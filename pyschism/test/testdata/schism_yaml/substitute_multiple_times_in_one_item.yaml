@@ -1,0 +1,5 @@
+env:
+  sub1: dir1
+  sub2: file1
+mesh:
+  work_dir: ${sub1}/${sub2}

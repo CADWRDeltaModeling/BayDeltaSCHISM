@@ -1,0 +1,1 @@
+This directory is initially empty. We will provide schism_loader.py to download large files.

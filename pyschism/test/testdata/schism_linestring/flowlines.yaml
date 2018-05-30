@@ -1,0 +1,9 @@
+linestrings:
+  - name: ocean
+    coordinates:
+      - [41., 69.]
+      - [41., 101.]
+  - name: mixed1
+    coordinates: [[101, 75], [69, 75]]
+  - name: middle
+    coordinates: [[45, 5], [45, 25]]

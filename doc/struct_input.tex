@@ -1,0 +1,144 @@
+
+
+
+\section{Model Input for Structures}
+\subsection{Enabling Structures ({\em param.in})}
+Hydraulic stuctures are enabled in \url{param.in} using the parameter {\em ihydraulics}. This is a binary
+flag with 1 indicating that structures are to be used and 0 indicating that they will be ignored.
+
+\subsection{Defining Structures ({\em hydraulics.in})}
+Below is an annotated example \url{hydraulics.in} file. The line numbers are not part of the original file
+and the comments (parts after the "`!"') are not required.
+
+\begin{samepage}
+\verbatiminput{hydraulics.in}
+\end{samepage}
+\subsubsection{Global header (example line 1-2)}
+The first two lines of \url{hydraulics.in} include two global parameters, 
+the total number of structures and the nudging factor.
+
+The gate equations are not enforced exactly. We have found that this specification is not fully stable, particularly when gates
+are abruptly installed or open. Instead we use a relaxation formulation:
+
+$$Q(t+\frac{\Delta t}{2})= (1-\chi) Q(t) + (\chi) Q_{\text{s}}(\eta(t),\mathbf{u}(t),\phi(t+1))$$
+
+where $Q_s$ is the explicit flow calculation for the structure based on state variables and parameters at time $t$.
+
+In other words, rather than being set exactly to the gate value, the (coupled) flow boundaries will be nudged a fraction $\chi$ towards this value. 
+The nudging factor can also be interpreted as a time constant. Using a small value like 0.1 will provide maximum stability, but is too slow
+to respond to tidal fluctuations. 
+
+\subsubsection{Structure geometry}
+After the global parameters, the next lines (3-10 in the example) represent the identification and geometry of the structure:
+\begin{enumerate}
+\item [Line 3] An index and name for the structure. The indices must be sequential and the maximum length of name is 32 characters
+\item [Line 4] The number of node pairs in the definition, the upstream reference node and the downstream reference node. All use global node numbers.
+\item [Line 5-10] For each node pair in the string defining the structure, the member of the pair on the upstream and downstream side. 
+The start and end must be on land boundaries. The concept of a node pair is illustrated by the unprimed and primed nodes in Figure \ref{fig:structmesh}
+\end{enumerate}
+
+\subsubsection{Parameters and coefficients}
+\label{sec:gate_spec}
+After the geometric information are some parameters that are specific to the structure type.
+In the example, this happens to fall on lines 11-14 although this would be different with different geometry
+or in a \url{hydraulics.in} with multiple gates.
+The first of these lines controls this input with the structure type being listed on the first of these lines. 
+All parameters are specified {\em per unit}. For all structures except the hydraulic tranfer, 
+the number of duplicate units is controlled by the variable {\em nduplicate}. 
+
+Many of the structures have invert elevations among their parameters. The datum for this elevation is the same
+as the datum for the elevation state variable $\eta$ in the model.
+
+\paragraph{transfer}
+A transfer is a coupled boundary condition (outflow and inflow). The only parameter is the prescribed flow.
+\begin{verbatim}
+struct_type        ! type of structure (transfer)
+nduplicate         ! number of duplicate units
+flow               ! flow in cms
+\end{verbatim}
+
+\paragraph{orifice,radial}
+\begin{verbatim}
+struct_type        ! type of structure (orifice, radial)
+nduplicate         ! number of duplicate units
+elev width height  ! invert elevation (m), width, height (rectangular)
+coef op_up op_down ! flow coeficient, operating coefficient down and up
+\end{verbatim}
+
+\paragraph{radial\_rh}
+A {\em radial\_rh} gate has a flow coefficient that has both
+a constant term and a linear variation in the gate height:
+\begin{verbatim}
+struct_type        ! type of structure (radial_rh)
+nduplicate         ! number of duplicate units
+elev width height  ! invert elevation (m), width (m), height (m)
+coef coef_linear op_up op_down 
+                   ! constant, linear parameters of flow coef.
+                   ! op coef down/up
+\end{verbatim}
+
+\paragraph{weir}
+An orifice is submerged, rectangular orifice (outflow and inflow). 
+\begin{verbatim}
+struct_type        ! type of structure (weir)
+nduplicate         ! number of duplicate units
+elev width height  ! invert elevation, width of  a single unit, height
+coef op_up op_down ! flow coef., operating coefficients down and up
+\end{verbatim}
+
+\paragraph{culvert}
+An culvert is a round culvert
+\begin{verbatim}
+struct_type        ! type of structure (culvert)
+nduplicate         ! number of duplicate units
+elev width         ! invert elevation, radius
+coef op_down op_up ! flow coeficient, operating coeficient down and up
+\end{verbatim}
+
+\paragraph{weir\_culvert}
+This is a combination of weir and culvert
+\begin{verbatim}
+struct_type           ! type of structure (culvert)
+weir_nduplicate       ! number of duplicate weir units
+weir_elev weir_width  ! invert elevation, radius
+weir_coef weir_op_down weir_op_up ! flow, operating coefs for weir
+pipe_nduplicate       ! number of duplicate culvert/pipe units
+pipe_elev pipe_width              ! invert elevation, radius
+pipe_coef pipe_op_down pipe_op_up ! flow, operating coefs for culvert
+\end{verbatim}
+
+\subsubsection{Enabling time series control}
+\label{sec:timeflag}
+The final line (line 15 in the example) of each structure definition is a flag (1=True, 0=False) indicating whether a time history (\url{*.th}) file will be used to make many of the parameters time-varying -- effectively replacing the values loaded in 
+\url{hydraulics.in}. Time series control is covered in Section \ref{sec:timeseries}.
+
+\subsection{Time Series Files ({\em *.th})}
+\label{sec:timeseries}
+If you set the time series flag for a gate coefficient to 1=True as indicated in \ref{sec:timeflag}, time series control is
+enabled for the gate. You need to provide an input file named \url{[gate_name].th} where {\em [gate\_name]} 
+is identical to the name used in the gate definition.
+
+The file \url{[gate_name].th} is a multivariate time history.As with all \url{*.th} files the first column  is time in elapsed seconds since the start of the run and the other columns are space delimited.
+One quirk compared to other SCHISM inputs is that the times can be irregular and interpolation 
+for gate variables is based on constant repetition of the previous value, not on linear interpolation. This, we feel, is more typical of the actuator on a gate; some things (like "`installation"') are
+also not meaningful at intermediate values.
+
+The other parameters that are included depend on the gate type, and the columns for each type are given below. 
+Most of the variables are identical to the ones listed in \url{hydraulics.in} and described in
+Section \ref{sec:gate_spec}. Howerver, there is one special variable {\em install} that is always 
+located in the column immediately after the time column. This variable takes on integer values and must be zero or one. 
+Setting the installation to zero removes the structure, restoring the original algorithm.
+ 
+\begin{description}
+\item[transfer] time  install(int) flow    ! Install = \(0,1\)
+\item[culvert,weir] time install(int) nduplicate(int) op\_down op\_up elev 
+\item[orifice,radial,radial\_rh] time install(int) nduplicate(int) op\_down op\_up elev width height
+\item[weir\_culvert] time install (int) ndup\_weir (int) op\_down\_weir op\_up\_weir elev\_weir width\_weir ndup\_pipe (int) down\_op\_pipe up\_op\_pipe elev\_pipe radius\_pipe
+\end{description}
+
+Below is a sample \url{dcc.th}, corresponding to the radial gate used in the original example \url{hydraulics.in}:
+\begin{samepage}
+\verbatiminput{dcc.th}
+\end{samepage}
+
+

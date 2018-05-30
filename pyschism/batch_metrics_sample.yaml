@@ -1,0 +1,20 @@
+# Batch metrics sample YAML
+# Outputs directories. They should contains station.in or flowlines.yaml.
+outputs_dir: ../outputs.control ../outputs.experiment
+# Station database
+stations_csv: ../../Data/stations_utm.csv
+# Database of the field data file
+obs_links_csv: ../../Data/2013/obs_links.csv
+time_basis: 2013-08-28   # ISO date (datetime)
+start_inst: 2013-12-01   # ISO date (datetime)
+end_inst:   2013-12-15   # ISO date (datetime)
+start_avg:  2013-11-01   # ISO date (datetime)
+end_avg:    2014-01-20   # ISO date (datetime)
+variable: salt  # one of elev, salt, flow
+labels: # Three labels for field data and two runs
+  - Obs
+  - 74b
+  - 74b windx2
+# selected_stations: CCS
+# excluded_stations: CLC
+# plot_format: simple

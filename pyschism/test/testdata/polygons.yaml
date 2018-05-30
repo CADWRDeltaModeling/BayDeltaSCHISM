@@ -1,0 +1,16 @@
+polygons:
+  - name: polygon1
+    type: none
+    attribute: 2.
+    vertices:
+      - [-1, -1]
+      - [10, 0]
+      - [9,  9]
+      - [0, 10]
+  - name: polygon2
+    type: min
+    attribute: x
+    vertices:
+      - [-1, -1]
+      - [10, 0]
+      - [9,  9]

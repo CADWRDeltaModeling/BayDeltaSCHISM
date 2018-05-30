@@ -1,0 +1,63 @@
+ANH,San Joaquin at Antioch,B95020,ANH
+BAC,Bacon Island at Old River,B95250,BAC
+BEN,Mokelumne River at Benson's Ferry,B94175,BEN
+CIS,Old River at Coney Island,B95290,CIS
+DBI,Discovery Bay at Indian Slough,B95260,DBI
+DGL,Doughty Cut above Grant Line Canal,B95325,DGL
+GCT,Grant Line Canal at Tracy Rd Bridge,B95300,GCT
+ISH,Italian Slough Headwater near Byron,B95283,ISH
+MAL,Mallard Island,EOB80261551,MAL
+MHR,Middle River at Howard Rd Bridge,B95530,MHR
+MSD,San Joaquin at Mossdale Bridge,B95820,MSD
+MTB,Middle River at Tracy Blvd,B95503,MTB
+OBD,Old River below Dam,B95365,OBD
+OH1,Old River at Head,B95400,OH1
+ORB,Old River at Byron,B95270,ORB
+RSL,Rock Slough at Contra Costa Canal,B95220,RSL
+TPI,Tom Paine Sl above Intake,B95421,TPI
+TPP,Tom Paine Sl near Pescadero,B95425,TPP
+TPS,Tom Paine Sl above the mouth,B95420,TPS
+VNI,Venice Island,B95580,VNI
+RVB,Sacramento River at Rio Vista,B91212,RVB
+LIS,Yolo Bypass at Lisbon,B91560,LIS
+ORI,Old River near Clifton Court Intake,B95341,ORI
+SJL,San Joaquin River near Lathrop,B95765,SJL
+BDT,San Joaquin River at Brandt Bridge,B95740,BDT
+RRI,Rough and Ready Island,B95660,RRI
+OLD,Old River at Tracy Blvd,B95380,OLD
+B95620,San Joaquin River at Rindge Pump,B95620,B95620
+A02100,Sacramento R at I Street,A02100,A02100
+B94100,Georgiana Slough at Mokelumne R,B94100,B94100
+B91650,Sacramento R at Walnut Grove,B91650,B91650
+B91750,Sacramento R at Snodgrass,B91750,B91750
+B95060,Threemile Slough at San Joaquin R,B95060,B95060
+B95310,Grantline Canal above Dam,B95310,B95310
+B95340,Old R at Clifton Court,B95340,B95340
+B95460,Middle R at Bacon Island,B95460,B95460
+MDM,Middle R at Middle R,B95468,B95468
+B95500,Middle R at Borden Hw,B95500,B95500  #also B9550000
+B95540,Middle R at Mowry,B95540,B95540
+MRU,Middle R at Undine Road,B95541,B95541
+WCI,West Canal at Clifton Court Intake,B95338,B95338
+NSL,Montezuma Slough at National Steel (S64),E33670,E33670
+TRN,Turner Cut Near Holt,B9561600,B9561600
+VCU,Victoria Canal near Byron,B9528500,B9528500
+HLT,Middle River near Holt,B9545800,B9545800
+BLP,San Joaquin River at Blind Point,B95029,B95029
+OSJ,Old River at Franks Tract,B9510800,B9510800
+OAD,Old River near DMC above Dam,B9536600,B9536600   # also B95366
+OBD,Old River Barrier near DMC below Dam,B9536500,B9536500 
+MFV,Miner Slough at Five Points,B91475,B91475
+DGL,Doughty Cut above Grantline Canal,B9532500,B9532500 
+B9529500 Grant Line Canal near Clifton Court Forebay,B9529500,B9529500 
+B95378,Old River at Tracy Wildlife Association,B95378,B95378
+B9539000,Old River above Doughty Cut,B9539000,B9539000
+B94150,South Fork Mokelumne at New Hope Bridge,B94150,B94150
+LIY,Yolo Bypass at Liberty Island,B91510,B91510
+B91479,Steamboat Slough Below Sutter Slough,B91479 
+HOL,Holland Cut near Bethel Island,B9512000,B9512000
+ORQ,Old River at Quimby Island,B9520000,B9520000 
+FAL,False River near Oakley,B9504400,B9504400
+B9522500,Werner Dredger Cut near Palm Tract,B9522500,B9522500  
+OH1,Old River at Head,B95400,OH1    #also B9540000
+TMS,Sacramento River at Threemile Slough,B91160,B91160

@@ -1,0 +1,4 @@
+env:
+  sub1: dir1
+mesh:
+  work_dir: ${sub1}

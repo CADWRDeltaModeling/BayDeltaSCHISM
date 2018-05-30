@@ -1,0 +1,18 @@
+2 ! ivcor
+    12   2   80.0   nvrt,  kz (# of z-levels), h_s (transition depth)
+Z levels ! Z-levels below
+    1       -100.000
+    2       -80.00
+S levels ! S-levels below
+  5.0     1.0       0.0001  h_c, theta_b, theta_f
+    1         -1.00    ! first level (always -1)
+    2         -0.90
+    3         -0.80
+    4         -0.70
+    5         -0.60
+    6         -0.50
+    7         -0.40
+    8         -0.30
+    9         -0.20
+   10         -0.10
+   11          0.00

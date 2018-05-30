@@ -1,0 +1,10 @@
+default: 0.
+polygons:
+  - name: ocean
+    type: none
+    attribute: max(0., (200. - x) * 0.01)
+    vertices:
+       - [-1.,   -1.]
+       - [31.,  -1.]
+       - [31., 101.]
+       - [-1., 101.]
