@@ -12,6 +12,7 @@ import xmlrunner
 class TestSchismMesh(unittest.TestCase):
     """ Unit test class for TriSchismMesh
     """
+
     def setUp(self):
         self.testdata_dir = os.path.join(os.path.dirname(__file__), "testdata")
         self.fpath_mesh = os.path.join(self.testdata_dir, "testmesh.gr3")
@@ -80,12 +81,14 @@ class TestSchismMesh(unittest.TestCase):
         self.assertEqual(mesh.vmesh.param['kz'], 2)
         self.assertEqual(mesh.vmesh.param['h_s'], 80.)
         self.assertEqual(mesh.vmesh.param['h_c'], 5.0)
-        self.assertTrue(np.allclose(mesh.vmesh.sigma, np.array([-1.00, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0.])))
+        self.assertTrue(np.allclose(mesh.vmesh.sigma, np.array(
+            [-1.00, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0.])))
 
     def test_schism_mesh_gr3_writer(self):
         fpath_mesh = self.fpath_mesh
         mesh = read_mesh(fpath_mesh)
-        fpath_mesh_out = os.path.join(os.path.dirname(__file__), "testdata/meshout.gr3")
+        fpath_mesh_out = os.path.join(
+            os.path.dirname(__file__), "testdata/meshout.gr3")
         write_mesh(mesh, fpath_mesh_out, write_boundary=True)
         meshout = read_mesh(fpath_mesh_out)
         self.assertEqual(meshout.n_nodes(), 112)
@@ -93,6 +96,21 @@ class TestSchismMesh(unittest.TestCase):
         self.assertEqual(meshout.n_boundaries(), 3)
         if os.path.exists(fpath_mesh_out):
             os.remove(fpath_mesh_out)
+
+    def test_schism_mesh_areas(self):
+        fpath_mesh = self.fpath_mesh
+        mesh = read_mesh(fpath_mesh)
+        areas = mesh.areas()
+        self.assertEqual(areas[0], 50.)
+        self.assertEqual(areas[60], 100.)
+
+    def test_schism_mesh_edge_len(self):
+        fpath_mesh = self.fpath_mesh
+        mesh = read_mesh(fpath_mesh)
+        edge_lens = mesh.edge_len()
+        self.assertAlmostEqual(edge_lens[0], 14.14213562)
+        self.assertAlmostEqual(edge_lens[1], 10.)
+
 
 if __name__ == '__main__':
     # unittest.main(testRunner=xmlrunner.XMLTestRunner(output='test-reports'))

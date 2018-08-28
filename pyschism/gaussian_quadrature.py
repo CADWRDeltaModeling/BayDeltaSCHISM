@@ -273,7 +273,7 @@ class GaussianQuadratureQuad4(GaussianQuadrature):
         return quad_pts, quad_wts
 
     def domain_size(self, vertices):
-        """ Size of domian, which is the area of the quadrilateral
+        """ Size of domain, which is the area of the quadrilateral
             in this case.
             The area is calculated with shoelace equation.
 

@@ -10,6 +10,7 @@ import numpy as np
 import os
 import math
 from copy import deepcopy
+from shapely.geometry import Point, Polygon
 
 __all__ = ['read_mesh', 'write_mesh']
 
@@ -103,6 +104,10 @@ class SchismMesh(TriQuadMesh):
         self._boundaries = []
         self._metadata = {}
         self._vmesh = None
+        self._areas = None
+        self._points = None
+        self._polygons = None
+        self._edge_lengths = None
 
     @property
     def vmesh(self):
@@ -354,11 +359,13 @@ class SchismMesh(TriQuadMesh):
         for i in range(len(up_path) - 1):
             edge = self.find_edge((up_path[i], up_path[i + 1]))
             if edge is None:
-                elem_up = self.get_elems_i_from_node(up_path[i]).intersection(self.get_elems_i_from_node(up_path[i + 1]))
+                elem_up = self.get_elems_i_from_node(up_path[i]).intersection(
+                    self.get_elems_i_from_node(up_path[i + 1]))
                 nodes_in_elem = self.elem(elem_up.pop())
                 for node_i in nodes_in_elem:
                     if node_i != up_path[i] and node_i != up_path[i + 1] and node_i not in down_path:
-                        up_path_updated.insert(i + 1 + n_inserted_nodes, node_i)
+                        up_path_updated.insert(
+                            i + 1 + n_inserted_nodes, node_i)
                         n_inserted_nodes += 1
                         break
 
@@ -367,11 +374,13 @@ class SchismMesh(TriQuadMesh):
         for i in range(len(down_path) - 1):
             edge = self.find_edge((down_path[i], down_path[i + 1]))
             if edge is None:
-                elem_up = self.get_elems_i_from_node(down_path[i]).intersection(self.get_elems_i_from_node(down_path[i + 1]))
+                elem_up = self.get_elems_i_from_node(down_path[i]).intersection(
+                    self.get_elems_i_from_node(down_path[i + 1]))
                 nodes_in_elem = self.elem(elem_up.pop())
                 for node_i in nodes_in_elem:
                     if node_i != down_path[i] and node_i != down_path[i + 1] and node_i not in up_path:
-                        down_path_updated.insert(i + 1 + n_inserted_nodes, node_i)
+                        down_path_updated.insert(
+                            i + 1 + n_inserted_nodes, node_i)
                         n_inserted_nodes += 1
                         break
 
@@ -532,6 +541,52 @@ class SchismMesh(TriQuadMesh):
         for i, edge in enumerate(self.edges):
             centers[i] = np.mean(self.nodes[self.edges[:2], :2], axis=0)
         return centers
+
+    def areas(self):
+        """ Get the array of element areas
+
+            Returns
+            -------
+            numpy.ndarray
+        """
+        if self._areas is None:
+            self._calculate_areas()
+        return self._areas
+
+    def _create_2d_points(self):
+        self._points = [Point(n[0], n[1]) for n in self._nodes]
+
+    def _create_2d_polygons(self):
+        n = self._nodes
+        self._polygons = [Polygon(n[e, :]) for e in self.elems]
+
+    def _calculate_areas(self):
+        """ Calculate the areas of the elements
+        """
+        if self._polygons is None:
+            self._create_2d_polygons()
+        self._areas = np.array([p.area for p in self._polygons])
+
+    def _calculate_edge_lens(self):
+        """ Calculate the lengths of the edges
+        """
+        edges = self.edges
+        self._edge_lengths = np.linalg.norm(
+            self._nodes[edges[:, 0], :2] - self._nodes[edges[:, 1], :2],
+            axis=1)
+
+    def edge_len(self):
+        """ Get a simple NumPy array of edge lengths
+            The ordering of the edges is decided from triquadmesh.
+            Look edges properties to find out connectivity
+
+            Returns
+            -------
+            numpy.ndarray
+        """
+        if self._edge_lengths is None:
+            self._calculate_edge_lens()
+        return self._edge_lengths
 
 
 class SchismMeshReader(object):
