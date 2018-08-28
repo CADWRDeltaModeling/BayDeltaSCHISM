@@ -108,6 +108,7 @@ class SchismMesh(TriQuadMesh):
         self._points = None
         self._polygons = None
         self._edge_lengths = None
+        self._centroids = None
 
     @property
     def vmesh(self):
@@ -575,8 +576,18 @@ class SchismMesh(TriQuadMesh):
             self._nodes[edges[:, 0], :2] - self._nodes[edges[:, 1], :2],
             axis=1)
 
+    def _calculate_centroids(self):
+        """ Calculate the centroids of all the elements
+            NOTE: Assume that the polygons are simple polygons
+            that do not consist of multiple parts.
+        """
+        if self._polygons is None:
+            self._create_2d_polygons()
+        self._centroids = np.array(
+            [p.centroid.coords[0] for p in self._polygons])
+
     def edge_len(self):
-        """ Get a simple NumPy array of edge lengths
+        """ Get a NumPy array of edge lengths
             The ordering of the edges is decided from triquadmesh.
             Look edges properties to find out connectivity
 
@@ -587,6 +598,16 @@ class SchismMesh(TriQuadMesh):
         if self._edge_lengths is None:
             self._calculate_edge_lens()
         return self._edge_lengths
+
+    def centroids(self):
+        """ Get a Numpy array of element centroids
+            Returns
+            -------
+            numpy.ndarray
+        """
+        if self._centroids is None:
+            self._calculate_centroids()
+        return self._centroids
 
 
 class SchismMeshReader(object):

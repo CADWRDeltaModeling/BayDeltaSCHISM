@@ -111,6 +111,15 @@ class TestSchismMesh(unittest.TestCase):
         self.assertAlmostEqual(edge_lens[0], 14.14213562)
         self.assertAlmostEqual(edge_lens[1], 10.)
 
+    def test_schism_mesh_centroids(self):
+        fpath_mesh = self.fpath_mesh
+        mesh = read_mesh(fpath_mesh)
+        centroids = mesh.centroids()
+        np.testing.assert_almost_equal(
+            centroids[0, :], np.array([6.66666667, 96.66666667]))
+        np.testing.assert_almost_equal(
+            centroids[60, :], np.array([75., 45.]))
+
 
 if __name__ == '__main__':
     # unittest.main(testRunner=xmlrunner.XMLTestRunner(output='test-reports'))
