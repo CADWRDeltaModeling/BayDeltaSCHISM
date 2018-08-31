@@ -3,7 +3,7 @@
 """
 from __future__ import print_function
 from plot_default_formats import set_color_cycle_dark2, set_scatter_color, make_plot_isometric, set_dual_axes, set_xaxis_dateformat, rotate_xticks
-from vtools.functions.api import cosine_lanczos, interpolate_ts, interpolate_ts_nan, LINEAR
+from vtools.functions.api import shift, cosine_lanczos, interpolate_ts, interpolate_ts_nan, LINEAR
 from vtools.functions.skill_metrics import rmse, median_error, skill_score, corr_coefficient
 from vtools.data.vtime import days, hours, minutes, time_interval, time_sequence
 from matplotlib.gridspec import GridSpec
@@ -510,7 +510,7 @@ def calculate_metrics(tss, lags, interpolate_method='linear'):
             corr = None
         else:
             if lags[i] != timedelta():
-                ts_target_shifted = ts_target.shift(-lags[i])
+                ts_target_shifted = shift(ts_target, -lags[i])
                 window_common = get_common_window((ts_base, ts_target_shifted))
                 ts1 = ts_base.window(*window_common)
                 ts2 = ts_target_shifted.window(*window_common)
