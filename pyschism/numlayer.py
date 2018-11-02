@@ -89,7 +89,7 @@ class LayerEval(object):
         layerdepthprod = layerdiff*self.depthdiff
         alignfac = np.where(layerdepthprod>0.,1.,2.)
         alignfac[self.depthdiff==0]=1.5
-        bad = np.sum(np.absolute(layerdiff)*alignfac,0.)
+        bad = np.sum(np.absolute(layerdiff) * alignfac, 0)
         return bad,
         
     #def benefit(self):
