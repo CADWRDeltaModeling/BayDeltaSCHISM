@@ -407,6 +407,38 @@ class CDECReader(TextTimeSeriesReader):
         return timestamp, value
 
 
+    
+class CDECReader2(TextTimeSeriesReader):
+    """ CDEC Reader class revised 2018 to read in CDEC style text file.
+        The fields of the CDEF format are delineated with ',' e.g.
+        20140101,0110,1000 (Day, hour, value)
+    """
+    def __init__(self):
+        super(CDECReader2, self).__init__()
+        #STATION_ID,DURATION,SENSOR_NUMBER,SENSOR_TYPE,DATE TIME,OBS DATE,VALUE,DATA_FLAG,UNITS
+        # FPT,H,1,RIV STG,20181123 1000,,103.27, ,FEET
+        self._record_regex = r"(?P<id>[\w]{3}),.*?,.*?,.*?,(?P<datetime>\d{8} \d{4}),,(?P<value>[-\d.]*), ,FEET"
+        #self._record_regex = r"(?P<datetime>\d{8},\d{4}),.*?,(?P<value>[-\d.]*),.*?,.*?"        
+        self._header_approval_regexes = [r"STATION_ID,DURATION,SENSOR_NUMBER.*"]
+
+    def parse_datetime(self, line):
+        pass
+
+    def parse_value(self, line):
+        pass
+
+    def parse_record(self, line):
+        parts = line.strip().split(',')
+        timestamp = datetime.datetime.strptime(parts[4],
+                                               "%Y%m%d %H%M")
+
+        # Please do not revert this code. It used to put a nan in for anything that fails to parse
+        # If this doesn't cover nan, we need to learn about the other codes in the data dictionary
+        value = float(parts[6].replace("m","nan"))
+        return timestamp, value
+    
+        
+        
 def read_cdec(fpath, start=None, end=None, force_regular=True):
     reader = CDECReader()
     return reader.read(fpath, start, end, force_regular)
@@ -786,7 +818,7 @@ def read_ts(fpath, start=None, end=None, force_regular=True, selector = None):
         dict
             metadata of the time series
     """
-    readers = [CDECReader(), NOAAReader(), WDLReader(), DESReader(),
+    readers = [CDECReader(), CDECReader2(), NOAAReader(), WDLReader(), DESReader(),
                USGSReader(), USGS2Reader(), USGSRdbReader()]
     for reader in readers:
         if reader.is_readable(fpath):
