@@ -150,7 +150,7 @@ class SubstituteConstructor(SafeConstructor):
                 return loader.get_single_data()
         else:
             print "Error: cannot find the file:", filename
-            raise ValueError('Cannot found an included file')
+            raise ValueError('Cannot find included file: {}'.format(filename))
 
 
 SubstituteConstructor.add_constructor('!include',

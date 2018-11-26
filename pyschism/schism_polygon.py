@@ -195,7 +195,7 @@ class SchismPolygonShapefileReader(SchismPolygonIo):
             return polygons
             # return SchismPolygonDictConverter().read({'polygons': polygons})
         else:
-            raise ValueError('File not found')
+            raise ValueError('File not found: {}'.format(fpath))
 
 
 class SchismPolygonYamlWriter(SchismPolygonIo):

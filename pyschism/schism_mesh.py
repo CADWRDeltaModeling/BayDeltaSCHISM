@@ -705,7 +705,7 @@ class SchismMeshGr3Reader(SchismMeshReader):
                 read_boundary = arg
 
         if not os.path.exists(fpath_mesh):
-            raise ValueError('File not found')
+            raise ValueError('File not found:{}'.format(fpath_mesh))
         if self._logger is not None:
             self._logger.debug("Reading in a gr3 file: %s ..." % fpath_mesh)
 
