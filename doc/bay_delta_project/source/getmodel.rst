@@ -5,7 +5,7 @@ Getting Started
 Depending on your experience level, you may be learning a new computation environment as well as a new model. We suggest you tackle these separately:
 
   - Download the model and try the first couple tutorials on a simplified grid using Windows or Linux. 
-  - Try the Bay-Delta `preprocessing tools <http://baydeltaoffice.water.ca.gov/modeling/deltamodeling/models/tools/index.html>`_ in the package for working on the mesh, generating initial and boundary conditions, the ocean boundary and post processing. 
+  - Try the Bay-Delta `preprocessing tools <scripting_tools/html/index.html>`_ in the package for working on the mesh, generating initial and boundary conditions, the ocean boundary and post processing. 
   - Download the code and the ready-to-run :ref:`complete-sample` and use them to configure and test your target high performance computing (HPC) environment.
 
 SCHISM Code
@@ -53,7 +53,7 @@ learning the preprocessor.
 includes a complete directory of inputs for a late August - early September 2013 baroclinic run with salt transport, sample PBS launching script (pbs.sh) and launching script (run.sh) that we use with our  cluster's job scheduler.
 
 
-VisIt SELFE Plug-in
+VisIt SCHISM Plug-in
 -----------------------
 `VisIt <http://visit.llnl.gov/>`_ is a visualization toolkit for high performance 
 numerical simulations. VisIt accesses specific data sources using plugins. At the time of writing, ours plugin works for SELFE/SCHISM native binaries and the next iteration will work for the NetCDF UGRID 0.9 output from SCHISM. We do not distribute the base VisIt. 

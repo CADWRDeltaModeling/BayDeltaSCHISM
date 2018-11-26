@@ -5,7 +5,11 @@ REM Command file for Sphinx documentation
 if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=sphinx-build
 )
-set BUILDDIR=build
+set BUILDDIR=../../../bay_delta_schism_docgen
+set PDFBUILDDDIR="d:/temp/pdftmp"
+set PDF=../schism_tools.pdf
+echo %BUILDDIR%
+
 set ALLSPHINXOPTS=-d %BUILDDIR%/doctrees %SPHINXOPTS% source
 set I18NSPHINXOPTS=%SPHINXOPTS% source
 if NOT "%PAPER%" == "" (
