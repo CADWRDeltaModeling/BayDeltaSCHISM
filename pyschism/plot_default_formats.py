@@ -10,6 +10,7 @@ from matplotlib.ticker import AutoLocator, ScalarFormatter
 import matplotlib.gridspec as gridspec
 import matplotlib as mpl
 import numpy as np
+from cycler import cycler
 
 __all__ = ['set_color_cycle_dark2', 'set_dual_axes', 'set_dual_axes_elev', 'set_dual_axes_salt']
 
@@ -45,7 +46,8 @@ def set_color_cycle_dark2():
         brewer_colors: list
             list of the colors
     """
-    mpl.rcParams['axes.color_cycle'] = brewer_colors
+    
+    mpl.rcParams['axes.prop_cycle'] = cycler(color=brewer_colors)
     return brewer_colors
 
 
