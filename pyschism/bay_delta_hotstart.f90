@@ -1,7 +1,7 @@
 ! Generate hotstart.in with const. elev. (from elev.ic) and 0 vel (i.e. S,T only; no tracers)
 ! History: added ivcor=1; fixed a bug in ntracers
 ! pgf90 -O2 -mcmodel=medium -Mbounds -Bstatic -o bay_delta_hotstart /sciclone/home04/yinglong/SELFE/svn/trunk/src/Utility/UtilLib/argparse.F90 bay_delta_hotstart.f90
-
+! ifort -Bstatic -assume byterecl -O2 -o bay_delta_hotstart bay_delta_hotstart.f90 argparse.F90
 !   Input: 
 !     (1) USGS survey data: (e.g. usgs_cruise_station.txt, usgs_2009_02_10.txt) -WARNING:
 !                            dates have to be in: mm/dd/yyyy... i.e. double digits for mm & dd,
@@ -170,7 +170,7 @@
       integer, parameter :: mndps=200 !max. # of depth bins
       integer, parameter :: mnp=300000
       integer, parameter :: mne=400000
-      integer, parameter :: mns=450000
+      integer, parameter :: mns=600000
       integer, parameter :: mnv=140
       integer, parameter :: mnope=20 !max # of open bnd segments
       integer, parameter :: mnond=1000 !max # of open bnd nodes in each segment
