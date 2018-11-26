@@ -69,7 +69,7 @@ class ObsLinks(object):
                 Station name
         """
         if self.links.has_key((station_id, variable, vert_pos)):
-            return self.links[(station_id, variable, vert_pos)][3]
+            return self.links[(station_id, variable, vert_pos)][2]
         else:
             return None
 

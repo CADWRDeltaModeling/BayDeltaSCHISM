@@ -1,1 +1,1 @@
-sphinx-apidoc --force -o source\api ..\..\Scripts
+sphinx-apidoc --force -o source\api ..\..\pyschism

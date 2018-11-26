@@ -5,6 +5,7 @@
 __all__ = ["StationDB",]
 
 
+
 class StationDB(object):
     """ Read a station DB in csv format, and provide station information
     """
@@ -29,6 +30,8 @@ class StationDB(object):
                     self.ndx_station_id = columns.index("id")
                     self.ndx_name = columns.index("name")
                     self.ndx_alias = columns.index("alias_id2")
+                    self.x_name=columns.index("point_x")
+                    self.y_name=columns.index("point_y")
                 else:
                     data = line
                     id = str(data[self.ndx_station_id])
@@ -37,7 +40,10 @@ class StationDB(object):
                     else:
                         raise ValueError("Station with id %s has incorrect number of columns compared to header (%s vs %s)" % (id,len(data),len(self.header)))
 
-
+    def ids(self):
+        return self.data.keys()
+                        
+                        
     def alias(self, station_id):
         """ Get an alias of a station with ID
             station_id:
@@ -66,6 +72,27 @@ class StationDB(object):
             long_name = self.data[station_id][self.ndx_name]
         return long_name
 
+    def xy(self, station_id):
+            """ Get coordinates of station with station_id
+
+                Parameters
+                ----------
+                station_id:
+                    station name
+
+                Returns
+                -------
+                loc : array
+                    a tuple length 2 with x and y coordinate
+            """
+            
+            if station_id in self.data.keys():
+                x = float(self.data[station_id][self.x_name])
+                y = float(self.data[station_id][self.y_name])
+                return (x,y)        
+            else:
+                return None
+        
     def station_ids_from_alias(self, alias):
         ids = [x for x in self.data.keys() if self.data[x][self.ndx_alias] == alias]
         return ids

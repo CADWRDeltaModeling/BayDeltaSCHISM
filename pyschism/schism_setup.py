@@ -238,9 +238,13 @@ class SchismSetup(object):
         neighboring_nodes = []
         for linestring in linestrings:
             line = linestring.get('coordinates')
-            up_path, down_path = mesh.find_two_neighboring_node_paths(line)
-            neighboring_nodes.append((up_path, down_path))
-
+            name = linestring.get('name')
+            try:
+                up_path, down_path = mesh.find_two_neighboring_node_paths(line)
+                neighboring_nodes.append((up_path, down_path))
+            except KeyError as ke:
+                raise ValueError(" could not find neighboring node paths for linestring named: {}".format(name))
+                
         flags = np.full((mesh.n_elems(), 1), -1, dtype='int')
         for i, (up_path, down_path) in enumerate(neighboring_nodes):
             if len(down_path) < 2:
