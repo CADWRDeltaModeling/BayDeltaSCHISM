@@ -9,6 +9,7 @@ import numpy as np
 def combine_flux(infiles,outfile,prefer_last=False):
     """ Merge possibly overlapping flux.dat files from hostart runs
     """
+    
     filedata = [np.loadtxt(f) for f in infiles]
     nfile = len(filedata)
     starts = np.array([fd[ 0,0] for fd in filedata])
@@ -79,8 +80,11 @@ def main():
     parser = create_arg_parser()
     args = parser.parse_args()
     filelist = args.files
+    inputs = [x.name for x in filelist]
     prefer_last = args.prefer_last
     output = args.output
+    if output in inputs:
+        raise ValueError("Cannot overwrite input file names")
     combine_flux(filelist,output,prefer_last)
 
 
