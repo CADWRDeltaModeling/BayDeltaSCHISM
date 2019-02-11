@@ -14,7 +14,8 @@ stationlist = {"9414290":"San Francisco",
                "9414863":"Richmond",
                "9415144":"Port Chicago",
                "9413450":"Monterey",
-               "9415020":"Point Reyes"}
+               "9415020":"Point Reyes",
+               "9415102":"Martinez-Amorco Pier"}
 
 
 name_to_id = dict((v,k) for k, v in stationlist.iteritems())
