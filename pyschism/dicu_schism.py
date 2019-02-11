@@ -137,16 +137,22 @@ def expand_dicu(source, saltsource, tempsource, nodelist, window):
             else:
                 raise ValueError("Input time series interval is unexpected")            
             if (tname == 'salinity'): 
+                x.data = np.maximum(x.data,100.)            
                 x.data = ec_psu_25c(x.data)
             elif (tname == 'sink'):
                 x *= -CFS2CMS
+                x.data = np.minimum(x.data,0.)
             elif (tname == 'source'):
                 x *= CFS2CMS
+                x.data = np.maximum(x.data,0.)
+            elif (tname == 'temperature'):
+                x.data = np.maximum(x.data,0.)
+                
             dicu_data[itype,:,(inode+1)] = x.data        
     #write it out    
     write_data = None
     for tname in tname_ndx.keys():
-        thfile = "dicu_%s.th" % tname
+        thfile = "dcd_%s.th" % tname
         tndx=tname_ndx[tname]
         f0 = open(thfile,"w")
         print "Writing %s" % tname
@@ -191,9 +197,9 @@ if __name__ == "__main__":
     parser = create_arg_parser()
     args = parser.parse_args()
     sdtime=dtm.datetime(*map(int, re.split('[^\d]', args.start))) # convert start time string input to datetime
-    "DICU start time given: %s" % sdtime
+    "DICU/DCD start time given: %s" % sdtime
     edtime=dtm.datetime(*map(int, re.split('[^\d]', args.end))) # convert start time string input to datetime
-    "DICU end time given: %s" % edtime    
+    "DICU/DCD end time given: %s" % edtime    
 
     flow_file = args.flow_file
     wq_file = args.wq_file
