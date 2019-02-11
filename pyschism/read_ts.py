@@ -744,7 +744,7 @@ class USGSRdbReader(TextTimeSeriesReader):
             if data_col_re.match(columns[icol]):
                 data_names.append(columns[icol])
                 data_ndxs.append(icol)
-        if not selector:
+        if selector is None:
             if len(data_ndxs) > 1:
                 raise ValueError("Multiple data columns found but no selector provided for path %s" %fpath)
             else:
@@ -788,7 +788,7 @@ class USGSRdbReader(TextTimeSeriesReader):
         return n_headerlines, metadata  #, col_ndx
 
 
-def read_usgs2(fpath, start=None, end=None, force_regular=True):
+def read_usgs2(fpath, start=None, end=None, force_regular=True, selector = None):
     reader = USGS2Reader()
     return reader.read(fpath, start, end, force_regular)
 
@@ -822,7 +822,10 @@ def read_ts(fpath, start=None, end=None, force_regular=True, selector = None):
                USGSReader(), USGS2Reader(), USGSRdbReader()]
     for reader in readers:
         if reader.is_readable(fpath):
-            return reader.read(fpath, start, end, force_regular)
+            if selector is None:
+                return reader.read(fpath, start, end, force_regular)
+            else:
+                return reader.read(fpath, start, end, force_regular, selector)
     raise ValueError("File format not identified or supported: %s\n" % fpath)
 
 
