@@ -60,7 +60,7 @@ def test_combine_flux():
         b=e
         out.close()
     fout = "flux_comb.dat"
-    combine_flux(fnames,fout)
+    combine_flux(fnames,fout,prefer_last=False)
 
 
 def create_arg_parser():
