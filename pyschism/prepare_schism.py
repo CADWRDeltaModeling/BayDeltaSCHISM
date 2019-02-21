@@ -185,7 +185,11 @@ def create_structures(s, inputs, logger):
     configuration_items = ('n_duplicates', 'elevation', 'width', 'height',
                            'radius', 'coefficient',
                            'op_downstream', 'op_upstream',
-                           'use_time_series', 'coefficient_height')
+                           'use_time_series', 'coefficient_height',
+                           'culvert_n_duplicates', 
+                           'culvert_elevation', 'culvert_radius',
+                           'culvert_coefficient',
+                           'culvert_op_downstream', 'culvert_op_upstream')
     nudging = dict_struct.get('nudging')
     for structure in structures:
         check_and_suggest(structure, structure_items)

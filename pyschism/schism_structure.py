@@ -184,7 +184,7 @@ class SchismStructureIO(BaseIO):
                 flow = float(tokens[0])
                 struct.properties = [flow]
             else:
-                raise Exception("Not supported structureee type")
+                raise Exception("Not supported structure type")
 
             # Time series
             tokens, ok = self._read_and_parse_line(f, 1)
@@ -265,6 +265,27 @@ class SchismStructureIO(BaseIO):
                 buf = "%f %f ! op_downstream, op_upstream\n" % \
                       (struct.properties['op_downstream'],
                        struct.properties['op_upstream'])
+                f.write(buf)
+            elif struct.type == "weir_culvert":
+                buf = "%f %f ! elevation and width for weir\n" % \
+                       (struct.properties['elevation'],
+                        struct.properties['width'])
+                f.write(buf)
+                buf = "%f %f %f ! coef, op_downstream, op_upstream for weirs\n" % \
+                      (struct.properties['coefficient'],
+                       struct.properties['op_downstream'],
+                       struct.properties['op_upstream'])
+                f.write(buf)
+                buf = "%d ! n_duplicates for culverts\n" % (
+                    struct.properties['culvert_n_duplicates'])
+                f.write(buf)
+                buf = "%f %f\n" % (struct.properties['culvert_elevation'],
+                                   struct.properties['culvert_radius'])
+                f.write(buf)
+                buf = "%f %f %f ! coef, op_downstream, op_upstream for culverts\n" % \
+                      (struct.properties['culvert_coefficient'],
+                       struct.properties['culvert_op_downstream'],
+                       struct.properties['culvert_op_upstream'])
                 f.write(buf)
             elif struct.type == "transfer":
                 buf = "%f ! flow\n" % struct.properties['flow']
