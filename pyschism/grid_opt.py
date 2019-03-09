@@ -820,7 +820,7 @@ def init_logger():
 def grid_opt_with_args(args):
     """ Optimize grid with arguments parsed by argparse
     """
-    with open(args.optparam) as f:
+    with open(args.optparm) as f:
         opt_param = schism_yaml.load(f)
     mesh = read_mesh(args.filename, nodestring_option='land')
     with open(args.demfile, 'r') as f:
@@ -844,6 +844,7 @@ def main():
     parser = create_arg_parser()
     args = parser.parse_args()
     grid_opt_with_args(args)
+    args.na_fill = -999999
 
 
 if __name__ == '__main__':
