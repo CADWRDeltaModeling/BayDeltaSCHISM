@@ -417,7 +417,8 @@ class CDECReader2(TextTimeSeriesReader):
         super(CDECReader2, self).__init__()
         #STATION_ID,DURATION,SENSOR_NUMBER,SENSOR_TYPE,DATE TIME,OBS DATE,VALUE,DATA_FLAG,UNITS
         # FPT,H,1,RIV STG,20181123 1000,,103.27, ,FEET
-        self._record_regex = r"(?P<id>[\w]{3}),.*?,.*?,.*?,(?P<datetime>\d{8} \d{4}),,(?P<value>[-\d.]*), ,FEET"
+        # DSJ,E,20,FLOW,20071001 0100,,7283, ,CFS
+        self._record_regex = r"(?P<id>[\w]{3}),.*?,.*?,.*?,(?P<datetime>\d{8} \d{4}),.*?,(?P<value>[-\d.]*),.*?"
         #self._record_regex = r"(?P<datetime>\d{8},\d{4}),.*?,(?P<value>[-\d.]*),.*?,.*?"        
         self._header_approval_regexes = [r"STATION_ID,DURATION,SENSOR_NUMBER.*"]
 
@@ -434,10 +435,9 @@ class CDECReader2(TextTimeSeriesReader):
 
         # Please do not revert this code. It used to put a nan in for anything that fails to parse
         # If this doesn't cover nan, we need to learn about the other codes in the data dictionary
-        value = float(parts[6].replace("m","nan"))
+        value = float(parts[6].replace("m","nan").replace("---","nan"))
         return timestamp, value
-    
-        
+           
         
 def read_cdec(fpath, start=None, end=None, force_regular=True):
     reader = CDECReader()
