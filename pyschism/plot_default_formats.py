@@ -519,8 +519,7 @@ def change_tick_label_size(ax1, size=None):
 
 
 def set_scatter_color(artist):
-    mpl.pyplot.setp(artist, alpha=0.15, edgecolor='grey',
-                    facecolor=mpl.rcParams['axes.color_cycle'][0])
+    mpl.pyplot.setp(artist, alpha=0.15, edgecolor='grey',facecolor=brewer_colors[0])
 
 
 def make_plot_isometric(axes):
