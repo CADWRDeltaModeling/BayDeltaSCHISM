@@ -185,9 +185,9 @@ if __name__ == "__main__":
     start = dtm.datetime(2003,1,1)
     end = dtm.datetime(2008,5,29)
     mdir = "//cnrastore-bdo/Modeling_Data/des_emp/raw"
-    fpat="s33_cygnus_cyg_ec_inst_*.csv"
-    fpat="bll_blacklockriver_bll_ec_inst_2009_2019.csv"
-    #fpat="s71_mzmroar_msl_ec_inst_*.csv"
+    #fpat="s33_cygnus_cyg_ec_inst_*.csv"
+    #fpat="bll_blacklockriver_bll_ec_inst_2009_2019.csv"
+    fpat="s71_mzmroar_msl_ec_inst_*.csv"
     ts=csv_retrieve_ts(fpat,mdir,start,end,selector="VALUE",qaqc_selector="QAQC Flag",
                     parsedates=["DATETIME"],
                     indexcol=["DATETIME"],
@@ -196,11 +196,11 @@ if __name__ == "__main__":
                     comment = None,
                     prefer_age="new",                    
                     tz_adj=hours(0))  
-    ts2 = ts.asfreq("15min")+10.
+    ts2 = ts.asfreq("15min")
     fig,ax = plt.subplots(1)
-    ts.plot(ax=ax)
+    (ts-10.).plot(ax=ax)
     ts2.plot(ax=ax)
     plt.legend(["Original", "Regular"])
     plt.show()
-    ts2.to_csv("D:/temp/bll_ec.csv",date_format="%Y%m%d,%H%M",float_format="%.1f",na_rep="m")
+    ts2.to_csv("//cnrastore-bdo/BDO_HOME/SCHISM/fielddata/emp_ec_20190802/msl.csv",date_format="%Y%m%d,%H%M",float_format="%.1f",na_rep="m")
 
