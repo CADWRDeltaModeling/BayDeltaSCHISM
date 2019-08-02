@@ -1,4 +1,4 @@
-
+import csv
 from numpy import cos as npcos
 from numpy import sin as npsin
 import pandas as pd
@@ -19,6 +19,22 @@ avelen = hours(1)
 MPH2MS = 0.44704
 KPH2MS = 1./3.6
 ref_pressure = None
+
+
+def ts_merge(series):
+    # this concatenates, leaving redundant indices in df0, df1, df2
+    dfmerge = pd.concat(series,sort=True)
+
+    # finally, drop duplicate indices
+    dfmerge = dfmerge.loc[~dfmerge.index.duplicated(keep='last')]    
+    # Now apply, in priority order, each of the original dataframes to fill the original
+    for ddf in series:
+        dfmerge = dfmerge.combine_first(ddf)
+
+
+    print(dfmerge)
+    return dfmerge
+
 
 def remove_isolated(ts,thresh):
     goodloc = np.where(np.isnan(ts.data),0,1)
@@ -70,15 +86,22 @@ def rep_size(x):
     return outy
 
 
-
+def cdec_date_parser(*args):
+    if len(args) == 2: 
+        x = args[0] + args[1]     
+        return dtm.datetime.strptime(x,"%Y%m%d%H%M")
+    else:
+        return dtm.datetime.strptime(args,"%Y%m%d%H%M")
 
 def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
                     qaqc_selector=None,
+                    qaqc_accept=["G","U"],
                     parsedates=None,
                     indexcol=0,
                     skiprows=0,
                     dateparser=None,
                     comment = None,
+                    extra_na = ["m","---",""," "],
                     prefer_age="new",                    
                     tz_adj=hours(0)):
     import os
@@ -89,9 +112,9 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
             matches.append(os.path.join(root, filename))
      
     head = skiprows
-    qaqc_accept = ["G","U"]
     column_names = None
-
+    
+    
 
     #parsetime = lambda x: pd.datetime.strptime(x, '%Y-%m-%d%H%M')
     tsm = []
@@ -101,12 +124,14 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
     # The matches are in lexicogrphical order. Reversing them puts the newer ones 
     # higher priority than the older ones for merging
     matches.reverse()
+    if len(matches) == 0:
+        raise ValueError("No matches to file pattern")
     for m in matches:
         dargs = {}
         if not dateparser is None: dargs["date_parser"] = dateparser
         if not comment is None: dargs["comment"] = comment
         #if not na_values is None: dargs["na_values"] = na_values
-        dset = pd.read_csv(m,index_col=indexcol,header = head,parse_dates=parsedates,**dargs)
+        dset = pd.read_csv(m,index_col=indexcol,header = head,parse_dates=parsedates,na_values=extra_na,keep_default_na=True,**dargs)
         if column_names is None:        
             dset.columns = [x.strip() for x in dset.columns]
         else:
@@ -121,10 +146,14 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
         if qaqc_selector is None:
             rowok = None
         else:
-             print dset.loc[~dset[qaqc_selector].isin(qaqc_accept),selector].count()
-             print dset.count()                
-             dset.loc[~dset[qaqc_selector].isin(qaqc_accept),selector] = np.nan
-        
+            # print dset.head()
+            # print dset.columns
+            # print qaqc_selector
+            # print dset[qaqc_selector].isin(qaqc_accept).head()
+            # print dset.loc[~dset[qaqc_selector].isin(qaqc_accept),selector].count()
+            # print dset.count()                
+            dset.loc[~dset[qaqc_selector].isin(qaqc_accept),selector] = np.nan
+             
 #            anyok = None
 #            qa_flag = dset[qaqc_selector].as_matrix()
 #            print("QAQC SEction: {}".format(qaqc_selector))
@@ -141,9 +170,9 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
 #            print rowok.shape
             
 
-        tsm.append(dset[selector])
-        big_ts = pd.concat(tsm)
-    return big_ts.to_xarray()      
+        tsm.append(dset[selector].astype(float))
+        big_ts = ts_merge(tsm) #pd.concat(tsm)
+    return big_ts.to_frame()  #.to_xarray()      
 
 
 
@@ -156,14 +185,22 @@ if __name__ == "__main__":
     start = dtm.datetime(2003,1,1)
     end = dtm.datetime(2008,5,29)
     mdir = "//cnrastore-bdo/Modeling_Data/des_emp/raw"
-    fpat="s21_sunrise_snc_ec_inst*.csv"
+    fpat="s33_cygnus_cyg_ec_inst_*.csv"
+    fpat="bll_blacklockriver_bll_ec_inst_2009_2019.csv"
+    #fpat="s71_mzmroar_msl_ec_inst_*.csv"
     ts=csv_retrieve_ts(fpat,mdir,start,end,selector="VALUE",qaqc_selector="QAQC Flag",
-                    parsedates=["DATETIME],
+                    parsedates=["DATETIME"],
                     indexcol=["DATETIME"],
                     skiprows=2,
                     dateparser=None,
                     comment = None,
                     prefer_age="new",                    
                     tz_adj=hours(0))  
-    ts.plot()
+    ts2 = ts.asfreq("15min")+10.
+    fig,ax = plt.subplots(1)
+    ts.plot(ax=ax)
+    ts2.plot(ax=ax)
+    plt.legend(["Original", "Regular"])
+    plt.show()
+    ts2.to_csv("D:/temp/bll_ec.csv",date_format="%Y%m%d,%H%M",float_format="%.1f",na_rep="m")
 
