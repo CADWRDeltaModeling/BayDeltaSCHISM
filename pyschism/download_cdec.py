@@ -73,19 +73,20 @@ def cdec_download(stations,dest_dir,start,end="Now",param="ec",overwrite=False):
             print "Skipping existing station because file exists: %s" % path
             skips.append(path)
             continue
-        stime=start.strftime("%m/%d/%Y")
-        etime=end if end == "Now" else end.strftime("%m/%d/%Y")
+        stime=start.strftime("%m-%d-%Y")
+        etime=end if end == "Now" else end.strftime("%m-%d-%Y")
         found = False
        
         for code in z:
-            station_query_base = "http://%s/cgi-progs/queryCSV?station_id=%s&sensor_num=%s&dur_code=%s&start_date=%s&end_date=%s"
+            station_query_base = "http://%s/dynamicapp/req/CSVDataServlet?Stations=%s&SensorNums=%s&dur_code=%s&Start=%s&End=%s"
+            #station_query_base = "http://%s/cgi-progs/queryCSV?station_id=%s&sensor_num=%s&dur_code=%s&start_date=%s&end_date=%s"
             dur_codes = ["E","H","D"]
             for dur in dur_codes:
                 station_query = station_query_base % (cdec_base_url,station,code,dur,stime,etime)
-                #print station_query
+                print station_query
                 response = urllib2.urlopen(station_query)
                 station_html = response.read().replace("\r","")
-                if station_html.startswith("Title") and len(station_html) > 16:
+                if station_html.startswith("Title") or station_html.startswith("STATION_ID") and len(station_html) > 16:
                     found = True
                     with open(path,"w") as f:
                         f.write(station_html)
