@@ -62,7 +62,7 @@ flow               ! flow in cms
 struct_type        ! type of structure (orifice, radial)
 nduplicate         ! number of duplicate units
 elev width height  ! invert elevation (m), width, height (rectangular)
-coef op_up op_down ! flow coeficient, operating coefficient down and up
+coef op_down op_up ! flow coeficient, operating coefficient down and up
 \end{verbatim}
 
 \paragraph{radial\_rh}
@@ -72,9 +72,8 @@ a constant term and a linear variation in the gate height:
 struct_type        ! type of structure (radial_rh)
 nduplicate         ! number of duplicate units
 elev width height  ! invert elevation (m), width (m), height (m)
-coef coef_linear op_up op_down 
-                   ! constant, linear parameters of flow coef.
-                   ! op coef down/up
+coef coef_linear   ! constant, linear height-based parameters of flow coef.
+op_down op_up      ! op coef down/up
 \end{verbatim}
 
 \paragraph{weir}
@@ -83,7 +82,7 @@ An orifice is submerged, rectangular orifice (outflow and inflow).
 struct_type        ! type of structure (weir)
 nduplicate         ! number of duplicate units
 elev width height  ! invert elevation, width of  a single unit, height
-coef op_up op_down ! flow coef., operating coefficients down and up
+coef op_down op_up ! flow coef., operating coefficients down and up
 \end{verbatim}
 
 \paragraph{culvert}
