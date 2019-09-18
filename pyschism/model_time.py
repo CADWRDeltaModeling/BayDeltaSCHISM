@@ -79,7 +79,10 @@ def to_elapsed(args):
     inputfile = args.dated_input
     dt = args.step
     # convert start time string input to datetime
-    sdtime = datetime.datetime(*map(int, re.split(r'[^\d]', args.start)))
+    try:
+        sdtime = datetime.datetime(*map(int, re.split(r'[^\d]', args.start)))
+    except:
+        raise ValueError("Could not convert start time to datetime: {}".format(args.start))
     print "Model start time given: %s" % sdtime
     # Some correctness checking
     if len(inputfile) > 1 and inputfile[0].endswith(".th"):
@@ -189,9 +192,35 @@ def clip(args):
     if outfile != sys.stdout:
         outfile.close()
 
-
+def multi_file_to_elapsed(input,output,start):
+    import os
+    import glob
+    if isinstance(input,list):
+        inputs = input
+        if isinstance(output,list):
+            if not len(input) == len(output): 
+                raise ValueError("If inputs and outputs are both lists, they should be the same size")
+            outputs = output
+        elif not os.path.isdir(output):
+            raise ValueError("output was a scalar, but not a valid directory name: {}".format(output))
+        else:
+             outputs = [os.path.join(output,y) for y in [os.path.split(x)[1] for x in input]]
+    else:
+        is_glob = True
+        is_dir = os.path.isdir(output)
+        if isinstance(output,list) or not is_dir:
+            raise ValueError("If using blob search, output must be a directory not a list: {}".format(output))
+        inputs = glob.glob(input)
+        if len(inputs) == 0: raise ValueError("No files matched pattern: {}".format(input))
+        outputs = [os.path.join(output,y) for y in [os.path.split(x)[1] for x in inputs]]
+    for ifn,ofn in zip(inputs,outputs):
+        print ifn
+        file_to_elapsed(ifn,start,ofn)
+        
+            
 def file_to_elapsed(infile, start, outpath=None, annotate=False, skip_nan=False):
-    if type(start) == str:
+
+    if not isinstance(start,datetime.datetime):
         start = datetime.datetime(*map(int, re.split(r'[^\d]', start)))
 
     if not outpath:
@@ -202,17 +231,21 @@ def file_to_elapsed(infile, start, outpath=None, annotate=False, skip_nan=False)
         prev_use = False
         prev_outline = None
         no_record = True
-        for line in thfile:
+        for iline,line in enumerate(thfile):
             if line and len(line) > 4 and not line.startswith("#"):
                 splitline = line.split()
                 if skip_nan and splitline[-1] == 'nan':
                     continue
+                if len(splitline) <  2: continue
                 timestr = splitline[0]
                 if len(timestr) == 10:
                     # Only got the date,not the time
                     timestr += " %s" % splitline[1]
                 use = True
-                mdtm = datetime.datetime(*map(int, re.split('[^\d]', timestr)))
+                try:
+                    mdtm = datetime.datetime(*map(int, re.split('[^\d]', timestr)))
+                except:
+                    raise ValueError("Could not parse time {} in line {}".format(timestr,iline))
                 mdelta = (mdtm - start)
                 mdtime = start + mdelta
                 msec = mdelta.total_seconds()
