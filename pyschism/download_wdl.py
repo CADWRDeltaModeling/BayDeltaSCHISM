@@ -28,7 +28,9 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
              "STAGE":"gageheight",
              "CONDUCTIVITY":"conductance",
              "VELOCITY":"velocity",
-             "ADCP_WATER_TEMPERATURE":"temperature"}
+             "ADCP_WATER_TEMPERATURE":"temperature",
+             "WATER_TEMPERATURE":"temperature",
+             "TURBIDITY":"turbidity"}
 
     if not os.path.exists(work_dir):
         os.mkdir(work_dir)

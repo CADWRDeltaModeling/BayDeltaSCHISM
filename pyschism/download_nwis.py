@@ -65,7 +65,7 @@ def nwis_download(stations,dest_dir,start,end=None,param=None,overwrite=False):
             failures.append(station)
         else:    
             station_html = response.read().replace("\r","")
-            if len(station_html) > 30:
+            if len(station_html) > 30 and not "No sites found matching" in station_html:
                 found = True
                 with open(path,"w") as f:
                     f.write(station_html)
