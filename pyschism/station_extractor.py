@@ -68,8 +68,9 @@ class StationReader(object):
             fpath: a file path of 'station.in' to read
         """
         stations = list()
+        print "Reading {}".format(fpath)
+        
         with open(fpath, 'r') as f:
-            print "Reading in station.in..."
             # First line, output items
             tkns = f.readline().split()
             if len(tkns) < 9:
