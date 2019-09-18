@@ -576,7 +576,7 @@ class SchismSetup(object):
                             msg = "Egn: %s" % attribute
                             self._logger.error(msg)
                             raise ValueError(
-                                "The polygon equation does not seem to be well-formed..")
+                                "The polygon equation does not seem to be well-formed for polygon: {} ".format(name))
                     else:
                         value = attribute
                     empty = False
@@ -589,7 +589,7 @@ class SchismSetup(object):
                         if attr[node_i] > value:
                             attr[node_i] = value
                     else:
-                        raise Exception('Not supported polygon type')
+                        raise Exception("Not supported polygon type ({}) for polygon ({})".format(poly.type,name))
             if empty:
                 msg = "This polygon contains no nodes: %s" % poly.name
                 self._logger.error(poly)
