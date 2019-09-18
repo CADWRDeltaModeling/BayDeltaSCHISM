@@ -157,6 +157,7 @@ def expand_dicu(source, saltsource, tempsource, nodelist, window):
         f0 = open(thfile,"w")
         print "Writing %s" % tname
         write_data=None
+        writefmt = "%0.2f"
         if tname in ['source','sink']:
             write_data=dicu_data[tndx,:,:]
         elif tname == 'temperature':
@@ -168,10 +169,10 @@ def expand_dicu(source, saltsource, tempsource, nodelist, window):
                 print "Temperature provided"
                 temp = dicu_data[tname_ndx['temperature'],:,1:]
             else:
-                print "Temperature not provided, assumed to be 20C"
-                temp = np.ones_like(salt)*20.0
+                print "Temperature not provided, assumed to be -9999"
+                temp = np.ones_like(salt)*-9999.
             write_data = np.hstack((times[:,np.newaxis],temp,salt))
-        np.savetxt(f0,write_data,fmt="%0.2f",delimiter=" ")
+        np.savetxt(f0,write_data,fmt=writefmt,delimiter=" ")
         print "Write complete"
         f0.close()        
    
