@@ -194,8 +194,12 @@ class SchismMesh(TriQuadMesh):
             edge = self._edges[edge_i]
             if ccw:
                 if not edge[2] == EdgeType.INTERNAL and edge[0] == node_i:
-                    not_assigned.remove(edge_i)
-                    return edge[1]
+                    try:
+                        not_assigned.remove(edge_i)
+                        return edge[1]
+                    except Exception,exc:
+                        print("Attempted to remove edge {} based on node {} which is not in not_assigned list".format(edge_i,node_i))
+                        raise
             else:
                 if not edge[2] == EdgeType.INTERNAL and edge[1] == node_i:
                     not_assigned.remove(edge_i)
@@ -1084,8 +1088,8 @@ class SchismMeshShapefileWriter(SchismMeshWriter):
                 node_attr = arg
 
         if os.path.exists(fpath):
-            print("A file with the output file name exists already", fpath)
-            raise RuntimeError("A file exists already")
+            print("File with the output file name exists already", fpath)
+            raise RuntimeError("File exists already")
 
         spatial_reference = osgeo.osr.SpatialReference()
         proj4 = kwargs.get('proj4')
