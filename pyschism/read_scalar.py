@@ -125,7 +125,7 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
     # higher priority than the older ones for merging
     matches.reverse()
     if len(matches) == 0:
-        raise ValueError("No matches to file pattern")
+        raise ValueError("No matches to file pattern {} in directory {}".format(fpat,dir))
     for m in matches:
         dargs = {}
         if not dateparser is None: dargs["date_parser"] = dateparser
@@ -185,9 +185,9 @@ if __name__ == "__main__":
     start = dtm.datetime(2003,1,1)
     end = dtm.datetime(2008,5,29)
     mdir = "//cnrastore-bdo/Modeling_Data/des_emp/raw"
-    #fpat="s33_cygnus_cyg_ec_inst_*.csv"
+    fpat="s33_cygnus_cyg_ec_inst_*.csv"
     #fpat="bll_blacklockriver_bll_ec_inst_2009_2019.csv"
-    fpat="s71_mzmroar_msl_ec_inst_*.csv"
+    #fpat="s71_mzmroar_msl_ec_inst_*.csv"
     ts=csv_retrieve_ts(fpat,mdir,start,end,selector="VALUE",qaqc_selector="QAQC Flag",
                     parsedates=["DATETIME"],
                     indexcol=["DATETIME"],
@@ -202,5 +202,5 @@ if __name__ == "__main__":
     ts2.plot(ax=ax)
     plt.legend(["Original", "Regular"])
     plt.show()
-    ts2.to_csv("//cnrastore-bdo/BDO_HOME/SCHISM/fielddata/emp_ec_20190802/msl.csv",date_format="%Y%m%d,%H%M",float_format="%.1f",na_rep="m")
+    ts2.to_csv("//cnrastore-bdo/BDO_HOME/SCHISM/fielddata/emp_ec_20190802/cyg.csv",date_format="%Y%m%d,%H%M",float_format="%.1f",na_rep="m")
 
