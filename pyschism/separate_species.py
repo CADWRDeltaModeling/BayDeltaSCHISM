@@ -14,7 +14,7 @@ import argparse
 from vtools.data.vtime import *
 
 
-def separate_species(ts):
+def separate_species(ts,noise_thresh_min=40):
     """Separate species into subtidal, diurnal, semidiurnal and noise components
 
         Input:
@@ -28,7 +28,7 @@ def separate_species(ts):
     """
     
     # the first filter eliminates noise
-    ts_no_noise= cosine_lanczos(ts,cutoff_period=minutes(40))
+    ts_no_noise= cosine_lanczos(ts,cutoff_period=minutes(noise_thresh_min))
     ts_noise=ts-ts_no_noise   # this is the residual, the part that IS noise
     
     # the filter length assumes 6 minute data. The resulting filter is 90 hours
