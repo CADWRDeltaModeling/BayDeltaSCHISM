@@ -198,15 +198,15 @@ def view_smooth(file0,file1,levels,vmin,vmax,**kwargs):
     dem0 = np.load(file0)
     dem1 = np.load(file1)
 
-    fig, (ax0,ax1) = plt.subplots(1,2,sharex=True,sharey=True)
+    fig, (ax0,ax1) = plt.subplots(1,2,sharex=True,sharey=True,figsize=(16,6))
       
-    ax0.imshow(dem0,vmin=vmin,vmax=vmax)
+    im0 =ax0.imshow(dem0,vmin=vmin,vmax=vmax)
     cs0 = ax0.contour(dem0, levels,
                      origin='lower',
                      colors = 'k',
                      linewidths=1,antialiased=True)
 
-                     
+    #fig.colorbar(im0)
     im1 = ax1.imshow(dem1,vmin=vmin,vmax=vmax)
     
     cs1 = ax1.contour(dem1, levels,
@@ -214,7 +214,7 @@ def view_smooth(file0,file1,levels,vmin,vmax,**kwargs):
                      colors = 'k',
                      linewidths=1,antialiased=True)
     plt.clabel(cs1, inline=1, fontsize=10)           
-    fig.colorbar(im1)    
+    #fig.colorbar(im1)    
     plt.show()
 
 
