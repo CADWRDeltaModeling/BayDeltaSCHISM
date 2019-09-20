@@ -77,7 +77,7 @@ class BinaryTHWriter(THWriter):
         self.valformat="f"*nloc
     
     def write_step(self,iter,time,vals):
-        print "Writing Output"
+        print("Writing Output")
         buf = struct.pack(self.tformat, time)
         self.outfile.write(buf)
         buf = struct.pack(self.valformat, *vals)
@@ -186,8 +186,8 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
     tangent = tangent / np.linalg.norm(tangent)  # Normalize
     # Rotate 90 cw to get normal vec
     normal = np.array([tangent[1], -tangent[0]])
-    print "tangent:", tangent
-    print "normal:", normal
+    print("tangent: {}".format(tangent))
+    print("normal: {}".format(normal))
 
     mt_rel = pos_mt - pos_pr
     x_mt = np.dot(tangent, mt_rel)  # In pr-mt direction
@@ -200,17 +200,17 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
     ocean_boundary = s.mesh.boundaries[0]  # First one is ocean
  
     # Data
-    print "Reading Point Reyes..."
+    print("Reading Point Reyes...")
     pt_reyes = read_ts(pt_reyes_fpath, start=sdate - tbuf, end=bufend, force_regular=True)
     pt_reyes = interpolate_ts_nan(pt_reyes)
     if np.any(np.isnan(pt_reyes.data)):
-        print pt_reyes.times[np.isnan(pt_reyes.data)]
+        print(pt_reyes.times[np.isnan(pt_reyes.data)])
     ts_pr_subtidal, ts_pr_diurnal, ts_pr_semi, noise = separate_species(pt_reyes,noise_thresh_min=150)
         
       
     del noise
 
-    print "Reading Monterey..."
+    print("Reading Monterey...")
     monterey = read_ts(monterey_fpath, start=sdate - tbuf, end=bufend, force_regular=True)
     monterey = interpolate_ts_nan(monterey)
     if pt_reyes.interval != monterey.interval:
@@ -222,9 +222,9 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
 
     dt = monterey.interval.seconds
 
-    print "Done Reading"
+    print("Done Reading")
 
-    print "Interpolating Point Reyes"
+    print("Interpolating Point Reyes")
     # interpolate_ts(ts_pr_subtidal.window(sdate,edate),step)
     ts_pr_subtidal = ts_pr_subtidal.window(sdate, edate)
     ts_pr_diurnal = ts_pr_diurnal.window(sdate, edate)  # interpolate_ts(,step)
@@ -233,7 +233,7 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
 
   
     
-    print "Interpolating Monterey"
+    print("Interpolating Monterey")
     # interpolate_ts(ts_mt_subtidal.window(sdate,edate),step)
     ts_mt_subtidal = ts_mt_subtidal.window(sdate, edate)
     # interpolate_ts(ts_mt_diurnal.window(sdate,edate),step)
@@ -241,7 +241,7 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
     # interpolate_ts(ts_mt_semi.window(sdate,edate),step)
     ts_mt_semi = ts_mt_semi.window(sdate, edate)
 
-    print "Creating writer"  # requires dt be known for netcdf
+    print("Creating writer")  # requires dt be known for netcdf
     if fpath_out.endswith("th"):
         thwriter = BinaryTHWriter(fpath_out,nnode,None)
     elif fpath_out.endswith("nc"):
@@ -298,7 +298,7 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
     #slr = 0.0  # Sea level rise
 
     if np.any(np.isnan(ts_pr_semi.data)):
-        print ts_pr_semi.times[np.isnan(ts_pr_semi.data)]
+        print(ts_pr_semi.times[np.isnan(ts_pr_semi.data)])
         raise ValueError('Above times are missing in Point Reyes data')
 
 #    temp=np.zeros((len(ts_pr_semi),nnode))
@@ -312,8 +312,8 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
         mt = ts_mt_semi[i].value * scaling_semidiurnal_mt
 
         if np.isnan(pr) or np.isnan(mt):
-            print pr
-            print mt
+            print(pr)
+            print(mt)
             raise ValueError("One of values is numpy.nan.")
 
         eta_pr_side = var_y / var_semi[0] * pr

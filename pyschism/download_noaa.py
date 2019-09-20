@@ -33,8 +33,8 @@ def retrieve_table(url):
             soup = bs4.BeautifulSoup(urllib2.urlopen(url))
             done = True
         except urllib2.URLError:
-            print "Failed to retrieve %s" % url
-            print "Try again..."
+            print("Failed to retrieve %s" % url)
+            print("Try again...")
 
     table = soup.table.pre.pre.string
     return table
@@ -89,7 +89,7 @@ def retrieve_data(station_id, start, end, product=None):
         strstation = station_id
         if station_id in name_to_id.keys():
             station_id = name_to_id[station_id]
-    print "Station: %s"  % strstation
+    print("Station: %s"  % strstation)
 
     product_info = {"water_level" :      { "agency": "noaa",
                                            "unit": "meters",
@@ -138,18 +138,18 @@ def retrieve_data(station_id, start, end, product=None):
 
             datum = "NAVD"
             url = "http://tidesandcurrents.noaa.gov/api/datagetter?product=%s&application=NOS.COOPS.TAC.PHYSOCEANL&station=%s&begin_date=%s&end_date=%s&datum=%s&units=metric&time_zone=LST&format=csv" % (product, station_id, date_start, date_end, datum)
-            print "Retrieving %s, %s, %s..." % (station_id, date_start, date_end)
-            print "URL:", url
+            print("Retrieving %s, %s, %s..." % (station_id, date_start, date_end))
+            print("URL: {}".format(url))
             # raw_table = retrieve_table(url)
             raw_table = retrieve_csv(url)
             if raw_table[0] == '\n':
                 datum = "STND"
                 url = "http://tidesandcurrents.noaa.gov/api/datagetter?product=%s&application=NOS.COOPS.TAC.PHYSOCEANL&station=%s&begin_date=%s&end_date=%s&datum=%s&units=metric&time_zone=LST&format=csv" % (product, station_id, date_start, date_end, datum)
-                print "Retrieving Station %s, from %s to %s..." % (station_id, date_start, date_end)
-                print "URL:", url
+                print("Retrieving Station %s, from %s to %s..." % (station_id, date_start, date_end))
+                print("URL: {}".format(url))
                 # raw_table = retrieve_table(url)
                 raw_table = retrieve_csv(url)
-            print "Done retrieving."
+            print("Done retrieving.")
 
             if first:
                 headers["datum"] = datum
@@ -190,9 +190,9 @@ def create_arg_parser():
 def list_stations():
     """ Show NOAA station ID's in our study area.
     """
-    print "Available stations:"
+    print("Available stations:")
     for key in stationlist.keys():
-        print "%s: %s" % (key, stationlist[key])
+        print("%s: %s" % (key, stationlist[key]))
 
 
 def assure_datetime(dtime, isend = False):
@@ -268,7 +268,7 @@ def main():
             for line in args.stationfile:
                 if not line.startswith("#") and len(line) > 1:
                     sid = line.strip().split()[0]
-                    print "station id=%s" % sid
+                    print("station id=%s" % sid)
                     stage_stations.append(sid)
 
         return download_noaa(stage_stations,args.product,start,end)

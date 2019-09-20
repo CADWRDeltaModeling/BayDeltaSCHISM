@@ -166,18 +166,18 @@ def psu_ec_25c(psu,refine=True,hill_correction=True):
 if __name__ == '__main__':
      import sys
      if "--help" in sys.argv:
-         print "Usage:"
-         print "unit_conversions.py conversion input [input...]"
-         print "where"
-         print "conversion is the op to perform, only ec_psu and psu_ec currently supported"
-         print "input      can be multiple values"
+         print("Usage:")
+         print("unit_conversions.py conversion input [input...]")
+         print("where")
+         print("conversion is the op to perform, only ec_psu and psu_ec currently supported")
+         print("input      can be multiple values")
      elif sys.argv[1] == "ec_psu":
          ec = np.array(sys.argv[2:],dtype='d')
          psu = ec_psu_25c(ec,True)
-         print psu
+         print(psu)
      elif sys.argv[1] == "psu_ec":
          psu = np.array(sys.argv[2:],dtype='d')
          ec = psu_ec_25c(psu)
-         print ec
+         print(ec)
          #ec_round = psu_ec_25c(psu,True,True)
          #print ec_round

@@ -35,7 +35,7 @@ cdec_base_url = "cdec4gov.water.ca.gov" if ping("cdec4gov.water.ca.gov") else "c
         
 def create_arg_parser():
     parser = argparse.ArgumentParser()
-    paramhelp = 'Variable to download, should be in list:\n%s' % params.keys()
+    paramhelp = 'Variable to download, should be in list:\n%s' % list(params.keys())
     
     parser.add_argument('--dest', dest = "dest_dir", default="cdec_download", help = 'Destination directory for downloaded files.')
     parser.add_argument('--cdec_col', default = 0, type = int, help = 'Column in station file representing CDEC ID. IDs with > 3 characters will be ignored.')
@@ -67,10 +67,10 @@ def cdec_download(stations,dest_dir,start,end="Now",param="ec",overwrite=False):
     failures = []
     skips = []
     for station,p,z in zip(stations,param,paramcode):
-        print "Processing station: %s param: %s" % (station,p)
+        print("Processing station: %s param: %s" % (station,p))
         path = os.path.join(dest_dir,"%s_%s.csv"% (station,p))
         if os.path.exists(path) and not overwrite:
-            print "Skipping existing station because file exists: %s" % path
+            print("Skipping existing station because file exists: %s" % path)
             skips.append(path)
             continue
         stime=start.strftime("%m-%d-%Y")
@@ -83,26 +83,26 @@ def cdec_download(stations,dest_dir,start,end="Now",param="ec",overwrite=False):
             dur_codes = ["E","H","D"]
             for dur in dur_codes:
                 station_query = station_query_base % (cdec_base_url,station,code,dur,stime,etime)
-                print station_query
+                print(station_query)
                 response = urllib2.urlopen(station_query)
                 station_html = response.read().replace("\r","")
                 if station_html.startswith("Title") or station_html.startswith("STATION_ID") and len(station_html) > 16:
                     found = True
                     with open(path,"w") as f:
                         f.write(station_html)
-                    print "Found, duration code: %s" % dur
+                    print("Found, duration code: %s" % dur)
                     break
             if found: break
         if not found: 
-            print "Station %s query failed or produced no data" % station
+            print("Station %s query failed or produced no data" % station)
             failures.append(station)
     
     if len(failures) == 0:
-        print "No failed stations"
+        print("No failed stations")
     else:
-        print "Failed query stations: "
+        print("Failed query stations: ")
         for failure in failures:
-            print failure
+            print(failure)
 
 
 def process_station_list(file,cdec_ndx,param_ndx=None):
@@ -148,5 +148,5 @@ if __name__ == '__main__':
                       etime,
                       variables,overwrite)
     else:
-        print "Station list does not exist"
+        print("Station list does not exist")
 

@@ -22,9 +22,9 @@ def create_poly(shapefile,dsetname,keyfile,polyfile,type,default=None):
     f=open(polyfile,"w")
     ds = ogr.Open( shapefile )
     if ds is None:
-        print "Open failed.\n"
+        print("Open failed.\n")
         sys.exit( 1 )
-    print "Opening dataset: %s" % ds.GetLayer(0).GetName()
+    print("Opening dataset: %s" % ds.GetLayer(0).GetName())
         
     lyr = ds.GetLayerByName(dsetname)
 
@@ -37,7 +37,7 @@ def create_poly(shapefile,dsetname,keyfile,polyfile,type,default=None):
         feat_defn = lyr.GetLayerDefn()
         #name = "poly_" + feat.GetFieldAsString(3).strip()
         label = feat.GetFieldAsString(2).strip()
-        print "Name: %s" % (label)
+        print("Name: %s" % (label))
 
         #print "mindepth %s" %rough
         #for i in range(feat_defn.GetFieldCount()):

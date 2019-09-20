@@ -175,7 +175,7 @@ class TriMesh(object):
     def build_edges_from_elems(self):
         """ This is a function copied and modified from TriGrid
         """
-        print "Building edges from elements"
+        print("Building edges from elements")
         # iterate over elements, and for each element, if it's index
         # is smaller than a neighbor or if no neighbor exists,
         # write an edge record
@@ -219,7 +219,7 @@ class TriMesh(object):
 
     def _build_node_index(self):
         if self._node_index is None:
-            print "Building node indices..."
+            print("Building node indices...")
             # assemble points into list of (id, [x x y y], None)
             # but new rtree allows for interleaved coordinates all the time.
             # best solution probably to specify interleaved=False
@@ -232,7 +232,7 @@ class TriMesh(object):
     def _build_elem_index(self):
         # Build Rtree index for elems
         if self._elem_index is None:
-            print "Building element indices..."
+            print("Building element indices...")
             elem_i = 0
             tuples = []
             for element in self._elems:
@@ -259,7 +259,7 @@ class TriMesh(object):
         """ Get neighboring elements indexes of a node, so-called a ball.
         """
         if self._node2elems is None:
-            print "Mapping elements to nodes..."
+            print("Mapping elements to nodes...")
             # build array for point->element lookup
             # Use set for later convenience
             self._node2elems = [set() for i in range(self.n_nodes())]
@@ -308,7 +308,7 @@ class TriMesh(object):
         return nodes
 
     def _build_node2edges(self):
-        print "Mapping nodes to edges..."
+        print("Mapping nodes to edges...")
         # Build node2edges map
         n2e = [[] for i in range(self.n_nodes())]
         for edge_i in range(self.n_edges()):
@@ -719,9 +719,9 @@ class TriMesh(object):
         else:
             bad_elem = element2
 
-        print "Deleting elems..."
+        print("Deleting elems...")
         self._recursive_delete(bad_elem)
-        print "Renumbering nodes and elems..."
+        print("Renumbering nodes and elems...")
         self._renumber()
 
     def _recursive_delete(self,c,renumber = 1):
@@ -760,7 +760,7 @@ class TriMesh(object):
 
                     if nbr >= 0:
                         to_delete.append(nbr)
-        print "Deleted %i elems." % del_count
+        print("Deleted %i elems." % del_count)
 
 
     def _renumber(self):

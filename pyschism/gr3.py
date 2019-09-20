@@ -82,7 +82,7 @@ class Gr3IO(base_io.BaseIO):
         for i in range(self._n_nodes):
             tokens, ok = self._read_and_parse_line(f, 4)
             if not ok:
-                print "Line: ", self.linecounter
+                print("Line: {}".format(self.linecounter))
                 raise ValueError("Node block is corrupt.")
             node_coords = map(float, tokens[1:4])
             self._mesh.set_node(node_counter, node_coords)
@@ -93,7 +93,7 @@ class Gr3IO(base_io.BaseIO):
             tkn = f.readline().split()
             self.linecounter += 1
             if len(tkn) < 5:
-                print "Line: ", self.linecounter
+                print("Line: {}".format(self.linecounter))
                 raise ValueError("Element block is corrupt.")
             type_elem = int(tkn[1])
             if type_elem < 3 or type_elem > 4:
@@ -123,7 +123,7 @@ class Gr3IO(base_io.BaseIO):
         # total # of open boundary nodes
         tokens, ok = self._read_and_parse_line(f, 1)
         if not ok:
-            print "Line: ", self.linecounter
+            print("Line: {}".format(self.linecounter))
             raise Exception("The number of total open boundary nodes is not"\
                             " correctly provided.")
         n_open_boundary_nodes = int(tokens[0])
@@ -133,7 +133,7 @@ class Gr3IO(base_io.BaseIO):
             # # of nodes of this open boundary
             tokens, ok = self._read_and_parse_line(f, 1)
             if not ok:
-                print "Line: ", self.linecounter
+                print("Line: {}".format(self.linecounter))
                 raise Exception("The number of nodes for a boundary is not"\
                                 " correctly provided.")
             # Comment
@@ -146,7 +146,7 @@ class Gr3IO(base_io.BaseIO):
             for _ in range(n_nodes):
                 tokens, ok = self._read_and_parse_line(f, 1)
                 if not ok:
-                    print "Line: ", self.linecounter
+                    print("Line: {}".format(self.linecounter))
                     raise ValueError("Node for boundary not"\
                                      " correctly provided.")
 
@@ -167,7 +167,7 @@ class Gr3IO(base_io.BaseIO):
         # total # of land boundary nodes
         tokens, ok = self._read_and_parse_line(f, 1)
         if not ok:
-            print "Line: ", self.linecounter
+            print("Line: {}".format(self.linecounter))
             raise Exception("The number of total land boundary nodes is " \
                             "not provided properly.")
         # n_land_boundary_nodes = int(tokens[0])
@@ -175,7 +175,7 @@ class Gr3IO(base_io.BaseIO):
             # # of nodes of this open boundary
             (tokens, ok) = self._read_and_parse_line(f,1)
             if not ok:
-                print "Line: ", self.linecounter
+                print("Line: {}".format(self.linecounter))
                 raise Exception("The number of nodes for a boundary is "\
                                 "not provided properly.")
             # Comment
@@ -188,7 +188,7 @@ class Gr3IO(base_io.BaseIO):
             for _ in range(n_nodes):
                 (tokens, ok) = self._read_and_parse_line(f, 1)
                 if not ok:
-                    print "Line: ", self.linecounter
+                    print("Line: {}".format(self.linecounter))
                     raise Exception("Node for a boundary not correctly provided.")
                 node = int(tokens[0]) - 1 # Zero based
                 nodes.append(node)

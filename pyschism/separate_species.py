@@ -176,10 +176,10 @@ def run_example():
     sf_path="../9415020_gageheight.csv"
     ts= read_ts(sf_path, start, end)
 
-    print "separating reys..."
+    print("separating reys...")
     separate_species(ts,"rey",out_st,out_end,do_plot=True)
 
-    print "all done"
+    print("all done")
 
 
 

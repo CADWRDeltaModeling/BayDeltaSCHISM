@@ -3,7 +3,7 @@
 """ PoC of quad splitting
 """
 
-from __future__ import print_function
+
 import schism_mesh
 import numpy as np
 import argparse

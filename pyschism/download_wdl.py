@@ -44,12 +44,12 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
             station_param = "%s_%s" % (station,items[param])
             newname = "%s.csv" % station_param
             dest_path = os.path.join(dest_dir,newname)
-            print dest_path
+            print(dest_path)
             if (os.path.exists(dest_path)):
                 if overwrite:
                     os.remove(dest_path)
                 else:
-                    print "Skipping station/param/year because file exists: %s" % newname 
+                    print("Skipping station/param/year because file exists: %s" % newname) 
                     continue
             
             file_created = False
@@ -82,7 +82,7 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
                     mode = "a" if file_created else "w"
                     destfile = open(dest_path,mode)
                     file_created = True
-                    print "Working on %s" % workpath
+                    print("Working on %s" % workpath)
                     for line in f.readlines()[3:]:
                         if line and len(line) > 5:
                             ndata=ndata+1
@@ -113,7 +113,7 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
                     mode = "a" if file_created else "w"
                     destfile = open(dest_path,mode)
                     file_created = True
-                    print "Working on %s" % workfile
+                    print("Working on %s" % workfile)
                     for line in f.readlines()[3:]:
                         if line and len(line) > 5:
                             ndata=ndata+1
@@ -133,8 +133,8 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
                     os.remove(os.path.join(work_dir,workfile))
                     data_years.append(str(year))
                     
-            print "Data for station %s param %s in years: %s" % (station, param, string.join(data_years,","))
-            print "Total # data for %s: %s" % (station_param,ndata)
+            print("Data for station %s param %s in years: %s" % (station, param, string.join(data_years,",")))
+            print("Total # data for %s: %s" % (station_param,ndata))
             #if ndata > 0: convert2netcdf(dest_path,ndata)
             
                     

@@ -22,7 +22,7 @@ def bounding_coords(image):
     rows=ds.RasterYSize 
     xlo = (gt[0],gt[3])
     xhi = (xlo[0]+ds.RasterXSize*gt[1],xlo[1]+ds.RasterYSize*gt[5])
-    print "Upper left and lower right coords of requested region: %s %s" % (xlo, xhi)
+    print("Upper left and lower right coords of requested region: %s %s" % (xlo, xhi))
     ds = None
     return xlo,xhi
 
@@ -43,7 +43,7 @@ def clip_dem(xlo,xhi,demlist="dem.txt",outformat="AAIGrid",hshift=False,prefix="
         raise ValueError("format not supported? (this may be easily fixed if you add the extension you want and its gdal code)")
 
     for demfile in filelist:
-        print "Checking: %s" % demfile
+        print("Checking: %s" % demfile)
         ds = gdal.Open(demfile, GA_ReadOnly )
         gt = ds.GetGeoTransform()
         cols=ds.RasterXSize  
@@ -66,15 +66,15 @@ def clip_dem(xlo,xhi,demlist="dem.txt",outformat="AAIGrid",hshift=False,prefix="
             win_xhi = (math.ceil((win_xhi[0] - ds_xlo[0])/ds_dx)*ds_dx + gt[0], \
                        math.floor((win_xhi[1] - ds_xlo[1])/ds_dy)*ds_dy + gt[3])
 
-            print "\n********\nDataset %s intersects region and is complete: %s" % (demfile, complete)
+            print("\n********\nDataset %s intersects region and is complete: %s" % (demfile, complete))
             if verbose:
-                print "Upper left and lower right coords of requested region: %s %s" % (xlo, xhi)
-                print "ds_dx %s ds_dy %s" % (ds_dx, ds_dy)
-                print "ds origin %s %s" % ds_xlo
-                print "Data set upper left %s, lower right: %s"  % (ds_xlo,ds_xhi)
-                print "Final upper left %s, lower right: %s"  % (win_xlo,win_xhi)
+                print("Upper left and lower right coords of requested region: %s %s" % (xlo, xhi))
+                print("ds_dx %s ds_dy %s" % (ds_dx, ds_dy))
+                print("ds origin %s %s" % ds_xlo)
+                print("Data set upper left %s, lower right: %s"  % (ds_xlo,ds_xhi))
+                print("Final upper left %s, lower right: %s"  % (win_xlo,win_xhi))
                 approx_size = (win_xhi[0] - win_xlo[0])*(win_xhi[1] - win_xlo[1])/ds_dx*ds_dy
-                print "Approx number of raster cells: %s " % int(approx_size)
+                print("Approx number of raster cells: %s " % int(approx_size))
             outname = "%s_%s.%s" % (prefix,iout,extension)
             if hshift:
                 shift = "-a_ullr %s %s %s %s " % (win_xlo[0] + ds_dx/2.,win_xlo[1] - ds_dy/2.,win_xhi[0] + ds_dx/2.,win_xhi[1] - ds_dy/2.)
@@ -84,12 +84,12 @@ def clip_dem(xlo,xhi,demlist="dem.txt",outformat="AAIGrid",hshift=False,prefix="
             quiet = "" if verbose else "-quiet"
             command = "gdal_translate %s -projwin %s %s %s %s %s -of %s %s %s" % \
                       (quiet,win_xlo[0],win_xlo[1],win_xhi[0],win_xhi[1],shift,outformat,demfile,outname)
-            if verbose: print "Calling gdal_translate with command:\n %s" % command
+            if verbose: print("Calling gdal_translate with command:\n %s" % command)
             p = subprocess.Popen(command.split(), shell=True)
             err = p.wait()
             if err:
                 raise Exception("Command failed:\n %s" % command)
-            print "Output file: %s" % outname
+            print("Output file: %s" % outname)
 
 def create_arg_parser():
     import argparse

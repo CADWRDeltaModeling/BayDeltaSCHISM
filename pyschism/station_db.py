@@ -104,9 +104,9 @@ class StationDB(object):
             ndx = self.header.index(attrname)
             return self.data[station_id][ndx]
         except:
-            print "Dumping column headers: "
+            print("Dumping column headers: ")
             # import string
-            print self.header #string.join(self.header,",")
+            print(self.header) #string.join(self.header,",")
             raise ValueError("Unable to retrieve attribute %s for station_id %s" % (attrname,station_id))
 
     def exists(self, station_id):

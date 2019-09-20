@@ -190,7 +190,7 @@ def set_dual_axes(ax, ts):
                 ax.set_ylabel(DEG_C_LABEL)
                 ax2.set_ylabel(DEG_F_LABEL)
             return ax2
-    print "Warning: set_dual_axes: Not a supported unit in the time series."
+    print("Warning: set_dual_axes: Not a supported unit in the time series.")
     return None
 
 

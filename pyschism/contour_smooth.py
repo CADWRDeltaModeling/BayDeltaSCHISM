@@ -48,7 +48,7 @@ class RasterWrapper(object):
         left = self.origin[0]
         right = self.origin[0]+self.nx*self.dx[0]
         self.extent = (left,right,bottom,top)  # left right bottom top
-        print self.extent
+        print(self.extent)
 
     def write_copy(self,filename,data):
         outdata = self.driver.CreateCopy(filename,self.ds, 0)
@@ -64,7 +64,7 @@ def calc_f(t,data,width_shape):
     
     tt = t*10
     if abs(tt-np.round(tt))<1e-8:
-        print "Eval time = %s width = %s" % (t,width)
+        print("Eval time = %s width = %s" % (t,width))
     X = np.arange(-width,width+1.,1.)
     Y = np.arange(-width,width+1.,1.)
     X,Y = np.meshgrid(X,Y)
@@ -142,19 +142,19 @@ def calc_f(t,data,width_shape):
     
 def contour_smooth(input,scales,max_time,nstep,report_interval,fill_val=2.,**kwargs):
     """ Driver function for smoothing a DEM"""
-    print "input: %s" % input
+    print("input: %s" % input)
     ds = RasterWrapper(input)
     outpathsplit = os.path.splitext(input)
     outfile = outpathsplit[0]+"_smooth"+outpathsplit[1]
-    print "Out: %s" % outfile
+    print("Out: %s" % outfile)
     cols=ds.nx  
     rows=ds.ny
     dem = ds.dem
     nd = ds.no_data
-    print "No data value: %s" % nd
+    print("No data value: %s" % nd)
     #dem[np.equals(dem,nd)] = fill_val
     dem_shape = dem.shape
-    print "DEM shape: %s %s" % dem_shape	
+    print("DEM shape: %s %s" % dem_shape)	
     smoothed_dem = contour_smooth2d(dem,scales,max_time,nstep,report_interval)
     ds.write_copy(outfile,smoothed_dem)
     
@@ -180,7 +180,7 @@ def contour_smooth2d(dem,scales,max_time,nstep,report_interval):
             dem = out[1][-1].reshape(dem_shape)
             differ = dem[mask_good] - demold[mask_good]
             diffinf = np.amax(np.abs(differ))
-            print "diff: %s %s" % (np.sqrt((differ*differ).mean()),diffinf)
+            print("diff: %s %s" % (np.sqrt((differ*differ).mean()),diffinf))
             demold = dem
             itime = itime + 1
             np.save("smoothed_%s_%s" % (iscale,itime),dem)
@@ -194,7 +194,7 @@ def view_smooth(file0,file1,levels,vmin,vmax,**kwargs):
     import numpy as np
     import matplotlib.pyplot as plt
 
-    print levels
+    print(levels)
     dem0 = np.load(file0)
     dem1 = np.load(file1)
 
@@ -219,10 +219,10 @@ def view_smooth(file0,file1,levels,vmin,vmax,**kwargs):
 
 
 def save_smooth(dumpfile,original,outfile,**kwargs):
-    print "Saving"
-    print "Original DEM file: %s" % original
-    print "Array dump file: %s" % dumpfile
-    print "Output: %s" % outfile
+    print("Saving")
+    print("Original DEM file: %s" % original)
+    print("Array dump file: %s" % dumpfile)
+    print("Output: %s" % outfile)
 
     
     ds = gdal.Open( original, GA_ReadOnly )

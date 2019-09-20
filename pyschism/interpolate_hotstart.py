@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """ Script to interpolate SCHISM hotstart.in from one grid to another
 """
-from __future__ import print_function
+
 from schism_mesh import read_mesh
 from schism_hotstart import read_hotstart, SchismHotstart
 from scipy.interpolate import griddata

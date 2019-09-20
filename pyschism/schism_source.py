@@ -118,6 +118,6 @@ class SchismSourceIO(object):
                 
         lc += 1
         if expected_count > 0 and len(tokens) < expected_count:
-            print "Line #: ", lc
+            print("Line #: {}".format(lc))
             raise Exception("Line is corrupted.")
         return tokens, lc, note

@@ -2,7 +2,7 @@
 """
 SchismVerticalMesh class with a reader
 """
-from __future__ import print_function
+
 import numpy as np
 import warnings
 import os

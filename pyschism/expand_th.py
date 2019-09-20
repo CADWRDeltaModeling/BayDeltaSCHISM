@@ -54,7 +54,7 @@ def expand(infile, expandfile, dt, add_line = None):
         oldvals = newvals
         oldtime = newtime
 
-    print "Rough timing of expansion: %s: " % (time.time() - t0)
+    print("Rough timing of expansion: %s: " % (time.time() - t0))
     f1.close()
     f2.close()    
     

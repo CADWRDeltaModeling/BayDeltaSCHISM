@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Hotstart.in memory model
 """
-from __future__ import print_function
+
 from struct import unpack, calcsize
 import numpy as np
 import os

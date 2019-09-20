@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """ A script to create a hotstart.in for the Bay-Delta
 """
-from __future__ import print_function
+
 from hotstart_generator import (HotstartGenerator,
                                 RegionalInitializer,
                                 NearestNeighborInitializer,

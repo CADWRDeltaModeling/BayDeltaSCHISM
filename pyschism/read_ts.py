@@ -545,7 +545,7 @@ class DESReader(TextTimeSeriesReader):
             else:
                 value = float(text) if len(text) > 0 else numpy.nan
         except IndexError:
-            print 'missing field??', line
+            print('missing field?? {}'.format(line))
             value = numpy.nan
         return value
 
@@ -726,7 +726,7 @@ class USGSRdbReader(TextTimeSeriesReader):
         except:
             time_col = columns.index("date")
             iextra = 0
-        print columns
+        print(columns)
         try:
             zone_col = columns.index("tz_cd")
         except:
@@ -760,7 +760,7 @@ class USGSRdbReader(TextTimeSeriesReader):
                 ndx = data_names.index(lselector)
                 data_ndx = data_ndxs[ndx]
             except:
-                print data_names
+                print(data_names)
                 raise ValueError("Sensor not found %s " % lselector)
 
         self.time_ndx = time_col
@@ -838,33 +838,33 @@ def read_ts(fpath, start=None, end=None, force_regular=True, selector = None):
 
 if __name__ == "__main__":
     c = CDECReader()
-    print c.is_readable("Z:/schism/Data_2013/cdec/flow/FAL_flow_E.csv")
-    print c.is_readable("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb")
+    print(c.is_readable("Z:/schism/Data_2013/cdec/flow/FAL_flow_E.csv"))
+    print(c.is_readable("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb"))
     d = USGSRdbReader()
     ts = d.read("W:/usgs_scalar_to_oct_2013/x.UV.USGS.11303500.5.C.00000000.rdb")
-    print ts.start
+    print(ts.start)
 
 
-    print d.is_readable("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb")
+    print(d.is_readable("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb"))
     #n,x,y = d.process_header("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb",selector="sensor=02_00095")
 
     ts = d.read("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb",force_regular=True,selector="sensor=04_00095")
-    print ts.start
-    print ts.end
-    print ts.interval
-    print ts[3].time
-    print ts[3].value
-    print ts[46536].time
-    print ts[46536].value
+    print(ts.start)
+    print(ts.end)
+    print(ts.interval)
+    print(ts[3].time)
+    print(ts[3].value)
+    print(ts[46536].time)
+    print(ts[46536].value)
     import datetime as dtm
     t = dtm.datetime(2014,8,12,1,45)
-    print ts[t].time
-    print ts[t].value
+    print(ts[t].time)
+    print(ts[t].value)
     t = dtm.datetime(2014,8,12,10,30)
-    print ts[t].time
-    print ts[t].value
+    print(ts[t].time)
+    print(ts[t].value)
     t = dtm.datetime(2014,8,12,10,45)
-    print ts[t].time
-    print ts[t].value
+    print(ts[t].time)
+    print(ts[t].value)
 
 

@@ -83,7 +83,7 @@ def to_elapsed(args):
         sdtime = datetime.datetime(*map(int, re.split(r'[^\d]', args.start)))
     except:
         raise ValueError("Could not convert start time to datetime: {}".format(args.start))
-    print "Model start time given: %s" % sdtime
+    print("Model start time given: %s" % sdtime)
     # Some correctness checking
     if len(inputfile) > 1 and inputfile[0].endswith(".th"):
         raise ValueError("Only one file argument allowed at a time")
@@ -109,7 +109,7 @@ def to_elapsed(args):
 
 
 def to_datetime(args):
-    print args.subcommand
+    print(args.subcommand)
     s = args.start
     input = args.elapsed_input
     dt = args.step
@@ -214,7 +214,7 @@ def multi_file_to_elapsed(input,output,start):
         if len(inputs) == 0: raise ValueError("No files matched pattern: {}".format(input))
         outputs = [os.path.join(output,y) for y in [os.path.split(x)[1] for x in inputs]]
     for ifn,ofn in zip(inputs,outputs):
-        print ifn
+        print(ifn)
         file_to_elapsed(ifn,start,ofn)
         
             
@@ -324,19 +324,19 @@ def describe_elapsed(times, start, dt=None):
             # assuming that the input elapsed time is in seconds
             msec = float(elapsed)
         mdelta = datetime.timedelta(seconds=msec)
-        print "Model seconds:  %s" % msec
-        print "Elapsed time:   %s" % mdelta
+        print("Model seconds:  %s" % msec)
+        print("Elapsed time:   %s" % mdelta)
         mdtime = start + mdelta
-        print "Model datetime: %s" % mdtime
+        print("Model datetime: %s" % mdtime)
         if dt:
             remain = abs(msec % dt)
             if abs(msec % dt) > 1.e-6:
-                print "Model step:    %s" % (msec / dt)
-                print "\n Input time is %s seconds past the last even model time step\n" % remain
+                print("Model step:    %s" % (msec / dt))
+                print("\n Input time is %s seconds past the last even model time step\n" % remain)
             else:
-                print "Model step:    %s\n" % long(msec / dt)
+                print("Model step:    %s\n" % int(msec / dt))
         else:
-            print "\n"
+            print("\n")
 
 
 def describe_timestamps(timestamps, start, dt=None):
@@ -349,18 +349,18 @@ def describe_timestamps(timestamps, start, dt=None):
         mdtime = datetime.datetime(*map(int, re.split('[^\d]', stamp)))
         mdelta = mdtime - start
         msec = mdelta.total_seconds()
-        print "Datetime:      %s" % mdtime
-        print "Elapsed time:  %s" % mdelta
-        print "Model seconds: %s" % msec
+        print("Datetime:      %s" % mdtime)
+        print("Elapsed time:  %s" % mdelta)
+        print("Model seconds: %s" % msec)
         if dt:
             remain = abs(msec % dt)
             if abs(msec % dt) > 1.e-6:
-                print "Model step:    %s" % (msec / dt)
-                print "\n Input time is %s seconds past the last model time step\n" % remain
+                print("Model step:    %s" % (msec / dt))
+                print("\n Input time is %s seconds past the last model time step\n" % remain)
             else:
-                print "Model step:    %s\n" % long(msec / dt)
+                print("Model step:    %s\n" % int(msec / dt))
         else:
-            print "\n"
+            print("\n")
 
 
 # driver for standalone use

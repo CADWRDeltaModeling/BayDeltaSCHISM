@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Routine to create hotstart
 """
-from __future__ import print_function
+
 from shapely.geometry import Point
 from scipy.spatial import cKDTree
 import numpy as np

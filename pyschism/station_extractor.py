@@ -68,7 +68,7 @@ class StationReader(object):
             fpath: a file path of 'station.in' to read
         """
         stations = list()
-        print "Reading {}".format(fpath)
+        print("Reading {}".format(fpath))
         
         with open(fpath, 'r') as f:
             # First line, output items
@@ -89,7 +89,7 @@ class StationReader(object):
                 line = f.readline()
                 matched = re.match(pattern, line)
                 if matched is None:
-                    print "Error in line %d: %s" % (i + 3, line)
+                    print("Error in line %d: %s" % (i + 3, line))
                     raise ValueError("station.in is not well formatted.")
                 tkns = line.split()
                 coords = tuple(map(float, tkns[1:4]))
@@ -112,7 +112,7 @@ class StationReader(object):
         self._map_station_ids()
         self._sort_stations_by_depth()
         self._check_integrity_stations()
-        print "Done reading station.in."
+        print("Done reading station.in.")
 
     def _map_station_ids(self):
         station_ids = dict()
@@ -149,9 +149,9 @@ class StationReader(object):
                 all_coords = [self._stations[i]["coords"][:2] for i in indices]
                 counted = collections.Counter(all_coords)
                 if len(counted) != 1:
-                    print "WARNING: These stations have the same name " \
-                          "but do not have an identical horizontal position."
-                    print "  Station:", station_id, ", indices:", indices
+                    print("WARNING: These stations have the same name " \
+                          "but do not have an identical horizontal position.")
+                    print("  Station:", station_id, ", indices:", indices)
 
         # Check duplicate coords
         all_coords = [station["coords"] for station in self._stations]
@@ -162,10 +162,10 @@ class StationReader(object):
                 for index, station in enumerate(self._stations):
                     if station["coords"] == coords:
                         stations.append((index, station["name"]))
-                print "WARNING: These stations have an identical position."
-                print "  Pos: %f, %f, %f" % coords
+                print("WARNING: These stations have an identical position.")
+                print("  Pos: %f, %f, %f" % coords)
                 for station in stations:
-                    print "  %d: %s" % (station[0], station[1])
+                    print("  %d: %s" % (station[0], station[1]))
 
     def set_tss_prop(self, tss, unit):
         for ts in tss:
@@ -206,8 +206,8 @@ class StationReader(object):
                 raise ValueError("Coord or station ID must be provided.")
             if not name in self._station_id_to_index.keys():
                 # raise ValueError("No matching station for %s" % name)
-                print "Warning: No matching station for %s in station.in" \
-                      % name
+                print("Warning: No matching station for %s in station.in" \
+                      % name)
                 return None
             indices = self._station_id_to_index[name]
             if len(indices) == 1:
@@ -227,7 +227,7 @@ class StationReader(object):
         fname = "staout_%d" % (var_index + 1)
         fname = os.path.join(self._working_dir, fname)
         tss = self.read_stdout(fname)
-        print "Reading %s..." % fname
+        print("Reading %s..." % fname)
 
         if len(tss) != len(self._stations):
             raise ValueError("# of stations in station.in and staout do not "
@@ -372,16 +372,16 @@ class FlowReader(object):
         if name not in self._station_id_to_index.keys():
             print name, self._station_id_to_index
             # raise ValueError("No matching station for %s" % name)
-            print "Warning: No matching station for %s in station.in" % name
+            print("Warning: No matching station for %s in station.in" % name)
             return None
         indices = self._station_id_to_index[name]
 
         if len(indices) < 1:
-            print "More than two outputs with the same name."
-            print "Use the first one."
+            print("More than two outputs with the same name.")
+            print("Use the first one.")
 
         if self.data is None:
-            print "Reading flow...: ", self.flow_fname
+            print("Reading flow...: {}".format(self.flow_fname))
             fname = os.path.join(self._working_dir, self.flow_fname)
             self.data = self.read_all(fname)
         return self.data[indices[0]]
@@ -390,7 +390,7 @@ class FlowReader(object):
         try:
             raw = np.loadtxt(fname)
         except:
-            print "Failure reading file with loadtxt: %s" % fname
+            print("Failure reading file with loadtxt: %s" % fname)
             raise
         # Get the first time stamp
         ts_begin = datetime.timedelta(seconds=np.around(raw[0, 0]*86400))

@@ -137,7 +137,7 @@ class SubstituteConstructor(SafeConstructor):
                 result[k] = self.extractFile(v)
             return result
         else:
-            print "Error: unrecognized node type in the include constructor"
+            print("Error: unrecognized node type in the include constructor")
             raise ConstructorError
 
     def extractFile(self, filename):
@@ -149,7 +149,7 @@ class SubstituteConstructor(SafeConstructor):
                 loader = SubstituteLoader(f, self.env)
                 return loader.get_single_data()
         else:
-            print "Error: cannot find the file:", filename
+            print("Error: cannot find the file:" + filename)
             raise ValueError('Cannot find included file: {}'.format(filename))
 
 
@@ -435,4 +435,4 @@ if __name__ == "__main__":
     fname_ = args_.filename
     with open(fname_, 'r') as f:
         data_ = load(f)
-        print yaml.safe_dump(data_)
+        print(yaml.safe_dump(data_))

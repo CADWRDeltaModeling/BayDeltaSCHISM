@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ 3D Version of schism_mesh
 """
-from __future__ import print_function
+
 from triquadmesh import TriQuadMesh, BoundaryType, EdgeType
 from schism_vertical_mesh import read_vmesh
 import osgeo.ogr

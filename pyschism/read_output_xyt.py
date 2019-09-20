@@ -229,7 +229,7 @@ if __name__ == "__main__":
     results = read_depth_avg_from_output7b_xyt('read_output7b_xyt.in',
                                                time_basis)
     ssd = calculate_stokes_drift(results)
-    print ssd
+    print(ssd)
     for depth, value in results:
         plt.clf()
         ax1 = plt.gca()

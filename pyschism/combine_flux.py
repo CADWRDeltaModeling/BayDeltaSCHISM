@@ -33,7 +33,7 @@ def combine_flux(infiles,outfile,prefer_last=False):
         eblock = [filedata[i].shape[0] for i in range(len(filedata))]
 
     blocks2merge = [d[s:e] for d,s,e in zip(filedata,sblock,eblock)]
-    for m in blocks2merge: print m.shape      
+    for m in blocks2merge: print(m.shape)
     merged = np.vstack(tuple(blocks2merge))
     
     ddt = np.diff(merged[:,0],n=2)

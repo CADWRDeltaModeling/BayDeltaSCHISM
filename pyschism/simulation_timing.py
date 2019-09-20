@@ -10,8 +10,8 @@ def schism_timing(workdir,start=1, end=None, block_days = 1.0):
     blocks = [int(x[0:x.index("_")]) for x in files]
     if end:
         endndx = blocks.index(end)
-        print endndx
-        print blocks
+        print(endndx)
+        print(blocks)
     else:
         endndx = len(blocks)-1
     startndx = blocks.index(start)
@@ -28,7 +28,7 @@ def schism_timing(workdir,start=1, end=None, block_days = 1.0):
     speed = 1./diffs
     speedmean = np.mean(speed)
     speedmed = np.median(speed)
-    print "Mean speed: %5.1f" % speedmean
+    print("Mean speed: %5.1f" % speedmean)
 
 
     f, ax = plt.subplots()
@@ -58,8 +58,8 @@ if __name__=="__main__":
     start = args.start
     end = args.end
     blocklen = args.blocklen
-    print start
-    print end
-    print workdir
-    print blocklen
+    print(start)
+    print(end)
+    print(workdir)
+    print(blocklen)
     schism_timing(workdir,start,end,blocklen)

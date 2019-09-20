@@ -173,11 +173,11 @@ def vgrid_gen(hgrid,vgrid_out,eta,
         #print nlayer_default
         #nlayer = deap_numlayer(depth,mesh.edges,nlayer_default,minlayer,ngen)
         nlayer = tabu_numlayer(depth,mesh.edges,nlayer_default,minlayer,maxlayer,ngen)
-        print depth.shape
-        print nlayer.shape
+        print(depth.shape)
+        print(nlayer.shape)
 
         if archive_nlayer=="out":
-            print "writing out number of layers"
+            print("writing out number of layers")
             write_mesh(mesh,nlayer_gr3.replace(".gr3","_default.gr3"),node_attr=nlayer_default)
             write_mesh(mesh,nlayer_gr3,node_attr=nlayer)
             write_mesh(mesh,nlayer_gr3.replace(".gr3","_dztarget.gr3"),node_attr=dztarget)
@@ -206,8 +206,8 @@ def vgrid_gen(hgrid,vgrid_out,eta,
         
     #np.savez("savevar.npz",nlayer,nlayer_default,depth,h0)
     sigma,nlayer_revised = gen_sigma(nlayer, dztarget, eta, h0, theta, b, hc,mesh=mesh)
-    print "sigma shape"
-    print sigma.shape
+    print("sigma shape")
+    print(sigma.shape)
     nlayer = nlayer_revised
     nlevel = nlayer+1
     
@@ -231,8 +231,8 @@ def vgrid_gen(hgrid,vgrid_out,eta,
     sidemasked = nodemasked[edges[:,0]] | nodemasked[edges[:,1]]
     gradmat = gradient_matrix(mesh,sidelen2,sidemasked)    
     
-    print "Nodes excluded: %s" % np.sum(nodemasked)
-    print "Sides excluded: %s" % np.sum(sidemasked)
+    print("Nodes excluded: %s" % np.sum(nodemasked))
+    print("Sides excluded: %s" % np.sum(sidemasked))
 
     zcor = vmesh.build_z(mesh,eta)[:,::-1]
  
@@ -297,7 +297,7 @@ def vgrid_gen(hgrid,vgrid_out,eta,
     vmesh1 = SchismLocalVerticalMesh(flip_sigma(sigma1))
     print("Writing vgrid.in output file...")
     write_vmesh(vmesh1, vgrid_out)
-    print "Done"
+    print("Done")
     
 
 def plot_vgrid(hgrid_file,vgrid_file,vgrid0_file,eta,transectfiles):

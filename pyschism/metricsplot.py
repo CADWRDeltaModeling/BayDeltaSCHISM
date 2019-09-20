@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Metrics plot
 """
-from __future__ import print_function
+
 from plot_default_formats import set_color_cycle_dark2, set_scatter_color, make_plot_isometric, set_dual_axes, set_xaxis_dateformat, rotate_xticks,brewer_colors
 from vtools.functions.api import cosine_lanczos, interpolate_ts, interpolate_ts_nan, LINEAR, shift
 from vtools.functions.skill_metrics import rmse, median_error, skill_score, corr_coefficient

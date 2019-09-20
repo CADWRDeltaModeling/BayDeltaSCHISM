@@ -22,7 +22,7 @@ def get_bad_elements(output_dir, n_proc):
     for i_proc in range(n_proc):
 	fname = "nonfatal_%04d" % i_proc
 	fpath = os.path.join(output_dir, fname)
-	print "Processing %s..." % fname
+	print("Processing %s..." % fname)
 	f = open(fpath, 'r')
 	for l in f:
 	    l = l.strip()
@@ -99,9 +99,9 @@ def remove_nodes(nodes_to_remove, mesh):
     for node_i in nodes_to_remove:
 	node = mesh.nodes[node_i]
 	if node[2] == 0.:
-	    print "This node is not in the TVD zone. Node:", node_i + 1, node
+	    print("This node is not in the TVD zone. Node: {} {}".format(node_i + 1, node))
 	else:
-	    print "Remove Node:", node_i + 1, node
+	    print("Remove Node: {} {}".format(node_i + 1, node))
 	    node[2] = 0.
 
 
@@ -112,7 +112,7 @@ def main():
     output_dir = os.path.join(input_dir, "outputs")
     global_to_local_fpath = os.path.join(output_dir, "global_to_local.prop")
     n_proc = get_number_of_processors_used(global_to_local_fpath)
-    print "# of processors used for the run:", n_proc
+    print("# of processors used for the run: {}".format(n_proc))
 
     # Collect bad elements from all nonfatals
     bad_elements = get_bad_elements(output_dir, n_proc)
@@ -130,8 +130,8 @@ def main():
     nodes_to_remove = collect_nodes_to_remove(bad_elements_sorted[:n_elements_to_remove],
 					      s.mesh)
 
-    print "Nodes to remove:"
-    print nodes_to_remove
+    print("Nodes to remove:")
+    print(nodes_to_remove)
 
     # Let's remove selected nodes from tvd.gr3
 #     bak_fname = "tvd.gr3.bak"

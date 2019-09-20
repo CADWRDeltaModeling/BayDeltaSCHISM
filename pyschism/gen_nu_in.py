@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """ Script to create TEM_nu.in and SAL_nu.in
 """
-from __future__ import print_function
+
 from schism_mesh import SchismMeshIoFactory
 from station_db import StationDB
 from schism_polygon import Polygon, Point

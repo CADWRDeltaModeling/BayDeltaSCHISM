@@ -50,7 +50,7 @@ def read_lines_from_shapefile(fpath):
     driver = osgeo.ogr.GetDriverByName('ESRI Shapefile')
     datasource = driver.Open(fpath, 0)
     if datasource is None:
-        print 'Could not open ' + fpath
+        print('Could not open ' + fpath)
         raise RuntimeError()
     layer = datasource.GetLayer()
     feature = layer.GetNextFeature()

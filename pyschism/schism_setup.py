@@ -957,18 +957,18 @@ def check_and_suggest(testees, list_words, logger=None):
             if logger is not None:
                 logger.error(msg)
             else:
-                print msg
+                print(msg)
             similar_one = check_similarity(keyword, list_words)
             if not similar_one is None:
                 msg = "-- Did it mean '%s'?" % similar_one
                 if logger is not None:
                     logger.info(msg)
                 else:
-                    print msg
+                    print(msg)
             msg = "Acceptable items in this section are: " + \
                   ', '.join(list_words)
             if logger is not None:
                 logger.error(msg)
             else:
-                print msg
+                print(msg)
             raise ValueError("Unrecognizable item")

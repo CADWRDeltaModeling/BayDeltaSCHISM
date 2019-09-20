@@ -43,8 +43,8 @@ def med_outliers(ts,level=4.,scale = None,\
 
     Returns: copy of series with outliers replaced by nan
     """
-    print "level"
-    print level
+    print("level")
+    print(level)
     import warnings
     ts_out = ts.copy() if copy else ts
     warnings.filterwarnings("ignore")
@@ -64,8 +64,8 @@ def med_outliers(ts,level=4.,scale = None,\
     if not scale:
         low,high = mquantiles(res[~ np.isnan(res)],quantiles)
         scale = high - low 
-        print "scale"
-        print scale
+        print("scale")
+        print(scale)
     outlier = (np.absolute(res) > level*scale) | (np.absolute(res) < -level*scale)
     ts_out.data[outlier]= np.nan
 

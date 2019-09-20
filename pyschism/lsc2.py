@@ -47,17 +47,17 @@ def default_num_layers(eta, h0, minlayer, maxlayer,dz_target):
     layerds[0]=0.
     ss = np.cumsum(layerds)
     zz = szcoord(ss, NCUTOFF-eta, eta, 2., 0., 1.) - 1.
-    print "zz in default_num_layers"
-    print zz
+    print("zz in default_num_layers")
+    print(zz)
  
     nlayer0 = np.maximum(np.searchsorted(zz,effdepth),1)
     HCUT = 5.6
     nlayercutoff =  np.searchsorted(zz,HCUT)
-    print "default num layer"
-    print NCUTOFF/2
-    print nlayercutoff
-    print zz[nlayercutoff]
-    print zz[nlayercutoff-1]
+    print("default num layer")
+    print(NCUTOFF/2)
+    print(nlayercutoff)
+    print(zz[nlayercutoff])
+    print(zz[nlayercutoff-1])
     nlayer1 = (effdepth - HCUT) + 1 + nlayercutoff
     
     nlayer_trial = np.where(effdepth<HCUT,nlayer0,nlayer1.astype("i"))
@@ -65,8 +65,8 @@ def default_num_layers(eta, h0, minlayer, maxlayer,dz_target):
     nlayer = np.minimum(np.maximum(
         minlayer, (nlayer_trial).astype('i')), maxlayer) #.astype('f')
 
-    print "Small minlayer %s = " % np.any(minlayer<=1.)
-    print "Any small number layers: %s %s" % (np.amin(nlayer), np.argmin(nlayer))   
+    print("Small minlayer %s = " % np.any(minlayer<=1.))
+    print("Any small number layers: %s %s" % (np.amin(nlayer), np.argmin(nlayer)))   
     return nlayer
 
 def gen_sigma(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
@@ -104,18 +104,18 @@ def gen_sigma(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
     midlevel = (maxlevel-1)/3
     
     zcor = np.empty((npoint, maxlevel), 'd')
-    print "max level %s mid level %s" % (maxlevel,midlevel)
-    print "sizes"
-    print h.shape
-    print npoint
-    print 
+    print("max level %s mid level %s" % (maxlevel,midlevel))
+    print("sizes")
+    print(h.shape)
+    print(npoint)
+    print() 
     
     zcor[:,maxlevel - 1]=-h
     old_layer = -h
     speed = np.maximum(0.5,depth_smooth)*0.55 + np.minimum(40.,np.maximum(0.0,depth-40.))/8.
     if True:
         for i in range(maxlevel+1):
-            print "layer iteration: %s" % i
+            print("layer iteration: %s" % i)
             new_layer = laplace_smooth_with_vel(mesh,old_layer,vel=speed,kappa=2.4,dt=0.05,iter_total=20)
             latest_layer = np.where(new_layer>old_layer, new_layer, old_layer)
             zcor[:,maxlevel-2-i] = latest_layer
@@ -129,8 +129,8 @@ def gen_sigma(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
     tlayerds[0]=0.
     tss = -np.cumsum(tlayerds)
     tzz_base = szcoord(tss, NCUTOFF-eta, eta, 2., 0., 1.0)
-    print "tzz"
-    print tzz_base
+    print("tzz")
+    print(tzz_base)
 
     
     
@@ -144,13 +144,13 @@ def gen_sigma(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
         snaptol=np.maximum(0.15,depth*0.01)
         lastsim01=np.absolute(zcortwo[:,0]-zcortwo[:,1])<snaptol
         
-        print "@#%#$@^"
-        print "zcortwo"
-        print zcortwo[lastsim01,:][10000:10004,:]
-        print "depth"
-        print depth[lastsim01][10000:10004]
+        print("@#%#$@^")
+        print("zcortwo")
+        print(zcortwo[lastsim01,:][10000:10004,:])
+        print("depth")
+        print(depth[lastsim01][10000:10004])
         zcortwo[lastsim01,0] = zcortwo[lastsim01,1] + snaptol[lastsim01]
-        print zcortwo[lastsim01,:][10000:10004,:]
+        print(zcortwo[lastsim01,:][10000:10004,:])
         notused = np.sum(np.isnan(zcortwo),axis=1)
         nbnd = 2-notused
         bndlevel = nlevel - 2
@@ -181,12 +181,12 @@ def gen_sigma(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
             try:
                 zcor[i,bndlevel[i]:(bndlevel[i]+2)] = zcortwo[i,:]
             except:
-                print "Bad 1"
-                print "bndlevel[%s] = %s " % (i,bndlevel[i])
-                print zcortwo.shape
-                print "nlevel[%s] = %s" % (i,nlevel[i])
-                print "nbnd[%s] = %s" % (i,nbnd[i])
-                print maxlevel
+                print("Bad 1")
+                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
+                print(zcortwo.shape)
+                print("nlevel[%s] = %s" % (i,nlevel[i]))
+                print("nbnd[%s] = %s" % (i,nbnd[i]))
+                print(maxlevel)
                 raise ValueError("blah")
             try:
                 
@@ -196,12 +196,12 @@ def gen_sigma(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
                 elif (bndlevel[i] > 0) and (nbnd[i] == 0):
                     zcor[i,bndlevel[i]] = 0.7*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i]-1]               
             except:
-                print "Bad 2"
-                print "bndlevel[%s] = %s " % (i,bndlevel[i])
-                print zcortwo.shape
-                print "nlevel[%s] = %s" % (i,nlevel[i])
-                print "nbnd[%s] = %s" % (i,nbnd[i])
-                print maxlevel
+                print("Bad 2")
+                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
+                print(zcortwo.shape)
+                print("nlevel[%s] = %s" % (i,nlevel[i]))
+                print("nbnd[%s] = %s" % (i,nbnd[i]))
+                print(maxlevel)
                 raise ValueError("blah blah")
             zcor[i,nlevel[i]:-1] = np.nan
 
@@ -237,10 +237,10 @@ def gen_sigma(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
                     zsigma = np.linspace(tzz[zb],zcor[i,bndlevel[i]],(bndlevel[i]-zb+1))
                     replace[zb:(bndlevel[i]+1)]=zsigma
                 except:
-                    print "issue: %s %s %s %s " % (depth[i],zb,nlevel[i],tzz[zb])
-                    print zsigma
-                    print len (zsigma)
-                    print tzz  
+                    print("issue: %s %s %s %s " % (depth[i],zb,nlevel[i],tzz[zb]))
+                    print(zsigma)
+                    print(len (zsigma))
+                    print(tzz)  
                 if zb>0: replace[zb] = 0.2*replace[zb]+0.4*replace[zb-1]+0.4*replace[zb+1]
                 zcor[i,:] = zcor[i,:]*(1.-blend) + replace*blend
             
@@ -254,9 +254,9 @@ def gen_sigma(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
         if depth[i] < shallow or bndfrac[i] > 0.8:
             sigma[i, 0:(nlevel[i])] = np.linspace(0., 1., nlevel[i])
     sigma = -sigma
-    print "sigma"
-    print sigma[0,:]
-    print sigma.shape
+    print("sigma")
+    print(sigma[0,:])
+    print(sigma.shape)
     # zcor[depth<0.,:]=np.nan
     nlayer_revised = nlevel - 1
     return sigma,nlayer_revised    
@@ -297,13 +297,13 @@ def gen_sigma4(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
     midlevel = (maxlevel-1)/3
     
     zcor = np.empty((npoint, maxlevel), 'd')
-    print "max level %s mid level %s" % (maxlevel,midlevel)
+    print("max level %s mid level %s" % (maxlevel,midlevel))
     zcor[:,maxlevel - 1]=-h
     old_layer = -h
     speed = np.maximum(0.5,depth_smooth)*0.55 + np.minimum(40.,np.maximum(0.0,depth-40.))/8.
     if False:
         for i in range(maxlevel+1):
-            print "layer iteration: %s" % i
+            print("layer iteration: %s" % i)
             new_layer = laplace_smooth_with_vel(mesh,old_layer,vel=speed,kappa=2.4,dt=0.05,iter_total=20)
             latest_layer = np.where(new_layer>old_layer, new_layer, old_layer)
             zcor[:,maxlevel-2-i] = latest_layer
@@ -323,13 +323,13 @@ def gen_sigma4(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
         snaptol=np.maximum(0.15,depth*0.01)
         lastsim01=np.absolute(zcortwo[:,0]-zcortwo[:,1])<snaptol
         
-        print "@#%#$@^"
-        print "zcortwo"
-        print zcortwo[lastsim01,:][10000:10004,:]
-        print "depth"
-        print depth[lastsim01][10000:10004]
+        print("@#%#$@^")
+        print("zcortwo")
+        print(zcortwo[lastsim01,:][10000:10004,:])
+        print("depth")
+        print(depth[lastsim01][10000:10004])
         zcortwo[lastsim01,0] = zcortwo[lastsim01,1] + snaptol[lastsim01]
-        print zcortwo[lastsim01,:][10000:10004,:]
+        print(zcortwo[lastsim01,:][10000:10004,:])
         notused = np.sum(np.isnan(zcortwo),axis=1)
         nbnd = 2-notused
         bndlevel = nlevel - 2
@@ -360,12 +360,12 @@ def gen_sigma4(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
             try:
                 zcor[i,bndlevel[i]:(bndlevel[i]+2)] = zcortwo[i,:]
             except:
-                print "Bad 1"
-                print "bndlevel[%s] = %s " % (i,bndlevel[i])
-                print zcortwo.shape
-                print "nlevel[%s] = %s" % (i,nlevel[i])
-                print "nbnd[%s] = %s" % (i,nbnd[i])
-                print maxlevel
+                print("Bad 1")
+                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
+                print(zcortwo.shape)
+                print("nlevel[%s] = %s" % (i,nlevel[i]))
+                print("nbnd[%s] = %s" % (i,nbnd[i]))
+                print(maxlevel)
                 raise ValueError("blah")
             try:
                 
@@ -375,12 +375,12 @@ def gen_sigma4(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
                 elif (bndlevel[i] > 0) and (nbnd[i] == 0):
                     zcor[i,bndlevel[i]] = 0.7*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i]-1]               
             except:
-                print "Bad 2"
-                print "bndlevel[%s] = %s " % (i,bndlevel[i])
-                print zcortwo.shape
-                print "nlevel[%s] = %s" % (i,nlevel[i])
-                print "nbnd[%s] = %s" % (i,nbnd[i])
-                print maxlevel
+                print("Bad 2")
+                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
+                print(zcortwo.shape)
+                print("nlevel[%s] = %s" % (i,nlevel[i]))
+                print("nbnd[%s] = %s" % (i,nbnd[i]))
+                print(maxlevel)
                 raise ValueError("blah blah")
             zcor[i,nlevel[i]:-1] = np.nan
         #zcor[i,bndlevel[i]] = 0.2*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i+1]] + 0.5*zcor[i,bndlevel[i-1]]
@@ -393,9 +393,9 @@ def gen_sigma4(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
         if depth[i] < shallow or bndfrac[i] > 0.8:
             sigma[i, 0:(nlevel[i])] = np.linspace(0., 1., nlevel[i])
     sigma = -sigma
-    print "sigma"
-    print sigma[0,:]
-    print sigma.shape
+    print("sigma")
+    print(sigma[0,:])
+    print(sigma.shape)
     # zcor[depth<0.,:]=np.nan
     nlayer_revised = nlevel - 1
     return sigma,nlayer_revised
@@ -436,13 +436,13 @@ def gen_sigma3(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
     maxlevel = np.max(nlevel)
 
     zcor = np.empty((npoint, maxlevel), 'd')
-    print "max level %s" % maxlevel
+    print("max level %s" % maxlevel)
     zcor[:,maxlevel - 1]=-h
     old_layer = -h
     speed = np.maximum(0.5,depth_smooth)*0.55 + np.minimum(40.,np.maximum(0.0,depth-40.))/8.
     if True:
         for i in range(maxlevel-1):
-            print "layer iteration: %s" % i
+            print("layer iteration: %s" % i)
             new_layer = laplace_smooth_with_vel(mesh,old_layer,vel=speed,kappa=2.4,dt=0.05,iter_total=20)
             latest_layer = np.where(new_layer>old_layer, new_layer, old_layer)
             zcor[:,maxlevel-2-i] = latest_layer
@@ -455,7 +455,7 @@ def gen_sigma3(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
     if True:
         zcorthree=zcor[:,0:3].copy()
         zcorthree[:,1] = zcor[:,midlevel]
-        print "max level %s" % maxlevel    
+        print("max level %s" % maxlevel)    
         zcorthree[:,2] = zcor[:,(maxlevel-1)]
         bndthick = zcorthree[:,0] - zcorthree[:,2]
         bndfrac = bndthick/depth
@@ -500,11 +500,11 @@ def gen_sigma3(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
             try:
                 zcor[i,bndlevel[i]:(bndlevel[i]+3)] = zcorthree[i,:]
             except:
-                print "bndlevel[%s] = %s " % (i,bndlevel[i])
-                print zcorthree.shape
-                print "nlevel[%s] = %s" % (i,nlevel[i])
-                print "nbnd[%s] = %s" % (i,nbnd[i])
-                print maxlevel
+                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
+                print(zcorthree.shape)
+                print("nlevel[%s] = %s" % (i,nlevel[i]))
+                print("nbnd[%s] = %s" % (i,nbnd[i]))
+                print(maxlevel)
                 raise ValueError("blah")
             try:
                 
@@ -514,11 +514,11 @@ def gen_sigma3(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
                 elif (bndlevel[i] > 0) and (nbnd[i] == 0):
                     zcor[i,bndlevel[i]] = 0.7*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i]-1]               
             except:
-                print "bndlevel[%s] = %s " % (i,bndlevel[i])
-                print zcorthree.shape
-                print "nlevel[%s] = %s" % (i,nlevel[i])
-                print "nbnd[%s] = %s" % (i,nbnd[i])
-                print maxlevel
+                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
+                print(zcorthree.shape)
+                print("nlevel[%s] = %s" % (i,nlevel[i]))
+                print("nbnd[%s] = %s" % (i,nbnd[i]))
+                print(maxlevel)
                 raise ValueError("blah blah")
             zcor[i,nlevel[i]:-1] = np.nan
         #zcor[i,bndlevel[i]] = 0.2*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i+1]] + 0.5*zcor[i,bndlevel[i-1]]
@@ -531,9 +531,9 @@ def gen_sigma3(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
         if depth[i] < shallow or (1.-bndfrac[i])/(nlevel[i]-1) < 0.05:
             sigma[i, 0:(nlevel[i])] = np.linspace(0., 1., nlevel[i])
     sigma = -sigma
-    print "sigma"
-    print sigma[0,:]
-    print sigma.shape
+    print("sigma")
+    print(sigma[0,:])
+    print(sigma.shape)
     # zcor[depth<0.,:]=np.nan
     nlayer_revised = nlevel - 1
     return sigma,nlayer_revised    
@@ -622,10 +622,10 @@ def gen_sigma2(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.):
                     replace[zb:(nlevel[i])]=zsigma
                 except:
                     pass
-                    print "issue: %s %s %s %s " % (depth[i],zb,nlevel[i],tzz[zb])
-                    print zsigma
-                    print len (zsigma)
-                    print tzz                    
+                    print("issue: %s %s %s %s " % (depth[i],zb,nlevel[i],tzz[zb]))
+                    print(zsigma)
+                    print(len (zsigma))
+                    print(tzz)                    
                 if zb>0: replace[zb] = 0.2*replace[zb]+0.4*replace[zb-1]+0.4*replace[zb+1]
                 zcor[i,:] = zcor[i,:]*(1.-blend) + replace*blend
 
@@ -638,9 +638,9 @@ def gen_sigma2(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.):
         if depth[i] < 1e-3:
             sigma[i, 0:(nlevel[i])] = np.linspace(0., 1., nlevel[i])
     sigma = -sigma
-    print "sigma"
-    print sigma[0,:]
-    print sigma.shape
+    print("sigma")
+    print(sigma[0,:])
+    print(sigma.shape)
     # zcor[depth<0.,:]=np.nan
     return sigma
 

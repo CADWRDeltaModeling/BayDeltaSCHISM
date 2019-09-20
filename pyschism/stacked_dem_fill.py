@@ -44,7 +44,7 @@ def stacked_dem_fill(files, points, values=None, negate=False, require_all=True,
     for infile in files:
         if not os.path.exists(infile):
             raise ValueError("File does not exist: %s" % infile)
-        print "Using DEM: %s" % infile
+        print("Using DEM: %s" % infile)
         indataset = gdal.Open(infile, GA_ReadOnly)
         gt = indataset.GetGeoTransform()
         rb = indataset.GetRasterBand(1)
@@ -70,7 +70,7 @@ def stacked_dem_fill(files, points, values=None, negate=False, require_all=True,
         if require_all:
             raise ValueError(message)
         else:
-            print message
+            print(message)
     if na_fill is not None:
         values[np.isnan(values)] = na_fill
     return values
@@ -78,7 +78,7 @@ def stacked_dem_fill(files, points, values=None, negate=False, require_all=True,
 
 # =============================================================================
 def Usage():
-    print 'Usage: stacked_dem_fill.py demfilelist pointlist'
+    print('Usage: stacked_dem_fill.py demfilelist pointlist')
     sys.exit(1)
 
 # =============================================================================
@@ -166,7 +166,7 @@ def test_main():
     points[2:, ] = (616877, 4226454, np.nan)
     points[3:, ] = (816877, 4226454, np.nan)
 
-    print stacked_dem_fill(["bay_delta_mini.tif", "bay_delta_west.tif", "bay_delta_east.tif"], points[:, :2], points[:, 2])
+    print(stacked_dem_fill(["bay_delta_mini.tif", "bay_delta_west.tif", "bay_delta_east.tif"], points[:, :2], points[:, 2]))
 
 
 def filelist_main(demlistfile, pointlistfile, sep=""):
@@ -180,25 +180,25 @@ def filelist_main(demlistfile, pointlistfile, sep=""):
     bad_files = [f for f in filelist if not os.path.exists(f)]
     if len(bad_files) > 0:
         for fname in bad_files:
-            print "Does not exist: %s " % fname
+            print("Does not exist: %s " % fname)
         raise ValueError("Some file(s) not found")
     points = np.loadtxt(pointlistfile, delimiter=sep).copy()
-    print points
+    print(points)
     pshape = points.shape
     if pshape[1] == 2:
         z = np.zeros((points.shape[0], 1), dtype=np.float64)
         points = np.hstack((points, z))
         # points.resize((pshape[0],3),refcheck=False)
     points[:, 2] = np.nan
-    print points
+    print(points)
     points = stacked_dem_fill(filelist, points[:, :2], points[:, 2])
-    print points
+    print(points)
     return points
 
 
 def fill_2dm(infile, outfile, files,na_fill=DEFAULT_NA_FILL):
     import string
-    print "Filling elevations in %s and writing to %s" % (infile, outfile)
+    print("Filling elevations in %s and writing to %s" % (infile, outfile))
     f = open(infile, 'r')
     all_lines = f.readlines()
     f.close()
@@ -224,7 +224,7 @@ def fill_2dm(infile, outfile, files,na_fill=DEFAULT_NA_FILL):
 def fill_gr3(infile, outfile, files, elev2depth=True,na_fill=DEFAULT_NA_FILL):
     import string
     import math
-    print "Filling elevations in %s and writing to %s" % (infile, outfile)
+    print("Filling elevations in %s and writing to %s" % (infile, outfile))
     f = open(infile, 'r')
     all_lines = f.readlines()
     f.close()
@@ -274,7 +274,7 @@ def main():
     args = parser.parse_args()
     infile = args.filename
     bakfile = infile + ".bak"
-    print "Backing up file to %s" % bakfile
+    print("Backing up file to %s" % bakfile)
     shutil.copyfile(infile, bakfile)
     demlistfile = args.demfile
  
@@ -292,11 +292,11 @@ def main():
     na_fill = args.fill       
     if infile.endswith(".2dm"):
         if elev2depth:
-            print "Warning: --elev2depth is an unusual option for 2dm files"
+            print("Warning: --elev2depth is an unusual option for 2dm files")
         fill_2dm(bakfile, infile, files, na_fill=na_fill)
     elif infile.endswith(".gr3"):
         if not elev2depth:
-            print "Warning: omitting --elev2depth is an unusual option for gr3 files"
+            print("Warning: omitting --elev2depth is an unusual option for gr3 files")
         fill_gr3(bakfile, infile, files, elev2depth, na_fill=na_fill)
     else:
         raise ValueError(

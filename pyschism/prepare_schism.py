@@ -266,9 +266,9 @@ def update_temporal_inputs(s, inputs):
     return_code = p.wait()
     if return_code != 0:
         for l in p.stdout:
-            print l
+            print(l)
         for l in p.stderr:
-            print l
+            print(l)
 
 
 def item_exist(inputs, name):
