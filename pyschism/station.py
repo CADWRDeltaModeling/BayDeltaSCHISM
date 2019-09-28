@@ -120,20 +120,20 @@ def read_station_dbase(fpath):
     return  pd.read_csv(fpath,sep=",",header=0,index_col="id")
 
 def merge_station_depth(station_dbase,station_depth,default_z):
-    """Merge BayDeltaSCHISM station files, either station_dbase to station_depth or station.in to obs_links            
+    """Merge BayDeltaSCHISM station database with depth file, producing the union of all stations and depths including a default entry for stations with no depth entry            
         
      Parameters
      ----------
      station_dbase : DataFrame 
-        This should be the input that has only the station id as an index, if one has id and the other has (id,subloc)
+        This should be the input that has only the station id as an index and includes other metadata like x,y, 
 
      station_depth : DataFrame 
-        This should be the argument that has (id,subloc) as an index
+        This should have (id,subloc) as an index
         
      Returns
      -------    
      Result : DataFrame
-         DataFrame that links the information. Simple left join on indexes
+         DataFrame that links the information.
                 
     """
     merged =  station_dbase.merge(station_depth.reset_index("subloc"),
