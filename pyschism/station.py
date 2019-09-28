@@ -97,9 +97,6 @@ def read_station_depth(fpath):
     return pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
 
 
-def read_obs_links(fpath):
-    """Read an obs_links csv file which has comma as delimiter and (id,subloc) as index """
-    return pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
 
 
 def read_station_dbase(fpath):
@@ -122,7 +119,7 @@ def read_station_dbase(fpath):
     """
     return  pd.read_csv(fpath,sep=",",header=0,index_col="id")
 
-def merge_station_info(station_dbase,station_aux):
+def merge_station_depth(station_dbase,station_depth,default_z):
     """Merge BayDeltaSCHISM station files, either station_dbase to station_depth or station.in to obs_links            
         
      Parameters
@@ -130,7 +127,7 @@ def merge_station_info(station_dbase,station_aux):
      station_dbase : DataFrame 
         This should be the input that has only the station id as an index, if one has id and the other has (id,subloc)
 
-     station_aux : DataFrame 
+     station_depth : DataFrame 
         This should be the argument that has (id,subloc) as an index
         
      Returns
@@ -139,27 +136,54 @@ def merge_station_info(station_dbase,station_aux):
          DataFrame that links the information. Simple left join on indexes
                 
     """
-    return pd.merge(station_dbase,station_aux,how='left',left_index=True,right_index=True)
+    merged =  station_dbase.merge(station_depth.reset_index("subloc"),
+                left_on="id",right_on="id",
+                how='left').set_index("subloc",append=True)
+    merged.loc[merged.z.isna(),"z"] = default_z
+    return merged
+
+def read_obs_links(fpath):
+    """Read an obs_links csv file which has comma as delimiter and (id,subloc) as index """
+    return pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
 
 
+def read_station_out(fpath_base,stationinfo,var=None,start=None):
+    if var is None:
+        fname = fpath_base
+    else:
+        try:
+            fileno = station_variables.index(var)
+        except ValueError:
+            raise ValueError("Variable name {} not on list: {}.format(var,station_variables")
+        fname = "{}_{:d}".format(fileno)
+    data = pandas.read_csv(fpath,var,sep="\s+",index_col=0,
+                           header=None,names = stationinfo.index,dtype='d')
+    if start is not None:
+        data = elapsed_to_date(data)
+    return data
 
 def example():
     print(read_station_in("example_station.in"))  
     stations_utm = read_station_dbase("stations_utm.csv")
     sdepth = read_station_depth("station_depth.csv")
-    stations_in = merge_station_info(stations_utm,sdepth)
+    stations_in = merge_station_depth(stations_utm,sdepth,default_z=-0.5)
+    #stations_in = pd.merge(stations_utm,sdepth,how='inner',left_index=True,right_index=True)
+    print(stations_in)
     station_request = ["salt","elev"]
     write_station_in("station.in",stations_in,request=station_request)
-    stations_in = read_station_in("station.in")
+    #stations_in = read_station_in("station.in")
     obs_links = read_obs_links("obs_links.csv")
-    joined = merge_station_info(stations_in,obs_links)
+    merged = stations_in.merge(obs_links,left_index=True,right_index=True,how="left")
+   
     if True:
-        print("**")
-        print(stations_in)
         print("**")
         print(obs_links)
         print("**")
         print(stations_in)
+        print("**")
+        print(stations_utm)
+        print("**")
+        print(merged)
 
 if __name__ == '__main__':
     example()
