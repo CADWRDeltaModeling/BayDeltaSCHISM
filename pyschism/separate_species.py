@@ -123,11 +123,11 @@ def main():
     parser = create_arg_parser()
     args = parser.parse_args()
     if args.stime:
-        sdate=dtm.datetime(*map(int, re.split('[^\d]', args.stime))) # convert start time string input to datetime
+        sdate=dtm.datetime(*list(map(int, re.split('[^\d]', args.stime)))) # convert start time string input to datetime
     else:
         sdate = None
     if args.etime:
-        edate=dtm.datetime(*map(int, re.split('[^\d]', args.etime))) # convert start time string input to datetime
+        edate=dtm.datetime(*list(map(int, re.split('[^\d]', args.etime)))) # convert start time string input to datetime
     else:
         edate = None
     data_file = args.infile

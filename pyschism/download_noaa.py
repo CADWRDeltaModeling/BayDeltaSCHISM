@@ -18,7 +18,7 @@ stationlist = {"9414290":"San Francisco",
                "9415102":"Martinez-Amorco Pier"}
 
 
-name_to_id = dict((v,k) for k, v in stationlist.iteritems())
+name_to_id = dict((v,k) for k, v in stationlist.items())
 
 
 def retrieve_csv(url):
@@ -57,7 +57,7 @@ def write_table(table, fname, first):
 
 def write_header(fname, headers):
     f = open(fname, 'w')
-    for key, value in headers.iteritems():
+    for key, value in headers.items():
         buf = "# \"%s\"=\"%s\"\n" % (key, value)
         f.write(buf)
     f.flush()
@@ -83,11 +83,11 @@ def retrieve_data(station_id, start, end, product=None):
             production, it is either water_level or predictions.
 
     """
-    if station_id in stationlist.keys():
+    if station_id in stationlist:
         strstation = stationlist[station_id]
     else:
         strstation = station_id
-        if station_id in name_to_id.keys():
+        if station_id in name_to_id:
             station_id = name_to_id[station_id]
     print("Station: %s"  % strstation)
 
@@ -122,7 +122,7 @@ def retrieve_data(station_id, start, end, product=None):
     if product is None:
         product = 'water_level'
     fname = "{}_{}.txt".format(station_id,product)    
-    if not product in product_info.keys():
+    if not product in product_info:
         raise ValueError("Product not supported: {}".format(product))
     first = True
     headers = product_info[product]
@@ -191,16 +191,16 @@ def list_stations():
     """ Show NOAA station ID's in our study area.
     """
     print("Available stations:")
-    for key in stationlist.keys():
+    for key in stationlist:
         print("%s: %s" % (key, stationlist[key]))
 
 
 def assure_datetime(dtime, isend = False):
     if isinstance(dtime,dtm.datetime): 
         return dtime
-    elif isinstance(dtime,unicode) or isinstance(dtime,str):
+    elif isinstance(dtime,str): # Note: Removed comparison after unicode cast for Python 3
         if len(dtime) > 4:
-            return dtm.datetime(*map(int, re.split(r'[^\d]', dtime)))
+            return dtm.datetime(*list(map(int, re.split(r'[^\d]', dtime))))
         elif len(dtime) == 4:
             return dtm.datetime(int(dtime),12,31,23,59) if isend else dtm.datetime(int(dtime),1,1)
         else:
@@ -233,11 +233,11 @@ def main():
             raise ValueError("Either station or stationfile required")
 
         if args.start:
-            start = dtm.datetime(*map(int, re.split(r'[^\d]', args.start)))
+            start = dtm.datetime(*list(map(int, re.split(r'[^\d]', args.start))))
         else:
             start = None
         if args.end:
-            end = dtm.datetime(*map(int, re.split(r'[^\d]', args.end)))
+            end = dtm.datetime(*list(map(int, re.split(r'[^\d]', args.end))))
         else:
             end = None
 

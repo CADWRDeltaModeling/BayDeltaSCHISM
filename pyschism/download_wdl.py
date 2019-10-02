@@ -40,7 +40,7 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
         response = urllib2.urlopen(station_query)
         station_html = response.read()
         params = [x for x in items if  "%s_"%x in station_html]
-        for param in items.keys():
+        for param in items:
             station_param = "%s_%s" % (station,items[param])
             newname = "%s.csv" % station_param
             dest_path = os.path.join(dest_dir,newname)
@@ -145,7 +145,7 @@ if __name__ == '__main__':
     stopyr = int(sys.argv[3]) + 1
     f = open(stationlist,"r")
     stations = [x.strip().split(",")[2] for x in f.readlines() if x and len(x) > 2]
-    years = range(firstyr,stopyr)
+    years = list(range(firstyr,stopyr))
     destdir = 'wdl_data'
     overwrite = False    
     wdl_download(stations,years,destdir,overwrite)

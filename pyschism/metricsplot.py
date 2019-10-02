@@ -228,8 +228,8 @@ def plot_metrics_to_figure(fig, tss,
         matplotlib.figure.Figure
     """
     grids = gen_metrics_grid()
-    axes = dict(zip(grids.keys(), map(fig.add_subplot,
-                                      grids.values())))
+    axes = dict(list(zip(list(grids.keys()), list(map(fig.add_subplot,
+                                      list(grids.values()))))))
     if labels is None:
         labels = [ts.props.get('label') for ts in tss]
     plot_inst_and_avg(axes, tss, window_inst, window_avg, labels, label_loc, legend_size)
@@ -278,8 +278,8 @@ def plot_comparsion_to_figure(fig, tss, title=None,
         matplotlib.figure.Figure
     """
     grids = gen_simple_grid()
-    axes = dict(zip(grids.keys(), map(fig.add_subplot,
-                                      grids.values())))
+    axes = dict(list(zip(list(grids.keys()), list(map(fig.add_subplot,
+                                      list(grids.values()))))))
     plot_inst_and_avg(axes, tss, window_inst, window_avg, labels,
                       label_loc, legend_size)
     if title is not None:

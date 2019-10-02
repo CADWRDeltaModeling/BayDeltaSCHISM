@@ -248,7 +248,7 @@ class GridOptimizer(object):
             result = lsqr(mat, vec, damp)
         elif solver == 'L-BFGS-B':
             result = fmin_l_bfgs_b(object_func, depths_at_nodes, fprime=fprime, args=(mat, vec),
-                                   approx_grad=0, bounds=[(0., None) for _ in xrange(self.mesh.n_nodes())],
+                                   approx_grad=0, bounds=[(0., None) for _ in range(self.mesh.n_nodes())],
                                    m=10, factr=100.0, pgtol=1e-05, epsilon=1e-08, iprint=-1,
                                    maxfun=15000, maxiter=15000, disp=None, callback=None)
         return ref_surf_at_nodes - result[0]

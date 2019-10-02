@@ -58,7 +58,7 @@ class ObsLinks(object):
             station_id:
                 Station name
         """
-        if self.links.has_key((station_id, variable, vert_pos)):
+        if (station_id, variable, vert_pos) in self.links:
             return self.links[(station_id, variable, vert_pos)][2]
         else:
             return None
@@ -68,28 +68,28 @@ class ObsLinks(object):
             station_id:
                 Station name
         """
-        if self.links.has_key((station_id, variable, vert_pos)):
+        if (station_id, variable, vert_pos) in self.links:
             return self.links[(station_id, variable, vert_pos)][2]
         else:
             return None
 
     def stations_for_variable(self, variable):
-        return [self.links[x] for x in self.links.keys() if x[1] == variable]
+        return [self.links[x] for x in self.links if x[1] == variable]
 
     def agency(self, station_id, variable):
-        if self.links2d.has_key((station_id, variable)):
+        if (station_id, variable) in self.links2d:
             return self.data2d[(station_id, variable)][5]
         else:
             return None
 
     def item(self, station_id, variable, vert_pos, item):
-        if self.links.has_key((station_id, variable, vert_pos)):
+        if (station_id, variable, vert_pos) in self.links:
             return self.links[(station_id, variable, vert_pos)][item]
         else:
             return None
 
     def item2d(self, station_id, variable, item):
-        if self.data2d.has_key((station_id, variable)):
+        if (station_id, variable) in self.data2d:
             return self.data2d[(station_id, variable)][item]
         else:
             return None

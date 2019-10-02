@@ -43,7 +43,7 @@ def get_bad_elements(output_dir, n_proc):
 		else:
 		    bad_elements_dict[element_i] = (1, dtb)
 	f.close()
-    bad_elements = np.array([(k, ) + v for k, v in bad_elements_dict.iteritems()],
+    bad_elements = np.array([(k, ) + v for k, v in bad_elements_dict.items()],
 			 dtype = [('element_i', 'i4'), ('count', 'i4'),
 				  ('min_dtb', 'f4')])
     return bad_elements

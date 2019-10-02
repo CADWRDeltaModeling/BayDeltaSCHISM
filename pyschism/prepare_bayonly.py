@@ -108,7 +108,7 @@ def update_spatial_inputs(s):
     s.write_hgrid_ll(hgrid_ll_fpath)
     
     # Create GR3 files with one values
-    for fname, attribute in gr3s_one_value.iteritems():
+    for fname, attribute in gr3s_one_value.items():
         attr_array = numpy.empty(s.mesh.n_nodes())
         attr_array.fill(attribute)
         gr3_fpath = os.path.join(output_dir, fname)
@@ -116,7 +116,7 @@ def update_spatial_inputs(s):
         s.write_hgrid(gr3_fpath, attr_array, False)
 
     # Create GR3 files with polygons
-    for out_fname, polygon_fname in gr3s_polygons.iteritems():
+    for out_fname, polygon_fname in gr3s_polygons.items():
         polygon_fpath = os.path.join(input_dir, polygon_fname)
         gr3_fpath = os.path.join(output_dir, out_fname)
         print("Creating %s..." % out_fname)

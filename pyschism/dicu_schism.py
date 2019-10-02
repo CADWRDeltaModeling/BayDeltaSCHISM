@@ -151,7 +151,7 @@ def expand_dicu(source, saltsource, tempsource, nodelist, window):
             dicu_data[itype,:,(inode+1)] = x.data        
     #write it out    
     write_data = None
-    for tname in tname_ndx.keys():
+    for tname in tname_ndx:
         thfile = "dcd_%s.th" % tname
         tndx=tname_ndx[tname]
         f0 = open(thfile,"w")
@@ -197,9 +197,9 @@ def test_extend():
 if __name__ == "__main__":
     parser = create_arg_parser()
     args = parser.parse_args()
-    sdtime=dtm.datetime(*map(int, re.split('[^\d]', args.start))) # convert start time string input to datetime
+    sdtime=dtm.datetime(*list(map(int, re.split('[^\d]', args.start)))) # convert start time string input to datetime
     "DICU/DCD start time given: %s" % sdtime
-    edtime=dtm.datetime(*map(int, re.split('[^\d]', args.end))) # convert start time string input to datetime
+    edtime=dtm.datetime(*list(map(int, re.split('[^\d]', args.end)))) # convert start time string input to datetime
     "DICU/DCD end time given: %s" % edtime    
 
     flow_file = args.flow_file

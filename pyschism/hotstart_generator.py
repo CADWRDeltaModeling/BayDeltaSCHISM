@@ -23,7 +23,7 @@ def parse_date_time(date_str, time_str):
     """
     date = re.split(r'[^\d]+', date_str)
     hr = time_str
-    dtm = map(int, [date[i] for i in (2, 0, 1)])
+    dtm = list(map(int, [date[i] for i in (2, 0, 1)]))
     dtm.extend((int(hr[:2]), int(hr[2:])))
     tm = datetime.datetime(*dtm)
     return tm
@@ -136,7 +136,7 @@ class HotstartGenerator(object):
             self.logger.info("Start calculating elev...")
         if not self.gen_elev is None:
             self.elev = np.empty(nodes.shape[0])
-            for i in xrange(self.mesh.n_nodes()):
+            for i in range(self.mesh.n_nodes()):
                 self.elev[i] = self.gen_elev(node_idx=i)
         else:
             self.elev = np.zeros(self.mesh.n_nodes())
@@ -159,13 +159,13 @@ class HotstartGenerator(object):
             self.logger.info("Start calculating temperature..")
         self.temp = np.empty((nodes.shape[0], nvrt))
         if not self.gen_temp is None:
-            for i in xrange(self.mesh.n_nodes()):
+            for i in range(self.mesh.n_nodes()):
                 self.temp[i, :] = self.gen_temp(node_idx=i, depths=self.depths[i])
         if self.logger is not None:
             self.logger.info("Start calculating salt..")
         self.salt = np.empty((nodes.shape[0], nvrt))
         if not self.gen_salt is None:
-            for i in xrange(self.mesh.n_nodes()):
+            for i in range(self.mesh.n_nodes()):
                 self.salt[i, :] = self.gen_salt(node_idx=i, depths=self.depths[i])
         if self.logger is not None:
             self.logger.info("Done calculating salt..")
@@ -191,7 +191,7 @@ class HotstartGenerator(object):
         nvrt = self.nvrt
         # Elements
         out_elem = np.empty((self.mesh.n_elems(), nvrt, 2))
-        for elem_i in xrange(mesh.n_elems()):
+        for elem_i in range(mesh.n_elems()):
             elem = mesh.elem(elem_i)
             avg = np.average(self.var_nodes[elem, :, :], axis=0)
             out = np.average(np.dstack((avg[1:], avg[:-1])), axis=2)
@@ -292,7 +292,7 @@ class NearestNeighborInitializerBase(object):
                 new_casts[name] = [val]
             else:
                 new_casts[name].append(val)
-        new_casts = dict([(k, np.array(sorted(v))) for k, v in new_casts.iteritems()])
+        new_casts = dict([(k, np.array(sorted(v))) for (k, v) in new_casts.items()])
         self.casts = new_casts
 
     # def find_nearest_station(self, x, y):
@@ -347,7 +347,7 @@ class NearestNeighborInitializer(NearestNeighborInitializerBase):
         pt_avail_stations = [[(s['x'], s['y'])
                               for s in self.stations
                               if s['id'] == x][0]
-                             for x in self.casts.keys()]
+                             for x in self.casts]
         # Voronoi tessellation
         kdtree = cKDTree(pt_avail_stations)
         _, self.nearest_station_idx = kdtree.query(self.mesh.nodes[:, :2])
@@ -355,7 +355,7 @@ class NearestNeighborInitializer(NearestNeighborInitializerBase):
     def __call__(self, **kwargs):
         node_idx = kwargs['node_idx']
         depth = kwargs['depths']
-        nearest_station = self.casts.keys()[self.nearest_station_idx[node_idx]]
+        nearest_station = list(self.casts.keys())[self.nearest_station_idx[node_idx]]
         casts = self.casts[nearest_station]
         cast_depths = casts[:, 0]
         values = []
@@ -390,7 +390,7 @@ def read_stations(fpath):
         stations = []
         try:
             for row in reader:
-                stations.append(dict([(k.lower(), float(v)) if k in ('x', 'y', 'depth') else (k.lower(), v.strip()) for k, v in row.iteritems()]))
+                stations.append(dict([(k.lower(), float(v)) if k in ('x', 'y', 'depth') else (k.lower(), v.strip()) for k, v in row.items()]))
         except AttributeError:
             raise ValueError("Format of the station file may be wrong")
         return stations
@@ -415,7 +415,7 @@ def read_station_data(fpath):
                 continue
             data.append(dict([(k.lower(), v) for k, v in zip(fields, l.split(','))]))
         for row in data:
-            for k in row.keys():
+            for k in row:
                 if k in ('depth', 'salinity', 'temperature'):
                     row[k] = float(row[k])
         return data

@@ -6,7 +6,6 @@ from vtools.data.vtime import infer_interval
 import vtools.data.vtime as vtt
 import vtools.data.timeseries as vts
 import numpy
-import abc
 import datetime
 import re
 import sys
@@ -14,7 +13,7 @@ import sys
 __all__ = ['read_ts', 'read_noaa', 'read_wdl', 'read_cdec',
            'read_usgs', 'read_usgs_rdb','read_vtide']
 
-class TextTimeSeriesReader(object):
+class TextTimeSeriesReader:
     """ Base class to read in time series of field data in various text
         formats.
         This class is designed to be inherited. A user needs to implement
@@ -28,7 +27,6 @@ class TextTimeSeriesReader(object):
         tell a format, must be set before calling
         'is_readable.' '__init__' function would be a good place to do so.
     """
-    __metaclass__ = abc.ABCMeta
 
     def __init__(self):
         self._record_regex = None
@@ -182,9 +180,9 @@ class TextTimeSeriesReader(object):
                     if m is not None:
                         k = m.groupdict()["key"]
                         v = m.groupdict()["value"]
-                        if k in self._prop_key_table.keys():
+                        if k in self._prop_key_table:
                             k = self._prop_key_table[k]
-                        if v in self._prop_value_table.keys():
+                        if v in self._prop_value_table:
                             v = self._prop_value_table[v]
                         metadata[k] = v
             return metadata
@@ -341,7 +339,7 @@ class TextTimeSeriesReader(object):
             #         ts = vts.extrapolate_ts(ts, end=end)
             #     else:
             #         ts = ts.window(end=end)
-        for k, v in metadata.iteritems():
+        for k, v in metadata.items():
             ts.props[k] = v
 
         return ts
@@ -466,7 +464,7 @@ class NOAAReader(TextTimeSeriesReader):
     def parse_value(self, line):
         try:
             value = float(line[31:])
-        except ValueError, IndexError:
+        except (ValueError, IndexError):
             value = numpy.nan
         return value
 
@@ -501,7 +499,7 @@ class WDLReader(TextTimeSeriesReader):
         try:
             text = parts[1].strip()
             value = float(text) if len(text) > 0 else numpy.nan
-        except ValueError, IndexError:
+        except (ValueError, IndexError):
             value = numpy.nan
         return value
 
@@ -573,7 +571,7 @@ class USGSReader(TextTimeSeriesReader):
         #                                        "%m/%d/%Y%H:%M:%S")
         timestamp_parts = re.split(r'[^\d]', parts[0] + ' ' + parts[1])
         timestamp_parts = [timestamp_parts[i] for i in [2, 0, 1, 3, 4, 5]]
-        timestamp = datetime.datetime(*map(int, timestamp_parts))
+        timestamp = datetime.datetime(*list(map(int, timestamp_parts)))
         timezone = parts[2]
         timestamp += self._timezone_table[timezone]
         return timestamp
@@ -657,22 +655,22 @@ class USGSRdbReader(TextTimeSeriesReader):
         d = parts[self.time_ndx]
         if self.year_first_dash:
             if self.column_is_datetime:
-                timestamp = datetime.datetime(*map(int,[d[0:4],d[5:7],d[8:10],d[11:13],d[14:16]]))
+                timestamp = datetime.datetime(*list(map(int,[d[0:4],d[5:7],d[8:10],d[11:13],d[14:16]])))
             else:
                 t = parts[self.time_ndx+1]
-                timestamp = datetime.datetime(*map(int,[d[0:4],d[5:7],d[8:10],t[0:2],t[3:5]]))
+                timestamp = datetime.datetime(*list(map(int,[d[0:4],d[5:7],d[8:10],t[0:2],t[3:5]])))
         elif self.month_first_dash:
             if self.column_is_datetime:
-                timestamp = datetime.datetime(*map(int,[d[6:10],d[0:2],d[3:5],d[10:12],d[12:14]]))
+                timestamp = datetime.datetime(*list(map(int,[d[6:10],d[0:2],d[3:5],d[10:12],d[12:14]])))
             else:
                 t = parts[self.time_ndx+1]
-                timestamp = datetime.datetime(*map(int,[d[6:10],d[0:2],d[3:5],t[0:2],t[3:5]]))
+                timestamp = datetime.datetime(*list(map(int,[d[6:10],d[0:2],d[3:5],t[0:2],t[3:5]])))
         else:
             if self.column_is_datetime:
-                timestamp = datetime.datetime(*map(int,[d[0:4],d[4:6],d[6:8],d[10:12],d[12:14]]))
+                timestamp = datetime.datetime(*list(map(int,[d[0:4],d[4:6],d[6:8],d[10:12],d[12:14]])))
             else:
                 t = parts[self.time_ndx+1]
-                timestamp = datetime.datetime(*map(int,[d[0:4],d[4:6],d[6:8],t[0:2],t[2:4]]))
+                timestamp = datetime.datetime(*list(map(int,[d[0:4],d[4:6],d[6:8],t[0:2],t[2:4]])))
 
         if self.zone_ndx > -1:
             timezone = parts[self.zone_ndx]

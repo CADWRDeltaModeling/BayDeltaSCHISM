@@ -28,7 +28,7 @@ def read_lines(fpath):
             line = line.strip()
             if len(line) > 0:
                 tokens = line.split()
-                lines.append(map(float, tokens[:4]))
+                lines.append(list(map(float, tokens[:4])))
         return lines
 
 

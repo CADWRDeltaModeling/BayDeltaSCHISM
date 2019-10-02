@@ -70,7 +70,7 @@ class Gr3IO(base_io.BaseIO):
         tokens, ok = self._read_and_parse_line(f, 2)
         if not ok:
             raise ValueError("The Header information of GR3 file is corrupted.")
-        (n_elems, n_nodes) = map(int, tokens[:2])
+        (n_elems, n_nodes) = list(map(int, tokens[:2]))
         if n_nodes <= 0 or n_elems <= 0:
             raise ValueError("The Header information of GR3 file is corrupted.")
         self._mesh.allocate(n_elems, n_nodes) # Allocate memory
@@ -84,7 +84,7 @@ class Gr3IO(base_io.BaseIO):
             if not ok:
                 print("Line: {}".format(self.linecounter))
                 raise ValueError("Node block is corrupt.")
-            node_coords = map(float, tokens[1:4])
+            node_coords = list(map(float, tokens[1:4]))
             self._mesh.set_node(node_counter, node_coords)
             node_counter += 1
 
@@ -101,9 +101,9 @@ class Gr3IO(base_io.BaseIO):
                                  "quadrilateral are supported.")
             # Zero-based connectivities
             if type_elem == 3:
-                connectivities = np.subtract(np.array(map(int, tkn[2:5])), 1)
+                connectivities = np.subtract(np.array(list(map(int, tkn[2:5]))), 1)
             elif type_elem == 4:
-                connectivities = np.subtract(np.array(map(int, tkn[2:6])), 1)
+                connectivities = np.subtract(np.array(list(map(int, tkn[2:6]))), 1)
             else:
                 raise ValueError("Not allowed element type is encountered.")
             self._mesh.set_elem(elem_i, connectivities)
@@ -218,7 +218,7 @@ class Gr3IO(base_io.BaseIO):
         buf = "%d %d ! # of elements and nodes \n" % (n_elems, n_nodes)
         f.write(buf)
         # Nodes
-        for i in xrange(n_nodes):
+        for i in range(n_nodes):
             if not node_attr is None:
                 buf = "%d %18.8f %18.8f %18.8f\n" % (i + 1, \
                                      mesh.nodes[i, 0], \
@@ -233,7 +233,7 @@ class Gr3IO(base_io.BaseIO):
             f.write(buf)
 
         # Elements
-        for elem_i in xrange(n_elems):
+        for elem_i in range(n_elems):
             elem = mesh.elem(elem_i) + 1
             n_nodes = len(elem)
             buf = '%d %d' % (elem_i + 1, n_nodes)

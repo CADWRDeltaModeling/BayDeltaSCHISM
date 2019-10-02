@@ -97,9 +97,9 @@ if __name__ == '__main__':
     start = args.start
     end = args.end
     param = args.param
-    stime = dt.datetime(*map(int, re.split('[^\d]', start))) 
+    stime = dt.datetime(*list(map(int, re.split('[^\d]', start)))) 
     if end:
-        etime = dt.datetime(*map(int, re.split('[^\d]', end))) 
+        etime = dt.datetime(*list(map(int, re.split('[^\d]', end)))) 
     else:
         etime = dt.datetime.now()
     

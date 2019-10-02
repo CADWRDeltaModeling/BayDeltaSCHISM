@@ -26,7 +26,7 @@ from copy import deepcopy
 
 
 def process_time_str(val):
-    return datetime(*map(int, re.split(r'[^\d]', val)))
+    return datetime(*list(map(int, re.split(r'[^\d]', val))))
 
 
 def read_optional_flag_param(params, name):
@@ -434,7 +434,7 @@ class BatchMetrics(object):
                 if adj_obs > 0.:
                     labels_to_plot[0] += " + %g" % adj_obs
                 else:
-                    labels_to_plot[0] += u" \u2212 %g" % (-adj_obs)
+                    labels_to_plot[0] += " - %g" % (-adj_obs)
             if plot_format == 'simple':
                 fig = plot_comparison(ts_obs, *tss_sim,
                                       window_inst=(start_inst, end_inst),

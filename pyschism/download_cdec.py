@@ -57,7 +57,7 @@ def cdec_download(stations,dest_dir,start,end="Now",param="ec",overwrite=False):
     """
     if end == None: end = "Now"
     if not type(param) == list:
-        if not param in params.keys():
+        if not param in params:
             raise ValueError("Requested param has no code in script or is incorrect")
         param=[param]*len(stations)
     paramcode=[params[p] for p in param]
@@ -130,9 +130,9 @@ if __name__ == '__main__':
     param = args.param
     start = args.start
     end = args.end
-    stime = dt.datetime(*map(int, re.split('[^\d]', start))) 
+    stime = dt.datetime(*list(map(int, re.split('[^\d]', start)))) 
     if end:
-        etime = dt.datetime(*map(int, re.split('[^\d]', end))) 
+        etime = dt.datetime(*list(map(int, re.split('[^\d]', end)))) 
     else:
         etime = "Now"
     if param_column and param:

@@ -250,7 +250,7 @@ class SchismPolygonShapefileWriter(SchismPolygonIo):
         if driver is None:
             print('%s is not available.' % driver_name)
             raise RuntimeError()
-        datasource = driver.CreateDataSource(unicode(fpath))
+        datasource = driver.CreateDataSource(str(fpath))
         if datasource is None:
             raise RuntimeError("Cannot create a GIS file")
         layer = datasource.CreateLayer('layer',

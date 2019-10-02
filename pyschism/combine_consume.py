@@ -27,7 +27,7 @@ def do_combine_hotstart(dir,step):
 
 def split(alist, n):
     k, m = divmod(len(a), n)
-    return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in xrange(n))    
+    return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n))    
         
 def combine(dir,blocks,fbase,consume=True):
     print("Called combine with %s" % (fbase))
@@ -215,7 +215,7 @@ def combine_consume(is_test=False):
     blocks = archive_blocks(datefile,start,blocks_per_day,ndxmin,ndxmax)
     wanted = set()
     for b in blocks: 
-        wanted.update(range(b[0],b[1]+1))
+        wanted.update(list(range(b[0],b[1]+1)))
     u  = range(ndxmin,ndxmax+1)
     unwanted = [ii for ii in u if not ii in wanted]
     unwanted = [ii for ii in u if not ii in wanted]

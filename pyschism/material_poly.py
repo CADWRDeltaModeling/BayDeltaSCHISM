@@ -65,7 +65,7 @@ def create_poly(shapefile,dsetname,keyfile,polyfile,type,default=None):
             for ring in geom:
                 #f.write("%s %s %s None\n" %(label,ring.GetPointCount(),val))
                 points = ring.GetPointCount()
-                for p in xrange(points):
+                for p in range(points):
                     x,y,z = ring.GetPoint(p)
                     f.write("      %s %s\n" % (x,y))
     ds = None

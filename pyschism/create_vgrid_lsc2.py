@@ -185,7 +185,7 @@ def vgrid_gen(hgrid,vgrid_out,eta,
         nlayer_mesh = read_mesh(nlayer_gr3)
         dztarget=read_mesh(nlayer_gr3.replace(".gr3","_dztarget.gr3")).nodes[:,2]
         nlayer = nlayer_mesh.nodes[:,2].astype('i')
-        if long(nlayer_mesh.n_nodes()) != long(mesh.n_nodes()):
+        if nlayer_mesh.n_nodes() != mesh.n_nodes():
             raise ValueError("NLayer gr3 file (%s)\nhas %s nodes, hgrid file (%s) has %s" 
                   %(nlayer_gr3, nlayer_mesh.n_nodes(),hgrid,mesh.n_nodes()) )
         #print("Reading the polygons for dz_target...")

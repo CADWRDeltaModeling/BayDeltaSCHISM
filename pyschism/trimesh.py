@@ -9,7 +9,6 @@ Prerequisite: Numpy, rtree package, and libspatialindex for rtree
 ##
 ## Author: Kijin Nam, knam@water.ca.gov
 ##
-## LICENSE: GPLv2
 
 import priority_queue as pq
 import rtree
@@ -406,7 +405,7 @@ class TriMesh(object):
             # newer versions of rtree return a generator:
             if isinstance(hits, types.GeneratorType):
                 # so translate that into a list like we used to get.
-                hits = [hits.next() for i in range(count)]
+                hits = [next(hits) for i in range(count)]
 
             if count > 1:
                 return hits
@@ -443,7 +442,7 @@ class TriMesh(object):
             all_nodes_i = np.unique(self._elems[elems_i])
 
             for node_i in all_nodes_i:
-                if done.has_key(node_i):
+                if node_i in done:
                     # both for p and for points that we've already done
                     continue
 
@@ -457,7 +456,7 @@ class TriMesh(object):
                                   - self._nodes[best])**2).sum() )
                 new_cost = best_cost + dist
 
-                if not queue.has_key(node_i):
+                if node_i not in queue:
                     queue[node_i] = np.inf
 
                 if queue[node_i] > new_cost:
@@ -477,7 +476,7 @@ class TriMesh(object):
 
             found_prev = 0
             for nbr in all_nodes_i:
-                if nbr == node_i or not done.has_key(nbr):
+                if nbr == node_i or nbr not in done:
                     continue
 
                 dist = np.sqrt( ((self._nodes[node_i] \
@@ -669,7 +668,7 @@ class TriMesh(object):
         # newer versions of rtree return a generator:
         if isinstance(hits, types.GeneratorType):
             # so translate that into a list like we used to get.
-            hits = [hits.next() for i in range(count)]
+            hits = [next(hits) for i in range(count)]
 
         if count > 1:
             return hits
@@ -771,10 +770,10 @@ class TriMesh(object):
         """
         element_hash = {} # sorted tuples of vertices
         new_elems = [] # list of indexes into the old ones
-        for i in xrange(self.n_elems()):
+        for i in range(self.n_elems()):
             my_key = tuple( np.sort(self._elems[i]) )
 
-            if not element_hash.has_key(my_key) and self.elems[i,0] >= 0:
+            if my_key not in element_hash and self.elems[i,0] >= 0:
                 # we're original and not deleted
                 element_hash[my_key] = i # value is ignored...
                 new_elems.append(i)
@@ -784,13 +783,13 @@ class TriMesh(object):
         # remove lonesome nodes
         active_nodes = np.unique(np.ravel(self._elems))
         if np.any(active_nodes) <= 0:
-            raise Exception, "renumber: Active nodes includes some negative indices"
+            raise Exception("renumber: Active nodes includes some negative indices")
 
         old_indices = -np.ones(self.n_nodes(), np.int32)
 
         self._nodes = self._nodes[active_nodes]
         if np.any(np.isnan(self._nodes)):
-            raise Exception,"renumber: some points have NaNs!"
+            raise Exception("renumber: some points have NaNs!")
 
         # need a mapping from active node to its index -
         # explicitly ask for int32 for consistency
@@ -800,7 +799,7 @@ class TriMesh(object):
         self._elems = old_indices[self._elems]
 
         if np.any(self._elems) < 0:
-            raise Exception,"renumber: after remapping indices, have negative node index in elems"
+            raise Exception("renumber: after remapping indices, have negative node index in elems")
 
         # clear out stale data
         self._clear_stale_data()

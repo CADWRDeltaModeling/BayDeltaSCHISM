@@ -80,7 +80,7 @@ def to_elapsed(args):
     dt = args.step
     # convert start time string input to datetime
     try:
-        sdtime = datetime.datetime(*map(int, re.split(r'[^\d]', args.start)))
+        sdtime = datetime.datetime(*list(map(int, re.split(r'[^\d]', args.start))))
     except:
         raise ValueError("Could not convert start time to datetime: {}".format(args.start))
     print("Model start time given: %s" % sdtime)
@@ -116,7 +116,7 @@ def to_datetime(args):
     annotate = args.annotate
 
     # convert start time string input to datetime
-    sdtime = datetime.datetime(*map(int, re.split('[^\d]', args.start)))
+    sdtime = datetime.datetime(*list(map(int, re.split('[^\d]', args.start))))
     "Model start time given: %s" % sdtime
     # Some correctness checking
     if len(input) > 1 and input[0].endswith(".th"):
@@ -152,9 +152,9 @@ def clip(args):
     input = args.elapsed_input
 
     # convert start time string input to datetime
-    start = datetime.datetime(*map(int, re.split('[^\d]', args.start)))
+    start = datetime.datetime(*list(map(int, re.split('[^\d]', args.start))))
     scliptime = datetime.datetime(
-        *map(int, re.split('[^\d]', args.clip_start)))
+        *list(map(int, re.split('[^\d]', args.clip_start))))
 
     th = len(input) == 1 and input[0].endswith(".th")
     th = len(input) == 1 and os.path.exists(input[0])
@@ -221,7 +221,7 @@ def multi_file_to_elapsed(input,output,start):
 def file_to_elapsed(infile, start, outpath=None, annotate=False, skip_nan=False):
 
     if not isinstance(start,datetime.datetime):
-        start = datetime.datetime(*map(int, re.split(r'[^\d]', start)))
+        start = datetime.datetime(*list(map(int, re.split(r'[^\d]', start))))
 
     if not outpath:
         outfile = sys.stdout
@@ -243,7 +243,7 @@ def file_to_elapsed(infile, start, outpath=None, annotate=False, skip_nan=False)
                     timestr += " %s" % splitline[1]
                 use = True
                 try:
-                    mdtm = datetime.datetime(*map(int, re.split('[^\d]', timestr)))
+                    mdtm = datetime.datetime(*list(map(int, re.split('[^\d]', timestr))))
                 except:
                     raise ValueError("Could not parse time {} in line {}".format(timestr,iline))
                 mdelta = (mdtm - start)
@@ -282,7 +282,7 @@ def file_to_timestamp(infile, start, outpath=None, annotate=False,
         raise ValueError("elapsed_unit must be 's' or 'd'")
 
     if type(start) == str:
-        start = datetime.datetime(*map(int, re.split('[^\d]', start)))
+        start = datetime.datetime(*list(map(int, re.split('[^\d]', start))))
     if not outpath:
         outfile = sys.stdout
     else:
@@ -311,7 +311,7 @@ def file_to_timestamp(infile, start, outpath=None, annotate=False,
 
 def describe_elapsed(times, start, dt=None):
     if type(start) == str:
-        start = datetime.datetime(*map(int, re.split('[^\d]', start)))
+        start = datetime.datetime(*list(map(int, re.split('[^\d]', start))))
     for elapsed in times:
         elapsed = elapsed.lower()
         if elapsed.endswith("d") or elapsed.endswith("days") or elapsed.endswith("day"):
@@ -341,12 +341,12 @@ def describe_elapsed(times, start, dt=None):
 
 def describe_timestamps(timestamps, start, dt=None):
     if type(start) == str:
-        start = datetime.datetime(*map(int, re.split('[^\d]', start)))
+        start = datetime.datetime(*list(map(int, re.split('[^\d]', start))))
     if not type(timestamps) == list:
         timestampse = [timestamps]
     for stamp in timestamps:
         # assume mtime argument is a date time and try to parse to datetime
-        mdtime = datetime.datetime(*map(int, re.split('[^\d]', stamp)))
+        mdtime = datetime.datetime(*list(map(int, re.split('[^\d]', stamp))))
         mdelta = mdtime - start
         msec = mdelta.total_seconds()
         print("Datetime:      %s" % mdtime)

@@ -197,7 +197,7 @@ class SchismMesh(TriQuadMesh):
                     try:
                         not_assigned.remove(edge_i)
                         return edge[1]
-                    except Exception,exc:
+                    except Exception as exc:
                         print("Attempted to remove edge {} based on node {} which is not in not_assigned list".format(edge_i,node_i))
                         raise
             else:
@@ -511,9 +511,9 @@ class SchismMesh(TriQuadMesh):
         n_nodes = self.n_nodes()
         n_vert_levels = self._vmesh.n_vert_levels()
         points = np.empty((n_nodes * n_vert_levels, 3))
-        for i in xrange(n_nodes):
+        for i in range(n_nodes):
             z = self.z[i]
-            for j in xrange(n_vert_levels):
+            for j in range(n_vert_levels):
                 r = i * n_vert_levels + j
                 points[r, :2] = self.nodes[i, :2]
                 points[r, 2] = z[j]
@@ -648,25 +648,25 @@ class SchismMeshGr3Reader(SchismMeshReader):
         tkns = f.readline().split()
         if len(tkns) < 2:
             raise ValueError('Not enough items is the second line')
-        n_elems, n_nodes = map(int, tkns[:2])
+        n_elems, n_nodes = list(map(int, tkns[:2]))
         if n_elems < 1 or n_nodes < 1:
             raise ValueError('Invalid # of elems or nodes')
         self._mesh.allocate(n_elems, n_nodes)  # Allocate memory
 
     def read_nodes(self, f):
         node_counter = 0
-        for i in xrange(self._mesh.n_nodes()):
+        for i in range(self._mesh.n_nodes()):
             line = f.readline()
             tkns = line.split()
             if len(tkns) < 4:
                 self._logger.error("Error reading: %s", line)
                 raise ValueError("Node block is corrupt.")
-            node_coords = map(float, tkns[1:4])
+            node_coords = list(map(float, tkns[1:4]))
             self._mesh.set_node(node_counter, node_coords)
             node_counter += 1
 
     def read_elems(self, f):
-        for elem_i in xrange(self._mesh.n_elems()):
+        for elem_i in range(self._mesh.n_elems()):
             line = f.readline()
             tkn = line.split()
             if len(tkn) < 5:
@@ -682,10 +682,10 @@ class SchismMeshGr3Reader(SchismMeshReader):
             try:
                 if type_elem == 3:
                     connectivities = np.subtract(
-                        np.array(map(int, tkn[2:5])), 1)
+                        np.array(list(map(int, tkn[2:5]))), 1)
                 elif type_elem == 4:
                     connectivities = np.subtract(
-                        np.array(map(int, tkn[2:6])), 1)
+                        np.array(list(map(int, tkn[2:6]))), 1)
                 else:
                     self._logger.error("Error reading: %s", line)
                     raise ValueError("Element block is corrupt")
@@ -716,7 +716,7 @@ class SchismMeshGr3Reader(SchismMeshReader):
             if len(tkns) < 1:
                 self._logger.error("Error reading: %s", line)
                 raise ValueError("Boundary block is corrupt")
-            for i in xrange(n_open_boundaries):
+            for i in range(n_open_boundaries):
                 line = f.readline()
                 tkns = line.split()
                 if len(tkns) < 1:
@@ -747,7 +747,7 @@ class SchismMeshGr3Reader(SchismMeshReader):
                 self._logger.error("Error reading: %s", line)
                 raise ValueError("Boundary block is corrupt")
             n_land_boundary_nodes = int(tkns[0])
-            for i in xrange(n_land_boundaries):
+            for i in range(n_land_boundaries):
                 line = f.readline()
                 tkns = line.split()
                 if len(tkns) < 1:
@@ -865,10 +865,10 @@ class SchismMeshSmsReader(SchismMeshReader):
                     # elem_i = int(row[1]) - 1
                     if row[0] == 'E3T':
                         connectivities = np.subtract(
-                            np.array(map(int, row[2:5])), 1)
+                            np.array(list(map(int, row[2:5]))), 1)
                     elif row[0] == 'E4Q':
                         connectivities = np.subtract(
-                            np.array(map(int, row[2:6])), 1)
+                            np.array(list(map(int, row[2:6]))), 1)
                     else:
                         raise ValueError("Element block is corrupt")
                     self.mesh.set_elem(elem_i, connectivities)
@@ -882,7 +882,7 @@ class SchismMeshSmsReader(SchismMeshReader):
                 row = line.strip().split()
                 if row[0] == 'ND':
                     node_i = int(row[1]) - 1
-                    node_coords = map(float, row[2:5])
+                    node_coords = list(map(float, row[2:5]))
                     self.mesh.set_node(node_i, node_coords)
 
     def read_boundary(self, fpath, nodestring_option=None):
@@ -895,7 +895,7 @@ class SchismMeshSmsReader(SchismMeshReader):
             for line in file_object:
                 row = line.strip().split()
                 if row[0] == 'NS':
-                    nodes = map(int, row[1:])
+                    nodes = list(map(int, row[1:]))
                     if nodes[0] < 0:
                         bound_nodes.append(-nodes[0] - 1)
                         if nodestring_option == 'open':
@@ -909,7 +909,7 @@ class SchismMeshSmsReader(SchismMeshReader):
                             raise ValueError('Not supported option')
                         bound_nodes = []
                     else:
-                        bound_nodes.extend(map(lambda x: x - 1, nodes))
+                        bound_nodes.extend([x - 1 for x in nodes])
         if nodestring_option == 'open':
             self.mesh.fill_land_and_island_boundaries()
         else:
@@ -1034,14 +1034,14 @@ class SchismMeshGr3Writer(SchismMeshWriter):
             nfmt = ifmtj + ffmt * 3 + "\n"
             # Nodes
             if node_attr is not None:
-                for i in xrange(n_nodes):
+                for i in range(n_nodes):
                     buf = nfmt % (i + 1,
                                   mesh.nodes[i, 0],
                                   mesh.nodes[i, 1],
                                   node_attr[i])
                     f.write(buf)
             else:
-                for i in xrange(n_nodes):
+                for i in range(n_nodes):
                     buf = nfmt % (i + 1,
                                   mesh.nodes[i, 0],
                                   mesh.nodes[i, 1],
@@ -1049,7 +1049,7 @@ class SchismMeshGr3Writer(SchismMeshWriter):
                     f.write(buf)
 
             # Elements
-            for elem_i in xrange(n_elems):
+            for elem_i in range(n_elems):
                 elem = mesh.elem(elem_i) + 1
                 n_nodes_in_elem = len(elem)
                 buf = '%d %d' % (elem_i + 1, n_nodes_in_elem)
@@ -1101,7 +1101,7 @@ class SchismMeshShapefileWriter(SchismMeshWriter):
         if driver is None:
             print('%s is not available.' % driver_name)
             raise RuntimeError()
-        datasource = driver.CreateDataSource(unicode(fpath))
+        datasource = driver.CreateDataSource(str(fpath))
         if datasource is None:
             raise RuntimeError()
         layer = datasource.CreateLayer('mesh',

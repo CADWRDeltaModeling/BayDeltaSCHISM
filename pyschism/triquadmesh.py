@@ -93,7 +93,7 @@ class TriQuadMesh(object):
             list of Numpy integer array
                 list of node indexes for all elements
         """
-        return [self.elem(i) for i in xrange(self._elems.shape[0])]
+        return [self.elem(i) for i in range(self._elems.shape[0])]
         # return self._elems
 
     @property
@@ -252,7 +252,7 @@ class TriQuadMesh(object):
         # this will get built on demand later.
         self._node2edges = None
 
-        for elem_i in xrange(self.n_elems()):
+        for elem_i in range(self.n_elems()):
             # find the neighbors:
             # the first neighbor: need another element that has
             # both self._elems[i,0] and self._elems[i,1] in its
@@ -306,7 +306,7 @@ class TriQuadMesh(object):
             if self._logger is not None:
                 self._logger.info("Building element indexes...")
             tuples = []
-            for elem_i in xrange(self.n_elems()):
+            for elem_i in range(self.n_elems()):
                 # TODO: This could be better with numpy.
                 box = [None, None, None, None]  # [xmin xmax ymin ymax]
                 elem = self.elem(elem_i)
@@ -336,8 +336,8 @@ class TriQuadMesh(object):
             self._logger.info("Mapping nodes to elements...")
         # build array for point->element lookup
         # Use set for later convenience
-        self._node2elems = [set() for _ in xrange(self.n_nodes())]
-        for elem_i in xrange(self.n_elems()):
+        self._node2elems = [set() for _ in range(self.n_nodes())]
+        for elem_i in range(self.n_elems()):
             elem = self.elem(elem_i)
             for node_index in elem:
                 self._node2elems[node_index].add(elem_i)
@@ -414,7 +414,7 @@ class TriQuadMesh(object):
         if self._logger is not None:
             self._logger.info("Building nodes to edges...")
         # Build node2edges map
-        n2e = [[] for i in xrange(self.n_nodes())]
+        n2e = [[] for i in range(self.n_nodes())]
         for edge_i in range(self.n_edges()):
             for n in self.edges[edge_i, :2]:
                 n2e[int(n)].append(edge_i)
@@ -524,7 +524,7 @@ class TriQuadMesh(object):
             # newer versions of rtree return a generator:
             if isinstance(hits, types.GeneratorType):
                 # so translate that into a list like we used to get.
-                hits = [hits.next() for _ in range(count)]
+                hits = [next(hits) for _ in range(count)]
 
             if count > 1:
                 return hits
@@ -721,7 +721,7 @@ class TriQuadMesh(object):
         """
         if self._elemcenter_index is None:
             tuples = []
-            for elem_i in xrange(self.n_elems()):
+            for elem_i in range(self.n_elems()):
                 center = np.zeros(2)
                 elem = self.elem(elem_i)
                 for node_i in elem:
@@ -737,7 +737,7 @@ class TriQuadMesh(object):
         # newer versions of rtree return a generator:
         if isinstance(hits, types.GeneratorType):
             # so translate that into a list like we used to get.
-            hits = [hits.next() for _ in range(count)]
+            hits = [next(hits) for _ in range(count)]
 
         if count > 1:
             return hits
@@ -857,7 +857,7 @@ class TriQuadMesh(object):
         """
         element_hash = {}  # sorted tuples of vertices
         new_elems = []  # list of indexes into the old ones
-        for i in xrange(self.n_elems()):
+        for i in range(self.n_elems()):
             my_key = tuple(self._elems[i])
             if my_key not in element_hash and self.elem(i) is not None:
                 # we're original and not deleted

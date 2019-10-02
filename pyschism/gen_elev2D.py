@@ -161,11 +161,11 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
     
     tbuf = days(16)              
     # convert start time string input to datetime       
-    sdate = datetime(*map(int, re.split('[^\d]', stime)))
+    sdate = datetime(*list(map(int, re.split('[^\d]', stime))))
 
     if not etime is None:
         # convert start time string input to datetime
-        edate = datetime(*map(int, re.split('[^\d]', etime)))
+        edate = datetime(*list(map(int, re.split('[^\d]', etime))))
         bufend = edate + tbuf
     else:
         edate = None
@@ -304,7 +304,7 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
 #    temp=np.zeros((len(ts_pr_semi),nnode))
 #    times[:]=[dt*i for i in xrange(len(ts_pr_semi))]   
 
-    for i in xrange(len(ts_pr_semi)):
+    for i in range(len(ts_pr_semi)):
         t = float(dt * i)
         # semi-diurnal
         # Scaling

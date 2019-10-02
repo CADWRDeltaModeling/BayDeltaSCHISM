@@ -181,7 +181,7 @@ class SchismSzVerticalMeshReader(object):
         self._vgrid = vgrid
         with open(fpath, 'r') as fin:
             ivcor = int(fin.readline().split()[0])
-            nvrt, kz, h_s = map(float, fin.readline().split()[:3])
+            nvrt, kz, h_s = list(map(float, fin.readline().split()[:3]))
             nvrt = int(nvrt)
             vgrid.param['nvrt'] = nvrt
             kz = int(kz)
@@ -204,7 +204,7 @@ class SchismSzVerticalMeshReader(object):
             vgrid.ztot = ztot
 
             fin.readline()  # S levels
-            h_c, theta_b, theta_f = map(float, fin.readline().split()[:3])
+            h_c, theta_b, theta_f = list(map(float, fin.readline().split()[:3]))
             vgrid.param['h_c'] = h_c
             vgrid.param['theta_b'] = theta_b
             vgrid.param['theta_f'] = theta_f
@@ -292,7 +292,7 @@ class SchismLocalVerticalMeshReader(object):
                 kbp = int(tkns[1]) - 1
                 kbps.append(kbp)
                 sigma = np.full((nvrt,), np.nan)
-                sigma[:nvrt - kbp] = map(float, tkns[2:nvrt - kbp + 2])
+                sigma[:nvrt - kbp] = list(map(float, tkns[2:nvrt - kbp + 2]))
                 sigmas.append(sigma)
             vgrid.sigma = np.array(sigmas)
             vgrid.kbps = np.array(kbps)
@@ -313,7 +313,7 @@ class SchismLocalVerticalMeshWriter(object):
             n_max_levels = vmesh.n_vert_levels()
             buf = "{}\n".format(n_max_levels)
             f.write(buf)
-            for i in xrange(len(vmesh.sigma)):
+            for i in range(len(vmesh.sigma)):
                 kbps = vmesh.kbps[i]
                 n_levels = n_max_levels - kbps
                 buf = "{}\t{}\t".format(i + 1, kbps + 1)
