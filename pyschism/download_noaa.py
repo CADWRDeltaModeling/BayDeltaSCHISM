@@ -1,6 +1,6 @@
 """ Script to download NOAA water level data
 """
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import bs4
 import calendar
 import datetime as dtm
@@ -22,7 +22,7 @@ name_to_id = dict((v,k) for k, v in stationlist.items())
 
 
 def retrieve_csv(url):
-    response = urllib2.urlopen(url)
+    response = urllib.request.urlopen(url)
     return response.read()
 
 
@@ -30,9 +30,9 @@ def retrieve_table(url):
     done = False
     while not done:
         try:
-            soup = bs4.BeautifulSoup(urllib2.urlopen(url))
+            soup = bs4.BeautifulSoup(urllib.request.urlopen(url))
             done = True
-        except urllib2.URLError:
+        except urllib.error.URLError:
             print("Failed to retrieve %s" % url)
             print("Try again...")
 

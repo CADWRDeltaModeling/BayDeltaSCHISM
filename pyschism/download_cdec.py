@@ -6,7 +6,7 @@
 """
 import argparse
 
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import re
 import zipfile
 import os
@@ -84,7 +84,7 @@ def cdec_download(stations,dest_dir,start,end="Now",param="ec",overwrite=False):
             for dur in dur_codes:
                 station_query = station_query_base % (cdec_base_url,station,code,dur,stime,etime)
                 print(station_query)
-                response = urllib2.urlopen(station_query)
+                response = urllib.request.urlopen(station_query)
                 station_html = response.read().replace("\r","")
                 if station_html.startswith("Title") or station_html.startswith("STATION_ID") and len(station_html) > 16:
                     found = True

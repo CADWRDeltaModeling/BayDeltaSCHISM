@@ -113,7 +113,7 @@ def bay_delta_hotstart_with_cdec_stations(args):
     usgs_stations = read_stations(fpath_usgs_cruise_stations)
     usgs_data = read_station_data(fpath_usgs_cruise)
     for row in usgs_data:
-        if 'station number' in row.keys():
+        if 'station number' in row:
             row['id'] = row['station number']
             del row['station number']
     if fpath_cdec_stations is not None:

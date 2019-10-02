@@ -3,7 +3,7 @@
  
 """
 
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import re
 import zipfile
 import os
@@ -37,7 +37,7 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
 
     for station in stations:
         station_query = "http://wdl.water.ca.gov/waterdatalibrary/docs/Hydstra/index.cfm?site=%s" % station
-        response = urllib2.urlopen(station_query)
+        response = urllib.request.urlopen(station_query)
         station_html = response.read()
         params = [x for x in items if  "%s_"%x in station_html]
         for param in items:
@@ -63,7 +63,7 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
                 yrcsvfile = re.search(searchcsvstr,station_html)
                 if yrzipfile:
                     url = yrzipfile.group(0)                
-                    response = urllib2.urlopen(url)
+                    response = urllib.request.urlopen(url)
                     f = station_param_yr+".zip"
                     f = f.lower()
                     localname = os.path.join(".",work_dir,f)
@@ -103,7 +103,7 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
                     data_years.append(str(year))
                 elif yrcsvfile:
                     url = yrcsvfile.group(0)                
-                    response = urllib2.urlopen(url)
+                    response = urllib.request.urlopen(url)
                     workfile = station_param_yr+".csv"
                     workfile = workfile.lower()
                     localname = os.path.join(".",work_dir,workfile)
