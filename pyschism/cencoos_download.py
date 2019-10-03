@@ -132,10 +132,10 @@ def cencoos_schism_opendap(lat_lo,lon_lo,lat_hi,lon_hi,
         np.save("pmsl",pres)
 
     
-    nfile = len(times)/24
+    nfile = len(times) // 24
     
     hrs = times.astype(int)
-    dayint = hrs/24
+    dayint = hrs // 24
     minday = dayint.min()
     maxday = dayint.max()
     dayrange = np.arange(minday,maxday+1)

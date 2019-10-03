@@ -482,7 +482,7 @@ class SchismSetup(object):
         # TODO: The safety of this code needs to check further
         mesh = self.mesh
         # path1
-        center_node_i = path1[len(path1) / 2]
+        center_node_i = path1[len(path1) // 2]
         neighbors = mesh.get_neighbor_nodes(center_node_i)
         candidates = []
         for n in neighbors:
@@ -742,9 +742,9 @@ class SchismSetup(object):
         dt_ratio = int(dt_in / dt_out)
         loop_step = max_size_spline * dt_ratio
         if nout % loop_step != 0:
-            iloop = nout / loop_step + 1
+            iloop = nout // loop_step + 1
         else:
-            iloop = nout / loop_step
+            iloop = nout // loop_step
 
         msg = "number of loops required to convert the file: %s" % iloop
         self._logger.info(msg)

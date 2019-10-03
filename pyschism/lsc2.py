@@ -101,7 +101,7 @@ def gen_sigma(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
     maxlayer = np.max(nlayer)
     nlevel = nlayer + 1
     maxlevel = np.max(nlevel)
-    midlevel = (maxlevel-1)/3
+    midlevel = (maxlevel-1) // 3
     
     zcor = np.empty((npoint, maxlevel), 'd')
     print("max level %s mid level %s" % (maxlevel,midlevel))
@@ -294,7 +294,7 @@ def gen_sigma4(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
     maxlayer = np.max(nlayer)
     nlevel = nlayer + 1
     maxlevel = np.max(nlevel)
-    midlevel = (maxlevel-1)/3
+    midlevel = (maxlevel-1) // 3
     
     zcor = np.empty((npoint, maxlevel), 'd')
     print("max level %s mid level %s" % (maxlevel,midlevel))
@@ -451,7 +451,7 @@ def gen_sigma3(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
     else:
         zcor = np.loadtxt("zcorsave.txt")
     
-    midlevel = (maxlevel-1)/2
+    midlevel = (maxlevel-1)//2
     if True:
         zcorthree=zcor[:,0:3].copy()
         zcorthree[:,1] = zcor[:,midlevel]

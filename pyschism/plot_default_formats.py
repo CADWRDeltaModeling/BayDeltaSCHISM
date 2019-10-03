@@ -381,7 +381,7 @@ def set_xaxis_month(ax, date_format="%b %y", rotate=None, pad=None, n_ticks=5):
 def get_nice_tick_indices(n_ticks, n_wanted):
     interval = int(n_ticks / n_wanted)
     remnants = n_ticks % n_wanted
-    return np.arange(remnants/2 + 1, n_ticks, interval)
+    return np.arange(remnants // 2 + 1, n_ticks, interval)
 
 
 def set_nice_tick_intervals(ax, n_ticks):
