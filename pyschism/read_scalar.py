@@ -151,9 +151,15 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
             # print qaqc_selector
             # print dset[qaqc_selector].isin(qaqc_accept).head()
             # print dset.loc[~dset[qaqc_selector].isin(qaqc_accept),selector].count()
-            # print dset.count()                
-            dset.loc[~dset[qaqc_selector].isin(qaqc_accept),selector] = np.nan
-             
+            # print dset.count()
+            
+            qafilter = dset[qaqc_selector].isin(qaqc_accept)
+            if ' ' in qaqc_accept or '' in qaqc_accept or u' ' in qaqc_accept:
+                qafilter = dset[qaqc_selector].isna() | dset[qaqc_selector].isin(qaqc_accept)
+            else:
+                qafilter = dset[qaqc_selector].isin(qaqc_accept)
+            dset.loc[~qafilter,selector] = np.nan
+        
 #            anyok = None
 #            qa_flag = dset[qaqc_selector].as_matrix()
 #            print("QAQC SEction: {}".format(qaqc_selector))
