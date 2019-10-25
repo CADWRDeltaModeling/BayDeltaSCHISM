@@ -1,0 +1,235 @@
+nudging: 0.1
+structures:
+  - name: delta_cross_channel
+    type: radial
+    end_points:
+      [[630430, 4234237],
+      [630418, 4234200]]
+    configuration:
+      n_duplicates: 2
+      elevation: -3.42
+      width: 18.29
+      height: 10
+      coefficient: 1.0
+      op_downstream: 1.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: self
+
+  - name: ccfb_gate
+    type: radial_relheight
+    end_points:
+      [[626980, 4187907],
+      [627006, 4187944]]
+    configuration:
+      n_duplicates: 5
+      elevation: -4.0044
+      width:  6.096
+      height: 5.
+      coefficient: 0.75
+      coefficient_height: 0.80
+      op_downstream: 1.0
+      op_upstream: 0.0
+      use_time_series: 1
+    reference: self
+
+  - name: montezuma_radial
+    type: radial
+    end_points:
+      [[597644, 4216725],
+      [597676, 4216748]]
+    configuration:
+      n_duplicates: 3
+      elevation: -6.86
+      width: 10.97
+      height: 10.0
+      coefficient: 1.5
+      op_downstream: 1.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: self
+
+  - name: montezuma_flash
+    type: weir
+    end_points:
+      [[597620, 4216715],
+      [597638, 4216730]]
+    configuration:
+      n_duplicates: 1
+      elevation: -5.34
+      width: 20.73
+      coefficient: 1.0
+      op_downstream: 1.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: montezuma_radial
+
+  - name: montezuma_boat_lock
+    type: weir
+    end_points:
+      [[597673, 4216755],
+      [597683, 4216760]]
+    configuration:
+      n_duplicates: 1
+      elevation: -2.29
+      width: 6.1
+      coefficient: 0.05
+      op_downstream: 1.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: montezuma_radial
+
+  - name: grantline_weir
+    type: weir
+    end_points:
+      [[636576, 4186940],
+      [636575, 4187000]]
+    configuration:
+      n_duplicates: 1
+      elevation: 1.00
+      width: 54.9
+      coefficient: 0.8
+      op_downstream: 1.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: self
+
+  - name: grantline_culvert
+    type: culvert
+    end_points:
+      [[636576, 4186918],
+      [636576, 4186940]]
+    configuration:
+      n_duplicates: 6
+      elevation: -1.28
+      radius: 0.61
+      coefficient: 0.6
+      op_downstream: 0.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: grantline_weir
+
+  - name: midr_weir
+    type: weir
+    end_points:
+      [[633467, 4194186],
+      [633465, 4194223]]
+    configuration:
+      n_duplicates: 1
+      elevation: 1.00
+      width: 42.7
+      coefficient: 0.8
+      op_downstream: 1.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: self
+
+  - name: midr_culvert_l
+    type: culvert
+    end_points:
+      [[633468, 4194169],
+      [633467, 4194186]]
+    configuration:
+      n_duplicates: 3
+      elevation: -0.53
+      radius: 0.61
+      coefficient: 0.6
+      op_downstream: 0.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: midr_weir
+
+  - name: midr_culvert_r
+    type: culvert
+    end_points:
+      [[633465, 4194223],
+      [633463, 4194239]]
+    configuration:
+      n_duplicates: 3
+      elevation: -0.53
+      radius: 0.61
+      coefficient: 0.6
+      op_downstream: 0.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: midr_weir
+
+  - name: oldr_tracy_weir
+    type: weir
+    end_points:
+      [[628268, 4185749],
+      [628290, 4185790]]
+    configuration:
+      n_duplicates: 1
+      elevation: 1.33
+      width: 22.9
+      coefficient: 0.8
+      op_downstream: 1.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: self
+
+  - name: oldr_tracy_culvert
+    type: culvert
+    end_points:
+      [[628259, 4185732],
+      [628268, 4185749]]
+    configuration:
+      n_duplicates: 9
+      elevation: -1.11
+      radius: 0.61
+      coefficient: 0.6
+      op_downstream: 1.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: oldr_tracy_weir
+
+  - name: tom_paine
+    type: culvert
+    end_points:
+      [[639242, 4183710],
+      [639285, 4183738]]
+    configuration:
+      n_duplicates: 9
+      elevation: -0.35
+      radius: 0.57
+      coefficient: 0.6
+      op_downstream: 0.0
+      op_upstream: 1.0
+      use_time_series: 0
+
+  - name: oldr_head_barrier
+    type: weir_culvert
+    end_points:
+      [[647182, 4185811],
+      [647196, 4185874]]
+    configuration:
+      n_duplicates: 1
+      elevation: -0.7
+      width: 9.75
+      coefficient: 1
+      op_downstream: 1.
+      op_upstream: 1.
+      culvert_n_duplicates: 8
+      culvert_elevation: 0.
+      culvert_radius: 0.
+      culvert_coefficient: 1.
+      culvert_op_downstream: 1.
+      culvert_op_upstream: 1.
+      use_time_series: 1
+    reference: self
+
+  - name: sandmound
+    type: culvert
+    end_points:
+      [[620907.89, 4204328.42],
+       [621035.86, 4204327.14]]
+    configuration:
+      n_duplicates: 2
+      elevation: -0.20
+      radius: 0.76
+      coefficient: 0.5
+      op_downstream: 1.0
+      op_upstream: 0.0
+      use_time_series: 0
+    reference: self

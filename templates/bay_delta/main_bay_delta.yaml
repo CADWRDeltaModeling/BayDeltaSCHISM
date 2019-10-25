@@ -1,0 +1,52 @@
+# Main input file for default bay_delta template
+# The template is based on version of the mesh 90e and inputs work through v95 at least
+# The current stablee meesh for studies is 90e and the current development mesh is 95
+# The file elev_enforcemnt includes some marsh features that make more
+# sense in messh v95, but shoulld do noo harm.
+
+mesh:
+  mesh_inputfile: bay_delta_90e.gr3
+  dem_list: !include dem_4.1.yaml
+  depth_optimization: !include depth_opt_params.yaml
+  open_boundaries: !include open_boundary.yaml
+  ll_outputfile: hgrid.ll
+  gr3_outputfile: bay_delta_90e_opt.gr3
+
+gr3:
+  hgrid.gr3: !include elev_enforcement.yaml
+  xlsc.gr3:
+    default: 0.1
+  diffmax.gr3:
+    default: 1.0
+  windrot_geo2proj.gr3:
+    default: 0.0
+  windfactor.gr3: !include windfactor38.yaml
+  manning.gr3:
+    default: 0.025
+  elev.ic: !include elev.yaml
+  estuary.gr3: !include estuary.yaml
+  SAL_nudge.gr3: !include SAL_nudge.yaml
+  TEM_nudge.gr3: !include TEM_nudge.yaml
+  sav_N.gr3: !include veg_density_sherman.yaml
+  sav_D.gr3: !include veg_diameter_sherman.yaml
+  sav_h.gr3: !include veg_height_sherman.yaml
+  diffmin.gr3:
+    default: 1.e-5
+  krvel.gr3: !include krvel.yaml
+  rough.gr3:
+    default: 4.e-5
+  albedo.gr3:
+    default: 0.1
+  watertype.gr3:
+    default: 7.
+prop:
+  tvd.prop: !include tvd.yaml
+hydraulics:
+  include: hydraulic_structures.yaml
+  outputfile: hydraulics.in
+sources_sinks:
+  include: source_sink_dcd_delta.yaml
+  outputfile: source_sink.in
+flow_outputs:
+  include: station_flow_xsects_itp.yaml
+  outputfile: fluxflag.prop
