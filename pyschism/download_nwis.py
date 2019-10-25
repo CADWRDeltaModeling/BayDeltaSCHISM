@@ -43,10 +43,10 @@ def nwis_download(stations,dest_dir,start,end=None,param=None,overwrite=False):
     failures = []
     skips = []
     for station in stations:
-        print "Downloading station: %s" % (station)
+        print("Downloading station: %s" % (station))
         path = os.path.join(dest_dir,"%s.rdb"% (station))
         if os.path.exists(path) and not overwrite:
-            print "Skipping existing station because file exists: %s" % station
+            print("Skipping existing station because file exists: %s" % station)
             skips.append(path)
             continue
         stime=start.strftime("%Y-%m-%d")
@@ -58,27 +58,27 @@ def nwis_download(stations,dest_dir,start,end=None,param=None,overwrite=False):
             station_query = station_query_base % (station,stime,etime,param)
         else:
             station_query = station_query_base % (station,stime,etime)
-        print station_query
+        print(station_query)
         try: 
             response = urllib2.urlopen(station_query)
         except:
             failures.append(station)
         else:    
             station_html = response.read().replace("\r","")
-            if len(station_html) > 30:
+            if len(station_html) > 30 and not "No sites found matching" in station_html:
                 found = True
                 with open(path,"w") as f:
                     f.write(station_html)
             if not found: 
-                print "Station %s query failed or produced no data" % station
+                print("Station %s query failed or produced no data" % station)
                 failures.append(station)
     
     if len(failures) == 0:
-        print "No failed stations"
+        print("No failed stations")
     else:
-        print "Failed query stations: "
+        print("Failed query stations: ")
         for failure in failures:
-            print failure
+            print(failure)
 
 def process_station_list(file):
     stations = []
@@ -97,9 +97,9 @@ if __name__ == '__main__':
     start = args.start
     end = args.end
     param = args.param
-    stime = dt.datetime(*map(int, re.split('[^\d]', start))) 
+    stime = dt.datetime(*list(map(int, re.split('[^\d]', start)))) 
     if end:
-        etime = dt.datetime(*map(int, re.split('[^\d]', end))) 
+        etime = dt.datetime(*list(map(int, re.split('[^\d]', end)))) 
     else:
         etime = dt.datetime.now()
     
@@ -107,7 +107,7 @@ if __name__ == '__main__':
         stations = process_station_list(stationfile)
         nwis_download(stations,destdir,stime,etime, param)  
     else:
-        print "Station list does not exist"
+        print("Station list does not exist")
         
 
 

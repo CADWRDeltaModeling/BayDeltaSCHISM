@@ -103,13 +103,13 @@ def tabu_numlayer(depth,sides,nlayer,minlayer,maxlayer,ngen=60):
     layer_eval = LayerEval(depth,sides,nlayer,minlayer,maxlayer)    
     changeable = layer_eval.changeable
     if not np.any(changeable):
-        print "No nodes had a changeable # layers"
+        print("No nodes had a changeable # layers")
         return nlayer.copy()
     else:
-        print "%s changeable nodes" % np.sum(changeable)
+        print("%s changeable nodes" % np.sum(changeable))
     
     gafit = layer_eval(0*nlayer[changeable])
-    print "Initial GA fitness %s" % gafit    
+    print("Initial GA fitness %s" % gafit)    
     MAXTABU = 300
     base = nlayer.copy()       
     best = np.zeros_like(base)    # list of best 0-1 increments to nlayer so far at each node
@@ -189,7 +189,7 @@ def tabu_numlayer(depth,sides,nlayer,minlayer,maxlayer,ngen=60):
         evalfit = layer_eval(active[changeable])
         
         if iter % 100 == 0 or since_improve == 400:
-            print "Iteration %s: Badness: %s Best ever = %s" % (iter,bad,best_ever)
+            print("Iteration %s: Badness: %s Best ever = %s" % (iter,bad,best_ever))
         iter +=1
               
     return best_nlayer

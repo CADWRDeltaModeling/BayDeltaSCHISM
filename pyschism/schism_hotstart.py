@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Hotstart.in memory model
 """
-from __future__ import print_function
+
 from struct import unpack, calcsize
 import numpy as np
 import os
@@ -214,7 +214,7 @@ class SchismHotstartReader(object):
         with open(self.fpath, 'rb') as f:
             self.seek_elem(f)
             n_elems = self.mesh.n_elems()
-            for i in xrange(n_elems):
+            for i in range(n_elems):
                 data = unpack(self.fmt_elem_block,
                               f.read(self.size_elem_block))
                 self.hotstart.elems_dry[i] = int(data[2])
@@ -225,7 +225,7 @@ class SchismHotstartReader(object):
         with open(self.fpath, 'rb') as f:
             self.seek_side(f)
             n_edges = self.mesh.n_edges()
-            for i in xrange(n_edges):
+            for i in range(n_edges):
                 data = unpack(self.fmt_side_block,
                               f.read(self.size_side_block))
                 self.hotstart.sides_dry[i] = int(data[2])
@@ -236,7 +236,7 @@ class SchismHotstartReader(object):
         with open(self.fpath, 'rb') as f:
             self.seek_node(f)
             n_nodes = self.mesh.n_nodes()
-            for i in xrange(n_nodes):
+            for i in range(n_nodes):
                 data = unpack(self.fmt_node_block,
                               f.read(self.size_node_block))
                 self.hotstart.nodes_dry[i] = int(data[3])

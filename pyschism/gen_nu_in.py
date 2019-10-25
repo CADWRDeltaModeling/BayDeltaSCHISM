@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """ Script to create TEM_nu.in and SAL_nu.in
 """
-from __future__ import print_function
+
 from schism_mesh import SchismMeshIoFactory
 from station_db import StationDB
 from schism_polygon import Polygon, Point
@@ -214,7 +214,7 @@ def read_csv_from_dss(fpath):
             elif i > 6:
                 t = datetime(*strptime(row[1], r'%d%b%Y  %H%M')[:5])
                 times.append(t)
-                row_data = map(convert_string_to_float, row[2:])
+                row_data = list(map(convert_string_to_float, row[2:]))
                 data.append(row_data)
         data = np.array(data)
         return [rts(data[:, i], times[0], times[1] - times[0],
@@ -246,7 +246,7 @@ def select_ec_in_stations_db(tss, stations_db):
             logger().info("Found matching station: %s", cdec_name)
             station_data = stations_db.data[ids[0]]
             try:
-                station_coord = map(float, [station_data[idx] for idx in point_idx])
+                station_coord = list(map(float, [station_data[idx] for idx in point_idx]))
                 ts.props['pos'] = station_coord
                 ts_selected.append(ts)
             except:
@@ -375,7 +375,7 @@ def main():
 
     # Convert to PSU
     log.info("Convert EC to PSU...")
-    map(ec_psu_25c, ec_for_nudging)
+    list(map(ec_psu_25c, ec_for_nudging))
 
     # Filtering, not doing it now
     # ts_filt, filt = med_outliers(ts, level=6., range=[100., None])
@@ -415,7 +415,7 @@ def main():
     ec_for_nudging.append(create_ocean_salt_ts(ec_for_nudging[0]))
 
     # Add the ocean nudging mask
-    for node_idx in xrange(n_nodes):
+    for node_idx in range(n_nodes):
         if ocean_nudging[node_idx] > 0.:
             nudging_mask[node_idx] = len(ec_for_nudging) - 1
 

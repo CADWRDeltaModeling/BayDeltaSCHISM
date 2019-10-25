@@ -1,0 +1,65 @@
+linestrings:
+- coordinates:
+  - [503363.0, 4204253.0]
+  - [550710.0, 4139854.0]
+  name: ocean
+- coordinates:
+  - [591817.0, 4146720.0]
+  - [591796.0, 4146806.0]
+  name: coyote
+- coordinates:
+  - [619373.0, 4204044.0]
+  - [619373.0, 4204001.0]
+  name: ccc_rock_slough
+- coordinates:
+  - [625165.0, 4194322.0]
+  - [625163.0, 4194301.0]
+  name: ccc_old
+- coordinates:
+  - [623595.0, 4187481.0]
+  - [623642.0, 4187447.0]
+  name: swp
+- coordinates:
+  - [626837.0, 4186466.0]
+  - [626847.0, 4186431.0]
+  name: cvp
+- coordinates:
+  - [652946.0, 4171594.0]
+  - [653067.0, 4171518.0]
+  name: sjr
+- coordinates:
+  - [646822.0, 4205069.0]
+  - [646810.0, 4205088.0]
+  name: calaveras
+- coordinates:
+  - [637265.7889653387, 4235224.301300076]
+  - [637140.7760075614, 4235615.900558032]
+  name: mokelumne
+- coordinates:
+  - [640540, 4269805]
+  - [640510, 4269997]
+  name: american  
+- coordinates:
+  - [611009.0, 4295653.0]
+  - [610999.0, 4295548.0]
+  name: sacramento
+- coordinates:
+  - [623125.0, 4259636.0]
+  - [623077.0, 4259635.0]
+  name: yolo_toedrain
+- coordinates:
+  - [618578.0, 4246095.0]
+  - [614117.0, 4246366.0]
+  name: yolo
+- coordinates:
+  - [605630.0, 4236348.0]
+  - [605631.0, 4236326.0]
+  name: northbay
+- coordinates:
+  - [560586.0, 4228683.0]
+  - [560483.0, 4228792.0]
+  name: napa
+- coordinates:
+  - [628124.0, 4192028.0]
+  - [628029.0, 4191974.0]
+  name: ccc_victoria

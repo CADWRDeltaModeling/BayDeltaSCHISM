@@ -79,8 +79,11 @@ def to_elapsed(args):
     inputfile = args.dated_input
     dt = args.step
     # convert start time string input to datetime
-    sdtime = datetime.datetime(*map(int, re.split(r'[^\d]', args.start)))
-    print "Model start time given: %s" % sdtime
+    try:
+        sdtime = datetime.datetime(*list(map(int, re.split(r'[^\d]', args.start))))
+    except:
+        raise ValueError("Could not convert start time to datetime: {}".format(args.start))
+    print("Model start time given: %s" % sdtime)
     # Some correctness checking
     if len(inputfile) > 1 and inputfile[0].endswith(".th"):
         raise ValueError("Only one file argument allowed at a time")
@@ -106,14 +109,14 @@ def to_elapsed(args):
 
 
 def to_datetime(args):
-    print args.subcommand
+    print(args.subcommand)
     s = args.start
     input = args.elapsed_input
     dt = args.step
     annotate = args.annotate
 
     # convert start time string input to datetime
-    sdtime = datetime.datetime(*map(int, re.split('[^\d]', args.start)))
+    sdtime = datetime.datetime(*list(map(int, re.split('[^\d]', args.start))))
     "Model start time given: %s" % sdtime
     # Some correctness checking
     if len(input) > 1 and input[0].endswith(".th"):
@@ -149,9 +152,9 @@ def clip(args):
     input = args.elapsed_input
 
     # convert start time string input to datetime
-    start = datetime.datetime(*map(int, re.split('[^\d]', args.start)))
+    start = datetime.datetime(*list(map(int, re.split('[^\d]', args.start))))
     scliptime = datetime.datetime(
-        *map(int, re.split('[^\d]', args.clip_start)))
+        *list(map(int, re.split('[^\d]', args.clip_start))))
 
     th = len(input) == 1 and input[0].endswith(".th")
     th = len(input) == 1 and os.path.exists(input[0])
@@ -189,10 +192,36 @@ def clip(args):
     if outfile != sys.stdout:
         outfile.close()
 
-
+def multi_file_to_elapsed(input,output,start):
+    import os
+    import glob
+    if isinstance(input,list):
+        inputs = input
+        if isinstance(output,list):
+            if not len(input) == len(output): 
+                raise ValueError("If inputs and outputs are both lists, they should be the same size")
+            outputs = output
+        elif not os.path.isdir(output):
+            raise ValueError("output was a scalar, but not a valid directory name: {}".format(output))
+        else:
+             outputs = [os.path.join(output,y) for y in [os.path.split(x)[1] for x in input]]
+    else:
+        is_glob = True
+        is_dir = os.path.isdir(output)
+        if isinstance(output,list) or not is_dir:
+            raise ValueError("If using blob search, output must be a directory not a list: {}".format(output))
+        inputs = glob.glob(input)
+        if len(inputs) == 0: raise ValueError("No files matched pattern: {}".format(input))
+        outputs = [os.path.join(output,y) for y in [os.path.split(x)[1] for x in inputs]]
+    for ifn,ofn in zip(inputs,outputs):
+        print(ifn)
+        file_to_elapsed(ifn,start,ofn)
+        
+            
 def file_to_elapsed(infile, start, outpath=None, annotate=False, skip_nan=False):
-    if type(start) == str:
-        start = datetime.datetime(*map(int, re.split(r'[^\d]', start)))
+
+    if not isinstance(start,datetime.datetime):
+        start = datetime.datetime(*list(map(int, re.split(r'[^\d]', start))))
 
     if not outpath:
         outfile = sys.stdout
@@ -202,17 +231,21 @@ def file_to_elapsed(infile, start, outpath=None, annotate=False, skip_nan=False)
         prev_use = False
         prev_outline = None
         no_record = True
-        for line in thfile:
+        for iline,line in enumerate(thfile):
             if line and len(line) > 4 and not line.startswith("#"):
                 splitline = line.split()
                 if skip_nan and splitline[-1] == 'nan':
                     continue
+                if len(splitline) <  2: continue
                 timestr = splitline[0]
                 if len(timestr) == 10:
                     # Only got the date,not the time
                     timestr += " %s" % splitline[1]
                 use = True
-                mdtm = datetime.datetime(*map(int, re.split('[^\d]', timestr)))
+                try:
+                    mdtm = datetime.datetime(*list(map(int, re.split('[^\d]', timestr))))
+                except:
+                    raise ValueError("Could not parse time {} in line {}".format(timestr,iline))
                 mdelta = (mdtm - start)
                 mdtime = start + mdelta
                 msec = mdelta.total_seconds()
@@ -249,7 +282,7 @@ def file_to_timestamp(infile, start, outpath=None, annotate=False,
         raise ValueError("elapsed_unit must be 's' or 'd'")
 
     if type(start) == str:
-        start = datetime.datetime(*map(int, re.split('[^\d]', start)))
+        start = datetime.datetime(*list(map(int, re.split('[^\d]', start))))
     if not outpath:
         outfile = sys.stdout
     else:
@@ -278,7 +311,7 @@ def file_to_timestamp(infile, start, outpath=None, annotate=False,
 
 def describe_elapsed(times, start, dt=None):
     if type(start) == str:
-        start = datetime.datetime(*map(int, re.split('[^\d]', start)))
+        start = datetime.datetime(*list(map(int, re.split('[^\d]', start))))
     for elapsed in times:
         elapsed = elapsed.lower()
         if elapsed.endswith("d") or elapsed.endswith("days") or elapsed.endswith("day"):
@@ -291,43 +324,43 @@ def describe_elapsed(times, start, dt=None):
             # assuming that the input elapsed time is in seconds
             msec = float(elapsed)
         mdelta = datetime.timedelta(seconds=msec)
-        print "Model seconds:  %s" % msec
-        print "Elapsed time:   %s" % mdelta
+        print("Model seconds:  %s" % msec)
+        print("Elapsed time:   %s" % mdelta)
         mdtime = start + mdelta
-        print "Model datetime: %s" % mdtime
+        print("Model datetime: %s" % mdtime)
         if dt:
             remain = abs(msec % dt)
             if abs(msec % dt) > 1.e-6:
-                print "Model step:    %s" % (msec / dt)
-                print "\n Input time is %s seconds past the last even model time step\n" % remain
+                print("Model step:    %s" % (msec / dt))
+                print("\n Input time is %s seconds past the last even model time step\n" % remain)
             else:
-                print "Model step:    %s\n" % long(msec / dt)
+                print("Model step:    %s\n" % int(msec / dt))
         else:
-            print "\n"
+            print("\n")
 
 
 def describe_timestamps(timestamps, start, dt=None):
     if type(start) == str:
-        start = datetime.datetime(*map(int, re.split('[^\d]', start)))
+        start = datetime.datetime(*list(map(int, re.split('[^\d]', start))))
     if not type(timestamps) == list:
         timestampse = [timestamps]
     for stamp in timestamps:
         # assume mtime argument is a date time and try to parse to datetime
-        mdtime = datetime.datetime(*map(int, re.split('[^\d]', stamp)))
+        mdtime = datetime.datetime(*list(map(int, re.split('[^\d]', stamp))))
         mdelta = mdtime - start
         msec = mdelta.total_seconds()
-        print "Datetime:      %s" % mdtime
-        print "Elapsed time:  %s" % mdelta
-        print "Model seconds: %s" % msec
+        print("Datetime:      %s" % mdtime)
+        print("Elapsed time:  %s" % mdelta)
+        print("Model seconds: %s" % msec)
         if dt:
             remain = abs(msec % dt)
             if abs(msec % dt) > 1.e-6:
-                print "Model step:    %s" % (msec / dt)
-                print "\n Input time is %s seconds past the last model time step\n" % remain
+                print("Model step:    %s" % (msec / dt))
+                print("\n Input time is %s seconds past the last model time step\n" % remain)
             else:
-                print "Model step:    %s\n" % long(msec / dt)
+                print("Model step:    %s\n" % int(msec / dt))
         else:
-            print "\n"
+            print("\n")
 
 
 # driver for standalone use

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """ Metrics plot
 """
-from __future__ import print_function
-from plot_default_formats import set_color_cycle_dark2, set_scatter_color, make_plot_isometric, set_dual_axes, set_xaxis_dateformat, rotate_xticks
+
+from plot_default_formats import set_color_cycle_dark2, set_scatter_color, make_plot_isometric, set_dual_axes, set_xaxis_dateformat, rotate_xticks,brewer_colors
 from vtools.functions.api import cosine_lanczos, interpolate_ts, interpolate_ts_nan, LINEAR, shift
 from vtools.functions.skill_metrics import rmse, median_error, skill_score, corr_coefficient
 from vtools.data.vtime import days, hours, minutes, time_interval, time_sequence
@@ -228,8 +228,8 @@ def plot_metrics_to_figure(fig, tss,
         matplotlib.figure.Figure
     """
     grids = gen_metrics_grid()
-    axes = dict(zip(grids.keys(), map(fig.add_subplot,
-                                      grids.values())))
+    axes = dict(list(zip(list(grids.keys()), list(map(fig.add_subplot,
+                                      list(grids.values()))))))
     if labels is None:
         labels = [ts.props.get('label') for ts in tss]
     plot_inst_and_avg(axes, tss, window_inst, window_avg, labels, label_loc, legend_size)
@@ -278,8 +278,8 @@ def plot_comparsion_to_figure(fig, tss, title=None,
         matplotlib.figure.Figure
     """
     grids = gen_simple_grid()
-    axes = dict(zip(grids.keys(), map(fig.add_subplot,
-                                      grids.values())))
+    axes = dict(list(zip(list(grids.keys()), list(map(fig.add_subplot,
+                                      list(grids.values()))))))
     plot_inst_and_avg(axes, tss, window_inst, window_avg, labels,
                       label_loc, legend_size)
     if title is not None:
@@ -395,7 +395,8 @@ def add_regression_line(axes, d1, d2):
         np.vstack([d1, np.ones(len(d1))]).T, d2)[:2]
     x = np.array([min(d1), max(d1)])
     y = model[0] * x + model[1]
-    l, = axes.plot(x, y, color=rcParams['axes.color_cycle'][1])
+    bc1 = brewer_colors[1]
+    l, = axes.plot(x, y, color=bc1)
     # Text info
     if model[1] >= 0.:
         eqn = "Y=%.3f*X+%.3f" % (model[0], model[1])
@@ -453,7 +454,7 @@ def calculate_lag_of_tss(tss, max_shift, period):
         raise ValueError("Number of time series is less than two.")
     for i in range(len(tss) - 1):
         if tss[0] is not None:
-            if np.all(np.isnan(tss[i+1].data)):
+            if tss[i+1] is None or np.all(np.isnan(tss[i+1].data)):
                 lags.append(None)
                 continue
             try:
@@ -511,11 +512,7 @@ def calculate_metrics(tss, lags, interpolate_method='linear'):
             corr = None
         else:
             if lags[i] != timedelta():
-<<<<<<< HEAD
-                ts_target_shifted = shift(ts_target, -lags[i])
-=======
                 ts_target_shifted = shift(ts_target,-lags[i])
->>>>>>> revisions
                 window_common = get_common_window((ts_base, ts_target_shifted))
                 ts1 = ts_base.window(*window_common)
                 ts2 = ts_target_shifted.window(*window_common)

@@ -36,7 +36,7 @@ def get_dicu_nodes(filename):
     for item in dicu:
         g.write("%s,%s,%s,%s\n" % item)
     g.close()
-    print "Identified %s DICU nodes (using diversions)" % len(dicu)
+    print("Identified %s DICU nodes (using diversions)" % len(dicu))
     return [x[1] for x in dicu]
 
 
@@ -102,10 +102,10 @@ def expand_dicu(source, saltsource, tempsource, nodelist, window):
     interval=hours(1)
     stime = window[0]
     etime = window[1]
-    print "Creating instantaneous data at interval %s " % interval
+    print("Creating instantaneous data at interval %s " % interval)
     ts2=interpolate_ts(ts,interval,method=PREVIOUS).window(stime,etime)
     ntime=len(ts2)
-    print "Number of steps at this interval: %s " % ntime
+    print("Number of steps at this interval: %s " % ntime)
 
 
     tnames = [ (sources,"source"), 
@@ -122,7 +122,7 @@ def expand_dicu(source, saltsource, tempsource, nodelist, window):
     
     for tslist, tname in tnames:
         itype = tname_ndx[tname]
-        print "Interpolating %s" % tname
+        print("Interpolating %s" % tname)
         for inode,s in enumerate(tslist):
             if s.interval == months(2):
                 if tname == "sink":
@@ -151,12 +151,13 @@ def expand_dicu(source, saltsource, tempsource, nodelist, window):
             dicu_data[itype,:,(inode+1)] = x.data        
     #write it out    
     write_data = None
-    for tname in tname_ndx.keys():
+    for tname in tname_ndx:
         thfile = "dcd_%s.th" % tname
         tndx=tname_ndx[tname]
         f0 = open(thfile,"w")
-        print "Writing %s" % tname
+        print("Writing %s" % tname)
         write_data=None
+        writefmt = "%0.2f"
         if tname in ['source','sink']:
             write_data=dicu_data[tndx,:,:]
         elif tname == 'temperature':
@@ -165,14 +166,14 @@ def expand_dicu(source, saltsource, tempsource, nodelist, window):
             times = dicu_data[tndx,:,0]
             salt = dicu_data[tndx,:,1:]
             if tempsource:
-                print "Temperature provided"
+                print("Temperature provided")
                 temp = dicu_data[tname_ndx['temperature'],:,1:]
             else:
-                print "Temperature not provided, assumed to be 20C"
-                temp = np.ones_like(salt)*20.0
+                print("Temperature not provided, assumed to be -9999")
+                temp = np.ones_like(salt)*-9999.
             write_data = np.hstack((times[:,np.newaxis],temp,salt))
-        np.savetxt(f0,write_data,fmt="%0.2f",delimiter=" ")
-        print "Write complete"
+        np.savetxt(f0,write_data,fmt=writefmt,delimiter=" ")
+        print("Write complete")
         f0.close()        
    
 
@@ -191,14 +192,14 @@ def test_extend():
     ts = rts([0.,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.,0.,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.],dtm.datetime(2004,5,1),months(1))
     ts2 = extend_monthly_series(ts,dtm.datetime(2005,1,1),dtm.datetime(2006,6,1)) 
     for el in ts2:
-        print el
+        print(el)
 
 if __name__ == "__main__":
     parser = create_arg_parser()
     args = parser.parse_args()
-    sdtime=dtm.datetime(*map(int, re.split('[^\d]', args.start))) # convert start time string input to datetime
+    sdtime=dtm.datetime(*list(map(int, re.split('[^\d]', args.start)))) # convert start time string input to datetime
     "DICU/DCD start time given: %s" % sdtime
-    edtime=dtm.datetime(*map(int, re.split('[^\d]', args.end))) # convert start time string input to datetime
+    edtime=dtm.datetime(*list(map(int, re.split('[^\d]', args.end)))) # convert start time string input to datetime
     "DICU/DCD end time given: %s" % edtime    
 
     flow_file = args.flow_file

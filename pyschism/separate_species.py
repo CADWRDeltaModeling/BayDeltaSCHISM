@@ -14,7 +14,7 @@ import argparse
 from vtools.data.vtime import *
 
 
-def separate_species(ts):
+def separate_species(ts,noise_thresh_min=40):
     """Separate species into subtidal, diurnal, semidiurnal and noise components
 
         Input:
@@ -28,7 +28,7 @@ def separate_species(ts):
     """
     
     # the first filter eliminates noise
-    ts_no_noise= cosine_lanczos(ts,cutoff_period=minutes(40))
+    ts_no_noise= cosine_lanczos(ts,cutoff_period=minutes(noise_thresh_min))
     ts_noise=ts-ts_no_noise   # this is the residual, the part that IS noise
     
     # the filter length assumes 6 minute data. The resulting filter is 90 hours
@@ -123,11 +123,11 @@ def main():
     parser = create_arg_parser()
     args = parser.parse_args()
     if args.stime:
-        sdate=dtm.datetime(*map(int, re.split('[^\d]', args.stime))) # convert start time string input to datetime
+        sdate=dtm.datetime(*list(map(int, re.split('[^\d]', args.stime)))) # convert start time string input to datetime
     else:
         sdate = None
     if args.etime:
-        edate=dtm.datetime(*map(int, re.split('[^\d]', args.etime))) # convert start time string input to datetime
+        edate=dtm.datetime(*list(map(int, re.split('[^\d]', args.etime)))) # convert start time string input to datetime
     else:
         edate = None
     data_file = args.infile
@@ -176,10 +176,10 @@ def run_example():
     sf_path="../9415020_gageheight.csv"
     ts= read_ts(sf_path, start, end)
 
-    print "separating reys..."
+    print("separating reys...")
     separate_species(ts,"rey",out_st,out_end,do_plot=True)
 
-    print "all done"
+    print("all done")
 
 
 

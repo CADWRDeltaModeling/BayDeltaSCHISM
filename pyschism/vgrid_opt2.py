@@ -370,9 +370,9 @@ def test_vgrid_spacing(zcor,zcorig,nodemasked,foldfrac):
     bad[nodemasked,:] = 0.
 
     wherebad = np.where((bad<0.) & (href> 1e-14))
-    print "Any bad?"
-    print wherebad
-    print np.count_nonzero(wherebad)
+    print("Any bad?")
+    print(wherebad)
+    print(np.count_nonzero(wherebad))
 
     #print nlayer[7]
     #print nlayer[23]
@@ -395,7 +395,7 @@ def mesh_opt(zcor,mesh,nlayer,ndx,eta,depth,gradmat,sidelen2,
     objstart = meshobj(xvar,zcorig,mesh,nlayer,ndx,eta,depth,gradmat,
             sidelen2,nodemasked,sidemasked,ata,dx2fac,curvewgt,foldwgt,foldfrac,
             href_hess, grad_hess,laplace_hess)  
-    print "Starting obj value: %s" % objstart
+    print("Starting obj value: %s" % objstart)
     #import pdb
     #pdb.set_trace()
     
@@ -416,10 +416,10 @@ def mesh_opt(zcor,mesh,nlayer,ndx,eta,depth,gradmat,sidelen2,
     test_vgrid_spacing(zcornew,zcorig,nodemasked,foldfrac*0.75)
     
     
-    print "Optimization succeeded: %s with objective value %s" % (result.success,result.fun)
-    print "Number iterations: %s Func: %s  Grad: %s" % (result.nit,result.nfev,result.njev)
-    print "Gradient had bad values: %s" % np.any(np.isnan(result.jac))
-    print result.message
+    print("Optimization succeeded: %s with objective value %s" % (result.success,result.fun))
+    print("Number iterations: %s Func: %s  Grad: %s" % (result.nit,result.nfev,result.njev))
+    print("Gradient had bad values: %s" % np.any(np.isnan(result.jac)))
+    print(result.message)
     return zcornew
 
 
@@ -558,8 +558,8 @@ def example():
  
     
     
-    print "Nodes excluded: %s" % np.sum(nodemasked)
-    print "Sides excluded: %s" % np.sum(sidemasked)
+    print("Nodes excluded: %s" % np.sum(nodemasked))
+    print("Sides excluded: %s" % np.sum(sidemasked))
 
     sigma = gen_sigma(nlayer,eta,h0,theta,b,hc)
     zcor = sigma_z(sigma,eta,h0)
@@ -629,8 +629,8 @@ def test_gradients():
     sidemasked = nodemasked[edges[:,0]] & nodemasked[edges[:,1]]
     gradmat = gradient_matrix(mesh,sidelen2,sidemasked)
    
-    print "Nodes excluded: %s" % np.sum(nodemasked)
-    print "Sides excluded: %s" % np.sum(sidemasked)
+    print("Nodes excluded: %s" % np.sum(nodemasked))
+    print("Sides excluded: %s" % np.sum(sidemasked))
 
     #sigma = gen_sigma(nlayer,eta,h0,theta,b,hc)
     # todo: this has excluded node, but not side
@@ -673,9 +673,9 @@ def test_gradients():
     grad1 = meshgrad(xvar,zcorold,mesh,nlayer,ndx,eta,depth,gradmat,
              sidelen2,nodemasked,sidemasked,ata,dx2fac,curvewgt,foldwgt,foldfrac,
              href_hess, grad_hess,laplace_hess)
-    print "calc hessian"
+    print("calc hessian")
     big_hess = grad_hess + href_hess + laplace_hess
-    print big_hess
+    print(big_hess)
     xvarbase=xvar.copy()
     numgrad = np.zeros(8)
     for i in range(8):
@@ -689,8 +689,8 @@ def test_gradients():
              href_hess, grad_hess,laplace_hess)
         numgrad[i] = (obj2-obj1)/delta
     
-        print "num hessian (%s)" % i
-        print (grad2-grad1)/delta  
+        print("num hessian (%s)" % i)
+        print((grad2-grad1)/delta)  
     xvar = xvarbase.copy()
     p = np.array([0.,0.,0.,0.,0.,0.,0.,0.])    
     jtest = 7
@@ -699,11 +699,11 @@ def test_gradients():
              nodemasked,sidemasked,ata,dx2fac,curvewgt,foldwgt,foldfrac,
              href_hess,grad_hess,laplace_hess)
         
-    print "\n**hessian element [%s]" % jtest
-    print hessp
-    print "\ngradient"
-    print numgrad
-    print grad1
+    print("\n**hessian element [%s]" % jtest)
+    print(hessp)
+    print("\ngradient")
+    print(numgrad)
+    print(grad1)
  
 
     

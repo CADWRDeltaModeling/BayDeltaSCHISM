@@ -63,7 +63,7 @@ def embed_raster(input_fg,
     dem_fine = contour_smooth2d(dem,scales,max_time_init,nstep,report_interval)
     x_fine = origin[0] + dx[0]*(0.5+np.arange(cols))
     y_fine = origin[1] + dx[1]*(0.5+np.arange(rows))
-    print "Start interp"
+    print("Start interp")
     import scipy.interpolate as si     
     fine_good = np.where(np.isnan(dem_fine),0.,1.)
     
@@ -78,7 +78,7 @@ def embed_raster(input_fg,
                        fill_value=np.nan)   
     fg2 = f2(x_fine,y_fine)
 
-    print "End interp"
+    print("End interp")
     
     ds_coarse = RasterWrapper( input_bg)
     

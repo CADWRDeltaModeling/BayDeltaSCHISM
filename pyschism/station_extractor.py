@@ -20,7 +20,7 @@ station_variables = ["elev", "air pressure", "wind_x", "wind_y",
 # Ordered Dict YAML
 # From http://stackoverflow.com/questions/5121931/in-python-how-can-you-load-yaml-mappings-as-ordereddicts
 def dict_representer(dumper, data):
-    return dumper.represent_mapping(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, data.iteritems())
+    return dumper.represent_mapping(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, iter(data.items()))
 
 
 def dict_constructor(loader, node):
@@ -68,13 +68,14 @@ class StationReader(object):
             fpath: a file path of 'station.in' to read
         """
         stations = list()
+        print("Reading {}".format(fpath))
+        
         with open(fpath, 'r') as f:
-            print "Reading in station.in..."
             # First line, output items
             tkns = f.readline().split()
             if len(tkns) < 9:
                 raise ValueError("Not enough items in the first line.")
-            items = map(int, tkns[:9])
+            items = list(map(int, tkns[:9]))
             self._output_items = items
             # Second line, # of output locations
             tkns = f.readline().split()
@@ -88,7 +89,7 @@ class StationReader(object):
                 line = f.readline()
                 matched = re.match(pattern, line)
                 if matched is None:
-                    print "Error in line %d: %s" % (i + 3, line)
+                    print("Error in line %d: %s" % (i + 3, line))
                     raise ValueError("station.in is not well formatted.")
                 tkns = line.split()
                 coords = tuple(map(float, tkns[1:4]))
@@ -111,15 +112,14 @@ class StationReader(object):
         self._map_station_ids()
         self._sort_stations_by_depth()
         self._check_integrity_stations()
-        print "Done reading station.in."
+        print("Done reading station.in.")
 
     def _map_station_ids(self):
         station_ids = dict()
         for index, station in enumerate(self._stations):
             station_id = station["name"]
             if station_id is not None:
-                keys = station_ids.keys()
-                if station_id in keys:
+                if station_id in station_ids:
                     station_ids[station_id] .append(index)
                 else:
                     station_ids[station_id] = [index]
@@ -128,11 +128,11 @@ class StationReader(object):
     def _sort_stations_by_depth(self):
         """ Sort stations with the same id.
         """
-        for station_id, indices in self._station_id_to_index.iteritems():
+        for station_id, indices in self._station_id_to_index.items():
             if len(indices) > 1:
                 depths = [(self._stations[i]["coords"][2], i) for i in indices]
                 depths = sorted(depths, reverse=True)
-                self._station_id_to_index[station_id] = zip(*depths)[1]
+                self._station_id_to_index[station_id] = list(zip(*depths))[1]
                 for i, index in \
                     enumerate(self._station_id_to_index[station_id]):
                     self._stations[index]["vert_pos"] = i
@@ -143,28 +143,28 @@ class StationReader(object):
     def _check_integrity_stations(self):
         """ Check integrity of stations """
         # Check station coords per ID
-        for station_id, indices in self._station_id_to_index.iteritems():
+        for station_id, indices in self._station_id_to_index.items():
             if station_id is not None and len(indices) > 1:
                 all_coords = [self._stations[i]["coords"][:2] for i in indices]
                 counted = collections.Counter(all_coords)
                 if len(counted) != 1:
-                    print "WARNING: These stations have the same name " \
-                          "but do not have an identical horizontal position."
-                    print "  Station:", station_id, ", indices:", indices
+                    print("WARNING: These stations have the same name " \
+                          "but do not have an identical horizontal position.")
+                    print("  Station:", station_id, ", indices:", indices)
 
         # Check duplicate coords
         all_coords = [station["coords"] for station in self._stations]
         counted = collections.Counter(all_coords)
-        for coords, count in counted.iteritems():
+        for coords, count in counted.items():
             if count > 1:
                 stations = list()
                 for index, station in enumerate(self._stations):
                     if station["coords"] == coords:
                         stations.append((index, station["name"]))
-                print "WARNING: These stations have an identical position."
-                print "  Pos: %f, %f, %f" % coords
+                print("WARNING: These stations have an identical position.")
+                print("  Pos: %f, %f, %f" % coords)
                 for station in stations:
-                    print "  %d: %s" % (station[0], station[1])
+                    print("  %d: %s" % (station[0], station[1]))
 
     def set_tss_prop(self, tss, unit):
         for ts in tss:
@@ -193,7 +193,7 @@ class StationReader(object):
             a time series
         """
         try:
-            if variable in self._variable_table.keys():
+            if variable in self._variable_table:
                 variable = self._variable_table[variable]
             var_index = self._station_variables.index(variable)
         except IndexError:
@@ -203,10 +203,10 @@ class StationReader(object):
         if index is None:
             if name is None:
                 raise ValueError("Coord or station ID must be provided.")
-            if not name in self._station_id_to_index.keys():
+            if not name in self._station_id_to_index:
                 # raise ValueError("No matching station for %s" % name)
-                print "Warning: No matching station for %s in station.in" \
-                      % name
+                print("Warning: No matching station for %s in station.in" \
+                      % name)
                 return None
             indices = self._station_id_to_index[name]
             if len(indices) == 1:
@@ -226,7 +226,7 @@ class StationReader(object):
         fname = "staout_%d" % (var_index + 1)
         fname = os.path.join(self._working_dir, fname)
         tss = self.read_stdout(fname)
-        print "Reading %s..." % fname
+        print("Reading %s..." % fname)
 
         if len(tss) != len(self._stations):
             raise ValueError("# of stations in station.in and staout do not "
@@ -245,7 +245,7 @@ class StationReader(object):
         # Get the first time stamp
         ts_begin = datetime.timedelta(seconds=raw[0, 0])
         # Get dt
-        for i in xrange(raw.shape[0]):
+        for i in range(raw.shape[0]):
             dt = raw[i+1, 0] - raw[i, 0]
             if dt > 0.:
                 if i > 0:
@@ -368,19 +368,19 @@ class FlowReader(object):
             vtools.data.timeseries.TimeSeries
                 a flow time series
         """
-        if name not in self._station_id_to_index.keys():
-            print name, self._station_id_to_index
+        if name not in list(self._station_id_to_index.keys()):
+            print(name, self._station_id_to_index)
             # raise ValueError("No matching station for %s" % name)
-            print "Warning: No matching station for %s in station.in" % name
+            print("Warning: No matching station for %s in station.in" % name)
             return None
         indices = self._station_id_to_index[name]
 
         if len(indices) < 1:
-            print "More than two outputs with the same name."
-            print "Use the first one."
+            print("More than two outputs with the same name.")
+            print("Use the first one.")
 
         if self.data is None:
-            print "Reading flow...: ", self.flow_fname
+            print("Reading flow...: {}".format(self.flow_fname))
             fname = os.path.join(self._working_dir, self.flow_fname)
             self.data = self.read_all(fname)
         return self.data[indices[0]]
@@ -389,12 +389,12 @@ class FlowReader(object):
         try:
             raw = np.loadtxt(fname)
         except:
-            print "Failure reading file with loadtxt: %s" % fname
+            print("Failure reading file with loadtxt: %s" % fname)
             raise
         # Get the first time stamp
         ts_begin = datetime.timedelta(seconds=np.around(raw[0, 0]*86400))
         # Get dt
-        for i in xrange(raw.shape[0]):
+        for i in range(raw.shape[0]):
             dt = np.around((raw[i+1, 0] - raw[i, 0])*86400.)
             if dt > 0.:
                 if i > 0:
@@ -416,8 +416,7 @@ class FlowReader(object):
         for index, station in enumerate(self._stations):
             station_id = station.get("name")
             if station_id is not None:
-                keys = station_ids.keys()
-                if station_id in keys:
+                if station_id in station_ids:
                     station_ids[station_id].append(index)
                 else:
                     station_ids[station_id] = [index]

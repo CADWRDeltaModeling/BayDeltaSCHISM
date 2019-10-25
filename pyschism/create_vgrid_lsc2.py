@@ -173,11 +173,11 @@ def vgrid_gen(hgrid,vgrid_out,eta,
         #print nlayer_default
         #nlayer = deap_numlayer(depth,mesh.edges,nlayer_default,minlayer,ngen)
         nlayer = tabu_numlayer(depth,mesh.edges,nlayer_default,minlayer,maxlayer,ngen)
-        print depth.shape
-        print nlayer.shape
+        print(depth.shape)
+        print(nlayer.shape)
 
         if archive_nlayer=="out":
-            print "writing out number of layers"
+            print("writing out number of layers")
             write_mesh(mesh,nlayer_gr3.replace(".gr3","_default.gr3"),node_attr=nlayer_default)
             write_mesh(mesh,nlayer_gr3,node_attr=nlayer)
             write_mesh(mesh,nlayer_gr3.replace(".gr3","_dztarget.gr3"),node_attr=dztarget)
@@ -185,7 +185,7 @@ def vgrid_gen(hgrid,vgrid_out,eta,
         nlayer_mesh = read_mesh(nlayer_gr3)
         dztarget=read_mesh(nlayer_gr3.replace(".gr3","_dztarget.gr3")).nodes[:,2]
         nlayer = nlayer_mesh.nodes[:,2].astype('i')
-        if long(nlayer_mesh.n_nodes()) != long(mesh.n_nodes()):
+        if nlayer_mesh.n_nodes() != mesh.n_nodes():
             raise ValueError("NLayer gr3 file (%s)\nhas %s nodes, hgrid file (%s) has %s" 
                   %(nlayer_gr3, nlayer_mesh.n_nodes(),hgrid,mesh.n_nodes()) )
         #print("Reading the polygons for dz_target...")
@@ -206,8 +206,8 @@ def vgrid_gen(hgrid,vgrid_out,eta,
         
     #np.savez("savevar.npz",nlayer,nlayer_default,depth,h0)
     sigma,nlayer_revised = gen_sigma(nlayer, dztarget, eta, h0, theta, b, hc,mesh=mesh)
-    print "sigma shape"
-    print sigma.shape
+    print("sigma shape")
+    print(sigma.shape)
     nlayer = nlayer_revised
     nlevel = nlayer+1
     
@@ -231,8 +231,8 @@ def vgrid_gen(hgrid,vgrid_out,eta,
     sidemasked = nodemasked[edges[:,0]] | nodemasked[edges[:,1]]
     gradmat = gradient_matrix(mesh,sidelen2,sidemasked)    
     
-    print "Nodes excluded: %s" % np.sum(nodemasked)
-    print "Sides excluded: %s" % np.sum(sidemasked)
+    print("Nodes excluded: %s" % np.sum(nodemasked))
+    print("Sides excluded: %s" % np.sum(sidemasked))
 
     zcor = vmesh.build_z(mesh,eta)[:,::-1]
  
@@ -297,7 +297,7 @@ def vgrid_gen(hgrid,vgrid_out,eta,
     vmesh1 = SchismLocalVerticalMesh(flip_sigma(sigma1))
     print("Writing vgrid.in output file...")
     write_vmesh(vmesh1, vgrid_out)
-    print "Done"
+    print("Done")
     
 
 def plot_vgrid(hgrid_file,vgrid_file,vgrid0_file,eta,transectfiles):

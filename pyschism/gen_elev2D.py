@@ -42,8 +42,10 @@ def create_arg_parser():
                         required=False, help='End time.')
     parser.add_argument('--hgrid', default='hgrid.gr3',
                         required=False, help='Name of hgrid file if not hgrid.gr3')
-    parser.add_argument('--outfile', default=None,
-                        help='Name of output file: either elev2D.th or elev2D.nc')
+    parser.add_argument('--outfile', default='elev2D.th.nc',
+                        help='Name of output file: either elev2D.th or elev2D.th.nc')
+    parser.add_argument('--slr', default=0.0, type=float, required=False,
+                        help='Scalar sea level rise increment')                        
     parser.add_argument('pt_reyes', default=None,
                         help='Pt Reyes data file, must have a buffer of 16 days at either end of series')
     parser.add_argument('monterey', default=None,
@@ -75,7 +77,7 @@ class BinaryTHWriter(THWriter):
         self.valformat="f"*nloc
     
     def write_step(self,iter,time,vals):
-        print "Writing Output"
+        print("Writing Output")
         buf = struct.pack(self.tformat, time)
         self.outfile.write(buf)
         buf = struct.pack(self.valformat, *vals)
@@ -140,16 +142,30 @@ def main():
     pt_reyes_fpath = args.pt_reyes
     hgrid_fpath = args.hgrid
     fpath_out = args.outfile
+    slr = args.slr
+    stime = args.stime
+    etime = args.etime
+    
+    return gen_elev2D(hgrid_fpath,fpath_out,pt_reyes_fpath,monterey_fpath,stime,etime,slr)
+
+    
+    
+    
+def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
+    stime = start
+    etime = end
+    fpath_out = outfile
+    
     #todo: hardwire 
     nnode = 83
     
     tbuf = days(16)              
     # convert start time string input to datetime       
-    sdate = datetime(*map(int, re.split('[^\d]', args.stime)))
+    sdate = datetime(*list(map(int, re.split('[^\d]', stime))))
 
-    if args.etime:
+    if not etime is None:
         # convert start time string input to datetime
-        edate = datetime(*map(int, re.split('[^\d]', args.etime)))
+        edate = datetime(*list(map(int, re.split('[^\d]', etime))))
         bufend = edate + tbuf
     else:
         edate = None
@@ -170,8 +186,8 @@ def main():
     tangent = tangent / np.linalg.norm(tangent)  # Normalize
     # Rotate 90 cw to get normal vec
     normal = np.array([tangent[1], -tangent[0]])
-    print "tangent:", tangent
-    print "normal:", normal
+    print("tangent: {}".format(tangent))
+    print("normal: {}".format(normal))
 
     mt_rel = pos_mt - pos_pr
     x_mt = np.dot(tangent, mt_rel)  # In pr-mt direction
@@ -184,38 +200,40 @@ def main():
     ocean_boundary = s.mesh.boundaries[0]  # First one is ocean
  
     # Data
-    print "Reading Point Reyes..."
+    print("Reading Point Reyes...")
     pt_reyes = read_ts(pt_reyes_fpath, start=sdate - tbuf, end=bufend, force_regular=True)
     pt_reyes = interpolate_ts_nan(pt_reyes)
     if np.any(np.isnan(pt_reyes.data)):
-        print pt_reyes.times[np.isnan(pt_reyes.data)]
-    ts_pr_subtidal, ts_pr_diurnal, ts_pr_semi, noise = separate_species(
-        pt_reyes)
+        print(pt_reyes.times[np.isnan(pt_reyes.data)])
+    ts_pr_subtidal, ts_pr_diurnal, ts_pr_semi, noise = separate_species(pt_reyes,noise_thresh_min=150)
+        
+      
     del noise
 
-    print "Reading Monterey..."
+    print("Reading Monterey...")
     monterey = read_ts(monterey_fpath, start=sdate - tbuf, end=bufend, force_regular=True)
     monterey = interpolate_ts_nan(monterey)
     if pt_reyes.interval != monterey.interval:
         raise ValueError(
             "Point Reyes and Monterey time step must be the same in gen_elev2D.py")
 
-    ts_mt_subtidal, ts_mt_diurnal, ts_mt_semi, noise = separate_species(
-        monterey)
+    ts_mt_subtidal, ts_mt_diurnal, ts_mt_semi, noise = separate_species(monterey,noise_thresh_min=150)
     del noise
 
     dt = monterey.interval.seconds
 
-    print "Done Reading"
+    print("Done Reading")
 
-    print "Interpolating Point Reyes"
+    print("Interpolating Point Reyes")
     # interpolate_ts(ts_pr_subtidal.window(sdate,edate),step)
     ts_pr_subtidal = ts_pr_subtidal.window(sdate, edate)
     ts_pr_diurnal = ts_pr_diurnal.window(sdate, edate)  # interpolate_ts(,step)
     # interpolate_ts(ts_pr_semi.window(sdate,edate),step)
     ts_pr_semi = ts_pr_semi.window(sdate, edate)
 
-    print "Interpolating Monterey"
+  
+    
+    print("Interpolating Monterey")
     # interpolate_ts(ts_mt_subtidal.window(sdate,edate),step)
     ts_mt_subtidal = ts_mt_subtidal.window(sdate, edate)
     # interpolate_ts(ts_mt_diurnal.window(sdate,edate),step)
@@ -223,7 +241,7 @@ def main():
     # interpolate_ts(ts_mt_semi.window(sdate,edate),step)
     ts_mt_semi = ts_mt_semi.window(sdate, edate)
 
-    print "Creating writer"  # requires dt be known for netcdf
+    print("Creating writer")  # requires dt be known for netcdf
     if fpath_out.endswith("th"):
         thwriter = BinaryTHWriter(fpath_out,nnode,None)
     elif fpath_out.endswith("nc"):
@@ -277,16 +295,16 @@ def main():
     scaling_diurnal_pr = 0.94
     scaling_semidiurnal_mt = 1.0  # Scaling at Monterey semi-diurnal signal
 
-    slr = 0.0  # Sea level rise
+    #slr = 0.0  # Sea level rise
 
     if np.any(np.isnan(ts_pr_semi.data)):
-        print ts_pr_semi.times[np.isnan(ts_pr_semi.data)]
-        raise ValueError('')
+        print(ts_pr_semi.times[np.isnan(ts_pr_semi.data)])
+        raise ValueError('Above times are missing in Point Reyes data')
 
 #    temp=np.zeros((len(ts_pr_semi),nnode))
 #    times[:]=[dt*i for i in xrange(len(ts_pr_semi))]   
 
-    for i in xrange(len(ts_pr_semi)):
+    for i in range(len(ts_pr_semi)):
         t = float(dt * i)
         # semi-diurnal
         # Scaling
@@ -294,8 +312,8 @@ def main():
         mt = ts_mt_semi[i].value * scaling_semidiurnal_mt
 
         if np.isnan(pr) or np.isnan(mt):
-            print pr
-            print mt
+            print(pr)
+            print(mt)
             raise ValueError("One of values is numpy.nan.")
 
         eta_pr_side = var_y / var_semi[0] * pr
@@ -315,13 +333,12 @@ def main():
         # Subtidal
         # No phase change in x-direction. Simply interpolate in
         # y-direction.
-        pr = ts_pr_subtidal[i].value + slr
-        mt = ts_mt_subtidal[i].value + adj_subtidal_mt + slr
+        pr = ts_pr_subtidal[i].value 
+        mt = ts_mt_subtidal[i].value + adj_subtidal_mt 
 
         if np.isnan(pr) or np.isnan(mt):
             raise ValueError("One of values is numpy.nan.")
-
-        eta += pr * theta_y_comp + mt * theta_y
+        eta += pr * theta_y_comp + mt * theta_y + slr
         
         # write data to netCDF file   
         thwriter.write_step(i,t,eta)

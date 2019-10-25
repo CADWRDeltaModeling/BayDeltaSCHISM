@@ -11,8 +11,8 @@ class GaussianQuadrature(object):
 
     def __init__(self, order):
         self.order = order
-        self.quad_pts_1d, self.quad_wts_1d = map(
-            np.array, np.polynomial.legendre.leggauss(order))
+        self.quad_pts_1d, self.quad_wts_1d = list(map(
+            np.array, np.polynomial.legendre.leggauss(order)))
         self.quad_pts, self.quad_wts = self.calculate_quadrature_points_and_weights()
         self.shape_at_quads = self.shape(self.quad_pts)
         self.shape_derivative_at_quads = self.shape_derivative(self.quad_pts)

@@ -91,44 +91,44 @@ def update_spatial_inputs(s):
 #     s.adopt_new_mesh(new_hgrid_in_fpath)
     
     # Fill the missing land and island boundary information
-    print "Filling up missing land and island boundaries..."
+    print("Filling up missing land and island boundaries...")
     s.mesh.fill_land_and_island_boundarise()
     # Dredging upstearm boundary
-    print "Dreding upstearm boundaries..."
+    print("Dreding upstearm boundaries...")
     upstream_polgyon_fpath = os.path.join(input_dir, upstream_polgyon_fname)
     s.modify_depth(upstream_polgyon_fpath)
     
     # Write hgrid.gr3
-    print "Write up a new hgrid file..."
+    print("Write up a new hgrid file...")
     hgrid_out_fpath = os.path.join(output_dir, hgrid_out_fname)
     s.write_hgrid(hgrid_out_fpath)
     # Write hgrid.ll
-    print "Create a new hgrid.ll file..."
+    print("Create a new hgrid.ll file...")
     hgrid_ll_fpath = os.path.join(output_dir, hgrid_ll_fname)
     s.write_hgrid_ll(hgrid_ll_fpath)
     
     # Create GR3 files with one values
-    for fname, attribute in gr3s_one_value.iteritems():
+    for fname, attribute in gr3s_one_value.items():
         attr_array = numpy.empty(s.mesh.n_nodes())
         attr_array.fill(attribute)
         gr3_fpath = os.path.join(output_dir, fname)
-        print "Creating %s..." % fname
+        print("Creating %s..." % fname)
         s.write_hgrid(gr3_fpath, attr_array, False)
 
     # Create GR3 files with polygons
-    for out_fname, polygon_fname in gr3s_polygons.iteritems():
+    for out_fname, polygon_fname in gr3s_polygons.items():
         polygon_fpath = os.path.join(input_dir, polygon_fname)
         gr3_fpath = os.path.join(output_dir, out_fname)
-        print "Creating %s..." % out_fname
+        print("Creating %s..." % out_fname)
         s.create_node_partitioning(gr3_fpath, polygon_fpath)
 
     # Create fluxflag.gr3
-    print "Creating %s..." % flux_out_fname
+    print("Creating %s..." % flux_out_fname)
     flux_in_fpath = os.path.join(input_dir, transect_in_fname)
     flux_out_fpath = os.path.join(output_dir, flux_out_fname)
     s.create_flux_regions(flux_in_fpath, flux_out_fpath)
 
-    print "Done."
+    print("Done.")
 
 def update_temporal_inputs(s):
     """ Create temporal inputs. Under development
@@ -150,9 +150,9 @@ def update_temporal_inputs(s):
     return_code = p.wait()
     if return_code != 0:
         for l in p.stdout:
-            print l
+            print(l)
         for l in p.stderr:
-            print l
+            print(l)
 
 def main():
     # Read the grid file to be processed

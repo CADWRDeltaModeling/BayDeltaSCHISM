@@ -27,17 +27,17 @@ def do_combine_hotstart(dir,step):
 
 def split(alist, n):
     k, m = divmod(len(a), n)
-    return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in xrange(n))    
+    return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n))    
         
 def combine(dir,blocks,fbase,consume=True):
-    print "Called combine with %s" % (fbase)
+    print("Called combine with %s" % (fbase))
     workdir = dir
     for block in blocks:
         firstblock,lastblock = block
         all_delete_files = []
         for fb in fbase:
-            print "Working on file type %s from stack %s to %s" % (fb, firstblock,lastblock)
-            print " In directory %s" % workdir
+            print("Working on file type %s from stack %s to %s" % (fb, firstblock,lastblock))
+            print(" In directory %s" % workdir)
             subprocess.check_call([combine_exe, "-b", str(firstblock),"-e", str(lastblock), "-f", fb], cwd = workdir, shell=True)
             #do_combine(dir,firstblock,lastblock,fb)
             for block in range(firstblock,lastblock+1):
@@ -50,7 +50,7 @@ def combine(dir,blocks,fbase,consume=True):
 
 def combine_hotstart(dir,minstep=0,maxstep=99999999,consume=True):
     workdir = dir
-    print "Called combine_hotstart"
+    print("Called combine_hotstart")
     proc0files = glob.glob(os.path.join(dir,"*_0000_hotstart"))
     allindex = [int(os.path.split(p0)[1].split("_")[0]) for p0 in proc0files]
     if maxstep:
@@ -58,7 +58,7 @@ def combine_hotstart(dir,minstep=0,maxstep=99999999,consume=True):
     else: 
         allindex = [x for x in allindex if x > minstep]    
     allindex.sort()
-    print allindex
+    print(allindex)
     all_delete_files = []
     for step in allindex:
         #do_combine_hotstart(dir,step)
@@ -72,7 +72,7 @@ def combine_hotstart(dir,minstep=0,maxstep=99999999,consume=True):
         all_delete_files.extend(to_delete_files)
     if consume:
         for fname in all_delete_files:
-            print fname
+            print(fname)
             os.remove(fname)
             
 def archive_blocks(ar_file,tbase,blocks_per_day=1,ndxmin=1,ndxmax=None):
@@ -111,8 +111,8 @@ def archive_blocks(ar_file,tbase,blocks_per_day=1,ndxmin=1,ndxmax=None):
     cblock = [x for x in cblock if x[1] >= ndxmin and x[0] <= ndxmax]
     cblock[0]=(max(cblock[0][0],ndxmin),cblock[0][1])
     cblock[-1]=(cblock[-1][0],min(cblock[-1][1],ndxmax))
-    print "cblock"    
-    print cblock
+    print("cblock")
+    print(cblock)
     return cblock
             
 def gather_ppf_names(dir,blocks):
@@ -120,7 +120,7 @@ def gather_ppf_names(dir,blocks):
 
 def prune_ppf_files(dir,blocks,fbase,list_only=False):
     flist = []
-    print "pruning"
+    print("pruning")
     for fb in fbase:
         for b in blocks:
             globpath = os.path.join(dir,"%s_????_%s" % (int(b),fb))
@@ -211,19 +211,19 @@ def combine_consume(is_test=False):
             raise Exception("combine_hotstart executable not found")
 
     ndxmin,ndxmax = 1,100 # detect_min_max_index(dir,fbase[0])
-    print "min/max: %s %s" % (ndxmin,ndxmax )
+    print("min/max: %s %s" % (ndxmin,ndxmax ))
     blocks = archive_blocks(datefile,start,blocks_per_day,ndxmin,ndxmax)
     wanted = set()
     for b in blocks: 
-        wanted.update(range(b[0],b[1]+1))
+        wanted.update(list(range(b[0],b[1]+1)))
     u  = range(ndxmin,ndxmax+1)
     unwanted = [ii for ii in u if not ii in wanted]
     unwanted = [ii for ii in u if not ii in wanted]
     wanted = list(wanted)
     wanted.sort()
     unwanted.sort()
-    print "wanted"
-    print wanted
+    print("wanted")
+    print(wanted)
     if consume: 
         prune_ppf_files(dir,unwanted,fbase,list_only = True)
     #combine(dir,blocks,fbase,consume=consume)

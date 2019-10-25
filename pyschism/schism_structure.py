@@ -123,7 +123,7 @@ class SchismStructureIO(BaseIO):
     def read(self, fname):
         """ Read in 'hydraulics.in' file.
         """
-        print "Reading in", fname, "..."
+        print("Reading in" + fname + "...")
         f = open(fname, 'r')
         # # of blocks
         tokens, ok = self._read_and_parse_line(f, 1)
@@ -194,7 +194,7 @@ class SchismStructureIO(BaseIO):
             self._input.add_structure(struct)
 
         f.close()
-        print "Done reading a structure file."
+        print("Done reading a structure file.")
 
     def write(self, fname='hydraulics.in'):
         """ Write out 'hydraulics.in' file.
@@ -307,7 +307,7 @@ class SchismStructureIO(BaseIO):
         tokens = f.readline().split()
         lc += 1
         if expected_count > 0 and len(tokens) < expected_count:
-            print "Line #: ", lc
+            print("Line #: {}".format(lc))
             raise Exception("Line is corrupted.")
         return tokens, lc
 

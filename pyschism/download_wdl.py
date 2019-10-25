@@ -28,7 +28,9 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
              "STAGE":"gageheight",
              "CONDUCTIVITY":"conductance",
              "VELOCITY":"velocity",
-             "ADCP_WATER_TEMPERATURE":"temperature"}
+             "ADCP_WATER_TEMPERATURE":"temperature",
+             "WATER_TEMPERATURE":"temperature",
+             "TURBIDITY":"turbidity"}
 
     if not os.path.exists(work_dir):
         os.mkdir(work_dir)
@@ -38,16 +40,16 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
         response = urllib2.urlopen(station_query)
         station_html = response.read()
         params = [x for x in items if  "%s_"%x in station_html]
-        for param in items.keys():
+        for param in items:
             station_param = "%s_%s" % (station,items[param])
             newname = "%s.csv" % station_param
             dest_path = os.path.join(dest_dir,newname)
-            print dest_path
+            print(dest_path)
             if (os.path.exists(dest_path)):
                 if overwrite:
                     os.remove(dest_path)
                 else:
-                    print "Skipping station/param/year because file exists: %s" % newname 
+                    print("Skipping station/param/year because file exists: %s" % newname) 
                     continue
             
             file_created = False
@@ -80,7 +82,7 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
                     mode = "a" if file_created else "w"
                     destfile = open(dest_path,mode)
                     file_created = True
-                    print "Working on %s" % workpath
+                    print("Working on %s" % workpath)
                     for line in f.readlines()[3:]:
                         if line and len(line) > 5:
                             ndata=ndata+1
@@ -111,7 +113,7 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
                     mode = "a" if file_created else "w"
                     destfile = open(dest_path,mode)
                     file_created = True
-                    print "Working on %s" % workfile
+                    print("Working on %s" % workfile)
                     for line in f.readlines()[3:]:
                         if line and len(line) > 5:
                             ndata=ndata+1
@@ -131,8 +133,8 @@ def wdl_download(stations,years,dest_dir,overwrite=False):
                     os.remove(os.path.join(work_dir,workfile))
                     data_years.append(str(year))
                     
-            print "Data for station %s param %s in years: %s" % (station, param, string.join(data_years,","))
-            print "Total # data for %s: %s" % (station_param,ndata)
+            print("Data for station %s param %s in years: %s" % (station, param, string.join(data_years,",")))
+            print("Total # data for %s: %s" % (station_param,ndata))
             #if ndata > 0: convert2netcdf(dest_path,ndata)
             
                     
@@ -143,7 +145,7 @@ if __name__ == '__main__':
     stopyr = int(sys.argv[3]) + 1
     f = open(stationlist,"r")
     stations = [x.strip().split(",")[2] for x in f.readlines() if x and len(x) > 2]
-    years = range(firstyr,stopyr)
+    years = list(range(firstyr,stopyr))
     destdir = 'wdl_data'
     overwrite = False    
     wdl_download(stations,years,destdir,overwrite)

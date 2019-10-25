@@ -2,6 +2,7 @@
 ! History: added ivcor=1; fixed a bug in ntracers
 ! pgf90 -O2 -mcmodel=medium -Mbounds -Bstatic -o bay_delta_hotstart /sciclone/home04/yinglong/SELFE/svn/trunk/src/Utility/UtilLib/argparse.F90 bay_delta_hotstart.f90
 ! ifort -Bstatic -assume byterecl -O2 -o bay_delta_hotstart bay_delta_hotstart.f90 argparse.F90
+! ifort -Bstatic /assume:byterecl -O2 -fpp -o bay_delta_hotstart bay_delta_hotstart.f90 argparse.F90
 !   Input: 
 !     (1) USGS survey data: (e.g. usgs_cruise_station.txt, usgs_2009_02_10.txt) -WARNING:
 !                            dates have to be in: mm/dd/yyyy... i.e. double digits for mm & dd,
@@ -19,13 +20,13 @@
       program bay_delta_hotstart
       implicit none
           
-      character*80 tempsaltfile
-      character*80 stationfile
-      character*80 hotstartfile
-      character*80 initialelevfile
-      character*80 hgridfile
-      character*80 vgridfile
-      character*80 estuaryfile
+      character*120 tempsaltfile
+      character*120 stationfile
+      character*120 hotstartfile
+      character*120 initialelevfile
+      character*120 hgridfile
+      character*120 vgridfile
+      character*120 estuaryfile
       real         deltasalt
       real         deltatemp
       real         coastal_T
@@ -66,13 +67,13 @@
       use argparse
       implicit none          
       character :: cmd = "bay_delta_hotstart"
-      character*80 tempsaltfile
-      character*80 stationfile
-      character*80 hotstartfile
-      character*80 initialelevfile
-      character*80 hgridfile
-      character*80 vgridfile
-      character*80 estuaryfile
+      character*120 tempsaltfile
+      character*120 stationfile
+      character*120 hotstartfile
+      character*120 initialelevfile
+      character*120 hgridfile
+      character*120 vgridfile
+      character*120 estuaryfile
       real         deltasalt        
       real         deltatemp
       real         coastal_T
@@ -119,32 +120,32 @@
       inquire(FILE=tempsaltfile, EXIST=fileexists)
       if (.not.fileexists) then
          print *, tempsaltfile,"is invalid"
-         stop
+         stop -1
       endif
       inquire(FILE=estuaryfile, EXIST=fileexists)
       if (.not.fileexists) then
          print *, estuaryfile,"is invalid"
-         stop
+         stop -1
       endif
       inquire(FILE=stationfile, EXIST=fileexists)
       if (.not.fileexists) then
          print *, stationfile,"is invalid"
-         stop
+         stop -1
       endif
       inquire(FILE=hgridfile, EXIST=fileexists)
       if (.not.fileexists) then
          print *, hgridfile,"is invalid"
-         stop
+         stop -1
       endif
       inquire(FILE=vgridfile, EXIST=fileexists)
       if (.not.fileexists) then
          print *, vgridfile,"is invalid"
-         stop
+         stop -1
       endif
       inquire(FILE=initialelevfile, EXIST=fileexists)
       if (.not.fileexists) then
          print *, initialelevfile,"is invalid"
-         stop
+         stop -1
       endif
       end if
       
@@ -153,14 +154,14 @@
       
       subroutine hotstart_from_cruise_data(tempsaltfile,stationfile,initialelevfile,&
                  hgridfile,vgridfile,estuaryfile,deltasalt,deltatemp,coastal_T,hotstartfile)
-      
-      character*80 tempsaltfile
-      character*80 stationfile
-      character*80 hotstartfile
-      character*80 initialelevfile
-      character*80 hgridfile
-      character*80 vgridfile
-      character*80 estuaryfile
+      !implicit none
+      character*120 tempsaltfile
+      character*120 stationfile
+      character*120 hotstartfile
+      character*120 initialelevfile
+      character*120 hgridfile
+      character*120 vgridfile
+      character*120 estuaryfile
       real         deltasalt
       real         deltatemp
       real         coastal_T
@@ -168,10 +169,10 @@
       
       integer, parameter :: mcasts=1000 !max. # of casts on 03/12
       integer, parameter :: mndps=200 !max. # of depth bins
-      integer, parameter :: mnp=300000
+      integer, parameter :: mnp=400000 !400000
       integer, parameter :: mne=400000
-      integer, parameter :: mns=600000
-      integer, parameter :: mnv=140
+      integer, parameter :: mns=650000 !790000
+      integer, parameter :: mnv=140    !100
       integer, parameter :: mnope=20 !max # of open bnd segments
       integer, parameter :: mnond=1000 !max # of open bnd nodes in each segment
       integer, parameter :: mnei=20 !neighbor
@@ -179,6 +180,8 @@
       real, parameter :: small1=1.e-3 !used to check area ratios
   
 !     Vertical postion, salinity, and temperature
+      integer :: ne,np,i,j
+      integer :: nope,neta
       integer, dimension(:,:), allocatable :: kbp
       integer   code
       integer tmp
@@ -187,24 +190,33 @@
       integer   dummy,commalocation
       integer ::  dd,mm,yyyy,tttt
       character(len=1) ::  c1,c2,c3,c4
-      character*80  tempstring
+      character*120  tempstring
       integer :: iostatus
-      dimension xnd(mnp),ynd(mnp),nm(mne,4),dp(mnp),i34(mne),eta(mnp)
-      dimension ztot(0:mnv),sigma(mnv),cs(mnv),z(mnp,mnv),iest(mnp),ixy(mnp,2),arco(3)
+      integer, allocatable :: i34(:)
+      real,allocatable :: xnd(:),ynd(:),nm(:,:),dp(:),eta(:)
+      !dimension xnd(mnp),ynd(mnp),nm(mne,4),dp(mnp),i34(mne),eta(mnp)
+      real,allocatable :: sigma(:),cs(:),z(:,:)
+      integer,allocatable :: iest(:),ixy(:,:)
+      !dimension sigma(mnv),cs(mnv),z(mnp,mnv),iest(mnp),ixy(mnp,2)
+      dimension arco(3),ztot(0:mnv)
       dimension iwild(100)
       dimension tempout(mnp,mnv), saltout(mnp,mnv),month_day(12)
       dimension tsd(mns,mnv),ssd(mns,mnv),tsel(mnv,mne,2)
-      dimension nne(mnp),ine(mnp,mnei),ic3(mne,4),nx(4,4,3),js(mne,4),is(mns,2),isidenode(mns,2)
+      integer,allocatable :: nne(:),ine(:,:),ic3(:,:),js(:,:),is(:,:),isidenode(:,:)
+       
+      dimension nx(4,4,3)
       dimension xcj(mns),ycj(mns),nond(mnope),iond(mnope,mnond) !,iob(mnope),iond2(mnope*mnond)
       dimension sta2(mcasts),casts_xyz(mcasts,3),cast_h(mcasts,mndps),cast_S(mcasts,mndps), &
      &cast_T(mcasts,mndps),nbins(mcasts)
       dimension kbp2(mnp),sigma_lcl(mnv,mnp)
       allocatable :: sta1(:),xsta(:),ysta(:),hsta(:),map(:)
-
 !     Read in (const) elev.
       open(10,file=initialelevfile,status='old')
       read(10,*)
       read(10,*)ne, np
+      allocate(xnd(np),ynd(np),nm(ne,4),dp(np),i34(ne),eta(np))
+      allocate(sigma(mnv),cs(mnv),z(np,mnv),iest(np),ixy(np,2))     
+      allocate(nne(np),ine(np,mnei),ic3(ne,4),js(ne,4),is(mns,2),isidenode(mns,2))      
       do i=1,np
         read(10,*)j,xtmp,ytmp,eta(i)
       enddo
@@ -254,7 +266,7 @@
           if (code.ne.0) then
              if (i.eq.3) then
                write(*,*) "input data is empty, no result generated:",mm,c1,dd,c2,yyyy,c3,tttt,c4,tempstring
-               stop
+               stop -1
              else ! at least have one data
                exit
              end if
@@ -263,7 +275,7 @@
           if ((.not.((mm.le.12).and.(mm.ge.1))) .or. (.not.((dd.le.31).and.(dd.ge.1))) )then
              if (i.eq.3) then
                write(*,*) "valid data must start from the third line, no result generated"
-               stop
+               stop -1
              else ! at least have one data
                exit
              end if
@@ -312,7 +324,7 @@
           ndps=ndps+1
           if(ncasts>mcasts.or.ndps>mndps) then
             write(*,*)'Increase mcasts or mndps:',ncasts,ndps
-            stop 
+            stop -1 
           endif
           sta2(ncasts)=tmp
           itmp=map(int(tmp*10))
@@ -330,27 +342,28 @@
       close(9)
       print*, '# of casts',ncasts
       print*, 'Last cast (x,y,h)=',casts_xyz(ncasts,1:3),'; depths=',cast_h(ncasts,1:nbins(ncasts))
-!      stop
+!      stop -1
 
 !     Read in hgrid and vgrid
       open(17,file=estuaryfile,status='old')
       open(14,file=hgridfile,status='old') !only need depth info and connectivity
       open(19,file=vgridfile,status='old')
-
+      print*,"Reading hgrid"
       read(14,*)
       read(14,*)ne,np
       if(np.gt.mnp.or.ne.gt.mne) then
         write(*,*)'Increase mnp/mne'
-        stop
+        stop -1
       endif
       read(17,*)
       read(17,*)
+      print*, "ne = ",ne," np=",np
       do i=1,np
         read(14,*)j,xnd(i),ynd(i),dp(i)
         read(17,*)j,xtmp,ytmp,iest(i)
         if(iest(i)<0.or.iest(i)>2) then
           write(11,*)'Estuary flag wrong:',i,iest(i)
-          stop
+          stop -1
         endif
       enddo !i
       do i=1,ne
@@ -380,20 +393,21 @@
       close(14)
 
 !     V-grid
+      print*,"Reading vgrid"
       read(19,*)ivcor
       if(ivcor==2) then
         read(19,*) nvrt,kz,h_s !kz>=1
         if(nvrt>mnv.or.nvrt<2) then
           write(11,*)'nvrt > mnv or nvrt<2'
-          stop
+          stop -1
         endif
         if(kz<1) then !.or.kz>nvrt-2) then
           write(11,*)'Wrong kz:',kz
-          stop
+          stop -1
         endif
         if(h_s<10) then
           write(11,*)'h_s needs to be larger:',h_s
-          stop
+          stop -1
         endif
 
 !       # of z-levels excluding "bottom" at h_s
@@ -402,7 +416,7 @@
           read(19,*)j,ztot(k)
           if(k>1.and.ztot(k)<=ztot(k-1).or.ztot(k)>=-h_s) then
             write(11,*)'z-level inverted:',k
-            stop
+            stop -1
           endif
         enddo !k
         read(19,*) !level kz       
@@ -414,15 +428,15 @@
         read(19,*)h_c,theta_b,theta_f
         if(h_c<5) then !large h_c to avoid 2nd type abnormaty
           write(11,*)'h_c needs to be larger:',h_c
-          stop
+          stop -1
         endif
         if(theta_b<0.or.theta_b>1) then
           write(11,*)'Wrong theta_b:',theta_b
-          stop
+          stop -1
         endif
         if(theta_f<=0) then 
           write(11,*)'Wrong theta_f:',theta_f 
-          stop
+          stop -1
         endif
 !       Pre-compute constants
         s_con1=sinh(theta_f)
@@ -435,7 +449,7 @@
           read(19,*) j,sigma(kin)
           if(sigma(kin)<=sigma(kin-1).or.sigma(kin)>=0) then
             write(11,*)'Check sigma levels at:',k,sigma(kin),sigma(kin-1)
-            stop
+            stop -1
           endif
         enddo
         read(19,*) !level nvrt
@@ -466,7 +480,7 @@
         read(19,*)nvrt
         if(nvrt>mnv.or.nvrt<3) then
           write(11,*)'nvrt > mnv or nvrt<4:',nvrt
-          stop
+          stop -1
         endif
 
         do i=1,np
@@ -483,7 +497,7 @@
           do k=kbp2(i)+1,nvrt
             if(z(i,k)-z(i,k-1)<=0) then
               write(11,*)'Inverted Z:',z(i,k),z(i,k-1),k,i,dp(i),sigma_lcl(:,i)
-              stop
+              stop -1
             endif
           enddo !k
 
@@ -492,11 +506,11 @@
         enddo !i=1,np
       else
         write(11,*)'Unknow ivcor'
-        stop
+        stop -1
       endif !ivcor
 
       close(19)
-
+      print*,"Computing geometry information such as interpolation neighbors"
 !     Compute geometry
       do k=3,4
         do i=1,k
@@ -505,7 +519,7 @@
             if(nx(k,i,j)>k) nx(k,i,j)=nx(k,i,j)-k
             if(nx(k,i,j)<1.or.nx(k,i,j)>k) then
               write(*,*)'nx wrong',i,j,k,nx(k,i,j)
-              stop
+              stop -1
             endif
           enddo !j
         enddo !i
@@ -521,7 +535,7 @@
           nne(nd)=nne(nd)+1
           if(nne(nd)>mnei) then
             write(11,*)'Too many neighbors',nd
-            stop
+            stop -1
           endif
           ine(nd,nne(nd))=i
         enddo
@@ -540,6 +554,7 @@
         enddo !j
       enddo !i
 
+      print*,"Computing edge information"
       ns=0 !# of sides
       do i=1,ne
         do j=1,i34(i)
@@ -548,8 +563,9 @@
           if(ic3(i,j)==0.or.i<ic3(i,j)) then !new sides
             ns=ns+1
             if(ns>mns) then
-              write(11,*)'Too many sides'
-              stop
+              print*,"Too many sides (ns must be bigger in script"
+              write(11,*)'Too many sides:'
+              stop -1
             endif
             js(i,j)=ns
             is(ns,1)=i
@@ -571,17 +587,17 @@
               enddo !k
               if(indexside==0) then
                 write(11,*)'Wrong ball info',i,j
-                stop
+                stop -1
               endif
               js(iel,indexside)=ns
             endif !ic3(i,j).ne.0
           endif !ic3(i,j)==0.or.i<ic3(i,j)
         enddo !j=1,i34
       enddo !i=1,ne
-
+      print*,"Number of sides: ",ns
       if(ns<ne.or.ns<np) then
         write(11,*)'Weird grid with ns < ne or ns < np',np,ne,ns
-        stop
+        stop -1
       endif
 
 !     Compute node T,S
@@ -627,7 +643,7 @@
               enddo !kk
               if(ind0==0.or.zrat<0.or.zrat>1) then
                 write(*,*)'Failed to find a level:',i,k
-                stop
+                stop -1
               endif
               saltout(i,k)=zrat*cast_S(icast,ind0)+(1-zrat)*cast_S(icast,ind0+1)
               tempout(i,k)=zrat*cast_T(icast,ind0)+(1-zrat)*cast_T(icast,ind0+1)
@@ -691,6 +707,7 @@
                   0.d0,0.d0,0.d0,0.d0,0.d0,j=1,nvrt)
       enddo !i
       close(36)
-
+      !deallocate(xnd,ynd,nm,dp,i34,eta)
+      !deallocate(sigma,cs,z,iest,ixy)
       stop
     end  subroutine

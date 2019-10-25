@@ -30,7 +30,7 @@ def check_env(env):
     """
     msg = ""
     n_errors = 0
-    for k, v in env.iteritems():
+    for k, v in env.items():
         if '$' in k:
             msg += "A Name of environment variable cannot be a variable: " \
                    "%s\n" % k
@@ -51,7 +51,7 @@ def substitute_env(env):
     check_env(env)
     while True:
         count_substitutions = 0
-        for k, v in env.iteritems():
+        for k, v in env.items():
             template = string.Template(v)
             substituted = template.safe_substitute(**env)
             if v != substituted:
@@ -73,7 +73,7 @@ class SubstituteComposer(Composer):
             return super(SubstituteComposer, self).compose_scalar_node(anchor)
         event = self.get_event()
         tag = event.tag
-        if tag is None or tag == u'!':
+        if tag is None or tag == '!':
             tag = self.resolve(ScalarNode, event.value, event.implicit)
         template = string.Template(event.value)
         value = template.safe_substitute(**self.env)
@@ -111,7 +111,7 @@ class SubstituteConstructor(SafeConstructor):
             if key_node.value in include_keywords:
                 included = self.include(value_node)
                 if isinstance(included, dict):
-                    pairs.extend(included.iteritems())
+                    pairs.extend(iter(included.items()))
                 else:
                     raise ValueError("Included YAML must be a dictionary")
             else:
@@ -133,11 +133,11 @@ class SubstituteConstructor(SafeConstructor):
             return result
         elif isinstance(node, yaml.MappingNode):
             result = {}
-            for k, v in self.construct_mapping(node).iteritems():
+            for k, v in self.construct_mapping(node).items():
                 result[k] = self.extractFile(v)
             return result
         else:
-            print "Error: unrecognized node type in the include constructor"
+            print("Error: unrecognized node type in the include constructor")
             raise ConstructorError
 
     def extractFile(self, filename):
@@ -149,7 +149,7 @@ class SubstituteConstructor(SafeConstructor):
                 loader = SubstituteLoader(f, self.env)
                 return loader.get_single_data()
         else:
-            print "Error: cannot find the file:", filename
+            print("Error: cannot find the file:" + filename)
             raise ValueError('Cannot find included file: {}'.format(filename))
 
 
@@ -216,7 +216,7 @@ def dict_representer(dumper, data):
     """ Dumper with OrderedDict
     """
     return dumper.represent_mapping(BaseResolver.DEFAULT_MAPPING_TAG,
-                                    data.iteritems())
+                                    iter(data.items()))
 
 
 # Add constructor and representer
@@ -317,7 +317,7 @@ class YamlAction(argparse.Action):
                     data = loader.get_single_data()
                 finally:
                     loader.dispose()
-                for k, v in data.iteritems():
+                for k, v in data.items():
                     if re.search(r"[\s]", k):
                         raise ValueError("No whitespace is allowed in the key.")
                     if not isinstance(v, str):
@@ -389,7 +389,7 @@ class ArgumentParserYaml(argparse.ArgumentParser):
                                 data = loader.get_single_data()
                             finally:
                                 loader.dispose()
-                            for k, v in data.iteritems():
+                            for k, v in data.items():
                                 if re.search(r"[\s]", k):
                                     raise ValueError("No whitespace is allowed in the key.")
                                 if not isinstance(v, str):
@@ -435,4 +435,4 @@ if __name__ == "__main__":
     fname_ = args_.filename
     with open(fname_, 'r') as f:
         data_ = load(f)
-        print yaml.safe_dump(data_)
+        print(yaml.safe_dump(data_))

@@ -6,7 +6,6 @@ from vtools.data.vtime import infer_interval
 import vtools.data.vtime as vtt
 import vtools.data.timeseries as vts
 import numpy
-import abc
 import datetime
 import re
 import sys
@@ -14,7 +13,7 @@ import sys
 __all__ = ['read_ts', 'read_noaa', 'read_wdl', 'read_cdec',
            'read_usgs', 'read_usgs_rdb','read_vtide']
 
-class TextTimeSeriesReader(object):
+class TextTimeSeriesReader:
     """ Base class to read in time series of field data in various text
         formats.
         This class is designed to be inherited. A user needs to implement
@@ -28,7 +27,6 @@ class TextTimeSeriesReader(object):
         tell a format, must be set before calling
         'is_readable.' '__init__' function would be a good place to do so.
     """
-    __metaclass__ = abc.ABCMeta
 
     def __init__(self):
         self._record_regex = None
@@ -182,9 +180,9 @@ class TextTimeSeriesReader(object):
                     if m is not None:
                         k = m.groupdict()["key"]
                         v = m.groupdict()["value"]
-                        if k in self._prop_key_table.keys():
+                        if k in self._prop_key_table:
                             k = self._prop_key_table[k]
-                        if v in self._prop_value_table.keys():
+                        if v in self._prop_value_table:
                             v = self._prop_value_table[v]
                         metadata[k] = v
             return metadata
@@ -341,7 +339,7 @@ class TextTimeSeriesReader(object):
             #         ts = vts.extrapolate_ts(ts, end=end)
             #     else:
             #         ts = ts.window(end=end)
-        for k, v in metadata.iteritems():
+        for k, v in metadata.items():
             ts.props[k] = v
 
         return ts
@@ -417,7 +415,8 @@ class CDECReader2(TextTimeSeriesReader):
         super(CDECReader2, self).__init__()
         #STATION_ID,DURATION,SENSOR_NUMBER,SENSOR_TYPE,DATE TIME,OBS DATE,VALUE,DATA_FLAG,UNITS
         # FPT,H,1,RIV STG,20181123 1000,,103.27, ,FEET
-        self._record_regex = r"(?P<id>[\w]{3}),.*?,.*?,.*?,(?P<datetime>\d{8} \d{4}),,(?P<value>[-\d.]*), ,FEET"
+        # DSJ,E,20,FLOW,20071001 0100,,7283, ,CFS
+        self._record_regex = r"(?P<id>[\w]{3}),.*?,.*?,.*?,(?P<datetime>\d{8} \d{4}),.*?,(?P<value>[-\d.]*),.*?"
         #self._record_regex = r"(?P<datetime>\d{8},\d{4}),.*?,(?P<value>[-\d.]*),.*?,.*?"        
         self._header_approval_regexes = [r"STATION_ID,DURATION,SENSOR_NUMBER.*"]
 
@@ -434,10 +433,9 @@ class CDECReader2(TextTimeSeriesReader):
 
         # Please do not revert this code. It used to put a nan in for anything that fails to parse
         # If this doesn't cover nan, we need to learn about the other codes in the data dictionary
-        value = float(parts[6].replace("m","nan"))
+        value = float(parts[6].replace("m","nan").replace("---","nan"))
         return timestamp, value
-    
-        
+           
         
 def read_cdec(fpath, start=None, end=None, force_regular=True):
     reader = CDECReader()
@@ -466,7 +464,7 @@ class NOAAReader(TextTimeSeriesReader):
     def parse_value(self, line):
         try:
             value = float(line[31:])
-        except ValueError, IndexError:
+        except (ValueError, IndexError):
             value = numpy.nan
         return value
 
@@ -501,7 +499,7 @@ class WDLReader(TextTimeSeriesReader):
         try:
             text = parts[1].strip()
             value = float(text) if len(text) > 0 else numpy.nan
-        except ValueError, IndexError:
+        except (ValueError, IndexError):
             value = numpy.nan
         return value
 
@@ -545,7 +543,7 @@ class DESReader(TextTimeSeriesReader):
             else:
                 value = float(text) if len(text) > 0 else numpy.nan
         except IndexError:
-            print 'missing field??', line
+            print('missing field?? {}'.format(line))
             value = numpy.nan
         return value
 
@@ -573,7 +571,7 @@ class USGSReader(TextTimeSeriesReader):
         #                                        "%m/%d/%Y%H:%M:%S")
         timestamp_parts = re.split(r'[^\d]', parts[0] + ' ' + parts[1])
         timestamp_parts = [timestamp_parts[i] for i in [2, 0, 1, 3, 4, 5]]
-        timestamp = datetime.datetime(*map(int, timestamp_parts))
+        timestamp = datetime.datetime(*list(map(int, timestamp_parts)))
         timezone = parts[2]
         timestamp += self._timezone_table[timezone]
         return timestamp
@@ -657,22 +655,22 @@ class USGSRdbReader(TextTimeSeriesReader):
         d = parts[self.time_ndx]
         if self.year_first_dash:
             if self.column_is_datetime:
-                timestamp = datetime.datetime(*map(int,[d[0:4],d[5:7],d[8:10],d[11:13],d[14:16]]))
+                timestamp = datetime.datetime(*list(map(int,[d[0:4],d[5:7],d[8:10],d[11:13],d[14:16]])))
             else:
                 t = parts[self.time_ndx+1]
-                timestamp = datetime.datetime(*map(int,[d[0:4],d[5:7],d[8:10],t[0:2],t[3:5]]))
+                timestamp = datetime.datetime(*list(map(int,[d[0:4],d[5:7],d[8:10],t[0:2],t[3:5]])))
         elif self.month_first_dash:
             if self.column_is_datetime:
-                timestamp = datetime.datetime(*map(int,[d[6:10],d[0:2],d[3:5],d[10:12],d[12:14]]))
+                timestamp = datetime.datetime(*list(map(int,[d[6:10],d[0:2],d[3:5],d[10:12],d[12:14]])))
             else:
                 t = parts[self.time_ndx+1]
-                timestamp = datetime.datetime(*map(int,[d[6:10],d[0:2],d[3:5],t[0:2],t[3:5]]))
+                timestamp = datetime.datetime(*list(map(int,[d[6:10],d[0:2],d[3:5],t[0:2],t[3:5]])))
         else:
             if self.column_is_datetime:
-                timestamp = datetime.datetime(*map(int,[d[0:4],d[4:6],d[6:8],d[10:12],d[12:14]]))
+                timestamp = datetime.datetime(*list(map(int,[d[0:4],d[4:6],d[6:8],d[10:12],d[12:14]])))
             else:
                 t = parts[self.time_ndx+1]
-                timestamp = datetime.datetime(*map(int,[d[0:4],d[4:6],d[6:8],t[0:2],t[2:4]]))
+                timestamp = datetime.datetime(*list(map(int,[d[0:4],d[4:6],d[6:8],t[0:2],t[2:4]])))
 
         if self.zone_ndx > -1:
             timezone = parts[self.zone_ndx]
@@ -726,7 +724,7 @@ class USGSRdbReader(TextTimeSeriesReader):
         except:
             time_col = columns.index("date")
             iextra = 0
-        print columns
+        print(columns)
         try:
             zone_col = columns.index("tz_cd")
         except:
@@ -760,7 +758,7 @@ class USGSRdbReader(TextTimeSeriesReader):
                 ndx = data_names.index(lselector)
                 data_ndx = data_ndxs[ndx]
             except:
-                print data_names
+                print(data_names)
                 raise ValueError("Sensor not found %s " % lselector)
 
         self.time_ndx = time_col
@@ -838,33 +836,33 @@ def read_ts(fpath, start=None, end=None, force_regular=True, selector = None):
 
 if __name__ == "__main__":
     c = CDECReader()
-    print c.is_readable("Z:/schism/Data_2013/cdec/flow/FAL_flow_E.csv")
-    print c.is_readable("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb")
+    print(c.is_readable("Z:/schism/Data_2013/cdec/flow/FAL_flow_E.csv"))
+    print(c.is_readable("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb"))
     d = USGSRdbReader()
     ts = d.read("W:/usgs_scalar_to_oct_2013/x.UV.USGS.11303500.5.C.00000000.rdb")
-    print ts.start
+    print(ts.start)
 
 
-    print d.is_readable("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb")
+    print(d.is_readable("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb"))
     #n,x,y = d.process_header("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb",selector="sensor=02_00095")
 
     ts = d.read("Z:/schism/Data_2013/usgs/11162765_sanmateo_ec_2013_2014.rdb",force_regular=True,selector="sensor=04_00095")
-    print ts.start
-    print ts.end
-    print ts.interval
-    print ts[3].time
-    print ts[3].value
-    print ts[46536].time
-    print ts[46536].value
+    print(ts.start)
+    print(ts.end)
+    print(ts.interval)
+    print(ts[3].time)
+    print(ts[3].value)
+    print(ts[46536].time)
+    print(ts[46536].value)
     import datetime as dtm
     t = dtm.datetime(2014,8,12,1,45)
-    print ts[t].time
-    print ts[t].value
+    print(ts[t].time)
+    print(ts[t].value)
     t = dtm.datetime(2014,8,12,10,30)
-    print ts[t].time
-    print ts[t].value
+    print(ts[t].time)
+    print(ts[t].value)
     t = dtm.datetime(2014,8,12,10,45)
-    print ts[t].time
-    print ts[t].value
+    print(ts[t].time)
+    print(ts[t].value)
 
 

@@ -2,7 +2,7 @@
 """ Convenient routines to set up and to tweak matplotlib plots.
 """
 
-from __future__ import unicode_literals
+
 import vtools.data.timeseries
 from unit_conversions import m_to_ft, cms_to_cfs, celcius_to_fahrenheit, psu_ec_25c, psu_ec_25c_scalar, ec_sea
 import brewer2mpl as brewer
@@ -160,7 +160,7 @@ def set_dual_axes(ax, ts):
     """
     if ts is None:
         return
-    if 'unit' in ts.props.keys():
+    if 'unit' in ts.props:
         unit = ts.props.get('unit')
         filtered = False if ts.props.get('filtered') is None else True
         if unit == 'm' or unit == 'meter':
@@ -174,7 +174,7 @@ def set_dual_axes(ax, ts):
             return ax2
         elif unit == 'm/s':
             ax2 = create_second_axis(ax, m_to_ft)
-            if 'filtered' in ts.props.keys():
+            if 'filtered' in ts.props:
                 ax.set_ylabel(FILTERED_MPS_LABEL)
                 ax2.set_ylabel(FILTERED_FTPS_LABEL)
             else:
@@ -183,14 +183,14 @@ def set_dual_axes(ax, ts):
             return ax2
         elif unit == 'deg C':
             ax2 = create_second_axis(ax, celcius_to_fahrenheit)
-            if 'filtered' in ts.props.keys():
+            if 'filtered' in ts.props:
                 ax.set_ylabel(FILTERED_DEG_C_LABEL)
                 ax2.set_ylabel(FILTERED_DEG_F_LABEL)
             else:
                 ax.set_ylabel(DEG_C_LABEL)
                 ax2.set_ylabel(DEG_F_LABEL)
             return ax2
-    print "Warning: set_dual_axes: Not a supported unit in the time series."
+    print("Warning: set_dual_axes: Not a supported unit in the time series.")
     return None
 
 
@@ -381,7 +381,7 @@ def set_xaxis_month(ax, date_format="%b %y", rotate=None, pad=None, n_ticks=5):
 def get_nice_tick_indices(n_ticks, n_wanted):
     interval = int(n_ticks / n_wanted)
     remnants = n_ticks % n_wanted
-    return np.arange(remnants/2 + 1, n_ticks, interval)
+    return np.arange(remnants // 2 + 1, n_ticks, interval)
 
 
 def set_nice_tick_intervals(ax, n_ticks):
@@ -409,24 +409,24 @@ def auto_ylabels(axes, timeseries, dual=True):
                 ts = item
     unit = ts.props['unit']
     if unit == 'm' or unit == 'meter':
-        if 'filtered' in ts.props.keys():
+        if 'filtered' in ts.props:
             axes.set_ylabel(FILTERED_M_LABEL)
         else:
             axes.set_ylabel(M_LABEL)
         if dual is True:
             axes2 = create_second_axis(axes, m_to_ft)
-            if 'filtered' in ts.props.keys():
+            if 'filtered' in ts.props:
                 axes2.set_ylabel(FILTERED_FT_LABEL)
             else:
                 axes2.set_ylabel(FT_LABEL)
     elif unit == 'cms':
-        if 'filtered' in ts.props.keys():
+        if 'filtered' in ts.props:
             axes.set_ylabel(FILTERED_CMS_LABEL)
         else:
             axes.set_ylabel(CMS_LABEL)
         if dual is True:
             axes2 = create_second_axis(axes, cms_to_cfs)
-            if 'filtered' in ts.props.keys():
+            if 'filtered' in ts.props:
                 axes2.set_ylabel(FILTERED_CFS_LABEL)
             else:
                 axes2.set_ylabel(CFS_LABEL)
@@ -434,13 +434,13 @@ def auto_ylabels(axes, timeseries, dual=True):
         ylim = axes.get_ylim()
         if ylim[0] < 0.:
             axes.set_ylim((0, ylim[1]))
-        if 'filtered' in ts.props.keys():
+        if 'filtered' in ts.props:
             axes.set_ylabel(FILTERED_PSU_LABEL)
         else:
             axes.set_ylabel(PSU_LABEL)
         if dual is True:
             axes2 = create_second_axis(axes, psu_ec_25c_neg)
-            if 'filtered' in ts.props.keys():
+            if 'filtered' in ts.props:
                 axes2.set_ylabel(FILTERED_EC_LABEL)
             else:
                 axes2.set_ylabel(EC_LABEL)
@@ -448,13 +448,13 @@ def auto_ylabels(axes, timeseries, dual=True):
         ylim = axes.get_ylim()
         if ylim[0] < 0.:
             axes.set_ylim((0, ylim[1]))
-        if 'filtered' in ts.props.keys():
+        if 'filtered' in ts.props:
             axes.set_ylabel(FILTERED_DEG_C_LABEL)
         else:
             axes.set_ylabel(DEG_C_LABEL)
         if dual is True:
             axes2 = create_second_axis(axes, psu_ec_25c_neg)
-            if 'filtered' in ts.props.keys():
+            if 'filtered' in ts.props:
                 axes2.set_ylabel(FILTERED_DEG_F_LABEL)
             else:
                 axes2.set_ylabel(DEG_F_LABEL)
@@ -519,8 +519,7 @@ def change_tick_label_size(ax1, size=None):
 
 
 def set_scatter_color(artist):
-    mpl.pyplot.setp(artist, alpha=0.15, edgecolor='grey',
-                    facecolor=mpl.rcParams['axes.color_cycle'][0])
+    mpl.pyplot.setp(artist, alpha=0.15, edgecolor='grey',facecolor=brewer_colors[0])
 
 
 def make_plot_isometric(axes):

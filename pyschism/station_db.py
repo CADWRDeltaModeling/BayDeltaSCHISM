@@ -41,7 +41,7 @@ class StationDB(object):
                         raise ValueError("Station with id %s has incorrect number of columns compared to header (%s vs %s)" % (id,len(data),len(self.header)))
 
     def ids(self):
-        return self.data.keys()
+        return list(self.data.keys())
                         
                         
     def alias(self, station_id):
@@ -50,7 +50,7 @@ class StationDB(object):
                 station name
         """
         alias = None
-        if station_id in self.data.keys():
+        if station_id in self.data:
             alias = self.data[station_id][self.ndx_alias]
         return alias
 
@@ -68,7 +68,7 @@ class StationDB(object):
                 a long name of a station
         """
         long_name = None
-        if station_id in self.data.keys():
+        if station_id in self.data:
             long_name = self.data[station_id][self.ndx_name]
         return long_name
 
@@ -86,7 +86,7 @@ class StationDB(object):
                     a tuple length 2 with x and y coordinate
             """
             
-            if station_id in self.data.keys():
+            if station_id in self.data:
                 x = float(self.data[station_id][self.x_name])
                 y = float(self.data[station_id][self.y_name])
                 return (x,y)        
@@ -94,23 +94,23 @@ class StationDB(object):
                 return None
         
     def station_ids_from_alias(self, alias):
-        ids = [x for x in self.data.keys() if self.data[x][self.ndx_alias] == alias]
+        ids = [x for x in self.data if self.data[x][self.ndx_alias] == alias]
         return ids
 
     def station_attribute(self, station_id, attrname):
-        if not station_id in self.data.keys():
+        if not station_id in self.data:
             raise ValueError("Station ID not on station list")
         try:
             ndx = self.header.index(attrname)
             return self.data[station_id][ndx]
         except:
-            print "Dumping column headers: "
+            print("Dumping column headers: ")
             # import string
-            print self.header #string.join(self.header,",")
+            print(self.header) #string.join(self.header,",")
             raise ValueError("Unable to retrieve attribute %s for station_id %s" % (attrname,station_id))
 
     def exists(self, station_id):
         """ Check if the station_id is in the database
         """
-        return True if station_id in self.data.keys() else False
+        return True if station_id in self.data else False
 

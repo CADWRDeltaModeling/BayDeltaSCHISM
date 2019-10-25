@@ -10,7 +10,7 @@ def time_block_report(message,told):
     """ This routine is for reporting incremental timing of parts of the script"""
     tnew=time.time()
     diff = tnew - told
-    print "%s : %s" % (message,diff)
+    print("%s : %s" % (message,diff))
     return tnew
     
 # For converting the Mercator projection of the data to lat/lon
@@ -55,12 +55,12 @@ def cencoos_schism_opendap(lat_lo,lon_lo,lat_hi,lon_hi,
         times  = timevar[:]
         tunits = timevar.units
         alldatetimes = num2date(times,tunits)
-        print "File time units: %s" % tunits
+        print("File time units: %s" % tunits)
         appdt = times[1] - times[0]
-        print "Apparent dt in units: %s" % appdt
+        print("Apparent dt in units: %s" % appdt)
 
-        print "First datetime: %s" % alldatetimes[0]
-        print "Last datetime: %s" % alldatetimes[-1]
+        print("First datetime: %s" % alldatetimes[0])
+        print("Last datetime: %s" % alldatetimes[-1])
         
         
         t=time_block_report("Full dimensions loaded at",t)    
@@ -75,10 +75,10 @@ def cencoos_schism_opendap(lat_lo,lon_lo,lat_hi,lon_hi,
             ldt = dtm.datetime(1970,1,1) + dtm.timedelta(hours=last_time)
             dttxt = dtt.strftime("%Y-%m-%d %H:%M")
             ldtxt = ldt.strftime("%Y-%m-%d %H:%M")
-            print "Non-consecutive time %s %s" % (dttxt,ldtxt)
+            print("Non-consecutive time %s %s" % (dttxt,ldtxt))
         last_time = tt
     dset_last = dtm.datetime(1970,1,1) + dtm.timedelta(hours=tt)
-    print "Last time in cencoos dataset: %s" % dset_last
+    print("Last time in cencoos dataset: %s" % dset_last)
     
     # Filter based on bounding box in lat/lon
     lon = np.array([merc_to_latlon(xx,y_merc[0])[0] for xx in x_merc])
@@ -89,8 +89,8 @@ def cencoos_schism_opendap(lat_lo,lon_lo,lat_hi,lon_hi,
     lon_dest = lon[lonndx]
     np.savetxt("latitude.csv",lat_dest,fmt="%.5f")
     np.savetxt("longitude.csv",lon_dest,fmt="%.5f")
-    print "# lat: %s" % len(lat_dest)
-    print "# lon: %s" % len(lon_dest)
+    print("# lat: %s" % len(lat_dest))
+    print("# lon: %s" % len(lon_dest))
     meshcoord = np.meshgrid(lon_dest,lat_dest)
     meshpoints = np.array(meshcoord).T.reshape(-1,2)
     np.savetxt("meshpoints.csv",meshpoints,delimiter = ",",fmt="%.5f")
@@ -132,10 +132,10 @@ def cencoos_schism_opendap(lat_lo,lon_lo,lat_hi,lon_hi,
         np.save("pmsl",pres)
 
     
-    nfile = len(times)/24
+    nfile = len(times) // 24
     
     hrs = times.astype(int)
-    dayint = hrs/24
+    dayint = hrs // 24
     minday = dayint.min()
     maxday = dayint.max()
     dayrange = np.arange(minday,maxday+1)
@@ -143,17 +143,17 @@ def cencoos_schism_opendap(lat_lo,lon_lo,lat_hi,lon_hi,
     # This remaining loop processes the big (in time) download and stores it in daily 
     # blocks.
     for d,dy in enumerate(dayrange):
-        print "Block: %s" % d
+        print("Block: %s" % d)
         timendx, = np.where(dayint == dy)
         if len(timendx) == 24:
             lastgood = timendx
             assert np.all(times[timendx] == np.arange(dy*24,(dy+1)*24))
         elif len(timendx) == 0:
-            print "empty index on block %s" % d
+            print("empty index on block %s" % d)
             timendx = lastgood
             desired = np.arange(dy*24,(dy+1)*24)
         else:
-            print "incomplete index on block %s" % d
+            print("incomplete index on block %s" % d)
             desired = np.arange(dy*24,(dy+1)*24)
             timendx = np.searchsorted(times,desired,side="left")
 
@@ -161,7 +161,7 @@ def cencoos_schism_opendap(lat_lo,lon_lo,lat_hi,lon_hi,
         
         # times are in hours since 1970-01-01
         base = dtm.datetime(1970,1,1) + dtm.timedelta(hours=dy*24)
-        print "Base %s" % base.strftime("%Y-%m-%d %H:%M")
+        print("Base %s" % base.strftime("%Y-%m-%d %H:%M"))
         time_days = (time_subset - time_subset[0])/24.
         base_date_str = base.strftime("%Y-%m-%d")
         dest_time_unit = "days since %s" % base_date_str
@@ -172,7 +172,7 @@ def cencoos_schism_opendap(lat_lo,lon_lo,lat_hi,lon_hi,
         datestr_for_file = base.strftime("%Y%m%d")
         outname = "%s_%s.nc" % (file_base,datestr_for_file)
         out = Dataset(outname,"w",format='NETCDF4')
-        print "Created file: %s " % outname
+        print("Created file: %s " % outname)
         
 
         subset = "u_component_wind_true_direction_all_geometries"
@@ -180,21 +180,21 @@ def cencoos_schism_opendap(lat_lo,lon_lo,lat_hi,lon_hi,
         if np.any(np.isnan(uwind2)):
             for i in range(uwinds.shape[0]):
                 if np.any(np.isnan(uwind2[i,:,:])):
-                    print "uwind[%s] has nan values: %s *************************" % (i,datestr_for_file)
+                    print("uwind[%s] has nan values: %s *************************" % (i,datestr_for_file))
                     
         subset = "v_component_wind_true_direction_all_geometries"                               
         vwind2 = vwind[timendx,:,:]
         if np.any(np.isnan(vwind2)):
             for i in range(vwinds.shape[0]):
                 if np.any(np.isnan(vwind2[i,:,:])):
-                    print "vwind[%s] has nan values: %s *************************" % (i,datestr_for_file)
+                    print("vwind[%s] has nan values: %s *************************" % (i,datestr_for_file))
             
         pres2 = pres[timendx,:,:]
         if np.any(np.isnan(pres2)):
             for i in range(pres2.shape[0]):
                 if np.any(np.isnan(pres2[i,:,:])):
                     pres2[i,:,:] = pres2[i-1,:,:]
-                    print "pres[%s] has nan values: %s *************************" % (i,datestr_for_file)
+                    print("pres[%s] has nan values: %s *************************" % (i,datestr_for_file))
  
         ntime = pres2.shape[0]
         ny = pres2.shape[1]
@@ -244,7 +244,7 @@ def cencoos_schism_opendap(lat_lo,lon_lo,lat_hi,lon_hi,
         prmsl[:,:,:] = pres2
         
         out.sync()
-        print "Creating dummy surface temp and humidity"
+        print("Creating dummy surface temp and humidity")
         
         stmp = out.createVariable('stmp','f4',('time', 'ny_grid', 'nx_grid',)) 
         stmp.long_name = "Surface Air Temperature (2m AGL)"
@@ -256,7 +256,7 @@ def cencoos_schism_opendap(lat_lo,lon_lo,lat_hi,lon_hi,
         spfh.standard_name = "specific_humidity"
         spfh.units = "1"
         out.close()
-        print "Closed file: %s" % outname
+        print("Closed file: %s" % outname)
 
 
 if __name__ == '__main__':

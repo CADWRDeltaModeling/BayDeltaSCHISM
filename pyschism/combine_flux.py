@@ -26,14 +26,14 @@ def combine_flux(infiles,outfile,prefer_last=False):
 
     ndxlast = filedata[-1].shape[0]
     if prefer_last:
-        sblock = np.repeat(0L,len(filedata))
+        sblock = np.full(len(filedata), 0, dtype=np.int64)
         eblock = [np.searchsorted(filedata[i][:,0],starts[i+1]) for i in range(nfile-1)] + [ndxlast]
     else:
-        sblock = [0L] + [np.searchsorted(filedata[i][:,0],ends[i-1],side="right") for i in range(1,nfile)]
+        sblock = [0] + [np.searchsorted(filedata[i][:,0],ends[i-1],side="right") for i in range(1,nfile)]
         eblock = [filedata[i].shape[0] for i in range(len(filedata))]
 
     blocks2merge = [d[s:e] for d,s,e in zip(filedata,sblock,eblock)]
-    for m in blocks2merge: print m.shape      
+    for m in blocks2merge: print(m.shape)
     merged = np.vstack(tuple(blocks2merge))
     
     ddt = np.diff(merged[:,0],n=2)

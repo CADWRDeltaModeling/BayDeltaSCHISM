@@ -9,7 +9,6 @@ Prerequisite: Numpy, rtree package, and libspatialindex for rtree
 ##
 ## Author: Kijin Nam, knam@water.ca.gov
 ##
-## LICENSE: GPLv2
 
 import priority_queue as pq
 import rtree
@@ -175,7 +174,7 @@ class TriMesh(object):
     def build_edges_from_elems(self):
         """ This is a function copied and modified from TriGrid
         """
-        print "Building edges from elements"
+        print("Building edges from elements")
         # iterate over elements, and for each element, if it's index
         # is smaller than a neighbor or if no neighbor exists,
         # write an edge record
@@ -219,7 +218,7 @@ class TriMesh(object):
 
     def _build_node_index(self):
         if self._node_index is None:
-            print "Building node indices..."
+            print("Building node indices...")
             # assemble points into list of (id, [x x y y], None)
             # but new rtree allows for interleaved coordinates all the time.
             # best solution probably to specify interleaved=False
@@ -232,7 +231,7 @@ class TriMesh(object):
     def _build_elem_index(self):
         # Build Rtree index for elems
         if self._elem_index is None:
-            print "Building element indices..."
+            print("Building element indices...")
             elem_i = 0
             tuples = []
             for element in self._elems:
@@ -259,7 +258,7 @@ class TriMesh(object):
         """ Get neighboring elements indexes of a node, so-called a ball.
         """
         if self._node2elems is None:
-            print "Mapping elements to nodes..."
+            print("Mapping elements to nodes...")
             # build array for point->element lookup
             # Use set for later convenience
             self._node2elems = [set() for i in range(self.n_nodes())]
@@ -308,7 +307,7 @@ class TriMesh(object):
         return nodes
 
     def _build_node2edges(self):
-        print "Mapping nodes to edges..."
+        print("Mapping nodes to edges...")
         # Build node2edges map
         n2e = [[] for i in range(self.n_nodes())]
         for edge_i in range(self.n_edges()):
@@ -406,7 +405,7 @@ class TriMesh(object):
             # newer versions of rtree return a generator:
             if isinstance(hits, types.GeneratorType):
                 # so translate that into a list like we used to get.
-                hits = [hits.next() for i in range(count)]
+                hits = [next(hits) for i in range(count)]
 
             if count > 1:
                 return hits
@@ -443,7 +442,7 @@ class TriMesh(object):
             all_nodes_i = np.unique(self._elems[elems_i])
 
             for node_i in all_nodes_i:
-                if done.has_key(node_i):
+                if node_i in done:
                     # both for p and for points that we've already done
                     continue
 
@@ -457,7 +456,7 @@ class TriMesh(object):
                                   - self._nodes[best])**2).sum() )
                 new_cost = best_cost + dist
 
-                if not queue.has_key(node_i):
+                if node_i not in queue:
                     queue[node_i] = np.inf
 
                 if queue[node_i] > new_cost:
@@ -477,7 +476,7 @@ class TriMesh(object):
 
             found_prev = 0
             for nbr in all_nodes_i:
-                if nbr == node_i or not done.has_key(nbr):
+                if nbr == node_i or nbr not in done:
                     continue
 
                 dist = np.sqrt( ((self._nodes[node_i] \
@@ -669,7 +668,7 @@ class TriMesh(object):
         # newer versions of rtree return a generator:
         if isinstance(hits, types.GeneratorType):
             # so translate that into a list like we used to get.
-            hits = [hits.next() for i in range(count)]
+            hits = [next(hits) for i in range(count)]
 
         if count > 1:
             return hits
@@ -719,9 +718,9 @@ class TriMesh(object):
         else:
             bad_elem = element2
 
-        print "Deleting elems..."
+        print("Deleting elems...")
         self._recursive_delete(bad_elem)
-        print "Renumbering nodes and elems..."
+        print("Renumbering nodes and elems...")
         self._renumber()
 
     def _recursive_delete(self,c,renumber = 1):
@@ -760,7 +759,7 @@ class TriMesh(object):
 
                     if nbr >= 0:
                         to_delete.append(nbr)
-        print "Deleted %i elems." % del_count
+        print("Deleted %i elems." % del_count)
 
 
     def _renumber(self):
@@ -771,10 +770,10 @@ class TriMesh(object):
         """
         element_hash = {} # sorted tuples of vertices
         new_elems = [] # list of indexes into the old ones
-        for i in xrange(self.n_elems()):
+        for i in range(self.n_elems()):
             my_key = tuple( np.sort(self._elems[i]) )
 
-            if not element_hash.has_key(my_key) and self.elems[i,0] >= 0:
+            if my_key not in element_hash and self.elems[i,0] >= 0:
                 # we're original and not deleted
                 element_hash[my_key] = i # value is ignored...
                 new_elems.append(i)
@@ -784,13 +783,13 @@ class TriMesh(object):
         # remove lonesome nodes
         active_nodes = np.unique(np.ravel(self._elems))
         if np.any(active_nodes) <= 0:
-            raise Exception, "renumber: Active nodes includes some negative indices"
+            raise Exception("renumber: Active nodes includes some negative indices")
 
         old_indices = -np.ones(self.n_nodes(), np.int32)
 
         self._nodes = self._nodes[active_nodes]
         if np.any(np.isnan(self._nodes)):
-            raise Exception,"renumber: some points have NaNs!"
+            raise Exception("renumber: some points have NaNs!")
 
         # need a mapping from active node to its index -
         # explicitly ask for int32 for consistency
@@ -800,7 +799,7 @@ class TriMesh(object):
         self._elems = old_indices[self._elems]
 
         if np.any(self._elems) < 0:
-            raise Exception,"renumber: after remapping indices, have negative node index in elems"
+            raise Exception("renumber: after remapping indices, have negative node index in elems")
 
         # clear out stale data
         self._clear_stale_data()

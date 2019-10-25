@@ -64,7 +64,7 @@ class Output7bXYTReader(object):
                 nxy = int(fin.readline().split()[0])  # 2nd: nxy
                 self._nxy = nxy
                 for xy_i in range(nxy):
-                    coord = map(float, fin.readline().split()[1:4])
+                    coord = list(map(float, fin.readline().split()[1:4]))
                     coords.append(coord)
             self._coords = coords
 
@@ -101,7 +101,7 @@ class Output7bXYTReader(object):
                         line = fin.readline().strip()
                         # time, value, depth
                         tokens = (line.split()[i] for i in [3, 1, 2])
-                        records = map(float, tokens)
+                        records = list(map(float, tokens))
                         data.append(records)
             outputs.append(numpy.array(data))
         self._outputs = outputs
@@ -229,7 +229,7 @@ if __name__ == "__main__":
     results = read_depth_avg_from_output7b_xyt('read_output7b_xyt.in',
                                                time_basis)
     ssd = calculate_stokes_drift(results)
-    print ssd
+    print(ssd)
     for depth, value in results:
         plt.clf()
         ax1 = plt.gca()

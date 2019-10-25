@@ -28,7 +28,7 @@ def read_lines(fpath):
             line = line.strip()
             if len(line) > 0:
                 tokens = line.split()
-                lines.append(map(float, tokens[:4]))
+                lines.append(list(map(float, tokens[:4])))
         return lines
 
 
@@ -50,7 +50,7 @@ def read_lines_from_shapefile(fpath):
     driver = osgeo.ogr.GetDriverByName('ESRI Shapefile')
     datasource = driver.Open(fpath, 0)
     if datasource is None:
-        print 'Could not open ' + fpath
+        print('Could not open ' + fpath)
         raise RuntimeError()
     layer = datasource.GetLayer()
     feature = layer.GetNextFeature()

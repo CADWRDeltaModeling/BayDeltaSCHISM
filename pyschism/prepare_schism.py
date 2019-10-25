@@ -79,14 +79,14 @@ def create_hgrid(s, inputs, logger):
 
         # Write hgrid.gr3
         option_name = 'gr3_outputfile'
-        if option_name in section.keys():
+        if option_name in section:
             logger.info("Writing up a new hgrid file...")
             hgrid_out_fpath = os.path.expanduser(section[option_name])
             s.write_hgrid(hgrid_out_fpath)
 
         # Write hgrid.ll
         option_name = 'll_outputfile'
-        if option_name in section.keys():
+        if option_name in section:
             logger.info("Creating a new hgrid.ll file...")
             hgrid_ll_fpath = os.path.expanduser(section[option_name])
             s.write_hgrid_ll(hgrid_ll_fpath)
@@ -123,14 +123,14 @@ def create_gr3_with_polygons(s, inputs, logger):
         return
     logger.info("Processing gr3 outputs...")
     expected_items = ('polygons', 'default')
-    for fname, item in dict_gr3.iteritems():
+    for fname, item in dict_gr3.items():
         check_and_suggest(item, expected_items)
         polygons = item.get('polygons', [])
         if polygons is not None:
             polygon_items = ('name', 'vertices', 'type', 'attribute')
             for polygon in polygons:
                 check_and_suggest(polygon, polygon_items)
-    for fname, item in dict_gr3.iteritems():
+    for fname, item in dict_gr3.items():
         if fname is None:
             logger.warning("No filename is given in one of gr3")
             continue
@@ -149,14 +149,14 @@ def create_prop_with_polygons(s, inputs, logger):
         return
     logger.info("Processing prop outputs...")
     expected_items = ('default', 'polygons')
-    for fname, item in dict_prop.iteritems():
+    for fname, item in dict_prop.items():
         check_and_suggest(item, expected_items)
         polygons = item.get('polygons', [])
         if polygons is not None:
             polygon_items = ('name', 'vertices', 'type', 'attribute')
             for polygon in polygons:
                 check_and_suggest(polygon, polygon_items)
-    for fname, item in dict_prop.iteritems():
+    for fname, item in dict_prop.items():
         if fname is None:
             logger.warning("No filename is given in one of prop")
             continue
@@ -266,13 +266,13 @@ def update_temporal_inputs(s, inputs):
     return_code = p.wait()
     if return_code != 0:
         for l in p.stdout:
-            print l
+            print(l)
         for l in p.stderr:
-            print l
+            print(l)
 
 
 def item_exist(inputs, name):
-    return True if name in inputs.keys() else False
+    return True if name in inputs else False
 
 
 def setup_logger():
@@ -316,7 +316,7 @@ def prepare_schism(args, use_logging=True):
                       "sources_sinks", "flow_outputs"] \
         + schism_yaml.include_keywords
     logger.info("Processing the top level...")
-    check_and_suggest(inputs.keys(), keys_top_level, logger)
+    check_and_suggest(list(inputs.keys()), keys_top_level, logger)
 
     out_fname = os.path.splitext(in_fname)[0] \
         + '_echo' + os.path.splitext(in_fname)[1]
@@ -332,7 +332,7 @@ def prepare_schism(args, use_logging=True):
                              "depth_optimization",
                              "gr3_outputfile", "ll_outputfile"] \
             + schism_yaml.include_keywords
-        check_and_suggest(mesh_items.keys(), keys_mesh_section)
+        check_and_suggest(list(mesh_items.keys()), keys_mesh_section)
         if item_exist(inputs['mesh'], 'mesh_inputfile'):
             # Read the grid file to be processed
             mesh_input_fpath = \

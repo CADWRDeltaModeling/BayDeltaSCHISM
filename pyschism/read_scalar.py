@@ -1,4 +1,4 @@
-
+import csv
 from numpy import cos as npcos
 from numpy import sin as npsin
 import pandas as pd
@@ -20,6 +20,22 @@ avelen = hours(1)
 MPH2MS = 0.44704
 KPH2MS = 1./3.6
 ref_pressure = None
+
+
+def ts_merge(series):
+    # this concatenates, leaving redundant indices in df0, df1, df2
+    dfmerge = pd.concat(series,sort=True)
+
+    # finally, drop duplicate indices
+    dfmerge = dfmerge.loc[~dfmerge.index.duplicated(keep='last')]    
+    # Now apply, in priority order, each of the original dataframes to fill the original
+    for ddf in series:
+        dfmerge = dfmerge.combine_first(ddf)
+
+
+    print(dfmerge)
+    return dfmerge
+
 
 def remove_isolated(ts,thresh):
     goodloc = np.where(np.isnan(ts.data),0,1)
@@ -71,15 +87,22 @@ def rep_size(x):
     return outy
 
 
-
+def cdec_date_parser(*args):
+    if len(args) == 2: 
+        x = args[0] + args[1]     
+        return dtm.datetime.strptime(x,"%Y%m%d%H%M")
+    else:
+        return dtm.datetime.strptime(args,"%Y%m%d%H%M")
 
 def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
                     qaqc_selector=None,
+                    qaqc_accept=["G","U"],
                     parsedates=None,
                     indexcol=0,
                     skiprows=0,
                     dateparser=None,
                     comment = None,
+                    extra_na = ["m","---",""," "],
                     prefer_age="new",                    
                     tz_adj=hours(0)):
     import os
@@ -90,10 +113,9 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
             matches.append(os.path.join(root, filename))
      
     head = skiprows
-    qaqc_accept = ["G","U"]
-    qaqc_accept = ["A","W"]
     column_names = None
-
+    
+    
 
     #parsetime = lambda x: pd.datetime.strptime(x, '%Y-%m-%d%H%M')
     tsm = []
@@ -110,9 +132,8 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
         if not dateparser is None: dargs["date_parser"] = dateparser
         if not comment is None: dargs["comment"] = comment
         #if not na_values is None: dargs["na_values"] = na_values
-        dset = pd.read_csv(m,index_col=indexcol,header = 0,parse_dates=parsedates,sep="\s+",comment="#",**dargs)
-        print(dset)
-        if column_names is None:
+        dset = pd.read_csv(m,index_col=indexcol,header = head,parse_dates=parsedates,na_values=extra_na,keep_default_na=True,**dargs)
+        if column_names is None:        
             dset.columns = [x.strip() for x in dset.columns]
             print(dset.columns)
         else:
@@ -127,34 +148,17 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
         if qaqc_selector is None:
             rowok = None
         else:
-             print(dset.loc[~dset[qaqc_selector].isin(qaqc_accept),selector].count())
-             print(dset.count())
-             dset.loc[~dset[qaqc_selector].isin(qaqc_accept),selector] = np.nan
-        
-#            anyok = None
-#            qa_flag = dset[qaqc_selector].as_matrix()
-#            print("QAQC SEction: {}".format(qaqc_selector))
-#            print qa_flag.shape
-#            for okflag in qaqc_accept:
-#                isok = np.equal(qa_flag,okflag)        #np.apply_along_axis(np.equal,0,qa_flag,okflag)
-#                if anyok is None:
-#                    anyok = isok
-#                else:
-#                    anyok |= isok
-#            assert anyok.ndim <= 2
-#            rowok =  anyok   #np.all(anyok,axis=anyok.ndim-1).flatten()
-#            print("number flagged: {}".format(np.count_nonzero(rowok)))
-#            print rowok.shape
             
+            qafilter = dset[qaqc_selector].isin(qaqc_accept)
+            if ' ' in qaqc_accept or '' in qaqc_accept or u' ' in qaqc_accept:
+                qafilter = dset[qaqc_selector].isna() | dset[qaqc_selector].isin(qaqc_accept)
+            else:
+                qafilter = dset[qaqc_selector].isin(qaqc_accept)
+            dset.loc[~qafilter,selector] = np.nan
 
-        tsm.append(dset[selector])
-    big_ts = tsm[0] if len(tsm) == 1 else pd.concat(tsm)
-    return big_ts  #.to_xarray()      
-
-
-
-
-    
+        tsm.append(dset[selector].astype(float))
+        big_ts = ts_merge(tsm) #pd.concat(tsm)  # does this need to be outdented?
+    return big_ts.to_frame()  #.to_xarray()      
 
 
 
@@ -162,25 +166,23 @@ if __name__ == "__main__":
     start = dtm.datetime(2003,1,1)
     end = dtm.datetime(2008,5,29)
     mdir = "//cnrastore-bdo/Modeling_Data/des_emp/raw"
-    mdir = "C:/delta/data_sample/raw"
-    fpat="s21_sunrise_snc_ec_inst*.csv"
-#    ts=csv_retrieve_ts(fpat,mdir,start,end,selector="VALUE",qaqc_selector="QAQC Flag",
-#                    parsedates=["DATETIME"],
-#                    indexcol=["DATETIME"],
-#                    skiprows=2,
-#                    dateparser=None,
-#                    comment = None,
-#                    prefer_age="new",                    
-#                    tz_adj=hours(0))  
-#    ts.plot()
-    mdir = "C:/delta/data_sample"
-    fpat = "SC.UV.USGS.11303500.6.C.00000000.rdb"
-    ts=csv_retrieve_ts(fpat,mdir,start,end,selector="VALUE",qaqc_selector="QA",
-                    parsedates=[["DATE","TIME","TZCD"]],
-                    indexcol="DATE_TIME_TZCD",
-                    skiprows=0,
+    fpat="s33_cygnus_cyg_ec_inst_*.csv"
+    #fpat="bll_blacklockriver_bll_ec_inst_2009_2019.csv"
+    #fpat="s71_mzmroar_msl_ec_inst_*.csv"
+    ts=csv_retrieve_ts(fpat,mdir,start,end,selector="VALUE",qaqc_selector="QAQC Flag",
+                    parsedates=["DATETIME"],
+                    indexcol=["DATETIME"],
+                    skiprows=2,
                     dateparser=None,
                     comment = None,
                     prefer_age="new",                    
-                    tz_adj=hours(0))
+                    tz_adj=hours(0))  
+    ts2 = ts.asfreq("15min")
+    fig,ax = plt.subplots(1)
+    (ts-10.).plot(ax=ax)
+    ts2.plot(ax=ax)
+    plt.legend(["Original", "Regular"])
+    plt.show()
+    ts2.to_csv("//cnrastore-bdo/BDO_HOME/SCHISM/fielddata/emp_ec_20190802/cyg.csv",date_format="%Y%m%d,%H%M",float_format="%.1f",na_rep="m")
+
 

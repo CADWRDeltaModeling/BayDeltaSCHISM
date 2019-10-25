@@ -248,9 +248,9 @@ class SchismPolygonShapefileWriter(SchismPolygonIo):
             driver_name = 'ESRI Shapefile'
         driver = GetDriverByName(driver_name)
         if driver is None:
-            print '%s is not available.' % driver_name
+            print('%s is not available.' % driver_name)
             raise RuntimeError()
-        datasource = driver.CreateDataSource(unicode(fpath))
+        datasource = driver.CreateDataSource(str(fpath))
         if datasource is None:
             raise RuntimeError("Cannot create a GIS file")
         layer = datasource.CreateLayer('layer',
@@ -286,7 +286,7 @@ class SchismPolygonIoFactory(object):
             raise ValueError('Not in the SchismPolygonIoFactory')
 
     def show_registered_readers(self):
-        print self.registered_readers
+        print(self.registered_readers)
 
     def get_writer(self, name):
         if name in self.registered_writers:

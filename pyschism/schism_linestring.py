@@ -120,9 +120,9 @@ class LineStringShapefileWriter(LineStringIo):
             driver_name = 'ESRI Shapefile'
         driver = GetDriverByName(driver_name)
         if driver is None:
-            print '%s is not available.' % driver_name
+            print('%s is not available.' % driver_name)
             raise RuntimeError()
-        datasource = driver.CreateDataSource(unicode(fpath))
+        datasource = driver.CreateDataSource(fpath)
         if datasource is None:
             raise RuntimeError("Cannot create a GIS file")
         layer = datasource.CreateLayer('layer',

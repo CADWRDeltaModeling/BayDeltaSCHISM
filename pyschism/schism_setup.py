@@ -435,7 +435,7 @@ class SchismSetup(object):
             # Find node pairs
             up_path, down_path = \
                 self.mesh.find_two_neighboring_node_paths(struct.coords)
-            struct.node_pairs = zip(up_path, down_path)
+            struct.node_pairs = list(zip(up_path, down_path))
             # Reference pair
             ref = item.get('reference', 'self')
             struct.reference = ref
@@ -482,7 +482,7 @@ class SchismSetup(object):
         # TODO: The safety of this code needs to check further
         mesh = self.mesh
         # path1
-        center_node_i = path1[len(path1) / 2]
+        center_node_i = path1[len(path1) // 2]
         neighbors = mesh.get_neighbor_nodes(center_node_i)
         candidates = []
         for n in neighbors:
@@ -551,7 +551,7 @@ class SchismSetup(object):
                     'The number of coordinates in vertices are wrong.')
             vertices = np.array(vertices)
             poly_type = polygon['type'].lower() \
-                if 'type' in polygon.keys() else "none"
+                if 'type' in polygon else "none"
             attribute = polygon['attribute']
             prop = {'name': name, 'type': poly_type, 'attribute': attribute}
             poly = SchismPolygon(shell=vertices,
@@ -576,7 +576,7 @@ class SchismSetup(object):
                             msg = "Egn: %s" % attribute
                             self._logger.error(msg)
                             raise ValueError(
-                                "The polygon equation does not seem to be well-formed..")
+                                "The polygon equation does not seem to be well-formed for polygon: {} ".format(name))
                     else:
                         value = attribute
                     empty = False
@@ -589,7 +589,7 @@ class SchismSetup(object):
                         if attr[node_i] > value:
                             attr[node_i] = value
                     else:
-                        raise Exception('Not supported polygon type')
+                        raise Exception("Not supported polygon type ({}) for polygon ({})".format(poly.type,name))
             if empty:
                 msg = "This polygon contains no nodes: %s" % poly.name
                 self._logger.error(poly)
@@ -635,7 +635,7 @@ class SchismSetup(object):
         mesh = self.mesh
         elementflags = np.empty((mesh.n_elems(), 1))
         elementflags.fill(0.)
-        for elem_i in xrange(mesh.n_elems()):
+        for elem_i in range(mesh.n_elems()):
             elem = mesh.elem(elem_i)
             flags = attr[elem]
             if np.amax(flags) == 1.:
@@ -658,14 +658,14 @@ class SchismSetup(object):
         """
         # TODO: I need to use a common source/sink I/O routines.
         key = 'sources'
-        sources = source_sinks[key] if key in source_sinks.keys() else dict()
+        sources = source_sinks[key] if key in source_sinks else dict()
         key = 'sinks'
-        sinks = source_sinks[key] if key in source_sinks.keys() else dict()
+        sinks = source_sinks[key] if key in source_sinks else dict()
 
         fout = open(out_fname, 'w')
-        buf = "%d ! total # of elems with sources\n" % len(sources.keys())
+        buf = "%d ! total # of elems with sources\n" % len(sources)
         fout.write(buf)
-        for name, coord in sources.iteritems():
+        for name, coord in sources.items():
             element_i = self.mesh.find_elem(coord)
             if element_i is None:
                 element_i = self.mesh.find_closest_elems(coord)
@@ -675,9 +675,9 @@ class SchismSetup(object):
                 buf = "%d ! %s\n" % (element_i + 1, name)
                 fout.write(buf)
 
-        buf = "\n%d ! total # of elems with sinks\n" % len(sinks.keys())
+        buf = "\n%d ! total # of elems with sinks\n" % len(sinks)
         fout.write(buf)
-        for name, coord in sinks.iteritems():
+        for name, coord in sinks.items():
             element_i = self.mesh.find_elem(coord)
             if element_i is None:
                 element_i = self.mesh.find_closest_elems(coord)
@@ -742,9 +742,9 @@ class SchismSetup(object):
         dt_ratio = int(dt_in / dt_out)
         loop_step = max_size_spline * dt_ratio
         if nout % loop_step != 0:
-            iloop = nout / loop_step + 1
+            iloop = nout // loop_step + 1
         else:
-            iloop = nout / loop_step
+            iloop = nout // loop_step
 
         msg = "number of loops required to convert the file: %s" % iloop
         self._logger.info(msg)
@@ -812,7 +812,7 @@ class SchismSetup(object):
             for j in range(n_nodes):
                 l = f.readline().strip()
                 tokens = l.split()
-                harmonic[j, ] = map(float, tokens)
+                harmonic[j, ] = list(map(float, tokens))
             harmonics[name] = harmonic
 
         # Calculate weights
@@ -957,18 +957,18 @@ def check_and_suggest(testees, list_words, logger=None):
             if logger is not None:
                 logger.error(msg)
             else:
-                print msg
+                print(msg)
             similar_one = check_similarity(keyword, list_words)
             if not similar_one is None:
                 msg = "-- Did it mean '%s'?" % similar_one
                 if logger is not None:
                     logger.info(msg)
                 else:
-                    print msg
+                    print(msg)
             msg = "Acceptable items in this section are: " + \
                   ', '.join(list_words)
             if logger is not None:
                 logger.error(msg)
             else:
-                print msg
+                print(msg)
             raise ValueError("Unrecognizable item")
