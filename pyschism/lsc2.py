@@ -23,8 +23,17 @@
 
 """
 
+
 import numpy as np
 from laplace_smooth_data import *
+import matplotlib.pyplot as plt
+
+showlist = [0,1,2] #,419,28778,28923,237892,237893,232311]
+showlist = [7942, 7967, 7968, 7969, 7972]
+showlist = [67, 71, 72, 73, 76]
+showlist = [29914, 29915,30094,30774]
+showlist = [16948,16949,207525,207526]
+showlist = [245201]
 
 def szcoord(s, h, eta, theta, b, hc):
     thetaterm = np.tanh(0.5 * theta)
@@ -35,669 +44,711 @@ def szcoord(s, h, eta, theta, b, hc):
     return z
 
 
+
+
 def default_num_layers0(total_ref_depth, minlayer, maxlayer):
     return np.minimum(np.maximum(minlayer, total_ref_depth.astype('i')), maxlayer).astype('f')
 
 
-def default_num_layers(eta, h0, minlayer, maxlayer,dz_target):
-    total_ref_depth = eta + h0
-    effdepth = total_ref_depth
-    NCUTOFF = 18
-    layerds=np.ones(NCUTOFF+1,dtype="d")/float(NCUTOFF)
-    layerds[0]=0.
-    ss = np.cumsum(layerds)
-    zz = szcoord(ss, NCUTOFF-eta, eta, 2., 0., 1.) - 1.
-    print("zz in default_num_layers")
-    print(zz)
- 
-    nlayer0 = np.maximum(np.searchsorted(zz,effdepth),1)
-    HCUT = 5.6
-    nlayercutoff =  np.searchsorted(zz,HCUT)
-    print("default num layer")
-    print(NCUTOFF/2)
-    print(nlayercutoff)
-    print(zz[nlayercutoff])
-    print(zz[nlayercutoff-1])
-    nlayer1 = (effdepth - HCUT) + 1 + nlayercutoff
     
-    nlayer_trial = np.where(effdepth<HCUT,nlayer0,nlayer1.astype("i"))
+class CubicLSC2MeshFunction(object):
     
+    def __init__(self):
+        #self.params = np.array([0.6,0.066,0.002,1e-5])
+        self.params = np.array([0.5,0.055,0.002,1e-5])
+        
+    def density(self,x,tlev):
+        p = self.params
+        return p[3]*tlev**3.+ p[2]*tlev**2. + p[1]*tlev + p[0]
+        
+    def depth(self,x,tlev):
+        p = self.params
+        d = p[3]*tlev**4./4.+ p[2]*tlev**3./3. + p[1]*tlev**2./2. + p[0]*tlev
+        return d
+
+
+
+class BilinearMeshDensity(object):
+    
+    def __init__(self):
+        #self.params = np.array([0.6,0.066,0.002,1e-5])
+        self.params = np.array([0.5,0.012,0.1,1e-5])
+        self.params = np.array([0.5,0.005,0.09,-8.5e-5])
+        self.params = np.array([0.5,0.005,0.07,-3.e-5])
+        
+        
+    def density(self,z,h,x):
+        (a,b,c,d) = self.params
+        return a + b*h + c*z + d*z*h
+        
+    def depth(self,t,h,x):
+        (a,b,c,d) = self.params
+        m = (a + b*h)
+        n = (c+d*h)
+        opnd = np.outer(t,n) 
+        #print "opnd"
+        #print t
+        #print t.shape
+        #print n.shape
+        #print opnd.shape
+        retval = ((np.exp(opnd)-1)*m/n).T
+        return retval
+
+        
+    
+    
+def default_num_layers(x,eta, h0, minlayer, maxlayer,dz_target,meshfun,maxlev=100):
+    """ Returns the number of layers that, according to meshfun, gives a depth matching eta + h0
+        In the (likely) case of inexact fit) the lower bound n- of the number of layers
+        not yet outfitted for variation in x"""
+    totaldepth = eta + h0
+    levs = np.arange(0.,float(maxlev))
+    levdepths = meshfun.depth(levs,totaldepth,x)
+    # todo: redo with ndindex
+    nlayer = np.zeros_like(totaldepth)
+    npoint = len(nlayer)
+    for inode in range(npoint):
+        #hi_ndx is the index that is equal or greater
+        nlayer[inode] = np.maximum(1,np.searchsorted(levdepths[inode,:],totaldepth[inode]))
+    print "Maximum reference depth: {} Unrestricted max layer: {}".format (np.max(totaldepth),np.max(nlayer))
     nlayer = np.minimum(np.maximum(
-        minlayer, (nlayer_trial).astype('i')), maxlayer) #.astype('f')
+        minlayer, (nlayer).astype('i')), maxlayer) #.astype('f')    
+    print "# small minlayer = %s " % np.count_nonzero(minlayer<=1.)
+    print "Any small number layers: %s at index %s" % (np.amin(nlayer), np.argmin(nlayer))   
+    return nlayer.astype("i")
+    
 
-    print("Small minlayer %s = " % np.any(minlayer<=1.))
-    print("Any small number layers: %s %s" % (np.amin(nlayer), np.argmin(nlayer)))   
-    return nlayer
+def example3():
+    eta = 1.5
+    h0 = np.array([2.,-1.,-1.8,0.,2.,5.,20.,28.])
+    minlayer = np.array([3,1,2,5,2,2,2,2])
+    maxlayer = np.array([5,5,5,5,5,8,32,32])
+    meshfun = BilinearMeshDensity()
+    nlayer = default_num_layers(0.,eta,h0,minlayer,maxlayer,0.,meshfun)
+    print(nlayer)
 
-def gen_sigma(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
-    """" Generate local sigma coordinates based on # layers, reference surface and depth
 
-        Parameters
-        ----------
-        nlayer: ndarray
-            Veector of size np (number of nodes) giving desired # layers for each node
-            in the mesh
+def example2():
+    eta = 1.5
+    h0 = np.array([3.58,1.,0.25,0.,4.5,107.0,120.])
+    minlayer = np.array([3,4,4,5,8,12,12])
+    maxlayer = np.array([8,8,8,10,8,38,38])
+    print "Depth"
+    print eta+h0
+    meshfun = BilinearMeshDensity()
+    nlayer = default_num_layers(0.,eta,h0,minlayer,maxlayer,0.,meshfun)
+    print "NLayer"
+    print(nlayer)
+    sigma = gen_sigma(nlayer,eta,h0,None,meshfun)
+    
 
-        eta: ndarray or float
-            reference water level heights at each node at which generation is to occur.
-
-        h: ndarray
-            unperturbed depth for each node in the mesh
-
-        theta: float
-            maximum theta to use in S calculations. This is interpreted the same
-            as a standard S grid theta although it will be varied according to depth
-
-        b: float
-            S coordinate parameter b
-
-        hc: float
-            S coordinate parameter hc (do not alter)
-    """
-    depth = h + eta
+def mesh_function_depths(nlayer, depth, mesh, meshfun):
+    
+    print "Entering mesh_functino_depths"
+    for inode in showlist:
+        print "inode={} depth={} nlayer={}".format(inode,depth[inode],nlayer[inode])
+    
+    
+    
     npoint = len(nlayer)
-    theta = np.maximum(1e-4, theta * depth / 100)
-    ds = 1. / nlayer
-    maxlayer = np.max(nlayer)
+    globalmaxlayer = np.max(nlayer)
     nlevel = nlayer + 1
-    maxlevel = np.max(nlevel)
-    midlevel = (maxlevel-1) // 3
-    
-    zcor = np.empty((npoint, maxlevel), 'd')
-    print("max level %s mid level %s" % (maxlevel,midlevel))
-    print("sizes")
-    print(h.shape)
-    print(npoint)
-    print() 
-    
-    zcor[:,maxlevel - 1]=-h
-    old_layer = -h
-    speed = np.maximum(0.5,depth_smooth)*0.55 + np.minimum(40.,np.maximum(0.0,depth-40.))/8.
-    if True:
-        for i in range(maxlevel+1):
-            print("layer iteration: %s" % i)
-            new_layer = laplace_smooth_with_vel(mesh,old_layer,vel=speed,kappa=2.4,dt=0.05,iter_total=20)
-            latest_layer = np.where(new_layer>old_layer, new_layer, old_layer)
-            zcor[:,maxlevel-2-i] = latest_layer
-            old_layer = latest_layer
-        np.savetxt("zcorsave.txt",zcor)
-    else:
-        zcor = np.loadtxt("zcorsave.txt")
-    
-    NCUTOFF = 18
-    tlayerds=np.ones(NCUTOFF+1,dtype="d")/float(NCUTOFF)
-    tlayerds[0]=0.
-    tss = -np.cumsum(tlayerds)
-    tzz_base = szcoord(tss, NCUTOFF-eta, eta, 2., 0., 1.0)
-    print("tzz")
-    print(tzz_base)
+    globalmaxlevel = globalmaxlayer + 1
 
+    meshfundepths = np.empty((npoint, globalmaxlevel), 'd')
+    
+    # sigmadepths is the uniform mesh implied by applying the layer thickness over the depth
+    sigmadepths = np.empty((npoint, globalmaxlevel), 'd')    
+    hsig = np.empty(npoint,dtype='d')
     
     
-    if True:
-        zcortwo=zcor[:,0:2].copy()
-        zcortwo[:,0] = zcor[:,midlevel]
-        zcortwo[:,1] = -h       
-        bndthick = zcortwo[:,0] - zcortwo[:,1]
-        bndfrac = bndthick/depth
-        
-        snaptol=np.maximum(0.15,depth*0.01)
-        lastsim01=np.absolute(zcortwo[:,0]-zcortwo[:,1])<snaptol
-        
-        print("@#%#$@^")
-        print("zcortwo")
-        print(zcortwo[lastsim01,:][10000:10004,:])
-        print("depth")
-        print(depth[lastsim01][10000:10004])
-        zcortwo[lastsim01,0] = zcortwo[lastsim01,1] + snaptol[lastsim01]
-        print(zcortwo[lastsim01,:][10000:10004,:])
-        notused = np.sum(np.isnan(zcortwo),axis=1)
-        nbnd = 2-notused
-        bndlevel = nlevel - 2
-        nlevel -= notused
-        nlevel = np.maximum(2,nlevel)
-        zcor[:,:] = np.nan        
-        ds = 1./(bndlevel)
-        maxnonbndlayer = np.max(bndlevel) +1
+    
+    levs = np.arange(globalmaxlevel) # The plus two is to protect against situations when all nlayer == 0
+    x = np.zeros(npoint,dtype="d")
 
-        layerds = np.tile(ds, (maxnonbndlayer, 1)).transpose()
-        layerds[:, 0] = 0.
-        ss = np.cumsum(layerds, axis=1)
-    
-        np.set_printoptions(threshold=np.inf)
-        ss[ss > 1.0001] = np.nan 
-        ss[ss > 0.999] = 1.0
-        ss = -ss
-        for i in range(maxnonbndlayer):
-            zcor[:, i] = szcoord(ss[:, i], -zcortwo[:,0] , eta, theta, b, 1.0)
+    x = np.zeros(npoint)
+    for inode in range(npoint):
+        meshfundepths[inode,:]=meshfun.depth(levs,depth[inode],x)
         
-        for i in range(npoint):
-            if nlevel[i] == 2:
-                zcor[i,0] = eta
-                zcor[i,1] = -h[i]
-                zcor[i,2:-1] = np.nan
-                bndlevel[i] = 0
-                continue
-            try:
-                zcor[i,bndlevel[i]:(bndlevel[i]+2)] = zcortwo[i,:]
-            except:
-                print("Bad 1")
-                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
-                print(zcortwo.shape)
-                print("nlevel[%s] = %s" % (i,nlevel[i]))
-                print("nbnd[%s] = %s" % (i,nbnd[i]))
-                print(maxlevel)
-                raise ValueError("blah")
-            try:
+    dz1 = meshfundepths[:,1].copy()  # height (dz) of top layer 
+
+
+
+    hnv = np.zeros_like(dz1)         # 
+    hnv1 = hnv.copy()
+    dh_meshfun = np.zeros_like(dz1)
+    for inode in range(npoint):
+        # hnv is depth given by # vertical layers and mesh function
+        # hnv1 is the depth of the level above
+        # In this version, the vanilla case is that these straddle depth
+        
+        hnv[inode] = meshfundepths[inode,nlevel[inode]-1]
+        hnv1[inode] = meshfundepths[inode,nlevel[inode]-2] 
+        
+        excess_depth = depth[inode] - hnv1[inode]
+        dh_meshfun[inode] = hnv[inode] - hnv1[inode]
+        
+        # rule out cases where the bed is at above the lowest meshfun (which will become
+        # hybrid with sigma or sigma) 
+        # rule out the exact case where the bed ifind out if lowest level falls below bottom (eliminating exact fit case)
+        # and if it does check if it is a sliver
+        sliver = 0.025
+
+        if excess_depth > 0.:
+            if (excess_depth < sliver*dh_meshfun[inode]) and (nlayer[inode]>1):    # todo is this the right plae for nlayer check?
                 
-                #zcor[i,0:(bndlevel[i]+1)] = np.linspace(eta,zcor[i,bndlevel[i]],bndlevel[i]+1)
-                if (bndlevel[i] > 0) and (nbnd[i] > 1):
-                    zcor[i,bndlevel[i]] = 0.4*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i]-1] + 0.3*zcor[i,bndlevel[i]+1]
-                elif (bndlevel[i] > 0) and (nbnd[i] == 0):
-                    zcor[i,bndlevel[i]] = 0.7*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i]-1]               
-            except:
-                print("Bad 2")
-                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
-                print(zcortwo.shape)
-                print("nlevel[%s] = %s" % (i,nlevel[i]))
-                print("nbnd[%s] = %s" % (i,nbnd[i]))
-                print(maxlevel)
-                raise ValueError("blah blah")
-            zcor[i,nlevel[i]:-1] = np.nan
-
-    flatten = True
-    if flatten:
-        for i in range(npoint):
-            zb = 0
-            stretch = max(0.8, min((depth[i]-4)/36.,1.25))   # was 0.8
-            tzz = (tzz_base-eta)*stretch + eta
-            for k in range(min(bndlevel[i]-2,NCUTOFF-1),-1,-1):
-                if k < 0: break
-                tdepth = eta-tzz[k]
-                real_depth=depth[i]
-                dzlow = (real_depth-tdepth)/(nlevel[i] - 1 - k)
-                dzend = tzz[k-1]-tzz[k] if k > 0 else np.nan # todo: is this right?  
-                ratio = dzlow/dzend
-                distbnd = tzz[k] - zcor[i,bndlevel[i]]
-                levsbnd=bndlevel[i] - k
-                dzlow = distbnd/levsbnd
-                ratio = dzlow/dzend                
-                if ratio > 0.7 and ratio < 3.0 and distbnd > 0.01 :
-                    zb = k
-                    if depth[i]>=7.:
-                        zb = min(int(nlevel[i]/2),max(3,k))
-                    break
-                #print "k=%s tdepth=%s real_depth=%s dzlow=%s dzend=%s nlayer=%s" % (k,tdepth,real_depth,dzlow,dzend,nlayer[i])
-            zsigma=None
-            if (depth[i] < 35. and depth[i] > 0 and nlayer[i] >=3 and zb >= 0 and zb < nlevel[i]):      
-                blend = max(0.,min((35. - depth[i])/10.,1.0)) 
-                replace = zcor[i,:].copy()     
-                replace[0:(zb+1)]=tzz[0:(zb+1)]
-                try:
-                    zsigma = np.linspace(tzz[zb],zcor[i,bndlevel[i]],(bndlevel[i]-zb+1))
-                    replace[zb:(bndlevel[i]+1)]=zsigma
-                except:
-                    print("issue: %s %s %s %s " % (depth[i],zb,nlevel[i],tzz[zb]))
-                    print(zsigma)
-                    print(len (zsigma))
-                    print(tzz)  
-                if zb>0: replace[zb] = 0.2*replace[zb]+0.4*replace[zb-1]+0.4*replace[zb+1]
-                zcor[i,:] = zcor[i,:]*(1.-blend) + replace*blend
-            
-        #zcor[i,bndlevel[i]] = 0.2*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i+1]] + 0.5*zcor[i,bndlevel[i-1]]
-    sigma = ((np.zeros_like(h) + eta).reshape(npoint, 1) - zcor) / \
-        depth.reshape(npoint, 1)
-    sigma = np.minimum(sigma, 1)
-
-    shallow = 0.2
-    for i in range(npoint):
-        if depth[i] < shallow or bndfrac[i] > 0.8:
-            sigma[i, 0:(nlevel[i])] = np.linspace(0., 1., nlevel[i])
-    sigma = -sigma
-    print("sigma")
-    print(sigma[0,:])
-    print(sigma.shape)
-    # zcor[depth<0.,:]=np.nan
-    nlayer_revised = nlevel - 1
-    return sigma,nlayer_revised    
+                # sliver below bed that needs to be absorbed into layer above
+                # reduce nlevel and nlayer, readjust hnv. Mesh will be stretched later. hnv1[inode] is now invalidv
+                if inode in showlist: print "WATCH inode={}".format(inode)
+                nlayer[inode] -= 1
+                nlevel[inode] -= 1
+                meshfundepths[inode,nlevel[inode]-1] = depth[inode]
+                hnv[inode] = depth[inode]
+                
+            elif excess_depth < dh_meshfun[inode]:
+                # it is sufficiently big, set it to bed height
+                #todo: could these be asserts?
+                meshfundepths[inode,nlevel[inode]-1] = depth[inode]
+                hnv[inode] = depth[inode]    
+                
+                if excess_depth < 0.3*dh_meshfun[inode]:
+                    meshfundepths[inode,nlevel[inode]-2] -= 0.25*dh_meshfun[inode]                
+            #else:
+            #    #print "excess at {}".format(inode)
+    
+        sigmadepths[inode,0:nlevel[inode]] = np.arange(nlevel[inode],dtype='d')*dz1[inode]
+        hsig[inode]=sigmadepths[inode,nlevel[inode]-1]
+        sigmadepths[inode,nlevel[inode]:] = hsig[inode]    
+        
+        if inode in showlist:
+            print "@#(%!@$*%"
+            print "inode={} depth={} nlevel={} nlayer={}".format(inode,depth[inode],nlevel[inode],nlayer[inode])
+            print meshfundepths[inode,:]
     
 
-def gen_sigma4(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
-    """" Generate local sigma coordinates based on # layers, reference surface and depth
-
-        Parameters
-        ----------
-        nlayer: ndarray
-            Veector of size np (number of nodes) giving desired # layers for each node
-            in the mesh
-
-        eta: ndarray or float
-            reference water level heights at each node at which generation is to occur.
-
-        h: ndarray
-            unperturbed depth for each node in the mesh
-
-        theta: float
-            maximum theta to use in S calculations. This is interpreted the same
-            as a standard S grid theta although it will be varied according to depth
-
-        b: float
-            S coordinate parameter b
-
-        hc: float
-            S coordinate parameter hc (do not alter)
-    """
-    depth = h + eta
-    npoint = len(nlayer)
-    theta = np.maximum(1e-4, theta * depth / 100)
-    ds = 1. / nlayer
-    maxlayer = np.max(nlayer)
-    nlevel = nlayer + 1
-    maxlevel = np.max(nlevel)
-    midlevel = (maxlevel-1) // 3
+    # hsig is the depth of a uniform sigma grid 
+    # given the specificed num layers and layer thickness of the top layer 
+    # from the mesh function. If the depth is less this, a pure sigma grid will be used
+    # todo: single layer is a special case that I thought would be taken care of by using <= not =
+    # but the special case seems to require spelling out
+    is_sigma = (depth <= hsig)  | (nlayer==1)
     
-    zcor = np.empty((npoint, maxlevel), 'd')
-    print("max level %s mid level %s" % (maxlevel,midlevel))
-    zcor[:,maxlevel - 1]=-h
-    old_layer = -h
-    speed = np.maximum(0.5,depth_smooth)*0.55 + np.minimum(40.,np.maximum(0.0,depth-40.))/8.
+    
+    # is_expand means that the depth is greater than the depth of the mesh function evaluated at the bottom level. 
+    # This will often be true ... it implies some stretching, which may be a lot or a little
+    # For now (pre-stretch) use the coordinates as given by mesh function (min/max doesn't affect)
+    is_expand = depth > hnv
     if False:
-        for i in range(maxlevel+1):
-            print("layer iteration: %s" % i)
-            new_layer = laplace_smooth_with_vel(mesh,old_layer,vel=speed,kappa=2.4,dt=0.05,iter_total=20)
-            latest_layer = np.where(new_layer>old_layer, new_layer, old_layer)
-            zcor[:,maxlevel-2-i] = latest_layer
-            old_layer = latest_layer
-        np.savetxt("zcorsave.txt",zcor)
-    else:
-        zcor = np.loadtxt("zcorsave.txt")
+        print "Hello"
+        print "is_expand: {}".format(is_expand)
+        print hnv.shape
+        print depth
+        print hsig
+        print hnv
+        
+    # for hsig <= h < htrans the levels given by meshfun don't quite fit in the (shallower) water column, 
+    # so transition to sigma coordinates with weight gamma
+    print "gamma stuff"
+    for inode in showlist:
+        print depth[inode]
+        print hsig[inode]
+        print hnv[inode]
+        print meshfundepths[inode,:]
     
-
-    if True:
-        zcortwo=zcor[:,0:2].copy()
-        zcortwo[:,0] = zcor[:,midlevel]
-        zcortwo[:,1] = -h       
-        bndthick = zcortwo[:,0] - zcortwo[:,1]
-        bndfrac = bndthick/depth
-        
-        snaptol=np.maximum(0.15,depth*0.01)
-        lastsim01=np.absolute(zcortwo[:,0]-zcortwo[:,1])<snaptol
-        
-        print("@#%#$@^")
-        print("zcortwo")
-        print(zcortwo[lastsim01,:][10000:10004,:])
-        print("depth")
-        print(depth[lastsim01][10000:10004])
-        zcortwo[lastsim01,0] = zcortwo[lastsim01,1] + snaptol[lastsim01]
-        print(zcortwo[lastsim01,:][10000:10004,:])
-        notused = np.sum(np.isnan(zcortwo),axis=1)
-        nbnd = 2-notused
-        bndlevel = nlevel - 2
-        nlevel -= notused
-        nlevel = np.maximum(2,nlevel)
-        zcor[:,:] = np.nan        
-        ds = 1./(bndlevel)
-        maxnonbndlayer = np.max(bndlevel) +1
-
-        layerds = np.tile(ds, (maxnonbndlayer, 1)).transpose()
-        layerds[:, 0] = 0.
-        ss = np.cumsum(layerds, axis=1)
+    safe_divisor = hnv - hsig
+    safe_divisor[hnv == hsig] = 1.
+    # todo is this really safe?
+    gamma = np.minimum(1.,np.maximum(0.,(depth - hsig)/safe_divisor ) )  # One value per node
+    htrans  = (meshfundepths.T*gamma + sigmadepths.T*(1.-gamma)).T
+     
+    dh_meshfun = dh_meshfun*gamma + dz1*(1.-gamma)
     
-        np.set_printoptions(threshold=np.inf)
-        ss[ss > 1.0001] = np.nan 
-        ss[ss > 0.999] = 1.0
-        ss = -ss
-        for i in range(maxnonbndlayer):
-            zcor[:, i] = szcoord(ss[:, i], -zcortwo[:,0] , eta, theta, b, 1.0)
-        
-        for i in range(npoint):
-            if nlevel[i] == 2:
-                zcor[i,0] = eta
-                zcor[i,1] = -h[i]
-                zcor[i,2:-1] = np.nan
-                bndlevel[i] = 0
-                continue
-            try:
-                zcor[i,bndlevel[i]:(bndlevel[i]+2)] = zcortwo[i,:]
-            except:
-                print("Bad 1")
-                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
-                print(zcortwo.shape)
-                print("nlevel[%s] = %s" % (i,nlevel[i]))
-                print("nbnd[%s] = %s" % (i,nbnd[i]))
-                print(maxlevel)
-                raise ValueError("blah")
-            try:
-                
-                #zcor[i,0:(bndlevel[i]+1)] = np.linspace(eta,zcor[i,bndlevel[i]],bndlevel[i]+1)
-                if (bndlevel[i] > 0) and (nbnd[i] > 1):
-                    zcor[i,bndlevel[i]] = 0.4*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i]-1] + 0.3*zcor[i,bndlevel[i]+1]
-                elif (bndlevel[i] > 0) and (nbnd[i] == 0):
-                    zcor[i,bndlevel[i]] = 0.7*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i]-1]               
-            except:
-                print("Bad 2")
-                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
-                print(zcortwo.shape)
-                print("nlevel[%s] = %s" % (i,nlevel[i]))
-                print("nbnd[%s] = %s" % (i,nbnd[i]))
-                print(maxlevel)
-                raise ValueError("blah blah")
-            zcor[i,nlevel[i]:-1] = np.nan
-        #zcor[i,bndlevel[i]] = 0.2*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i+1]] + 0.5*zcor[i,bndlevel[i-1]]
-    sigma = ((np.zeros_like(h) + eta).reshape(npoint, 1) - zcor) / \
-        depth.reshape(npoint, 1)
-    sigma = np.minimum(sigma, 1)
-
-    shallow = 0.2
+    
+    # now evaluate any stretching to be done
+    # the stretching factor starts out at zero at the surface and linearly increases to the full amount
+    # at the lowest level. In other words, the stretching gets stretched
+    stretch = depth/hnv
+    expandfac = np.ones(globalmaxlevel,dtype="d")
     for i in range(npoint):
-        if depth[i] < shallow or bndfrac[i] > 0.8:
-            sigma[i, 0:(nlevel[i])] = np.linspace(0., 1., nlevel[i])
-    sigma = -sigma
-    print("sigma")
-    print(sigma[0,:])
-    print(sigma.shape)
-    # zcor[depth<0.,:]=np.nan
-    nlayer_revised = nlevel - 1
-    return sigma,nlayer_revised
+        if is_expand[i]:
+            expandfac[0:nlevel[i]] = 1. + np.power(np.linspace(0.,1.,nlevel[i]),4.)*(stretch[i]-1.)
+            expandfac[nlevel[i]:] = expandfac[nlevel[i]-1]
+            htrans[i,:] = expandfac[0:]*htrans[i,:]
+            dh_meshfun[i] *= stretch[i]
+        # todo: this is new because it gives some behavior for sigma. This is reasonable for positive depth but 
+        # a bit funny for negative. The real issue of course is that the bed is above the reference
+        if is_sigma[i]:
+            htrans[i,0:nlevel[i]] = np.linspace(0,depth[i],nlevel[i]) 
+        htrans[i,nlevel[i]:] = depth[i]
+    if True:
+        print"{{{{{{{}}}}}}}"
+        for i in showlist:
+            print "\ni={} depth ={} gamma={} nlayer={} hvn={}".format(i,depth[i],gamma[i],nlayer[i],hnv[i])
+            print htrans[i,0:nlevel[i]]
+            print "meshfundepths:"
+            print meshfundepths[i,0:nlevel[i]]
+            print "sigmadepths"
+            print sigmadepths[i,0:nlevel[i]]
+    return htrans,is_sigma,nlayer,dh_meshfun
+    
+    
+def lowest_layer_height(htrans,nlevel,klev=0):
+    npoint = htrans.shape[0]
+    print "npoint: %s" % npoint
+    print htrans.shape[1]
+    llh = np.zeros(npoint,dtype=float)
+    for ipoint in range(npoint):
+        bigindex = np.maximum(nlevel[ipoint]-klev - 1, 1)
+        llh[ipoint] = htrans[ipoint,bigindex] - htrans[ipoint,bigindex - 1] 
+    #todo: experieent necessitated because htrans can go negative when bed is above reference
+    return np.absolute(llh)
 
+
+
+
+def label_components(mesh,nlayer,thresh,exclude):
+
+    labels = -np.ones(len(nlayer))
+    
+    labels[exclude]=0    
+    current_label = 0
+    cc = [exclude]
+    qualified = (nlayer > thresh) & (labels < 0)
+    while np.any(qualified):
+        current_label +=1
+        #if current_label % 100 == 1: 
+        #    print "label: {}".format(current_label)
+        cc.append([])
+        # pick first seed that qualifies and that isn't labeled yet
+        
+        v = np.nonzero(qualified)[0][0]
+        #labels[v] = current_label
+        stack = [v] 
+        while len(stack) > 0:
+            v = stack.pop()
+            #print "Here is v: {},{}".format(v,type(v))
+            #print v
+            if labels[v] > 0:
+                continue
+            if nlayer[v] > thresh:
+                labels[v] = current_label
+                cc[current_label].append(v)
+                for v0 in mesh.get_neighbor_nodes(v):
+                    if not labels[v0]>0: 
+                        stack.append(v0)
+        qualified = (nlayer > thresh) & (labels < 0)
+        #if current_label % 100 == 1:
+        #    print "Label size: {}".format(len(cc[current_label]))
+    
+        #assert 0 == 1
+    print "Number of components: {}".format(len(cc))
+    return cc
+
+
+
+def process_orphans2(mesh,nlayer,depth,hcor):
+    norphan = 0
+    maxlayer = np.max(nlayer)-1
+    smallest_nlayer = 3   # don't check for orphans smaller than this # layers
+    smallest_component_size = 16   # size of component considered orphan
+    
+    for ilay in range(maxlayer,smallest_nlayer,-1):
+        exclude, = np.where(nlayer<=ilay)
+        print "orphans {}".format(ilay)
+        # find connected components that have this many or fewer layers
+        cc = label_components(mesh,nlayer,ilay,exclude)
+        sizes = np.array([len(c) for c in cc],dtype="i")
+        #print sizes
+        use_labels, = np.where(sizes < smallest_component_size)       
+        for iuse in use_labels:
+            cuse = cc[iuse]
+            norphan += len(cuse)
+            #print "cuse"
+            #print cuse
+            for inode in cuse:
+                #print "inode"
+                #print inode
+                nlayer[inode] -= 1
+                hcor[inode,nlayer[inode]:]=depth[inode]
+        print "ilay={} norphan = {}".format(ilay,norphan)
+    return nlayer,hcor
+    
     
 
-def gen_sigma3(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.,mesh=None):
-    """" Generate local sigma coordinates based on # layers, reference surface and depth
+def process_orphans(mesh,nlayer,depth,hcor):
+    norphan = 0
+    nodes = mesh.nodes
+    for ndx in range(nodes.shape[0]):
+        nds = mesh.get_neighbor_nodes(ndx)
+        nlayer_node = nlayer[ndx]
+        max_nlayer_neighbor = np.max(nlayer[nds])
+        
+        is_orphan = max_nlayer_neighbor < nlayer_node #No connectivity,
+        if is_orphan:
+            nlayer[ndx] = max_nlayer_neighbor
+            hcor[ndx,nlayer[ndx]:] = depth[ndx]
+            norphan+=1
+    print "# orphans = {}".format(norphan)
+    return nlayer
+    
 
-        Parameters
-        ----------
-        nlayer: ndarray
-            Veector of size np (number of nodes) giving desired # layers for each node
-            in the mesh
-
-        eta: ndarray or float
-            reference water level heights at each node at which generation is to occur.
-
-        h: ndarray
-            unperturbed depth for each node in the mesh
-
-        theta: float
-            maximum theta to use in S calculations. This is interpreted the same
-            as a standard S grid theta although it will be varied according to depth
-
-        b: float
-            S coordinate parameter b
-
-        hc: float
-            S coordinate parameter hc (do not alter)
-    """
-    depth = h + eta
-    npoint = len(nlayer)
-    theta = np.maximum(1e-4, theta * depth / 100)
-    ds = 1. / nlayer
-    maxlayer = np.max(nlayer)
-    nlevel = nlayer + 1
-    maxlevel = np.max(nlevel)
-
-    zcor = np.empty((npoint, maxlevel), 'd')
-    print("max level %s" % maxlevel)
-    zcor[:,maxlevel - 1]=-h
+def smooth_bed(mesh,eta,h,hcor,nlevel,speed):
+    
+    nsmoothlev = 1
+    i=0
+    npoint = len(nlevel)
+    nlayer = nlevel - 1
+    zsmooth = np.zeros((npoint,nsmoothlev),dtype='d')
+    zsmooth[:,nsmoothlev - 1]=-h
     old_layer = -h
-    speed = np.maximum(0.5,depth_smooth)*0.55 + np.minimum(40.,np.maximum(0.0,depth-40.))/8.
-    if True:
-        for i in range(maxlevel-1):
-            print("layer iteration: %s" % i)
-            new_layer = laplace_smooth_with_vel(mesh,old_layer,vel=speed,kappa=2.4,dt=0.05,iter_total=20)
-            latest_layer = np.where(new_layer>old_layer, new_layer, old_layer)
-            zcor[:,maxlevel-2-i] = latest_layer
-            old_layer = latest_layer
-        np.savetxt("zcorsave.txt",zcor)
-    else:
-        zcor = np.loadtxt("zcorsave.txt")
     
-    midlevel = (maxlevel-1)//2
-    if True:
-        zcorthree=zcor[:,0:3].copy()
-        zcorthree[:,1] = zcor[:,midlevel]
-        print("max level %s" % maxlevel)    
-        zcorthree[:,2] = zcor[:,(maxlevel-1)]
-        bndthick = zcorthree[:,0] - zcorthree[:,2]
-        bndfrac = bndthick/depth
-        
-        snaptol=0.1
-        lastsim12=np.absolute(zcorthree[:,1]-zcorthree[:,2])<snaptol
-        save=zcorthree[lastsim12,2]
-        zcorthree[lastsim12,2] = np.nan
-        zcorthree[lastsim12,1] = save
-        lastsim01=np.absolute(zcorthree[:,0]-zcorthree[:,1])<snaptol
-        save=zcorthree[lastsim01,1]
-        zcorthree[lastsim01,1] = np.nan
-        zcorthree[lastsim01,0] = save
-        notused = np.sum(np.isnan(zcorthree),axis=1)
-        nbnd = 3-notused
-        bndlevel = nlevel - 3
-        nlevel -= notused
-        nlevel = np.maximum(2,nlevel)
-        zcor[:,:] = np.nan
-        
-        ds = 1./(bndlevel)
-        maxnonbndlayer = np.max(bndlevel) +1
 
-        layerds = np.tile(ds, (maxnonbndlayer, 1)).transpose()
-        layerds[:, 0] = 0.
-        ss = np.cumsum(layerds, axis=1)
+    #hlow = lowest_layer_height(hcor,nlevel,0)
+    # speed = np.absolute(hlow)
+    # with nsmoothlay = 1 used vel=speed*.7,kappa=.75,dt=0.05,iter_total=20
+    # this includes experimental smoothing based on neighbors in the base layer and/or current layer depending on whether 
+    # the number of layers is less in the neighbor. If reverting, eliminate nlayer and use laplace_wismooth_with_vel3
+    #new_layer = laplace_smooth_with_vel3(mesh,nlayer,old_layer,vel=speed*.6,kappa=0.75,dt=0.05,iter_total=20)
+    new_layer = laplace_smooth_with_vel3(mesh,nlayer,old_layer,vel=speed*.2,kappa=0.7,dt=0.05,iter_total=20)
+    #latest_layer = np.where(new_layer>old_layer, new_layer, old_layer)
+            
+    # todo: At the moment this script not equipped to change the # of layers. 
+    # As a result we want to keep the bottom layer off the bed by limiting its shrinkage 
+    latest_layer = np.maximum(old_layer+0.5*speed, new_layer)
+    zsmooth[:,nsmoothlev-2-i] = latest_layer
+    old_layer = latest_layer
+    np.savetxt("zsmoothsave.txt",zsmooth)
+    # Now generate new mesh depths using the smoothed elevations as a pseudo-bed
+    # and one fewer layers
+    # Mind that the outcome from the previous step is in z coordinates, not depth
+    # but the depth function works based on depth from reference eta
+    hsmooth = eta - zsmooth
+    pseudo_bed_depth = hsmooth[:,0] 
+    return pseudo_bed_depth
+
+
     
-        np.set_printoptions(threshold=np.inf)
-        ss[ss > 1.0001] = np.nan 
-        ss[ss > 0.999] = 1.0
-        ss = -ss
-        for i in range(maxnonbndlayer):
-            zcor[:, i] = szcoord(ss[:, i], -zcorthree[:,0] , eta, theta, b, 1.0)
+def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
+    """" Generate local sigma coordinates based on # layers, reference surface and depth
+
+        Parameters
+        ----------
+        nlayer: ndarray
+            Veector of size np (number of nodes) giving desired # layers for each node
+            in the mesh
+
+        eta: ndarray or float
+            reference water level heights at each node at which generation is to occur.
+
+        h: ndarray
+            unperturbed depth for each node in the mesh
+
+        mesh : float
+            maximum theta to use in S calculations. This is interpreted the same
+            as a standard S grid theta although it will be varied according to depth
+
+        meshfun: float
+            S coordinate parameter b
+
+        hc: float
+            S coordinate parameter hc (do not alter)
+    """
+    depth=eta+h    
+    # Have to do this first because nlayer may be modified
+    hcor,is_sigma,nlayer,dh_meshfun = mesh_function_depths(nlayer,depth,mesh,meshfun)
+    
+    print "first hcor"
+    for inode in showlist:
+        print hcor[inode,:]
+    
+    
+    #def layer_depths(nlayer, depth, mesh, meshfun):
+    
+    do_smooth = nsmoothlay > 0
+    SIGMA_NEG = -9999.
+    
+    # This is the first pass at generating the zcor using the mesh function
+    # If we aren't smoothing this is the z part of the final mesh
+
+    smooth_to_archive = True
+    npoint = len(nlayer)
+    globalmaxlayer = np.max(nlayer)
+    nlevel = nlayer + 1
+    globalmaxlevel = np.max(nlevel)
+    print "Global maxlevel before smooth: {}".format(globalmaxlevel)
+    
+
+    nsmoothlev = nsmoothlay + 1
+
+    #do_smooth = True
+    if do_smooth:
+        print "******\n\n\nSmoothing"
+        print "hcor dims"
+        print hcor.shape
+        print nlevel.shape
+        print nlayer.shape
+   
         
-        for i in range(npoint):
-            if nlevel[i] == 2:
-                zcor[i,0] = eta
-                zcor[i,1] = -h[i]
-                zcor[i,2:-1] = np.nan
-                bndlevel[i] = 0
+        for i in showlist:
+            print "i={} nlevel = {}, depth={}".format(i,nlevel[i],depth[i])
+            print "firlst"
+            print hcor[i,:]
+        
+        
+        zsmooth = np.zeros((npoint,nsmoothlev),dtype='d')
+        zsmooth[:,nsmoothlev - 1]=-h
+        old_layer = -h
+        
+        if smooth_to_archive:
+            for i in range(nsmoothlay):
+                print "layer iteration: %s" % i
+                hlow = lowest_layer_height(hcor,nlevel,i) 
+                speed = np.absolute(hlow)
+                # with nsmoothlay = 1 used vel=speed*.7,kappa=.75,dt=0.05,iter_total=20
+                # this includes experimental smoothing based on neighbors in the base layer and/or current layer depending on whether 
+                # the number of layers is less in the neighbor. If reverting, eliminate nlayer and use laplace_wismooth_with_vel3
+                #new_layer = laplace_smooth_with_vel3(mesh,nlayer,old_layer,vel=speed*.6,kappa=0.75,dt=0.05,iter_total=20)
+                new_layer = laplace_smooth_with_vel3(mesh,nlayer,old_layer,vel=speed*.6,kappa=0.7,dt=0.05,iter_total=20)
+                #latest_layer = np.where(new_layer>old_layer, new_layer, old_layer)
+                
+                # todo: At the moment this script not equipped to change the # of layers. 
+                # As a result we want to keep the bottom layer off the bed by limiting its shrinkage 
+                latest_layer = np.maximum(old_layer+0.5*speed, new_layer)
+                zsmooth[:,nsmoothlev-2-i] = latest_layer
+                old_layer = latest_layer
+            np.savetxt("zsmoothsave.txt",zsmooth)
+        else:
+            zsmooth = np.loadtxt("zsmoothsave.txt")
+            
+        print "Linking"
+        # Now generate new mesh depths using the smoothed elevations as a pseudo-bed
+        # and one fewer layers
+        # Mind that the outcome from the previous step is in z coordinates, not depth
+        # but the depth function works based on depth from reference eta
+        hsmooth = eta - zsmooth
+        pseudo_bed_depth = hsmooth[:,0] 
+
+        
+        
+        # todo from here down is experimental. The next couple lines setup computation of # levels revised
+        # after that, nlevel was replaced by nlevel2.
+        dztarget = np.zeros_like(nlayer, dtype="d")
+        xdummy = 0.
+        eta_dummy = 0. # todo: is this good enough? Did it because we already have the eta part of the depth in pseudo_bed_depth
+
+        nlayer2 = default_num_layers(xdummy,eta_dummy, pseudo_bed_depth, np.maximum(1,minlayer-nsmoothlay), 
+                                     np.maximum(1,maxlayer-nsmoothlay), dztarget,meshfun)
+        
+        # the code later recognizes the minimum of 1 enforced above and below is artificial the globalmaxlayer stuff prevents
+        # going past bound ... something that came up in a small test problem
+        nlayer2 = np.maximum(1,np.minimum(nlayer2, globalmaxlayer-nsmoothlay))
+        print "yo"
+        print nlayer2
+         
+        # this is a flag needed used later to signal to indicate not enough layers to absorb nsmoothlay into the total
+        # this is the last opportunity to calculate it based on the original number of layers
+        # this is an all-or-nothing approach that does not try to eek out every opportunity to use the smoothed layers.
+        # for instance, if nsmoothlay = 2 and there are 2 original layers we could conceivably use the lowest smoothed layer 
+        # and then ignore the upper one in order to match the reference
+        few4smooth=(nlayer <= nsmoothlay)
+        
+        #nlayer2 = np.where(nlayer > nsmoothlay,nlayer2,nlayer)  # right generalization ? will need to test
+        #nlayer2 = nlayer_default
+        #nlayer = tabu_numlayer(depth,mesh.edges,nlayer_default,minlayer,maxlayer)
+
+
+        
+        #
+        # nlayer-nsmoothlay
+
+        hcor2,is_sigma2,nlayer2 = mesh_function_depths(nlayer2,pseudo_bed_depth,mesh,meshfun)
+
+        nlevel2 = nlayer2+1
+        nlevel3 = nlevel2+nsmoothlay
+        nlayer3 = nlayer2+nsmoothlay
+        
+
+        # This is simplified from before when it was possible for the smoothing process
+        # to reduce the # levels. At the moment the interface is assumed to be the top
+        # smoothed level
+        #bndlevel = np.maximum(0,nlevel2 - nsmoothlay - 1).astype('i')
+        bndlevel = np.maximum(0,nlevel2-1)
+        nbnd = (bndlevel*0 + nsmoothlay).astype('i')
+
+        
+        # Blend the region around the interface between the upper part done with the mesh
+        # function and the lower part done with the smoothing
+        for inode in range(npoint):
+            hcor[inode,nlevel2[i]:] = np.nan
+            if nlevel2[inode] == 2: 
                 continue
-            try:
-                zcor[i,bndlevel[i]:(bndlevel[i]+3)] = zcorthree[i,:]
-            except:
-                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
-                print(zcorthree.shape)
-                print("nlevel[%s] = %s" % (i,nlevel[i]))
-                print("nbnd[%s] = %s" % (i,nbnd[i]))
-                print(maxlevel)
-                raise ValueError("blah")
-            try:
-                
-                #zcor[i,0:(bndlevel[i]+1)] = np.linspace(eta,zcor[i,bndlevel[i]],bndlevel[i]+1)
-                if (bndlevel[i] > 0) and (nbnd[i] > 1):
-                    zcor[i,bndlevel[i]] = 0.4*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i]-1] + 0.3*zcor[i,bndlevel[i]+1]
-                elif (bndlevel[i] > 0) and (nbnd[i] == 0):
-                    zcor[i,bndlevel[i]] = 0.7*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i]-1]               
-            except:
-                print("bndlevel[%s] = %s " % (i,bndlevel[i]))
-                print(zcorthree.shape)
-                print("nlevel[%s] = %s" % (i,nlevel[i]))
-                print("nbnd[%s] = %s" % (i,nbnd[i]))
-                print(maxlevel)
-                raise ValueError("blah blah")
-            zcor[i,nlevel[i]:-1] = np.nan
-        #zcor[i,bndlevel[i]] = 0.2*zcor[i,bndlevel[i]] + 0.3*zcor[i,bndlevel[i+1]] + 0.5*zcor[i,bndlevel[i-1]]
-    sigma = ((np.zeros_like(h) + eta).reshape(npoint, 1) - zcor) / \
-        depth.reshape(npoint, 1)
-    sigma = np.minimum(sigma, 1)
+            blev = bndlevel[inode]
+            print "xxxxxxxxxxx\ni={} nlevels = {} nlevel2 = {} nlevel3 = {}\n blev = {} depth = {} pseudo_be_depth={} is_sigma={}".format(
+                        inode,nlevel[inode],nlevel2[inode],nlevel3[inode],blev,depth[inode],pseudo_bed_depth[inode],is_sigma[inode])            
+            if blev == 0: 
+                continue
+            if inode in showlist:
+                print "to be joined"                    
+                print "\ni={} nlevels = {} nlevel2 = {} nlevel3 = {}\n blev = {} depth = {} pseudo_be_depth={} is_sigma={}".format(
+                        inode,nlevel[inode],nlevel2[inode],nlevel3[inode],blev,depth[inode],pseudo_bed_depth[inode],is_sigma[inode])
 
-    shallow = 1e-3
-    for i in range(npoint):
-        if depth[i] < shallow or (1.-bndfrac[i])/(nlevel[i]-1) < 0.05:
-            sigma[i, 0:(nlevel[i])] = np.linspace(0., 1., nlevel[i])
-    sigma = -sigma
-    print("sigma")
-    print(sigma[0,:])
-    print(sigma.shape)
-    # zcor[depth<0.,:]=np.nan
-    nlayer_revised = nlevel - 1
-    return sigma,nlayer_revised    
-    
-    
-    
-def gen_sigma2(nlayer, depth_smooth, eta, h, theta, b=0., hc=0.):
-    """" Generate local sigma coordinates based on # layers, reference surface and depth
+                print hcor[inode,:]
+                print hcor2[inode,:]
+                print hsmooth[inode,:]
+            hcor[inode,0:blev] = hcor2[inode,0:blev]
+            hcor[inode,blev:nlevel3[inode]] = hsmooth[inode,:]   # nlevel3 is the adjusted number
+            hcor[inode,nlevel3[inode]:] = hcor[inode,nlevel3[inode]-1] # copy to lower levels
+            
+            if inode in showlist: 
+                print "** hcor after merge before bound inode = {}** ".format(inode)
+                print hcor[inode,:]
+                print " &*&*"
+            #zcor[inode,0:(bndlevel[inode]+1)] = np.linspace(eta,zcor[inode,bndlevel[inode]],bndlevel[inode]+1)
+            if (blev > 0) and (nbnd[inode] > 1):
+               hcor[inode,blev] = 0.4*hcor[inode,blev] + 0.3*hcor[inode,blev-1] + 0.3*hcor[inode,blev+1]
+            elif (blev > 0) and (nbnd[inode] == 1):
+                hcor[inode,blev] = 0.7*hcor[inode,blev] + 0.3*hcor[inode,blev-1]              
+            
+            if inode in showlist: 
+                print "final hcor inode={}".format(inode)
+                print hcor[inode,:]
+    else:
+        # seems like if # smoothing is zero these are not provided?
+        nlevel2=nlevel
+        nlevel3=nlevel
 
-        Parameters
-        ----------
-        nlayer: ndarray
-            Veector of size np (number of nodes) giving desired # layers for each node
-            in the mesh
-
-        eta: ndarray or float
-            reference water level heights at each node at which generation is to occur.
-
-        h: ndarray
-            unperturbed depth for each node in the mesh
-
-        theta: float
-            maximum theta to use in S calculations. This is interpreted the same
-            as a standard S grid theta although it will be varied according to depth
-
-        b: float
-            S coordinate parameter b
-
-        hc: float
-            S coordinate parameter hc (do not alter)
-    """
-    depth = h + eta
-    npoint = len(nlayer)
-    theta = np.maximum(1e-4, theta * depth / 100)
-    ds = 1. / nlayer
-    maxlayer = np.max(nlayer)
-    nlevel = nlayer + 1
-    maxlevel = np.max(nlevel)
-
-    zcor = np.empty((npoint, maxlayer + 1), 'd')
-    layerds = np.tile(ds, (maxlevel, 1)).transpose()
-    layerds[:, 0] = 0.
-    ss = np.cumsum(layerds, axis=1)
-    
-    np.set_printoptions(threshold=np.inf)
-    ss[ss > 1.0001] = np.nan
-    ss[ss > 0.999] = 1.0
-    ss = -ss
-    for i in range(maxlevel):
-        zcor[:, i] = szcoord(ss[:, i], h, eta, theta, b, 1.0)
-
+    smooth_bed_clip = True       
+    if smooth_bed_clip:
+        smoothed_bed = smooth_bed(mesh,eta,h,hcor,nlevel,dh_meshfun)
+       
+        for inode in range(npoint):
+            if hcor[inode,(nlevel[inode]-2)] > smoothed_bed[inode]:
+                if nlevel[inode] == 2: 
+                    continue
+                if (inode > 111900) and (inode < 112000):
+                    print "inode = {}, nlevel={} smoothed = {}  hcor={}".format(inode,nlevel[inode],smoothed_bed[inode],hcor[inode,nlevel[inode]-2])
+                nlayer[inode] -= 1
+                nlevel2[inode] -= 1
+                nlevel[inode] -= 1
+                hcor[inode,nlayer[inode]:] = depth[inode]  # todo: should this be nan?
         
-    NCUTOFF = 18
-    tlayerds=np.ones(NCUTOFF+1,dtype="d")/float(NCUTOFF)
-    tlayerds[0]=0.
-    tss = np.cumsum(tlayerds)
-    tzz = (szcoord(tss, NCUTOFF-eta, eta, 2., 0., 1.0) - 1.)*0.8
-
-    #todo: hardwire
-    #todo: could cause dz to be too large on bottom?
-    #zbreak = np.minimum(12,0.6*nlayer).astype(int)
-    #zbreak = np.maximum(zbreak0,6)
-    #f = 0.65 # layers below the regular ones must be this fraction of the regular ones in size
-    #import pdb
-    flatten = True
-    if flatten:
-        for i in range(npoint):
-            zb = 0
-            for k in range(min(nlevel[i]-2,NCUTOFF-1),-1,-1):
-                tdepth = tzz[k]
-                real_depth=depth[i]
-                dzlow = (real_depth-tdepth)/(nlevel[i] - 1 - k)
-                dzend = tzz[k]-tzz[k-1] if k > 0 else 100000. # todo: is this right?  
-                ratio = dzlow/dzend                
-                if ratio > 0.6 and ratio < 3.:
-                    zb = k
-                    break
-                #print "k=%s tdepth=%s real_depth=%s dzlow=%s dzend=%s nlayer=%s" % (k,tdepth,real_depth,dzlow,dzend,nlayer[i])
-            zsigma=None
-            if (depth[i] < 30. and depth[i] > 0 and nlayer[i] >=3 and zb >= 0 and zb < nlevel[i]):      
-                blend = max(0.,min((30. - depth[i])/5.,1.0)) 
-                replace = zcor[i,:].copy()     
-                replace[0:(zb+1)]=eta-tzz[0:(zb+1)] 
-                try:
-                    zsigma = eta - np.linspace(tzz[zb],depth[i],(nlevel[i]-zb))
-                    replace[zb:(nlevel[i])]=zsigma
-                except:
-                    pass
-                    print("issue: %s %s %s %s " % (depth[i],zb,nlevel[i],tzz[zb]))
-                    print(zsigma)
-                    print(len (zsigma))
-                    print(tzz)                    
-                if zb>0: replace[zb] = 0.2*replace[zb]+0.4*replace[zb-1]+0.4*replace[zb+1]
-                zcor[i,:] = zcor[i,:]*(1.-blend) + replace*blend
-
-                
-    sigma = ((np.zeros_like(h) + eta).reshape(npoint, 1) - zcor) / \
-        depth.reshape(npoint, 1)
-    sigma = np.minimum(sigma, 1)
-
-    for i in range(npoint):
-        if depth[i] < 1e-3:
-            sigma[i, 0:(nlevel[i])] = np.linspace(0., 1., nlevel[i])
-    sigma = -sigma
-    print("sigma")
-    print(sigma[0,:])
-    print(sigma.shape)
-    # zcor[depth<0.,:]=np.nan
-    return sigma
-
-
-def gen_sigma_original(nlayer, eta, h, theta, b=0., hc=0.):
-    """" Generate local sigma coordinates based on # layers, reference surface and depth
-
-        Parameters
-        ----------
-        nlayer: ndarray
-            Veector of size np (number of nodes) giving desired # layers for each node
-            in the mesh
-
-        eta: ndarray or float
-            reference water level heights at each node at which generation is to occur.
-
-        h: ndarray
-            unperturbed depth for each node in the mesh
-
-        theta: float
-            maximum theta to use in S calculations. This is interpreted the same
-            as a standard S grid theta although it will be varied according to depth
-
-        b: float
-            S coordinate parameter b
-
-        hc: float
-            S coordinate parameter hc (do not alter)
-    """
-    depth = h + eta
-    npoint = len(nlayer)
-    theta = np.maximum(1e-4, theta * depth / 100)
-    ds = 1. / nlayer
-    maxlayer = np.max(nlayer)
+        
+    print("Procesing orphans")    
+    #nlayer = process_orphans(mesh,nlayer,depth,hcor)    
+    oldnlayer = nlayer.copy()
+    nlayer,hcor = process_orphans2(mesh,nlayer,depth,hcor)
+    #plt.hist(oldnlayer-nlayer)
+    #plt.show()
+    
+    
+    nlevel3 = nlayer + 1
     nlevel = nlayer + 1
-    maxlevel = np.max(nlevel)
-    zcor = np.empty((npoint, maxlayer + 1), 'd')
-    layerds = np.tile(ds, (maxlevel, 1)).transpose()
-    layerds[:, 0] = 0.
-    ss = np.cumsum(layerds, axis=1)
-    np.set_printoptions(threshold=np.inf)
-    ss[ss > 1.0001] = np.nan
-    ss[ss > 0.999] = 1.0
-    ss = -ss
-    for i in range(maxlevel):
-        zcor[:, i] = szcoord(ss[:, i], h, eta, theta, b, hc)
+    
+    print("Convert to sigma")
 
-    sigma = ((np.zeros_like(h) + eta).reshape(npoint, 1) - zcor) / \
-        depth.reshape(npoint, 1)
+    
+    # Convert to sigma and replace     
+    sigma = (hcor / depth.reshape(npoint, 1))
     sigma = np.minimum(sigma, 1)
+    sigma[sigma==-0.0] = 0.0
 
-    for i in range(npoint):
-        if depth[i] < 1e-3:
-            sigma[i, 0:(nlevel[i])] = np.linspace(0., 1., nlevel[i])
-    sigma = -sigma
-    # zcor[depth<0.,:]=np.nan
-    return sigma
+    print" (*(*(*())))"
+    for inode in showlist:
+        print"inode={} depth={} nlayer={} nlevel={} nlevel3={}".format(inode,depth[inode],nlayer[inode],nlevel[inode],nlevel3[inode])
+        print hcor[inode,:]
+        print sigma[inode,:]
+
+    if nsmoothlay > 0:
+        for inode in range(npoint):
+            # when is_sigma changes this is conservative for monotonicity
+            # first, assume that the smoothed layers are OK and just do sigma down to the top of the smoothing
+            if inode in showlist or inode==2:
+                print "deciding if sigma for i={} is_sigma= {} is_sigma2={}".format(inode,is_sigma[inode],is_sigma2[inode])
+            
+            if is_sigma2[inode] or is_sigma[inode]:
+                nnonbndlev = nlevel2[inode] 
+                if inode in showlist:
+                    print "Experimental stuff inode={} nonbndlev={} nlevel={} nlevel2={} nlevel3={}".format(
+                            inode,nnonbndlev,nlevel[inode],nlevel2[inode],nlevel3[inode])
+                    print "sigma"
+                    print sigma[inode,:]
+                sigma[inode,0:nnonbndlev] = np.linspace(0.,sigma[inode,nnonbndlev-1],nnonbndlev) 
+                
+                
+                # the above step may have left some very thin sigma layers above some very wide smoothing layers
+                # sigmartio is the ratio of the sigma layer width to the top smoothed layer, unless the smoothing went above the
+                # reference ratio (which is indirectly indicated by sigmas<0) and in this case it is just 0. as a signal
+                sigmaratio =  sigma[inode,1]/ (sigma[inode,nnonbndlev] - sigma[inode,nnonbndlev-1]) 
+                
+                # another flagged issue is the possibility that sigma values are negative, which wouldd have happened because
+                # hsmooth was negative
+                if np.any(sigma[inode,0:nnonbndlev] < 0.): 
+                    sigmaratio = SIGMA_NEG
+                    
+
+                # abandon the shole matching/merge idea and do sigma from scratch
+                # hardwired threshold
+                ACCEPT_RATIO=0.2
+                nlev = nlevel[inode] if few4smooth[inode] else nlevel3[inode] 
+                nlevel3[inode] = nlev
+                if (sigmaratio < ACCEPT_RATIO) or np.isnan(sigmaratio) or few4smooth[inode]:
+                    if inode == 2: print "\n**\nsigma not accepted i={} sigmaratio={} nlev={} few4smooth={}".format(inode,sigmaratio,nlev,few4smooth[inode])                  
+                    sigma[inode,0:nlev] = np.linspace(0.,1.,nlev)
+                else:
+                    pass
+                    #print "\n**\nsigma IS accepted i={} sigmaratio={} nlev={} few4smooth={}".format(inode,sigmaratio,nlev,few4smooth[inode])                  
+ 
+                if inode in showlist:
+                    print "\msigmaratio stuff: inode={} sigmaratio={} nlevel={} nlevel2={} nlevel3={} few4smooth={} nnonbndlev={}".format(
+                            inode,sigmaratio,nlevel[inode],nlevel2[inode],nlevel3[inode],few4smooth[inode],nnonbndlev)
+                    print sigma[inode,:]
+                    print "***\n"
+                    
+                sigma[inode,nlev:] = np.nan
+    else:
+        for inode in range(npoint):
+            nlev = nlevel3[inode]
+            if is_sigma[inode]:
+                sigma[inode,0:nlev] = np.linspace(0.,1.,nlev)
+            sigma[inode,nlev:] = np.nan  
+            
+    # todo: these are rules to abandon smoothing altogether and go with even sigma everywhere
+    # the first one says to do it if the number of layers does not exceed the number of smoothing layers
+    # the second says do it if depth of the upper levels isn't too fine compared to the  enough and that rule is very
+    # ad hoc and hardwired
+    
+    
+    #for inode in range(npoint):
+    #    # when is_sigma changes this is conservative for monotonicity
+    #    if is_sigma[inode] or is_sigma2[inode] or nlevel2[inode] == 2:
+    #        #print nlevel2[inode]
+    #        sigma[inode, 0:nlevel[inode]] = np.linspace(0., 1., nlevel[inode])
+    #    sigma[inode,nlevel[inode]:maxlevel] = np.nan
+ 
+    print "Testing monotonicity"
+    nonmon=[]
+    for inode in range(npoint):
+        if np.any(sigma[inode,:-1] > sigma[inode,1:]):
+            nonmon.append(inode)
+    if len(nonmon)>1: 
+        for inode in range(min(3,len(nonmon))):
+            ii = nonmon[inode]
+            print "\nNode {} is not monotonic in sigma".format(ii)
+            print "depth={} nlevel0={} nlevel={} nlevel2={} nlevel3={} is_sigma={} is_sigma2={}".format(depth[ii],nlevel0[ii],
+                         nlevel[ii],nlevel2[ii],nlevel3[ii],is_sigma[ii], is_sigma2[ii])
+            print sigma[ii,:]
+            print hcor[ii,:]
+
+
+    print sigma[0:5,:]
+    #print sigma[0:7,0:9]
+    sigma = -sigma       
+    nlayer3 = nlevel3 - 1
+
+    return sigma,nlayer3
+
+    
+    
 
 
 
@@ -816,4 +867,4 @@ def example():
 
 
 if __name__ == '__main__':
-    example()
+    example2()

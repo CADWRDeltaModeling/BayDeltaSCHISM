@@ -3,17 +3,18 @@ from numpy import cos as npcos
 from numpy import sin as npsin
 import pandas as pd
 import numpy as np
-from vtools.data.api import *
-from vtools.functions.api import *
+#from vtools.data.api import *
+#from vtools.functions.api import *
 import matplotlib.pylab as plt
-from netCDF4 import *
+from vtools3.data.vtime import *
+#from netCDF4 import *
 
-from error_detect import *
+#from error_detect import *
 import datetime as dtm
-from read_ts import read_ts
+#from read_ts import read_ts
 from write_ts import *
 import glob
-from unit_conversions import *
+#from unit_conversions import *
 
 avelen = hours(1)
 MPH2MS = 0.44704
@@ -105,7 +106,7 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
                     prefer_age="new",                    
                     tz_adj=hours(0)):
     import os
-    import fnmatch    
+    import fnmatch
     matches = []
     for root, dirnames, filenames in os.walk(fdir):
         for filename in fnmatch.filter(filenames, fpat):
@@ -124,8 +125,8 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
     # The matches are in lexicogrphical order. Reversing them puts the newer ones 
     # higher priority than the older ones for merging
     matches.reverse()
-    if len(matches) == 0:
-        raise ValueError("No matches to file pattern {} in directory {}".format(fpat,dir))
+    if len(matches) < 1:
+        raise ValueError("File pattern {} searched from dir {} returned no matches".format(fpat,fdir))
     for m in matches:
         dargs = {}
         if not dateparser is None: dargs["date_parser"] = dateparser
@@ -134,6 +135,7 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
         dset = pd.read_csv(m,index_col=indexcol,header = head,parse_dates=parsedates,na_values=extra_na,keep_default_na=True,**dargs)
         if column_names is None:        
             dset.columns = [x.strip() for x in dset.columns]
+            print(dset.columns)
         else:
             dset.columns = column_names
         if dset.shape[0] == 0: 
@@ -146,38 +148,17 @@ def csv_retrieve_ts(fpat,fdir,start,end,selector=":",
         if qaqc_selector is None:
             rowok = None
         else:
-            # print dset.head()
-            # print dset.columns
-            # print qaqc_selector
-            # print dset[qaqc_selector].isin(qaqc_accept).head()
-            # print dset.loc[~dset[qaqc_selector].isin(qaqc_accept),selector].count()
-            # print dset.count()                
-            dset.loc[~dset[qaqc_selector].isin(qaqc_accept),selector] = np.nan
-             
-#            anyok = None
-#            qa_flag = dset[qaqc_selector].as_matrix()
-#            print("QAQC SEction: {}".format(qaqc_selector))
-#            print qa_flag.shape
-#            for okflag in qaqc_accept:
-#                isok = np.equal(qa_flag,okflag)        #np.apply_along_axis(np.equal,0,qa_flag,okflag)
-#                if anyok is None:
-#                    anyok = isok
-#                else:
-#                    anyok |= isok
-#            assert anyok.ndim <= 2
-#            rowok =  anyok   #np.all(anyok,axis=anyok.ndim-1).flatten()
-#            print("number flagged: {}".format(np.count_nonzero(rowok)))
-#            print rowok.shape
             
+            qafilter = dset[qaqc_selector].isin(qaqc_accept)
+            if ' ' in qaqc_accept or '' in qaqc_accept or u' ' in qaqc_accept:
+                qafilter = dset[qaqc_selector].isna() | dset[qaqc_selector].isin(qaqc_accept)
+            else:
+                qafilter = dset[qaqc_selector].isin(qaqc_accept)
+            dset.loc[~qafilter,selector] = np.nan
 
         tsm.append(dset[selector].astype(float))
-        big_ts = ts_merge(tsm) #pd.concat(tsm)
+        big_ts = ts_merge(tsm) #pd.concat(tsm)  # does this need to be outdented?
     return big_ts.to_frame()  #.to_xarray()      
-
-
-
-
-    
 
 
 
@@ -203,4 +184,5 @@ if __name__ == "__main__":
     plt.legend(["Original", "Regular"])
     plt.show()
     ts2.to_csv("//cnrastore-bdo/BDO_HOME/SCHISM/fielddata/emp_ec_20190802/cyg.csv",date_format="%Y%m%d,%H%M",float_format="%.1f",na_rep="m")
+
 
