@@ -103,7 +103,8 @@ def main():
 def vgrid_gen(hgrid,vgrid_out,eta,
               minmaxlayerfile,archive_nlayer=None,nlayer_gr3=None):
     from lsc2 import default_num_layers
-    from vgrid_opt2 import *
+    import scipy.spatial.distance
+    #from vgrid_opt2 import *
    
     meshfun = BilinearMeshDensity()
     
@@ -123,10 +124,7 @@ def vgrid_gen(hgrid,vgrid_out,eta,
     
     depth = eta+h0
 
-    
-    
-    
-    
+
 
     print("Reading the polygons...")
     polygons = read_polygons(minmaxlayerfile)
