@@ -1,6 +1,6 @@
 
 #runfile('D:/Delta/BayDeltaSCHISM/Scripts/create_vgrid_lsc2.py',
-#         wdir='D:/temp/gridopt/%s' % (scene), 
+#         wdir='D:/temp/gridopt/%s' % (scene),
 #        args="--hgrid=%s.gr3 --minmaxregion=../minmaxlayer.shp --dxwgt=1.0 --curvewgt=8. --archive_nlayer=out --nlayer_gr3=%s_nlayer.gr3 --eta=1.0" %(scene,scene) )
 
 
@@ -13,8 +13,9 @@ from lsc2 import * #default_num_layers, gen_sigma, flip_sigma
 from schism_vertical_mesh import SchismLocalVerticalMesh, write_vmesh
 from schism_mesh import read_mesh,write_mesh
 from schism_polygon import read_polygons
+from vgrid_opt2 import *
 import numpy as np
-import scipy
+import scipy.spatial
 fix_minmax = False
 fixed_min = 1
 fixed_max = 40
@@ -28,12 +29,12 @@ def create_arg_parser():
     parser.add_argument('--hgrid', default='hgrid.gr3',
                         help='hgrid file name')
     parser.add_argument('--vgrid', default='vgrid.in',
-                        help='vgrid output file name')                        
+                        help='vgrid output file name')
     help_region = "Polygon file that contains min and max layer information"
     parser.add_argument('--minmaxregion', required=True,
                         help=help_region)
     parser.add_argument('--ngen', type=int, default=60,
-                        help='Number of iterations for layer simplification')                                                 
+                        help='Number of iterations for layer simplification')
     parser.add_argument('--eta', type=float, default=1.5,
                         help='Reference surface elevation')
     parser.add_argument('--plot_transects',default=None,
@@ -53,7 +54,7 @@ def main():
     hgrid=args.hgrid
     minmax_region = args.minmaxregion
     vgrid_out = args.vgrid
-    archive_nlayer = args.archive_nlayer    
+    archive_nlayer = args.archive_nlayer
     nlayer_gr3 = args.nlayer_gr3
     if nlayer_gr3 == hgrid: raise ValueError ("Nlayer archive gr3 and hgrid.gr3 the same")
     eta = args.eta
@@ -66,7 +67,7 @@ def main():
     import glob
     fulldir = getcwd()
     head,tail=os.path.split(fulldir)
-    if not transect: 
+    if not transect:
         transect = tail
         transectfiles = glob.glob(tail+"_*.csv")
     else:
@@ -76,12 +77,10 @@ def main():
             for fname in transectfiles:
                 if not os.path.exists(fname): raise ValueError("Requested output transect file does not exist: {}".format(fname))
 
-    
+
     vgrid_gen(hgrid,vgrid_out,eta,minmax_region,archive_nlayer,nlayer_gr3)
-              
-        
-          
-    transect_mallard = ["mallard_1.csv","mallard_2.csv"]         
+
+    transect_mallard = ["mallard_1.csv","mallard_2.csv"]
     transect_gg = ["transect_gg1.csv","transect_gg2.csv"]
     transect_liberty = ["toe_drain_north_liberty_1.csv","toe_drain_north_liberty_2.csv",
                         "toe_drain_north_liberty_3.csv","toe_drain_north_liberty_4.csv"]
@@ -92,39 +91,33 @@ def main():
                        "frank_tract_sjr_5.csv"]
 
     #transectfiles = transect_franks
-    
+
     vgrid_out = "vgrid.in"
     vgrid0_out = "D:/Delta/BayDeltaSCHISM.bak/BayDeltaSCHISM/calibration_20171101_v87d/run58/vgrid.in.58d"
     vgrid0_out = "vgrid.in"
     plot_vgrid(hgrid,vgrid_out,vgrid0_out,eta,transectfiles)
-          
-    
+
+
 
 def vgrid_gen(hgrid,vgrid_out,eta,
               minmaxlayerfile,archive_nlayer=None,nlayer_gr3=None):
     from lsc2 import default_num_layers
-    import scipy.spatial.distance
-    #from vgrid_opt2 import *
-   
+
     meshfun = BilinearMeshDensity()
-    
-    
+
     dummydepth = np.linspace(0,14,15)
     dummyk = np.linspace(0,14,15)
     dummyout = meshfun.depth(dummyk,dummydepth,0.)
 
     print("Reading the mesh " )
     mesh = read_mesh(hgrid)
-    h0 = mesh.nodes[:, 2]    
-    
+    h0 = mesh.nodes[:, 2]
+
     places_on = np.array([[626573.490000,4260349.590000],[626635.000000,4260391.7]],dtype='d')
     dists_on = np.min(scipy.spatial.distance.cdist(mesh.nodes[:,0:2],places_on),axis=1)
-    print np.where(dists_on<100)    
+    print(np.where(dists_on<100))
 
-    
     depth = eta+h0
-
-
 
     print("Reading the polygons...")
     polygons = read_polygons(minmaxlayerfile)
@@ -149,23 +142,23 @@ def vgrid_gen(hgrid,vgrid_out,eta,
         print(np.where(np.isnan(minlayer)))
         raise ValueError('Nan value in minlayer')
 
-    if archive_nlayer == 'out':     
+    if archive_nlayer == 'out':
 
-        dztarget = 0.      
+        dztarget = 0.
         #todo: these will ruin the code
         if fix_minmax:
             minlayer = minlayer*0+fixed_min
             maxlayer = maxlayer*0+fixed_max  #np.max(maxlayer)
-        
+
         xdummy = 0.
         nlayer_default = default_num_layers(xdummy,eta, h0, minlayer, maxlayer, dztarget,meshfun)
         nlayer = nlayer_default
         #todo: disabled
-        print depth.shape
-        print nlayer.shape
+        print(depth.shape)
+        print(nlayer.shape)
 
         if archive_nlayer=="out":
-            print "writing out number of layers"
+            print("writing out number of layers")
             write_mesh(mesh,nlayer_gr3.replace(".gr3","_default.gr3"),node_attr=nlayer_default)
             write_mesh(mesh,nlayer_gr3,node_attr=nlayer)
             #write_mesh(mesh,nlayer_gr3.replace(".gr3","_dztarget.gr3"),node_attr=dztarget)
@@ -173,40 +166,35 @@ def vgrid_gen(hgrid,vgrid_out,eta,
         nlayer_mesh = read_mesh(nlayer_gr3)
         #dztarget=read_mesh(nlayer_gr3.replace(".gr3","_dztarget.gr3")).nodes[:,2]
         nlayer = nlayer_mesh.nodes[:,2].astype('i')
-        if long(nlayer_mesh.n_nodes()) != long(mesh.n_nodes()):
-            raise ValueError("NLayer gr3 file (%s)\nhas %s nodes, hgrid file (%s) has %s" 
+        if nlayer_mesh.n_nodes() != mesh.n_nodes():
+            raise ValueError("NLayer gr3 file (%s)\nhas %s nodes, hgrid file (%s) has %s"
                   %(nlayer_gr3, nlayer_mesh.n_nodes(),hgrid,mesh.n_nodes()) )
-    else: 
+    else:
         raise ValueError("archive_nlayer must be one of 'out', 'in' or None")
-        
-        
+
+
     # inclusion of minlayer and maxlayer has to do with experiment regenerating # layers after smoothing
     # this will ruin code generally, and if the experiment goes well we need to make sure this is available when archive_nlayer="in"
     if fix_minmax:
         minlayer = nlayer*0+fixed_min
         maxlayer = nlayer*0+fixed_max #np.max(maxlayer)
-    
-    
+
+
     sigma2,nlayer_revised = gen_sigma(nlayer, minlayer,maxlayer, eta, h0, mesh, meshfun)
-    print "Returned nlayer revised: {}".format(np.max(nlayer_revised))
-    print "sigma2 shape"
-    print sigma2.shape
+    print("Returned nlayer revised: {}".format(np.max(nlayer_revised)))
+    print("sigma2 shape")
+    print(sigma2.shape)
     nlayer = nlayer_revised
     nlevel = nlayer+1
-    
+
     vmesh = SchismLocalVerticalMesh(flip_sigma(sigma2))
-    #vgrid0 = vgrid_out.replace(".in", "_int.in")    
+    #vgrid0 = vgrid_out.replace(".in", "_int.in")
     #write_vmesh(vmesh, vgrid0)
-    
-
-    
-
-    
     #vmesh1 = SchismLocalVerticalMesh(flip_sigma(sigma1))
     print("Writing vgrid.in output file...")
     write_vmesh(vmesh, vgrid_out)
-    print "Done"
-    
+    print("Done")
+
 
 def plot_vgrid(hgrid_file,vgrid0_file,vgrid_file,eta,transectfiles):
     from lsc2 import default_num_layers,plot_mesh
@@ -215,34 +203,34 @@ def plot_vgrid(hgrid_file,vgrid0_file,vgrid_file,eta,transectfiles):
     import os.path as ospath
 
     mesh = read_mesh(hgrid_file)
-    x=mesh.nodes[:,0:2] 
+    x=mesh.nodes[:,0:2]
     vmesh0 = read_vmesh(vgrid0_file)
     vmesh1 = read_vmesh(vgrid_file)
     h0 = mesh.nodes[:, 2]
-    depth = eta+h0         
-        
+    depth = eta+h0
+
     zcor0 = vmesh0.build_z(mesh,eta)[:,::-1]
     zcor1 = vmesh1.build_z(mesh,eta)[:,::-1]
     for transectfile in transectfiles:
         base = ospath.splitext(ospath.basename(transectfile))[0]
         transect = np.loadtxt(transectfile,skiprows=1,delimiter=",")
-        #transx = transect[:,1:3] 
-        path = []        
-        transx = transect[:,1:3] 
+        #transx = transect[:,1:3]
+        path = []
+        transx = transect[:,1:3]
         for p in range(transx.shape[0]):
             if "victoria_3.csv" in transectfile:
-                print "p: {} node: {}".format(p,mesh.find_closest_nodes(transx[p,:]))
+                print("p: {} node: {}".format(p,mesh.find_closest_nodes(transx[p,:])))
             path.append( mesh.find_closest_nodes(transx[p,:]))
-        
-        #ndx1 = mesh.find_closest_nodes(transx[-1,:])     
-        #path = mesh.shortest_path(ndx0,ndx1)    
+
+        #ndx1 = mesh.find_closest_nodes(transx[-1,:])
+        #path = mesh.shortest_path(ndx0,ndx1)
         #zcorsub = zcor[path,:]
         xx = x[path]
         xpath = np.zeros(xx.shape[0])
         for i in range (1,len(path)):
             dist = np.linalg.norm(xx[i,:] - xx[i-1,:])
             xpath[i] = xpath[i-1] + dist
-        
+
         fig,(ax0,ax1) = plt.subplots(2,1,figsize=(10,8)) #,sharex=True,sharey=True)
         ax0.set_title(transectfile)
         #plot_mesh(ax0,xpath,zcor0[path,:],0,len(xpath),c="0.5",linewidth=2)
@@ -252,8 +240,8 @@ def plot_vgrid(hgrid_file,vgrid0_file,vgrid_file,eta,transectfiles):
         ax1.plot(xpath,-h0[path],linewidth=2,c="black")
         plt.savefig(ospath.join("images",base+".png"))
         plt.show()
-    
-    
+
+
 
 if __name__ == '__main__':
     main()
