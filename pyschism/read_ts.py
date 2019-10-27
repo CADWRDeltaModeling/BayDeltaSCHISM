@@ -9,11 +9,12 @@ import numpy
 import datetime
 import re
 import sys
+import abc
 
 __all__ = ['read_ts', 'read_noaa', 'read_wdl', 'read_cdec',
            'read_usgs', 'read_usgs_rdb','read_vtide']
 
-class TextTimeSeriesReader:
+class TextTimeSeriesReader(object):
     """ Base class to read in time series of field data in various text
         formats.
         This class is designed to be inherited. A user needs to implement
