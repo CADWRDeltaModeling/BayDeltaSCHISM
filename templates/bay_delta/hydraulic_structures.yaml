@@ -1,4 +1,4 @@
-nudging: 0.1
+nudging: 0.05
 structures:
   - name: delta_cross_channel
     type: radial
