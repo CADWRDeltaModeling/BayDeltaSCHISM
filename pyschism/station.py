@@ -1,6 +1,7 @@
 from builtins import open, file, str
 from pandas.compat import u
 import pandas as pd
+import argparse
 
 station_variables = ["elev", "air pressure", "wind_x", "wind_y",
                      "temp", "salt", "u", "v", "w"]
@@ -94,8 +95,10 @@ def read_station_depth(fpath):
          DataFrame with hierarchical index (id,subloc) and data column z
                 
     """
-    return pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
-
+    df = pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
+    df["z"] = -df.depth
+    print(df)
+    return df[["z"]]
 
 
 
@@ -185,8 +188,41 @@ def example():
         print("**")
         print(merged)
 
+def convert_db_station_in(stationdb="stations_utm.csv",depthdb="station_depth.csv",station_request="all",default=-0.5):
+    stations_utm = read_station_dbase(stationdb)
+    sdepth = read_station_depth(depthdb)
+    stations_in = merge_station_depth(stations_utm,sdepth,default_z=-0.5)
+    write_station_in("station.in",stations_in,request=station_request)
+
+
+def create_arg_parser():
+    """ Create an argument parser
+    """
+    parser = argparse.ArgumentParser(description="Create station.in file from station database (stations_utm.csv) and station depth listing station_depth.csv")
+    parser.add_argument('--station_db', default = "stations_utm.csv",
+                        help="station database, often stations_utm.csv")
+    parser.add_argument('--depth_db', default = "station_depth.csv",
+                        help="depth listings for stations (otherwise default depth)")
+    parser.add_argument('--request', default='all',help="requested variables or 'all' for all of them. Possibilities are: {}".format(",".join(station_variables)))
+    parser.add_argument('--default_depth',default='-0.5',
+                        help="depth used when there is no listing for station id")
+    parser.add_argument('--out', default = "station.in",
+                        help="station.in formatted file")
+    return parser
+
+
+def main():
+    """ A main function to convert polygon files
+    """
+    parser = create_arg_parser()
+    args = parser.parse_args()
+    stationdb = args.station_db
+    depthdb = args.depth_db
+    default = args.default_depth
+    convert_db_station_in(stationdb,depthdb,default)
+
 if __name__ == '__main__':
-    example()
+    main()
 
 
 
