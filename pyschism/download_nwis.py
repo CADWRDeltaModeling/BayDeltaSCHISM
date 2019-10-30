@@ -6,7 +6,7 @@
 """
 import argparse
 
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import re
 import zipfile
 import os
@@ -60,7 +60,7 @@ def nwis_download(stations,dest_dir,start,end=None,param=None,overwrite=False):
             station_query = station_query_base % (station,stime,etime)
         print(station_query)
         try: 
-            response = urllib2.urlopen(station_query)
+            response = urllib.request.urlopen(station_query)
         except:
             failures.append(station)
         else:    
