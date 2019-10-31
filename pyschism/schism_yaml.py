@@ -358,15 +358,28 @@ class ArgumentParserYaml(argparse.ArgumentParser):
                  argument_default=None,
                  conflict_handler='error',
                  add_help=True):
-        super(ArgumentParserYaml, self).__init__(prog, usage,
-                                                 description, epilog,
-                                                 version, parents,
-                                                 formatter_class,
-                                                 prefix_chars,
-                                                 fromfile_prefix_chars,
-                                                 argument_default,
-                                                 conflict_handler,
-                                                 add_help)
+        if sys.version_info[0] == 2:
+            super(ArgumentParserYaml, self).__init__(prog, usage,
+                                                    description, epilog,
+                                                    version, parents,
+                                                    formatter_class,
+                                                    prefix_chars,
+                                                    fromfile_prefix_chars,
+                                                    argument_default,
+                                                    conflict_handler,
+                                                    add_help)
+        elif sys.version_info[0] == 3:
+            super(ArgumentParserYaml, self).__init__(prog, usage,
+                                                    description, epilog,
+                                                    parents,
+                                                    formatter_class,
+                                                    prefix_chars,
+                                                    fromfile_prefix_chars,
+                                                    argument_default,
+                                                    conflict_handler,
+                                                    add_help)
+        else:
+            raise NotImplementedError("Not supported Python version")
 
     def _read_args_from_files(self, arg_strings):
         """ Override this function to handle YAML files
