@@ -6,7 +6,6 @@ from schism_mesh import SchismMesh, read_mesh, write_mesh, BoundaryType
 import numpy as np
 import unittest
 import os
-import xmlrunner
 
 
 class TestSchismMesh(unittest.TestCase):
@@ -122,5 +121,4 @@ class TestSchismMesh(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    # unittest.main(testRunner=xmlrunner.XMLTestRunner(output='test-reports'))
     unittest.main()

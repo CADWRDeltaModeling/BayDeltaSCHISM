@@ -5,7 +5,6 @@
 from __future__ import absolute_import
 from schism_yaml import load, YamlAction, ArgumentParserYaml
 import yaml
-import xmlrunner
 import argparse
 import sys
 import unittest
@@ -188,5 +187,4 @@ class TestSchismYaml(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main(testRunner=xmlrunner.XMLTestRunner(output='test-reports'))
-    # unittest.main()
+    unittest.main()
