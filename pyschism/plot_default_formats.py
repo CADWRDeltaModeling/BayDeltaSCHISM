@@ -5,7 +5,7 @@
 
 import vtools.data.timeseries
 from unit_conversions import m_to_ft, cms_to_cfs, celcius_to_fahrenheit, psu_ec_25c, psu_ec_25c_scalar, ec_sea
-import brewer2mpl as brewer
+import palettable
 from matplotlib.ticker import AutoLocator, ScalarFormatter
 import matplotlib.gridspec as gridspec
 import matplotlib as mpl
@@ -18,7 +18,7 @@ __all__ = ['set_color_cycle_dark2', 'set_dual_axes', 'set_dual_axes_elev', 'set_
 font = { # 'family': '',
          # 'weight': 'regular',
         'size': 12,}
-brewer_colors = [brewer.get_map('Dark2', 'qualitative', 5).mpl_colors[i]
+brewer_colors = [palettable.colorbrewer.qualitative.Dark2_5.mpl_colors[i]
                  for i in [1, 0, 2, 3, 4]]
 line_thickness = 1.
 
