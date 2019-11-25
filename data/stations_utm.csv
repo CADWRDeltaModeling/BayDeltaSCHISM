@@ -122,14 +122,14 @@ PCT,Port Chicago,38.05893797,-122.024823,585550.4,4212803.2,C14,,,,usbr,PCT,x,,,
 11455335,Sacramento R Deep Water Ship Channel Near Rio Vista,38.2561111,-121.6666667,616657.3,4235072.2,,,C,,usgs,DWS,x,x,x,x,x,x,,,,,,,x,,
 11455350,Cache Slough at Ryer Island,38.21292541,-121.66896,616525.5,4230277.3,,,C,,usgs,RYI,x,x,x,x,x,,,,,,,,x,,
 11455420,Sacramento R at Rio Vista,38.14789999,-121.6898619,614797.6,4223035.8,,,,,usgs,SRV,x,x,x,x,x,x,,,,,,,x,"The flow station is under the bridge Red Channel Marker 28, transmitted from the DWR station 100' away. The WQ station is downstream a bit and is not confirmed.",
-11455780,Suisun Bay at Benicia Bridge,38.04492057,-122.1266323,576633.3,4211159.0,,,,,usgs,11455780,x,,,x,x,,,,,,,,,,
+11455780,Suisun Bay at Benicia Bridge,38.04492057,-122.1266323,576633.3,4211159,,,,,usgs,11455780,x,,,x,x,,,,,,,,,,
 11455820,Carquinez Strait at Carquinez Bridge near Crockett,38.0613095,-122.2255241,567940.8,4212900.6,,,,,usgs,11455820,x,,,x,x,,,,,,,,,,
-11458000,Napa R near Napa,38.36851973,-122.3032124,560869.0,4246934.1,,,,,usgs,NAP,,x,x,,,,,,,,,,,,
+11458000,Napa R near Napa,38.36851973,-122.3032124,560869,4246934.1,,,,,usgs,NAP,,x,x,,,,,,,,,,,,
 11459150,Petaluma R at Copland Pumping Station,38.23852452,-122.6401691,531489.6,4232341.6,,,,,usgs,11459150,,,,,,,,,,,,,,,O
-3.73E+14,San Francisco Bay at Old Dumbarton Bridge,37.50694444,-122.1163889,578096.0,4151478.4,,,,,usgs,3.73E+14,,x,,,,,,,,,,,,,
-3.76E+14,San Francisco Bay at Richmond-San Rafael Bridge,37.93527778,-122.4463889,548648.5,4198778.5,,,,,usgs,3.76E+14,x,,,x,x,,,,,,,,,,
+373025122065901,San Francisco Bay at Old Dumbarton Bridge,37.50694444,-122.1163889,578096,4151478.4,,,,,usgs,3.73E+14,,x,,,,,,,,,,,,,
+374938122251801,San Francisco Bay at Richmond-San Rafael Bridge,37.93527778,-122.4463889,548648.5,4198778.5,,,,,usgs,3.76E+14,x,,,x,x,,,,,,,,,,
 9415218,Mare Island,38.07,-122.25,565785.8,4213847.2,,,,,noaa,9415218,,x,,,,,,,,,,,,,
-9415143,Crockett,38.0583,-122.223,568165.0,4212568.5,,,,,noaa,9415143,,x,,,,,,,,,,,,,D
+9415143,Crockett,38.0583,-122.223,568165,4212568.5,,,,,noaa,9415143,,x,,,,,,,,,,,,,D
 9415265,Suisun Slough Entrance,38.12065452,-122.0737802,581187.1,4219607.1,,,,,noaa,9415265,,x,,,,,,,,,,,,"Not confirmed. No detailed description, defunct 1989",D
 9415144,Port Chicago,38.056,-122.0395,584266.1,4212463.8,,,,,noaa,9415144,,x,,,,,,,,,,,,,
 9414811,Bradmoor Island,38.18285942,-121.9247926,594166.8,4226650.2,,,,,noaa,9414811,,x,,,,,,,,,,,,"Rogers Duck Club, pier behind shack. Discontinued 2006",D
@@ -187,7 +187,7 @@ B95320,Grant Line Canal East,37.820258,-121.4348562,637754.4,4187026.5,,,C,B9532
 B95502,Middle River above Barrier ,37.8851804,-121.4727615,634300.2,4194175.0,,,C,B95502,dwr_ncro,MAB,,,x,,x,,,,,,,,x,"ADCP Flow Station, commence on 4/23/2013",
 B95390,Old River above Doughty Cut,37.8109973,-121.3865757,642021.8,4186071.2,,,C,B95390,dwr_ncro,ORX,x,,x,x,x,,,,,,,,x,"ADCP Flow Station, commence on 1/30/2013",
 B95760,San Joaquin River above Dos Reis,37.8223312,-121.3177244,648060.2,4187435.7,,,C,B95760,dwr_nrco,SJD,,,x,,x,,,,,,,,x,"ADCP Flow Station, commence on 2/28/2013",
-3.75E+14,San Francisco Bay at Northeast Shore Alcatraz Island,37.82722222,122.4216667,550895.2,4186802.8,,,,,usgs,3.75E+14,x,,,x,x,,,,,,,,,"location: unsurveyed, at end of finger pier adjacent to ferry terminal; WQ monitor since November 2013;Interruptions in record were due to malfunction of the sensing and (or) recording instrument and biological interference within the conductivity cell. The probe is set at 6 ft below the water surface at Mean Lower Low Water (MLLW). MLLW is about 16 ft. Daily maximums and minimums sometimes differ from tidal cycle (24.8 hours) maximums and minimums.
+374938122251801,San Francisco Bay at Northeast Shore Alcatraz Island,37.82722222,122.4216667,550895.2,4186802.8,,,,,usgs,3.75E+14,x,,,x,x,,,,,,,,,"location: unsurveyed, at end of finger pier adjacent to ferry terminal; WQ monitor since November 2013;Interruptions in record were due to malfunction of the sensing and (or) recording instrument and biological interference within the conductivity cell. The probe is set at 6 ft below the water surface at Mean Lower Low Water (MLLW). MLLW is about 16 ft. Daily maximums and minimums sometimes differ from tidal cycle (24.8 hours) maximums and minimums.
 
 Specific conductivity records are rated excellent except for the following periods of fouling: Oct. 1, 2, Nov. 2-8, Aug. 19, 20, which are rated good.
 
