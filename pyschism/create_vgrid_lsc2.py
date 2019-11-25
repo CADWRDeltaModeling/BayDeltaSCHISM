@@ -139,7 +139,7 @@ def vgrid_gen(hgrid,vgrid_out,eta,
                 dztarget[node_i] = dz0
 
     if np.any(np.isnan(minlayer)):
-        print(np.where(np.isnan(minlayer)))
+        print((np.where(np.isnan(minlayer))))
         raise ValueError('Nan value in minlayer')
 
     if archive_nlayer == 'out':
@@ -153,10 +153,7 @@ def vgrid_gen(hgrid,vgrid_out,eta,
         xdummy = 0.
         nlayer_default = default_num_layers(xdummy,eta, h0, minlayer, maxlayer, dztarget,meshfun)
         nlayer = nlayer_default
-        #todo: disabled
-        print(depth.shape)
-        print(nlayer.shape)
-
+ 
         if archive_nlayer=="out":
             print("writing out number of layers")
             write_mesh(mesh,nlayer_gr3.replace(".gr3","_default.gr3"),node_attr=nlayer_default)
@@ -166,8 +163,8 @@ def vgrid_gen(hgrid,vgrid_out,eta,
         nlayer_mesh = read_mesh(nlayer_gr3)
         #dztarget=read_mesh(nlayer_gr3.replace(".gr3","_dztarget.gr3")).nodes[:,2]
         nlayer = nlayer_mesh.nodes[:,2].astype('i')
-        if nlayer_mesh.n_nodes() != mesh.n_nodes():
-            raise ValueError("NLayer gr3 file (%s)\nhas %s nodes, hgrid file (%s) has %s"
+            raise ValueError("NLayer gr3 file (%s)\nhas %s nodes, hgrid file (%s) has %s" 
+        if int(nlayer_mesh.n_nodes()) != int(mesh.n_nodes()):
                   %(nlayer_gr3, nlayer_mesh.n_nodes(),hgrid,mesh.n_nodes()) )
     else:
         raise ValueError("archive_nlayer must be one of 'out', 'in' or None")
@@ -182,8 +179,6 @@ def vgrid_gen(hgrid,vgrid_out,eta,
 
     sigma2,nlayer_revised = gen_sigma(nlayer, minlayer,maxlayer, eta, h0, mesh, meshfun)
     print("Returned nlayer revised: {}".format(np.max(nlayer_revised)))
-    print("sigma2 shape")
-    print(sigma2.shape)
     nlayer = nlayer_revised
     nlevel = nlayer+1
 
@@ -214,16 +209,8 @@ def plot_vgrid(hgrid_file,vgrid0_file,vgrid_file,eta,transectfiles):
     for transectfile in transectfiles:
         base = ospath.splitext(ospath.basename(transectfile))[0]
         transect = np.loadtxt(transectfile,skiprows=1,delimiter=",")
-        #transx = transect[:,1:3]
-        path = []
-        transx = transect[:,1:3]
-        for p in range(transx.shape[0]):
-            if "victoria_3.csv" in transectfile:
-                print("p: {} node: {}".format(p,mesh.find_closest_nodes(transx[p,:])))
-            path.append( mesh.find_closest_nodes(transx[p,:]))
-
-        #ndx1 = mesh.find_closest_nodes(transx[-1,:])
-        #path = mesh.shortest_path(ndx0,ndx1)
+        path = []        
+        transx = transect[:,1:3] 
         #zcorsub = zcor[path,:]
         xx = x[path]
         xpath = np.zeros(xx.shape[0])
