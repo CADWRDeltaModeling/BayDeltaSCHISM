@@ -160,15 +160,7 @@ B9520000,Old R at Quimby Island,38.0272222,-121.5644444,625994.6,4209807.9,,,C,B
 B9504400,False R near Oakley,38.0558333,-121.6669444,616952.5,4212848.6,,,C,B9504400,dwr_ncro,FAL,x,,,x,x,x,,,,,x,,x,"Both FAL and ORQ are USGS station where they collect flow and NCRO collects EC, chlorophyll, temp and turbidity",
 B9510800,Old R at Franks Tract,38.0711111,-121.5788889,624652.3,4214658.4,,,C,B9510800,dwr_ncro,OSJ,x,,,x,x,x,,x,,,x,,,"At OSJ USGS collects flow data while NCRO collects temp, EC, turbidity and chlorophyll.  USGS telemeters the data.",
 B9409500,Mokelumne River near Highway 12 ,38.1061111,-121.571111,625274.8,4218552.5,,,C,B9409500,dwr_ncro,MOK,x,,,x,x,x,,,,,,,x,"At MOK, USGS collects flow data while NCRO collects temp, EC and turbidity.  USGS telemeters the data.",
-B91479,Steamboat Slough Below Sutter Slough,38.25,-121.6020833,622318.4,4234477.5,,,,B91479,dwr_ncro,SUS,x,,,x,x,,,,,,,,,"SUS (cdec, 6/10/2015 ->) and B91479 (wdl, 10/1/1990 or 1982) same station or not?
-
-same station name, same parameters (temp, ec), but different time period and locations
-
-SUS (cdec, 6/10/2015 ->) and B91479 (wdl, 10/1/1990 or 1982) same station or not?
-
-same station name, same parameters (temp, ec), but different time period and locations
-
-",
+B91479,Steamboat Slough Below Sutter Slough,38.25,-121.6020833,622318.4,4234477.5,,,,B91479,dwr_ncro,SUS,x,,,x,x,,,,,,,,,"SUS (cdec, 6/10/2015 ->) and B91479 (wdl, 10/1/1990 or 1982) same station or not? same station name, same parameters (temp, ec), but different time period and locations SUS (cdec, 6/10/2015 ->) and B91479 (wdl, 10/1/1990 or 1982) same station or not? same station name, same parameters (temp, ec), but different time period and locations",
 B95378,Old River at Tracy Wildlife Association,37.802833,-121.457444,635798.2,4185059.9,,,,B95378,dwr_ncro,TWA,x,,,x,x,x,x,x,,,x,,,,
 B9521600,Rock Slough at Delta Road Bridge                                  ,37.97675,-121.6200833,621194.1,4204133.5,,,,B9521600,dwr_ncro,B9521600,x,,,x,x,,,,,,,,,,
 B9524900,Holland Cut at Holland Marina,37.97369444,-121.5812778,624631.5,4203880.0,,,,B9524900,dwr_ncro,B9524900,x,,,x,x,,x,,,,x,,,,
@@ -187,18 +179,12 @@ B95320,Grant Line Canal East,37.820258,-121.4348562,637754.4,4187026.5,,,C,B9532
 B95502,Middle River above Barrier ,37.8851804,-121.4727615,634300.2,4194175.0,,,C,B95502,dwr_ncro,MAB,,,x,,x,,,,,,,,x,"ADCP Flow Station, commence on 4/23/2013",
 B95390,Old River above Doughty Cut,37.8109973,-121.3865757,642021.8,4186071.2,,,C,B95390,dwr_ncro,ORX,x,,x,x,x,,,,,,,,x,"ADCP Flow Station, commence on 1/30/2013",
 B95760,San Joaquin River above Dos Reis,37.8223312,-121.3177244,648060.2,4187435.7,,,C,B95760,dwr_nrco,SJD,,,x,,x,,,,,,,,x,"ADCP Flow Station, commence on 2/28/2013",
-374938122251801,San Francisco Bay at Northeast Shore Alcatraz Island,37.82722222,122.4216667,550895.2,4186802.8,,,,,usgs,3.75E+14,x,,,x,x,,,,,,,,,"location: unsurveyed, at end of finger pier adjacent to ferry terminal; WQ monitor since November 2013;Interruptions in record were due to malfunction of the sensing and (or) recording instrument and biological interference within the conductivity cell. The probe is set at 6 ft below the water surface at Mean Lower Low Water (MLLW). MLLW is about 16 ft. Daily maximums and minimums sometimes differ from tidal cycle (24.8 hours) maximums and minimums.
-
-Specific conductivity records are rated excellent except for the following periods of fouling: Oct. 1, 2, Nov. 2-8, Aug. 19, 20, which are rated good.
-
-Water temperature records are rated excellent.",
+374938122251801,San Francisco Bay at Northeast Shore Alcatraz Island,37.82722222,122.4216667,550895.2,4186802.8,,,,,usgs,3.75E+14,x,,,x,x,,,,,,,,,"location: unsurveyed, at end of finger pier adjacent to ferry terminal; WQ monitor since November 2013;Interruptions in record were due to malfunction of the sensing and (or) recording instrument and biological interference within the conductivity cell. The probe is set at 6 ft below the water surface at Mean Lower Low Water (MLLW). MLLW is about 16 ft. Daily maximums and minimums sometimes differ from tidal cycle (24.8 hours) maximums and minimums.Specific conductivity records are rated excellent except for the following periods of fouling: Oct. 1, 2, Nov. 2-8, Aug. 19, 20, which are rated good. Water temperature records are rated excellent.",
 B9550000,Middle R at Union Point - WQ,37.890778,-121.488361,632918.3,4194773.7,,,C,B9550000,dwr_ncro,B9550000,x,,,x,x,x,x,x,,,x,,,Not confirmed. Based on lat/long to 1 arc second from Central District. Colocated with VIC?,
 B9553100,Middle River near Howard Rd Bridge,37.876222,-121.383306,642184.4,4193313.5,,,C,B9553100,dwr_ncro,MHO,x,,,x,x,x,x,x,,,x,,,added 6/6/2014,
 11455478,Decker Island,38.093367,-121.737267,610748.9,4216702.8,,,,,usgs,SDI,x,x,,x,x,x,,,,,,,,,
 11455315,Cache Slough at Liberty Island,38.2431666,-121.6845667,615115.0,4233613.0,,,C,,usgs,LIB,x,x,x,x,x,x,x,x,,,x,,x,Haven't verified that CDEC name is correct. Name slightly different,
-B91510,Yolo Bypass at Liberty Island ,38.32916667,-121.6938889,614160.9,4243144.8,,,C,B91510,dwr_ncro,LIY,,x,,,,,,,,,,,,"An additional station (B91510B) records water levels in drainage canal on Liberty Island side of levee
-
-An additional station (B91510B) records water levels in drainage canal on Liberty Island side of  levee.",
+B91510,Yolo Bypass at Liberty Island ,38.32916667,-121.6938889,614160.9,4243144.8,,,C,B91510,dwr_ncro,LIY,,x,,,,,,,,,,,,"An additional station (B91510B) records water levels in drainage canal on Liberty Island side of levee,
 B91511,Yolo Bypass at Liberty Island (Canal),38.32611111,-121.6938889,614165.7,4242805.8,,,C,B91511,dwr_ncro,LIR,,x,,,,,,,,,,,,An additional station (B91510) records water levels on Yolo Bypass side of levee,
 B91560Q,Yolo Bypass near Lisbon Weir,38.4747608,-121.5885961,623117.2,4259436.4,,,C,B91560,dwr_ncro,LIS,x,x,x,x,x,x,,,,,x,,x,"ADCP at this site, B91560Q",
 11336680,S Mokelumne R at New Hope BR near Walnut Grove,38.2255556,-121.4911111,632073.2,4231917.6,,,,,usgs,SMR,,x,x,,,x,,,,,,,x,"flow, stage, velocity available since 1/1/2011, turbidity since 4/16/2015, suspended sediment since 8/4/2012",
