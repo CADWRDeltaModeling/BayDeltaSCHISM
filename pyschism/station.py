@@ -60,12 +60,15 @@ def write_station_in(fpath,station_in,request=None):
     dfmerged =station_in.reset_index() 
     dfmerged.index += 1
     dfmerged["excl"] = "!"
-    buffer = "1 0 1 0\n{}\n".format(dfmerged.index[-1])
+    nitem = len(dfmerged)
+    # First two lines are a space delimited 1 or 0 for each request then the
+    # total number of station requests
+    buffer = " ".join([str(x) for x in request_int]) + "\n{}\n".format(nitem)
+    # Then the specific requests, here written to a string buffer
     buffer2 = dfmerged.to_csv(None,columns=["x","y","z","excl","id","subloc","name"],index_label="id",
         sep=' ',float_format="%.2f",header=False)
     with open(fpath,"w",newline='') as f: 
-        f.write(u"1 1 1 1\n")
-        f.write(u"21\n")
+        f.write(u(buffer))
         f.write(u(buffer2))
 
 
@@ -203,7 +206,7 @@ def create_arg_parser():
                         help="station database, often stations_utm.csv")
     parser.add_argument('--depth_db', default = "station_depth.csv",
                         help="depth listings for stations (otherwise default depth)")
-    parser.add_argument('--request', default='all',help="requested variables or 'all' for all of them. Possibilities are: {}".format(",".join(station_variables)))
+    parser.add_argument('--request', default='all',nargs="+",help="requested variables or 'all' for all of them. Possibilities are: {}".format(",".join(station_variables)))
     parser.add_argument('--default_depth',default='-0.5',
                         help="depth used when there is no listing for station id")
     parser.add_argument('--out', default = "station.in",
@@ -219,7 +222,8 @@ def main():
     stationdb = args.station_db
     depthdb = args.depth_db
     default = args.default_depth
-    convert_db_station_in(stationdb,depthdb,default)
+    request = args.request
+    convert_db_station_in(stationdb,depthdb,request,default)
 
 if __name__ == '__main__':
     main()
