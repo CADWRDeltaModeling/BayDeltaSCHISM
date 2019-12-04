@@ -1,4 +1,4 @@
-﻿id,subloc,depth,comment
+id,subloc,depth,comment
 MAL,upper,1,
 MAL,lower,9.4,
 MRZ,upper,1,
@@ -15,8 +15,8 @@ scqc1,upper,1.5,
 11455820,upper,15.57,
 11455780,upper,1.19,Benicia
 11455780,lower,16.77,
-375607122264701,mid,6.932,Richmond
+375607122264701,upper,6.932,Richmond
 375607122264701,lower,14.444,
 373025122065901,upper,6.714,Dumbarton
 373025122065901,lower,13.35,
-374938122251801,upper,2.26,Alcatraz
+374938122251801,mid,2.26,Alcatraz
