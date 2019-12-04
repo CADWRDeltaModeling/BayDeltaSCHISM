@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ Command line tool to convert SCHISM polygons in YAML
     to Shapefile and vice versa
