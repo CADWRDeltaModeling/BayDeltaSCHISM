@@ -55,7 +55,8 @@ def write_station_in(fpath,station_in,request=None):
         or 'all' to include them all
     """
     request_int = [0]*len(station_variables)
-    request_str = station_variables if request == "all" else request
+    if request == "all": request = ["all"]
+    request_str = station_variables if request[0] == "all" else request
     request_int = [(1 if var in request_str else 0) for var in station_variables]    
     dfmerged =station_in.reset_index() 
     dfmerged.index += 1
@@ -68,8 +69,10 @@ def write_station_in(fpath,station_in,request=None):
     buffer2 = dfmerged.to_csv(None,columns=["x","y","z","excl","id","subloc","name"],index_label="id",
         sep=' ',float_format="%.2f",header=False)
     with open(fpath,"w",newline='') as f: 
-        f.write(u(buffer))
+        f.write(buffer)
         f.write(u(buffer2))
+        #f.write(u(buffer))
+        #f.write(u(buffer2))
 
 
 def read_station_depth(fpath):
@@ -98,9 +101,9 @@ def read_station_depth(fpath):
          DataFrame with hierarchical index (id,subloc) and data column z
                 
     """
+   
     df = pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
     df["z"] = -df.depth
-    print(df)
     return df[["z"]]
 
 
@@ -142,10 +145,9 @@ def merge_station_depth(station_dbase,station_depth,default_z):
          DataFrame that links the information.
                 
     """
-    merged =  station_dbase.merge(station_depth.reset_index("subloc"),
+    merged =  station_dbase.reset_index().merge(station_depth.reset_index(),
                 left_on="id",right_on="id",
-                how='left').set_index("subloc",append=True)
-    merged.loc[merged.z.isna(),"z"] = default_z
+                how='left').set_index(["id","subloc"])
     return merged
 
 def read_obs_links(fpath):
@@ -171,10 +173,11 @@ def read_station_out(fpath_base,stationinfo,var=None,start=None):
 def example():
     print(read_station_in("example_station.in"))  
     stations_utm = read_station_dbase("stations_utm.csv")
+    print(stations_utm)
     sdepth = read_station_depth("station_depth.csv")
     stations_in = merge_station_depth(stations_utm,sdepth,default_z=-0.5)
     #stations_in = pd.merge(stations_utm,sdepth,how='inner',left_index=True,right_index=True)
-    print(stations_in)
+    #print(stations_in)
     station_request = ["salt","elev"]
     write_station_in("station.in",stations_in,request=station_request)
     #stations_in = read_station_in("station.in")
@@ -223,9 +226,11 @@ def main():
     depthdb = args.depth_db
     default = args.default_depth
     request = args.request
+    print(request)    
     convert_db_station_in(stationdb,depthdb,request,default)
 
 if __name__ == '__main__':
+    #example()
     main()
 
 
