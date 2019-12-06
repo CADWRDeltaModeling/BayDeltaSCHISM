@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ Unittest of customized YAML for SCHISM with including and substitution
 """
