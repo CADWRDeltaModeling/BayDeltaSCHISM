@@ -1,4 +1,3 @@
-import vtools.data.timeseries
 import numpy as np
 from scipy.optimize import brentq
 
@@ -28,68 +27,68 @@ def m_to_ft(x):
     """ Convert meter to foot
         WARNING: The function modifies the input argument if it is TimeSeries
     """
-    if isinstance(x, vtools.data.timeseries.TimeSeries):
+    try:
         x.data *= M2FT
         x.props['unit'] = 'ft'
         return x
-    else:
+    except:
         return x * M2FT
 
 
 def ft_to_m(x):
     """ Convert foot to meter
     """
-    if isinstance(x, vtools.data.timeseries.TimeSeries):
+    try:
         x.data *= FT2M
         x.props['unit'] = 'm'
         return x
-    else:
+    except:
         return x * FT2M
 
 
 def cms_to_cfs(x):
     """ Convert cms to cfs
     """
-    if isinstance(x, vtools.data.timeseries.TimeSeries):
+    try:
         x.data *= CMS2CFS
         x.props['unit'] = 'cfs'
         return x
-    else:
+    except:
         return x * CMS2CFS
 
 
 def cfs_to_cms(x):
     """ Convert cfs to cms
     """
-    if isinstance(x, vtools.data.timeseries.TimeSeries):
+    try:
         x.data *= CFS2CMS
         x.props['unit'] = 'cms'
         return x
-    else:
+    except:
         return x * CFS2CMS
 
 
 def fahrenheit_to_celcius(x):
     """ Convert cfs to cms
     """
-    if isinstance(x, vtools.data.timeseries.TimeSeries):
+    try:
         x.data -= 32.
         x.data *= 5. / 9.
         x.props['unit'] = 'deg C'
         return x
-    else:
+    except:
         return (x - 32.) * 5. / 9.
 
 
 def celcius_to_fahrenheit(x):
     """ Convert cfs to cms
     """
-    if isinstance(x, vtools.data.timeseries.TimeSeries):
+    try:
         x.data *= 1.8
         x.data += 32.
         x.props['unit'] = 'deg F'
         return x
-    else:
+    except:
         return x * 1.8 + 32.
 
 
@@ -102,11 +101,11 @@ def ec_psu_25c(ts_ec,hill_correction=True):
         and no low salinity correction
         Note: The input argument, ts_ec, will be altered.
     """
-    if isinstance(ts_ec, vtools.data.timeseries.TimeSeries):
+    try:
         ec = ts_ec.data
-    else:
+    except:
         ec = ts_ec
-    R = ec / ec_sea
+    R = np.divide(ec,ec_sea)
     sqrtR = np.sqrt(R)
     Rsq = R * R
     s = K1 + K2*sqrtR + K3*R + K4*R*sqrtR + K5*Rsq + K6*Rsq*sqrtR
@@ -119,11 +118,11 @@ def ec_psu_25c(ts_ec,hill_correction=True):
         b_0_f = 0.0005*f  # = f(T=25)*0.0005
         sqrty = np.sqrt(y)
         s = s - a_0/(1.0+1.5*x+x*x) - b_0_f/(1.+ sqrty + y+ y*sqrty)
-    if isinstance(ts_ec, vtools.data.timeseries.TimeSeries):
+    try:
         ts_ec.data = s
         ts_ec.props['unit'] = 'PSU'
         return ts_ec
-    else:
+    except:
         return s
 
 
