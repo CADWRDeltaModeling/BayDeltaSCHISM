@@ -11,6 +11,9 @@ import os
 import math
 from copy import deepcopy
 from shapely.geometry import Point, Polygon
+import xarray as xr
+import matplotlib.pyplot as plt
+from matplotlib.collections import PolyCollection
 
 __all__ = ['read_mesh', 'write_mesh']
 
@@ -109,6 +112,7 @@ class SchismMesh(TriQuadMesh):
         self._polygons = None
         self._edge_lengths = None
         self._centroids = None
+        self._merged_mesh = None
 
     @property
     def vmesh(self):
@@ -544,7 +548,7 @@ class SchismMesh(TriQuadMesh):
         """
         centers = np.empty((self.n_edges(), 3))
         for i, edge in enumerate(self.edges):
-            centers[i] = np.mean(self.nodes[self.edges[:2], :2], axis=0)
+            centers[i,:2] = np.mean(self.nodes[self.edges[i,:2], :2], axis=0)
         return centers
 
     def areas(self):
@@ -612,6 +616,63 @@ class SchismMesh(TriQuadMesh):
         if self._centroids is None:
             self._calculate_centroids()
         return self._centroids
+    
+    def merged_mesh(self):
+        """
+        merge all the meshes to create a boundary polygon
+        """
+        if self._merged_mesh is None:
+            from shapely.ops import cascaded_union
+            self._create_2d_polygons()            
+            self._merged_mesh = cascaded_union(self._polygons)
+        return self._merged_mesh        
+    
+    def to_geopandas(self,feature_type='polygon',proj4=None,Shap_fn=None,
+                     node_values=None, value_name=None,create_gdf=True):
+        """
+        Create mesh polygon and points as geopandas dataframe and shapefiles if
+        Shap_fn file name is supplied. 
+        """   
+        import geopandas as gpd
+        import pandas as pd
+        df = pd.DataFrame()
+        if feature_type == 'polygon':
+            self._create_2d_polygons()
+            features = self._polygons   
+        elif feature_type == 'point': 
+            self._create_2d_points()
+            features = self._points  
+            if node_values:
+                df[value_name] = node_values           
+        df['geometry'] = features              
+        gdf = gpd.GeoDataFrame(df,geometry='geometry')
+        
+        if proj4:
+            gdf.crs = proj4  
+        else: 
+            gdf.crs = "+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_def"
+        if Shap_fn:
+            gdf.to_file(Shap_fn)
+        if create_gdf:
+            return gdf
+    
+    def plot_elems(self,var=None,ax=None,inpoly=None,**kwargs):
+        """
+        Plot variables (1D array on element) based on SCHISM mesh grid. 
+        if var is None,just plot the grid. 
+        """
+        xy = [self._nodes[e, :2] for e in self.elems]
+        if inpoly is not None:
+            xy = np.asarry(xy)[inpoly]
+            coll = PolyCollection(xy,array=var[inpoly],**kwargs)
+        else:
+            coll = PolyCollection(xy,array=var,**kwargs)
+        
+        if not ax:
+            fig, ax = plt.subplots()
+        ax.add_collection(coll)
+        ax.axis('equal')
+        return coll
 
 
 class SchismMeshReader(object):
@@ -1062,6 +1123,77 @@ class SchismMeshGr3Writer(SchismMeshWriter):
                 self._write_boundary()
 
 
+#class SchismMeshShapefileWriter(SchismMeshWriter):
+#
+#    def write(self,  *args, **kwargs):
+#        """ Write a shapefile of the mesh
+#            Support only UTM10N at the moment
+#
+#            Parameters
+#            ----------
+#            mesh: SchismMesh
+#            fpath: str
+#                output file name
+#            node_attr: numpy.array
+#                node values to overwrite
+#        """
+#        mesh = kwargs.get('mesh')
+#        fpath = kwargs.get('fpath')
+#        node_attr = kwargs.get('node_attr')
+#        for i, arg in enumerate(args):
+#            if i == 0:
+#                mesh = arg
+#            elif i == 1:
+#                fpath = arg
+#            elif i == 2:
+#                node_attr = arg
+#
+#        if os.path.exists(fpath):
+#            print("File with the output file name exists already", fpath)
+#            raise RuntimeError("File exists already")
+#
+#        spatial_reference = osgeo.osr.SpatialReference()
+#        proj4 = kwargs.get('proj4')
+#        if proj4 is None:
+#            proj4 = '+proj=utm +zone=10N +ellps=NAD83 +datum=NAD83 +units=m'
+#        spatial_reference.ImportFromProj4(proj4)
+#        driver_name = 'ESRI Shapefile'
+#        driver = osgeo.ogr.GetDriverByName(driver_name)
+#        if driver is None:
+#            print('%s is not available.' % driver_name)
+#            raise RuntimeError()
+#        datasource = driver.CreateDataSource(str(fpath))
+#        if datasource is None:
+#            raise RuntimeError()
+#        layer = datasource.CreateLayer('mesh',
+#                                       spatial_reference,
+#                                       osgeo.ogr.wkbPolygon)
+#        for i in range(4):
+#            field = osgeo.ogr.FieldDefn('node%d' % i, osgeo.ogr.OFTInteger)
+#            layer.CreateField(field)
+#        field = osgeo.ogr.FieldDefn('cell', osgeo.ogr.OFTInteger)
+#        layer.CreateField(field)
+#        feature_defn = layer.GetLayerDefn()
+#        feature = osgeo.ogr.Feature(feature_defn)
+#        ring = osgeo.ogr.Geometry(osgeo.ogr.wkbLinearRing)
+#        polygon = osgeo.ogr.Geometry(osgeo.ogr.wkbPolygon)
+#
+#        nodes = mesh.nodes
+#        elems = mesh.elems
+#        for cell_i, cell in enumerate(elems):
+#            for i, node_index in enumerate(cell):
+#                node = nodes[node_index]
+#                ring.AddPoint(*node)
+#                feature.SetField(i, int(node_index))
+#            feature.SetField(4, int(cell_i))
+#            ring.AddPoint(*nodes[cell[0]])
+#            polygon.AddGeometry(ring)
+#            feature.SetGeometry(polygon)
+#            layer.CreateFeature(feature)
+#            ring.Empty()
+#            polygon.Empty()
+#        datasource.Destroy()
+        
 class SchismMeshShapefileWriter(SchismMeshWriter):
 
     def write(self,  *args, **kwargs):
@@ -1076,6 +1208,10 @@ class SchismMeshShapefileWriter(SchismMeshWriter):
             node_attr: numpy.array
                 node values to overwrite
         """
+        import pandas as pd
+        import geopandas as gpd
+        import logging
+        
         mesh = kwargs.get('mesh')
         fpath = kwargs.get('fpath')
         node_attr = kwargs.get('node_attr')
@@ -1090,48 +1226,121 @@ class SchismMeshShapefileWriter(SchismMeshWriter):
         if os.path.exists(fpath):
             print("File with the output file name exists already", fpath)
             raise RuntimeError("File exists already")
-
-        spatial_reference = osgeo.osr.SpatialReference()
+        
         proj4 = kwargs.get('proj4')
         if proj4 is None:
-            proj4 = '+proj=utm +zone=10N +ellps=NAD83 +datum=NAD83 +units=m'
-        spatial_reference.ImportFromProj4(proj4)
-        driver_name = 'ESRI Shapefile'
-        driver = osgeo.ogr.GetDriverByName(driver_name)
-        if driver is None:
-            print('%s is not available.' % driver_name)
-            raise RuntimeError()
-        datasource = driver.CreateDataSource(str(fpath))
-        if datasource is None:
-            raise RuntimeError()
-        layer = datasource.CreateLayer('mesh',
-                                       spatial_reference,
-                                       osgeo.ogr.wkbPolygon)
-        for i in range(4):
-            field = osgeo.ogr.FieldDefn('node%d' % i, osgeo.ogr.OFTInteger)
-            layer.CreateField(field)
-        field = osgeo.ogr.FieldDefn('cell', osgeo.ogr.OFTInteger)
-        layer.CreateField(field)
-        feature_defn = layer.GetLayerDefn()
-        feature = osgeo.ogr.Feature(feature_defn)
-        ring = osgeo.ogr.Geometry(osgeo.ogr.wkbLinearRing)
-        polygon = osgeo.ogr.Geometry(osgeo.ogr.wkbPolygon)
+            proj4 = "+proj=utm +zone=10 +datum=WGS84 +units=m +no_defs"
+            
+        nodes = mesh.nodes
+        node_values = nodes[:,2]   
+        value_name = os.path.basename(fpath).replace('.nc','')
+        
+        # Two shape files will be generated, one for the polygons and the other 
+        # for the nodes. 
+        fpath_str = os.path.split(fpath)
+        fdir = fpath_str[0]
+        fname = fpath_str[1].replace('.shp','')
+        fpath_poly = os.path.join(fdir, fname + '_polygon.shp')
+        fpath_point = os.path.join(fdir, fname + '_point.shp')      
 
+        mesh.to_geopandas('polygon',proj4,fpath_poly,create_gdf=False)
+        mesh.to_geopandas('point',proj4,fpath_point,node_values,value_name,create_gdf=False)        
+        logging.info("%s generated"%fpath)   
+       
+class SchismMeshNetcdfWriter(SchismMeshWriter):
+
+    def write(self,  *args, **kwargs):
+        """ Write a netcdf of the mesh
+            Support only UTM10N at the moment
+
+            Parameters
+            ----------
+            mesh: SchismMesh generated by read_mesh(gr3_fn)
+            fpath: str
+                output file name
+            node_attr: numpy.array
+                node values to overwrite
+        """
+        import logging 
+        
+        mesh = kwargs.get('mesh')
+        fpath = kwargs.get('fpath')
+        node_attr = kwargs.get('node_attr')
+        for i, arg in enumerate(args):
+            if i == 0:
+                mesh = arg
+            elif i == 1:
+                fpath = arg
+            elif i == 2:
+                node_attr = arg
+
+        if os.path.exists(fpath):
+            print("File with the output file name exists already", fpath)
+            raise RuntimeError("File exists already")
+        
         nodes = mesh.nodes
         elems = mesh.elems
-        for cell_i, cell in enumerate(elems):
-            for i, node_index in enumerate(cell):
-                node = nodes[node_index]
-                ring.AddPoint(*node)
-                feature.SetField(i, int(node_index))
-            feature.SetField(4, int(cell_i))
-            ring.AddPoint(*nodes[cell[0]])
-            polygon.AddGeometry(ring)
-            feature.SetGeometry(polygon)
-            layer.CreateFeature(feature)
-            ring.Empty()
-            polygon.Empty()
-        datasource.Destroy()
+        n_node = range(mesh.n_nodes())
+        n_face = range(mesh.n_elems())
+        contour = np.zeros([len(elems),4,2])*-99.99  # if less than 4 nodes, give a negative value
+        for i in range(len(elems)):
+            mesh_nodes =  mesh.nodes[elems[i]][:,0:2]
+            contour[i,0:len(mesh_nodes),:] = mesh_nodes # need to check if the mesh_nodes are consistenly in anti-clockwise direction
+        node_values = nodes[:,2]   
+        value_name = os.path.basename(fpath).replace('.nc','')
+        n_face_node = range(4) # maximum 4 nodes
+        
+        # the nc file generated may not exactly follow ugrid convention
+        ds_node_x = xr.DataArray(nodes[:,0], coords=[n_node], dims=['n_hgrid_node'],
+                                 name='hgrid_node_x')
+        ds_node_x.attrs['long_name'] = "x_coordinates of 2D mesh node" 
+        ds_node_x.attrs['units'] = "meters"        # alternatively, degrees lat/lon
+        ds_node_x.attrs['mesh'] = "SCHISM_hgrid" 
+        ds_node_x.attrs['location'] = "node" 
+    
+        ds_node_y = xr.DataArray(nodes[:,1], coords=[n_node], dims=['n_hgrid_node'], 
+                                 name='hgrid_node_y')
+        ds_node_y.attrs['long_name'] = "y_coordinates of 2D mesh node" 
+        ds_node_y.attrs['units'] = "meters"      # alternatively, degrees lat/lon
+        ds_node_y.attrs['mesh'] = "SCHISM_hgrid" 
+        ds_node_y.attrs['location'] = "node"
+        
+        ds_values = xr.DataArray(node_values,coords=[n_node],dims=['n_hgrid_node'],
+                                 name=value_name)
+        ds_values.attrs['long_name'] = "node_values of 2D mesh node"
+        ds_values.attrs['units'] = "unknown"
+        ds_values.attrs['mesh'] = "SCHISM_hgrid"
+        ds_values.attrs['location'] = "node"
+        
+        ds_elem_contour_x = xr.DataArray(contour[:,:,0],coords=[n_face,n_face_node],
+                                         dims=['n_hgrid_face','n_face_node'],name='hgrid_contour_x')
+        ds_elem_contour_x.attrs['long_name'] = "x_coordinates of 2D mesh contour" 
+        ds_elem_contour_x.attrs['units'] = "meters"        # alternatively, degrees lat/lon
+        ds_elem_contour_x.attrs['mesh'] = "SCHISM_hgrid" 
+        ds_elem_contour_x.attrs['location'] = "contour"
+        
+        ds_elem_contour_y = xr.DataArray(contour[:,:,1],coords=[n_face,n_face_node],
+                                         dims=['n_hgrid_face','n_face_node'],name='hgrid_contour_y')
+        ds_elem_contour_y.attrs['long_name'] = "y_coordinates of 2D mesh contour" 
+        ds_elem_contour_y.attrs['units'] = "meters"        # alternatively, degrees lat/lon
+        ds_elem_contour_y.attrs['mesh'] = "SCHISM_hgrid" 
+        ds_elem_contour_y.attrs['location'] = "contour"   
+        
+#        ds_face_x = xr.DataArray(faces[:,0], coords=[n_face], dims=['n_hgrid_face'],name='hgrid_face_x')
+#        ds_face_x.attrs['long_name'] = "x_coordinates of 2D mesh face" 
+#        ds_face_x.attrs['units'] = "meters"        # alternatively, degrees lat/lon
+#        ds_face_x.attrs['mesh'] = "SCHISM_hgrid" 
+#        ds_face_x.attrs['location'] = "face" 
+#    
+#        ds_face_y = xr.DataArray(faces[:,1], coords=[n_face], dims=['n_hgrid_face'], name='hgrid_face_y')
+#        ds_face_y.attrs['long_name'] = "y_coordinates of 2D mesh face" 
+#        ds_face_y.attrs['units'] = "meters"      # alternatively, degrees lat/lon
+#        ds_face_y.attrs['mesh'] = "SCHISM_hgrid" 
+#        ds_face_y.attrs['location'] = "face"     
+        
+        ds = xr.merge([ds_node_x,ds_node_y,ds_elem_contour_x,ds_elem_contour_y,ds_values])
+        ds.to_netcdf(fpath) 
+        logging.info("%s generated"%fpath) 
 
 
 class SchismMeshIoFactory(object):
@@ -1140,7 +1349,8 @@ class SchismMeshIoFactory(object):
     registered_readers = {'gr3': 'SchismMeshGr3Reader',
                           'sms': 'SchismMeshSmsReader'}
     registered_writers = {'gr3': 'SchismMeshGr3Writer',
-                          'shp': 'SchismMeshShapefileWriter'}
+                          'shp': 'SchismMeshShapefileWriter',
+                          'nc': 'SchismMeshNetcdfWriter'}
 
     def get_reader(self, name):
         if name in self.registered_readers:
@@ -1204,5 +1414,10 @@ def write_mesh(mesh, fpath_mesh, node_attr=None, write_boundary=False,
                      fpath=fpath_mesh,
                      node_attr=node_attr,
                      proj4=proj4)
+    elif fpath_mesh.endswith(('nc')):
+        writer = SchismMeshIoFactory().get_writer('nc')
+        writer.write(mesh=mesh,
+                     fpath=fpath_mesh,
+                     node_attr=node_attr)        
     else:
-        raise ValueError("Unsupported extension")
+        raise ValueError("Unsupported extension") 

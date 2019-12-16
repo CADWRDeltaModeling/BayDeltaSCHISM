@@ -8,7 +8,6 @@ import schism_mesh
 import numpy as np
 import argparse
 import os
-import sets
 
 angle_e = np.array((np.pi / 3., np.pi * 2. / 3.))
 split_index = [[[0, 1, 2], [0, 2, 3]], [[0, 1, 3], [1, 2, 3]]]  # CCW
@@ -188,7 +187,7 @@ def main():
         raise ValueError('No splitting criteria are given')
 
     mesh = schism_mesh.read_mesh(fpath_mesh_in)
-    elems_to_split = sets.Set()
+    elems_to_split = set()
     n_elems_ori = mesh.n_elems()
     if skewness is not None:
         for elem_i, elem in enumerate(mesh.elems):
