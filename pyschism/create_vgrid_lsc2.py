@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 #runfile('D:/Delta/BayDeltaSCHISM/Scripts/create_vgrid_lsc2.py',
 #         wdir='D:/temp/gridopt/%s' % (scene),
@@ -163,8 +165,8 @@ def vgrid_gen(hgrid,vgrid_out,eta,
         nlayer_mesh = read_mesh(nlayer_gr3)
         #dztarget=read_mesh(nlayer_gr3.replace(".gr3","_dztarget.gr3")).nodes[:,2]
         nlayer = nlayer_mesh.nodes[:,2].astype('i')
-            raise ValueError("NLayer gr3 file (%s)\nhas %s nodes, hgrid file (%s) has %s" 
         if int(nlayer_mesh.n_nodes()) != int(mesh.n_nodes()):
+            raise ValueError("NLayer gr3 file (%s)\nhas %s nodes, hgrid file (%s) has %s" 
                   %(nlayer_gr3, nlayer_mesh.n_nodes(),hgrid,mesh.n_nodes()) )
     else:
         raise ValueError("archive_nlayer must be one of 'out', 'in' or None")
