@@ -145,9 +145,13 @@ def merge_station_depth(station_dbase,station_depth,default_z):
          DataFrame that links the information.
                 
     """
+    
     merged =  station_dbase.reset_index().merge(station_depth.reset_index(),
                 left_on="id",right_on="id",
-                how='left').set_index(["id","subloc"])
+                how='left')
+    merged.fillna({"subloc":"default","z": default_z},inplace=True)
+    merged.set_index(["id","subloc"],inplace=True)
+    
     return merged
 
 def read_obs_links(fpath):
@@ -194,11 +198,11 @@ def example():
         print("**")
         print(merged)
 
-def convert_db_station_in(stationdb="stations_utm.csv",depthdb="station_depth.csv",station_request="all",default=-0.5):
+def convert_db_station_in(outfile="station.in",stationdb="stations_utm.csv",depthdb="station_depth.csv",station_request="all",default=-0.5):
     stations_utm = read_station_dbase(stationdb)
     sdepth = read_station_depth(depthdb)
     stations_in = merge_station_depth(stations_utm,sdepth,default_z=-0.5)
-    write_station_in("station.in",stations_in,request=station_request)
+    write_station_in(outfile,stations_in,request=station_request)
 
 
 def create_arg_parser():
@@ -210,7 +214,7 @@ def create_arg_parser():
     parser.add_argument('--depth_db', default = "station_depth.csv",
                         help="depth listings for stations (otherwise default depth)")
     parser.add_argument('--request', default='all',nargs="+",help="requested variables or 'all' for all of them. Possibilities are: {}".format(",".join(station_variables)))
-    parser.add_argument('--default_depth',default='-0.5',
+    parser.add_argument('--default_zcor',default='-0.5',
                         help="depth used when there is no listing for station id")
     parser.add_argument('--out', default = "station.in",
                         help="station.in formatted file")
@@ -224,10 +228,11 @@ def main():
     args = parser.parse_args()
     stationdb = args.station_db
     depthdb = args.depth_db
-    default = args.default_depth
+    default = args.default_zcor
     request = args.request
+    outfile = args.out
     print(request)    
-    convert_db_station_in(stationdb,depthdb,request,default)
+    convert_db_station_in(outfile,stationdb,depthdb,request,default)
 
 if __name__ == '__main__':
     #example()
