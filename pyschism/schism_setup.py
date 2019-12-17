@@ -242,8 +242,8 @@ class SchismSetup(object):
             try:
                 up_path, down_path = mesh.find_two_neighboring_node_paths(line)
                 neighboring_nodes.append((up_path, down_path))
-            except KeyError as ke:
-                raise ValueError(" could not find neighboring node paths for linestring named: {}".format(name))
+            except:
+                self._logger.error(" could not find neighboring node paths for linestring named: {}".format(name))
                 
         flags = np.full((mesh.n_elems(), 1), -1, dtype='int')
         for i, (up_path, down_path) in enumerate(neighboring_nodes):
@@ -274,6 +274,8 @@ class SchismSetup(object):
                 if elem_2 != -1:
                     flag_elem_2 = i + 1 if down else i
                     if flags[elem_2] != -1 and flags[elem_2] != flag_elem_2:
+                        print(linestrings[i]['name'])
+                        
                         msg = "Line %s tried to flag element %d flagged already by %s" % (
                             linestrings[i]['name'], elem_2, linestrings[flags[elem_2]]['name'])
                         self._logger.error(msg)
