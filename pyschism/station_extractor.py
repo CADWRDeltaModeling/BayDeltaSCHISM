@@ -324,7 +324,8 @@ class FlowReader(object):
         self._time_basis = time_basis
         self._items = None
         self.data = None
-        self._flow_fname = 'flux.dat'
+        
+        self._flow_fname = 'flux.out' if os.path.exists(os.path.join(working_dir,'flux.out')) else 'flux.dat'
         self._stations = None
         self._station_id_to_index = None
 
