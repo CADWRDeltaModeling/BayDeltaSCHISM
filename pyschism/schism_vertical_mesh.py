@@ -317,7 +317,7 @@ class SchismLocalVerticalMeshWriter(object):
                 kbps = vmesh.kbps[i]
                 n_levels = n_max_levels - kbps
                 buf = "{}\t{}\t".format(i + 1, kbps + 1)
-                buf += '\t'.join(['{}'.format(d)
+                buf += '\t'.join(['{:.6f}'.format(d)
                                   for d in vmesh.sigma[i][:n_levels]])
                 buf += '\n'
                 f.write(buf)
