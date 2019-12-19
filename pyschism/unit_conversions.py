@@ -134,6 +134,7 @@ def psu_ec_25c_scalar(psu,refine=True,hill_correction=True):
     '''
     if psu < 0.:
         raise ValueError("Negative psu not allowed")
+    elif np.isnan(psu): return np.nan
 
     if (hill_correction and not refine):
         raise ValueError("Unrefined (refine=False) psu-to-ec correction cannot have hill_correction")
@@ -159,7 +160,12 @@ def psu_ec_25c(psu,refine=True,hill_correction=True):
     if type(psu) == float:
         return psu_ec_25c_scalar(psu,refine,hill_correction)
     else:
-        return psu_ec_25c_vec(psu,refine,hill_correction)
+        try:
+            out = psu.copy()
+            out.loc[:,:] = psu_ec_25c_vec(psu.to_numpy(),refine,hill_correction)
+            return out
+        except:	
+            return psu_ec_25c_vec(psu,refine,hill_correction)
 
 
 if __name__ == '__main__':
