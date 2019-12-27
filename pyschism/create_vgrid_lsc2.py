@@ -213,23 +213,27 @@ def plot_vgrid(hgrid_file,vgrid0_file,vgrid_file,eta,transectfiles):
         transect = np.loadtxt(transectfile,skiprows=1,delimiter=",")
         path = []        
         transx = transect[:,1:3] 
+        for p in range(transx.shape[0]):
+            path.append( mesh.find_closest_nodes(transx[p,:]))        
         #zcorsub = zcor[path,:]
         xx = x[path]
         xpath = np.zeros(xx.shape[0])
+        
         for i in range (1,len(path)):
             dist = np.linalg.norm(xx[i,:] - xx[i-1,:])
             xpath[i] = xpath[i-1] + dist
-
-        fig,(ax0,ax1) = plt.subplots(2,1,figsize=(10,8)) #,sharex=True,sharey=True)
-        ax0.set_title(transectfile)
-        #plot_mesh(ax0,xpath,zcor0[path,:],0,len(xpath),c="0.5",linewidth=2)
-        plot_mesh(ax0,xpath,zcor0[path,:],0,len(xpath),c="red")
-        plot_mesh(ax1,xpath,zcor1[path,:],0,len(xpath),c="blue")
-        ax0.plot(xpath,-h0[path],linewidth=2,c="black")
-        ax1.plot(xpath,-h0[path],linewidth=2,c="black")
-        plt.savefig(ospath.join("images",base+".png"))
-        plt.show()
-
+        try:
+            fig,(ax0,ax1) = plt.subplots(2,1,figsize=(10,8)) #,sharex=True,sharey=True)
+            ax0.set_title(transectfile)
+            #plot_mesh(ax0,xpath,zcor0[path,:],0,len(xpath),c="0.5",linewidth=2)
+            plot_mesh(ax0,xpath,zcor0[path,:],0,len(xpath),c="red")
+            plot_mesh(ax1,xpath,zcor1[path,:],0,len(xpath),c="blue")
+            ax0.plot(xpath,-h0[path],linewidth=2,c="black")
+            ax1.plot(xpath,-h0[path],linewidth=2,c="black")
+            plt.savefig(ospath.join("images",base+".png"))
+            plt.show()
+        except:
+            print("Plotting of grid failed for transectfile: {}".format(transectfile))
 
 
 if __name__ == '__main__':
