@@ -229,8 +229,8 @@ class StationReader(object):
         print("Reading %s..." % fname)
 
         if len(tss) != len(self._stations):
-            raise ValueError("# of stations in station.in and staout do not "
-                              "correspond.")
+            raise ValueError("# of stations in station.in ({}) and staout ({}) do not "
+                              "correspond.".format(len(self._stations),len(tss)))
         unit = self._item_units[var_index]
         self.set_tss_prop(tss, unit)
         self.data[var_index] = tss
