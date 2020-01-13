@@ -10,10 +10,12 @@ import numpy as np
 import os
 import math
 from copy import deepcopy
-from shapely.geometry import Point, Polygon
 import xarray as xr
 import matplotlib.pyplot as plt
-from matplotlib.collections import PolyCollection
+from matplotlib.collections import PolyCollection, PatchCollection
+import matplotlib.patches as patches
+from shapely.geometry import Point, Polygon, MultiLineString
+
 
 __all__ = ['read_mesh', 'write_mesh']
 
@@ -627,7 +629,7 @@ class SchismMesh(TriQuadMesh):
             self._merged_mesh = cascaded_union(self._polygons)
         return self._merged_mesh        
     
-    def to_geopandas(self,feature_type='polygon',proj4=None,Shap_fn=None,
+    def to_geopandas(self,feature_type='polygon',proj4=None,Shp_fn=None,
                      node_values=None, value_name=None,create_gdf=True):
         """
         Create mesh polygon and points as geopandas dataframe and shapefiles if
@@ -651,7 +653,7 @@ class SchismMesh(TriQuadMesh):
             gdf.crs = proj4  
         else: 
             gdf.crs = "+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_def"
-        if Shap_fn:
+        if Shp_fn:
             gdf.to_file(Shap_fn)
         if create_gdf:
             return gdf
@@ -673,7 +675,32 @@ class SchismMesh(TriQuadMesh):
         ax.add_collection(coll)
         ax.axis('equal')
         return coll
-
+    
+    def plot_edge(self,ax=None,**kwargs):
+        """
+        Plot the edge of the computational grid. 
+        """
+        boundary_mesh = self.merged_mesh()
+        patch = []     
+        multi_poly = list(boundary_mesh)        
+        for pi in multi_poly:
+            if isinstance(pi.boundary, MultiLineString):
+                boundary = list(pi.boundary)
+                for b in boundary:
+                    cxy = np.asarray(b.xy).T    
+                    poly = patches.Polygon(cxy,True)
+                    patch.append(poly)
+            else:
+                cxy = np.asarray(pi.boundary.xy).T
+                poly = patches.Polygon(cxy,True)
+                patch.append(poly)            
+            
+        p = PatchCollection(patch,facecolor='none',**kwargs)           
+        if not ax:
+            fig, ax = plt.subplots()            
+        ax.add_collection(p)
+        plt.axis('equal')   
+        return p
 
 class SchismMeshReader(object):
     """ Schism Mesh Reader abstract class
@@ -1266,6 +1293,7 @@ class SchismMeshNetcdfWriter(SchismMeshWriter):
         mesh = kwargs.get('mesh')
         fpath = kwargs.get('fpath')
         node_attr = kwargs.get('node_attr')
+         
         for i, arg in enumerate(args):
             if i == 0:
                 mesh = arg
@@ -1280,68 +1308,153 @@ class SchismMeshNetcdfWriter(SchismMeshWriter):
         
         nodes = mesh.nodes
         elems = mesh.elems
-        n_node = range(mesh.n_nodes())
-        n_face = range(mesh.n_elems())
+        edges = mesh.edges[:,0:2]
+        #n_node = range(mesh.n_nodes())
+        #n_face = range(mesh.n_elems())
+        #n_edge = range(mesh.n_edges())
         contour = np.zeros([len(elems),4,2])*-99.99  # if less than 4 nodes, give a negative value
         for i in range(len(elems)):
             mesh_nodes =  mesh.nodes[elems[i]][:,0:2]
             contour[i,0:len(mesh_nodes),:] = mesh_nodes # need to check if the mesh_nodes are consistenly in anti-clockwise direction
-        node_values = nodes[:,2]   
+        depth = nodes[:,2]   
         value_name = os.path.basename(fpath).replace('.nc','')
         n_face_node = range(4) # maximum 4 nodes
         
         # the nc file generated may not exactly follow ugrid convention
-        ds_node_x = xr.DataArray(nodes[:,0], coords=[n_node], dims=['n_hgrid_node'],
+        ds_node_x = xr.DataArray(nodes[:,0], #coords=[n_node], 
+                                 dims=['n_hgrid_node'],
                                  name='hgrid_node_x')
-        ds_node_x.attrs['long_name'] = "x_coordinates of 2D mesh node" 
-        ds_node_x.attrs['units'] = "meters"        # alternatively, degrees lat/lon
+        ds_node_x.attrs['long_name'] = "node x-coordinate"
+        ds_node_x.attrs['standard_name'] = 'longitude'
+        ds_node_x.attrs['units'] = "degrees_east"        # alternatively, degrees lat/lon
         ds_node_x.attrs['mesh'] = "SCHISM_hgrid" 
         ds_node_x.attrs['location'] = "node" 
     
-        ds_node_y = xr.DataArray(nodes[:,1], coords=[n_node], dims=['n_hgrid_node'], 
+        ds_node_y = xr.DataArray(nodes[:,1], #coords=[n_node], 
+                                 dims=['n_hgrid_node'], 
                                  name='hgrid_node_y')
-        ds_node_y.attrs['long_name'] = "y_coordinates of 2D mesh node" 
-        ds_node_y.attrs['units'] = "meters"      # alternatively, degrees lat/lon
+        ds_node_y.attrs['long_name'] = "node x-coordinate" 
+        ds_node_x.attrs['standard_name'] = 'latitude'
+        ds_node_y.attrs['units'] = "degrees_north"      # alternatively, degrees lat/lon
         ds_node_y.attrs['mesh'] = "SCHISM_hgrid" 
         ds_node_y.attrs['location'] = "node"
         
-        ds_values = xr.DataArray(node_values,coords=[n_node],dims=['n_hgrid_node'],
-                                 name=value_name)
-        ds_values.attrs['long_name'] = "node_values of 2D mesh node"
-        ds_values.attrs['units'] = "unknown"
+        ds_values = xr.DataArray(depth, #coords=[n_node],
+                                 dims=['n_hgrid_node'],
+                                 name='depth')
+        ds_values.attrs['long_name'] = "Bathymetry"
+        ds_values.attrs['units'] = "meters"
+        ds_values.attrs['positive'] = "down"
         ds_values.attrs['mesh'] = "SCHISM_hgrid"
         ds_values.attrs['location'] = "node"
         
-        ds_elem_contour_x = xr.DataArray(contour[:,:,0],coords=[n_face,n_face_node],
+        ds_elem_contour_x = xr.DataArray(contour[:,:,0],    #coords=[n_face,n_face_node],
                                          dims=['n_hgrid_face','n_face_node'],name='hgrid_contour_x')
         ds_elem_contour_x.attrs['long_name'] = "x_coordinates of 2D mesh contour" 
-        ds_elem_contour_x.attrs['units'] = "meters"        # alternatively, degrees lat/lon
+        ds_elem_contour_x.attrs['units'] = "degree_east"        # alternatively, degrees lat/lon
         ds_elem_contour_x.attrs['mesh'] = "SCHISM_hgrid" 
         ds_elem_contour_x.attrs['location'] = "contour"
         
-        ds_elem_contour_y = xr.DataArray(contour[:,:,1],coords=[n_face,n_face_node],
+        ds_elem_contour_y = xr.DataArray(contour[:,:,1],    #coords=[n_face,n_face_node],
                                          dims=['n_hgrid_face','n_face_node'],name='hgrid_contour_y')
         ds_elem_contour_y.attrs['long_name'] = "y_coordinates of 2D mesh contour" 
-        ds_elem_contour_y.attrs['units'] = "meters"        # alternatively, degrees lat/lon
+        ds_elem_contour_y.attrs['units'] = "degree_north"        # alternatively, degrees lat/lon
         ds_elem_contour_y.attrs['mesh'] = "SCHISM_hgrid" 
         ds_elem_contour_y.attrs['location'] = "contour"   
         
-#        ds_face_x = xr.DataArray(faces[:,0], coords=[n_face], dims=['n_hgrid_face'],name='hgrid_face_x')
-#        ds_face_x.attrs['long_name'] = "x_coordinates of 2D mesh face" 
-#        ds_face_x.attrs['units'] = "meters"        # alternatively, degrees lat/lon
-#        ds_face_x.attrs['mesh'] = "SCHISM_hgrid" 
-#        ds_face_x.attrs['location'] = "face" 
-#    
-#        ds_face_y = xr.DataArray(faces[:,1], coords=[n_face], dims=['n_hgrid_face'], name='hgrid_face_y')
-#        ds_face_y.attrs['long_name'] = "y_coordinates of 2D mesh face" 
-#        ds_face_y.attrs['units'] = "meters"      # alternatively, degrees lat/lon
-#        ds_face_y.attrs['mesh'] = "SCHISM_hgrid" 
-#        ds_face_y.attrs['location'] = "face"     
+        schism_face_node = np.asarray([np.append(e.astype(int),np.nan) if len(e)<4 else e.astype(int) for e in mesh.elems]) +1 # change from 0 based to 1 based.  
+        ds_face_nodes = xr.DataArray(schism_face_node,  #coords=[n_face, n_face_node],
+                                     dims = ['n_hgrid_face','n_face_node'], name ="hgrid_face_nodes").astype(int)
+        ds_face_nodes.attrs['long_name'] = "Horizontal Element Table"
+        ds_face_nodes.attrs['cf_role'] = "face_node_connectivity"
+        ds_face_nodes.attrs['start_index'] = 1
         
-        ds = xr.merge([ds_node_x,ds_node_y,ds_elem_contour_x,ds_elem_contour_y,ds_values])
-        ds.to_netcdf(fpath) 
-        logging.info("%s generated"%fpath) 
+        schism_edge_nodes = mesh.edges[:,:2] +1   # edge to nodes; change from 0 based to 1 based. 
+        ds_edge_nodes = xr.DataArray(schism_edge_nodes, #coords=[n_edge,np.arange(2)],
+                                     dims=['n_hgrid_edge','two'], name = 'hgrid_edge_nodes').astype(int)
+        ds_edge_nodes.attrs['long_name'] = "Map every edge to the two nodes that it connects"
+        ds_edge_nodes.attrs['cf_role'] = "edge_node_connectivity"
+        ds_edge_nodes.attrs['start_index'] = 1  
+        
+        face_x = np.array([np.mean(nodes[e,0]) for e in elems])
+        ds_face_x = xr.DataArray(face_x,    #coords=[n_face],
+                                 dims=['n_hgrid_face'], name = 'hgrid_face_x')
+        ds_face_x.attrs['long_name'] = "x_coordinate of 2D mesh face"
+        ds_face_x.attrs['standard_name'] = "longitude"
+        ds_face_x.attrs['units'] = "degrees_east"
+        ds_face_x.attrs['mesh'] = "SCHISM_hgrid" 
+  
+        face_y = np.array([np.mean(nodes[e,1]) for e in elems])
+        ds_face_y = xr.DataArray(face_y,    #coords=[n_face],
+                                 dims=['n_hgrid_face'], name = 'hgrid_face_y')
+        ds_face_y.attrs['long_name'] = "y_coordinate of 2D mesh face"
+        ds_face_y.attrs['standard_name'] = "latitude"
+        ds_face_y.attrs['units'] = "degrees_north"
+        ds_face_y.attrs['mesh'] = "SCHISM_hgrid" 
 
+
+        edge_x = np.array([np.mean(nodes[e,0]) for e in edges])
+        ds_edge_x = xr.DataArray(edge_x,    #coords=[n_edge],
+                                 dims=['n_hgrid_edge'], name = 'hgrid_edge_x')
+        ds_edge_x.attrs['long_name'] = "x_coordinate of 2D mesh edge"
+        ds_edge_x.attrs['standard_name'] = "longitude"
+        ds_edge_x.attrs['units'] = "degrees_east"
+        ds_edge_x.attrs['mesh'] = "SCHISM_hgrid" 
+  
+        edge_y = np.array([np.mean(nodes[e,1]) for e in edges])
+        ds_edge_y = xr.DataArray(edge_y,    #coords=[n_edge],
+                                 dims=['n_hgrid_edge'], name = 'hgrid_edge_y')
+        ds_edge_y.attrs['long_name'] = "y_coordinate of 2D mesh edge"
+        ds_edge_y.attrs['standard_name'] = "latitude"
+        ds_edge_y.attrs['units'] = "degrees_north"
+        ds_edge_y.attrs['mesh'] = "SCHISM_hgrid" 
+        
+        ds = xr.merge([ds_node_x,ds_node_y,ds_elem_contour_x,ds_elem_contour_y,ds_values,
+               ds_face_nodes,ds_edge_nodes,ds_face_x,ds_face_y,ds_edge_x,ds_edge_y])
+        
+        if hasattr(mesh,'vmesh'):
+                vmesh = mesh.vmesh
+                n_vert_levels = range(vmesh.n_vert_levels())
+                node_bottom_index = vmesh.kbps +1 # from 0 based to 1 based.
+                ds_node_bottom = xr.DataArray(node_bottom_index,    #coords=[n_node],
+                                              dims=['n_hgrid_node'], name = 'node_bottom_index')
+                ds_node_bottom.attrs['long_name'] = "bottom level index at each node"
+                ds_node_bottom.attrs['units'] = "non-dimensional"
+                ds_node_bottom.attrs['mesh'] = "SCHISM_hgrid"
+                ds_node_bottom.attrs['location'] = "node"
+                ds_node_bottom.attrs['start_index'] = 1
+                
+                ele_bottom_index= np.array([np.min(node_bottom_index[e]) for e in elems])
+                ds_ele_bottom = xr.DataArray(ele_bottom_index,  #coords=[n_face],
+                                             dims=['n_hgrid_face'], name = 'ele_bottom_index')
+                ds_ele_bottom.attrs['long_name'] = "bottom level index at each element"
+                ds_ele_bottom.attrs['units'] = "non-dimensional"
+                ds_ele_bottom.attrs['mesh'] = "SCHISM_hgrid"
+                ds_ele_bottom.attrs['location'] = "elem"
+                ds_ele_bottom.attrs['start_index'] = 1                
+                
+                edge_bottom_index = np.array([np.min(node_bottom_index[e]) for e in edges[:,:2]])
+                ds_edge_bottom = xr.DataArray(edge_bottom_index,    #coords=[n_edge],
+                                              dims=['n_hgrid_edge'], name = 'edge_bottom_index')
+                ds_edge_bottom.attrs['long_name'] = "bottom level index at each edge"
+                ds_edge_bottom.attrs['units'] = "non-dimensional"
+                ds_edge_bottom.attrs['mesh'] = "SCHISM_hgrid"
+                ds_edge_bottom.attrs['location'] = "edge"
+                ds_edge_bottom.attrs['start_index'] = 1   
+                
+#                z = mesh.z 
+#                ds_z = xr.DataArray(z,  #coords=[n_node,n_vert_levels],
+#                                       dims=['n_hgrid_node','n_vgrid_layers'],name='z')
+#                ds_z.attrs['mesh'] = 'SCHISM_hgrid'
+#                ds_z.attrs['data_horizontal_center'] = 'node'
+#                ds_z.attrs['data_vertical_center'] = 'full'
+#                ds_z.attrs['i23d'] =2 
+#                ds_z.attrs['ivs'] = vmesh.ivcor
+                
+                ds = xr.merge([ds,ds_node_bottom,ds_ele_bottom,ds_edge_bottom,ds_z])        
+
+        ds.to_netcdf(fpath) 
+        logging.info("%s generated"%fpath)
 
 class SchismMeshIoFactory(object):
     """ A factory class for SchismMeshIo
@@ -1393,7 +1506,7 @@ def read_mesh(fpath_mesh, fpath_vmesh=None, **kwargs):
 
 
 def write_mesh(mesh, fpath_mesh, node_attr=None, write_boundary=False,
-               proj4=None):
+               proj4=None,**kwargs):
     """ Write a horizontal mesh
 
         Parameters
@@ -1407,17 +1520,18 @@ def write_mesh(mesh, fpath_mesh, node_attr=None, write_boundary=False,
         writer.write(mesh=mesh,
                      fpath=fpath_mesh,
                      node_attr=node_attr,
-                     write_boundary=write_boundary)
+                     write_boundary=write_boundary,
+                     **kwargs)
     elif fpath_mesh.endswith(('shp')):
         writer = SchismMeshIoFactory().get_writer('shp')
         writer.write(mesh=mesh,
                      fpath=fpath_mesh,
                      node_attr=node_attr,
-                     proj4=proj4)
+                     proj4=proj4,**kwargs)
     elif fpath_mesh.endswith(('nc')):
         writer = SchismMeshIoFactory().get_writer('nc')
         writer.write(mesh=mesh,
                      fpath=fpath_mesh,
-                     node_attr=node_attr)        
+                     node_attr=node_attr,**kwargs)        
     else:
         raise ValueError("Unsupported extension") 

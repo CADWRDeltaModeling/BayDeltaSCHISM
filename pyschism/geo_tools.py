@@ -1,14 +1,22 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Nov 19 15:50:34 2019
-
 @author: zzhang
+if "no arguments in initialization list" runtime error is seen for pyproj, 
+it is because that proj_def.dat file is missing. 
+Solution: find datadir for pyproj. 
+for example in C:\\Users\\YourUserName\\AppData\\Local\\Continuum\\anaconda3\\Lib\\site-packages\\pyproj\\datadir
+Open the file ‘datadir’.
+changed ...\\Anaconda3\\share\proj
+to ...\\Anaconda3\\Library\\share (where proj_def.dat is). 
 """
+
 import geopandas as gpd
 import pandas as pd
 import numpy as np
 import logging
 from shapely.geometry import Polygon, MultiPolygon
+from pyproj import Proj  
 
 def shapely_to_geopandas(features,Proj4=None,shp_fn=None):
     """
@@ -28,10 +36,10 @@ def shapely_to_geopandas(features,Proj4=None,shp_fn=None):
 
 def Contiguity_Check(mesh,poly_fn,centering='nodes'):
     """
-    Check if the mesh division by polygons in poly_fn is contiguous. 
-    The contiguity check is based on nodes or elems
-    1) if there are any orphand nodes, and 
-    2) if any nodes were assigned to multiple polygons. 
+    Check if the schism mesh division by the polygon features in poly_fn is contiguous. 
+    The contiguity check is based on either node or element, and the function checks
+    1) if there are any orphaned nodes, and 
+    2) if any nodes/elems were assigned to multiple polygons. 
     """
     poly_gpd = gpd.read_file(poly_fn)        
     if centering == 'elems':
@@ -82,12 +90,27 @@ def FindMultiPoly(poly_array):
     ind = np.where(np.array(plens)>1)[0]
     return ind
 
+def project_fun(proj4=None):
+    if proj4:
+        projection = Proj(proj4)
+    else:
+        projection = Proj("+proj=utm +zone=10, +datum=WGS84 +units=m +no_defs") # this is utm zone 10. 
+    return projection    
 
-            
-        
-
-
-    
-        
-    
-    
+def ll2utm(lonlat,proj4=None):
+    """
+    lonlat can be numpy arrays. lonlat = np.asarray([lon,lat])
+    default proj4 = "+proj=utm +zone=10, +datum=WGS84 +units=m +no_defs"
+    """    
+    projection = project_fun(proj4)
+    utm_x, utm_y = projection(lonlat[0], lonlat[1])    
+    return np.asarray([utm_x,utm_y])    
+  
+def utm2ll(utm_xy,proj4=None):
+    """
+    utm_xy can be numpy arrays. utm_xy = np.asarray([utm_x,utm_y])
+    default proj4 = "+proj=utm +zone=10, +datum=WGS84 +units=m +no_defs"
+    """
+    projection = project_fun(proj4)
+    lon, lat = projection(utm_xy[0],utm_xy[1],inverse=True)    
+    return np.asarray([lon,lat])
