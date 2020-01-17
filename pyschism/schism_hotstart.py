@@ -121,7 +121,7 @@ class hotstart(object):
             idry = np.zeros(self.mesh.n_nodes()).astype(int)
             idry_s = np.zeros(self.mesh.n_edges()).astype(int)      
                 
-            ds = xr.Dataset({#'time':('one',[0.0]),
+            ds = xr.Dataset({'time':('one',[0.0]),
                               'iths':('one',[0]),
                               'ifile':('one',[1]),
                               'idry_e':('elem',idry_e),
