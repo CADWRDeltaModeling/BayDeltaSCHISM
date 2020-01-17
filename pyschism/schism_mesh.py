@@ -630,7 +630,7 @@ class SchismMesh(TriQuadMesh):
         return self._merged_mesh        
     
     def to_geopandas(self,feature_type='polygon',proj4=None,Shp_fn=None,
-                     node_values=None, value_name=None,create_gdf=True):
+                     node_values=None,elem_values=None, value_name=None,create_gdf=True):
         """
         Create mesh polygon and points as geopandas dataframe and shapefiles if
         Shap_fn file name is supplied. 
@@ -640,11 +640,13 @@ class SchismMesh(TriQuadMesh):
         df = pd.DataFrame()
         if feature_type == 'polygon':
             self._create_2d_polygons()
-            features = self._polygons   
+            features = self._polygons  
+            if elem_values is not None:
+                df[value_name] = elem_values    
         elif feature_type == 'point': 
             self._create_2d_points()
             features = self._points  
-            if node_values:
+            if node_values is not None:
                 df[value_name] = node_values           
         df['geometry'] = features              
         gdf = gpd.GeoDataFrame(df,geometry='geometry')
@@ -654,7 +656,7 @@ class SchismMesh(TriQuadMesh):
         else: 
             gdf.crs = "+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_def"
         if Shp_fn:
-            gdf.to_file(Shap_fn)
+            gdf.to_file(Shp_fn)
         if create_gdf:
             return gdf
     
@@ -676,7 +678,7 @@ class SchismMesh(TriQuadMesh):
         ax.axis('equal')
         return coll
     
-    def plot_edge(self,ax=None,**kwargs):
+    def plot_edge(self,ax=None,edgecolor='k',**kwargs):
         """
         Plot the edge of the computational grid. 
         """
@@ -695,7 +697,7 @@ class SchismMesh(TriQuadMesh):
                 poly = patches.Polygon(cxy,True)
                 patch.append(poly)            
             
-        p = PatchCollection(patch,facecolor='none',**kwargs)           
+        p = PatchCollection(patch,facecolor='none',edgecolor=edgecolor,**kwargs)           
         if not ax:
             fig, ax = plt.subplots()            
         ax.add_collection(p)
