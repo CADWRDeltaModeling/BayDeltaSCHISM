@@ -46,25 +46,25 @@ def appears_done(wdir,fb,exten,firstblock,lastblock):
         fname = "{}_{}".format(fb,i)
         if exten == ".nc": fname = fname + exten
         combined_filepath = os.path.join(wdir,fname)
-        print "checking {}".format(combined_filepath)
+        print("checking {}".format(combined_filepath))
         if not os.path.exists(combined_filepath):
             appears_done=False
             break
-    print appears_done
+    print(appears_done)
     return appears_done
 
 
 def failed_incomplete(e):
     output = e.output
-    print output
+    print(output)
     with open("combine_output.txt","w") as coo:
-        print "writing output"
+        print("writing output")
         coo.write(output)
     return e.returncode == SCHISM_INCOMPLETE_COMBINE
 
 
-def combine(wdir,blocks,fbase,consume=True,assume_done=True):
-    print "Called combine with {} in directory {}".format(fbase,wdir)
+def combine(wdir,blocks,fbase,combine_exe,consume=True,assume_done=True):
+    print("Called combine with {} in directory {}".format(fbase,wdir))
     pesky_fn = os.path.join(wdir,"combine_files_pesky.txt")
     if os.path.exists(pesky_fn): os.remove(pesky_fn)
     deletable_fn = os.path.join(wdir,"combine_files_deletable.txt")
@@ -81,10 +81,10 @@ def combine(wdir,blocks,fbase,consume=True,assume_done=True):
                 exten = ".nc"
             else:
                 exten = ""
-            print "Working on file type %s from stack %s to %s" % (fb, firstblock,lastblock)
-            print " In directory %s" % workdir
+            print("Working on file type %s from stack %s to %s" % (fb, firstblock,lastblock))
+            print(" In directory %s" % workdir)
             if appears_done(wdir,fb,exten,firstblock,lastblock):
-                print "Skipping combine for block because it appears fully combined"
+                print("Skipping combine for block because it appears fully combined")
                 block_delete = True
             else:
                 try:
@@ -94,7 +94,7 @@ def combine(wdir,blocks,fbase,consume=True,assume_done=True):
                 except subprocess.CalledProcessError as e:
                     # failed because last file was incomplete
                     if failed_incomplete(e) and (block == lastblockonlist):
-                        print "fail"
+                        print("fail")
                         # Appears that combine failed because file was not complete. What to do next depends on whether run is assumed complete. 
                         if assume_done:
                             if lastblock > firstblock:
@@ -107,8 +107,8 @@ def combine(wdir,blocks,fbase,consume=True,assume_done=True):
                             # since not assuming done, we might have better luck later. Don't try again or delete right now. 
                            block_delete = False
                     else:
-                        print "not "
-                        print e.returncode
+                        print("not ")
+                        print(e.returncode)
        
             #do_combine(wdir,firstblock,lastblock,fb)
             for block in range(firstblock,lastblock+1):
@@ -134,15 +134,15 @@ def combine(wdir,blocks,fbase,consume=True,assume_done=True):
         with open(pesky_fn,'a') as pp:
             pp.write("\n".join(pesky_files))
 
-def combine_hotstart(wdir,minstep=0,maxstep=99999999,consume=True):
+def combine_hotstart(wdir,combine_hotstart_exe,minstep=0,maxstep=99999999,consume=True):
     workdir = wdir
-    print "Called combine_hotstart"
+    print("Called combine_hotstart")
     pat = "hotstart_0000_*.nc"
     proc0files = glob.glob(os.path.join(wdir,pat))
     proc0files = [os.path.splitext(os.path.split(p0)[1])[0] for p0 in proc0files]
     exten = ".nc"
     allindex = [int(p0.split("_")[2]) for p0 in proc0files]
-    print allindex
+    print(allindex)
     if maxstep:
         allindex = [x for x in allindex if x > minstep and x<maxstep]
     else: 
@@ -164,7 +164,7 @@ def combine_hotstart(wdir,minstep=0,maxstep=99999999,consume=True):
         all_delete_files.extend(to_delete_files)
     if consume:
         for fname in all_delete_files:
-            print fname
+            print(fname)
             os.remove(fname)
             
 def archive_blocks(ar_file,tbase,blocks_per_day=1,ndxmin=1,ndxmax=None):
@@ -203,8 +203,8 @@ def archive_blocks(ar_file,tbase,blocks_per_day=1,ndxmin=1,ndxmax=None):
     cblock = [x for x in cblock if x[1] >= ndxmin and x[0] <= ndxmax]
     cblock[0]=(max(cblock[0][0],ndxmin),cblock[0][1])
     cblock[-1]=(cblock[-1][0],min(cblock[-1][1],ndxmax))
-    print "cblock"    
-    print cblock
+    print("cblock"    )
+    print(cblock)
     return cblock
             
 def gather_ppf_names(wdir,blocks):
@@ -212,8 +212,8 @@ def gather_ppf_names(wdir,blocks):
 
 def prune_ppf_files(wdir,blocks,fbase,list_only=False):
     flist = []
-    print "pruning"
-    print fbase
+    print("pruning")
+    print(fbase)
     for fb in fbase:
         if fb.endswith(".nc"):
             fb = fb[:-3]
@@ -262,8 +262,8 @@ def detect_min_max_index(wdir,sample_fbase):
     proc0files = glob.glob(pat)
 
     print(pat)
-    print( os.path.splitext(os.path.split(proc0files[0])[1]) )
-    print os.path.splitext( os.path.split(proc0files[0])[1])[0].split("_")
+    print(os.path.splitext(os.path.split(proc0files[0])[1]))
+    print(os.path.splitext(os.path.split(proc0files[0])[1])[0].split("_"))
 
     if len(proc0files) == 0:
         raise ValueError("No files detecting matching base filename patterns. Wrong directory or pattern? ({})".format(pat))
@@ -311,12 +311,15 @@ def combine_consume(is_test=False):
     blocks_per_day = args.blocks_per_day
     start = dtm.datetime.strptime(args.start,"%Y-%m-%d")
     consume = args.consume
+
     hotstart = args.hotstart or args.hotstart_only
     hotstart_only = args.hotstart_only
     datefile = args.datefile.strip()
     sndx = args.sndx    
     endx = args.endx
     assume_done = args.assume_done
+    combine_exe = args.combiner
+    combine_hotstart_exe = args.hot_combiner
 
     if is_test: 
         setup(wdir,fbase)
@@ -332,7 +335,7 @@ def combine_consume(is_test=False):
             ndxmin = sndx
         if not endx is None:
             ndxmax = endx
-        print "min/max: %s %s" % (ndxmin,ndxmax )
+        print("min/max: %s %s" % (ndxmin,ndxmax ))
 
         blocks = archive_blocks(datefile,start,blocks_per_day,ndxmin,ndxmax)
         wanted = set()
@@ -346,9 +349,9 @@ def combine_consume(is_test=False):
         unwanted.sort()
         if consume: 
             prune_ppf_files(wdir,unwanted,fbase,list_only = True)
-        combine(wdir,blocks,fbase,consume=consume,assume_done=assume_done)
+        combine(wdir,blocks,fbase,combine_exe,consume=consume,assume_done=assume_done)
     if hotstart:
-        combine_hotstart(wdir,consume=consume)
+        combine_hotstart(wdir,combine_hotstart_exe,consume=consume)
       
           
 if __name__ == "__main__":
