@@ -678,6 +678,11 @@ class SchismMesh(TriQuadMesh):
         ax.axis('equal')
         return coll
     
+    def plot_nodes(self,var,ax=None,inpoly=None,**kwargs):                
+        velem = np.asarray([var[el].mean(axis=0) for el in self.elems]) 
+        coll = self.plot_elems(var=velem,ax=ax,inpoly=inpoly,**kwargs)
+        return coll
+    
     def plot_edge(self,ax=None,edgecolor='k',**kwargs):
         """
         Plot the edge of the computational grid. 
@@ -1453,7 +1458,7 @@ class SchismMeshNetcdfWriter(SchismMeshWriter):
 #                ds_z.attrs['i23d'] =2 
 #                ds_z.attrs['ivs'] = vmesh.ivcor
                 
-                ds = xr.merge([ds,ds_node_bottom,ds_ele_bottom,ds_edge_bottom,ds_z])        
+                ds = xr.merge([ds,ds_node_bottom,ds_ele_bottom,ds_edge_bottom])        
 
         ds.to_netcdf(fpath) 
         logging.info("%s generated"%fpath)
