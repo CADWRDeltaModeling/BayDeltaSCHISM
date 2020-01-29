@@ -1449,16 +1449,16 @@ class SchismMeshNetcdfWriter(SchismMeshWriter):
                 ds_edge_bottom.attrs['location'] = "edge"
                 ds_edge_bottom.attrs['start_index'] = 1   
                 
-#                z = mesh.z 
-#                ds_z = xr.DataArray(z,  #coords=[n_node,n_vert_levels],
-#                                       dims=['n_hgrid_node','n_vgrid_layers'],name='z')
-#                ds_z.attrs['mesh'] = 'SCHISM_hgrid'
-#                ds_z.attrs['data_horizontal_center'] = 'node'
-#                ds_z.attrs['data_vertical_center'] = 'full'
-#                ds_z.attrs['i23d'] =2 
-#                ds_z.attrs['ivs'] = vmesh.ivcor
+                z = mesh.z 
+                ds_z = xr.DataArray(z,  #coords=[n_node,n_vert_levels],
+                                       dims=['n_hgrid_node','n_vgrid_layers'],name='z')
+                ds_z.attrs['mesh'] = 'SCHISM_hgrid'
+                ds_z.attrs['data_horizontal_center'] = 'node'
+                ds_z.attrs['data_vertical_center'] = 'full'
+                ds_z.attrs['i23d'] =2 
+                ds_z.attrs['ivs'] = vmesh.ivcor
                 
-                ds = xr.merge([ds,ds_node_bottom,ds_ele_bottom,ds_edge_bottom])        
+                ds = xr.merge([ds,ds_node_bottom,ds_ele_bottom,ds_edge_bottom,ds_z])        
 
         ds.to_netcdf(fpath) 
         logging.info("%s generated"%fpath)
