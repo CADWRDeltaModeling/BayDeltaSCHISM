@@ -94,13 +94,13 @@ def project_fun(proj4=None):
     if proj4:
         projection = Proj(proj4)
     else:
-        projection = Proj("+proj=utm +zone=10, +datum=WGS84 +units=m +no_defs") # this is utm zone 10. 
+        projection = Proj("+proj=utm +zone=10 +datum=WGS84 +units=m +no_defs") # this is utm zone 10. 
     return projection    
 
 def ll2utm(lonlat,proj4=None):
     """
     lonlat can be numpy arrays. lonlat = np.asarray([lon,lat])
-    default proj4 = "+proj=utm +zone=10, +datum=WGS84 +units=m +no_defs"
+    default proj4 = "+proj=utm +zone=10 +datum=WGS84 +units=m +no_defs"
     """    
     projection = project_fun(proj4)
     utm_x, utm_y = projection(lonlat[0], lonlat[1])    

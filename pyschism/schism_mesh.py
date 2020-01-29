@@ -1369,16 +1369,16 @@ class SchismMeshNetcdfWriter(SchismMeshWriter):
         ds_elem_contour_y.attrs['mesh'] = "SCHISM_hgrid" 
         ds_elem_contour_y.attrs['location'] = "contour"   
         
-        schism_face_node = np.asarray([np.append(e.astype(int),np.nan) if len(e)<4 else e.astype(int) for e in mesh.elems]) +1 # change from 0 based to 1 based.  
+        schism_face_node = np.asarray([np.append(e.astype('int32'),np.nan) if len(e)<4 else e.astype('int32') for e in mesh.elems]) +1 # change from 0 based to 1 based.  
         ds_face_nodes = xr.DataArray(schism_face_node,  #coords=[n_face, n_face_node],
-                                     dims = ['n_hgrid_face','n_face_node'], name ="hgrid_face_nodes").astype(int)
+                                     dims = ['n_hgrid_face','n_face_node'], name ="hgrid_face_nodes").astype('int32')
         ds_face_nodes.attrs['long_name'] = "Horizontal Element Table"
         ds_face_nodes.attrs['cf_role'] = "face_node_connectivity"
         ds_face_nodes.attrs['start_index'] = 1
         
         schism_edge_nodes = mesh.edges[:,:2] +1   # edge to nodes; change from 0 based to 1 based. 
         ds_edge_nodes = xr.DataArray(schism_edge_nodes, #coords=[n_edge,np.arange(2)],
-                                     dims=['n_hgrid_edge','two'], name = 'hgrid_edge_nodes').astype(int)
+                                     dims=['n_hgrid_edge','two'], name = 'hgrid_edge_nodes').astype('int32')
         ds_edge_nodes.attrs['long_name'] = "Map every edge to the two nodes that it connects"
         ds_edge_nodes.attrs['cf_role'] = "edge_node_connectivity"
         ds_edge_nodes.attrs['start_index'] = 1  

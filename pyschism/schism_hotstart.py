@@ -859,8 +859,8 @@ def hotstart_to_outputnc(hotstart_fn,init_date,hgrid_fn = 'hgrid.gr3',vgrid_fn =
                    'hgrid_face_x':'SCHISM_hgrid_face_x',
                    'hgrid_face_y':'SCHISM_hgrid_face_y',
                    'hgrid_edge_x':'SCHISM_hgrid_edge_x',
-                   'hgrid_edge_y':'SCHISM_hgrid_edge_y',
-                   'n_vgrid_layers':'nSCHISM_vgrid_layers'}    
+                   'hgrid_edge_y':'SCHISM_hgrid_edge_y'}
+                   #'n_vgrid_layers':'nSCHISM_vgrid_layers'}    
     
     if not os.path.exists("hgrid.nc"):
         mesh = read_mesh(hgrid_fn,vgrid_fn)        
