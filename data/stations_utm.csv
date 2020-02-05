@@ -1,4 +1,4 @@
-id,name,lat,lon,x,y,d1641_id,discrete_sampling,Type,wdl_id,Agency,alias_id2,WQ,Stage,Flow,EC,Temp,Turb,pH,DO,Fluoro,UVA,Chloro,Chloride,Vel,Notes2,Status
+id,name,lat,lon,x,y,d1641_id,discrete_sampling,Type,wdl_id,Agency,alias,WQ,Stage,Flow,EC,Temp,Turb,pH,DO,Fluoro,UVA,Chloro,Chloride,Vel,Notes2,Status
 B95020,San Joaquin at Antioch,38.01784713,-121.802883,605075.1,4208474.7,D12A,,,B95020,dwr_ncro,ANH,,x,,,,,,,,,,,,USBR and DWR have equipment within a 30x30 building (in a 10x10 room) located on a pier that is the City of Antioch's pumping station,
 B94175,Mokelumne River at Benson's Ferry,38.2555,-121.44,636491.3,4235314.6,,,C,B94175,dwr_ncro,BEN,,x,,,,,,,,,,,,,
 CCS,Cache Slough,38.29713655,-121.7477601,609500.3,4239525.4,,,,,usbr,CCS,x,,,x,,x,,,,,,,,Old Vallejo Pumping Plant,
@@ -127,7 +127,7 @@ PCT,Port Chicago,38.05893797,-122.024823,585550.4,4212803.2,C14,,,,usbr,PCT,x,,,
 11458000,Napa R near Napa,38.36851973,-122.3032124,560869,4246934.1,,,,,usgs,NAP,,x,x,,,,,,,,,,,,
 11459150,Petaluma R at Copland Pumping Station,38.23852452,-122.6401691,531489.6,4232341.6,,,,,usgs,11459150,,,,,,,,,,,,,,,O
 "373025122065901",San Francisco Bay at Old Dumbarton Bridge,37.50694444,-122.1163889,578096,4151478.4,,,,,usgs,3.73E+14,,x,,,,,,,,,,,,,
-"374938122251801",San Francisco Bay at Richmond-San Rafael Bridge,37.93527778,-122.4463889,548648.5,4198778.5,,,,,usgs,3.76E+14,x,,,x,x,,,,,,,,,,
+"375607122264701",San Francisco Bay at Richmond-San Rafael Bridge,37.93527778,-122.4463889,548648.5,4198778.5,,,,,usgs,3.76E+14,x,,,x,x,,,,,,,,,,
 9415218,Mare Island,38.07,-122.25,565785.8,4213847.2,,,,,noaa,9415218,,x,,,,,,,,,,,,,
 9415143,Crockett,38.0583,-122.223,568165,4212568.5,,,,,noaa,9415143,,x,,,,,,,,,,,,,D
 9415265,Suisun Slough Entrance,38.12065452,-122.0737802,581187.1,4219607.1,,,,,noaa,9415265,,x,,,,,,,,,,,,"Not confirmed. No detailed description, defunct 1989",D
