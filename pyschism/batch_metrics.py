@@ -235,16 +235,19 @@ class BatchMetrics(object):
         elif unit in ('deg F', 'degF'):
             self.logger.info("Converting deg F to deg C")
             return fahrenheit_to_celcius(ts)
-        elif unit in ('degC',):
+        elif unit in ('degC','deg C'):
             ts.props['unit'] = 'deg C'
             return ts
         elif unit is None:
             self.logger.warning("No unit in the time series")
             return ts
+        elif unit == '':
+            self.logger.warning("Empty (blank) unit in the time series")
+            return ts
         else:
             self.logger.warning(
-                "  Not supported unit in the time series: %s", unit)
-            raise ValueError("Not supported unit in the time series")
+                "  Not supported unit in the time series: {}.".format(unit))
+            raise ValueError("Not supported unit in the time series: {}.".format(unit))
 
     def create_title(self, db_stations, station_id, source, variable, vert_pos=0):
         """ Create a title for the figure
@@ -398,7 +401,10 @@ class BatchMetrics(object):
                     adj_obs += adj
                 if 'unit' not in ts_obs.props:
                     ts_obs.props['unit'] = db_obs.unit(station_id, variable)
-                ts_obs = self.convert_unit_of_ts_obs_to_SI(ts_obs)
+                try:
+                    ts_obs = self.convert_unit_of_ts_obs_to_SI(ts_obs)
+                except Exception as e:
+                    raise type(e)(e.message + "\nStation".format(station_id))
 
             # Read simulation
             tss_sim = self.retrieve_tss_sim(sim_outputs,
