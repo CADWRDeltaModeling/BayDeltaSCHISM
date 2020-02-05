@@ -137,10 +137,10 @@ vel_axis_labels = [[None, MPS_LABEL],
 vel_filtered_axis_labels = [[None, FILTERED_MPS_LABEL],
                              [None, FILTERED_FTPS_LABEL]]
 
-DEG_C_LABEL = r'Temperature (\u00b0 C)'
-DEG_F_LABEL = r'Temperature (\u00b0 F)'
-FILTERED_DEG_C_LABEL = r'Tidal Avg Temp (\u00b0 C)'
-FILTERED_DEG_F_LABEL = r'Tidal Avg Temp (\u00b0 F)'
+DEG_C_LABEL = u'Temperature (\u00b0 C)'
+DEG_F_LABEL = u'Temperature (\u00b0 F)'
+FILTERED_DEG_C_LABEL = u'Tidal Avg Temp (\u00b0 C)'
+FILTERED_DEG_F_LABEL = u'Tidal Avg Temp (\u00b0 F)'
 temp_axis_labels = [[None, DEG_C_LABEL],
                     [None, DEG_F_LABEL]]
 temp_filtered_axis_labels = [[None, FILTERED_DEG_C_LABEL],
