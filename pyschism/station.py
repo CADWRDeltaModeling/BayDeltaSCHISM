@@ -276,7 +276,7 @@ def create_arg_parser():
                         help="depth listings for stations (otherwise default depth)")
     parser.add_argument('--request', default='all',nargs="+",help="requested variables or 'all' for all of them. Possibilities are: {}".format(",".join(station_variables)))
     parser.add_argument('--default_zcor',default='-0.5',
-                        help="depth used when there is no listing for station id")
+                        help="z coordinate used when there is no listing for station id (z coordinate, not depth from surface)")
     parser.add_argument('--out', default = "station.in",
                         help="station.in formatted file")
     return parser
