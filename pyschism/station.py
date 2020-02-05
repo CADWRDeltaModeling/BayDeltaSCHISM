@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 import sys
-if sys.version_info[0] < 3:
-    from builtins import open, file, str
-    from pandas.compat import u
 import pandas as pd
+
+if sys.version_info[0] < 3:
+    from pandas.compat import u
+    from builtins import open, file, str
+else:
+    u = lambda x: x
+
 import argparse
 from vtools.data.timeseries import *
 
