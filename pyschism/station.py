@@ -1,7 +1,64 @@
-from builtins import open, file, str
-from pandas.compat import u
+#!/usr/bin/env python
+import sys
+if sys.version_info[0] < 3:
+    from builtins import open, file, str
+    from pandas.compat import u
 import pandas as pd
 import argparse
+from vtools.data.timeseries import *
+
+def read_staout(fname,station_infile,reftime,ret_station_in = False,multi=False,elim_default=False):
+    """Read a SCHISM staout_* file into a pandas DataFrame
+    
+    Parameters
+    ----------
+    fpath : fname
+        Path to input staout file
+        
+    station_infile : str or DataFrame
+        Path to station.in file or DataFrame from read_station_in
+
+    reftime : Timestampe
+        Start of simulation, time basis for staout file elapse time
+
+    ret_station_in : bool
+        Return station_in DataFrame for use, which may speed reading of a second file
+        
+    multi : bool
+        Should the returned data have a multi index for the column with location and sublocation. If False the two are collapsed
+        
+    elim_default : bool
+        If the MultiIndex is collapsed, stations with subloc "default" will be collapsed. Eg. ("CLC","default") becomes "CLC_default"
+        
+     Returns
+     -------    
+     Result : DataFrame
+         DataFrame with hierarchical index (id,subloc) and columns representing the staout data (collapsed as described above
+         
+    Examples
+    --------
+
+    >>> staout1,station_in = read_staout("staout_1","station.in",reftime=pd.Timestamp(2009,2,10),
+                                 ret_station_in = True,multi=False,elim_default=True)
+    >>> staout6 = read_staout("staout_6",station_in,reftime=pd.Timestamp(2009,2,10),multi=False,elim_default=True)
+                
+    """
+    if isinstance(station_infile,str):
+        station_in = read_station_in(station_infile)
+    else: station_in = station_infile
+    station_index = station_in.index.copy()
+    staout = pd.read_csv(fname,index_col=0,sep="\s+",header=None)
+    staout.mask(staout==-999.,inplace=True)
+    staout.columns = station_index
+    elapsed_datetime(staout,reftime=reftime,inplace=True)
+    if not multi:
+        if elim_default:
+            staout.columns = [f'{loc}_{subloc}' if subloc != 'default' else f'{loc}' for loc,subloc in staout.columns]
+        else: [f'{loc}_{subloc}' for loc,subloc in staout.columns]
+    return (staout, station_infile) if ret_station_in else staout
+
+
+
 
 station_variables = ["elev", "air pressure", "wind_x", "wind_y",
                      "temp", "salt", "u", "v", "w"]
