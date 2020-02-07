@@ -8,16 +8,14 @@ Point Reyes and Monterey.
 """
 
 import sys
-#sys.path.append("D:\Schism\Scripts")
-sys.path.insert(0,"D:\Schism\Scripts")
+import pandas as pd
 
 from netCDF4 import Dataset
-from osgeo import gdal
+import gdal
 from separate_species import separate_species
-from read_ts import read_ts
-from schism_setup import create_schism_setup
-from vtools.functions.api import interpolate_ts_nan
-from vtools.data.vtime import hours, days
+from schism_mesh import read_mesh
+from vtools.data.vtime import hours, days, seconds
+from vtools.datastore.read_ts import read_noaa, read_ts
 import numpy as np
 from datetime import datetime
 import struct, argparse, re
@@ -152,6 +150,7 @@ def main():
     
     
 def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
+    max_gap = 5
     stime = start
     etime = end
     fpath_out = outfile
@@ -161,11 +160,11 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
     
     tbuf = days(16)              
     # convert start time string input to datetime       
-    sdate = datetime(*list(map(int, re.split('[^\d]', stime))))
+    sdate = pd.Timestamp(stime)
 
     if not etime is None:
         # convert start time string input to datetime
-        edate = datetime(*list(map(int, re.split('[^\d]', etime))))
+        edate = pd.Timestamp(etime)
         bufend = edate + tbuf
     else:
         edate = None
@@ -195,51 +194,53 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
     
     # Grid
     #todo: what is the difference between this and m = read_grid()??
-    s = create_schism_setup(hgrid_fpath)
+    mesh = read_mesh(hgrid_fpath)
     
-    ocean_boundary = s.mesh.boundaries[0]  # First one is ocean
+    ocean_boundary = mesh.boundaries[0]  # First one is ocean
  
     # Data
     print("Reading Point Reyes...")
-    pt_reyes = read_ts(pt_reyes_fpath, start=sdate - tbuf, end=bufend, force_regular=True)
-    pt_reyes = interpolate_ts_nan(pt_reyes)
-    if np.any(np.isnan(pt_reyes.data)):
-        print(pt_reyes.times[np.isnan(pt_reyes.data)])
+    pt_reyes = read_noaa(pt_reyes_fpath, start=sdate - tbuf, end=bufend, force_regular=True)
+    pt_reyes.interpolate(limit=max_gap,inplace=True)
+    if pt_reyes.isna().any(axis=None):
+        raise ValueError("pt_reyes has gaps larger than fill limit")
     ts_pr_subtidal, ts_pr_diurnal, ts_pr_semi, noise = separate_species(pt_reyes,noise_thresh_min=150)
         
       
     del noise
 
     print("Reading Monterey...")
-    monterey = read_ts(monterey_fpath, start=sdate - tbuf, end=bufend, force_regular=True)
-    monterey = interpolate_ts_nan(monterey)
-    if pt_reyes.interval != monterey.interval:
+    monterey = read_noaa(monterey_fpath, start=sdate - tbuf, end=bufend, force_regular=True)
+    monterey.interpolate(limit=max_gap,inplace=True)
+    if pt_reyes.isna().any(axis=None):
+        raise ValueError("monterey has gaps larger than fill limit")
+    
+    if pt_reyes.index.freq  != monterey.index.freq:
         raise ValueError(
             "Point Reyes and Monterey time step must be the same in gen_elev2D.py")
 
     ts_mt_subtidal, ts_mt_diurnal, ts_mt_semi, noise = separate_species(monterey,noise_thresh_min=150)
     del noise
 
-    dt = monterey.interval.seconds
+
+    dt = monterey.index.freq/seconds(1)
 
     print("Done Reading")
 
-    print("Interpolating Point Reyes")
+    print("Interpolating and subsetting Point Reyes")
     # interpolate_ts(ts_pr_subtidal.window(sdate,edate),step)
-    ts_pr_subtidal = ts_pr_subtidal.window(sdate, edate)
-    ts_pr_diurnal = ts_pr_diurnal.window(sdate, edate)  # interpolate_ts(,step)
+    ts_pr_subtidal = ts_pr_subtidal.loc[sdate:edate]
+    ts_pr_diurnal = ts_pr_diurnal.loc[sdate:edate]
     # interpolate_ts(ts_pr_semi.window(sdate,edate),step)
-    ts_pr_semi = ts_pr_semi.window(sdate, edate)
-
-  
+    ts_pr_semi = ts_pr_semi.loc[sdate:edate]
     
-    print("Interpolating Monterey")
+    print("Interpolating and subsetting Monterey")
     # interpolate_ts(ts_mt_subtidal.window(sdate,edate),step)
-    ts_mt_subtidal = ts_mt_subtidal.window(sdate, edate)
+    ts_mt_subtidal = ts_mt_subtidal.loc[sdate:edate]
     # interpolate_ts(ts_mt_diurnal.window(sdate,edate),step)
-    ts_mt_diurnal = ts_mt_diurnal.window(sdate, edate)
+    ts_mt_diurnal = ts_mt_diurnal.loc[sdate:edate]
     # interpolate_ts(ts_mt_semi.window(sdate,edate),step)
-    ts_mt_semi = ts_mt_semi.window(sdate, edate)
+    ts_mt_semi = ts_mt_semi.loc[sdate:edate]
 
     print("Creating writer")  # requires dt be known for netcdf
     if fpath_out.endswith("th"):
@@ -252,7 +253,7 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
     
     
     # Grid
-    boundaries = s.mesh.nodes[ocean_boundary.nodes]
+    boundaries = mesh.nodes[ocean_boundary.nodes]
     pos_rel = boundaries[:, :2] - pos_pr
 
     # x, y in a new principal axes
@@ -295,25 +296,20 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
     scaling_diurnal_pr = 0.94
     scaling_semidiurnal_mt = 1.0  # Scaling at Monterey semi-diurnal signal
 
-    #slr = 0.0  # Sea level rise
 
-    if np.any(np.isnan(ts_pr_semi.data)):
-        print(ts_pr_semi.times[np.isnan(ts_pr_semi.data)])
+    if ts_pr_semi.isna().any(axis=None):
+        print(ts_pr_semi[ts_pr_semi.isna()])
         raise ValueError('Above times are missing in Point Reyes data')
 
-#    temp=np.zeros((len(ts_pr_semi),nnode))
-#    times[:]=[dt*i for i in xrange(len(ts_pr_semi))]   
 
     for i in range(len(ts_pr_semi)):
         t = float(dt * i)
         # semi-diurnal
         # Scaling
-        pr = ts_pr_semi[i].value
-        mt = ts_mt_semi[i].value * scaling_semidiurnal_mt
+        pr = ts_pr_semi.iloc[i,0]
+        mt = ts_mt_semi.iloc[i,0] * scaling_semidiurnal_mt
 
         if np.isnan(pr) or np.isnan(mt):
-            print(pr)
-            print(mt)
             raise ValueError("One of values is numpy.nan.")
 
         eta_pr_side = var_y / var_semi[0] * pr
@@ -322,8 +318,12 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
 
         # diurnal
         # Interpolate in x-direction only to get a better phase
-        pr = ts_pr_diurnal[i].value * scaling_diurnal_pr
-        mt = ts_mt_diurnal[i].value * scaling_diurnal_mt
+        pr = ts_pr_diurnal.iloc[i,0] * scaling_diurnal_pr
+        mt = ts_mt_diurnal.iloc[i,0] * scaling_diurnal_mt
+        #if i < 5:
+        #    print("yu")
+        #    print(pr)
+        #    print(mt)
 
         if np.isnan(pr) or np.isnan(mt):
             raise ValueError("One of values is numpy.nan.")
@@ -333,8 +333,8 @@ def gen_elev2D(hgrid_fpath,outfile,pt_reyes_fpath,monterey_fpath,start,end,slr):
         # Subtidal
         # No phase change in x-direction. Simply interpolate in
         # y-direction.
-        pr = ts_pr_subtidal[i].value 
-        mt = ts_mt_subtidal[i].value + adj_subtidal_mt 
+        pr = ts_pr_subtidal.iloc[i,0]
+        mt = ts_mt_subtidal.iloc[i,0] + adj_subtidal_mt 
 
         if np.isnan(pr) or np.isnan(mt):
             raise ValueError("One of values is numpy.nan.")

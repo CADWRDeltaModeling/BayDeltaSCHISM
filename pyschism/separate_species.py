@@ -5,13 +5,11 @@
     from input files, seperates  the species, writes results and optionally plots
     an example
 """
-
-from read_ts import *
-import datetime as dtm
-from vtools.functions.filter import *
 import argparse
-
-from vtools.data.vtime import *
+from vtools.datastore.read_ts import read_ts
+import datetime as dtm
+from vtools.functions.filter import cosine_lanczos
+from vtools.data.vtime import hours,minutes
 
 
 def separate_species(ts,noise_thresh_min=40):
@@ -28,27 +26,26 @@ def separate_species(ts,noise_thresh_min=40):
     """
     
     # the first filter eliminates noise
-    ts_no_noise= cosine_lanczos(ts,cutoff_period=minutes(noise_thresh_min))
-    ts_noise=ts-ts_no_noise   # this is the residual, the part that IS noise
+    ts_denoise= cosine_lanczos(ts,cutoff_period=minutes(noise_thresh_min))
+    ts_noise=ts-ts_denoise   # this is the residual, the part that IS noise
     
     # the filter length assumes 6 minute data. The resulting filter is 90 hours
     # long which is MUCH longer than the default because this filter has to be
     # really sharp
-    assert ts.interval == minutes(6)
-    ts_diurnal_and_low=cosine_lanczos(ts_no_noise,cutoff_period=hours(14.5),
+    assert ts.index.freq == minutes(6)
+    # 14.5 hours = 870min
+    ts_diurnal_and_low=cosine_lanczos(ts_denoise,cutoff_period=minutes(870),
                                       filter_len=900)
-    ts_semidiurnal_and_high=ts_no_noise-ts_diurnal_and_low
+    ts_semidiurnal_and_high=ts_denoise-ts_diurnal_and_low
 
     # The resulting filter is again 90 hours
     # long which is still a bit longer than the default. Again,
     # we want this filter to be pretty sharp.
     #ts_sub_tide=cosine_lanczos(ts_diurnal_and_low,cutoff_period=hours(40),
     #                           filter_len=900)
-    ts_sub_tide=cosine_lanczos(ts_no_noise,cutoff_period=hours(40),
+    ts_sub_tide=cosine_lanczos(ts_denoise,cutoff_period=hours(40),
                                filter_len=900)
-                                
     ts_diurnal=ts_diurnal_and_low-ts_sub_tide
-    
     return ts_sub_tide,ts_diurnal,ts_semidiurnal_and_high, ts_noise
     
     
