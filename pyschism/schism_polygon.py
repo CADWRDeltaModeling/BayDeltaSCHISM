@@ -236,10 +236,15 @@ class SchismPolygonShapefileWriter(SchismPolygonIo):
             default: ESRI Shapefile
         """
         if spatial_reference is None:
-            spatial_reference = '+proj=utm +zone=10N +ellps=NAD83 +datum=NAD83 +units=m'
+            # Not sure if this changed. it should be EPSG 26910 
+            #spatial_reference = '+proj=utm +zone=10N +ellps=NAD83 +datum=NAD83 +units=m'
+            spatial_reference= '+proj=utm +zone=10 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
         if isinstance(spatial_reference, str):
             spatial_reference_obj = SpatialReference()
-            spatial_reference_obj.ImportFromProj4(spatial_reference)
+            try:
+                spatial_reference_obj.ImportFromProj4(spatial_reference)
+            except:
+                raise ValueError("spatial reference could not be created from string: {}".format(spatial_reference))
         elif isinstance(spatial_reference, SpatialReference):
             spatial_reference_obj = spatial_reference
         else:
@@ -257,10 +262,10 @@ class SchismPolygonShapefileWriter(SchismPolygonIo):
                                        spatial_reference_obj,
                                        wkbPolygon)
         fields = ('name', 'type', 'attribute')
-        map(layer.CreateField, [FieldDefn(field) for field in fields])
+        for field in fields:
+            layer.CreateField(FieldDefn(field))
         feature_defn = layer.GetLayerDefn()
         feature = Feature(feature_defn)
-
         for i, polygon in enumerate(polygons):
             feature.SetGeometry(CreateGeometryFromWkb(polygon.wkb))
             feature.SetField(0, polygon.name)
