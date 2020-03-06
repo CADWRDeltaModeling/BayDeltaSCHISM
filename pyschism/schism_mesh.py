@@ -1094,7 +1094,9 @@ class SchismMeshShapefileWriter(SchismMeshWriter):
         spatial_reference = osgeo.osr.SpatialReference()
         proj4 = kwargs.get('proj4')
         if proj4 is None:
+            # appears wrong for UTM zone 10
             proj4 = '+proj=utm +zone=10N +ellps=NAD83 +datum=NAD83 +units=m'
+            proj4 = '+proj=utm +zone=10 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
         spatial_reference.ImportFromProj4(proj4)
         driver_name = 'ESRI Shapefile'
         driver = osgeo.ogr.GetDriverByName(driver_name)
