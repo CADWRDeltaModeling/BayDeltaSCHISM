@@ -50,8 +50,8 @@ B91212,Sacramento River at Rio Vista,38.15974033,-121.6862425,615096.2,4224354.2
 MRZ,Sacramento River at Martinez,38.02761665,-122.1405194,575432.5,4209227.7,C6A,,dwr_des,MRZ,x,x,,
 D9,Honker Bay,38.0724452,-121.9392323,593042.2,4214384.2,D9,,dwr,D9,,,,
 SNC,Chadbourne Slough at Sunrise Duck Club,38.18503208,-122.0830545,580303.5,4226742.3,S21,,dwr,SNC,,x,,Not confirmed
-GYS,Goodyear Slough at Morrow Island club,38.11908576,-122.0957696,579261.3,4219414.1,S35,,dwr,GYS,x,x,,Not confirmed
-VOL,Suisun Slough 300' south of Volanti Slough,38.180526,-122.0469582,583469.9,4226274.2,S42,,dwr,VOL,x,x,,Not confirmed
+GYS,Goodyear Slough at Morrow Island club,38.11908576,-122.0957696,579250.3,4219415,S35,,dwr,GYS,x,x,,Not confirmed
+VOL,Suisun Slough 300' south of Volanti Slough,38.180526,-122.0469582,583460,4226234.2,S42,,dwr,VOL,x,x,,Not confirmed
 BDL,Montezuma Slough near Beldons Landing,38.186785,-121.9707745,590134.7,4227040.1,S49,,dwr_des,BDL,x,x,,Not confirmed. Moved to pier.
 IBS,Cordelia Slough at Ibis club,38.15729922,-122.1136785,577650.9,4223639,S97,,dwr,IBS,x,x,,
 B91560,Yolo Bypass at Lisbon,38.47503915,-121.5885124,623124,4259467.4,,B91560,dwr_ncro,LIS,x,x,x,
@@ -126,8 +126,8 @@ PCT,Port Chicago,38.05893797,-122.024823,585550.4,4212803.2,C14,,usbr,PCT,x,,,Pi
 11455820,Carquinez Strait at Carquinez Bridge near Crockett,38.0613095,-122.2255241,567940.8,4212900.6,,,usgs,11455820,x,,,
 11458000,Napa R near Napa,38.36851973,-122.3032124,560869,4246934.1,,,usgs,NAP,,x,x,
 11459150,Petaluma R at Copland Pumping Station,38.23852452,-122.6401691,531489.6,4232341.6,,,usgs,11459150,,,,
-"373025122065901",San Francisco Bay at Old Dumbarton Bridge,37.50694444,-122.1163889,578096,4151478.4,,,usgs,3.73E+14,,x,,
-"375607122264701",San Francisco Bay at Richmond-San Rafael Bridge,37.93527778,-122.4463889,548648.5,4198778.5,,,usgs,3.76E+14,x,,,
+3.73025E+14,San Francisco Bay at Old Dumbarton Bridge,37.50694444,-122.1163889,578096,4151478.4,,,usgs,3.73E+14,,x,,
+3.75607E+14,San Francisco Bay at Richmond-San Rafael Bridge,37.93527778,-122.4463889,548648.5,4198778.5,,,usgs,3.76E+14,x,,,
 9415218,Mare Island,38.07,-122.25,565785.8,4213847.2,,,noaa,9415218,,x,,
 9415143,Crockett,38.0583,-122.223,568165,4212568.5,,,noaa,9415143,,x,,
 9415265,Suisun Slough Entrance,38.12065452,-122.0737802,581187.1,4219607.1,,,noaa,9415265,,x,,"Not confirmed. No detailed description, defunct 1989"
@@ -177,7 +177,7 @@ B95320,Grant Line Canal East,37.820258,-121.4348562,637754.4,4187026.5,,B95320,d
 B95502,Middle River above Barrier ,37.8851804,-121.4727615,634300.2,4194175,,B95502,dwr_ncro,MAB,,,x,"ADCP Flow Station, commence on 4/23/2013"
 B95390,Old River above Doughty Cut,37.8109973,-121.3865757,642021.8,4186071.2,,B95390,dwr_ncro,ORX,x,,x,"ADCP Flow Station, commence on 1/30/2013"
 B95760,San Joaquin River above Dos Reis,37.8223312,-121.3177244,648060.2,4187435.7,,B95760,dwr_nrco,SJD,,,x,"ADCP Flow Station, commence on 2/28/2013"
-"374938122251801",San Francisco Bay at Northeast Shore Alcatraz Island,37.82722222,122.4216667,550895.2,4186802.8,,,usgs,3.75E+14,x,,,"location: unsurveyed, at end of finger pier adjacent to ferry terminal; WQ monitor since November 2013;Interruptions in record were due to malfunction of the sensing and (or) recording instrument and biological interference within the conductivity cell. The probe is set at 6 ft below the water surface at Mean Lower Low Water (MLLW). MLLW is about 16 ft. Daily maximums and minimums sometimes differ from tidal cycle (24.8 hours) maximums and minimums.Specific conductivity records are rated excellent except for the following periods of fouling: Oct. 1, 2, Nov. 2-8, Aug. 19, 20, which are rated good. Water temperature records are rated excellent."
+3.74938E+14,San Francisco Bay at Northeast Shore Alcatraz Island,37.82722222,122.4216667,550895.2,4186802.8,,,usgs,3.75E+14,x,,,"location: unsurveyed, at end of finger pier adjacent to ferry terminal; WQ monitor since November 2013;Interruptions in record were due to malfunction of the sensing and (or) recording instrument and biological interference within the conductivity cell. The probe is set at 6 ft below the water surface at Mean Lower Low Water (MLLW). MLLW is about 16 ft. Daily maximums and minimums sometimes differ from tidal cycle (24.8 hours) maximums and minimums.Specific conductivity records are rated excellent except for the following periods of fouling: Oct. 1, 2, Nov. 2-8, Aug. 19, 20, which are rated good. Water temperature records are rated excellent."
 B9550000,Middle R at Union Point - WQ,37.890778,-121.488361,632918.3,4194773.7,,B9550000,dwr_ncro,B9550000,x,,,Not confirmed. Based on lat/long to 1 arc second from Central District. Colocated with VIC?
 B9553100,Middle River near Howard Rd Bridge,37.876222,-121.383306,642184.4,4193313.5,,B9553100,dwr_ncro,MHO,x,,,added 6/6/2014
 11455478,Decker Island,38.093367,-121.737267,610748.9,4216702.8,,,usgs,SDI,x,x,,
