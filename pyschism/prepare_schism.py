@@ -217,15 +217,16 @@ def create_fluxflag(s, inputs, logger):
     if flowlines is None:
         raise ValueError("No flowlines in flow_outputs")
     fname = dict_flow.get('outputfile')
-    if fname is not None:
-        fname = os.path.expanduser(fname)
-        logger.info("Creating %s..." % fname)
-        s.create_flux_regions(flowlines, fname)
-        if fname == 'fluxflag.prop':
-            with open(fname, 'a') as f:
-                for line in flowlines:
-                    buf = '{}\n'.format(line['name'])
-                    f.write(buf)
+    if fname is None:
+        logger.info("outputfile not given for flow_outputs. Using fluxflag.prop")
+        fname = 'fluxflag.prop'
+    fname = os.path.expanduser(fname)
+    logger.info("Creating %s..." % fname)
+    s.create_flux_regions(flowlines, fname)
+    with open(fname, 'a') as f:
+        for line in flowlines:
+            buf = '{}\n'.format(line['name'])
+            f.write(buf)
 
 
 def update_spatial_inputs(s, inputs, logger):
