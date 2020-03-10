@@ -219,11 +219,56 @@ class SchismSetup(object):
         for i, node in enumerate(self.mesh.nodes):
             point.AddPoint(node[0], node[1])
             point.Transform(coordTransform)
-            new_mesh.nodes[i, 0] = point.GetX()
-            new_mesh.nodes[i, 1] = point.GetY()
+            new_mesh.nodes[i, 1] = point.GetX()
+            new_mesh.nodes[i, 0] = point.GetY()
         write_mesh(new_mesh, fname)
 
+
+    def elements_on_linestring(self, coords):
+        """List elements along linestring"""
+        mesh = self._input.mesh
+        line_segment = np.array(coords,dtype="d").flatten()
+        print(line_segment)
+        return mesh.find_intersecting_elems_with_line(line_segment)
+
     def create_flux_regions(self, linestrings, out_fname='fluxflag.prop'):
+        """ Create and write flux_regions.gr3 with the given lines
+
+            Parameters
+            ----------
+            linestrings: list
+                A list containing information for flux regions.
+                It must contains 'linestrings.'
+            out_fname: str, optional
+                Output file name
+        """
+        mesh = self._input.mesh
+        assigned = set()
+        flagval = 0
+        flags = np.full((mesh.n_elems(), 1), -1, dtype='int')        
+        for flagval,linestring in enumerate(linestrings):
+            line = linestring.get('coordinates')
+            name = linestring.get('name')
+            npoint = len(line)
+            for ip in range(npoint-1):
+                line_segment = np.array(line[ip:ip+2],dtype='d').flatten()
+                on_line,neighbors = mesh.find_neighbors_on_segment(line_segment)  
+                #if not set(neighbors).isdisjoint(assigned): raise ValueError("Element assigned twice in fluxline:".format(name))
+                #if not set(on_line).isdisjoint(assigned): raise ValueError("Element assigned twice in fluxline:".format(name))
+                # techinically we could (?) survive on_line  members 
+                # being assigned if it was assigned as online in previous group                
+                flags[np.array(on_line,dtype='i')] = flagval + 1
+                flags[np.array(neighbors,dtype='i')] = flagval 
+                assigned.update(on_line + neighbors)
+
+        index = np.arange(flags.shape[0]).reshape((-1, 1))
+        index += 1
+        elementflags = np.concatenate((index, flags), axis=1)
+        np.savetxt(out_fname, elementflags, fmt='%d')
+
+
+
+    def create_flux_regions2(self, linestrings, out_fname='fluxflag.prop'):
         """ Create and write flux_regions.gr3 with the given lines
 
             Parameters
@@ -247,6 +292,10 @@ class SchismSetup(object):
                 
         flags = np.full((mesh.n_elems(), 1), -1, dtype='int')
         for i, (up_path, down_path) in enumerate(neighboring_nodes):
+
+            #onstring = self.elements_on_linestring(linestrings[i]["coordinates"])       
+            onstring, neighbors = self.neighbors(linestrings[i]["coordinates"])
+               
             if len(down_path) < 2:
                 msg = 'No element found with line %s' % linestrings[i]['name']
                 self._logger.warning(msg)
@@ -274,8 +323,6 @@ class SchismSetup(object):
                 if elem_2 != -1:
                     flag_elem_2 = i + 1 if down else i
                     if flags[elem_2] != -1 and flags[elem_2] != flag_elem_2:
-                        print(linestrings[i]['name'])
-                        
                         msg = "Line %s tried to flag element %d flagged already by %s" % (
                             linestrings[i]['name'], elem_2, linestrings[flags[elem_2]]['name'])
                         self._logger.error(msg)
@@ -779,7 +826,6 @@ class SchismSetup(object):
             spline = interp1d(times[iin_start:iin_end],
                               data[iin_start:iin_end], kind='cubic')
             est_times = new_times[iout_start:iout_end]
-            # print est_times[0],est_times[-1],times[iin_start],times[iin_end]
             new_data = spline(est_times)
 
             for i in range(len(new_data)):

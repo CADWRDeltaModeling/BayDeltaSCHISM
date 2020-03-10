@@ -619,6 +619,76 @@ class TriQuadMesh(object):
                     box[1, i] = p[i]
         return np.transpose(box).reshape(4,)
 
+    def find_intersecting_elems_with_line(self, line_segment):
+        """ Format of the line segment: start_x, start_y, end_x, end_y
+        """
+        if self._elem_index is None:
+            self._build_elem_index()
+
+        x = np.array(line_segment).reshape(2, 2)
+        normal = np.array((x[0, 1] - x[1, 1], x[1, 0] - x[0, 0]))
+        box = self._box_from_points(x)
+        hits = self._elem_index.intersection(box)
+        # Test which one is actually intersect
+        real_hits = []
+        for hit in hits:
+            nodes_hit = np.array(self.elem(hit),dtype = 'i')
+            nodes = self._nodes[nodes_hit,0:2]                
+            signs = np.sign(np.dot(normal, \
+                    np.transpose(np.subtract(nodes, x[0, ]))))
+            if not np.all(signs == signs[0]):
+                real_hits.append(hit)
+
+        return real_hits
+
+    def find_neighbors_on_segment(self, line_segment):
+        """ Find elements on the line_segment and neighbors that are all to the left (downstream)
+        Format of the line segment: start_x, start_y, end_x, end_y
+        Returns a list of elements on the segment and a list of neighbors. The lists are not guarateed to be ordered spatially
+        """
+        if self._elem_index is None:
+            self._build_elem_index()
+
+        x = np.array(line_segment).reshape(2, 2)
+        normal = np.array((x[0, 1] - x[1, 1], x[1, 0] - x[0, 0]))
+        box = self._box_from_points(x)
+        hits = list(self._elem_index.intersection(box))
+        assert len(hits) > 0
+        # Test which one is actually intersect
+        neighborset = set()
+        real_hits = []
+        for hit in hits:
+            nodes_hit = np.array(self.elem(hit),dtype = 'i')
+            
+            nodes = self._nodes[nodes_hit,0:2]                
+            signs = np.sign(np.dot(normal, \
+                                   np.transpose(np.subtract(nodes, x[0, ]))))
+            if np.all(signs == signs[0]): 
+                # nodes of polygon all on same side of line, no real intersection
+                continue
+            real_hits.append(hit)
+            candidate_edges = self.element2edges(hit)
+            for ee in candidate_edges:
+                # neighbor elemets accepted if their adjoining edges are all on downstream side of 
+                # the segment
+                edge_info = self._edges[ee]
+                nodes_ee = np.array(edge_info[0:2],dtype = 'i')  
+                nodes2 = self._nodes[nodes_ee,0:2]                  
+                signs2 = np.sign(np.dot(normal, \
+                                   np.transpose(np.subtract(nodes2, x[0, ]))))
+                all_left = np.all(signs2 > 0)
+                if all_left:
+                    els =edge_info[3:5]
+                    if not hit in els: 
+                        raise Exception("Boundary case not handled")
+                    other = els[0] if (els[0] != hit) else els[1]
+                    neighborset.add(other)
+                    
+        return real_hits, list(neighborset)
+
+
+
+
     def find_elem(self, pos):
         """ Find a element index from a coordinate
             pos = A coordinate (2D)
