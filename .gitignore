@@ -103,5 +103,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# Unit test results
+junit.xml
 
-
+# VSCode
+.vscode/
+*.code-workspace
