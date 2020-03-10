@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """ unit tests of schism_mesh
 """
-from schism_mesh import SchismMesh, read_mesh, write_mesh, BoundaryType
+from pyschism import SchismMesh, read_mesh, write_mesh, BoundaryType
 import numpy as np
 import unittest
 import os

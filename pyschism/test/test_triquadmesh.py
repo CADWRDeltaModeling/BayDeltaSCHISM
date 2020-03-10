@@ -4,8 +4,8 @@
 TriQuadMesh unit test
 """
 
-import schism_mesh
-import triquadmesh
+import pyschism.schism_mesh as schism_mesh
+import pyschism.triquadmesh as triquadmesh
 import numpy as np
 import unittest
 import os

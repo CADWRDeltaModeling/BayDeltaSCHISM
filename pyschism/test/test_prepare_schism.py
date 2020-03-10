@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import prepare_schism
+from pyschism.prepare_schism import prepare_schism
 import unittest
 import os, sys, argparse
 
@@ -17,7 +17,7 @@ class TestPrepareSchism(unittest.TestCase):
         os.chdir('simple_triquad')
         args = argparse.Namespace()
         setattr(args, 'main_inputfile', 'main_good.yaml')
-        prepare_schism.prepare_schism(args)
+        prepare_schism(args)
 
 
 if __name__ == '__main__':

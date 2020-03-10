@@ -4,7 +4,7 @@
 ## Author: Kijin Nam, knam@water.ca.gov
 ##
 
-from base_io import *
+from .base_io import *
 
 # Some constants
 ELEVATION = 0

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """ unit tests of schism_vertical_mesh
 """
-from schism_vertical_mesh import SchismLocalVerticalMesh, read_vmesh, write_vmesh
-from schism_mesh import read_mesh
+from pyschism.schism_vertical_mesh import SchismLocalVerticalMesh, read_vmesh, write_vmesh
+from pyschism.schism_mesh import read_mesh
 import numpy as np
 import unittest
 import os

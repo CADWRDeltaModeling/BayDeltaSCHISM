@@ -2,8 +2,8 @@
 """ 3D Version of schism_mesh
 """
 
-from triquadmesh import TriQuadMesh, BoundaryType, EdgeType
-from schism_vertical_mesh import read_vmesh
+from .triquadmesh import TriQuadMesh, BoundaryType, EdgeType
+from .schism_vertical_mesh import read_vmesh
 import osgeo.ogr
 import osgeo.osr
 import numpy as np
@@ -17,7 +17,7 @@ import matplotlib.patches as patches
 from shapely.geometry import Point, Polygon, MultiLineString
 
 
-__all__ = ['read_mesh', 'write_mesh']
+__all__ = ['SchismMesh', 'BoundaryType', 'read_mesh', 'write_mesh',]
 
 
 def find_intersection(s1, s2):

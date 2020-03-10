@@ -9,7 +9,7 @@ from Rusty Chris Collerman's trigrid.
 Prerequisite: Numpy, rtree package, and libspatialindex for rtree
 """
 
-import priority_queue as pq
+from .priority_queue import priorityDictionary
 import rtree
 import numpy as np
 import types
@@ -552,7 +552,7 @@ class TriQuadMesh(object):
         numpy.ndarray
             shortest node indexes or None if it cannot be found
         """
-        queue = pq.priorityDictionary()
+        queue = priorityDictionary()
         queue[n1] = 0
 
         done = {}
