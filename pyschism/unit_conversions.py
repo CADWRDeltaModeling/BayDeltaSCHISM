@@ -28,8 +28,8 @@ def m_to_ft(x):
         WARNING: The function modifies the input argument if it is TimeSeries
     """
     try:
-        x.data *= M2FT
         x.props['unit'] = 'ft'
+        x.data *= M2FT
         return x
     except:
         return x * M2FT
@@ -39,8 +39,8 @@ def ft_to_m(x):
     """ Convert foot to meter
     """
     try:
-        x.data *= FT2M
         x.props['unit'] = 'm'
+        x.data *= FT2M
         return x
     except:
         return x * FT2M
@@ -50,8 +50,8 @@ def cms_to_cfs(x):
     """ Convert cms to cfs
     """
     try:
-        x.data *= CMS2CFS
         x.props['unit'] = 'cfs'
+        x.data *= CMS2CFS
         return x
     except:
         return x * CMS2CFS
@@ -61,8 +61,8 @@ def cfs_to_cms(x):
     """ Convert cfs to cms
     """
     try:
-        x.data *= CFS2CMS
         x.props['unit'] = 'cms'
+        x.data *= CFS2CMS
         return x
     except:
         return x * CFS2CMS
@@ -72,9 +72,9 @@ def fahrenheit_to_celcius(x):
     """ Convert cfs to cms
     """
     try:
+        x.props['unit'] = 'deg C'
         x.data -= 32.
         x.data *= 5. / 9.
-        x.props['unit'] = 'deg C'
         return x
     except:
         return (x - 32.) * 5. / 9.
@@ -84,9 +84,9 @@ def celcius_to_fahrenheit(x):
     """ Convert cfs to cms
     """
     try:
+        x.props['unit'] = 'deg F'
         x.data *= 1.8
         x.data += 32.
-        x.props['unit'] = 'deg F'
         return x
     except:
         return x * 1.8 + 32.
@@ -119,8 +119,8 @@ def ec_psu_25c(ts_ec,hill_correction=True):
         sqrty = np.sqrt(y)
         s = s - a_0/(1.0+1.5*x+x*x) - b_0_f/(1.+ sqrty + y+ y*sqrty)
     try:
-        ts_ec.data = s
         ts_ec.props['unit'] = 'PSU'
+        ts_ec.data = s
         return ts_ec
     except:
         return s

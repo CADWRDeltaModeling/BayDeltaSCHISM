@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import pandas as pd
+import os
 
 if sys.version_info[0] < 3:
     from pandas.compat import u
@@ -11,13 +12,24 @@ else:
 import argparse
 from vtools.data.timeseries import *
 
+station_variables = ["elev", "air pressure", "wind_x", "wind_y",
+                     "temp", "salt", "u", "v", "w"]
+
+def staout_name(var):
+    try:
+        ndx = station_variables.index(var)
+        return "staout_{}".format(ndx+1)
+    except:
+        raise ValueError("Input variable is not standard station variable: {}".format(var))
+
 def read_staout(fname,station_infile,reftime,ret_station_in = False,multi=False,elim_default=False):
     """Read a SCHISM staout_* file into a pandas DataFrame
     
     Parameters
     ----------
     fpath : fname
-        Path to input staout file
+        Path to input staout file or a variable name in ["elev", "air pressure", "wind_x", "wind_y",  "temp", "salt", "u", "v", "w"] whose
+        1-index will be mapped to a name like staout_1 for elev
         
     station_infile : str or DataFrame
         Path to station.in file or DataFrame from read_station_in
@@ -47,6 +59,8 @@ def read_staout(fname,station_infile,reftime,ret_station_in = False,multi=False,
     >>> staout6 = read_staout("staout_6",station_in,reftime=pd.Timestamp(2009,2,10),multi=False,elim_default=True)
                 
     """
+
+    
     if isinstance(station_infile,str):
         station_in = read_station_in(station_infile)
     else: station_in = station_infile
@@ -59,13 +73,14 @@ def read_staout(fname,station_infile,reftime,ret_station_in = False,multi=False,
         if elim_default:
             staout.columns = [f'{loc}_{subloc}' if subloc != 'default' else f'{loc}' for loc,subloc in staout.columns]
         else: [f'{loc}_{subloc}' for loc,subloc in staout.columns]
+    f = pd.infer_freq(staout.index)
+    staout = staout.asfreq(f)    
     return (staout, station_infile) if ret_station_in else staout
 
 
 
 
-station_variables = ["elev", "air pressure", "wind_x", "wind_y",
-                     "temp", "salt", "u", "v", "w"]
+
 
 def read_station_in(fpath):
     """Read a SCHISM station.in file into a pandas DataFrame
@@ -162,7 +177,7 @@ def read_station_depth(fpath):
          DataFrame with hierarchical index (id,subloc) and data column z
                 
     """
-   
+
     df = pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
     df["z"] = -df.depth
     return df[["z"]]
@@ -187,7 +202,8 @@ def read_station_dbase(fpath):
          DataFrame with hierarchical index (id,subloc) and columns x,y,z,name
                 
     """
-    return  pd.read_csv(fpath,sep=",",header=0,index_col="id")
+    print(fpath)    
+    return  pd.read_csv(fpath,sep=",",header=0,index_col="id",comment="#")
 
 def merge_station_depth(station_dbase,station_depth,default_z):
     """Merge BayDeltaSCHISM station database with depth file, producing the union of all stations and depths including a default entry for stations with no depth entry            
@@ -216,8 +232,8 @@ def merge_station_depth(station_dbase,station_depth,default_z):
     return merged
 
 def read_obs_links(fpath):
-    """Read an obs_links csv file which has comma as delimiter and (id,subloc) as index """
-    return pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
+    """Read an obs_links csv file which has comma as delimiter and (id,subloc,variable) as index """
+    return pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc","variable"],comment="#")
 
 
 def read_station_out(fpath_base,stationinfo,var=None,start=None):
@@ -228,11 +244,48 @@ def read_station_out(fpath_base,stationinfo,var=None,start=None):
             fileno = station_variables.index(var)
         except ValueError:
             raise ValueError("Variable name {} not on list: {}.format(var,station_variables")
-        fname = "{}_{:d}".format(fileno)
-    data = pandas.read_csv(fpath,var,sep="\s+",index_col=0,
+        fname = "{}_{:d}".format(fpath_base,fileno)
+    data = pd.read_csv(fpath,var,sep="\s+",index_col=0,
                            header=None,names = stationinfo.index,dtype='d')
     if start is not None:
-        data = elapsed_to_date(data)
+        data = elapsed_datetime(data,reftime=start)
+    f = pd.infer_freq(data.index)
+    data = data.asfreq(f)
+    return data
+
+def flux_names_from_yaml(inp):
+    """Retrieve names of fluxlines from yaml file or content""" 
+    import yaml
+    if os.path.exists(inp):
+        with open(inp) as f:
+            content = yaml.full_load(f)
+    else:
+        content = inp 
+    names =[]
+    linestrings = content["linestrings"]
+    for ls in linestrings:
+        names.append(ls["name"])
+    return names                
+        
+
+def station_names_from_file(fpath):
+    ext = os.path.splitext(fpath)[1]
+    if ext in (".yml",".yaml"):
+        return flux_names_from_yaml(fpath)
+    elif ext == ".prop":
+        raise NotImplementedError("Not implemented for .prop")
+        
+def read_flux_out(fpath,names,reftime):
+    if isinstance(names,str):
+        names = station_names_from_file(names)
+    data = pd.read_csv(fpath,sep="\s+",index_col=0,
+                           header=None,names = names,dtype='d')
+    if reftime is not None:
+        data = elapsed_datetime(data,reftime=reftime,time_unit='d')
+        data.index = data.index.round(freq='s')
+        f = pd.infer_freq(data.index)
+        data = data.asfreq(f)        
+    # todo: freq when start is none?
     return data
 
 def example():

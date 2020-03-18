@@ -147,7 +147,7 @@ temp_filtered_axis_labels = [[None, FILTERED_DEG_C_LABEL],
                              [None, FILTERED_DEG_F_LABEL]]
 
 
-def set_dual_axes(ax, ts):
+def set_dual_axes(ax, ts, cell_method = 'inst'):
     """ Create a dual y-axis with unit information in the given time series.
         It converts SI units to non-SI one.
 
@@ -160,37 +160,39 @@ def set_dual_axes(ax, ts):
     """
     if ts is None:
         return
-    if 'unit' in ts.props:
-        unit = ts.props.get('unit')
-        filtered = False if ts.props.get('filtered') is None else True
+    filtered = (cell_method == 'filtered') or (cell_method == 'ave')
+    if hasattr(ts,'unit'):
+        unit = ts.unit
         if unit == 'm' or unit == 'meter':
             ax2 = set_dual_axes_elev(ax, filtered=filtered)
             return ax2
-        elif unit == 'cms':
+        elif unit.lower() == 'cms':
             ax2 = set_dual_axes_flow(ax, filtered=filtered)
             return ax2
-        elif unit == 'PSU':
+        elif unit.lower() == 'psu':
             ax2 = set_dual_axes_salt(ax, filtered=filtered)
             return ax2
         elif unit == 'm/s':
             ax2 = create_second_axis(ax, m_to_ft)
-            if 'filtered' in ts.props:
+            if filtered:
                 ax.set_ylabel(FILTERED_MPS_LABEL)
                 ax2.set_ylabel(FILTERED_FTPS_LABEL)
             else:
                 ax.set_ylabel(MPS_LABEL)
                 ax2.set_ylabel(FTPS_LABEL)
             return ax2
-        elif unit == 'deg C':
+        elif unit == 'deg C' or unit == 'degC':
             ax2 = create_second_axis(ax, celcius_to_fahrenheit)
-            if 'filtered' in ts.props:
+            if filtered:
                 ax.set_ylabel(FILTERED_DEG_C_LABEL)
                 ax2.set_ylabel(FILTERED_DEG_F_LABEL)
             else:
                 ax.set_ylabel(DEG_C_LABEL)
                 ax2.set_ylabel(DEG_F_LABEL)
             return ax2
-    print("Warning: set_dual_axes: Not a supported unit in the time series.")
+    else:
+        raise ValueError("No unit provided for output and not inferred")
+    print("Warning: set_dual_axes: Time series unit missing or not supported.")
     return None
 
 
@@ -203,7 +205,7 @@ def set_dual_axes_elev(ax1, filtered=False):
         ax: matplotlib axes
     """
     ax2 = create_second_axis(ax1, m_to_ft)
-    if filtered is True:
+    if filtered:
         ax1.set_ylabel(FILTERED_M_LABEL)
         ax2.set_ylabel(FILTERED_FT_LABEL)
     else:
@@ -221,7 +223,7 @@ def set_dual_axes_flow(ax1, filtered=False):
         ax: matplotlib axes
     """
     ax2 = create_second_axis(ax1, cms_to_cfs)
-    if filtered is True:
+    if filtered:
         ax1.set_ylabel(FILTERED_CMS_LABEL)
         ax2.set_ylabel(FILTERED_CFS_LABEL)
     else:
@@ -239,7 +241,7 @@ def set_dual_axes_temp(ax1, filtered=False):
         ax: matplotlib axes
     """
     ax2 = create_second_axis(ax1, celcius_to_fahrenheit)
-    if filtered is True:
+    if filtered:
         ax1.set_ylabel(FILTERED_DEG_C_LABEL)
         ax2.set_ylabel(FILTERED_DEG_F_LABEL)
     else:
