@@ -254,81 +254,13 @@ class SchismSetup(object):
                 line_segment = np.array(line[ip:ip+2],dtype='d').flatten()
                 on_line,neighbors = mesh.find_neighbors_on_segment(line_segment)  
                 #if not set(neighbors).isdisjoint(assigned): raise ValueError("Element assigned twice in fluxline:".format(name))
+                #if not set(neighbors).isdisjoint(assigned): raise ValueError("Element assigned twice in fluxline:".format(name))
                 #if not set(on_line).isdisjoint(assigned): raise ValueError("Element assigned twice in fluxline:".format(name))
                 # techinically we could (?) survive on_line  members 
                 # being assigned if it was assigned as online in previous group                
                 flags[np.array(on_line,dtype='i')] = flagval + 1
                 flags[np.array(neighbors,dtype='i')] = flagval 
                 assigned.update(on_line + neighbors)
-
-        index = np.arange(flags.shape[0]).reshape((-1, 1))
-        index += 1
-        elementflags = np.concatenate((index, flags), axis=1)
-        np.savetxt(out_fname, elementflags, fmt='%d')
-
-
-
-    def create_flux_regions2(self, linestrings, out_fname='fluxflag.prop'):
-        """ Create and write flux_regions.gr3 with the given lines
-
-            Parameters
-            ----------
-            linestrings: list
-                A list containing information for flux regions.
-                It must contains 'linestrings.'
-            out_fname: str, optional
-                Output file name
-        """
-        mesh = self._input.mesh
-        neighboring_nodes = []
-        for linestring in linestrings:
-            line = linestring.get('coordinates')
-            name = linestring.get('name')
-            try:
-                up_path, down_path = mesh.find_two_neighboring_node_paths(line)
-                neighboring_nodes.append((up_path, down_path))
-            except:
-                self._logger.error(" could not find neighboring node paths for linestring named: {}".format(name))
-                
-        flags = np.full((mesh.n_elems(), 1), -1, dtype='int')
-        for i, (up_path, down_path) in enumerate(neighboring_nodes):
-
-            #onstring = self.elements_on_linestring(linestrings[i]["coordinates"])       
-            onstring, neighbors = self.neighbors(linestrings[i]["coordinates"])
-               
-            if len(down_path) < 2:
-                msg = 'No element found with line %s' % linestrings[i]['name']
-                self._logger.warning(msg)
-            for j in range(len(down_path) - 1):
-                edge_i = mesh.find_edge([down_path[j], down_path[j + 1]])
-                if edge_i is None:
-                    msg = "Fail to process Line %s" % (linestrings[i]['name'])
-                    self._logger.error(msg)
-                    self._logger.error(down_path)
-                    raise ValueError('No edge found')
-                elem_1, elem_2 = mesh.edges[edge_i][3:5]
-                down = False
-                for node_i in mesh.elem(elem_1):
-                    if not (node_i in down_path or node_i in up_path):
-                        down = True
-                        break
-                flag_elem_1 = i if down else i + 1
-                if flags[elem_1] != -1 and flags[elem_1] != flag_elem_1:
-                    msg = "Line %s tried to flag element %d flagged already by %s" % (
-                        linestrings[i]['name'], elem_1, linestrings[flags[elem_1]]['name'])
-                    self._logger.error(msg)
-                    raise ValueError('Fail to create fluxflag')
-                else:
-                    flags[elem_1] = flag_elem_1
-                if elem_2 != -1:
-                    flag_elem_2 = i + 1 if down else i
-                    if flags[elem_2] != -1 and flags[elem_2] != flag_elem_2:
-                        msg = "Line %s tried to flag element %d flagged already by %s" % (
-                            linestrings[i]['name'], elem_2, linestrings[flags[elem_2]]['name'])
-                        self._logger.error(msg)
-                        raise ValueError('Fail to create fluxflag')
-                    else:
-                        flags[elem_2] = flag_elem_2
 
         index = np.arange(flags.shape[0]).reshape((-1, 1))
         index += 1
@@ -584,6 +516,7 @@ class SchismSetup(object):
             numpy.ndarray
                 attributes
         """
+        import math
         mesh = self.mesh
         if default is None:
             # Use depth
