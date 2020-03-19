@@ -72,7 +72,8 @@ def read_staout(fname,station_infile,reftime,ret_station_in = False,multi=False,
     if not multi:
         if elim_default:
             staout.columns = [f'{loc}_{subloc}' if subloc != 'default' else f'{loc}' for loc,subloc in staout.columns]
-        else: [f'{loc}_{subloc}' for loc,subloc in staout.columns]
+        else: 
+            staout.columns = [f'{loc}_{subloc}' for loc,subloc in staout.columns]
     f = pd.infer_freq(staout.index)
     staout = staout.asfreq(f)    
     return (staout, station_infile) if ret_station_in else staout
