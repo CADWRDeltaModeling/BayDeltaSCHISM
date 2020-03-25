@@ -21,6 +21,10 @@ import copy
 import os
 import sys
 import difflib
+from shapely.ops import transform
+from shapely.geometry import Point
+import pyproj
+from functools import partial
 
 
 class SchismSetup(object):
@@ -204,23 +208,24 @@ class SchismSetup(object):
             output_epsg: int, optional
                 output EPSG. default value is 4269, NAD83
         """
-        inSpatialRef = osgeo.osr.SpatialReference()
-        inSpatialRef.ImportFromEPSG(input_epsg)
-        outSpatialRef = osgeo.osr.SpatialReference()
-        outSpatialRef.ImportFromEPSG(output_epsg)
-        coordTransform = osgeo.osr.CoordinateTransformation(
-            inSpatialRef, outSpatialRef)
+        
+        inSpatialRef = 'epsg:' + str(input_epsg)
+        outSpatialRef = 'epsg:' + str(output_epsg)
+
+        project = partial(pyproj.transform,
+                          pyproj.Proj(init=inSpatialRef),
+                          pyproj.Proj(init=outSpatialRef))
 
         new_mesh = SchismMesh()
         new_mesh._nodes = np.copy(self.mesh.nodes)
         new_mesh._elems = np.copy(self.mesh._elems)
 
-        point = osgeo.ogr.Geometry(osgeo.ogr.wkbPoint)
         for i, node in enumerate(self.mesh.nodes):
-            point.AddPoint(node[0], node[1])
-            point.Transform(coordTransform)
-            new_mesh.nodes[i, 1] = point.GetX()
-            new_mesh.nodes[i, 0] = point.GetY()
+            point = Point(node[0], node[1])
+            point = transform(project, point)
+            new_mesh.nodes[i, 0] = point.xy[0][0]
+            new_mesh.nodes[i, 1] = point.xy[1][0]
+
         write_mesh(new_mesh, fname)
 
 
