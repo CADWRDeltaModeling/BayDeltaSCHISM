@@ -102,6 +102,7 @@ def ec_psu_25c(ts_ec,hill_correction=True):
         Note: The input argument, ts_ec, will be altered.
     """
     try:
+        ts_ec.props['unit'] = 'PSU'
         ec = ts_ec.data
     except:
         ec = ts_ec
