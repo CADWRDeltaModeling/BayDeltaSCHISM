@@ -1083,7 +1083,7 @@ def hotstart_to_outputnc(hotstart_fn, init_date, hgrid_fn='hgrid.gr3', vgrid_fn=
                                 "The data_horizontal_center option for %s is unavailable" % v)
 
                     hnc[vn].attrs['ivs'] = hgrid_nc.zcor.ivs
-    hnc = hnc.drop(['SED3D_bed', 'SED3D_bedfrac'])
+    # hnc = hnc.drop(['SED3D_bed', 'SED3D_bedfrac'])
     output_nc = xr.merge([hgrid_nc, hnc])
 
     # additional variable attributes needed for VisIt to work: give them some dummy values
