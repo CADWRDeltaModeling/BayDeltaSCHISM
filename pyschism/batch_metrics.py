@@ -12,14 +12,15 @@ import pandas as pd
 matplotlib.use('Agg')  # To prevent an unwanted failure on Linux
 from metricsplot import (plot_metrics, plot_comparison, get_common_window,
                          safe_window, check_if_all_tss_are_bad, fill_gaps)
+
+import matplotlib.pyplot as plt
 from unit_conversions import (
     cfs_to_cms, ft_to_m, ec_psu_25c, fahrenheit_to_celcius)
 import schism_yaml
-from error_detect import med_outliers
 from vtools.data.vtime import days, hours
+from vtools.functions.error_detect import med_outliers
 import argparse
 from vtools.datastore.read_ts import read_ts
-#import station_extractor
 import station
 import numpy as np
 from datetime import datetime
@@ -95,7 +96,7 @@ class BatchMetrics(object):
                 datafname = os.path.join(working_dir,station.staout_name(variable))
                 sim_out = station.read_staout(datafname,station_infile,
                                               reftime=time_basis,ret_station_in = False,
-                                              multi=False,elim_default=False)
+                                              multi=True)
                 sim_outputs.append(sim_out)
         return sim_outputs
 
@@ -111,8 +112,6 @@ class BatchMetrics(object):
         for sim_output in sim_outputs:
             if variable == 'flow':
                 ts = sim_output[station_id]
-                print(ts.freq)
-                raise ValueError("alertwe;ktjhwl")
             elif variable in self.VAR_2D:
                 ts = sim_output[(station_id,vert_pos)]
             elif variable in self.VAR_3D:
@@ -201,9 +200,10 @@ class BatchMetrics(object):
                     if ts_obs.shape[1] > 1:
                         raise Exception("Multiple column series received. Need to implement selector")
                     ts_obs = ts_obs.iloc[:,0]
-                except ValueError:
+                except ValueError as e:
+                    raise
                     self.logger.warning(
-                        "Got ValueError while reading an observation file")
+                        "Got ValueError while reading an observation file: {}".format(e))
                     ts_obs = None
                 if ts_obs is None:
                     self.logger.warning(
@@ -394,8 +394,6 @@ class BatchMetrics(object):
             ts_obs = self.retrieve_ts_obs(station_id,subloc, variable, window_to_read,
                                           db_stations, db_obs)
 
-            if station_id == "B95502":
-                print("B95502")
 
             if ts_obs is None or ts_obs.isnull().all():
                 self.logger.warning("No observation data: %s.",
@@ -406,7 +404,7 @@ class BatchMetrics(object):
             else:
                 if remove_outliers is True:
                     self.logger.info("Removing outliers...")
-                    ts_obs, filtered = med_outliers(ts_obs, copy=False)
+                    ts_obs = med_outliers(ts_obs, level=3, copy=False)
                 adj = db_obs.loc[(station_id,subloc,variable),'datum_adj']
                 if adj is not None and adj != 0.:
                     self.logger.info(
@@ -420,7 +418,9 @@ class BatchMetrics(object):
                     adj_obs += adj
                 try:
                     obs_unit = db_obs.loc[(station_id, subloc, variable),'unit']
+
                     ts_obs = self.convert_unit_of_ts_obs_to_SI(ts_obs,obs_unit)
+                    
                     obs_unit = ts_obs.unit
                 except Exception as e:
                     raise Exception("Station {}".format(station_id)) from e
@@ -441,14 +441,12 @@ class BatchMetrics(object):
 
             # Adjust datum if necessary
             if adjust_datum and ts_obs is not None:
-                ts_obs, adj = self.adjust_obs_datum(ts_obs,
-                         
+                ts_obs, adj = self.adjust_obs_datum(ts_obs,                        
                                                     tss_sim[0],
                                                     station_id,
                                                     variable,
                                                     db_obs)
                 adj_obs += adj
-                
             if ts_obs is not None and fill_gap is True:
                 self.logger.info("Filling gaps in the data.")
                 fill_gaps(ts_obs, max_gap_to_fill)
@@ -480,10 +478,6 @@ class BatchMetrics(object):
                                       labels=labels_to_plot,
                                       title=title)
             else:
-                if ts_obs is None: 
-                    print("ywrtere")
-                if any([ts is None for ts in tss_sim]):
-                    raise("WT$W^T$W%T$")
                 fig = plot_metrics(ts_obs, tss_sim,
                                    window_inst=(start_inst, end_inst),
                                    window_avg=(start_avg, end_avg),
