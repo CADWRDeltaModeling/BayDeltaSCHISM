@@ -175,12 +175,15 @@ def plot_metrics_to_figure(fig, tss,
         
     lags = calculate_lag_of_tss(tss_clipped, max_shift, minutes(1))
     metrics, tss_scatter = calculate_metrics(tss_clipped, lags)
+    unit = tss[1].unit  # Get from the simulation 
     
-      
     if tss_scatter is not None:
+        if tss_scatter[0] is not None:
+            tss_scatter[0].unit = unit
+        tss_scatter[1].unit = unit        
         ax_scatter = axes['scatter']
         plot_scatter(ax_scatter, tss_scatter)
-    unit = tss[0].unit if tss[0] is not None else tss[1].unit
+
     str_metrics = gen_metrics_string(metrics, labels[1:], unit)
     write_metrics_string(axes['inst'], str_metrics)
     return fig
@@ -367,11 +370,14 @@ def plot_scatter(ax, tss):
 
     ts_obs = tss[0]
     ts_est = tss[1]
+    unit = ts_obs.unit
+    print(unit)
     #nonnan_flag = np.logical_not(np.logical_or(np.isnan(ts_base.data),
     #                                           np.isnan(ts_target.data)))
     #ts_target = ts_target.data[nonnan_flag]
     #ts_base = ts_base.data[nonnan_flag]
     ax.grid(True, linestyle='-', linewidth=0.1, color='0.5')
+    
     artist = ax.scatter(ts_obs, ts_est)
 
     #if self._have_regression is True:
@@ -382,8 +388,6 @@ def plot_scatter(ax, tss):
     make_plot_isometric(ax)
 
     labels = ['Obs', 'Sim']
-    # todo: hardwired unit
-    unit = 'deg C'
     labels = [l + " ({})".format(unit) for l in labels]
     ax.set_xlabel(labels[0])
     ax.set_ylabel(labels[1])
@@ -457,28 +461,23 @@ def calculate_metrics(tss, lags, interpolate_method='linear'):
             ts2_interpolated = ts2
             rmse_ = rmse(ts1, ts2)
         # Items with the lag correction
-        if lags[i] is None:
-            bias = None
-            nse = None
-            corr = None
+        #if lags[i] is None:
+        #    bias = None
+        #    nse = None
+        #    corr = None
+        #else:
+        if lags[i] is not None:
+            #todo: disabled
+            ts_target_shifted = ts_target.shift(1,-lags[i])
+            ts2_interpolated = ts2.resample(ts1.index.freq).interpolate(limit=1)       
+            window_common = get_common_window((ts_base, ts2_interpolated))
+            ts2_interpolated = ts2_interpolated[window_common[0]:window_common[1]]
+            ts1 = ts_base[window_common[0]:window_common[1]]
         else:
-            if lags[i] != None:
-                #todo: disabled
-                ts_target_shifted = ts_target   #shift(ts_target,-lags[i])
-                window_common = get_common_window((ts_base, ts_target_shifted))
-                #todo: don't think commmon window is needed, wit until shift is reinstated
-                ts1 = ts_base[window_common[0]:window_common[1]]
-                ts2 = ts_target_shifted[window_common[0]:window_common[1]]
-                if ts1.index[0] != ts2.index[0] or ts1.index.freq != ts2.index.freq: 
-                    if ts1.index.freq != ts2.index.freq:               
-                        ts2_interpolated = ts2.resample(ts1.index.freq).interpolate(limit=1)
-                    else:
-                        ts2_interpolated = ts_target
-                else:
-                    ts2_interpolated = ts2
-            bias = median_error(ts2_interpolated, ts1)
-            nse = skill_score(ts2_interpolated, ts1)
-            corr = corr_coefficient(ts2_interpolated, ts1)
+            ts2_interpolated = ts2
+        bias = median_error(ts2_interpolated, ts1)
+        nse = skill_score(ts2_interpolated, ts1)
+        corr = corr_coefficient(ts2_interpolated, ts1)
         metrics.append({'rmse': rmse_, 'bias': bias,
                         'nse': nse, 'corr': corr, 'lag': lags[i]})
         if i == 0 and lags[0] is not None:
