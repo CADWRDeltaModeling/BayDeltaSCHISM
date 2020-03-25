@@ -133,12 +133,15 @@ def filter_timeseries(tss, cutoff_period=hours(40)):
     return filtered
 
 
-def fill_gaps(ts, max_gap_to_fill=hours(1)):
+def fill_gaps(ts, max_gap_to_fill=None):
     if max_gap_to_fill is None or max_gap_to_fill == hours(0): 
         return ts
-    limit = ts.freq/max_gap_to_fill
-    ts = ts.interpolate(method=time,limit=limit)
-    ts.unit = tss.unit
+    limit = int(max_gap_to_fill/ts.index.freq)
+    if limit == 0:
+        raise ValueError("max_gap_to_fill must be longer than time step")
+    unit = ts.unit
+    ts = ts.interpolate(method='time',limit=limit)
+    ts.unit = unit
     return ts
 
 
