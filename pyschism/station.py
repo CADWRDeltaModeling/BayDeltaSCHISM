@@ -261,7 +261,8 @@ def flux_names_from_yaml(inp):
         with open(inp) as f:
             content = yaml.full_load(f)
     else:
-        content = inp 
+        content = inp
+        if not "linestrings" in content: raise ValueError("Could not fine 'linestrings' key. Was the input a string or filename? Valid file?")
     names =[]
     linestrings = content["linestrings"]
     for ls in linestrings:
