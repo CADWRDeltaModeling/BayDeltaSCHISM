@@ -197,6 +197,7 @@ class BatchMetrics(object):
             if os.path.exists(fpath_obs):
                 try:
                     ts_obs = read_ts(fpath_obs, start=window[0], end=window[1])
+
                     if ts_obs.shape[1] > 1:
                         raise Exception("Multiple column series received. Need to implement selector")
                     ts_obs = ts_obs.iloc[:,0]
@@ -269,7 +270,7 @@ class BatchMetrics(object):
         title = long_name
 
         if variable in ('salt', 'temp'):
-            if subloc != 'default': title += subloc
+            if subloc != 'default': title += " ({})".format(subloc)
         title += '\n'
         title += 'Source: {}, ID: {}\n'.format(source,
                                              station_id)
