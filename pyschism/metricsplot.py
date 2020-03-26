@@ -136,7 +136,10 @@ def filter_timeseries(tss, cutoff_period=hours(40)):
 def fill_gaps(ts, max_gap_to_fill=None):
     if max_gap_to_fill is None or max_gap_to_fill == hours(0): 
         return ts
-    limit = int(max_gap_to_fill/ts.index.freq)
+    try:
+        limit = int(max_gap_to_fill/ts.index.freq)
+    except:
+        raise ValueError("could not divide max_gap_to_fill by freq: {}".format(ts.index.freq))
     if limit == 0:
         raise ValueError("max_gap_to_fill must be longer than time step")
     unit = ts.unit
