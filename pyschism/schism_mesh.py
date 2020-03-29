@@ -978,7 +978,11 @@ class SchismMeshSmsReader(SchismMeshReader):
                 if row[0] == 'ND':
                     node_i = int(row[1]) - 1
                     node_coords = list(map(float, row[2:5]))
-                    self.mesh.set_node(node_i, node_coords)
+                    try:
+                        self.mesh.set_node(node_i, node_coords)
+                    except:
+                        print("Bad node: . This can be caused by deleting nodes in SMS and failing to renumber:".format(node_i))
+                        raise
 
     def read_boundary(self, fpath, nodestring_option=None):
         """ Read in nodestrings as boundaries
