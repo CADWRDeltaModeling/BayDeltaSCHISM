@@ -204,28 +204,31 @@ class SchismSetup(object):
             fname: str
                 the output file name
             input_epsg: int, optional
-                input EPSG. default value is 26310, NAD83/UTM10N.
+                input EPSG. default value is 26910, NAD83/UTM10N.
             output_epsg: int, optional
                 output EPSG. default value is 4269, NAD83
         """
         
         inSpatialRef = 'epsg:' + str(input_epsg)
         outSpatialRef = 'epsg:' + str(output_epsg)
-
-        project = partial(pyproj.transform,
-                          pyproj.Proj(init=inSpatialRef),
-                          pyproj.Proj(init=outSpatialRef))
+        proj_in = pyproj.Proj(init=inSpatialRef)
+        proj_out = pyproj.Proj(init=outSpatialRef)
+        try:
+            # More performant for pyproj > 2.1.0
+            project = pyproj.Transformer.from_proj(proj_in, proj_out).transform
+        except:
+            # In case that isn't available in earlier versions
+            # but orders of magnitude slow for pyproj 2.1.0
+            project = partial(transform,proj_in,proj_out)
 
         new_mesh = SchismMesh()
         new_mesh._nodes = np.copy(self.mesh.nodes)
         new_mesh._elems = np.copy(self.mesh._elems)
-
         for i, node in enumerate(self.mesh.nodes):
             point = Point(node[0], node[1])
             point = transform(project, point)
             new_mesh.nodes[i, 0] = point.xy[0][0]
             new_mesh.nodes[i, 1] = point.xy[1][0]
-
         write_mesh(new_mesh, fname)
 
 
