@@ -4,7 +4,8 @@
 """
 
 
-import schism_mesh
+from . import schism_mesh
+import copy
 import numpy as np
 import argparse
 import os
@@ -13,8 +14,10 @@ import sys
 if sys.version_info[0] < 3:
     import sets
 
+
+__all__ = ['split_all_quads', ]
+
 angle_e = np.array((np.pi / 3., np.pi * 2. / 3.))
-split_index = [[[0, 1, 2], [0, 2, 3]], [[0, 1, 3], [1, 2, 3]]]  # CCW
 
 
 def calculate_angle(a, b, ccw=True):
@@ -104,6 +107,7 @@ def split_quad(mesh, elems_to_split):
         elems_to_split: sets
             a list of quadrilateral element indexes to split
     """
+    split_index = [[[0, 1, 2], [0, 2, 3]], [[0, 1, 3], [1, 2, 3]]]  # CCW
     shape_ori = mesh._elems.shape
     mesh._elems.resize((shape_ori[0] + len(elems_to_split) * 2, shape_ori[1]))
     for i, elem_i in enumerate(elems_to_split):
@@ -121,6 +125,49 @@ def split_quad(mesh, elems_to_split):
     for elem_i in elems_to_split:
         mesh.mark_elem_deleted(elem_i)
     mesh.renumber()
+
+
+def split_all_quads(mesh):
+    """
+    Split all quad elements into triangular ones and return a new triangular
+    mesh. This function maintains the original node indices.
+    Currently this function does not add boundary information to the new mesh.
+
+    Parameters
+    ----------
+    mesh: SchismMesh
+        a mesh with elements to split
+
+    Returns
+    -------
+    SchismMesh
+        A new triangular mesh.
+        It does not contain any extra information, e.g. boundary information.
+    """
+    tri = schism_mesh.SchismMesh()
+    n_nodes = mesh.n_nodes()
+    mask_elem_i_quad = (mesh._elems[:, 3] >= 0)
+    tri.allocate(mesh.n_elems() + np.sum(mask_elem_i_quad), n_nodes)
+    tri._nodes[:] = mesh._nodes
+    split_index = [[[0, 1, 2], [0, 2, 3]], [[0, 1, 3], [1, 2, 3]]]  # CCW
+    shape_ori = mesh._elems.shape
+
+    j = shape_ori[0]
+    for i, quad in enumerate(mask_elem_i_quad):
+        if quad:
+            skew = []
+            elem = mesh._elems[i]
+            for index1, index2 in split_index:
+                re = np.max((calculate_skewness(mesh.nodes[elem[index1]]),
+                             calculate_skewness(mesh.nodes[elem[index2]])))
+                skew.append(re)
+            index = split_index[np.argmin(np.array(skew))]
+            tri._elems[i][:3] = elem[index[0]]
+            tri._elems[j][:3] = elem[index[1]]
+            j += 1
+        else:
+            tri._elems[i] = mesh._elems[i]
+    return tri
 
 
 def write_prop(elems_to_split, n_elems, fpath):
