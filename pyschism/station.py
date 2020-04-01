@@ -1,7 +1,10 @@
 #!/usr/bin/env python
+import os.path
+import os
 import sys
 import pandas as pd
-import os
+from unit_conversions import *
+
 
 if sys.version_info[0] < 3:
     from pandas.compat import u
@@ -66,7 +69,8 @@ def read_staout(fname,station_infile,reftime,ret_station_in = False,multi=False,
     else: station_in = station_infile
     station_index = station_in.index.copy()
     staout = pd.read_csv(fname,index_col=0,sep="\s+",header=None)
-    staout.mask(staout==-999.,inplace=True)
+    # todo: hardwire
+    staout.mask(staout<=-999.,inplace=True)
     staout.columns = station_index
     elapsed_datetime(staout,reftime=reftime,inplace=True)
     if not multi:
@@ -313,6 +317,191 @@ def example():
         print(stations_utm)
         print("**")
         print(merged)
+
+
+
+
+uconversions = {"ft" : m_to_ft, "ec" : psu_ec_25c, "cfs" : cms_to_cfs}
+
+
+def station_subset(fpath,run_start,locs,extract_freq,convert=None,stationfile=None,isflux='infer',miss="raise"):
+    """ Extract a subset of stations from an staout file or flux.out file 
+    
+     Parameters
+     ----------
+     fpath : str 
+        Path to the output file to be read 
+
+     run_start : pd.Timestamp 
+        Start time (reference time) for the simulation elapsed time
+
+     locs : pd.DataFrame or str 
+        A DataFrame with rows specifying the data to subset or a string that is the path to such a file. 
+        There are a few options. Minimally this file should have either one column called "station_id" or 
+        one called "id" and another called "subloc". If you use station_id, it should be an 
+        underscore-connected combination of id and subloc which should be unique, and this will be the treatment of the output. 
+        of the station. If you use "subloc" you can use "default" leave the subloc column blank. You can also use another optional 
+        column called "alias" and this will become the label used.
+
+      extract_freq : str or pd.tseries.TimeOffset
+        Frequency to extract ... this allows some economies if you want, say, 15min data. Use pandas freq string such as '15T' for 15min
+
+      convert: str or function
+         A small number of conversions are supported ("ft", "ec" for uS/cm, "cfs" for flow) 
+       
+      stationfile : str
+         Name of station file such as station.in. In the case of flow this will be a yaml file or fluxflag.prop file produced by our preprocessing system.
+         If you leave this None, 'station.in' in the same directory as the output file will be assumed for staout files. For flow, a string must be supplied
+         but will be tested first in the directory of execution and then side-by-side in that order.
+      
+      isflux : 'infer' | True | False
+         Is the request for flux.out?      
+       
+      miss : 'raise' | 'drop' | 'nan'
+          What to do when a requested station_id does not exist. The default, raise, helps station lists from growing faulty. 'drop' will ignore the column and 'nan'
+          will return nans for the column.          
+        
+     Returns
+     -------    
+     Result : DataFrame
+         DataFrame that returns the converted and subsetted data. Column names will be the ids unless 'alias' is provided in locs, in which case those names will be 
+         swapped in.
+                
+    """
+    
+    locs.station_id = locs.station_id.str.lower()
+    locs=locs.set_index("station_id")
+    
+    if isflux == 'infer':
+        if 'staout' in fpath: isflux = False
+        elif 'flux' in fpath: isflux = True
+        else: raise ValueError('Station output type (flux,staout) could not be inferred')
+    
+    if isflux:
+        if not os.path.exists(stationfile):
+            stationfile = os.path.join(os.path.split(fpath)[0],stationfile)
+        staout = read_flux_out(fpath,stationfile,reftime=run_start)            
+    else:
+        if stationfile is None:
+            stationfile = os.path.join(os.path.split(fpath)[0],"station.in")
+        print(stationfile)
+        staout = read_staout(fpath,stationfile,reftime=run_start,ret_station_in = False,
+                              multi=False,elim_default=True)
+    staout.columns = [x.lower() for x in staout.columns]
+    if extract_freq is not None: 
+        staout=staout.resample(extract_freq).interpolate()
+    loc_ndx = locs.index
+    missing = [label for label in locs.index if not label in staout.columns]
+    if len(missing) > 0: 
+        if miss == 'raise': 
+            print("Labels not in dataset:")
+            print(missing)
+            raise ValueError("Requested labels not in dataset")
+        elif miss == 'nan':
+            subset = loc_ndx.values        
+        elif miss == 'drop':
+            subset = [label for label in locs.index if label in staout.columns]
+        else:
+            raise ValueError("miss must be one of raise | drop | nan")
+    else:
+        subset = locs.index.values
+        
+    def find_nondups(columns):
+        nondups = list()
+        cset = set(columns)
+        for item in columns:
+            try:
+                cset.remove(item)
+                nondups.append(True)
+            except:
+                print("Column name {} is duplcated in outputs, accepting first instance".format(item))
+                nondups.append(False)
+                #raise ValueError("Column name {} is duplcated".format(item))
+        return nondups        
+
+    nondups = find_nondups(staout.columns)
+    staout = staout.loc[:,nondups]
+    
+    sub_df = staout.reindex(subset,axis = 'columns')
+    if "alias" in locs.columns: sub_df.columns = locs.alias.values
+    if convert is not None:
+        cv = uconversions[convert] if isinstance(convert,str) else convert
+        sub_df = cv(sub_df)
+    return sub_df   
+   
+def station_subset_multidir(dirs,staoutfile,run_start,locs,extract_freq,convert,stationfile=None,names=None,isflux='infer',miss="raise"):
+    """ Extract a subset of stations from an staout file or flux.out file across a list of directories
+    
+     Parameters
+     ----------
+     
+     dirs : list(str)
+         List of directories. The output dataframe will have a column multindex (dir,station_id) where dir is the directory of the output. 
+     
+     
+     fpath : str 
+        Path to the output file to be read 
+
+     run_start : pd.Timestamp 
+        Start time (reference time) for the simulation elapsed time
+
+     locs : pd.DataFrame or str 
+        A DataFrame with rows specifying the data to subset or a string that is the path to such a file. 
+        There are a few options for staout station files. Minimally this file should have either one column called "station_id" or 
+        one called "id" and another called "subloc". If you use station_id, it should be an 
+        underscore-connected combination of id and subloc and this will be the index treatment of the output. 
+        Flux files only have the station_id option. If you use "subloc" you can use "default" leave the subloc column blank. 
+        You can also include another optional column called "alias" and this will become the label used. 
+
+      extract_freq : str or pd.tseries.TimeOffset
+        Frequency to extract ... this allows some economies if you want, say, 15min data. Use pandas freq string such as '15T' for 15min
+
+      convert: str or function
+         A small number of conversions are supported ("ft", "ec" for uS/cm, "cfs" for flow) 
+       
+      stationfile : str
+         Name or list of station file such as station.in. You can provide a list of the same length as dirs or a single value which will be assumed
+         to be appropriate for all the directories. In the case of station.in, you can use None and 'station.in' in each directory 
+         will be assumed for staout files. For flow, a string (yaml file) must be supplied but will be tested first in the directory of 
+         execution and then side-by-side in that order.
+      
+      isflux : 'infer' | True | False
+         Is the request for flux.out?      
+       
+      miss : 'raise' | 'drop' | 'nan'
+          What to do when a requested station_id does not exist. The default, raise, helps station lists from growing faulty. 'drop' will ignore the column and 'nan'
+          will return nans for the column.          
+        
+     Returns
+     -------    
+     Result : DataFrame
+         DataFrame that returns the converted and subsetted data. Column names will be the ids unless 'alias' is provided in locs, in which case those names will be 
+         swapped in.
+                
+    """
+
+
+    
+    dfs = []
+    if stationfile is None or isinstance(stationfile,str): 
+        stationfile = [stationfile]*len(dirs)
+    else: 
+        stationfile = list(stationfile)
+        if len(stationfile) != len(dirs): raise ValueError("stationfile must be same length as dirs if it is iterable")
+    for d,s in zip(dirs,stationfile):
+        fpath=os.path.join(d,staoutfile)
+        dfs.append(station_subset(fpath,run_start,locs,extract_freq,convert,
+                                  stationfile=s,isflux=isflux,miss=miss))
+    if names is None: 
+        names = dirs
+    out = pd.concat(dfs,keys = names, names=['sim','loc'],axis=1)
+    return out
+
+
+
+
+
+
 
 def convert_db_station_in(outfile="station.in",stationdb="stations_utm.csv",depthdb="station_depth.csv",station_request="all",default=-0.5):
     stations_utm = read_station_dbase(stationdb)
