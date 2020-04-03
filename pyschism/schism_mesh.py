@@ -259,6 +259,8 @@ class SchismMesh(TriQuadMesh):
         """
         notypes = []
         i = 0
+        if self._edges is None:
+            self.build_edges_from_elems()
         for edge in self._edges:
             if edge[2] == EdgeType.BOUNDARY:
                 notypes.append(i)

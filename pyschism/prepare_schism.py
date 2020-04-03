@@ -45,9 +45,10 @@ def create_hgrid(s, inputs, logger):
             check_and_suggest(open_boundaries, ('linestrings',))
             s.create_open_boundaries(open_boundaries)
 
-            # Fill the missing land and island boundary information
-            logger.info("Filling missing land and island boundaries...")
-            s.mesh.fill_land_and_island_boundaries()
+        # Fill the missing land and island boundary information
+        logger.info("Filling missing land and island boundaries...")
+        s.mesh.fill_land_and_island_boundaries()
+
         # Second, Mesh optimization
         option_name = 'depth_optimization'
 
