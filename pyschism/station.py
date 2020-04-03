@@ -270,7 +270,10 @@ def flux_names_from_yaml(inp):
     names =[]
     linestrings = content["linestrings"]
     for ls in linestrings:
-        names.append(ls["name"])
+        name = ls.get("name")
+        if name is None:
+            name = ls.get("Name")
+        names.append(name)
     return names                
         
 

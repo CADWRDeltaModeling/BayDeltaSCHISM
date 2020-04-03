@@ -257,6 +257,8 @@ class SchismSetup(object):
         for flagval,linestring in enumerate(linestrings):
             line = linestring.get('coordinates')
             name = linestring.get('name')
+            if name is None:
+                name = linestring.get('Name')
             npoint = len(line)
             for ip in range(npoint-1):
                 line_segment = np.array(line[ip:ip+2],dtype='d').flatten()
@@ -861,7 +863,9 @@ class SchismSetup(object):
         if linestrings is None:
             raise ValueError('Linestrings is required for open boundaries')
         for item in linestrings:
-            name = item['name']
+            name = item.get('name')
+            if name is None:
+                name = item.get('Name')
             p = np.array(item['coordinates'])
             start = self.mesh.find_closest_nodes(p[0], 1, boundary_only)
             end = self.mesh.find_closest_nodes(p[1], 1, boundary_only)
