@@ -134,7 +134,7 @@ def psu_ec_25c_scalar(psu,refine=True,hill_correction=True):
         The refinement usually takes 4-6 iterations
     '''
     if psu < 0.:
-        raise ValueError("Negative psu not allowed")
+        raise ValueError("Negative psu not allowed: {}".format(psu))
     elif np.isnan(psu): return np.nan
 
     if (hill_correction and not refine):
