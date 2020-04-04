@@ -156,14 +156,14 @@ def write_station_in(fpath,station_in,request=None):
         #f.write(u(buffer2))
 
 
-def read_station_depth(fpath):
-    """Read a BayDeltaSCHISM station_depths.csv  file into a pandas DataFrame
+def read_station_subloc(fpath):
+    """Read a BayDeltaSCHISM station_sublocs.csv  file into a pandas DataFrame
     
        The BayDelta SCHISM format has a header and uses "," as the delimiter and has these columns:
        id,subloc,z
        
        The id is the station id, which is the key that joins this file to the station database. 'subloc' is a label that describes
-       the sublocation or depth and z is the actual elevation of the instrument
+       the sublocation or subloc and z is the actual elevation of the instrument
        
        Example might be:
        id,subloc,z
@@ -184,7 +184,7 @@ def read_station_depth(fpath):
     """
 
     df = pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
-    df["z"] = -df.depth
+    df["z"] = -df.z
     return df[["z"]]
 
 
@@ -210,15 +210,15 @@ def read_station_dbase(fpath):
     print(fpath)    
     return  pd.read_csv(fpath,sep=",",header=0,index_col="id",comment="#")
 
-def merge_station_depth(station_dbase,station_depth,default_z):
-    """Merge BayDeltaSCHISM station database with depth file, producing the union of all stations and depths including a default entry for stations with no depth entry            
+def merge_station_subloc(station_dbase,station_subloc,default_z):
+    """Merge BayDeltaSCHISM station database with subloc file, producing the union of all stations and sublocs including a default entry for stations with no subloc entry            
         
      Parameters
      ----------
      station_dbase : DataFrame 
         This should be the input that has only the station id as an index and includes other metadata like x,y, 
 
-     station_depth : DataFrame 
+     station_subloc : DataFrame 
         This should have (id,subloc) as an index
         
      Returns
@@ -228,7 +228,7 @@ def merge_station_depth(station_dbase,station_depth,default_z):
                 
     """
     
-    merged =  station_dbase.reset_index().merge(station_depth.reset_index(),
+    merged =  station_dbase.reset_index().merge(station_subloc.reset_index(),
                 left_on="id",right_on="id",
                 how='left')
     merged.fillna({"subloc":"default","z": default_z},inplace=True)
@@ -301,9 +301,9 @@ def example():
     print(read_station_in("example_station.in"))  
     stations_utm = read_station_dbase("stations_utm.csv")
     print(stations_utm)
-    sdepth = read_station_depth("station_depth.csv")
-    stations_in = merge_station_depth(stations_utm,sdepth,default_z=-0.5)
-    #stations_in = pd.merge(stations_utm,sdepth,how='inner',left_index=True,right_index=True)
+    ssubloc = read_station_subloc("station_subloc.csv")
+    stations_in = merge_station_subloc(stations_utm,ssubloc,default_z=-0.5)
+    #stations_in = pd.merge(stations_utm,ssubloc,how='inner',left_index=True,right_index=True)
     #print(stations_in)
     station_request = ["salt","elev"]
     write_station_in("station.in",stations_in,request=station_request)
@@ -506,24 +506,24 @@ def station_subset_multidir(dirs,staoutfile,run_start,locs,extract_freq,convert,
 
 
 
-def convert_db_station_in(outfile="station.in",stationdb="stations_utm.csv",depthdb="station_depth.csv",station_request="all",default=-0.5):
+def convert_db_station_in(outfile="station.in",stationdb="stations_utm.csv",sublocdb="station_subloc.csv",station_request="all",default=-0.5):
     stations_utm = read_station_dbase(stationdb)
-    sdepth = read_station_depth(depthdb)
-    stations_in = merge_station_depth(stations_utm,sdepth,default_z=-0.5)
+    ssubloc = read_station_subloc(sublocdb)
+    stations_in = merge_station_subloc(stations_utm,ssubloc,default_z=-0.5)
     write_station_in(outfile,stations_in,request=station_request)
 
 
 def create_arg_parser():
     """ Create an argument parser
     """
-    parser = argparse.ArgumentParser(description="Create station.in file from station database (stations_utm.csv) and station depth listing station_depth.csv")
+    parser = argparse.ArgumentParser(description="Create station.in file from station database (stations_utm.csv) and station subloc listing station_subloc.csv")
     parser.add_argument('--station_db', default = "stations_utm.csv",
                         help="station database, often stations_utm.csv")
-    parser.add_argument('--depth_db', default = "station_depth.csv",
-                        help="depth listings for stations (otherwise default depth)")
+    parser.add_argument('--subloc_db', default = "station_subloc.csv",
+                        help="subloc listings for stations (otherwise default subloc)")
     parser.add_argument('--request', default='all',nargs="+",help="requested variables or 'all' for all of them. Possibilities are: {}".format(",".join(station_variables)))
     parser.add_argument('--default_zcor',default='-0.5',
-                        help="z coordinate used when there is no listing for station id (z coordinate, not depth from surface)")
+                        help="z coordinate used when there is no listing for station id (z coordinate, not subloc from surface)")
     parser.add_argument('--out', default = "station.in",
                         help="station.in formatted file")
     return parser
@@ -535,12 +535,12 @@ def main():
     parser = create_arg_parser()
     args = parser.parse_args()
     stationdb = args.station_db
-    depthdb = args.depth_db
+    sublocdb = args.subloc_db
     default = args.default_zcor
     request = args.request
     outfile = args.out
     print(request)    
-    convert_db_station_in(outfile,stationdb,depthdb,request,default)
+    convert_db_station_in(outfile,stationdb,sublocdb,request,default)
 
 if __name__ == '__main__':
     #example()
