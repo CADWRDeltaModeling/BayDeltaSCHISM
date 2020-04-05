@@ -206,13 +206,13 @@ B94150,S.F. Mokelumne River at New Hope Bridge,38.22527778,-121.4908333,632098.1
 B91475,Miner Slough at Five Points ,38.29,-121.6447222,618522.3,4238860.6,,B91475,,MFV,x,,,
 11455139,Toe Drain at Mallard Road,38.36513889,-121.6377417,619009.8,4247207.4,,,usgs,Toe North,,x,x,moved from Toe South
 11455095,Sacramento River Deep Water Ship Channel Near Freeport,38.47686944,-121.5836417,623525.5,4259677.4,,,usgs,CM 72,,x,x,Proposed Effort to Discontinue
-11455136,Sacramento River Deep Water Ship Channel Near Clarksburg,38.40444444,-121.6145556,620970.0,4251599.2,,,usgs,CM 66,,,x,Proposed Effort to Discontinue
+11455136,Sacramento River Deep Water Ship Channel Near Clarksburg,38.40444444,-121.6145556,620970,4251599.2,,,usgs,CM 66,,,x,Proposed Effort to Discontinue
 11455268,Ulatis Creek Near Elmira,38.29416667,-121.7597222,608463.8,4239164.3,,,usgs,Ulatis,,x,x,
 11455280,Cache Slough Near Hastings Tract Near Rio Vista,38.27555556,-121.7091667,612908.6,4237177.1,,,usgs,USC,,x,x,
 11455385,Cache Slough Above Ryer Island Ferry,38.19395556,-121.6580028,617515.3,4228186.2,,,usgs,RYF,,x,x,Proposal provisional
 11455508,Suisun Bay At Van Sickle Island,38.04953056,-121.88755,597605.9,4211894.6,,,usgs,CONFL,,,x,
 11455278,Hass Slough Near Elmira,38.29415,-121.7257389,611430.5,4239220.3,,,usgs,HAS,,x,x,
-'380631122032201,Grizzly Bay at Suisun Slough,38.10853056,-122.0559806,582761.0,4218277.6,,,usgs,Grizzly,,,x,
+'380631122032201,Grizzly Bay at Suisun Slough,38.10853056,-122.0559806,582761,4218277.6,,,usgs,Grizzly,,,x,
 11453000,Yolo Bypass Near Woodland,38.67777778,-121.6430556,618033.7,4281893.8,,,usgs,YOLO,,x,x,
 11313240,Grant Line Canal Near Tracy,37.82,-121.5447222,628084.6,4186841.5,,,usgs,11313240,,x,x,
 11455142,Sacramento River Deep Water Ship Channel Near Courtland,38.34166667,-121.6438889,618499.6,424459.8,,,usgs,CM 62,,x,x,
@@ -222,18 +222,17 @@ B91475,Miner Slough at Five Points ,38.29,-121.6447222,618522.3,4238860.6,,B9147
 '381410121395801,Miner Slough Near Sacramento River and Prospect Island,38.23556111,-121.6660694,616742.4,4232792.7,,,usgs,MSS,,x,x,
 '380833122033401,Montezuma Slough Near Hunters Cut,38.14808056,-122.0576472,582570.3,4222664.5,,,usgs,MNZ-W,,x,x,
 11455146,LIBERTY CUT A LITTLE HOLLAND TRACT NR COURTLAND CA,38.32885,-121.6675306,616465.4,4243142.6,,,usgs,Lcut,x,x,x,Proposed Effort to Discontinue (currently funded by Reclamation)
-ALV,Alviso Slough,37.44,-121.998,588638.9,4144156.0,,,sfei,,,x,
-COY,Coyote Creek at confluence with Alviso slough,37.464,-122.024,586311.2,4146794.6,,,sfei,,,x,
-DMB,Dumbarton Bridge, near surface,37.504,-122.119,577868.3,4151149.6,,,sfei,,,x,
-GL,Guadalupe Slough,37.435,-122.026,586167.6,4143575.3,,,sfei,,,x,
-MOW,Mowry Slough,37.485,-122.033,585491.4,4149116.2,,,sfei,,,x,
-NW,Newark Slough,37.513,-122.082,581128.9,4152179.4,,,sfei,,,x,
-POND,Pond A8 Outlet at Confluence with Alviso Slough,37.424,-121.98,590250.4,4142398.0,,,sfei,,,x,
-SM,San Mateo Bridge, Near Surface,37.464,-122.024,586311.2,4146794.6,,,sfei,,,x,
+ALV,Alviso Slough,37.44,-121.998,588638.9,4144156,,,sfei,,,x,,
+COY,Coyote Creek at confluence with Alviso slough,37.464,-122.024,586311.2,4146794.6,,,sfei,,,x,,
+DMB,Dumbarton Bridge,37.504,-122.119,577868.3,4151149.6,,,sfei,,,,x,
+GL,Guadalupe Slough,37.435,-122.026,586167.6,4143575.3,,,sfei,,,x,,
+MOW,Mowry Slough,37.485,-122.033,585491.4,4149116.2,,,sfei,,,x,,
+NW,Newark Slough,37.513,-122.082,581128.9,4152179.4,,,sfei,,,x,,
+POND,Pond A8 Outlet at Confluence with Alviso Slough,37.424,-121.98,590250.4,4142398,,,sfei,,,x,,
+SM,San Mateo Bridge,37.464,-122.024,586311.2,4146794.6,,,sfei,,,,x,
 11426000,Sacramento Weir Spill to Yolo Bypass,38.607,-121.554,625889.9,4274151.5,,,usgs,,,x,,
 '374811122235001,San Francisco Bay at Pier 17,37.803,-122.397,553143.4,4184169.8,,,usgs,,,,x,
-9415102,Martinez-Amorco Pier,38.035,-122.125,576774.9,4210025.7,,,NOAA,,x,,x,
+9415102,Martinez-Amorco Pier,38.035,-122.125,576774.9,4210025.7,,,noaa,,x,,x,
 11169750,Alviso Slough Near Alviso,37.44,-121.998,588609.4,4144155.7,,,usgs,,,,x,
 '373015122071000,South San Francisco Bay at Dumbarton Bridge,37.504,-122.119,577828.8,4151167.7,,,usgs,DUM,,,x,
-11460090,Corte Madera Creek Near Larkspur,37.943,-122.515,542639.0,4199638.8,,,usgs,CM,,,x,
-
+11460090,Corte Madera Creek Near Larkspur,37.943,-122.515,542639,4199638.8,,,usgs,CM,,,x,

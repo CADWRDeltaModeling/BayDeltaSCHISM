@@ -1,4 +1,4 @@
-﻿id,agency_id,name,lat,lon,x,y,d1641_id,wdl_id,cdec_id,agency,stage,flow,quality,notes
+﻿new_id,id,name,lat,lon,x,y,d1641_id,wdl_id,cdec_id,agency,stage,flow,quality,notes
 ANH,B95020,San Joaquin at Antioch,38.01784713,-121.802883,605075.1,4208474.7,D12A,B95020,ANH,dwr_ncro,x,,,USBR and DWR have equipment within a 30x30 building (in a 10x10 room) located on a pier that is the City of Antioch's pumping station
 BEN,B94175,Mokelumne River at Benson's Ferry,38.2555,-121.44,636491.3,4235314.6,,B94175,BEN,dwr_ncro,x,,,
 CCS,CCS,Cache Slough,38.29713655,-121.7477601,609500.3,4239525.4,,,CCS,usbr,,,x,Old Vallejo Pumping Plant
@@ -211,7 +211,7 @@ HAS,11455278,Hass Slough Near Elmira,38.29415,-121.7257389,611430.5,4239220.3,,,
 GRIZZB,'380631122032201,Grizzly Bay at Suisun Slough,38.10853056,-122.0559806,582761,4218277.6,,,,usgs,,,x,
 YOLO,11453000,Yolo Bypass Near Woodland,38.67777778,-121.6430556,618033.7,4281893.8,,,,usgs,,x,x,
 GLCGS,11313240,Grant Line Canal Near Tracy,37.82,-121.5447222,628084.6,4186841.5,,,,usgs,,x,x,
-CM62,11455142,Sacramento River Deep Water Ship Channel Near Courtland,38.34166667,-121.6438889,618499.6,424459.8,,,,usgs,,x,x,
+CM62,11455142,Sacramento River Deep Water Ship Channel Near Courtland,38.34166667,-121.6438889,618511.,4244595.,,,,usgs,,x,x,
 MLD,11185185,Suisun Bay at Mallard Island,38.04277778,-121.9191667,594844.5,4211136.4,,,,usgs,,,,
 FMB,'381142122015801,First Mallard Branch,38.19489444,-122.0328139,584692.1,4227881.3,,,,usgs,,x,x,
 LIW,'382829121351801,Lisbon Weir,38.50015,-121.588925,623045.3,4262253.4,,,,usgs,,x,x,proposed effort to discontinue turbidity
