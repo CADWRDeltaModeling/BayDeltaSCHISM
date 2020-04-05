@@ -183,8 +183,8 @@ def read_station_subloc(fpath):
                 
     """
 
-    df = pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
-    df["z"] = -df.z
+    df = pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"],comment='#')
+    df["z"] = df.z
     return df[["z"]]
 
 
