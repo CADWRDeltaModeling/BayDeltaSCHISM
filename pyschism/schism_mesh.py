@@ -1267,7 +1267,7 @@ class SchismMeshShapefileWriter(SchismMeshWriter):
             
         nodes = mesh.nodes
         node_values = nodes[:,2]   
-        value_name = os.path.basename(fpath).replace('.nc','')
+        value_name = os.path.basename(fpath).split('.')[0]
         
         # Two shape files will be generated, one for the polygons and the other 
         # for the nodes. 
@@ -1278,7 +1278,7 @@ class SchismMeshShapefileWriter(SchismMeshWriter):
         fpath_point = os.path.join(fdir, fname + '_point.shp')      
 
         mesh.to_geopandas('polygon',proj4,fpath_poly,create_gdf=False)
-        mesh.to_geopandas('point',proj4,fpath_point,node_values,value_name,create_gdf=False)        
+        mesh.to_geopandas('point',proj4,fpath_point,node_values,value_name = value_name,create_gdf=False)        
         logging.info("%s generated"%fpath)   
        
 class SchismMeshNetcdfWriter(SchismMeshWriter):
