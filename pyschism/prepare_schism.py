@@ -11,9 +11,9 @@ Example jobs in this pre-processing are:
   6. Create an ocean boundary file, elev2D.th
 """
 
-from .schism_setup import create_schism_setup, check_and_suggest
-from .grid_opt import GridOptimizer
-from .stacked_dem_fill import stacked_dem_fill
+from schism_setup import create_schism_setup, check_and_suggest
+from grid_opt import GridOptimizer
+from stacked_dem_fill import stacked_dem_fill
 import pyschism.schism_yaml as schism_yaml
 import numpy as np
 import subprocess

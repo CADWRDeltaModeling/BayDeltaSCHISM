@@ -2,8 +2,8 @@
 """ 3D Version of schism_mesh
 """
 
-from .triquadmesh import TriQuadMesh, BoundaryType, EdgeType
-from .schism_vertical_mesh import read_vmesh
+from triquadmesh import TriQuadMesh, BoundaryType, EdgeType
+from schism_vertical_mesh import read_vmesh
 import osgeo.ogr
 import osgeo.osr
 import numpy as np

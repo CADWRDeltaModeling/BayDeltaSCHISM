@@ -9,7 +9,7 @@ from Rusty Chris Collerman's trigrid.
 Prerequisite: Numpy, rtree package, and libspatialindex for rtree
 """
 
-from .priority_queue import priorityDictionary
+from priority_queue import priorityDictionary
 import rtree
 import numpy as np
 import types
