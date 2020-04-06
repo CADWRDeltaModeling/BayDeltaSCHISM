@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ Command line tool to merge possibly overlapping flux.dat files from hotstart runs
 """

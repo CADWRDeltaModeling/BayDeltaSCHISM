@@ -5,7 +5,7 @@
 
 import vtools.data.timeseries
 from unit_conversions import m_to_ft, cms_to_cfs, celcius_to_fahrenheit, psu_ec_25c, psu_ec_25c_scalar, ec_sea
-import brewer2mpl as brewer
+import palettable
 from matplotlib.ticker import AutoLocator, ScalarFormatter
 import matplotlib.gridspec as gridspec
 import matplotlib as mpl
@@ -18,7 +18,7 @@ __all__ = ['set_color_cycle_dark2', 'set_dual_axes', 'set_dual_axes_elev', 'set_
 font = { # 'family': '',
          # 'weight': 'regular',
         'size': 12,}
-brewer_colors = [brewer.get_map('Dark2', 'qualitative', 5).mpl_colors[i]
+brewer_colors = [palettable.colorbrewer.qualitative.Dark2_5.mpl_colors[i]
                  for i in [1, 0, 2, 3, 4]]
 line_thickness = 1.
 
@@ -137,17 +137,17 @@ vel_axis_labels = [[None, MPS_LABEL],
 vel_filtered_axis_labels = [[None, FILTERED_MPS_LABEL],
                              [None, FILTERED_FTPS_LABEL]]
 
-DEG_C_LABEL = r'Temperature (\u00b0 C)'
-DEG_F_LABEL = r'Temperature (\u00b0 F)'
-FILTERED_DEG_C_LABEL = r'Tidal Avg Temp (\u00b0 C)'
-FILTERED_DEG_F_LABEL = r'Tidal Avg Temp (\u00b0 F)'
+DEG_C_LABEL = u'Temperature (\u00b0 C)'
+DEG_F_LABEL = u'Temperature (\u00b0 F)'
+FILTERED_DEG_C_LABEL = u'Tidal Avg Temp (\u00b0 C)'
+FILTERED_DEG_F_LABEL = u'Tidal Avg Temp (\u00b0 F)'
 temp_axis_labels = [[None, DEG_C_LABEL],
                     [None, DEG_F_LABEL]]
 temp_filtered_axis_labels = [[None, FILTERED_DEG_C_LABEL],
                              [None, FILTERED_DEG_F_LABEL]]
 
 
-def set_dual_axes(ax, ts):
+def set_dual_axes(ax, ts, cell_method = 'inst'):
     """ Create a dual y-axis with unit information in the given time series.
         It converts SI units to non-SI one.
 
@@ -160,37 +160,39 @@ def set_dual_axes(ax, ts):
     """
     if ts is None:
         return
-    if 'unit' in ts.props:
-        unit = ts.props.get('unit')
-        filtered = False if ts.props.get('filtered') is None else True
+    filtered = (cell_method == 'filtered') or (cell_method == 'ave')
+    if hasattr(ts,'unit'):
+        unit = ts.unit
         if unit == 'm' or unit == 'meter':
             ax2 = set_dual_axes_elev(ax, filtered=filtered)
             return ax2
-        elif unit == 'cms':
+        elif unit.lower() == 'cms':
             ax2 = set_dual_axes_flow(ax, filtered=filtered)
             return ax2
-        elif unit == 'PSU':
+        elif unit.lower() == 'psu':
             ax2 = set_dual_axes_salt(ax, filtered=filtered)
             return ax2
         elif unit == 'm/s':
             ax2 = create_second_axis(ax, m_to_ft)
-            if 'filtered' in ts.props:
+            if filtered:
                 ax.set_ylabel(FILTERED_MPS_LABEL)
                 ax2.set_ylabel(FILTERED_FTPS_LABEL)
             else:
                 ax.set_ylabel(MPS_LABEL)
                 ax2.set_ylabel(FTPS_LABEL)
             return ax2
-        elif unit == 'deg C':
+        elif unit == 'deg C' or unit == 'degC':
             ax2 = create_second_axis(ax, celcius_to_fahrenheit)
-            if 'filtered' in ts.props:
+            if filtered:
                 ax.set_ylabel(FILTERED_DEG_C_LABEL)
                 ax2.set_ylabel(FILTERED_DEG_F_LABEL)
             else:
                 ax.set_ylabel(DEG_C_LABEL)
                 ax2.set_ylabel(DEG_F_LABEL)
             return ax2
-    print("Warning: set_dual_axes: Not a supported unit in the time series.")
+    else:
+        raise ValueError("No unit provided for output and not inferred")
+    print("Warning: set_dual_axes: Time series unit missing or not supported.")
     return None
 
 
@@ -203,7 +205,7 @@ def set_dual_axes_elev(ax1, filtered=False):
         ax: matplotlib axes
     """
     ax2 = create_second_axis(ax1, m_to_ft)
-    if filtered is True:
+    if filtered:
         ax1.set_ylabel(FILTERED_M_LABEL)
         ax2.set_ylabel(FILTERED_FT_LABEL)
     else:
@@ -221,7 +223,7 @@ def set_dual_axes_flow(ax1, filtered=False):
         ax: matplotlib axes
     """
     ax2 = create_second_axis(ax1, cms_to_cfs)
-    if filtered is True:
+    if filtered:
         ax1.set_ylabel(FILTERED_CMS_LABEL)
         ax2.set_ylabel(FILTERED_CFS_LABEL)
     else:
@@ -239,7 +241,7 @@ def set_dual_axes_temp(ax1, filtered=False):
         ax: matplotlib axes
     """
     ax2 = create_second_axis(ax1, celcius_to_fahrenheit)
-    if filtered is True:
+    if filtered:
         ax1.set_ylabel(FILTERED_DEG_C_LABEL)
         ax2.set_ylabel(FILTERED_DEG_F_LABEL)
     else:

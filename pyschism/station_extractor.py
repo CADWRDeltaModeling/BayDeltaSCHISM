@@ -229,8 +229,8 @@ class StationReader(object):
         print("Reading %s..." % fname)
 
         if len(tss) != len(self._stations):
-            raise ValueError("# of stations in station.in and staout do not "
-                              "correspond.")
+            raise ValueError("# of stations in station.in ({}) and staout ({}) do not "
+                              "correspond.".format(len(self._stations),len(tss)))
         unit = self._item_units[var_index]
         self.set_tss_prop(tss, unit)
         self.data[var_index] = tss
@@ -324,7 +324,8 @@ class FlowReader(object):
         self._time_basis = time_basis
         self._items = None
         self.data = None
-        self._flow_fname = 'flux.dat'
+        
+        self._flow_fname = 'flux.out' if os.path.exists(os.path.join(working_dir,'flux.out')) else 'flux.dat'
         self._stations = None
         self._station_id_to_index = None
 

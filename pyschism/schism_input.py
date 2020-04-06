@@ -5,9 +5,9 @@ and sources/sinks.
 @author: Kijin Nam, knam@water.ca.gov
  """
 
-import schism_mesh
-import schism_structure
-import schism_source
+import pyschism.schism_mesh as schism_mesh
+import pyschism.schism_structure as schism_structure
+import pyschism.schism_source as schism_source
 
 class SchismInput(object):
     def __init__(self, logger=None):

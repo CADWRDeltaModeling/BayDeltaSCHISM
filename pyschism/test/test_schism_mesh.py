@@ -1,8 +1,8 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ unit tests of schism_mesh
 """
-from schism_mesh import SchismMesh, read_mesh, write_mesh, BoundaryType
+from pyschism import SchismMesh, read_mesh, write_mesh, BoundaryType
 import numpy as np
 import unittest
 import os
@@ -93,6 +93,19 @@ class TestSchismMesh(unittest.TestCase):
         self.assertEqual(meshout.n_nodes(), 112)
         self.assertEqual(meshout.n_elems(), 135)
         self.assertEqual(meshout.n_boundaries(), 3)
+        if os.path.exists(fpath_mesh_out):
+            os.remove(fpath_mesh_out)
+
+    def test_schism_mesh_shp_writer(self):
+        fpath_mesh = self.fpath_mesh
+        mesh = read_mesh(fpath_mesh)
+        fpath_mesh_out = os.path.join(
+            os.path.dirname(__file__), "testdata/meshout.shp")
+        write_mesh(mesh, fpath_mesh_out, write_boundary=True)
+        # meshout = read_mesh(fpath_mesh_out)
+        # self.assertEqual(meshout.n_nodes(), 112)
+        # self.assertEqual(meshout.n_elems(), 135)
+        # self.assertEqual(meshout.n_boundaries(), 3)
         if os.path.exists(fpath_mesh_out):
             os.remove(fpath_mesh_out)
 

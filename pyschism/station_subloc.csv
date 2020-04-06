@@ -1,0 +1,4 @@
+id,subloc,depth
+foo,top,0.5
+foo,bottom,8.0
+nonentry,top,999.

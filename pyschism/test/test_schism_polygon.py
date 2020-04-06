@@ -1,8 +1,8 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ Test Suite for Polygon
 """
-from schism_polygon import SchismPolygon, read_polygons, write_polygons
+from pyschism.schism_polygon import SchismPolygon, read_polygons, write_polygons
 from shapely.geometry import Point
 import unittest
 import os

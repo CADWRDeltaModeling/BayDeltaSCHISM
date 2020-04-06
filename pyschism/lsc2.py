@@ -84,7 +84,7 @@ class BilinearMeshDensity(object):
         (a,b,c,d) = self.params
         m = (a + b*h)
         n = (c+d*h)
-        opnd = np.outer(t,n)
+        opnd = np.outer(t,n) 
         retval = ((np.exp(opnd)-1)*m/n).T
         return retval
 
@@ -106,9 +106,9 @@ def default_num_layers(x,eta, h0, minlayer, maxlayer,dz_target,meshfun,maxlev=10
         nlayer[inode] = np.maximum(1,np.searchsorted(levdepths[inode,:],totaldepth[inode]))
     print("Maximum reference depth: {} Unrestricted max layer: {}".format (np.max(totaldepth),np.max(nlayer)))
     nlayer = np.minimum(np.maximum(
-        minlayer, (nlayer).astype('i')), maxlayer) #.astype('f')
+        minlayer, (nlayer).astype('i')), maxlayer) #.astype('f')    
     print("# small minlayer = %s " % np.count_nonzero(minlayer<=1.))
-    print("Any small number layers: %s at index %s" % (np.amin(nlayer), np.argmin(nlayer)))
+    print("Any small number layers: %s at index %s" % (np.amin(nlayer), np.argmin(nlayer)))   
     return nlayer.astype("i")
 
 
@@ -127,23 +127,19 @@ def example2():
     h0 = np.array([3.58,1.,0.25,0.,4.5,107.0,120.])
     minlayer = np.array([3,4,4,5,8,12,12])
     maxlayer = np.array([8,8,8,10,8,38,38])
-    print("Depth")
-    print(eta+h0)
     meshfun = BilinearMeshDensity()
     nlayer = default_num_layers(0.,eta,h0,minlayer,maxlayer,0.,meshfun)
-    print("NLayer")
-    print(nlayer)
     sigma = gen_sigma(nlayer,eta,h0,None,meshfun)
 
 
 def mesh_function_depths(nlayer, depth, mesh, meshfun):
-
+    
     print("Entering mesh_functino_depths")
     for inode in showlist:
         print("inode={} depth={} nlayer={}".format(inode,depth[inode],nlayer[inode]))
-
-
-
+    
+    
+    
     npoint = len(nlayer)
     globalmaxlayer = np.max(nlayer)
     nlevel = nlayer + 1
@@ -215,9 +211,10 @@ def mesh_function_depths(nlayer, depth, mesh, meshfun):
         sigmadepths[inode,nlevel[inode]:] = hsig[inode]
 
         if inode in showlist:
-            print("@#(%!@$*%")
+            print("SHOWLIST")
             print("inode={} depth={} nlevel={} nlayer={}".format(inode,depth[inode],nlevel[inode],nlayer[inode]))
             print(meshfundepths[inode,:])
+    
 
 
     # hsig is the depth of a uniform sigma grid
@@ -232,23 +229,16 @@ def mesh_function_depths(nlayer, depth, mesh, meshfun):
     # This will often be true ... it implies some stretching, which may be a lot or a little
     # For now (pre-stretch) use the coordinates as given by mesh function (min/max doesn't affect)
     is_expand = depth > hnv
-    if False:
-        print("Hello")
-        print("is_expand: {}".format(is_expand))
-        print(hnv.shape)
-        print(depth)
-        print(hsig)
-        print(hnv)
-
-    # for hsig <= h < htrans the levels given by meshfun don't quite fit in the (shallower) water column,
+        
+    # for hsig <= h < htrans the levels given by meshfun don't quite fit in the (shallower) water column, 
     # so transition to sigma coordinates with weight gamma
     print("gamma stuff")
-    for inode in showlist:
-        print(depth[inode])
-        print(hsig[inode])
-        print(hnv[inode])
-        print(meshfundepths[inode,:])
-
+    #for inode in showlist:
+    #    print(depth[inode])
+    #    print(hsig[inode])
+    #    print(hnv[inode])
+    #    print(meshfundepths[inode,:])
+    
     safe_divisor = hnv - hsig
     safe_divisor[hnv == hsig] = 1.
     # todo is this really safe?
@@ -274,7 +264,7 @@ def mesh_function_depths(nlayer, depth, mesh, meshfun):
         if is_sigma[i]:
             htrans[i,0:nlevel[i]] = np.linspace(0,depth[i],nlevel[i])
         htrans[i,nlevel[i]:] = depth[i]
-    if True:
+    if False:
         print("{{{{{{{}}}}}}}")
         for i in showlist:
             print("\ni={} depth ={} gamma={} nlayer={} hvn={}".format(i,depth[i],gamma[i],nlayer[i],hnv[i]))
@@ -310,18 +300,13 @@ def label_components(mesh,nlayer,thresh,exclude):
     qualified = (nlayer > thresh) & (labels < 0)
     while np.any(qualified):
         current_label +=1
-        #if current_label % 100 == 1:
-        #    print "label: {}".format(current_label)
         cc.append([])
         # pick first seed that qualifies and that isn't labeled yet
 
         v = np.nonzero(qualified)[0][0]
-        #labels[v] = current_label
-        stack = [v]
+        stack = [v] 
         while len(stack) > 0:
             v = stack.pop()
-            #print "Here is v: {},{}".format(v,type(v))
-            #print v
             if labels[v] > 0:
                 continue
             if nlayer[v] > thresh:
@@ -331,10 +316,6 @@ def label_components(mesh,nlayer,thresh,exclude):
                     if not labels[v0]>0:
                         stack.append(v0)
         qualified = (nlayer > thresh) & (labels < 0)
-        #if current_label % 100 == 1:
-        #    print "Label size: {}".format(len(cc[current_label]))
-
-        #assert 0 == 1
     print("Number of components: {}".format(len(cc)))
     return cc
 
@@ -450,12 +431,12 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
     depth=eta+h
     # Have to do this first because nlayer may be modified
     hcor,is_sigma,nlayer,dh_meshfun = mesh_function_depths(nlayer,depth,mesh,meshfun)
-
+    
     print("first hcor")
     for inode in showlist:
         print(hcor[inode,:])
-
-
+    
+    
     #def layer_depths(nlayer, depth, mesh, meshfun):
 
     do_smooth = nsmoothlay > 0
@@ -470,6 +451,7 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
     nlevel = nlayer + 1
     globalmaxlevel = np.max(nlevel)
     print("Global maxlevel before smooth: {}".format(globalmaxlevel))
+    
 
 
     nsmoothlev = nsmoothlay + 1
@@ -481,14 +463,14 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
         print(hcor.shape)
         print(nlevel.shape)
         print(nlayer.shape)
-
-
+   
+        
         for i in showlist:
             print("i={} nlevel = {}, depth={}".format(i,nlevel[i],depth[i]))
             print("firlst")
             print(hcor[i,:])
-
-
+        
+        
         zsmooth = np.zeros((npoint,nsmoothlev),dtype='d')
         zsmooth[:,nsmoothlev - 1]=-h
         old_layer = -h
@@ -496,7 +478,7 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
         if smooth_to_archive:
             for i in range(nsmoothlay):
                 print("layer iteration: %s" % i)
-                hlow = lowest_layer_height(hcor,nlevel,i)
+                hlow = lowest_layer_height(hcor,nlevel,i) 
                 speed = np.absolute(hlow)
                 # with nsmoothlay = 1 used vel=speed*.7,kappa=.75,dt=0.05,iter_total=20
                 # this includes experimental smoothing based on neighbors in the base layer and/or current layer depending on whether
@@ -513,7 +495,7 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
             np.savetxt("zsmoothsave.txt",zsmooth)
         else:
             zsmooth = np.loadtxt("zsmoothsave.txt")
-
+            
         print("Linking")
         # Now generate new mesh depths using the smoothed elevations as a pseudo-bed
         # and one fewer layers
@@ -538,7 +520,7 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
         nlayer2 = np.maximum(1,np.minimum(nlayer2, globalmaxlayer-nsmoothlay))
         print("yo")
         print(nlayer2)
-
+         
         # this is a flag needed used later to signal to indicate not enough layers to absorb nsmoothlay into the total
         # this is the last opportunity to calculate it based on the original number of layers
         # this is an all-or-nothing approach that does not try to eek out every opportunity to use the smoothed layers.
@@ -578,11 +560,11 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
                 continue
             blev = bndlevel[inode]
             print("xxxxxxxxxxx\ni={} nlevels = {} nlevel2 = {} nlevel3 = {}\n blev = {} depth = {} pseudo_be_depth={} is_sigma={}".format(
-                        inode,nlevel[inode],nlevel2[inode],nlevel3[inode],blev,depth[inode],pseudo_bed_depth[inode],is_sigma[inode]))
-            if blev == 0:
+                        inode,nlevel[inode],nlevel2[inode],nlevel3[inode],blev,depth[inode],pseudo_bed_depth[inode],is_sigma[inode]))            
+            if blev == 0: 
                 continue
             if inode in showlist:
-                print("to be joined")
+                print("to be joined")                    
                 print("\ni={} nlevels = {} nlevel2 = {} nlevel3 = {}\n blev = {} depth = {} pseudo_be_depth={} is_sigma={}".format(
                         inode,nlevel[inode],nlevel2[inode],nlevel3[inode],blev,depth[inode],pseudo_bed_depth[inode],is_sigma[inode]))
 
@@ -592,8 +574,8 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
             hcor[inode,0:blev] = hcor2[inode,0:blev]
             hcor[inode,blev:nlevel3[inode]] = hsmooth[inode,:]   # nlevel3 is the adjusted number
             hcor[inode,nlevel3[inode]:] = hcor[inode,nlevel3[inode]-1] # copy to lower levels
-
-            if inode in showlist:
+            
+            if inode in showlist: 
                 print("** hcor after merge before bound inode = {}** ".format(inode))
                 print(hcor[inode,:])
                 print(" &*&*")
@@ -601,9 +583,9 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
             if (blev > 0) and (nbnd[inode] > 1):
                hcor[inode,blev] = 0.4*hcor[inode,blev] + 0.3*hcor[inode,blev-1] + 0.3*hcor[inode,blev+1]
             elif (blev > 0) and (nbnd[inode] == 1):
-                hcor[inode,blev] = 0.7*hcor[inode,blev] + 0.3*hcor[inode,blev-1]
-
-            if inode in showlist:
+                hcor[inode,blev] = 0.7*hcor[inode,blev] + 0.3*hcor[inode,blev-1]              
+            
+            if inode in showlist: 
                 print("final hcor inode={}".format(inode))
                 print(hcor[inode,:])
     else:
@@ -658,17 +640,17 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
             # first, assume that the smoothed layers are OK and just do sigma down to the top of the smoothing
             if inode in showlist or inode==2:
                 print("deciding if sigma for i={} is_sigma= {} is_sigma2={}".format(inode,is_sigma[inode],is_sigma2[inode]))
-
+            
             if is_sigma2[inode] or is_sigma[inode]:
                 nnonbndlev = nlevel2[inode]
                 if inode in showlist:
-                    print("Experimental stuff inode={} nonbndlev={} nlevel={} nlevel2={} nlevel3={}".format()
-                         (  inode,nnonbndlev,nlevel[inode],nlevel2[inode],nlevel3[inode]))
+                    print("Experimental stuff inode={} nonbndlev={} nlevel={} nlevel2={} nlevel3={}".format(
+                            inode,nnonbndlev,nlevel[inode],nlevel2[inode],nlevel3[inode]))
                     print("sigma")
                     print(sigma[inode,:])
-                sigma[inode,0:nnonbndlev] = np.linspace(0.,sigma[inode,nnonbndlev-1],nnonbndlev)
-
-
+                sigma[inode,0:nnonbndlev] = np.linspace(0.,sigma[inode,nnonbndlev-1],nnonbndlev) 
+                
+                
                 # the above step may have left some very thin sigma layers above some very wide smoothing layers
                 # sigmartio is the ratio of the sigma layer width to the top smoothed layer, unless the smoothing went above the
                 # reference ratio (which is indirectly indicated by sigmas<0) and in this case it is just 0. as a signal
@@ -686,7 +668,7 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
                 nlev = nlevel[inode] if few4smooth[inode] else nlevel3[inode]
                 nlevel3[inode] = nlev
                 if (sigmaratio < ACCEPT_RATIO) or np.isnan(sigmaratio) or few4smooth[inode]:
-                    if inode == 2: print("\n**\nsigma not accepted i={} sigmaratio={} nlev={} few4smooth={}".format(inode,sigmaratio,nlev,few4smooth[inode]))
+                    if inode == 2: print("\n**\nsigma not accepted i={} sigmaratio={} nlev={} few4smooth={}".format(inode,sigmaratio,nlev,few4smooth[inode]))                  
                     sigma[inode,0:nlev] = np.linspace(0.,1.,nlev)
                 else:
                     pass
@@ -697,7 +679,7 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
                             inode,sigmaratio,nlevel[inode],nlevel2[inode],nlevel3[inode],few4smooth[inode],nnonbndlev))
                     print(sigma[inode,:])
                     print("***\n")
-
+                    
                 sigma[inode,nlev:] = np.nan
     else:
         for inode in range(npoint):
@@ -718,7 +700,7 @@ def gen_sigma(nlayer, minlayer, maxlayer, eta, h, mesh, meshfun, nsmoothlay=0):
     #        #print nlevel2[inode]
     #        sigma[inode, 0:nlevel[inode]] = np.linspace(0., 1., nlevel[inode])
     #    sigma[inode,nlevel[inode]:maxlevel] = np.nan
-
+ 
     print("Testing monotonicity")
     nonmon=[]
     for inode in range(npoint):

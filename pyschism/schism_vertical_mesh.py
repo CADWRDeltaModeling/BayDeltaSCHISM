@@ -232,8 +232,7 @@ class SchismSzVerticalMeshReader(object):
             c_s = (1. - theta_b) * np.sinh(theta_f * sigma) / np.sinh(theta_f) \
                 + theta_b * (np.tanh(theta_f * (sigma + 0.5))
                              - np.tanh(theta_f * 0.5)) * 0.5 / np.tanh(theta_f * 0.5)
-            vgrid.c_s = c_s     
-                
+            vgrid.c_s = c_s
         return vgrid
 
 
@@ -294,7 +293,7 @@ class SchismLocalVerticalMeshReader(object):
                 kbps.append(kbp)
                 sigma = np.full((nvrt,), np.nan)
                 sigma[:nvrt - kbp] = list(map(float, tkns[2:nvrt - kbp + 2]))
-                sigmas.append(sigma) 
+                sigmas.append(sigma)
             vgrid.sigma = np.array(sigmas)
             vgrid.kbps = np.array(kbps)
         return vgrid
@@ -318,7 +317,7 @@ class SchismLocalVerticalMeshWriter(object):
                 kbps = vmesh.kbps[i]
                 n_levels = n_max_levels - kbps
                 buf = "{}\t{}\t".format(i + 1, kbps + 1)
-                buf += '\t'.join(['{}'.format(d)
+                buf += '\t'.join(['{:.6f}'.format(d)
                                   for d in vmesh.sigma[i][:n_levels]])
                 buf += '\n'
                 f.write(buf)

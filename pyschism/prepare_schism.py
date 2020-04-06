@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 Driver module to prepares input files for a SCHISM run.
@@ -11,16 +11,18 @@ Example jobs in this pre-processing are:
   6. Create an ocean boundary file, elev2D.th
 """
 
-from schism_setup import create_schism_setup, check_and_suggest
-from grid_opt import GridOptimizer
-from stacked_dem_fill import stacked_dem_fill
-import schism_yaml
+from .schism_setup import create_schism_setup, check_and_suggest
+from .grid_opt import GridOptimizer
+from .stacked_dem_fill import stacked_dem_fill
+import pyschism.schism_yaml as schism_yaml
 import numpy as np
 import subprocess
 import os
 import argparse
 import logging
 
+
+__all__ = ['prepare_schism']
 
 def create_arg_parser():
     """ Create ArgumentParser
@@ -43,9 +45,10 @@ def create_hgrid(s, inputs, logger):
             check_and_suggest(open_boundaries, ('linestrings',))
             s.create_open_boundaries(open_boundaries)
 
-            # Fill the missing land and island boundary information
-            logger.info("Filling missing land and island boundaries...")
-            s.mesh.fill_land_and_island_boundaries()
+        # Fill the missing land and island boundary information
+        logger.info("Filling missing land and island boundaries...")
+        s.mesh.fill_land_and_island_boundaries()
+
         # Second, Mesh optimization
         option_name = 'depth_optimization'
 
@@ -80,14 +83,14 @@ def create_hgrid(s, inputs, logger):
         # Write hgrid.gr3
         option_name = 'gr3_outputfile'
         if option_name in section:
-            logger.info("Writing up a new hgrid file...")
+            logger.info("Writing hgrid file...")
             hgrid_out_fpath = os.path.expanduser(section[option_name])
             s.write_hgrid(hgrid_out_fpath)
 
         # Write hgrid.ll
         option_name = 'll_outputfile'
         if option_name in section:
-            logger.info("Creating a new hgrid.ll file...")
+            logger.info("Creating hgrid.ll file...")
             hgrid_ll_fpath = os.path.expanduser(section[option_name])
             s.write_hgrid_ll(hgrid_ll_fpath)
 
@@ -217,15 +220,16 @@ def create_fluxflag(s, inputs, logger):
     if flowlines is None:
         raise ValueError("No flowlines in flow_outputs")
     fname = dict_flow.get('outputfile')
-    if fname is not None:
-        fname = os.path.expanduser(fname)
-        logger.info("Creating %s..." % fname)
-        s.create_flux_regions(flowlines, fname)
-        if fname == 'fluxflag.prop':
-            with open(fname, 'a') as f:
-                for line in flowlines:
-                    buf = '{}\n'.format(line['name'])
-                    f.write(buf)
+    if fname is None:
+        logger.info("outputfile not given for flow_outputs. Using fluxflag.prop")
+        fname = 'fluxflag.prop'
+    fname = os.path.expanduser(fname)
+    logger.info("Creating %s..." % fname)
+    s.create_flux_regions(flowlines, fname)
+    with open(fname, 'a') as f:
+        for line in flowlines:
+            buf = '{}\n'.format(line['name'])
+            f.write(buf)
 
 
 def update_spatial_inputs(s, inputs, logger):

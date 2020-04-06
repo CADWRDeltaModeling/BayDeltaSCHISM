@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
-from read_ts import read_cdec
-from vtools.data.api import rts
+
+
 import numpy as np
 import numpy.ma as ma
 import sys
@@ -112,6 +112,7 @@ def despike(arr, n1=2, n2=20, block=10):
 
 if __name__ == '__main__':
     # Just an example
+    from read_ts import read_cdec
     station = sys.argv[1]
     ts = read_cdec("cdec_download/%s.csv"%station,start=None,end=None)
 

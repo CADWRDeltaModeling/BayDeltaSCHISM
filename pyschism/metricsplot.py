@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 """ Metrics plot
 """
-
+import pandas as pd
 from plot_default_formats import set_color_cycle_dark2, set_scatter_color, make_plot_isometric, set_dual_axes, set_xaxis_dateformat, rotate_xticks,brewer_colors
-from vtools.functions.api import cosine_lanczos, interpolate_ts, interpolate_ts_nan, LINEAR, shift
+from vtools.functions.filter import cosine_lanczos
+#, interpolate_ts, interpolate_ts_nan, LINEAR, shift
 from vtools.functions.skill_metrics import rmse, median_error, skill_score, corr_coefficient
-from vtools.data.vtime import days, hours, minutes, time_interval, time_sequence
+import statsmodels.formula.api as sm
+from vtools.functions.lag_cross_correlation import calculate_lag
+from vtools.data.vtime import days, hours, minutes
 from matplotlib.gridspec import GridSpec
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
@@ -14,89 +17,10 @@ from datetime import timedelta
 
 __all__ = ['plot_metrics', 'plot_comparison']
 
-def calculate_lag(a, b, max_shift, period=None,
-                  resolution=time_interval(minutes=1), interpolate_method=None):
-    """ Calculate lag of the second time series b, that maximizes the cross-correlation with a.
-
-        Parameters
-        ----------
-        a,b: vtools.data.timeseries.Timeseries
-            Two time series to compare. The time extent of b must be the same or a superset of that of a.
-
-        max_shift: interval
-            Maximum pos/negative time shift to consider in cross-correlation (ie, from -max_shift to +max_shift)
-
-        period: interval, optional
-            Period that will be used to further clip the time_window of analysis to fit a periodicity.
-
-        interpolate_method: str, optional
-            Interpolate method to generate a time series with a lag-calculation interpolation
-
-        Returns
-        -------
-        lag : datetime.timedelta
-            lag
-    """
-    # Get the available range from the first time series
-    a_windowed_by_b = a.window(b.start, b.end)
-    time_window = (a_windowed_by_b.start, a_windowed_by_b.end)
-    if (time_window[1] - time_window[0]).total_seconds() <= 0.:
-        raise ValueError('No available time series in the given time_window')
-
-    # Calculate actual time range to use
-    start = time_window[0] + max_shift
-    if period is not None:
-        n_periods = np.floor(((time_window[1] - max_shift) - start).total_seconds() / period.total_seconds())
-        if n_periods <= 0.:
-            raise ValueError("The time series is too short to cover one period.")
-        end = start + time_interval(seconds=n_periods * period.total_seconds())
-    else:
-        end = time_window[1] - max_shift
-    if (end - start).total_seconds() < 0.:
-        raise ValueError("The time series is too short.")
-
-    # This is actual time series to calculate lag
-    a_part = a.window(start, end)
-    start = a_part.start
-    end = a_part.end
-    a_part_masked = np.ma.masked_invalid(a_part.data, np.nan)
-
-    # Interpolate the second vector
-    factor = a.interval.total_seconds() / resolution.total_seconds()
-    if not factor - np.floor(factor) < 1.e-6:
-        raise ValueError('The interval of the time series is not integer multiple of the resolution.')
-    else:
-        factor = int(np.floor(factor))
-
-    new_n = np.ceil((end - start + 2 * max_shift).total_seconds() / resolution.total_seconds()) + 1
-    max_shift_tick = int(max_shift.total_seconds() / resolution.total_seconds())
-    length = 2 * max_shift_tick + 1
-    n = len(a_part)
-    if interpolate_method is None:
-        interpolate_method = LINEAR
-    b_interpolated = interpolate_ts(b,
-                                    time_sequence(a_part.start - max_shift,
-                                                  resolution, new_n),
-                                    method=interpolate_method)
-    def unnorm_xcor(lag):
-        lag_int = int(lag)
-        b_part = b_interpolated.data[lag_int:lag_int+factor*n-1:factor]
-        return -np.ma.inner(a_part_masked, b_part)
+#def calculate_lag_old(a, b, max_shift, period=None,
+#                  resolution=time_interval(minutes=1), interpolate_method=None):
 
 
-    index = np.arange(-max_shift_tick, max_shift_tick + 1)
-    brent = True
-    if brent is True:
-        from scipy.optimize import minimize_scalar
-        res = minimize_scalar(unnorm_xcor, method='bounded',
-                              bounds=(0, length), options={'xatol': 0.5})
-        v0 = index[int(np.floor(res.x))] * resolution.total_seconds()
-    else:
-        re = np.empty(length)
-        for i in range(length):
-            re[i] = unnorm_xcor(i)
-        v0 = index[np.argmax(-re)] * resolution.total_seconds()
-    return time_interval(seconds=v0)
 
 
 def safe_window(ts, window):
@@ -107,15 +31,23 @@ def safe_window(ts, window):
     -------
     vtools.data.timeseries.TimeSeries
     """
+    if ts is None: 
+        return None
+    # If this line bombs recommend fixing the problem upstream, not catching 
+    unit = ts.unit
+ 
+    if ts.last_valid_index() is None or ts.first_valid_index() is None:
+        print("Valid index None")
+        return None
     if window[0] > window[1]:
         raise ValueError("The left value of the window is larger than the right.")
-    if ts is not None:
-        if ts.end < window[0] or ts.start > window[1]:
-            return None
-        else:
-            return ts.window(*window)
-    else:
+
+    if (ts.last_valid_index() < window[0]) or (ts.first_valid_index() > window[1]):
         return None
+    else:
+        tssafe = ts[window[0]:window[1]]
+        tssafe.unit = unit
+        return tssafe
 
 
 def get_common_window(tss, window=None):
@@ -127,15 +59,15 @@ def get_common_window(tss, window=None):
     for ts in tss:
         if not ts is None:
             if lower_bound is None:
-                lower_bound = ts.start
+                lower_bound = ts.index[0]
             else:
-                if lower_bound < ts.start:
-                    lower_bound = ts.start
+                if lower_bound < ts.index[0]:
+                    lower_bound = ts.index[0]
             if upper_bound is None:
-                upper_bound = ts.end
+                upper_bound = ts.index[-1]
             else:
-                if upper_bound > ts.end:
-                    upper_bound = ts.end
+                if upper_bound > ts.index[-1]:
+                    upper_bound = ts.index[-1]
     if (lower_bound is None or upper_bound is None) \
         or (lower_bound > upper_bound):
         return None
@@ -178,7 +110,7 @@ def get_union_window(tss, window=None):
             return (lower_bound, upper_bound)
 
 
-def filter_timeseries(tss, cutoff_period="40hr"):
+def filter_timeseries(tss, cutoff_period=hours(40)):
     """ Filter time series
 
         Parameters
@@ -195,29 +127,31 @@ def filter_timeseries(tss, cutoff_period="40hr"):
             filtered.append(None)
         else:
             ts_filtered = cosine_lanczos(ts, cutoff_period=cutoff_period)
-            ts_filtered.props['filtered'] = 'cosine_lanczos'
+            ts_filtered.filtered = 'cosine_lanczos'
+            ts_filtered.unit = ts.unit
             filtered.append(ts_filtered)
     return filtered
 
 
-def fill_gaps(tss, max_gap_to_fill=time_interval(hours=1)):
-    tss_filled = []
-    for ts in tss:
-        if ts is not None:
-            max_gap = int(max_gap_to_fill.total_seconds() / ts.interval.total_seconds())
-            if max_gap > 0:
-                tss_filled.append(interpolate_ts_nan(ts, max_gap=max_gap))
-            else:
-                tss_filled.append(ts)
-        else:
-            tss_filled.append(None)
-    return tss_filled
+def fill_gaps(ts, max_gap_to_fill=None):
+    if max_gap_to_fill is None or max_gap_to_fill == hours(0): 
+        return ts
+    try:
+        limit = int(max_gap_to_fill/ts.index.freq)
+    except:
+        raise ValueError("could not divide max_gap_to_fill by freq: {}".format(ts.index.freq))
+    if limit == 0:
+        raise ValueError("max_gap_to_fill must be longer than time step")
+    unit = ts.unit
+    ts = ts.interpolate(method='time',limit=limit)
+    ts.unit = unit
+    return ts
 
 
 def plot_metrics_to_figure(fig, tss,
                            title=None, window_inst=None, window_avg=None,
                            labels=None,
-                           max_shift=hours(2),
+                           max_shift=hours(4),
                            period=minutes(int(12.24 * 60)),
                            label_loc=1,
                            legend_size=12):
@@ -227,24 +161,32 @@ def plot_metrics_to_figure(fig, tss,
         -------
         matplotlib.figure.Figure
     """
+        
+    
     grids = gen_metrics_grid()
     axes = dict(list(zip(list(grids.keys()), list(map(fig.add_subplot,
                                       list(grids.values()))))))
-    if labels is None:
-        labels = [ts.props.get('label') for ts in tss]
-    plot_inst_and_avg(axes, tss, window_inst, window_avg, labels, label_loc, legend_size)
+    
+    plot_inst_and_avg(axes, tss, window_inst, 
+                      window_avg, labels, label_loc, legend_size)
     if title is not None:
         axes['inst'].set_title(title)
     if window_avg is not None:
         tss_clipped = [safe_window(ts, window_avg) for ts in tss]
     else:
         tss_clipped = tss
-    lags = calculate_lag_of_tss(tss_clipped, max_shift, period)
+        
+    lags = calculate_lag_of_tss(tss_clipped, max_shift, minutes(1))
     metrics, tss_scatter = calculate_metrics(tss_clipped, lags)
+    unit = tss[1].unit  # Get from the simulation 
+    
     if tss_scatter is not None:
+        if tss_scatter[0] is not None:
+            tss_scatter[0].unit = unit
+        tss_scatter[1].unit = unit        
         ax_scatter = axes['scatter']
         plot_scatter(ax_scatter, tss_scatter)
-    unit = tss[0].props.get('unit') if tss[0] is not None else None
+
     str_metrics = gen_metrics_string(metrics, labels[1:], unit)
     write_metrics_string(axes['inst'], str_metrics)
     return fig
@@ -255,7 +197,8 @@ def plot_inst_and_avg(axes, tss, window_inst, window_avg, labels, label_loc, leg
     """
     if window_inst is None:
         window_inst = get_union_window(tss)
-    lines = plot_tss(axes['inst'], tss, window_inst)
+
+    lines = plot_tss(axes['inst'], tss, window_inst,cell_method='inst')
     if labels is not None:
         axes['inst'].legend(lines, labels, prop={'size': legend_size}, loc=label_loc)
 
@@ -265,7 +208,7 @@ def plot_inst_and_avg(axes, tss, window_inst, window_avg, labels, label_loc, leg
     window_to_filter = (window_avg[0] - pad, window_avg[1] + pad)
     tss_clipped = [safe_window(ts, window_to_filter) for ts in tss]
     tss_filtered = filter_timeseries(tss_clipped)
-    plot_tss(axes['avg'], tss_filtered, window_avg)
+    plot_tss(axes['avg'], tss_filtered, window_avg,cell_method='ave')
 
 
 def plot_comparsion_to_figure(fig, tss, title=None,
@@ -310,7 +253,7 @@ def gen_metrics_grid():
     return grids
 
 
-def plot_tss(ax, tss, window=None):
+def plot_tss(ax, tss, window=None,cell_method='inst'):
     """ Simply plot lines from a list of time series
     """
     if window is not None:
@@ -325,17 +268,21 @@ def plot_tss(ax, tss, window=None):
     else:
         ts_plotted = None
         for ts in tss_plot:
-            if ts is not None:
+            if ts is None: 
+                l, = ax.plot([], [])
+            else:
+                l, = ax.plot(ts.index,ts.values)
                 ax.grid(True, linestyle='-', linewidth=0.1, color='0.5')
-                l, = ax.plot(ts.times, ts.data)
                 if ts_plotted is None:
                     ts_plotted = ts
-            else:
-                l, = ax.plot([], [])
             lines.append(l)
         if ts_plotted is not None:
-            set_dual_axes(ax, ts_plotted)
+            if not hasattr(ts_plotted,"unit"):
+                raise Exception("No unit in time series")
+            set_dual_axes(ax, ts_plotted,cell_method)
             set_xaxis_dateformat(ax, date_format="%m/%d/%Y", rotate=25)
+        else:
+            raise Exception("W$%RTE$#R")
     return lines
 
 
@@ -357,11 +304,10 @@ def gen_metrics_string(metrics, names, unit=None):
             line_metrics += "RMSE=%.3f      " % (metric['rmse'])
         lag = metric['lag']
         if lag is not None:
-            seconds_ = lag.total_seconds()
-            line_metrics += "Lag=%d min   " % (seconds_ / 60.)
-            line_metrics += r"Bias$_\phi$=%.3f   " % metric['bias']
-            line_metrics += r"NSE$_\phi$=%.3f   " % metric['nse']
-            line_metrics += r"R$_\phi$=%.3f   " % metric['corr']
+            line_metrics += "Lag={}  ".format(lag)
+            line_metrics += r"Bias$_\phi$={:.3f}   ".format(metric['bias'])
+            line_metrics += r"NSE$_\phi$={:.3f}   ".format(metric['nse'])
+            line_metrics += r"R$_\phi$={:.3f}   ".format(metric['corr'])
         else:
             line_metrics += "Lag=N/A  "
             line_metrics += r"Bias$_\phi$=N/A  "
@@ -391,18 +337,23 @@ def write_metrics_string(ax, str_metrics, metrics_loc=None):
 def add_regression_line(axes, d1, d2):
     """ Add a regression line to a scatter plot
     """
-    model, resid = np.linalg.lstsq(
-        np.vstack([d1, np.ones(len(d1))]).T, d2)[:2]
-    x = np.array([min(d1), max(d1)])
-    y = model[0] * x + model[1]
+    df = pd.concat([d1,d2],axis=1)
+    df.columns = ["obs","model"]
+
+
+    result = sm.ols(formula="model~obs", data=df).fit().params
+    
+    
+    x = np.array([d1.min(), d1.max()])
+    y = result[1] * x + result[0]
     bc1 = brewer_colors[1]
     l, = axes.plot(x, y, color=bc1)
     # Text info
-    if model[1] >= 0.:
-        eqn = "Y=%.3f*X+%.3f" % (model[0], model[1])
+    if result[1] >= 0.:
+        eqn = "Y={:.3f}*X+{:.3f}".format(result[1], result[0])
     # Calculate the linear regression
     else:
-        eqn = "Y=%.3f*X-%.3f" % (model[0], -model[1])
+        eqn = "Y={:.3f}*X-{:.3f}".format(result[1], -result[0])
     axes.legend([l,], [eqn,], loc='upper left', prop={'size': 10})
 
 
@@ -420,25 +371,27 @@ def plot_scatter(ax, tss):
         ax.set_visible(False)
         return
 
-    ts_base = tss[0]
-    ts_target = tss[1]
-    nonnan_flag = np.logical_not(np.logical_or(np.isnan(ts_base.data),
-                                               np.isnan(ts_target.data)))
-    ts_target = ts_target.data[nonnan_flag]
-    ts_base = ts_base.data[nonnan_flag]
+    ts_obs = tss[0]
+    ts_est = tss[1]
+    unit = ts_obs.unit
+    print(unit)
+    #nonnan_flag = np.logical_not(np.logical_or(np.isnan(ts_base.data),
+    #                                           np.isnan(ts_target.data)))
+    #ts_target = ts_target.data[nonnan_flag]
+    #ts_base = ts_base.data[nonnan_flag]
     ax.grid(True, linestyle='-', linewidth=0.1, color='0.5')
-    artist = ax.scatter(ts_base, ts_target)
+    
+    artist = ax.scatter(ts_obs, ts_est)
 
-    # if self._have_regression is True:
-    #     self.add_regression_line(ts_base, ts_target)
-    add_regression_line(ax, ts_base, ts_target)
+    #if self._have_regression is True:
+        #  self.add_regression_line(ts_base, ts_target)
+    add_regression_line(ax, ts_obs, ts_est)
 
     set_scatter_color(artist)
     make_plot_isometric(ax)
 
     labels = ['Obs', 'Sim']
-    unit = tss[0].props.get('unit')
-    labels = [l + " (%s)" % unit for l in labels]
+    labels = [l + " ({})".format(unit) for l in labels]
     ax.set_xlabel(labels[0])
     ax.set_ylabel(labels[1])
     rotate_xticks(ax, 25)
@@ -454,12 +407,14 @@ def calculate_lag_of_tss(tss, max_shift, period):
         raise ValueError("Number of time series is less than two.")
     for i in range(len(tss) - 1):
         if tss[0] is not None:
-            if tss[i+1] is None or np.all(np.isnan(tss[i+1].data)):
+            allbad = True if tss[i+1] is None else tss[i+1].isnull().all() 
+            if tss[i+1] is None or allbad:
                 lags.append(None)
                 continue
             try:
                 lag = calculate_lag(tss[0], tss[i+1],
                                     max_shift, period)
+
                 if lag == -max_shift or lag == max_shift:
                     lags.append(None)
                 else:
@@ -493,37 +448,39 @@ def calculate_metrics(tss, lags, interpolate_method='linear'):
         if window_common is None:
             metrics.append(None)
             continue
-        ts1 = ts_base.window(*window_common)
-        ts2 = ts_target.window(*window_common)
-        if np.all(np.isnan(ts1.data)) or np.all(np.isnan(ts2.data)):
+        ts1 = ts_base[window_common[0]:window_common[1]]
+        ts2 = ts_target[window_common[0]:window_common[1]]
+        if ts1.isnull().all() or ts2.isnull().all():
             metrics.append(None)
             continue
-        if ts1.start != ts2.start or ts1.interval != ts2.interval:
-            ts2_interpolated = interpolate_ts(ts_target, ts1,
-                                              method=interpolate_method)
+        if ts1.index[0] != ts2.index[0] or ts1.index.freq != ts2.index.freq:
+            if ts1.index.freq != ts2.index.freq:               
+                ts2_interpolated = ts2.resample(ts1.index.freq).interpolate(limit=1)
+            else:
+                ts2_interpolated = ts_target
+            ts2_interpolated = ts2_interpolated[ts2.index[0]:]
             rmse_ = rmse(ts1, ts2_interpolated)
         else:
             ts2_interpolated = ts2
             rmse_ = rmse(ts1, ts2)
         # Items with the lag correction
-        if lags[i] is None:
-            bias = None
-            nse = None
-            corr = None
+        #if lags[i] is None:
+        #    bias = None
+        #    nse = None
+        #    corr = None
+        #else:
+        if lags[i] is not None:
+            #todo: disabled
+            ts_target_shifted = ts_target.shift(1,-lags[i])
+            ts2_interpolated = ts2.resample(ts1.index.freq).interpolate(limit=1)       
+            window_common = get_common_window((ts_base, ts2_interpolated))
+            ts2_interpolated = ts2_interpolated[window_common[0]:window_common[1]]
+            ts1 = ts_base[window_common[0]:window_common[1]]
         else:
-            if lags[i] != timedelta():
-                ts_target_shifted = shift(ts_target,-lags[i])
-                window_common = get_common_window((ts_base, ts_target_shifted))
-                ts1 = ts_base.window(*window_common)
-                ts2 = ts_target_shifted.window(*window_common)
-                if ts1.start != ts2.start or ts1.interval != ts2.interval:
-                    ts2_interpolated = interpolate_ts(ts_target_shifted, ts1,
-                                                      method=interpolate_method)
-                else:
-                    ts2_interpolated = ts2
-            bias = median_error(ts2_interpolated, ts1)
-            nse = skill_score(ts2_interpolated, ts1)
-            corr = corr_coefficient(ts2_interpolated, ts1)
+            ts2_interpolated = ts2
+        bias = median_error(ts2_interpolated, ts1)
+        nse = skill_score(ts2_interpolated, ts1)
+        corr = corr_coefficient(ts2_interpolated, ts1)
         metrics.append({'rmse': rmse_, 'bias': bias,
                         'nse': nse, 'corr': corr, 'lag': lags[i]})
         if i == 0 and lags[0] is not None:
@@ -545,10 +502,13 @@ def check_if_all_tss_are_bad(tss):
     """ Check if all time series in a list are not good.
         'Not good' means that a time series is None or all np.nan
     """
-    return all([ts is None or np.all(np.isnan(ts.data)) for ts in tss])
+    def bad(ts): 
+        return True if ts is None else ts.isnull().all()
+    bads = [bad(ts) for ts in tss]
+    return all([bad(ts) for ts in tss])
 
 
-def plot_metrics(*args, **kwargs):
+def plot_metrics(obs,tssim, **kwargs):
     """
     Create a metrics plot
 
@@ -560,8 +520,12 @@ def plot_metrics(*args, **kwargs):
     -------
     matplotlib.pyplot.figure.Figure
     """
+    if type(tssim) == tuple:
+        tss = tuple([obs] + [s for s in tssim])
+    else:
+        raise Exception("Unanticipated type")
     fig = set_figure()
-    fig = plot_metrics_to_figure(fig, args, **kwargs)
+    fig = plot_metrics_to_figure(fig, tss, **kwargs)
     return fig
 
 

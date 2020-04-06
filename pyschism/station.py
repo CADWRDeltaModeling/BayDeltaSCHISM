@@ -1,10 +1,91 @@
-from builtins import open, file, str
-from pandas.compat import u
+#!/usr/bin/env python
+import os.path
+import os
+import sys
 import pandas as pd
+from unit_conversions import *
+
+
+if sys.version_info[0] < 3:
+    from pandas.compat import u
+    from builtins import open, file, str
+else:
+    u = lambda x: x
+
 import argparse
+from vtools.data.timeseries import *
 
 station_variables = ["elev", "air pressure", "wind_x", "wind_y",
                      "temp", "salt", "u", "v", "w"]
+
+def staout_name(var):
+    try:
+        ndx = station_variables.index(var)
+        return "staout_{}".format(ndx+1)
+    except:
+        raise ValueError("Input variable is not standard station variable: {}".format(var))
+
+def read_staout(fname,station_infile,reftime,ret_station_in = False,multi=False,elim_default=False):
+    """Read a SCHISM staout_* file into a pandas DataFrame
+    
+    Parameters
+    ----------
+    fpath : fname
+        Path to input staout file or a variable name in ["elev", "air pressure", "wind_x", "wind_y",  "temp", "salt", "u", "v", "w"] whose
+        1-index will be mapped to a name like staout_1 for elev
+        
+    station_infile : str or DataFrame
+        Path to station.in file or DataFrame from read_station_in
+
+    reftime : Timestampe
+        Start of simulation, time basis for staout file elapse time
+
+    ret_station_in : bool
+        Return station_in DataFrame for use, which may speed reading of a second file
+        
+    multi : bool
+        Should the returned data have a multi index for the column with location and sublocation. If False the two are collapsed
+        
+    elim_default : bool
+        If the MultiIndex is collapsed, stations with subloc "default" will be collapsed. Eg. ("CLC","default") becomes "CLC_default"
+        
+     Returns
+     -------    
+     Result : DataFrame
+         DataFrame with hierarchical index (id,subloc) and columns representing the staout data (collapsed as described above
+         
+    Examples
+    --------
+
+    >>> staout1,station_in = read_staout("staout_1","station.in",reftime=pd.Timestamp(2009,2,10),
+                                 ret_station_in = True,multi=False,elim_default=True)
+    >>> staout6 = read_staout("staout_6",station_in,reftime=pd.Timestamp(2009,2,10),multi=False,elim_default=True)
+                
+    """
+
+    
+    if isinstance(station_infile,str):
+        station_in = read_station_in(station_infile)
+    else: station_in = station_infile
+    station_index = station_in.index.copy()
+    staout = pd.read_csv(fname,index_col=0,sep="\s+",header=None)
+    # todo: hardwire
+    staout.mask(staout<=-999.,inplace=True)
+    staout.columns = station_index
+    elapsed_datetime(staout,reftime=reftime,inplace=True)
+    if not multi:
+        if elim_default:
+            staout.columns = [f'{loc}_{subloc}' if subloc != 'default' else f'{loc}' for loc,subloc in staout.columns]
+        else: 
+            staout.columns = [f'{loc}_{subloc}' for loc,subloc in staout.columns]
+    f = pd.infer_freq(staout.index)
+    staout = staout.asfreq(f)    
+    return (staout, station_infile) if ret_station_in else staout
+
+
+
+
+
 
 def read_station_in(fpath):
     """Read a SCHISM station.in file into a pandas DataFrame
@@ -55,28 +136,34 @@ def write_station_in(fpath,station_in,request=None):
         or 'all' to include them all
     """
     request_int = [0]*len(station_variables)
-    request_str = station_variables if request == "all" else request
+    if request == "all": request = ["all"]
+    request_str = station_variables if request[0] == "all" else request
     request_int = [(1 if var in request_str else 0) for var in station_variables]    
     dfmerged =station_in.reset_index() 
     dfmerged.index += 1
     dfmerged["excl"] = "!"
-    buffer = "1 0 1 0\n{}\n".format(dfmerged.index[-1])
+    nitem = len(dfmerged)
+    # First two lines are a space delimited 1 or 0 for each request then the
+    # total number of station requests
+    buffer = " ".join([str(x) for x in request_int]) + "\n{}\n".format(nitem)
+    # Then the specific requests, here written to a string buffer
     buffer2 = dfmerged.to_csv(None,columns=["x","y","z","excl","id","subloc","name"],index_label="id",
         sep=' ',float_format="%.2f",header=False)
     with open(fpath,"w",newline='') as f: 
-        f.write(u"1 1 1 1\n")
-        f.write(u"21\n")
+        f.write(buffer)
         f.write(u(buffer2))
+        #f.write(u(buffer))
+        #f.write(u(buffer2))
 
 
-def read_station_depth(fpath):
-    """Read a BayDeltaSCHISM station_depths.csv  file into a pandas DataFrame
+def read_station_subloc(fpath):
+    """Read a BayDeltaSCHISM station_sublocs.csv  file into a pandas DataFrame
     
        The BayDelta SCHISM format has a header and uses "," as the delimiter and has these columns:
        id,subloc,z
        
        The id is the station id, which is the key that joins this file to the station database. 'subloc' is a label that describes
-       the sublocation or depth and z is the actual elevation of the instrument
+       the sublocation or subloc and z is the actual elevation of the instrument
        
        Example might be:
        id,subloc,z
@@ -95,9 +182,9 @@ def read_station_depth(fpath):
          DataFrame with hierarchical index (id,subloc) and data column z
                 
     """
-    df = pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
-    df["z"] = -df.depth
-    print(df)
+
+    df = pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"],comment='#')
+    df["z"] = df.z
     return df[["z"]]
 
 
@@ -120,17 +207,18 @@ def read_station_dbase(fpath):
          DataFrame with hierarchical index (id,subloc) and columns x,y,z,name
                 
     """
-    return  pd.read_csv(fpath,sep=",",header=0,index_col="id")
+    print(fpath)    
+    return  pd.read_csv(fpath,sep=",",header=0,index_col="id",comment="#")
 
-def merge_station_depth(station_dbase,station_depth,default_z):
-    """Merge BayDeltaSCHISM station database with depth file, producing the union of all stations and depths including a default entry for stations with no depth entry            
+def merge_station_subloc(station_dbase,station_subloc,default_z):
+    """Merge BayDeltaSCHISM station database with subloc file, producing the union of all stations and sublocs including a default entry for stations with no subloc entry            
         
      Parameters
      ----------
      station_dbase : DataFrame 
         This should be the input that has only the station id as an index and includes other metadata like x,y, 
 
-     station_depth : DataFrame 
+     station_subloc : DataFrame 
         This should have (id,subloc) as an index
         
      Returns
@@ -139,15 +227,18 @@ def merge_station_depth(station_dbase,station_depth,default_z):
          DataFrame that links the information.
                 
     """
-    merged =  station_dbase.merge(station_depth.reset_index("subloc"),
+    
+    merged =  station_dbase.reset_index().merge(station_subloc.reset_index(),
                 left_on="id",right_on="id",
-                how='left').set_index("subloc",append=True)
-    merged.loc[merged.z.isna(),"z"] = default_z
+                how='left')
+    merged.fillna({"subloc":"default","z": default_z},inplace=True)
+    merged.set_index(["id","subloc"],inplace=True)
+    
     return merged
 
 def read_obs_links(fpath):
-    """Read an obs_links csv file which has comma as delimiter and (id,subloc) as index """
-    return pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc"])
+    """Read an obs_links csv file which has comma as delimiter and (id,subloc,variable) as index """
+    return pd.read_csv(fpath,sep=",",header=0,index_col=["id","subloc","variable"],comment="#")
 
 
 def read_station_out(fpath_base,stationinfo,var=None,start=None):
@@ -158,20 +249,62 @@ def read_station_out(fpath_base,stationinfo,var=None,start=None):
             fileno = station_variables.index(var)
         except ValueError:
             raise ValueError("Variable name {} not on list: {}.format(var,station_variables")
-        fname = "{}_{:d}".format(fileno)
-    data = pandas.read_csv(fpath,var,sep="\s+",index_col=0,
+        fname = "{}_{:d}".format(fpath_base,fileno)
+    data = pd.read_csv(fpath,var,sep="\s+",index_col=0,
                            header=None,names = stationinfo.index,dtype='d')
     if start is not None:
-        data = elapsed_to_date(data)
+        data = elapsed_datetime(data,reftime=start)
+    f = pd.infer_freq(data.index)
+    data = data.asfreq(f)
+    return data
+
+def flux_names_from_yaml(inp):
+    """Retrieve names of fluxlines from yaml file or content""" 
+    import yaml
+    if os.path.exists(inp):
+        with open(inp) as f:
+            content = yaml.full_load(f)
+    else:
+        content = inp
+        if not "linestrings" in content: raise ValueError("Could not fine 'linestrings' key. Was the input a string or filename? Valid file?")
+    names =[]
+    linestrings = content["linestrings"]
+    for ls in linestrings:
+        name = ls.get("name")
+        if name is None:
+            name = ls.get("Name")
+        names.append(name)
+    return names                
+        
+
+def station_names_from_file(fpath):
+    ext = os.path.splitext(fpath)[1]
+    if ext in (".yml",".yaml"):
+        return flux_names_from_yaml(fpath)
+    elif ext == ".prop":
+        raise NotImplementedError("Not implemented for .prop")
+        
+def read_flux_out(fpath,names,reftime):
+    if isinstance(names,str):
+        names = station_names_from_file(names)
+    data = pd.read_csv(fpath,sep="\s+",index_col=0,
+                           header=None,names = names,dtype='d')
+    if reftime is not None:
+        data = elapsed_datetime(data,reftime=reftime,time_unit='d')
+        data.index = data.index.round(freq='s')
+        f = pd.infer_freq(data.index)
+        data = data.asfreq(f)        
+    # todo: freq when start is none?
     return data
 
 def example():
     print(read_station_in("example_station.in"))  
     stations_utm = read_station_dbase("stations_utm.csv")
-    sdepth = read_station_depth("station_depth.csv")
-    stations_in = merge_station_depth(stations_utm,sdepth,default_z=-0.5)
-    #stations_in = pd.merge(stations_utm,sdepth,how='inner',left_index=True,right_index=True)
-    print(stations_in)
+    print(stations_utm)
+    ssubloc = read_station_subloc("station_subloc.csv")
+    stations_in = merge_station_subloc(stations_utm,ssubloc,default_z=-0.5)
+    #stations_in = pd.merge(stations_utm,ssubloc,how='inner',left_index=True,right_index=True)
+    #print(stations_in)
     station_request = ["salt","elev"]
     write_station_in("station.in",stations_in,request=station_request)
     #stations_in = read_station_in("station.in")
@@ -188,24 +321,209 @@ def example():
         print("**")
         print(merged)
 
-def convert_db_station_in(stationdb="stations_utm.csv",depthdb="station_depth.csv",station_request="all",default=-0.5):
+
+
+
+uconversions = {"ft" : m_to_ft, "ec" : psu_ec_25c, "cfs" : cms_to_cfs}
+
+
+def station_subset(fpath,run_start,locs,extract_freq,convert=None,stationfile=None,isflux='infer',miss="raise"):
+    """ Extract a subset of stations from an staout file or flux.out file 
+    
+     Parameters
+     ----------
+     fpath : str 
+        Path to the output file to be read 
+
+     run_start : pd.Timestamp 
+        Start time (reference time) for the simulation elapsed time
+
+     locs : pd.DataFrame or str 
+        A DataFrame with rows specifying the data to subset or a string that is the path to such a file. 
+        There are a few options. Minimally this file should have either one column called "station_id" or 
+        one called "id" and another called "subloc". If you use station_id, it should be an 
+        underscore-connected combination of id and subloc which should be unique, and this will be the treatment of the output. 
+        of the station. If you use "subloc" you can use "default" leave the subloc column blank. You can also use another optional 
+        column called "alias" and this will become the label used.
+
+      extract_freq : str or pd.tseries.TimeOffset
+        Frequency to extract ... this allows some economies if you want, say, 15min data. Use pandas freq string such as '15T' for 15min
+
+      convert: str or function
+         A small number of conversions are supported ("ft", "ec" for uS/cm, "cfs" for flow) 
+       
+      stationfile : str
+         Name of station file such as station.in. In the case of flow this will be a yaml file or fluxflag.prop file produced by our preprocessing system.
+         If you leave this None, 'station.in' in the same directory as the output file will be assumed for staout files. For flow, a string must be supplied
+         but will be tested first in the directory of execution and then side-by-side in that order.
+      
+      isflux : 'infer' | True | False
+         Is the request for flux.out?      
+       
+      miss : 'raise' | 'drop' | 'nan'
+          What to do when a requested station_id does not exist. The default, raise, helps station lists from growing faulty. 'drop' will ignore the column and 'nan'
+          will return nans for the column.          
+        
+     Returns
+     -------    
+     Result : DataFrame
+         DataFrame that returns the converted and subsetted data. Column names will be the ids unless 'alias' is provided in locs, in which case those names will be 
+         swapped in.
+                
+    """
+    
+    locs.station_id = locs.station_id.str.lower()
+    locs=locs.set_index("station_id")
+    
+    if isflux == 'infer':
+        if 'staout' in fpath: isflux = False
+        elif 'flux' in fpath: isflux = True
+        else: raise ValueError('Station output type (flux,staout) could not be inferred')
+    
+    if isflux:
+        if not os.path.exists(stationfile):
+            stationfile = os.path.join(os.path.split(fpath)[0],stationfile)
+        staout = read_flux_out(fpath,stationfile,reftime=run_start)            
+    else:
+        if stationfile is None:
+            stationfile = os.path.join(os.path.split(fpath)[0],"station.in")
+        print(stationfile)
+        staout = read_staout(fpath,stationfile,reftime=run_start,ret_station_in = False,
+                              multi=False,elim_default=True)
+    staout.columns = [x.lower() for x in staout.columns]
+    if extract_freq is not None: 
+        staout=staout.resample(extract_freq).interpolate()
+    loc_ndx = locs.index
+    missing = [label for label in locs.index if not label in staout.columns]
+    if len(missing) > 0: 
+        if miss == 'raise': 
+            print("Labels not in dataset:")
+            print(missing)
+            raise ValueError("Requested labels not in dataset")
+        elif miss == 'nan':
+            subset = loc_ndx.values        
+        elif miss == 'drop':
+            subset = [label for label in locs.index if label in staout.columns]
+        else:
+            raise ValueError("miss must be one of raise | drop | nan")
+    else:
+        subset = locs.index.values
+        
+    def find_nondups(columns):
+        nondups = list()
+        cset = set(columns)
+        for item in columns:
+            try:
+                cset.remove(item)
+                nondups.append(True)
+            except:
+                print("Column name {} is duplcated in outputs, accepting first instance".format(item))
+                nondups.append(False)
+                #raise ValueError("Column name {} is duplcated".format(item))
+        return nondups        
+
+    nondups = find_nondups(staout.columns)
+    staout = staout.loc[:,nondups]
+    
+    sub_df = staout.reindex(subset,axis = 'columns')
+    if "alias" in locs.columns: sub_df.columns = locs.alias.values
+    if convert is not None:
+        cv = uconversions[convert] if isinstance(convert,str) else convert
+        sub_df = cv(sub_df)
+    return sub_df   
+   
+def station_subset_multidir(dirs,staoutfile,run_start,locs,extract_freq,convert,stationfile=None,names=None,isflux='infer',miss="raise"):
+    """ Extract a subset of stations from an staout file or flux.out file across a list of directories
+    
+     Parameters
+     ----------
+     
+     dirs : list(str)
+         List of directories. The output dataframe will have a column multindex (dir,station_id) where dir is the directory of the output. 
+     
+     
+     fpath : str 
+        Path to the output file to be read 
+
+     run_start : pd.Timestamp 
+        Start time (reference time) for the simulation elapsed time
+
+     locs : pd.DataFrame or str 
+        A DataFrame with rows specifying the data to subset or a string that is the path to such a file. 
+        There are a few options for staout station files. Minimally this file should have either one column called "station_id" or 
+        one called "id" and another called "subloc". If you use station_id, it should be an 
+        underscore-connected combination of id and subloc and this will be the index treatment of the output. 
+        Flux files only have the station_id option. If you use "subloc" you can use "default" leave the subloc column blank. 
+        You can also include another optional column called "alias" and this will become the label used. 
+
+      extract_freq : str or pd.tseries.TimeOffset
+        Frequency to extract ... this allows some economies if you want, say, 15min data. Use pandas freq string such as '15T' for 15min
+
+      convert: str or function
+         A small number of conversions are supported ("ft", "ec" for uS/cm, "cfs" for flow) 
+       
+      stationfile : str
+         Name or list of station file such as station.in. You can provide a list of the same length as dirs or a single value which will be assumed
+         to be appropriate for all the directories. In the case of station.in, you can use None and 'station.in' in each directory 
+         will be assumed for staout files. For flow, a string (yaml file) must be supplied but will be tested first in the directory of 
+         execution and then side-by-side in that order.
+      
+      isflux : 'infer' | True | False
+         Is the request for flux.out?      
+       
+      miss : 'raise' | 'drop' | 'nan'
+          What to do when a requested station_id does not exist. The default, raise, helps station lists from growing faulty. 'drop' will ignore the column and 'nan'
+          will return nans for the column.          
+        
+     Returns
+     -------    
+     Result : DataFrame
+         DataFrame that returns the converted and subsetted data. Column names will be the ids unless 'alias' is provided in locs, in which case those names will be 
+         swapped in.
+                
+    """
+
+
+    
+    dfs = []
+    if stationfile is None or isinstance(stationfile,str): 
+        stationfile = [stationfile]*len(dirs)
+    else: 
+        stationfile = list(stationfile)
+        if len(stationfile) != len(dirs): raise ValueError("stationfile must be same length as dirs if it is iterable")
+    for d,s in zip(dirs,stationfile):
+        fpath=os.path.join(d,staoutfile)
+        dfs.append(station_subset(fpath,run_start,locs,extract_freq,convert,
+                                  stationfile=s,isflux=isflux,miss=miss))
+    if names is None: 
+        names = dirs
+    out = pd.concat(dfs,keys = names, names=['sim','loc'],axis=1)
+    return out
+
+
+
+
+
+
+
+def convert_db_station_in(outfile="station.in",stationdb="stations_utm.csv",sublocdb="station_subloc.csv",station_request="all",default=-0.5):
     stations_utm = read_station_dbase(stationdb)
-    sdepth = read_station_depth(depthdb)
-    stations_in = merge_station_depth(stations_utm,sdepth,default_z=-0.5)
-    write_station_in("station.in",stations_in,request=station_request)
+    ssubloc = read_station_subloc(sublocdb)
+    stations_in = merge_station_subloc(stations_utm,ssubloc,default_z=-0.5)
+    write_station_in(outfile,stations_in,request=station_request)
 
 
 def create_arg_parser():
     """ Create an argument parser
     """
-    parser = argparse.ArgumentParser(description="Create station.in file from station database (stations_utm.csv) and station depth listing station_depth.csv")
+    parser = argparse.ArgumentParser(description="Create station.in file from station database (stations_utm.csv) and station subloc listing station_subloc.csv")
     parser.add_argument('--station_db', default = "stations_utm.csv",
                         help="station database, often stations_utm.csv")
-    parser.add_argument('--depth_db', default = "station_depth.csv",
-                        help="depth listings for stations (otherwise default depth)")
-    parser.add_argument('--request', default='all',help="requested variables or 'all' for all of them. Possibilities are: {}".format(",".join(station_variables)))
-    parser.add_argument('--default_depth',default='-0.5',
-                        help="depth used when there is no listing for station id")
+    parser.add_argument('--subloc_db', default = "station_subloc.csv",
+                        help="subloc listings for stations (otherwise default subloc)")
+    parser.add_argument('--request', default='all',nargs="+",help="requested variables or 'all' for all of them. Possibilities are: {}".format(",".join(station_variables)))
+    parser.add_argument('--default_zcor',default='-0.5',
+                        help="z coordinate used when there is no listing for station id (z coordinate, not subloc from surface)")
     parser.add_argument('--out', default = "station.in",
                         help="station.in formatted file")
     return parser
@@ -217,11 +535,15 @@ def main():
     parser = create_arg_parser()
     args = parser.parse_args()
     stationdb = args.station_db
-    depthdb = args.depth_db
-    default = args.default_depth
-    convert_db_station_in(stationdb,depthdb,default)
+    sublocdb = args.subloc_db
+    default = args.default_zcor
+    request = args.request
+    outfile = args.out
+    print(request)    
+    convert_db_station_in(outfile,stationdb,sublocdb,request,default)
 
 if __name__ == '__main__':
+    #example()
     main()
 
 

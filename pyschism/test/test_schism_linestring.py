@@ -1,6 +1,6 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import schism_linestring
+import pyschism.schism_linestring as schism_linestring
 import unittest
 import os
 import glob

@@ -2,12 +2,12 @@
 """
 Setup and processes SCHISM Inputs
 """
-from base_io import *
-from schism_polygon import SchismPolygon, Point
-from schism_structure import *
-from schism_source import *
-from schism_input import *
-from schism_mesh import SchismMesh, read_mesh, write_mesh, BoundaryType
+from .base_io import *
+from .schism_polygon import SchismPolygon, Point
+from .schism_structure import *
+from .schism_source import *
+from .schism_input import *
+from .schism_mesh import SchismMesh, read_mesh, write_mesh, BoundaryType
 import yaml
 import osgeo.ogr
 import osgeo.osr
@@ -204,48 +204,40 @@ class SchismSetup(object):
             fname: str
                 the output file name
             input_epsg: int, optional
-                input EPSG. default value is 26310, NAD83/UTM10N.
+                input EPSG. default value is 26910, NAD83/UTM10N.
             output_epsg: int, optional
                 output EPSG. default value is 4269, NAD83
         """
         
-#        # projection using osgeo: this doesn't work for recent version of the libararies (11/6/2019)
-#        inSpatialRef = osgeo.osr.SpatialReference()
-#        inSpatialRef.ImportFromEPSG(input_epsg)
-#        outSpatialRef = osgeo.osr.SpatialReference()
-#        outSpatialRef.ImportFromEPSG(output_epsg)
-#        coordTransform = osgeo.osr.CoordinateTransformation(
-#            inSpatialRef, outSpatialRef)
-        
-#       use pyproj (4.0). If runtime error, find datadir in 
-#       ...\anaconda3\Lib\site-packages\pyproj\; and change 
-#       .../Anaconda3\share\proj
-#       to ...\Anaconda3\Library\share
-   
-        inSpatialRef = 'epsg:'+str(input_epsg) 
-        outSpatialRef = 'epsg:'+str(output_epsg)  
-        
-        project = partial(
-        pyproj.transform,
-        pyproj.Proj(init=inSpatialRef), 
-        pyproj.Proj(init=outSpatialRef)) 
-    
+        inSpatialRef = 'epsg:' + str(input_epsg)
+        outSpatialRef = 'epsg:' + str(output_epsg)
+        proj_in = pyproj.Proj(init=inSpatialRef)
+        proj_out = pyproj.Proj(init=outSpatialRef)
+        try:
+            # More performant for pyproj > 2.1.0
+            project = pyproj.Transformer.from_proj(proj_in, proj_out).transform
+        except:
+            # In case that isn't available in earlier versions
+            # but orders of magnitude slow for pyproj 2.1.0
+            project = partial(transform,proj_in,proj_out)
+
         new_mesh = SchismMesh()
         new_mesh._nodes = np.copy(self.mesh.nodes)
         new_mesh._elems = np.copy(self.mesh._elems)
-
-#        point = osgeo.ogr.Geometry(osgeo.ogr.wkbPoint)        
         for i, node in enumerate(self.mesh.nodes):
-#            point.AddPoint(node[0], node[1])
-#            point.Transform(coordTransform)          
-#            new_mesh.nodes[i, 0] = point.GetX()
-#            new_mesh.nodes[i, 1] = point.GetY()            
-            point = Point(node[0],node[1])
-            point = transform(project,point) 
+            point = Point(node[0], node[1])
+            point = transform(project, point)
             new_mesh.nodes[i, 0] = point.xy[0][0]
-            new_mesh.nodes[i, 1] = point.xy[1][0]  
-            
+            new_mesh.nodes[i, 1] = point.xy[1][0]
         write_mesh(new_mesh, fname)
+
+
+    def elements_on_linestring(self, coords):
+        """List elements along linestring"""
+        mesh = self._input.mesh
+        line_segment = np.array(coords,dtype="d").flatten()
+        print(line_segment)
+        return mesh.find_intersecting_elems_with_line(line_segment)
 
     def create_flux_regions(self, linestrings, out_fname='fluxflag.prop'):
         """ Create and write flux_regions.gr3 with the given lines
@@ -259,51 +251,26 @@ class SchismSetup(object):
                 Output file name
         """
         mesh = self._input.mesh
-        neighboring_nodes = []
-        for linestring in linestrings:
+        assigned = set()
+        flagval = 0
+        flags = np.full((mesh.n_elems(), 1), -1, dtype='int')        
+        for flagval,linestring in enumerate(linestrings):
             line = linestring.get('coordinates')
             name = linestring.get('name')
-            try:
-                up_path, down_path = mesh.find_two_neighboring_node_paths(line)
-                neighboring_nodes.append((up_path, down_path))
-            except KeyError as ke:
-                raise ValueError(" could not find neighboring node paths for linestring named: {}".format(name))
-                
-        flags = np.full((mesh.n_elems(), 1), -1, dtype='int')
-        for i, (up_path, down_path) in enumerate(neighboring_nodes):
-            if len(down_path) < 2:
-                msg = 'No element found with line %s' % linestrings[i]['name']
-                self._logger.warning(msg)
-            for j in range(len(down_path) - 1):
-                edge_i = mesh.find_edge([down_path[j], down_path[j + 1]])
-                if edge_i is None:
-                    msg = "Fail to process Line %s" % (linestrings[i]['name'])
-                    self._logger.error(msg)
-                    self._logger.error(down_path)
-                    raise ValueError('No edge found')
-                elem_1, elem_2 = mesh.edges[edge_i][3:5]
-                down = False
-                for node_i in mesh.elem(elem_1):
-                    if not (node_i in down_path or node_i in up_path):
-                        down = True
-                        break
-                flag_elem_1 = i if down else i + 1
-                if flags[elem_1] != -1 and flags[elem_1] != flag_elem_1:
-                    msg = "Line %s tried to flag element %d flagged already by %s" % (
-                        linestrings[i]['name'], elem_1, linestrings[flags[elem_1]]['name'])
-                    self._logger.error(msg)
-                    raise ValueError('Fail to create fluxflag')
-                else:
-                    flags[elem_1] = flag_elem_1
-                if elem_2 != -1:
-                    flag_elem_2 = i + 1 if down else i
-                    if flags[elem_2] != -1 and flags[elem_2] != flag_elem_2:
-                        msg = "Line %s tried to flag element %d flagged already by %s" % (
-                            linestrings[i]['name'], elem_2, linestrings[flags[elem_2]]['name'])
-                        self._logger.error(msg)
-                        raise ValueError('Fail to create fluxflag')
-                    else:
-                        flags[elem_2] = flag_elem_2
+            if name is None:
+                name = linestring.get('Name')
+            npoint = len(line)
+            for ip in range(npoint-1):
+                line_segment = np.array(line[ip:ip+2],dtype='d').flatten()
+                on_line,neighbors = mesh.find_neighbors_on_segment(line_segment)  
+                #if not set(neighbors).isdisjoint(assigned): raise ValueError("Element assigned twice in fluxline:".format(name))
+                #if not set(neighbors).isdisjoint(assigned): raise ValueError("Element assigned twice in fluxline:".format(name))
+                #if not set(on_line).isdisjoint(assigned): raise ValueError("Element assigned twice in fluxline:".format(name))
+                # techinically we could (?) survive on_line  members 
+                # being assigned if it was assigned as online in previous group                
+                flags[np.array(on_line,dtype='i')] = flagval + 1
+                flags[np.array(neighbors,dtype='i')] = flagval 
+                assigned.update(on_line + neighbors)
 
         index = np.arange(flags.shape[0]).reshape((-1, 1))
         index += 1
@@ -559,6 +526,7 @@ class SchismSetup(object):
             numpy.ndarray
                 attributes
         """
+        import math
         mesh = self.mesh
         if default is None:
             # Use depth
@@ -801,7 +769,6 @@ class SchismSetup(object):
             spline = interp1d(times[iin_start:iin_end],
                               data[iin_start:iin_end], kind='cubic')
             est_times = new_times[iout_start:iout_end]
-            # print est_times[0],est_times[-1],times[iin_start],times[iin_end]
             new_data = spline(est_times)
 
             for i in range(len(new_data)):
@@ -896,7 +863,9 @@ class SchismSetup(object):
         if linestrings is None:
             raise ValueError('Linestrings is required for open boundaries')
         for item in linestrings:
-            name = item['name']
+            name = item.get('name')
+            if name is None:
+                name = item.get('Name')
             p = np.array(item['coordinates'])
             start = self.mesh.find_closest_nodes(p[0], 1, boundary_only)
             end = self.mesh.find_closest_nodes(p[1], 1, boundary_only)

@@ -81,13 +81,13 @@ is exceedingly sensitive to distance and to h.
             q = np.array([q])
         if self.wsum is None:
             self.wsum = np.zeros(nnear)
-            
-            
+
+
         # The reason we use KDTree here is for faster computation and also
-        # we want to find the nearest N points and their indices. 
-        self.distances, self.ix = self.tree.query( q, k=nnear, eps=eps ) 
+        # we want to find the nearest N points and their indices.
+        self.distances, self.ix = self.tree.query( q, k=nnear, eps=eps )
         interpol = np.zeros( (len(self.distances),) + np.shape(self.z[0]) )
-        jinterpol = 0  
+        jinterpol = 0
 
         for i, (dist, ix) in enumerate(zip( self.distances, self.ix )):
             if nnear == 1:
@@ -96,13 +96,13 @@ is exceedingly sensitive to distance and to h.
                 wz = self.z[ix[0]]
             else:  # weight z s by 1/dist --
                 w = 1 / dist**p
-                                
+
                 if weights is not None:
                     w *= weights[ix]  # >= 0
-                    
+
                 # when the line joining the two points intersects with the boundary
-                # give that point a very low weight. 
-                # The following code is too slow, so it needs more development. 
+                # give that point a very low weight.
+                # The following code is too slow, so it needs more development.
 #                if gridboundary is not None:
 #                    if nnear ==1:
 #                        line = LineString([q[i],self.x[ix]])
@@ -117,7 +117,7 @@ is exceedingly sensitive to distance and to h.
 #                            else:
 #                                weightg.append(1.0)
 #                    w *= weightg
-                        
+
                 w /= np.sum(w)
                 wz = np.dot( w, self.z[ix] )
                 if self.stat:

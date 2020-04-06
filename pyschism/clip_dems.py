@@ -1,11 +1,11 @@
-
+#!/usr/bin/env python
 import math
 try:
     from osgeo import gdal
     from osgeo.gdalconst import *
     gdal.TermProgress = gdal.TermProgress_nocb
 except ImportError:
-    import gdalf
+    import gdal
     from gdalconst import *
 
 import subprocess
