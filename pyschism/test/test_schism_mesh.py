@@ -96,6 +96,19 @@ class TestSchismMesh(unittest.TestCase):
         if os.path.exists(fpath_mesh_out):
             os.remove(fpath_mesh_out)
 
+    def test_schism_mesh_shp_writer(self):
+        fpath_mesh = self.fpath_mesh
+        mesh = read_mesh(fpath_mesh)
+        fpath_mesh_out = os.path.join(
+            os.path.dirname(__file__), "testdata/meshout.shp")
+        write_mesh(mesh, fpath_mesh_out, write_boundary=True)
+        meshout = read_mesh(fpath_mesh_out)
+        self.assertEqual(meshout.n_nodes(), 112)
+        self.assertEqual(meshout.n_elems(), 135)
+        self.assertEqual(meshout.n_boundaries(), 3)
+        if os.path.exists(fpath_mesh_out):
+            os.remove(fpath_mesh_out)
+
     def test_schism_mesh_areas(self):
         fpath_mesh = self.fpath_mesh
         mesh = read_mesh(fpath_mesh)
