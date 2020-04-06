@@ -1,0 +1,44 @@
+﻿short_name,standard_name,src_name,src_var_id
+stage_c,Corrected Stage - ft,WDL,233
+stage,"Gage height, ft",USGS,00065
+stage,"River stage, ft",CDEC,RIV STG
+depth,"Depth, meters",USGS,72147
+discharge,"Discharge, cubic feet per second",USGS,00060
+wind_sp,"Wind speed, mph",CDEC,WIND SP
+wind_dir,"Wind direction, Deg",CDEC,WIND DR
+solar_r,"Solar radiation, W/m2",CDEC,SOLAR R
+temp,"Water temperature, deg C",USGS,00010
+temp,Water temperature - deg F,CDEC,TEMP
+temp,"Water temperature, deg C",WDL,450
+spcond,"Specific Conductance, microSiemens/cm",USGS,00095
+el_cond,"Electrical conductivity, microSiemens/cm",CDEC,EL COND
+el_cond,"Electrical conductivity, microSiemens/cm",WDL,821
+el_condb,"Electrical conductivity at bottom, microSiemens/cm",CDEC,EL CONDB
+salinity,Water Sality (PSS-15),WDL,806
+DO,"Dissolved oxygen, percent of saturation",USGS,301
+DO,"Dissolved oxygen, percent of saturation",WDL,865
+DO,"Dissolved oxygen, mg/L",USGS,00300
+DO,"Dissolved oxygen, mg/L",CDEC,DIS OXY
+DO,"Dissolved oxygen, mg/L",WDL,2351
+pH,"Water, PH value,- PH",USGS,00400
+pH,"Water, PH value,- PH",CDEC,PH VAL
+pH,"Water, PH value,- PH",WDL,860
+Chl_rfu,"Chlorophyll fluorescence (fChl), total, water, in situ, fluorometric, 650-700 nm, relative fluorescence units (RFU)",USGS,32283
+Chla_rfu,"Chlorophyll relative fluorescence (fChl), water, in situ, relative fluorescence units (RFU)",USGS,32315
+Chl,"Chlorophyll, micro-gram/liter",CDEC,CHLORPH
+Chla,"Chlorophyll fluorescence (fChl), water, in situ, micrograms per liter as chlorophyll",USGS,32316
+TChl,"Total Chlorophyll, micro-gram/liter",WDL,7004
+fDOM,"Dissolved organic matter fluorescence (fDOM), water, in situ, micrograms per liter as quinine sulfate equivalents (QSE), LEFT BANK CORRECTED",USGS,32295
+bga,"Phycocyanin (Blue-green algae indicator), RFU",USGS,32321
+DOC,Dissolved Organic Carbon (mg/L),WDL,3026
+NO3,Nitrate (mg/L),WDL,2331
+SO4,Sulfate (mg/L),WDL,2401
+TOC,Total Organic Carbon (mg/L),WDL,3021
+turb,"Water turbidity, formazin nephelometric units (FNU)",USGS,63680
+turb,Water turbidity - NTU,CDEC,TURB W
+turb,Water turbidity - NTU,WDL,810
+ssc,"Suspended Sediment concentration, mg/L",USGS,80154
+ssc_e,"Suspended sediment concentration, water, unfiltered, estimated by regression equation, milligrams per liter, Cross Sectional Average",USGS,99409
+sal,"Salinity, practical salinity units (psu)",USGS,90860
+ssc,"Suspended Sediment concentration, estimated by regression, mg/L",USGS,99409
+NO3+NO2,"Nitrate (+ Nitrite), mg/L",USGS,99133
