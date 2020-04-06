@@ -1272,19 +1272,17 @@ class SchismMeshShapefileWriter(SchismMeshWriter):
             proj4 = "+proj=utm +zone=10 +datum=WGS84 +units=m +no_defs"
 
         nodes = mesh.nodes
-<<<<<<< HEAD
         node_values = nodes[:,2]   
         value_name = os.path.basename(fpath).split('.')[0]
         
         # Two shape files will be generated, one for the polygons and the other 
         # for the nodes. 
-=======
+
         node_values = nodes[:, 2]
         value_name = os.path.basename(fpath).split('.')[0]
 
         # Two shape files will be generated, one for the polygons and the other
         # for the nodes.
->>>>>>> 9acd38be850b73e74fde026a07424926a4fd0a29
         fpath_str = os.path.split(fpath)
         fdir = fpath_str[0]
         fname = fpath_str[1].replace('.shp', '')
@@ -1295,15 +1293,7 @@ class SchismMeshShapefileWriter(SchismMeshWriter):
         mesh.to_geopandas('point', proj4, fpath_point,
                           node_values, value_name=value_name, create_gdf=False)
         logging.info("%s generated" % fpath)
-
-
-<<<<<<< HEAD
-        mesh.to_geopandas('polygon',proj4,fpath_poly,create_gdf=False)
-        mesh.to_geopandas('point',proj4,fpath_point,node_values,value_name = value_name,create_gdf=False)        
-        logging.info("%s generated"%fpath)   
-       
-=======
->>>>>>> 9acd38be850b73e74fde026a07424926a4fd0a29
+      
 class SchismMeshNetcdfWriter(SchismMeshWriter):
 
     def write(self,  *args, **kwargs):
