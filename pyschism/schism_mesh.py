@@ -1272,12 +1272,6 @@ class SchismMeshShapefileWriter(SchismMeshWriter):
             proj4 = "+proj=utm +zone=10 +datum=WGS84 +units=m +no_defs"
 
         nodes = mesh.nodes
-        node_values = nodes[:,2]   
-        value_name = os.path.basename(fpath).split('.')[0]
-        
-        # Two shape files will be generated, one for the polygons and the other 
-        # for the nodes. 
-
         node_values = nodes[:, 2]
         value_name = os.path.basename(fpath).split('.')[0]
 
