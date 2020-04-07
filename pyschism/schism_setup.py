@@ -2,12 +2,12 @@
 """
 Setup and processes SCHISM Inputs
 """
-from .base_io import *
-from .schism_polygon import SchismPolygon, Point
-from .schism_structure import *
-from .schism_source import *
-from .schism_input import *
-from .schism_mesh import SchismMesh, read_mesh, write_mesh, BoundaryType
+from base_io import *
+from schism_polygon import SchismPolygon, Point
+from schism_structure import *
+from schism_source import *
+from schism_input import *
+from schism_mesh import SchismMesh, read_mesh, write_mesh, BoundaryType
 import yaml
 import osgeo.ogr
 import osgeo.osr

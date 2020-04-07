@@ -4,7 +4,7 @@
 """
 
 
-from . import schism_mesh
+import schism_mesh
 import copy
 import numpy as np
 import argparse
