@@ -3,7 +3,7 @@
 """ Unittest of customized YAML for SCHISM with including and substitution
 """
 # from __future__ import absolute_import
-from pyschism.schism_yaml import load, YamlAction, ArgumentParserYaml
+from schism_yaml import load, YamlAction, ArgumentParserYaml
 import yaml
 import argparse
 import sys

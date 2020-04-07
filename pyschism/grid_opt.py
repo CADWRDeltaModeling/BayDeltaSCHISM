@@ -19,14 +19,14 @@ Notes:
 
 First version, completed on 9/11/2013
 """
-from .gaussian_quadrature import GaussianQuadratureQuad4, GaussianQuadratureTri3, GaussianQuadratureLine2
-from .stacked_dem_fill import stacked_dem_fill
-from .schism_mesh import read_mesh, write_mesh, BoundaryType, EdgeType
+from gaussian_quadrature import GaussianQuadratureQuad4, GaussianQuadratureTri3, GaussianQuadratureLine2
+from stacked_dem_fill import stacked_dem_fill
+from schism_mesh import read_mesh, write_mesh, BoundaryType, EdgeType
 from scipy.sparse.linalg import lsqr
 from scipy.optimize import fmin_l_bfgs_b
 from scipy.sparse import lil_matrix, eye, vstack
 import numpy as np
-import pyschism.schism_yaml as schism_yaml
+import schism_yaml as schism_yaml
 import argparse
 import os
 import logging

@@ -14,7 +14,7 @@ Example jobs in this pre-processing are:
 from schism_setup import create_schism_setup, check_and_suggest
 from grid_opt import GridOptimizer
 from stacked_dem_fill import stacked_dem_fill
-import pyschism.schism_yaml as schism_yaml
+import schism_yaml as schism_yaml
 import numpy as np
 import subprocess
 import os

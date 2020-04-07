@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Line String data based on Shapely LineStrings
 """
-import pyschism.schism_yaml as schism_yaml
+import schism_yaml as schism_yaml
 import shapely.geometry
 from shapely.wkb import loads
 from osgeo.osr import SpatialReference

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from pyschism.prepare_schism import prepare_schism
+from prepare_schism import prepare_schism
 import unittest
 import os, sys, argparse
 
