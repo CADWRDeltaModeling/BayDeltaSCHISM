@@ -32,7 +32,7 @@ SAL,San Andreas Landing,38.10327819,-121.5912553,623513.4,4218211.2,C4,,usbr,SAL
 SJR,San Joaquin River Mccune Station near Vernalis,37.6791908,-121.2648837,653005.8,4171637.9,C10A,,dwr_des,SJR,x,x,x,"C10A is jointly operated by DWR and IEP-EMP. Collocated with VER. Flow monitoring discontinued and considered unsuccessful, so USGS is the best for that and it is upstream at the bridge."
 STI,Mokelumne River (South Fork) @ Staten Island,38.11685852,-121.4989048,631586.4,4219845,C13,,usbr,STI,x,,,
 B91160,Sacramento River at Threemile Slough,38.106,-121.7,613974.4,4218374.1,,B91160,dwr,TMS,x,,,
-B95421,Tom Paine Sl above intake,37.79054048,-121.4187437,639228.5,4183752.9,,B95421,dwr_ncro,TPI,x,x,,wdl: B95421 for stage and B9542100 for temp and EC
+B95421,Tom Paine Sl above intake,37.7900829,-121.4184369,639266.,4183708.,,B95421,dwr_ncro,TPI,x,x,,wdl: B95421 for stage and B9542100 for temp and EC
 B95425,Tom Paine Sl near Pescadero,37.76724044,-121.3514436,645200.2,4181269.9,,B95425,dwr_ncro,TPP,,x,,
 B95420,Tom Paine Sl above the mouth,37.79054048,-121.4187437,639228.5,4183752.9,,B95420,dwr_ncro,TPS,,x,,
 TRP,Tracy Pumping Plant,37.80027343,-121.584902,624581.2,4184598.4,,,dwr_om,TRP,x,,x,
