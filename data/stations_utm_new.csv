@@ -195,9 +195,9 @@ BET,B9504500,Bethel Island at Piper Slough,38.034023,-121.621266,620996.1,421048
 FRK,FRK,"Franks Tract, Mid Tract",38.04642,-121.5981,623008.4,4211892.7,,,FRK,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
 HON,HON,Honker Bay,38.0724,-121.9392,593045.1,4214379.2,,,HON,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
 RYC,RYC,Suisun Bay Cutoff Near Ryer,38.07415,-121.76174,588041.6,4215616.3,,,RYC,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
-GZL,GZL,Grizzly Bay,38.12425,-121.03812,584309,4220037.9,,,GZL,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
+GZL,GZL,Grizzly Bay,38.12425,-122.038117,584309.0232,4220037.891,,,GZL,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
 SGA,B95415,Sugar Cut at Golden Anchor,37.7928598,-121.421495,638981.8,4184006.2,,B95415Q,SGA,dwr_ncro,,x,,"same as B9541400 ar wdl, flow data available since 3/18/2014, water temp & EC since 4/30/2014"
-VON,11425500,Sacramento River at Verona,38.774444,121.597222,621783.2,4292647.4,,,VON,usgs,x,x,,"NWIS: Latitude 38deg46'28"",   Longitude 121deg35'50""   NAD27 (38.77444,-121.597222); Datum of gage: -3.00 feet above   NGVD29; CDEC: 38.77415,-121.59807"
+VON,11425500,Sacramento River at Verona,38.774444,-121.597222,621783.2,4292647.4,,,VON,usgs,x,x,,"NWIS: Latitude 38deg46'28"",   Longitude 121deg35'50""   NAD27 (38.77444,-121.597222); Datum of gage: -3.00 feet above   NGVD29; CDEC: 38.77415,-121.59807"
 SMR,B94150,S.F. Mokelumne River at New Hope Bridge,38.22527778,-121.4908333,632098.1,4231887.1,,B94150,SMR,dwr_ncro,x,,,
 MFV,B91475,Miner Slough at Five Points ,38.29,-121.6447222,618522.3,4238860.6,,B91475,MFV,,x,,,
 TOEN,11455139,Toe Drain at Mallard Road,38.36513889,-121.6377417,619009.8,4247207.4,,,,usgs,,x,x,moved from Toe South
@@ -211,7 +211,7 @@ HAS,11455278,Hass Slough Near Elmira,38.29415,-121.7257389,611430.5,4239220.3,,,
 GRIZZB,'380631122032201,Grizzly Bay at Suisun Slough,38.10853056,-122.0559806,582761,4218277.6,,,,usgs,,,x,
 YOLO,11453000,Yolo Bypass Near Woodland,38.67777778,-121.6430556,618033.7,4281893.8,,,,usgs,,x,x,
 GLCGS,11313240,Grant Line Canal Near Tracy,37.82,-121.5447222,628084.6,4186841.5,,,,usgs,,x,x,
-CM62,11455142,Sacramento River Deep Water Ship Channel Near Courtland,38.34166667,-121.6438889,618511.,4244595.,,,,usgs,,x,x,
+CM62,11455142,Sacramento River Deep Water Ship Channel Near Courtland,38.34166667,-121.6438889,618511,4244595,,,,usgs,,x,x,
 MLD,11185185,Suisun Bay at Mallard Island,38.04277778,-121.9191667,594844.5,4211136.4,,,,usgs,,,,
 FMB,'381142122015801,First Mallard Branch,38.19489444,-122.0328139,584692.1,4227881.3,,,,usgs,,x,x,
 LIW,'382829121351801,Lisbon Weir,38.50015,-121.588925,623045.3,4262253.4,,,,usgs,,x,x,proposed effort to discontinue turbidity
@@ -238,3 +238,9 @@ PCO,B95410,Paradise Cut Above Old River,37.80197222,-121.4123056,639774,4185031,
 PDC,B95410,Paradise Cut,37.8020598,-121.4122564,639778,4185041,,B95410Q,PDC,dwr_ncro,,x,x,Flow and WQ
 SJC,B95640Q,San Joaquin River near Buckley Cove,37.98026611,-121.3857175,641772,4204855,,B95640Q,SJC,dwr_ncro,,x,,Dave Huston's replacement for RRI
 DVI,B95880,San Joaquin River at D.V.I. Pump,37.75002778,-121.3028889,649512,4179437,,B95880,,dwr_ncro,,,x,
+BLL,BLL,Blacklock (NE1),38.18023832,-121.9067011,595754.7,4226377.9,BLL,,BLL,dwr_des,,,x,
+CYG,CYG,Cygnus-Cordelia Slough,38.1527,-122.0908,579691.7529,4219941.406,S33,,CYG,dwr_des,x,,x,
+GOD,GOD,Godfather II on Suisun Slough,38.1238,-122.0812,580533.214,4219949.694,S37,,GOD,dwr_des,,,x,
+HUN,HUN,Hunter Cut at Montezuma Slough,38.156,-122.0527,582994.8199,4223547.67,S54,,HUN,dwr_des,,,x,
+MSL,MSL,Montezuma Slough at Roaring River,38.0934,-121.8872,597578.3032,4216762.676,S71,,MSL,dwr_des,,,x,
+GZB,GZB,GRIZZLY BAY BUOY,38.1231408,-122.0075808,586986.9,4219943,,,GZB,dwr_des,,,x,
