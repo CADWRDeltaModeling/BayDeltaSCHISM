@@ -1,6 +1,0 @@
-config:
-  var1:
-    var2: word1
-  var3: $var1
-mesh:
-  a:   ${var1}/baydelta72.2dm

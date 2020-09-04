@@ -1,5 +1,0 @@
-id,subloc,filename,selector,datumadj
-foo,top,foo_top.csv,blah,-1.
-foo,bottom,foo_bot.csv,bleh,-1
-bar,,bar_bot.csv,bluh,-0.1
-

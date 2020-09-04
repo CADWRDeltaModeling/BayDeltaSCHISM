@@ -1,9 +1,0 @@
-polygons:
-  - name: upstream_part
-    vertices:
-      - [ 99.,  -1.]
-      - [101.,  -1.]
-      - [101.,  51.]
-      - [ 99,   51.]
-    type: min
-    attribute: 15.

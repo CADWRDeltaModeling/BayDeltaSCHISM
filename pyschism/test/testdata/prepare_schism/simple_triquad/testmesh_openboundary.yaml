@@ -1,5 +1,0 @@
-linestrings:
-- name: ocean
-  coordinates:
-   - [1.,  99.]
-   - [1.,  1.]

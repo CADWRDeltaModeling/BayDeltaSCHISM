@@ -1,4 +1,0 @@
-env:
-  sub1: dir1
-mesh:
-  include: substitute_included.yaml
