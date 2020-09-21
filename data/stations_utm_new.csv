@@ -93,7 +93,7 @@ VCU,11312672,Victoria Canal near Byron,37.8708333,-121.53,629291.6,4192502.2,,,V
 MDM,11312676,Middle R at Middle River,37.94266627,-121.5338075,628839.5,4200455,,,MDM,usgs,x,x,x,
 HLT,11312685,Middle R near Holt,38.00305556,-121.5108985,630737.3,4207200.2,,,HLT,usgs,x,x,x,"USGS collects flow data on a pile they installed.  NCRO collects temp, EC, turbidity and chlorophyll on pile with USGS and uses USGS telemetry.  All data on CDEC"
 ODM,11312968,Old R near Delta Mendota Canal,37.81025086,-121.5423248,628312.5,4185763.1,,,ODM,usgs,x,x,," At ODM which is on a pile, USGS collects flow while NCRO collects  temp, pH, EC, DO, turbidity and chlorophyll using USGS telemetry equipment."
-GLC,11313200,Grantline Canal,37.82010741,-121.4496329,627753,4186838.8,,,GLC,usgs,x,x,,"Replaces a station located on the Tracy Rd Bridge (5 miles east of the piling). Located on pile (B95320).  USGS measures flow whiles NCRO measures temp, EC pH, DO turbidity and chlorophyll.  USGS telemeters this data  "
+GLC,11313200,Grantline Canal,37.82010741,-121.5447222,628084.45,4186853.37,,,GLC,usgs,x,x,,"Replaces a station located on the Tracy Rd Bridge (5 miles east of the piling). Located on pile (B95320).  USGS measures flow whiles NCRO measures temp, EC pH, DO turbidity and chlorophyll.  USGS telemeters this data  "
 OH4,11313315,Old R near Byron,37.89103627,-121.5702283,625718.9,4194688.9,,,OH4,usgs,x,x,x,On bridge
 OBI,11313405,Old R at Bacon Island,37.96791667,-121.5743889,625222.5,4203213.9,,,OBI,usgs,x,x,,
 HOL,11313431,Holland Cut near Bethel Island,38.01638889,-121.5819444,624476.9,4208582.2,,,HOL,usgs,x,x,,"At HOL, USGS collects flow data while NCRO collects EC, temp and turbidity.  USGS telemeters the data."
