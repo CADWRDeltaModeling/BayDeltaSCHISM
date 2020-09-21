@@ -1,7 +1,0 @@
-config:
-  var1: sub1
-  var2: ${var3}
-  var3: $var1
-  var4: $var5
-mesh:
-  a:   ${var1}/baydelta72.2dm

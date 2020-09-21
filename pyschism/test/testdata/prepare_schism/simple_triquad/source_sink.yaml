@@ -1,6 +1,0 @@
-sinks:
-  sink_1: [2., 1.]
-  sink_2: [99., 1.]
-sources:
-  source_1:  [1.,  2.]
-  source_2: [99., 11.]
