@@ -1,3 +1,28 @@
+
+# This file is mostly based on the bathymetry release 4.1. It contains light smoothing and some additional data collected after the release,
+# which occur at the top of the file.
+
+
+# Non-standard (non-4.1) improvements
+
+# High res around Dutch Slough that is compatible with Dutch Slough
+- dem/dem_dutch_slough_1m_20200311.tif
+
+# Incorporates part of the 2019 joing DWR-USGS map in Cache that has to do with the ship channel
+- //cnrastore-bdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part3_2m_20200505_smooth_4_3_160_sac_dwsc_clip.tif
+- //cnrastore-bdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part4_2m_20200505_smooth_4_3_160_sac_dwsc_clip.tif
+- //cnrastore-bdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part5_2m_20200505_smooth_4_3_160_sac_dwsc_clip.tif
+
+# Upper Sacramento section done in advance of DCP
+- //cnrastore-bdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part1_2m_20190819_smooth_4_3_160.tif
+- //cnrastore-bdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part2_2m_20190819_smooth_4_3_160.tif
+- //cnrastore-bdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part3_2m_20190819_smooth_4_3_160.tif
+- //cnrastore-bdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part4_2m_20190819_smooth_4_3_160.tif
+
+# This lindsey map looks like it is restoration rather than historical, but it is needed for Barker Slough
+# The parts of the DEM that are altered/restoration aren't in the hitorical mesh.
+- //cnrastore-bdo/Modeling_Data/restoration/lindsey_slough/DEM/dem_lindsey_slough_restoration_1m_20200302.tif
+
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_montezuma_sl_2m_20180827.tif
 
 #North Delta
