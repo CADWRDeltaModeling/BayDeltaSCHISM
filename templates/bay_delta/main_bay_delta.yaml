@@ -12,7 +12,7 @@ mesh:
     warn: 10.
     fail: 4.  
   # includes restoration sites at top of list
-  dem_list: !include dem_4.1_hist_mod.yaml
+  dem_list: !include dem_4.1_hist.yaml
   depth_optimization: !include depth_opt_params.yaml
   open_boundaries: !include open_boundary.yaml
   elev_enforcement: !include elev_enforcement.yaml  
