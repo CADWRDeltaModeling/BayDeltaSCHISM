@@ -1,26 +1,37 @@
-# Main input file for default bay_delta template
-# The template is based on version of the mesh 90e and inputs work through v95 at least
-# The current stablee meesh for studies is 90e and the current development mesh is 95
-# The file elev_enforcemnt includes some marsh features that make more
-# sense in messh v95, but shoulld do noo harm.
+# Main input file for default bay_delta template based on version 105 of the mesh
+# Note that there are both hist and "current condition" (cc) versions of some files
+
 
 mesh:
-  mesh_inputfile: bay_delta_90e.gr3
-  dem_list: !include dem_4.1.yaml
+  mesh_inputfile: bay_delta_105_hist.2dm
+  split_quad:
+    minangle: 30.
+    maxangle: 140.
+    propfile: split_quad.prop
+  small_areas:
+    warn: 10.
+    fail: 4.  
+  # includes restoration sites at top of list
+  dem_list: !include dem_4.1_hist_mod.yaml
   depth_optimization: !include depth_opt_params.yaml
   open_boundaries: !include open_boundary.yaml
+  elev_enforcement: !include elev_enforcement.yaml  
   ll_outputfile: hgrid.ll
-  gr3_outputfile: bay_delta_90e_opt.gr3
+  gr3_outputfile: hgrid.gr3
 
 gr3:
-  hgrid.gr3: !include elev_enforcement.yaml
   xlsc.gr3:
     default: 0.1
+  diffmin.gr3: !include diffmin.yaml # Updated 105
+
+  rough.gr3: !include rough.yaml    # Updated 105
+
+  #  default: 1.5e-5
   diffmax.gr3:
     default: 1.0
   windrot_geo2proj.gr3:
     default: 0.0
-  windfactor.gr3: !include windfactor38.yaml
+  windfactor.gr3: !include windfactor.yaml   # Updated 105
   manning.gr3:
     default: 0.025
   elev.ic: !include elev.yaml
@@ -30,11 +41,11 @@ gr3:
   sav_N.gr3: !include veg_density_sherman.yaml
   sav_D.gr3: !include veg_diameter_sherman.yaml
   sav_h.gr3: !include veg_height_sherman.yaml
-  diffmin.gr3:
-    default: 1.e-5
+  #diffmin.gr3:
+  #  default: 1.e-5
   krvel.gr3: !include krvel.yaml
-  rough.gr3:
-    default: 4.e-5
+  #rough.gr3:
+  #  default: 4.e-5
   albedo.gr3:
     default: 0.1
   watertype.gr3:
@@ -45,8 +56,8 @@ hydraulics:
   include: hydraulic_structures.yaml
   outputfile: hydraulics.in
 sources_sinks:
-  include: source_sink_dcd_delta.yaml
+  include: source_sink_dcd_delta_suisun.yaml
   outputfile: source_sink.in
 flow_outputs:
-  include: station_flow_xsects_itp.yaml
+  include: station_flow_xsects.yaml
   outputfile: fluxflag.prop
