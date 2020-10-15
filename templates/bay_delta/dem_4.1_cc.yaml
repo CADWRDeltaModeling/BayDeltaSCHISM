@@ -64,6 +64,9 @@
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_decker_island_2m_20150914_smooth_4_3_160.tif 
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_san_joaquin_bradfords_clip_2m_20151204_smooth_4_3_160.tif 
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_false_rvr_piper_sl_fisherman_cut_2m_20171109_smooth_4_3_160.tif 
+
+- dem/dem_10m_20170301_clip_resample2m_utm.tif
+
 #
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_liberty_2m_20181128_smooth_4_3_160.tif
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_sherman_2m_20181128_smooth_4_3_160.tif
