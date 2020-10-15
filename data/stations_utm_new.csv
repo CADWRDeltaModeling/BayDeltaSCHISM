@@ -139,6 +139,7 @@ GEMOK,B94100,Georgiana Slough at Mokelumne R,38.13,-121.5802778,624430.5,4221190
 SWE,B91650,Sacramento R at Walnut Grove,38.24180921,-121.515902,629874.3,4233686.1,,B91650,SWE,dwr_ncro,x,x,x,Not confirmed. Based on lat/long to 1 arc second from Central District and nudged to pier.
 SNOD,B91750,Sacramento R at Snodgrass,38.34999607,-121.533782,628119.1,4245666.2,,B91750,,dwr_ncro,x,,,Not confirmed. Based on lat/long to 1 arc second from Central District and nudged to shore.
 SR3,B95060,Threemile Slough at San Joaquin R,38.09002802,-121.6865309,615180.4,4216618.4,,B95060,SR3,dwr_ncro,x,,x,Not confirmed. Based on lat/long to 1 arc second from Central District and nudged to shore.
+TSS,B9506100,Threemile Slough near San Joaquin River,38.1032429,-121.6861559,615192.5278,4218085.215,,B9506100,TSS,dwr_ncro,,,x,water quality
 GLAB,B95310,Grantline Canal above Dam,37.81958494,-121.4479993,636598.9,4186932.5,,B95310,,dwr_ncro,x,,,Not confirmed. Based on lat/long to 1 arc second from Central District
 ORCCF,B95340,Old R at Clifton Court Ferry,37.82862964,-121.5528418,627355.1,4187787.9,,B95340,,dwr_ncro,x,,,"Not confirmed. Based on lat/long to 1 arc second from Central District; not ORI, about 80 meter north of ORI"
 BIR,B95460,Middle R at Bacon Island,38.00180666,-121.523702,629615.4,4207043.7,,B95460,BIR,dwr_ncro,x,,,Not confirmed. Based on lat/long to 1 arc second from Central District and moved to pier
