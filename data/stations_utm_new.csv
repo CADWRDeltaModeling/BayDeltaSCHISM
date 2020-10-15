@@ -1,4 +1,4 @@
-﻿station_id,agency_id,name,lat,lon,x,y,d1641_id,wdl_id,cdec_id,agency,stage,flow,quality,notes
+id,agency_id,name,lat,lon,x,y,d1641_id,wdl_id,cdec_id,agency,stage,flow,quality,notes
 ANH,B95020,San Joaquin at Antioch,38.01784713,-121.802883,605075.1,4208474.7,D12A,B95020,ANH,dwr_ncro,x,,,USBR and DWR have equipment within a 30x30 building (in a 10x10 room) located on a pier that is the City of Antioch's pumping station
 BEN,B94175,Mokelumne River at Benson's Ferry,38.2555,-121.44,636491.3,4235314.6,,B94175,BEN,dwr_ncro,x,,,
 CCS,CCS,Cache Slough,38.29713655,-121.7477601,609500.3,4239525.4,,,CCS,usbr,,,x,Old Vallejo Pumping Plant
