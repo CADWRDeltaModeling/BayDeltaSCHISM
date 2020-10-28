@@ -1,0 +1,44 @@
+﻿src_var_name,src_name,src_var_id,var_name
+stage_c,source,233,elev
+stage,usgs,65,elev
+stage,cdec,RIV STG,elev
+depth,usgs,72147,depth
+discharge,usgs,60,flow
+wind_sp,cdec,WIND SP,wind_speed
+wind_dir,cdec,WIND DR,wind_dir
+solar_r,cdec,SOLAR R,solar_radiation
+temp,usgs,10,water_temperature
+temp,cdec,TEMP,water_temperature
+temp,wdl,450,
+spcond,usgs,95,
+el_cond,cdec,EL COND,
+el_cond,wdl,821,
+el_condb,cdec,EL CONDB,
+salinity,wdl,806,
+DO,usgs,301,
+DO,wdl,865,
+DO,usgs,300,
+DO,cdec,DIS OXY,
+DO,wdl,2351,
+pH,usgs,400,
+pH,cdec,PH VAL,
+pH,wdl,860,
+Chl_rfu,usgs,32283,
+Chla_rfu,usgs,32315,
+Chl,cdec,CHLORPH,
+Chla,usgs,32316,
+TChl,wdl,7004,
+fDOM,usgs,32295,
+bga,usgs,32321,
+DOC,wdl,3026,
+NO3,wdl,2331,
+SO4,wdl,2401,
+TOC,wdl,3021,
+turb,usgs,63680,
+turb,cdec,TURB W,
+turb,wdl,810,
+ssc,usgs,80154,
+ssc_e,usgs,99409,
+sal,usgs,90860,
+ssc,usgs,99409,
+NO3+NO2,usgs,99133,

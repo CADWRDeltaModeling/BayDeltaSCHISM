@@ -1,0 +1,23 @@
+﻿var_name,long_name,cf_standard_name,comment
+elev,water_level,water_surface_height_above_reference_datum,
+flow,volume_discharge,water_volume_transport_into_sea_water_from_rivers,
+depth,depth,depth,
+wind_speed,wind_speed,wind speed,
+wind_dir,wind_direction,wind_to_dir,"cf standard is a bearing clockwise from north and id the ""to"" direction. There is a ""from"" variant we could add if there are examples."
+solar_radiation,solar_radiation,surface_net_downward_radiative_flux,this may not be correct
+temp,water_temperature,sea_water_temperature
+ec,specific_conductance,sea_water_electrical_conductivity,specific conductance seems preferred by collectors?
+salinity,salinity,sea_water_practical_salinity,"this is in psu which is technically not a ""unit"""
+do,DO,,
+ph,pH,,
+chla,chlorophyll_a_florescence,,what is the difference between chla and chl_rfu? Are these really distinct observations?
+tchl,total_chlorophyl,,
+fdom,dissolved_organic_matter_florescence,,
+bga,blue_green_algae_indicator,,
+doc,dissolved_organic_matter_florescence,,
+no3,nitrate,,
+so4,sulfate,,
+toc,total_organic_carbon,,
+turbidity,turbidity,,
+ssc,suspended_sediment_concentration,,
+no3+no2,nitrate_plus_nitrite,,
