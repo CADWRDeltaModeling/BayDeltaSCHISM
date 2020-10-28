@@ -174,7 +174,8 @@ DMC,DMC,DMC Headworks,37.78,-121.588,626882.7,4186454,,,DMC,usbr,,,x,Nudged to a
 SUR,B95422,Sugar Cut,37.78836111,-121.4193889,639164.7,4183509.3,,B95422,SUR,dwr_ncro,,,x,
 GLE,B95320,Grant Line Canal East,37.820258,-121.4348562,637754.4,4187026.5,,B95320,GLE,dwr_ncro,,x,x,"ADCP Flow Station, commence on 1/15/2013; WQ, commence on 2/15/2013"
 MAB,B95502,Middle River above Barrier ,37.8851804,-121.4727615,634300.2,4194175,,B95502,MAB,dwr_ncro,,x,x,"ADCP Flow Station, commence on 4/23/2013"
-ORX,B95390,Old River above Doughty Cut,37.8109973,-121.3865757,642021.8,4186071.2,,B95390,ORX,dwr_ncro,,x,x,"ADCP Flow Station, commence on 1/30/2013"
+ORX,B95390,Old River above Doughty Cut,37.8109973,-121.3865757,642021.8,4186071.2,,B95390,ORX,dwr_ncro,x,x,,"ADCP Flow Station, commence on 1/30/2013"
+ORXWQ,B9539000,Old River above Doughty Cut -WQ,37.8109973,-121.3865757,642021.8,4186071.2,,B9539000,ORX,dwr_ncro,,,x,
 SJD,B95760,San Joaquin River above Dos Reis,37.8223312,-121.3177244,648060.2,4187435.7,,B95760,SJD,dwr_nrco,,x,,"ADCP Flow Station, commence on 2/28/2013"
 ALK,'374938122251801,San Francisco Bay at Northeast Shore Alcatraz Island,37.82722222,122.4216667,550895.2,4186802.8,,,,usgs,,,x,"location: unsurveyed, at end of finger pier adjacent to ferry terminal; WQ monitor since November 2013;Interruptions in record were due to malfunction of the sensing and (or) recording instrument and biological interference within the conductivity cell. The probe is set at 6 ft below the water surface at Mean Lower Low Water (MLLW). MLLW is about 16 ft. Daily maximums and minimums sometimes differ from tidal cycle (24.8 hours) maximums and minimums.Specific conductivity records are rated excellent except for the following periods of fouling: Oct. 1, 2, Nov. 2-8, Aug. 19, 20, which are rated good. Water temperature records are rated excellent."
 MHO,B9553100,Middle River near Howard Rd Bridge,37.876222,-121.383306,642184.4,4193313.5,,B9553100,MHO,dwr_ncro,,,x,added 6/6/2014
@@ -233,10 +234,11 @@ MRZ2,9415102,Martinez-Amorco Pier,38.035,-122.125,576774.9,4210025.7,,,,noaa,x,,
 ALVZ,11169750,Alviso Slough Near Alviso,37.44,-121.998,588609.4,4144155.7,,,,usgs,,,x,
 DUM,'373015122071000,South San Francisco Bay at Dumbarton Bridge,37.504,-122.119,577828.8,4151167.7,,,,usgs,,,x,
 CM,11460090,Corte Madera Creek Near Larkspur,37.943,-122.515,542639,4199638.8,,,,usgs,,,x,
-OAB,B9537000,Old River upstream of Mountain House Creek - WQ,37.7938408,-121.5173813,630537,4183977,,B9537000,OAB,dwr_ncro,,,x,Quality and flow have different CDEC
-ORM,B95370,Old River upstream of Mountain House Creek,37.7938408,-121.5173813,630537,4183977,,B95370Q,ORM,dwr_ncro,,x,,Quality and flow have different CDEC
+ORMWQ,B9537000,Old River upstream of Mountain House Creek - WQ,37.7938408,-121.5173813,630537,4183977,,B9537000,ORM,dwr_ncro,,,x,Quality and flow have different CDEC
+ORM,B95370Q,Old River upstream of Mountain House Creek,37.7938408,-121.5173813,630537,4183977,,B95370Q,ORM,dwr_ncro,,x,,Quality and flow have different CDEC
 PCO,B95410,Paradise Cut Above Old River,37.80197222,-121.4123056,639774,4185031,,B95410,PCO,dwr_ncro,,,x,EC and Temp
-PDC,B95410,Paradise Cut,37.8020598,-121.4122564,639778,4185041,,B95410Q,PDC,dwr_ncro,,x,x,Flow and WQ
+PDC,B95410Q,Paradise Cut,37.8020598,-121.4122564,639778,4185041,,B95410Q,PDC,dwr_ncro,,x,x,Flow and WQ
+PCU,B9541050,Paradise Cut Upstream - WQ,37.8010219,-121.373076,643229.4964,4184984.934,,B9541050,,dwr_ncro,,,x,EC and Temp
 SJC,B95640Q,San Joaquin River near Buckley Cove,37.98026611,-121.3857175,641772,4204855,,B95640Q,SJC,dwr_ncro,,x,,Dave Huston's replacement for RRI
 DVI,B95880,San Joaquin River at D.V.I. Pump,37.75002778,-121.3028889,649512,4179437,,B95880,,dwr_ncro,,,x,
 BLL,BLL,Blacklock (NE1),38.18023832,-121.9067011,595754.7,4226377.9,BLL,,BLL,dwr_des,,,x,
