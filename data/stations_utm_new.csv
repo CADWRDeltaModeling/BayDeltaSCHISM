@@ -78,7 +78,6 @@ RICHM,9414863,Richmond,37.92820794,-122.3999317,552736,4198019.3,,,,noaa,xx,,,
 ANC,ANC,Antioch,38.01784713,-121.802883,605075.1,4208474.7,,,ANC,usbr,,,x,
 CLL,CLL,Collinsville,38.07394957,-121.8500958,600858.7,4214644.1,,,CLL,usbr,,,x,
 CNT,CNT,Contra Costa,37.99587604,-121.7017029,613995.8,4206152.6,C5,,CNT,usbr,,,x,
-EMM,EMM,Emmaton,38.08428584,-121.7388746,610598.8,4215917.6,D22A,,EMM,usbr,,,x,"DWR and USBR listed at same site at end of pier, USBR is listed as D22A"
 PTS,PTS,PIttsburg,38.04316356,-121.8918355,597238.3,4211183.7,,,PTS,usbr,,,x,
 RIV,RIV,Rio Vista,38.15916838,-121.6844634,615252.9,4224292.9,D24A,,RIV,usbr,,,x,Under bridge tenders office almost in center of channel
 VER,VER,Vernalis,37.6791908,-121.2648837,653005.8,4171637.9,C10,,VER,usbr,,,x,Relocated from Durham Farry/Airoport Way Bridge to DWR pier where SJR is located
@@ -147,10 +146,9 @@ MDMZQ,B95468,Middle R at Middle R,37.94000114,-121.5330499,628839.5,4200455,,B95
 MUP,B95500,Middle River at Union Point,37.89083333,-121.4883333,632905.7,4194776.6,,B95500,MUP,dwr_ncro,x,,x,"We had this as Borden HW, NCRO said Union Point"
 MRMOW,B95540,Middle R at Mowry,37.83514791,-121.383011,642289.3,4188756.4,,B95540,,dwr_ncro,x,,,Not confirmed. Based on lat/long to 1 arc second from Central District and nudged to pier
 TRN,B9561600,Turner Cut near Holt,37.9925,-121.4538889,635762.3,4206110.6,,B9561600,TRN,dwr_ncro,,,x,"USGS collects flow data on a pile they installed.  NCRO collects temp, pH, EC, DO, turbidity, chlorophyll on pile with USGS and uses USGS telemetry."
-VCU,B9528500,Victoria Canal near Byron,37.8708333,-121.53,629291.6,4192502.2,,B9528500,VCU,dwr_ncro,,,x,Not confirmed. Boat access.
+VCU2,B9528500,Victoria Canal near Byron,37.8708333,-121.53,629291.6,4192502.2,,B9528500,VCU,dwr_ncro,,,x,Not confirmed. Boat access.
 HLT,B9545800,Middle R near Holt,38.00305556,-121.5108985,630737.3,4207200.2,,B9545800,HLT,dwr_ncro,,,x,"USGS collects flow data on a pile they installed.  NCRO collects temp, EC, turbidity and chlorophyll on pile with USGS and uses USGS telemetry.  All data on CDEC"
-OAD,B9536600,Old River Barrier near DMC (Above) - WQ,37.81025,-121.542194,628312.5,4185763.1,,B9536600 ,OAD,dwr_ncro,,,x,"Is this ODM? At ODM which is on a pile, USGS collects flow while NCRO collects  temp, pH, EC, DO, turbidity and chlorophyll using USGS telemetry equipment."
-GLC,B9529500,Grant Line Canal near Clifton Court Forebay - WQ ,37.82013889,-121.5446111,627753,4186838.8,,B9529500,GLC,dwr_ncro,,,x,"USGS measures flow whiles NCRO measures temp, EC pH, DO turbidity and chlorophyll.  USGS telemeters this data  (Station located on USGS pile 5.5 miles west of Tracy Rd. Bridge)"
+GLC2,B9529500,Grant Line Canal near Clifton Court Forebay - WQ ,37.82013889,-121.5446111,627753,4186838.8,,B9529500,GLC,dwr_ncro,,,x,"USGS measures flow whiles NCRO measures temp, EC pH, DO turbidity and chlorophyll.  USGS telemeters this data  (Station located on USGS pile 5.5 miles west of Tracy Rd. Bridge)"
 HOL,B9512000,Holland Cut near Bethel Island,38.01638889,-121.5819444,624476.9,4208582.2,,B9512000,HOL,dwr_ncro,,,x,"At HOL, USGS collects flow data while NCRO collects EC, temp and turbidity.  USGS telemeters the data."
 ORQ,B9520000,Old R at Quimby Island,38.0272222,-121.5644444,625994.6,4209807.9,,B9520000,ORQ,dwr_ncro,,,x,
 FAL,B9504400,False R near Oakley,38.0558333,-121.6669444,616952.5,4212848.6,,B9504400,FAL,dwr_ncro,,,x,"Both FAL and ORQ are USGS station where they collect flow and NCRO collects EC, chlorophyll, temp and turbidity"
@@ -175,7 +173,6 @@ SUR,B95422,Sugar Cut,37.78836111,-121.4193889,639164.7,4183509.3,,B95422,SUR,dwr
 GLE,B95320,Grant Line Canal East,37.820258,-121.4348562,637754.4,4187026.5,,B95320,GLE,dwr_ncro,,x,x,"ADCP Flow Station, commence on 1/15/2013; WQ, commence on 2/15/2013"
 MAB,B95502,Middle River above Barrier ,37.8851804,-121.4727615,634300.2,4194175,,B95502,MAB,dwr_ncro,,x,x,"ADCP Flow Station, commence on 4/23/2013"
 ORX,B95390,Old River above Doughty Cut,37.8109973,-121.3865757,642021.8,4186071.2,,B95390,ORX,dwr_ncro,x,x,,"ADCP Flow Station, commence on 1/30/2013"
-ORXWQ,B9539000,Old River above Doughty Cut -WQ,37.8109973,-121.3865757,642021.8,4186071.2,,B9539000,ORX,dwr_ncro,,,x,
 SJD,B95760,San Joaquin River above Dos Reis,37.8223312,-121.3177244,648060.2,4187435.7,,B95760,SJD,dwr_nrco,,x,,"ADCP Flow Station, commence on 2/28/2013"
 ALK,'374938122251801,San Francisco Bay at Northeast Shore Alcatraz Island,37.82722222,122.4216667,550895.2,4186802.8,,,,usgs,,,x,"location: unsurveyed, at end of finger pier adjacent to ferry terminal; WQ monitor since November 2013;Interruptions in record were due to malfunction of the sensing and (or) recording instrument and biological interference within the conductivity cell. The probe is set at 6 ft below the water surface at Mean Lower Low Water (MLLW). MLLW is about 16 ft. Daily maximums and minimums sometimes differ from tidal cycle (24.8 hours) maximums and minimums.Specific conductivity records are rated excellent except for the following periods of fouling: Oct. 1, 2, Nov. 2-8, Aug. 19, 20, which are rated good. Water temperature records are rated excellent."
 MHO,B9553100,Middle River near Howard Rd Bridge,37.876222,-121.383306,642184.4,4193313.5,,B9553100,MHO,dwr_ncro,,,x,added 6/6/2014
@@ -234,12 +231,11 @@ MRZ2,9415102,Martinez-Amorco Pier,38.035,-122.125,576774.9,4210025.7,,,,noaa,x,,
 ALVZ,11169750,Alviso Slough Near Alviso,37.44,-121.998,588609.4,4144155.7,,,,usgs,,,x,
 DUM,'373015122071000,South San Francisco Bay at Dumbarton Bridge,37.504,-122.119,577828.8,4151167.7,,,,usgs,,,x,
 CM,11460090,Corte Madera Creek Near Larkspur,37.943,-122.515,542639,4199638.8,,,,usgs,,,x,
-ORMWQ,B9537000,Old River upstream of Mountain House Creek - WQ,37.7938408,-121.5173813,630537,4183977,,B9537000,ORM,dwr_ncro,,,x,Quality and flow have different CDEC
-ORM,B95370Q,Old River upstream of Mountain House Creek,37.7938408,-121.5173813,630537,4183977,,B95370Q,ORM,dwr_ncro,,x,,Quality and flow have different CDEC
+ORM,B95370,Old River upstream of Mountain House Creek,37.7938408,-121.5173813,630537,4183977,,B95370Q,ORM,dwr_ncro,,x,,Quality and flow have different CDEC
 PCO,B95410,Paradise Cut Above Old River,37.80197222,-121.4123056,639774,4185031,,B95410,PCO,dwr_ncro,,,x,EC and Temp
-PDC,B95410Q,Paradise Cut,37.8020598,-121.4122564,639778,4185041,,B95410Q,PDC,dwr_ncro,,x,x,Flow and WQ
+PDC,B95410,Paradise Cut,37.8020598,-121.4122564,639778,4185041,,B95410Q,PDC,dwr_ncro,,x,x,Flow and WQ
 PCU,B9541050,Paradise Cut Upstream - WQ,37.8010219,-121.373076,643229.4964,4184984.934,,B9541050,,dwr_ncro,,,x,EC and Temp
-SJC,B95640Q,San Joaquin River near Buckley Cove,37.98026611,-121.3857175,641772,4204855,,B95640Q,SJC,dwr_ncro,,x,,Dave Huston's replacement for RRI
+SJC,B95640,San Joaquin River near Buckley Cove,37.98026611,-121.3857175,641772,4204855,,B95640Q,SJC,dwr_ncro,,x,,Dave Huston's replacement for RRI
 DVI,B95880,San Joaquin River at D.V.I. Pump,37.75002778,-121.3028889,649512,4179437,,B95880,,dwr_ncro,,,x,
 BLL,BLL,Blacklock (NE1),38.18023832,-121.9067011,595754.7,4226377.9,BLL,,BLL,dwr_des,,,x,
 CYG,CYG,Cygnus-Cordelia Slough,38.1527,-122.0908,579691.7529,4219941.406,S33,,CYG,dwr_des,x,,x,
