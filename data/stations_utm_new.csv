@@ -235,12 +235,12 @@ PDC,B95410,Paradise Cut,37.8020598,-121.4122564,639778,4185041,,B95410Q,PDC,dwr_
 PCU,B9541050,Paradise Cut Upstream - WQ,37.8010219,-121.373076,643229.4964,4184984.934,,B9541050,,dwr_ncro,,,x,EC and Temp
 SJC,B95640,San Joaquin River near Buckley Cove,37.98026611,-121.3857175,641772,4204855,,B95640Q,SJC,dwr_ncro,,x,,Dave Huston's replacement for RRI
 DVI,B95880,San Joaquin River at D.V.I. Pump,37.75002778,-121.3028889,649512,4179437,,B95880,,dwr_ncro,,,x,
-BLL,BLL,Blacklock (NE1),38.18023832,-121.9067011,595754.7,4226377.9,BLL,,BLL,dwr_des,,,x,
-CYG,CYG,Cygnus-Cordelia Slough,38.1527,-122.0908,579678.,4223160.,S33,,CYG,dwr_des,x,,x,
-GOD,GOD,Godfather II on Suisun Slough,38.1238,-122.0812,580533.214,4219949.694,S37,,GOD,dwr_des,,,x,
-HUN,HUN,Hunter Cut at Montezuma Slough,38.156,-122.0527,582994.8199,4223547.67,S54,,HUN,dwr_des,,,x,
-MSL,MSL,Montezuma Slough at Roaring River,38.0934,-121.8872,597578.3032,4216762.676,S71,,MSL,dwr_des,,,x,
-GZB,GZB,Grizzly Bay Buoy,38.1231408,-122.0075808,586986.9,4219943,,,GZB,dwr_des,,,x,
+BLL,119,Blacklock (NE1),38.18023832,-121.9067011,595754.7,4226377.9,BLL,,BLL,dwr_des,,,x,
+CYG,33,Cygnus-Cordelia Slough,38.1527,-122.0908,579678.,4223160.,S33,,CYG,dwr_des,x,,x,
+GOD,37,Godfather II on Suisun Slough,38.1238,-122.0812,580533.214,4219949.694,S37,,GOD,dwr_des,,,x,
+HUN,54,Hunter Cut at Montezuma Slough,38.156,-122.0527,582994.8199,4223547.67,S54,,HUN,dwr_des,,,x,
+MSL,71,Montezuma Slough at Roaring River,38.0934,-121.8872,597578.3032,4216762.676,S71,,MSL,dwr_des,,,x,
+GZB,368,Grizzly Bay Buoy,38.1231408,-122.0075808,586986.9,4219943,,,GZB,dwr_des,,,x,
 ALAM,11180700,Alameda Creek Flood Channel at Union City,37.585833,-122.047,584140.23,4160290.79,,,,usgs,,x,,
 TEA,28,Teal Club at Frank Horan Slough,38.176670,-122.086110,580045.,4225811.,S28,,,dwr_des,,,,x,
 HSL,4,Hill Slough,38.226390,-122.021110,585680.,4231386.,S4,,,dwr_des,,,,x,
