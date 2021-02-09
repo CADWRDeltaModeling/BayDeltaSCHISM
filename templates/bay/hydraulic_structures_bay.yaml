@@ -1,0 +1,47 @@
+nudging: 0.05
+structures:
+  - name: montezuma_radial
+    type: weir
+    end_points:
+      [[597644., 4216725.],
+      [597676., 4216748.]]
+    configuration:
+      n_duplicates: 3
+      elevation: -6.86
+      width: 10.97
+      height: 10.0
+      coefficient: 0.4
+      op_downstream: 1.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: self
+
+  - name: montezuma_flash
+    type: weir
+    end_points:
+      [[597620., 4216715.],
+      [597638., 4216730.]]
+    configuration:
+      n_duplicates: 1
+      elevation: -5.34
+      width: 20.73
+      coefficient: 0.4
+      op_downstream: 1.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: montezuma_radial
+
+  - name: montezuma_boat_lock
+    type: weir
+    end_points:
+      [[597673., 4216755.],
+      [597683., 4216760.]]
+    configuration:
+      n_duplicates: 1
+      elevation: -2.29
+      width: 6.1
+      coefficient: 0.05
+      op_downstream: 1.0
+      op_upstream: 1.0
+      use_time_series: 1
+    reference: montezuma_radial

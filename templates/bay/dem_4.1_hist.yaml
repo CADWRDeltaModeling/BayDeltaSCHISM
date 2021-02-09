@@ -1,0 +1,77 @@
+
+# This file is mostly based on the bathymetry release 4.1. It contains light smoothing and some additional data collected after the release,
+# which occur at the top of the file.
+
+
+# Non-standard (non-4.1) improvements
+
+# High res around Dutch Slough that is compatible with Dutch Slough
+- dem/dem_dutch_slough_1m_20200311.tif
+
+# Incorporates part of the 2019 joing DWR-USGS map in Cache that has to do with the ship channel
+- //cnrastore-bdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part3_2m_20200505_smooth_4_3_160_sac_dwsc_clip.tif
+- //cnrastore-bdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part4_2m_20200505_smooth_4_3_160_sac_dwsc_clip.tif
+- //cnrastore-bdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part5_2m_20200505_smooth_4_3_160_sac_dwsc_clip.tif
+
+# Upper Sacramento section done in advance of DCP
+- //cnrastore-bdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part1_2m_20190819_smooth_4_3_160.tif
+- //cnrastore-bdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part2_2m_20190819_smooth_4_3_160.tif
+- //cnrastore-bdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part3_2m_20190819_smooth_4_3_160.tif
+- //cnrastore-bdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part4_2m_20190819_smooth_4_3_160.tif
+
+# This lindsey map looks like it is restoration rather than historical, but it is needed for Barker Slough
+# The parts of the DEM that are altered/restoration aren't in the hitorical mesh.
+- //cnrastore-bdo/Modeling_Data/restoration/lindsey_slough/DEM/dem_lindsey_slough_restoration_1m_20200302.tif
+
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_montezuma_sl_2m_20180827.tif
+
+#North Delta
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part1_2m_20181011_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part2_2m_20160121_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part3_2m_20160121_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part4_2m_20171220_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part5multi_2m_20171220_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part5_2m_20160121.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part6_2m_20171220_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part7_2m_20171220_smooth_4_3_160.tif
+
+#South Delta
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part1_2m_20181120_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part2_2m_20181120_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part3_2m_20181120_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part4_2m_20181120_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part5_2m_20181120_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part6_2m_20181120_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part7_2m_20181120_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part8_2m_20181120_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part9_2m_20181120_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part10_2m_20181120.tif  
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part11_2m_20181206.tif
+
+#Yolo Bypass
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part1_2m_20181012_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part2_2m_20181012_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part3_2m_20181012_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part4_2m_20181012_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part5_2m_20181217_smooth_4_3_160.tif
+
+#
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_calaveras_rvr_2m_20120902.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_columbia_cut_2m_20120911.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_turner_cut_2m_20120907.tif
+#
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_decker_island_2m_20150914_smooth_4_3_160.tif 
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_san_joaquin_bradfords_clip_2m_20151204_smooth_4_3_160.tif 
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_false_rvr_piper_sl_fisherman_cut_2m_20171109_smooth_4_3_160.tif 
+#
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_liberty_2m_20181128_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_sherman_2m_20181128_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ryer_2m_20181128_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_sjr1_2m_20181128_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_sjr2_2m_20181128_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_delta_10m_20181128.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_golden_gate_bridge_10m_20151007_smooth.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_bay_delta_ocean_10m_20181128.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_bay_delta_south_bay_10m_20181128.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_bay_delta_north_bay_10m_20181128.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_columbia_cut_islands_10m.tif
