@@ -1,3 +1,5 @@
+# Originally introduced as flow_station_xsects_108.yaml this includes some diagnostic cross-sections as
+# well as a few extra stations and fixes in flow direction.
 linestrings:
 - coordinates:
   - - 647569.2749700006

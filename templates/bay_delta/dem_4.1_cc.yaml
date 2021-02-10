@@ -2,6 +2,7 @@
 # This file is mostly based on the bathymetry release 4.1. It contains light smoothing and some additional data collected after the release,
 # which occur at the top of the file.
 
+
 # Non-standard (non-4.1) improvements
 
 # High res around Dutch Slough that is compatible with Dutch Slough
@@ -26,10 +27,25 @@
 
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_montezuma_sl_2m_20180827.tif
 
+
+#Yolo Bypass
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part1_2m_20181012_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part2_2m_20181012_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part3_2m_20200505_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part4_2m_20200505_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part5_2m_20200505_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part6_2m_20200505_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part7_2m_20200505_smooth_4_3_160.tif
+
+ 
+
 #North Delta
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part1_2m_20181011_smooth_4_3_160.tif
+- //nasbdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part1_2m_20190819_smooth_4_3_160.tif 
+- //nasbdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part2_2m_20190819_smooth_4_3_160.tif 
+- //nasbdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part3_2m_20190819_smooth_4_3_160.tif 
+- //nasbdo/Modeling_Data/bathymetry/ncro_20190819/dem_nsac_part4_2m_20190819_smooth_4_3_160.tif 
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part2_2m_20160121_smooth_4_3_160.tif
-- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part3_2m_20160121_smooth_4_3_160.tif
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part4_2m_20171220_smooth_4_3_160.tif
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part5multi_2m_20171220_smooth_4_3_160.tif
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_north_delta_part5_2m_20160121.tif
@@ -49,12 +65,6 @@
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part10_2m_20181120.tif  
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part11_2m_20181206.tif
 
-#Yolo Bypass
-- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part1_2m_20181012_smooth_4_3_160.tif
-- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part2_2m_20181012_smooth_4_3_160.tif
-- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part3_2m_20181012_smooth_4_3_160.tif
-- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part4_2m_20181012_smooth_4_3_160.tif
-- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_yolo_part5_2m_20181217_smooth_4_3_160.tif
 
 #
 - //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_calaveras_rvr_2m_20120902.tif

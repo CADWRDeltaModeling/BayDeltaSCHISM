@@ -233,3 +233,24 @@ structures:
       op_upstream: 0.0
       use_time_series: 0
     reference: self
+
+  - name: west_false_river_barrier_leakage
+    type: weir_culvert
+    end_points:
+      [[616557., 4212909.],
+       [616653., 4213145.]]
+    configuration:
+      n_duplicates: 1
+      elevation: -2.44
+      width: 210.
+      coefficient: 0.8
+      op_downstream: 1.
+      op_upstream: 1.
+      culvert_n_duplicates: 10   # these are an approximation of observed leakage through rocks
+      culvert_elevation: -1.5
+      culvert_radius: 4.         # ~50 m^2 per dup (whole barrier)  mult by 6
+      culvert_coefficient: 0.03  # with 2m head diff, flow is 2000-3000.
+      culvert_op_downstream: 0.03
+      culvert_op_upstream: 1.
+      use_time_series: 1
+    reference: self
