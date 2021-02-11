@@ -6,7 +6,7 @@
 # Non-standard (non-4.1) improvements
 
 # High res around Dutch Slough that is compatible with Dutch Slough
-- dem/dem_dutch_slough_1m_20200311.tif
+- //cnrastore-bdo/Modeling_Data/restoration/dutch_slough/DEM/dem_dutch_slough_1m_20200311.tif
 
 # Incorporates part of the 2019 joing DWR-USGS map in Cache that has to do with the ship channel
 - //cnrastore-bdo/Modeling_Data/bathymetry/renamed_no_version/cache_sl_integration/dem_yolo_part3_2m_20200505_smooth_4_3_160_sac_dwsc_clip.tif
@@ -25,7 +25,7 @@
 - //cnrastore-bdo/Modeling_Data/restoration/tule_red/DEM/tule_red_future_ras_utm_m.tif
 - //cnrastore-bdo/Modeling_Data/restoration/yolo_flyway/DEM/dem_yolo_flyway_1m_20200228.tif
 
-- //nasbdo/Modeling_Data/bathymetry/renamed_no_version/dem_montezuma_sl_2m_20180827.tif
+- //cnrastore-bdo/Modeling_Data/bathymetry/renamed_no_version/dem_montezuma_sl_2m_20180827.tif
 
 
 #Yolo Bypass

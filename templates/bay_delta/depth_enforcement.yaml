@@ -7481,7 +7481,7 @@ polygons:
     - 4197380.0
   - - 622425.0
     - 4197180.0
-- attribute: 3 - 2*(x-611010)/(612727-611010)
+- attribute: 3.-2.*(x-611010.)/(612727.-611010.)
   name: sac_bc
   type: min
   vertices:
@@ -15891,7 +15891,7 @@ polygons:
     - 4220523.080826618
   - - 595013.8888755623
     - 4220387.959654879
-- attribute: max(z*1.15,z*.85,0.15)
+- attribute: max(max(z*1.15,z*.85),0.15)
   name: mzm_east_dredge
   type: none
   vertices:
@@ -16109,7 +16109,7 @@ polygons:
     - 4227791.299999998
   - - 584203.5870538618
     - 4227737.733217931
-- attribute: max(z,0.85*z,0.2)
+- attribute: max(max(z,0.85*z),0.2)
   name: collinsville
   type: min
   vertices:
@@ -19279,7 +19279,7 @@ polygons:
     - 4232709.291532026
   - - 586779.0
     - 4232687.2
-- attribute: max(1.1*z,0.9*z,0.1)
+- attribute: max(max(1.1*z,0.9*z),0.1)
   name: mzm_west_dredge_1
   type: none
   vertices:
@@ -19347,7 +19347,7 @@ polygons:
     - 4220289.3
   - - 582919.0
     - 4220927.0
-- attribute: max(1.1*z,0.9*z,0.1)
+- attribute: max(max(1.1*z,0.9*z),0.1)
   name: mzm_central_dredge
   type: none
   vertices:

@@ -22,7 +22,7 @@ mesh:
 
 # Note this file is in the /data directory and relative location needs to be set
 flow_outputs:
-  include: station_flow_xsects.yaml
+  include: flow_station_xsects.yaml
   outputfile: fluxflag.prop
 
 gr3:
