@@ -1,9 +1,10 @@
-# Main input file for default bay_delta template based on version 105 of the mesh
+# Main input file for default bay_delta template based on version 110 of the mesh
 # Note that there are both hist and "current condition" (cc) versions of some files
-
+# You will need to copy station_flow_xsects from the /data directory as well as the 
+# mesh file
 
 mesh:
-  mesh_inputfile: bay_delta_105_hist.2dm
+  mesh_inputfile: bay_delta_110_hist.2dm
   split_quad:
     minangle: 30.
     maxangle: 140.
@@ -15,37 +16,41 @@ mesh:
   dem_list: !include dem_4.1_hist.yaml
   depth_optimization: !include depth_opt_params.yaml
   open_boundaries: !include open_boundary.yaml
-  elev_enforcement: !include elev_enforcement.yaml  
+  depth_enforcement: !include depth_enforcement.yaml   # Introduced as depth_enforcement_itp_suisunshallow2.yaml  
   ll_outputfile: hgrid.ll
   gr3_outputfile: hgrid.gr3
+
+# Note this file is in the /data directory and relative location needs to be set
+flow_outputs:
+  include: flow_station_xsects.yaml
+  outputfile: fluxflag.prop
 
 gr3:
   xlsc.gr3:
     default: 0.1
-  diffmin.gr3: !include diffmin.yaml # Updated 105
-
-  rough.gr3: !include rough.yaml    # Updated 105
+  diffmin.gr3: !include diffmin.yaml # Updated 110b
+  rough.gr3: !include rough.yaml     # Updated 110b
 
   #  default: 1.5e-5
   diffmax.gr3:
     default: 1.0
   windrot_geo2proj.gr3:
     default: 0.0
-  windfactor.gr3: !include windfactor.yaml   # Updated 105
+  windfactor.gr3: !include windfactor.yaml   # Updated 110b
   manning.gr3:
     default: 0.025
   elev.ic: !include elev.yaml
-  estuary.gr3: !include estuary.yaml
+  estuary.gr3: !include estuary.yaml      # Introduced as estuary3 during SLR study, biggger area
   SAL_nudge.gr3: !include SAL_nudge.yaml
   TEM_nudge.gr3: !include TEM_nudge.yaml
   sav_N.gr3: !include veg_density_sherman.yaml
   sav_D.gr3: !include veg_diameter_sherman.yaml
   sav_h.gr3: !include veg_height_sherman.yaml
-  #diffmin.gr3:
-  #  default: 1.e-5
   krvel.gr3: !include krvel.yaml
-  #rough.gr3:
+  #rough.gr3:     # Approximately what Works with GOTM k-eps. Documentation pending
   #  default: 4.e-5
+  #diffmin.gr3:   # Approximately what works with GOTM k-eps. Documentation pending
+  #  default: 1.e-5  
   albedo.gr3:
     default: 0.1
   watertype.gr3:
@@ -53,11 +58,14 @@ gr3:
 prop:
   tvd.prop: !include tvd.yaml
 hydraulics:
-  include: hydraulic_structures.yaml
+  include: hydraulic_structures.yaml    # Includes West False River 2015 installation
   outputfile: hydraulics.in
 sources_sinks:
-  include: source_sink_dcd_delta_suisun.yaml
+  # Includes Delta and Suisun, including distribution modifications in 2020.
+  # See the _2019 variant for older locations  
+  include: source_sink.yaml  
   outputfile: source_sink.in
-flow_outputs:
-  include: station_flow_xsects.yaml
-  outputfile: fluxflag.prop
+vgrid:
+    vgrid_out: vgrid.in.3d
+    minmaxlayerfile: minmaxlayer_slr_0_mod105.shp 
+    eta: 1.5
