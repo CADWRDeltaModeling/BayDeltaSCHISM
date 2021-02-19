@@ -2,7 +2,9 @@
 Getting Started 
 ===============
 
-Depending on your experience level, you may be learning a new computation environment as well as a new model. We suggest you tackle these separately:
+Depending on your experience level, you may be learning a 
+new computation environment as well as a new model. 
+We suggest you tackle these separately:
 
   - Download the model and try the first couple tutorials on a simplified grid using Windows or Linux. 
   - Try the Bay-Delta `preprocessing tools <scripting_tools/html/index.html>`_ in the package for working on the mesh, generating initial and boundary conditions, the ocean boundary and post processing. 
@@ -30,7 +32,7 @@ The package includes a /bin directory that needs to be populated by building the
 
 VTools Scripting
 ----------------
-Some postprocessing tools are dependent on `VTools <http://baydeltaoffice.water.ca.gov/modeling/deltamodeling/models/vtools/index.html>`_.
+Some postprocessing tools are dependent on `VTools <https://cadwrdeltamodeling.github.io/vtools3/html/index.html>`_.
 
 
 Bathymetry
