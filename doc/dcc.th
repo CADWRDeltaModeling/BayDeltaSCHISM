@@ -1,4 +1,0 @@
-0.0000000  1  2  1. 1.	-3.42	18.29	0.0 ! Cols 1-3: t, install, nduplicate
-6170400.0  1  2  1.	1.	-3.42	18.29	10. ! Col    4: downstream op,  
-6521400.0  1  2	 1.	1.	-3.42	18.29	0.0 ! Col    5: upstream op
-6776640.0  1  2  1.	1.	-3.42	18.29	10. ! Cols 6-8: elev, width, height
