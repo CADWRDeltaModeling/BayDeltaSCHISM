@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Getting Started &#8212; Bay-Delta SCHISM</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Calibration and References" href="calibration.html" />
+    <link rel="prev" title="Bay-Delta SCHISM Project" href="index.html" /> 
+  </head><body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/logo6.png" border="0" alt="Bay-Delta SCHISM"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="calibration.html" title="Calibration and References"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Bay-Delta SCHISM Project"
+             accesskey="P">previous</a> |</li> 
+        <li><a href="http://baydeltaoffice.water.ca.gov/modeling/deltamodeling"> Delta Modeling Section</a>|&nbsp;</li>
+        <li><a href="index.html">Project home</a>|&nbsp;</li>
+        <li><a href="search.html">Search</a>|&nbsp;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/dwr_logo_small.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting Started</a><ul>
+<li><a class="reference internal" href="#schism-code">SCHISM Code</a></li>
+<li><a class="reference internal" href="#bay-delta-package">Bay-Delta Package</a></li>
+<li><a class="reference internal" href="#vtools-scripting">VTools Scripting</a></li>
+<li><a class="reference internal" href="#bathymetry">Bathymetry</a></li>
+<li><a class="reference internal" href="#complete-sample-inputs">Complete Sample Inputs</a></li>
+<li><a class="reference internal" href="#visit-schism-plug-in">VisIt SCHISM Plug-in</a></li>
+<li><a class="reference internal" href="#links-to-tools">Links to tools</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Bay-Delta SCHISM Project</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="calibration.html"
+                        title="next chapter">Calibration and References</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/getmodel.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>Depending on your experience level, you may be learning a
+new computation environment as well as a new model.
+We suggest you tackle these separately:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Download the model and try the first couple tutorials on a simplified grid using Windows or Linux.</p></li>
+<li><p>Try the Bay-Delta <a class="reference external" href="scripting_tools/html/index.html">preprocessing tools</a> in the package for working on the mesh, generating initial and boundary conditions, the ocean boundary and post processing.</p></li>
+<li><p>Download the code and the ready-to-run <a class="reference internal" href="#complete-sample"><span class="std std-ref">Complete Sample Inputs</span></a> and use them to configure and test your target high performance computing (HPC) environment.</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="schism-code">
+<h2>SCHISM Code<a class="headerlink" href="#schism-code" title="Permalink to this headline">¶</a></h2>
+<p>Clone the <a class="reference external" href="https://github.com/schism-dev">SCHISM source code</a>. If you are working on Windows (which is mostly useful for instruction or reduced size problems), compatible
+<a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/schism_4.1_bin_windows.zip">Windows binaries</a> are available.</p>
+<p>The SCHISM numerical methods are an extension of <a class="reference external" href="http://www.stccmop.org/knowledge_transfer/software/selfe">SELFE v3.1dc</a>,
+originally developed as a collaboration between Dr Joseph Zhang and Dr Antonio Baptista
+while the two worked together at the Oregon Health &amp; Science University. SCHISM contains critical optimizations and enhancements developed by Dr Zhang at the Virginia Institute of Marine Sciences, by the DWR Bay-Delta Office and by collaborators in other domains.</p>
+</div>
+<div class="section" id="bay-delta-package">
+<h2>Bay-Delta Package<a class="headerlink" href="#bay-delta-package" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/bay_delta_schism.tar.gz">Download the Bay-Delta Package</a></p></li>
+</ul>
+<p>The package includes a simulation template corresponding to the calibration, preprocessing tools and several of the tutorials that we will be using in the January hands-on Bay-Delta workshop. Help on the preprocessor and model setup can be found in the <a class="reference external" href="http://baydeltaoffice.water.ca.gov/modeling/deltamodeling/models/tools/index.html">preprocessor docs</a> which are also distributed with the package.
+The package includes a /bin directory that needs to be populated by building the source.</p>
+</div>
+<div class="section" id="vtools-scripting">
+<h2>VTools Scripting<a class="headerlink" href="#vtools-scripting" title="Permalink to this headline">¶</a></h2>
+<p>Some postprocessing tools are dependent on <a class="reference external" href="https://cadwrdeltamodeling.github.io/vtools3/html/index.html">VTools</a>.</p>
+</div>
+<div class="section" id="bathymetry">
+<h2>Bathymetry<a class="headerlink" href="#bathymetry" title="Permalink to this headline">¶</a></h2>
+<p>The Bay-Delta Package already contains our latest bathymetry in geo-tiff form, processed as we use them to populate our mesh. The data are described on the
+<a class="reference external" href="http://baydeltaoffice.water.ca.gov/modeling/deltamodeling/modelingdata/DEM.cfm">bathymetry page</a></p>
+</div>
+<div class="section" id="complete-sample-inputs">
+<span id="complete-sample"></span><h2>Complete Sample Inputs<a class="headerlink" href="#complete-sample-inputs" title="Permalink to this headline">¶</a></h2>
+<p>Interested users may want to explore their options as far as clusters
+and high performance environments without the confounding challenge of
+learning the preprocessor.</p>
+<p><a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/preprocessed_sample.tar.gz">Complete 21-day sample inputs</a></p>
+<p>includes a complete directory of inputs for a late August - early September 2013 baroclinic run with salt transport, sample PBS launching script (pbs.sh) and launching script (run.sh) that we use with our  cluster’s job scheduler.</p>
+</div>
+<div class="section" id="visit-schism-plug-in">
+<h2>VisIt SCHISM Plug-in<a class="headerlink" href="#visit-schism-plug-in" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://visit.llnl.gov/">VisIt</a> is a visualization toolkit for high performance
+numerical simulations. VisIt accesses specific data sources using plugins. At the time of writing, ours plugin works for SELFE/SCHISM native binaries and the next iteration will work for the NetCDF UGRID 0.9 output from SCHISM. We do not distribute the base VisIt.</p>
+<p>SCHISM plugins:
+* <a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/visit_plugin_1.0.0.source.zip">Source code for 2.7</a>
+* <a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/visit_plugin_1.0.0_visit2.7_win64_vs2010.zip">Compiled Windows binaries for 2.7</a>
+* <a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/visit_plugin_1.0.0_visit2.8_win64_vs2012.zip">Compiled Windows binaries for 2.8</a></p>
+<p>You may notice Visit documentation is becoming antiquated but still usable – the software is supported by a vigorous wiki and forum on the <a class="reference external" href="http://visitusers.org">VisIt community site</a>. We also offer the document <a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/visit_plugin_instruction.pdf">VisIT for SELFE users</a></p>
+</div>
+<div class="section" id="links-to-tools">
+<h2>Links to tools<a class="headerlink" href="#links-to-tools" title="Permalink to this headline">¶</a></h2>
+<p>These are mostly Windows or Linux tools. If you have information
+about analogous tools on other platforms we will gratefully share it.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://store.continuum.io/cshop/anaconda/">Anaconda Python 2.7 64 bit</a></p></li>
+<li><p><a class="reference external" href="http://sourceforge.net/projects/xming/">Xming XServer for Windows</a></p></li>
+<li><p><a class="reference external" href="http://winscp.net/eng/index.php">WinSCP</a> for transfering files</p></li>
+</ul>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="calibration.html" title="Calibration and References"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Bay-Delta SCHISM Project"
+             >previous</a> |</li> 
+        <li><a href="http://baydeltaoffice.water.ca.gov/modeling/deltamodeling"> Delta Modeling Section</a>|&nbsp;</li>
+        <li><a href="index.html">Project home</a>|&nbsp;</li>
+        <li><a href="search.html">Search</a>|&nbsp;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014,2020 California Department of Water Resources.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
