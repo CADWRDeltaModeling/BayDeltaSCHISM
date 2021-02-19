@@ -5,7 +5,7 @@ REM Command file for Sphinx documentation
 if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=sphinx-build
 )
-set BUILDDIR=../../../bay_delta_schism_docgen
+set BUILDDIR=../docs
 set PDFBUILDDDIR="d:/temp/pdftmp"
 set PDF=../schism_tools.pdf
 echo %BUILDDIR%
