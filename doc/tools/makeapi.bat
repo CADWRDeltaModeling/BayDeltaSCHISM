@@ -1,1 +1,0 @@
-sphinx-apidoc --force -o source\api ..\..\pyschism

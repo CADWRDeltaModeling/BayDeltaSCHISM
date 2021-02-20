@@ -1,0 +1,22 @@
+{% extends "!layout.html" %}
+
+
+{% block rootrellink %}
+        <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
+        <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
+        <li><a href="{{ pathto('search') }}">Search</a>|&nbsp;</li>
+{% endblock %}
+
+
+{% block relbar1 %}
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="{{ pathto('index') }}"><img src="{{ pathto('_static/logo6.png',1) }}" border="0" alt="Bay-Delta SCHISM"/></a>
+</div>
+{{ super() }}
+{% endblock %}
+
+{# put the sidebar before the body #}
+{% block sidebar1 %}{{ sidebar() }}{% endblock %}
+{% block sidebar2 %}{% endblock %}
+
