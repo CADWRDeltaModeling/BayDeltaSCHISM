@@ -55,6 +55,7 @@ WCI,WCI,West Canal near Clifton Court Intake,37.83161222,-121.5540556,627243.2,4
 ORI,B95341,Old River near Clifton Court Intake,37.82797167,-121.5526014,627377.4,4187715.2,,B95341,ORI,dwr_ncro,,x,x,ADCP flow station
 RCS,RCS,Ridge Cut Slough at Knight's Landing,38.79378266,-121.7253592,610695.0,4294664.3,,,RCS,dwr_ncro,x,x,x,
 NSL,E33670,Montezuma Slough at National Steel,38.12202682,-121.8882107,597451.6,4219938,S64,E33670,NSL,dwr_ncro,x,x,x,
+NSL2,64,Montezuma Slough at National Steel,38.122220,-121.8886940,597451.6,4219938,S64,64,NSL2,dwr_des,x,x,x,This i
 SJL,B95765,San Joaquin River near Lathrop,37.81097104,-121.3234822,647576.1,4186166.1,,B95765,SJL,dwr_ncro,x,x,x,Not confirmed. Moved to pier.
 BDT,B95740,San Joaquin River at Brandt Bridge,37.86457483,-121.3231244,647500.8,4192114.6,,B95740,BDT,dwr_ncro,x,x,x,
 RRI,B95660,Stockton Ship Channel at Burns Cut-off,37.96277611,-121.3655772,643575.2,4202944.9,,B95660,RRI,dwr_ncro,x,x,,a station house on the very corner of that final boat dock on Rough and Ready.
