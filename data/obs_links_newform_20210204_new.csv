@@ -1,4 +1,4 @@
-id,subloc,variable,path,selector,agency,unit,datum,timezone,datum_adj,vertical_position,new_id
+agency_id,subloc,variable,path,selector,agency,unit,datum,timezone,datum_adj,vertical_position,id
 BDL,default,temp,\\cnrastore-bdo\Modeling_Data\des_emp\raw\s49_beldons_bdl_temp_inst_2*.csv,0,dwr-emp,degC,NAVD,PST,0.0,0.0,BDL
 CYG,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\emp_temp_20190808\cyg.csv,0,dwr-emp,degC,NAVD,PST,0.0,0.0,CYG
 MSL,default,temp,\\cnrastore-bdo\Modeling_Data\des_emp\raw\s71_mzmroar_msl_temp_inst_*.csv,0,dwr-emp,degC,NAVD,PST,0.0,0.0,MSL
@@ -43,7 +43,7 @@ E33670,default,salt,\\cnrastore-bdo\Modeling_Data\des_emp\raw\s64_nationalsteel_
 E33670,default,flow,\\nasbdo\Modeling_Data\continuous_station_repo\raw\incoming\dwr_ncro\DWR_NCRO_NSL_E33670_262_Flow_2007_2020.csv,0,wdl,cfs,NAVD,PST,0.0,0.0,NSL
 E33670,default,vel,\\nasbdo\Modeling_Data\continuous_station_repo\raw\incoming\dwr_ncro\DWR_NCRO_NSL_E33670_621_Mean-Velocity_2007_2020.csv,0,wdl,ft,NAVD,PST,0.0,0.0,NSL
 E33670,default,elev,\\cnrastore-bdo\Modeling_Data\des_emp\raw\s64_nationalsteel_nsl_stage_inst_2010_2020.csv,0,dwr-emp,ft,NAVD,PST,0.0,0.0,NSL
-E33670,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\emp_temp_20190808\nsl.csv,0,dwr-emp,degC,NAVD,PST,0.0,0.0,NSL
+#E33670,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\emp_temp_20190808\nsl.csv,0,dwr-emp,degC,NAVD,PST,0.0,0.0,NSL
 11162765,upper,temp,\\delta-mod\share\Kijin\FieldData\USGS\x.UV.USGS.11162765.1.C.00000000.rdb,0,USGS,degC,NAVD,PST,0.0,0.0,MATEO
 11162765,lower,temp,\\delta-mod\share\Kijin\FieldData\USGS\x.UV.USGS.11162765.3.C.00000000.rdb,0,USGS,degC,NAVD,PST,0.0,1.0,MATEO
 11169025,default,temp,\\delta-mod\share\Kijin\FieldData\USGS\x.UV.USGS.11169025.16.C.00000000.rdb,0,USGS,degC,NAVD,PST,0.0,0.0,GUAD
@@ -100,7 +100,6 @@ HLL,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_
 JER,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\JER_hr.csv,0,cdec,deg F,NAVD,PST,0.0,0.0,JER
 MAL,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\MAL.csv,0,cdec,deg F,NAVD,PST,0.0,0.0,MAL
 MRZ,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\MRZ.csv,0,cdec,deg F,NAVD,PST,0.0,0.0,MRZ
-MSD,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\MSD.csv,0,cdec,deg F,NAVD,PST,0.0,0.0,MSD
 PCT,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\PCT_hr.csv,0,cdec,deg F,NAVD,PST,0.0,0.0,PCT
 PPT,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\PPT.csv,0,cdec,deg F,NAVD,PST,0.0,0.0,PPT
 PTS,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\PTS_hr.csv,0,cdec,deg F,NAVD,PST,0.0,0.0,PTS
@@ -112,7 +111,6 @@ SRH,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_
 STI,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\STI_hr.csv,0,cdec,deg F,NAVD,PST,0.0,0.0,STI
 UNI,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\UNI_hr.csv,0,cdec,deg F,NAVD,PST,0.0,0.0,UNI
 VIC,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\VIC_hr.csv,0,cdec,deg F,NAVD,PST,0.0,0.0,VIC
-WCI,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\WCI.csv,0,cdec,deg F,NAVD,PST,0.0,0.0,WCI
 MAL,default,elev,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_stage_6_28_2015\MAL.csv,0,cdec,ft,NAVD,PST,0.0,0.0,MAL
 SJR,default,elev,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_stage_6_28_2015\SJR.csv,0,cdec,ft,NAVD,PST,0.0,0.0,SJR
 CSE,default,elev,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_stage_6_28_2015\CSE.csv,0,cdec,ft,NAVD,PST,0.0,0.0,CSE
@@ -227,12 +225,10 @@ BDL,default,elev,\\cnrastore-bdo\Modeling_Data\des_emp\raw\s49_beldons_bdl_stage
 11459150,default,elev,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\nwis_stage_20150701\11459150.rdb,0,USGS,ft,STND,PST,0.0,0.0,PETR
 373025122065901,default,elev,\\nasbdo\Modeling_Data\continuous_station_repo\raw\incoming\usgs\373025122065901\Gage_height.ft@373025122065901.EntireRecord.csv,0,USGS,ft,STND,PST,0.0,0.0,DUMBR
 CLC,default,elev,\\delta-mod\share\Kijin\FieldData\cdec\CLC_gageheight_6min.csv,0,cdec,ft,STND,PST,0.0,0.0,CLC
-RVB,default,elev,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_stage_6_28_2015\RVB.csv,0,cdec,ft,STND,PST,0.0,0.0,RVB
 ANC,lower,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_EC_2_10_2016\ANC_bottom.csv,0,cdec,ec,STND,PST,0.0,1.0,ANC
 ANC,upper,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_EC_2_10_2016\ANC.csv,0,cdec,ec,STND,PST,0.0,0.0,ANC
 ANH,lower,salt,\\cnrastore-bdo\Modeling_Data\des_emp\raw\anh_antioch_anh_ec@bot_inst_*.csv,0,cdec,ec,STND,PST,0.0,1.0,ANH
 ANH,upper,salt,\\cnrastore-bdo\Modeling_Data\des_emp\raw\anh_antioch_anh_ec_inst_*.csv,0,cdec,ec,STND,PST,0.0,0.0,ANH
-BET,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20201108\b9504500_conductivity.csv,0,wdl,ec,STND,PST,0.0,0.0,BET
 BKS,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_EC_2_10_2016\BKS_H.csv,0,cdec,ec,STND,PST,0.0,0.0,BKS
 CCS,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_EC_2_10_2016\CCS.csv,0,cdec,ec,STND,PST,0.0,0.0,CCS
 CLC,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_ec_20200927\clc_ec.csv,0,cdec,ec,STND,PST,0.0,0.0,CLC
@@ -273,7 +269,6 @@ SJR,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_EC_2_10
 SRH,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_EC_2_10_2016\SRH.csv,0,cdec,ec,NAVD,PST,0.0,0.0,C3A
 11455420,default,salt,\\nasbdo\Modeling_Data\continuous_station_repo\raw\incoming\usgs\11455420\Specific_cond_at_25C.uS_cm.(YSI)@11455420.EntireRecord.csv,0,cdec,ec,NAVD,PST,0.0,0.0,SRV
 STI,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_EC_2_10_2016\STI.csv,0,cdec,ec,NAVD,PST,0.0,0.0,STI
-TPI,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_EC_2_10_2016\TPI.csv,0,cdec,ec,NAVD,PST,0.0,0.0,TPI
 TPS,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_EC_2_10_2016\TPS.csv,0,cdec,ec,NAVD,PST,0.0,0.0,TPS
 TRP,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_ec_20200927\trp_ec.csv,0,cdec,ec,NAVD,PST,0.0,0.0,TRP
 11337080,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_EC_2_10_2016\TSL.csv,0,cdec,ec,NAVD,PST,0.0,0.0,TSL
@@ -372,8 +367,8 @@ B95365,default,elev,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\
 B95365,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B9536500_conductance.csv,0,wdl,ec,NAVD,PST,0.0,0.0,OBD
 B95365,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95365_temperature.csv,0,wdl,degC,NAVD,PST,0.0,0.0,OBD
 B95366,default,elev,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95366_gageheight.csv,0,wdl,ft,NAVD,PST,0.0,0.0,OAD
-B95366,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95366_conductance.csv,0,wdl,ec,NAVD,PST,0.0,0.0,OAD
-B95366,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95366_temperature.csv,0,wdl,degC,NAVD,PST,0.0,0.0,OAD
+#B95366,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95366_conductance.csv,0,wdl,ec,NAVD,PST,0.0,0.0,OAD
+#B95366,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95366_temperature.csv,0,wdl,degC,NAVD,PST,0.0,0.0,OAD
 B9536600,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B9536600_conductance.csv,0,wdl,ec,NAVD,PST,0.0,0.0,OAD
 B9536600,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B9536600_temperature.csv,0,wdl,degC,NAVD,PST,0.0,0.0,OAD
 B95378,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B9537800_conductance.csv,0,wdl,ec,NAVD,PST,0.0,0.0,TWA
@@ -428,10 +423,9 @@ B95620,default,elev,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\
 B95660,default,flow,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95660Q_discharge.csv,0,wdl,cfs,NAVD,PST,0.0,0.0,RRI
 B95660,default,elev,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95660_gageheight.csv,0,wdl,ft,NAVD,PST,0.0,0.0,RRI
 B95660,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95660_temperature.csv,0,wdl,degC,NAVD,PST,0.0,0.0,RRI
-RRI,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95660Q_temperature.csv,0,wdl,degC,NAVD,PST,0.0,0.0,RRI
 RRI,default,vel,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95660Q_velocity.csv,0,wdl,ft,NAVD,PST,0.0,0.0,RRI
-RRI,lower,salt,\\delta-mod\share\Kijin\FieldData\DES\rri_ec_bot_inst.txt,0,dwr_des,ec,STND,PST,0.0,1.0,RRI
-RRI,upper,salt,\\delta-mod\share\Kijin\FieldData\DES\rri_ec_surf_inst.txt,0,dwr_des,ec,STND,PST,0.0,0.0,RRI
+RRI2,lower,salt,\\delta-mod\share\Kijin\FieldData\DES\rri_ec_bot_inst.txt,0,dwr_des,ec,STND,PST,0.0,1.0,RRI
+RRI2,upper,salt,\\delta-mod\share\Kijin\FieldData\DES\rri_ec_surf_inst.txt,0,dwr_des,ec,STND,PST,0.0,0.0,RRI
 B95740,default,salt,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95740_conductance.csv,0,wdl,ec,NAVD,PST,0.0,0.0,BDT
 B95740,default,flow,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95740Q_discharge.csv,0,wdl,cfs,NAVD,PST,0.0,0.0,BDT
 B95740,default,elev,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\wdl_data_20160205\B95740_gageheight.csv,0,wdl,ft,NAVD,PST,0.0,0.0,BDT
