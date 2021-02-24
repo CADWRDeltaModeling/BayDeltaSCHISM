@@ -23,11 +23,11 @@ RICHB,lower,-14.444,
 DUMBR,upper,-6.7139999999999995,Dumbarton
 DUMBR,lower,-13.35,
 ALK,mid,-2.26,Alcatraz
-EMM,upper,-0.5
+EMM,upper,-0.5,
 EMM,lower,-20.0,Exact depth being queried with USBR -- this value places output at bottom
-CLL,upper,-0.5
+CLL,upper,-0.5,
 CLL,lower,-20.0,Exact depth being queried with USBR  -- this value places output at bottom
-PTS,upper,-0.5
+PTS,upper,-0.5,
 PTS,lower,-20.0,Exact depth being queried with USBR  -- this value places output at bottom
-ANC,upper,-0.5
+ANC,upper,-0.5,
 ANC,lower,-20.0,Exact depth being queried with USBR  -- this value places output at bottom
