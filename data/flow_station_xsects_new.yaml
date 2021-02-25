@@ -1,13 +1,4 @@
 linestrings:
-- agency_id: B95380
-  coordinates:
-  - - 636530.0
-    - 4185243.0
-  - - 636532.0
-    - 4185300.0
-  name: OLD
-  station_id: OLD
-  station_name: Old River at Tracy Blvd
 - agency_id: B95765
   coordinates:
   - - 647569.275
@@ -100,10 +91,10 @@ linestrings:
   station_name: Grantline Canal
 - agency_id: '11313460'
   coordinates:
-  - - 626765.156
-    - 4213595.915
   - - 626418.551
     - 4213228.143
+  - - 626765.156
+    - 4213595.915
   name: PRI
   station_id: PRI
   station_name: San Joaquin R at Prisoners Pt
@@ -233,15 +224,7 @@ linestrings:
   name: TSL
   station_id: TSL
   station_name: Threemile Slough near Rio Vista
-- agency_id: '11455276'
-  coordinates:
-  - - 614331.197
-    - 4241946.678
-  - - 614174.781
-    - 4241939.017
-  name: SGG
-  station_id: SGG
-  station_name: Shag Slough at Liberty Island near Courtland
+
 - agency_id: '11313433'
   coordinates:
   - - 616698.677
@@ -549,15 +532,7 @@ linestrings:
   new_name: LHTN
   station_id: LHTN
   station_name: Little Holland Tract at North Breach Near Holland Tract
-- agency_id: '11455142'
-  coordinates:
-  - - 618543.0
-    - 4244591.0
-  - - 618337.0
-    - 4244650.0
-  name: DWS
-  station_id: DWS
-  station_name: Sacramento R Deep Water Ship Channel Near Rio Vista
+
 - agency_id: '11455278'
   coordinates:
   - - 611479.4
