@@ -25,7 +25,7 @@ while the two worked together at the Oregon Health & Science University. SCHISM 
 Bay-Delta Package
 -----------------
 
-* `Download the Bay-Delta Package <https://msb.water.ca.gov/documents/86683/266737/bay_delta_schism.tar.gz>`_
+* Clone the `Bay-Delta Package on GitHub <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM>`_
 
 The package includes a simulation template corresponding to the calibration, preprocessing tools and several of the tutorials that we will be using in the January hands-on Bay-Delta workshop. Help on the preprocessor and model setup can be found in the `schimpy <https://cadwrdeltamodeling.github.io/schimpy>`_ documentation. The package includes a /bin directory that needs to be populated by building the source or grabbing windows binaries if you want to learn on a high quality pc. 
 
