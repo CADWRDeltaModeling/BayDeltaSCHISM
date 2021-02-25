@@ -7,7 +7,7 @@ new computation environment as well as a new model.
 We suggest you tackle these separately:
 
   - Download the model and try the first couple tutorials on a simplified grid using Windows or Linux. 
-  - Try the Bay-Delta preprocessing tools `schimpy <https://cadwrdeltamodeling.github.io/>`_ in the package for working on the mesh, generating initial and boundary conditions, the ocean boundary and post processing. 
+  - Try the Bay-Delta preprocessing tools `schimpy <https://cadwrdeltamodeling.github.io/schimpy>`_ in the package for working on the mesh, generating initial and boundary conditions, the ocean boundary and post processing. 
   - Download the code and the ready-to-run :ref:`complete-sample` and use them to configure and test your target high performance computing (HPC) environment.
 
 SCHISM Code
