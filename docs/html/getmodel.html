@@ -121,9 +121,9 @@ while the two worked together at the Oregon Health &amp; Science University. SCH
 <p>The package includes a simulation template corresponding to the calibration, preprocessing tools and several of the tutorials that we will be using in the January hands-on Bay-Delta workshop. Help on the preprocessor and model setup can be found in the <a class="reference external" href="https://cadwrdeltamodeling.github.io/schimpy">schimpy</a> documentation. The package includes a /bin directory that needs to be populated by building the source or grabbing windows binaries if you want to learn on a high quality pc.</p>
 <dl class="simple">
 <dt>The current temporal coverage is calendar 2008-2018. There are several items in the distribution that are large:</dt><dd><ul class="simple">
-<li><p>atmospheric data</p></li>
-<li><p>roms data for forcing salinity and temperature on the boundary</p></li>
-<li><p><a class="reference external" href="http://google.com">processed bathymetry data</a> for populating the model. This is based on our <a class="reference external" href="https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2">Version 4.2 Bay-Delta Bathymetry release</a> with added smoothing steps to eliminate subgrid curvature (it preserves slope).</p></li>
+<li><p><a class="reference external" href="https://data.cnra.ca.gov/dataset/bay-delta-schism-atmospheric-collection-v1-0">SCHISM-compatible atmospheric data</a> which includes interpolated field data for wind, air pressure, and specific humidity, as well as reformatted <a class="reference external" href="https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr">North American Regional Reanalysis results</a> for radiation and precipitation.</p></li>
+<li><p><a class="reference external" href="https://data.cnra.ca.gov/dataset/bay-delta-schism-coastal-roms-dataset-for-boundary-relaxation-draft">CenCOOS ROMS model output</a> for forcing salinity and temperature on the boundary</p></li>
+<li><p><a class="reference external" href="https://data.cnra.ca.gov/dataset/bay-delta-schism-processed-bathymetry">Processed bathymetry data</a> for populating the model. This is based on our <a class="reference external" href="https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2">Version 4.2 Bay-Delta Bathymetry release</a> with added smoothing steps to eliminate subgrid curvature (it preserves slope).</p></li>
 </ul>
 </dd>
 </dl>
@@ -136,7 +136,7 @@ while the two worked together at the Oregon Health &amp; Science University. SCH
 <div class="section" id="bathymetry">
 <h2>Bathymetry<a class="headerlink" href="#bathymetry" title="Permalink to this headline">¶</a></h2>
 <p>The Bay-Delta Package already contains our latest bathymetry in geo-tiff form, processed as we use them to populate our mesh. Our bathymetry collection is available at the
-<a class="reference external" href="https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2">CNRA open portal bathymetry page</a>. Note however, that what goes in the model is the processed bathymetry.</p>
+<a class="reference external" href="https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2">CNRA open portal bathymetry page</a>. Note however, that what goes in the model is the <a class="reference external" href="https://data.cnra.ca.gov/dataset/bay-delta-schism-processed-bathymetry">processed bathymetry</a>.</p>
 </div>
 <div class="section" id="complete-sample-inputs">
 <span id="complete-sample"></span><h2>Complete Sample Inputs<a class="headerlink" href="#complete-sample-inputs" title="Permalink to this headline">¶</a></h2>

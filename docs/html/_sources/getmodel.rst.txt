@@ -30,9 +30,9 @@ Bay-Delta Package
 The package includes a simulation template corresponding to the calibration, preprocessing tools and several of the tutorials that we will be using in the January hands-on Bay-Delta workshop. Help on the preprocessor and model setup can be found in the `schimpy <https://cadwrdeltamodeling.github.io/schimpy>`_ documentation. The package includes a /bin directory that needs to be populated by building the source or grabbing windows binaries if you want to learn on a high quality pc. 
 
 The current temporal coverage is calendar 2008-2018. There are several items in the distribution that are large:
-  * atmospheric data
-  * roms data for forcing salinity and temperature on the boundary
-  * `processed bathymetry data <http://google.com>`_ for populating the model. This is based on our `Version 4.2 Bay-Delta Bathymetry release <https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2>`_ with added smoothing steps to eliminate subgrid curvature (it preserves slope). 
+  * `SCHISM-compatible atmospheric data <https://data.cnra.ca.gov/dataset/bay-delta-schism-atmospheric-collection-v1-0>`_ which includes interpolated field data for wind, air pressure, and specific humidity, as well as reformatted `North American Regional Reanalysis results <https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr>`_ for radiation and precipitation. 
+  * `CenCOOS ROMS model output <https://data.cnra.ca.gov/dataset/bay-delta-schism-coastal-roms-dataset-for-boundary-relaxation-draft>`_ for forcing salinity and temperature on the boundary
+  * `Processed bathymetry data <https://data.cnra.ca.gov/dataset/bay-delta-schism-processed-bathymetry>`_ for populating the model. This is based on our `Version 4.2 Bay-Delta Bathymetry release <https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2>`_ with added smoothing steps to eliminate subgrid curvature (it preserves slope). 
 
 These are too big for GitHub and not text based. We are experimenting with GitHub's large data facility but for the momement after you download the package, you can deploy the command get_big_data.py from python. It will help you acquire what you need without manual downloads. 
 
@@ -46,7 +46,7 @@ Some pre/postprocessing tools are dependent on `VTools <https://cadwrdeltamodeli
 Bathymetry
 ----------
 The Bay-Delta Package already contains our latest bathymetry in geo-tiff form, processed as we use them to populate our mesh. Our bathymetry collection is available at the  
-`CNRA open portal bathymetry page  <https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2>`_. Note however, that what goes in the model is the processed bathymetry. 
+`CNRA open portal bathymetry page  <https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2>`_. Note however, that what goes in the model is the `processed bathymetry <https://data.cnra.ca.gov/dataset/bay-delta-schism-processed-bathymetry>`_.
 
 
 .. _complete-sample:
