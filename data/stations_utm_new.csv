@@ -36,18 +36,18 @@ TMS,B91160,Sacramento River at Threemile Slough,38.106,-121.7,613974.4,4218374.1
 TPI,B95421,Tom Paine Sl above intake,37.79054048,-121.4187437,639228.5,4183752.9,,B95421,TPI,dwr_ncro,,,x,wdl: B95421 for stage and B9542100 for temp and EC
 TPP,B95425,Tom Paine Sl near Pescadero,37.76724044,-121.3514436,645200.2,4181269.9,,B95425,TPP,dwr_ncro,x,,,
 TPS,B95420,Tom Paine Sl above the mouth,37.79054048,-121.4187437,639228.5,4183752.9,,B95420,TPS,dwr_ncro,x,,,
-TRP,TRP,Tracy Pumping Plant,37.80027343,-121.584902,624581.2,4184598.4,,,TRP,dwr_om,,x,x,
+TRP,TRP,Tracy Pumping Plant,37.80027343,-121.584902,626865.0,4186450.0,,,TRP,dwr_om,,x,x,Moved from facility to trash rack
 UNI,UNI,Union Island,37.82209337,-121.3750095,643018.6,4187320.1,C8,,UNI,usbr,,,x,"Historically called """"bifurcation of Middle and Old Rivers"""""
 VIC,VIC,Victoria Island,37.89122605,-121.48825,632927.2,4194823.6,,,VIC,usbr,,,x,Not confirmed
 BKS,BKS,Barker Slough Pumping Plant,38.27639642,-121.7969582,605228.0,4237166.9,,,BKS,dwr,,x,x,Slightly moved closer to slough. D1461 site was in another side slough upstream.
 VNI,B95580,Venice Island,38.0491,-121.4976,631822.4,4212328.2,,B95580,VNI,dwr,x,,,same as the WDL B95580
 CSE,22,Sacramento River at Collinsville,38.07394957,-121.8500958,600859.1,4214643.6,C2B,,CSE,dwr_des,x,,x,
 C3A,70,Sacramento River at Hood,38.36771516,-121.5205061,629247.7,4247651,C3A,,SRH,dwr_des,,,x,"Colocated wiht MWQI """"HOOD"""" Established to replace C3. Location confirmed visually by DES (there is a bogus location north)."
-RVB,30,Sacramento River at Rio Vista,38.15974033,-121.6862425,615096.2,4224354.2,D24A,B91212,RVB,dwr_des,x,,x,DWR Rio Vista site
+RVB,30,Sacramento River at Rio Vista,38.15974033,-121.6862425,615105.0,4224354.2,D24A,B91212,RVB,dwr_des,x,,x,DWR Rio Vista site nudged 9m to the east to be always wet
 MRZ,40,Sacramento River at Martinez,38.02761665,-122.1405194,575432.5,4209227.7,C6A,,MRZ,dwr_des,x,,x,
 SNC,21,Chadbourne Slough at Sunrise Duck Club,38.18503208,-122.0830545,580303.5,4226742.3,S21,,SNC,dwr_des,x,,,Not confirmed
-GYS,35,Goodyear Slough at Morrow Island club,38.11908576,-122.0957696,579261.3,4219414.1,S35,,GYS,dwr_des,x,,x,Not confirmed
-VOL,42,Suisun Slough 300' south of Volanti Slough,38.180526,-122.0469582,583469.9,4226274.2,S42,,VOL,dwr_des,x,,x,Not confirmed
+GYS,35,Goodyear Slough at Morrow Island club,38.11908576,-122.0957696,579253.0,4219416.0,S35,,GYS,dwr_des,x,,x,Moved 8m to west to be in channel
+VOL,42,Suisun Slough 300' south of Volanti Slough,38.180526,-122.0469582,583348.0,4226330.0,S42,,VOL,dwr_des,x,,x,On Suisun Sl, downstream of Marina that is on Volanti. Believe that the placement is a small pier, but here it is nudged slightly instream.
 BDL,49,Montezuma Slough near Beldons Landing,38.186785,-121.9707745,590134.7,4227040.1,S49,,BDL,dwr_des,x,,x,Not confirmed. Moved to pier.
 IBS,97,Cordelia Slough at Ibis club,38.15729922,-122.1136785,577650.9,4223639,S97,,IBS,dwr_des,x,,x,
 LIS,B91560,Yolo Bypass at Lisbon,38.47503915,-121.5885124,623124,4259467.4,,B91560,LIS,dwr_ncro,x,x,,

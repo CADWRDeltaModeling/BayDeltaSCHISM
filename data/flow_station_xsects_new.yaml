@@ -91,10 +91,10 @@ linestrings:
   station_name: Grantline Canal
 - agency_id: '11313460'
   coordinates:
+  - - 626765.156
+    - 4213595.915  
   - - 626418.551
     - 4213228.143
-  - - 626765.156
-    - 4213595.915
   name: PRI
   station_id: PRI
   station_name: San Joaquin R at Prisoners Pt
