@@ -31,3 +31,5 @@ PTS,upper,-0.5,
 PTS,lower,-20.0,Exact depth being queried with USBR  -- this value places output at bottom
 ANC,upper,-0.5,
 ANC,lower,-20.0,Exact depth being queried with USBR  -- this value places output at bottom
+SDI,upper,-0.5,Per Paul Stumpner
+SDI,lower,-8.0,Per Paul Stumpner 1m from bottom (subject to uncertainty)
