@@ -93,10 +93,10 @@ linestrings:
   station_name: Grantline Canal
 - agency_id: '11313460'
   coordinates:
-  - - 626418.551
-    - 4213228.143
   - - 626765.156
     - 4213595.915  
+  - - 626418.551
+    - 4213228.143
   name: PRI
   station_id: PRI
   station_name: San Joaquin R at Prisoners Pt
@@ -488,33 +488,6 @@ linestrings:
   name: SGA
   station_id: SGA
   station_name: Sugar Cut at Golden Anchor
-- agency_id: B95640Q
-  coordinates:
-  - - 641779.0
-    - 4204820.
-  - - 641909.0
-    - 4204929.
-  name: SJC
-  station_id: SJC
-  station_name: San Joaquin River near Buckley Cove
-- agency_id: B95370
-  coordinates:
-  - - 630535.
-    - 4183895.
-  - - 630591.
-    - 4183961.
-  name: ORM
-  station_id: ORM
-  station_name: Old River upstream of Mountain House Creek
-- agency_id: B95325
-  coordinates:
-  - - 638618.
-    - 4186419.
-  - - 638707.
-    - 4186505.
-  name: DGL
-  station_id: DGL
-  station_name: Doughty Cut above Grant Line Canal
 - agency_id: '11455146'
   coordinates:
   - - 616532.0
@@ -654,10 +627,10 @@ linestrings:
   station_name: First Mallard Branch
 - comment: Diagnistic, not in station database
   coordinates:
-  - - 581350.0
-    - 4219850.0
-  - - 581340.
-    - 4219561.0
+  - - 581335.632
+    - 4219972.272
+  - - 581214.982
+    - 4219429.346
   name: suisun_sl_entrance
   station_id: suisun_sl_entrance
   station_name: suisun_sl_entrance
