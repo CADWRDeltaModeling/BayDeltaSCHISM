@@ -16,7 +16,7 @@ mesh:
   dem_list: !include dem_4.2_hist.yaml
   depth_optimization: !include depth_opt_params.yaml
   open_boundaries: !include open_boundary.yaml
-  depth_enforcement: !include depth_enforcement.yaml   # Introduced as depth_enforcement_itp_suisunshallow2.yaml  
+  depth_enforcement: !include depth_enforcement.yaml
   ll_outputfile: hgrid.ll
   gr3_outputfile: hgrid.gr3
 
@@ -29,8 +29,8 @@ flow_outputs:
 gr3:
   xlsc.gr3:
     default: 0.1
-  diffmin.gr3: !include diffmin.yaml # Updated 110b
-  rough.gr3: !include rough.yaml     # Updated 110b
+  diffmin.gr3: !include diffmin.yaml # Updated for bathymetry 4.2 (post 110b)
+  rough.gr3: !include rough.yaml     # Updated for bathymetry 4.2 (post 110b)
 
   #  default: 1.5e-5
   diffmax.gr3:
