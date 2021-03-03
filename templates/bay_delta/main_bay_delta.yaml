@@ -13,7 +13,7 @@ mesh:
     warn: 10.
     fail: 4.  
   # includes restoration sites at top of list
-  dem_list: !include dem_4.1_hist.yaml
+  dem_list: !include dem_4.2_hist.yaml
   depth_optimization: !include depth_opt_params.yaml
   open_boundaries: !include open_boundary.yaml
   depth_enforcement: !include depth_enforcement.yaml   # Introduced as depth_enforcement_itp_suisunshallow2.yaml  
@@ -21,8 +21,9 @@ mesh:
   gr3_outputfile: hgrid.gr3
 
 # Note this file is in the /data directory and relative location needs to be set
+# This should come from flow_station_xsects_new.yaml with newer ids.
 flow_outputs:
-  include: flow_station_xsects.yaml
+  include: flow_station_xsects.yaml 
   outputfile: fluxflag.prop
 
 gr3:
