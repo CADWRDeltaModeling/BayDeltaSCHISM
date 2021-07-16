@@ -53,7 +53,7 @@ IBS,97,Cordelia Slough at Ibis club,38.15729922,-122.1136785,577650.9,4223639,S9
 LIS,B91560,Yolo Bypass at Lisbon,38.47503915,-121.5885124,623124,4259467.4,,B91560,LIS,dwr_ncro,x,x,,
 WCI,WCI,West Canal near Clifton Court Intake,37.83161222,-121.5540556,627243.2,4188117.2,,B95338,WCI,dwr_ncro,,x,x,
 ORI,B95341,Old River near Clifton Court Intake,37.82797167,-121.5526014,627377.4,4187715.2,,B95341,ORI,dwr_ncro,,x,x,ADCP flow station
-RCS,RCS,Ridge Cut Slough at Knight's Landing,38.79378266,-121.7253592,610695,4294664.3,,,RCS,dwr_ncro,x,x,x,
+RCS,RCS,Ridge Cut Slough at Knight's Landing,38.79378266,-121.7253592,610695,4294664.3,,A02939,RCS,dwr_ncro,x,x,x,
 NSL,E33670,Montezuma Slough at National Steel,38.12202682,-121.8882107,597451.6,4219938,S64,E33670,NSL,dwr_ncro,x,x,x,
 NSL2,64,Montezuma Slough at National Steel,38.12222,-121.888694,597451.6,4219938,S64,64,NSL2,dwr_des,x,x,x,This i
 SJL,B95765,San Joaquin River near Lathrop,37.81097104,-121.3234822,647576.1,4186166.1,,B95765,SJL,dwr_ncro,x,x,x,Not confirmed. Moved to pier.
@@ -168,7 +168,7 @@ SUR,B95422,Sugar Cut,37.78836111,-121.4193889,639164.7,4183509.3,,B95422,SUR,dwr
 GLE,B95320,Grant Line Canal East,37.820258,-121.4348562,637754.4,4187026.5,,B95320,GLE,dwr_ncro,,x,x,"ADCP Flow Station, commence on 1/15/2013; WQ, commence on 2/15/2013"
 MAB,B95502,Middle River above Barrier ,37.8851804,-121.4727615,634300.2,4194175,,B95502,MAB,dwr_ncro,,x,x,"ADCP Flow Station, commence on 4/23/2013"
 ORX,B95390,Old River above Doughty Cut,37.8109973,-121.3865757,642021.8,4186071.2,,B95390,ORX,dwr_ncro,x,x,,"ADCP Flow Station, commence on 1/30/2013"
-SJD,B95760,San Joaquin River above Dos Reis,37.8223312,-121.3177244,648060.2,4187435.7,,B95760,SJD,dwr_nrco,,x,,"ADCP Flow Station, commence on 2/28/2013"
+SJD,B95760,San Joaquin River above Dos Reis,37.8223312,-121.3177244,648060.2,4187435.7,,B95760,SJD,dwr_ncro,,x,,"ADCP Flow Station, commence on 2/28/2013"
 ALK,'374938122251801,San Francisco Bay at Northeast Shore Alcatraz Island,37.82722222,-122.4216667,550895.2,4186802.8,,,,usgs,,,x,"location: unsurveyed, at end of finger pier adjacent to ferry terminal; WQ monitor since November 2013;Interruptions in record were due to malfunction of the sensing and (or) recording instrument and biological interference within the conductivity cell. The probe is set at 6 ft below the water surface at Mean Lower Low Water (MLLW). MLLW is about 16 ft. Daily maximums and minimums sometimes differ from tidal cycle (24.8 hours) maximums and minimums.Specific conductivity records are rated excellent except for the following periods of fouling: Oct. 1, 2, Nov. 2-8, Aug. 19, 20, which are rated good. Water temperature records are rated excellent."
 MHO,B9553100,Middle River near Howard Rd Bridge,37.876222,-121.383306,642184.4,4193313.5,,B9553100,MHO,dwr_ncro,,,x,added 6/6/2014
 SDI,11455478,Decker Island,38.093367,-121.737267,610748.9,4216702.8,,,SDI,usgs,x,,x,proposal provisional
@@ -240,11 +240,21 @@ GZB,368,Grizzly Bay Buoy,38.1231408,-122.0075808,586986.9,4219943,,,GZB,dwr_des,
 ALAM,11180700,Alameda Creek Flood Channel at Union City,37.585833,-122.047,584140.23,4160290.79,,,,usgs,,x,,
 TEA,28,Teal Club at Frank Horan Slough,38.17667,-122.08611,580045,4225811,S28,,,dwr_des,,,,x
 HSL,4,Hill Slough,38.22639,-122.02111,585680,4231386,S4,,,dwr_des,,,,x
-SSW,'382010121402301,Liberty Island at Upper Stair Step,38.3361667,-121.672925,617982,4243947,,,usgs,SSW,x,,,
-PSF,'381424121405601,Prospect Slough Near Five Points,38.23989,-121.68199,615325,4233252,,,usgs,PSF,x,,,
-TOES,'381732121393801,Toe Drain at Five Points,38.29218611,-121.6606028,617130,4239083,,,usgs,TOES,x,,,
-LHTN,11455143,Little Holland Tract at North Breach Near Holland Tract,38.33541,-121.6582,617274,4243882,,,usgs,LHTN,x,x,x,
-LHTSE,11455167,Prospect Slough at Toe Drain Near Courtland,38.33541,-121.6582,617274,4243882,,,usgs,LHTSE,x,x,x,
-CBS,'381502121411201,Cache Slough below Shag Slough,38.25069,-121.68669,614881,4234438,,,usgs,CBS,x,x,x,
-LCTS,'381749121400201,Liberty Cut at Five Points,38.296844,-121.667086,616555,4239591,,,usgs,LCTS,x,x,x,
-LCT,11455146,Liberty Cut at Holland Tract,38.32885,-121.6675306,616465,4243143,,,usgs,LCT,x,x,x,
+SSW,'382010121402301,Liberty Island at Upper Stair Step,38.3361667,-121.672925,617982,4243947,,,SSW,usgs,x,,,
+PSF,'381424121405601,Prospect Slough Near Five Points,38.23989,-121.68199,615325,4233252,,,PSF,usgs,x,,,
+TOES,'381732121393801,Toe Drain at Five Points,38.29218611,-121.6606028,617130,4239083,,,TOES,usgs,x,,,
+LHTN,11455143,Little Holland Tract at North Breach Near Holland Tract,38.33541,-121.6582,617274,4243882,,,LHTN,usgs,x,x,x,
+LHTSE,11455167,Prospect Slough at Toe Drain Near Courtland,38.33541,-121.6582,617274,4243882,,,LHTSE,usgs,x,x,x,
+CBS,'381502121411201,Cache Slough below Shag Slough,38.25069,-121.68669,614881,4234438,,,CBS,usgs,x,x,x,
+LCTS,'381749121400201,Liberty Cut at Five Points,38.296844,-121.667086,616555,4239591,,,LCTS,usgs,x,x,x,
+LCT,11455146,Liberty Cut at Holland Tract,38.32885,-121.6675306,616465,4243143,,,LCT,usgs,x,x,x,
+JTR,JTR,Jones Tract,37.9202,-121.5165,630392,4197998.7,,,JTR,dwr_ncro,,x,x,"NCRO station, but apparently not on WDL"
+HUP,9414358,Hunters Point,37.73,-122.357,556660.3,4176053.2,,,,noaa,,,,
+SSE,9415265,Suisun Slough Entrance,38.12065452,-122.0737802,581187.1,4219607.1,,,,noaa,,x,,"Not confirmed. No detailed description, defunct 1989"
+CCY,11452500,Cache Creek at Yolo,38.726635,-121.807152,603778.3506,4287183,,,,usgs,,,,
+PCW,11454000,Putah Creek near Winters,38.515186,-122.081917,580133.2256,4263389,,,,usgs,,,,
+WSD,383525121434601,Willow Slough Bypass near Davis,38.590278,-121.729444,610653.3539,4272076,,,,usgs,,,,
+ARF,11446500,American River at Fair Oaks,38.63546,-121.22773,654346.1435,4277827,,,,usgs,,,,
+ARH,A07140,American River at H Street Bridge,38.568611,-121.423889,637297.2836,4270084,,,,dwr,,,,
+BTS,S40,Boynton Slough,38.20528,-122.06111,582201.4519,4228997,,,,dwr_des,,,,
+GSF,S96,Goodyear Slough at Fleet,38.08083,-122.09972,579121.895,4214883,,,,dwr_des,,,,

@@ -1,4 +1,15 @@
 id,old_id,agency,station_utm,station_utm_new,d1641_id,wdl_id,cdec_id
+GSF,S96,dwr_des,T,T,,,
+BTS,S40,dwr_des,T,T,,,
+ARH,A07140,dwr,T,T,,,
+ARF,11446500,usgs,T,T,,,
+WSD,'383525121434601,usgs,T,T,,,
+PCW,11454000,usgs,T,T,,,
+CCY,11452500,usgs,T,T,,,
+SSE,9415265,noaa,T,T,,,
+SLM,9414688,noaa,T,T,,,
+HUP,9414358,noaa,T,T,,,
+JTR,JTR,dwr_ncro,T,T,,,JTR
 ANH,B95020,dwr_ncro,T,T,D12A,B95020,ANH
 ANH,ANH,dwr_des,T,T,D12A,,ANH
 BEN,B94175,dwr_ncro,T,T,,B94175,BEN
@@ -58,7 +69,7 @@ IBS,IBS,dwr_des,T,T,S97,,IBS
 LIS,B91560,dwr_ncro,T,T,,B91560,LIS
 WCI,WCI,dwr_ncro,T,T,,B95338,WCI
 ORI,B95341,dwr_ncro,T,T,,B95341,ORI
-RCS,RCS,dwr_ncro,T,T,,,RCS
+RCS,RCS,dwr_ncro,T,T,,A02939,RCS
 NSL,E33670,dwr_ncro,T,T,S64,E33670,NSL
 SJL,B95765,dwr_ncro,T,T,,B95765,SJL
 BDT,B95740,dwr_ncro,T,T,,B95740,BDT
@@ -188,7 +199,7 @@ TWI,TWI,dwr_des,T,T,,,TWI
 SSI,SSI,dwr_des,T,T,,,SSI
 BET2,B9504500,dwr_ncro,T,T,,B9504500,BET
 FRK,FRK,dwr_des,T,T,,,FRK
-HON,HON,dwr_des,T,T,,,HON
+HON,HON,dwr_des,T,T,D9,,HON
 RYC,RYC,,F,T,,RYC,dwr_des
 GZL,GZL,dwr_des,T,T,,,GZL
 SGA,B95415,dwr_ncro,T,T,,B95415Q,SGA
