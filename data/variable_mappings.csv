@@ -1,4 +1,4 @@
-﻿src_var_name,src_name,src_var_id,var_name,
+﻿src_var_name,src_name,src_var_id,var_name,cdec_id
 stage_c,source,233,elev,
 stage,usgs,65,elev,
 stage,cdec,RIV STG,elev,1
@@ -42,3 +42,6 @@ ssc_e,usgs,99409,,
 sal,usgs,90860,,
 ssc,usgs,99409,,
 NO3+NO2,usgs,99133,,
+NO3,cdec,DissNO3,,150
+DOC,cdec,D ORGCO,,179
+TOC,cdec,T ORG C,,101
