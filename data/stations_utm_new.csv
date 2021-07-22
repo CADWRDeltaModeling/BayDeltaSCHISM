@@ -22,6 +22,7 @@ MAL,60,Sacramento River at Mallard Island,38.04288249,-121.9201106,594757.5,4211
 MHR,B95530,Middle River at Howard Rd Bridge,37.877,-121.3835,642165.8,4193399.5,,B95530,MHR,dwr_ncro,x,,x,
 MSD,B95820,San Joaquin at Mossdale Bridge,37.78613049,-121.3064425,649126.1,4183436.8,C7A,B95820,MSD,dwr_ncro,x,x,,"Flow transect is 0.25 miles ds from bridge. Was once at bridge, but ferrous metals interfered with"
 MTB,B95503,Middle River at Tracy Blvd,37.8816,-121.456,635780.8,4193802,,B95503,MTB,dwr_ncro,x,,x,
+MTYC1,9413450,Monterey,36.605,-121.889,,,,noaa,x
 OAD,B95366,Old River Barrier near DMC (Above),37.81055556,-121.5422222,628312.5,4185763.1,,B95366,OAD,dwr_ncro,x,,x,"At OAD, NCRO collects stage, EC, pH, DO, turbidity and chlorophyll above the temp barrier (B95366 and B953660) and telemeters it.  "
 OBD,B95365,Old River below Dam,37.8116,-121.547,627898.6,4185906.3,,B95365,OBD,dwr_ncro,x,,x,At OBD NCRO collects only stage (B95365) and telemeters. 
 BAC,B95250,Old River at Bacon Island,37.96791667,-121.5743889,625406.5,4203423.6,,B95250,BAC,dwr_ncro,x,,x,Collocated with USGS 11313405 on USGS pile. Historically across river.
@@ -74,7 +75,7 @@ RICHM,9414863,Richmond,37.92820794,-122.3999317,552736,4198019.3,,,,noaa,xx,,,
 ANC,ANC,Antioch,38.01784713,-121.802883,605075.1,4208474.7,,,ANC,usbr,,,x,
 CLL,CLL,Collinsville,38.07394957,-121.8500958,600858.7,4214644.1,,,CLL,usbr,,,x,
 CNT,CNT,Contra Costa,37.99587604,-121.7017029,613995.8,4206152.6,C5,,CNT,usbr,,,x,
-PTS,PTS,PIttsburg,38.04316356,-121.8918355,597238.3,4211183.7,,,PTS,usbr,,,x,
+PTS,PTS,Pittsburg,38.04316356,-121.8918355,597238.3,4211183.7,,,PTS,usbr,,,x,
 RIV,RIV,Rio Vista,38.15916838,-121.6844634,615252.9,4224292.9,D24A,,RIV,usbr,,,x,Under bridge tenders office almost in center of channel
 VER,VER,Vernalis,37.6791908,-121.2648837,653005.8,4171637.9,C10,,VER,usbr,,,x,Relocated from Durham Farry/Airoport Way Bridge to DWR pier where SJR is located
 PCT,PCT,Port Chicago,38.05893797,-122.024823,585550.4,4212803.2,C14,,PCT,usbr,,,x,Pier 2 (1 mile upstream from NOAA site)
@@ -97,6 +98,7 @@ ORQ,11313434,Old R at Quimby Island,38.0272222,-121.5644444,625994.6,4209807.9,,
 FAL,11313440,False R near Oakley,38.0558333,-121.6669444,616952.5,4212848.6,,,FAL,usgs,x,x,,"Both FAL and ORQ are USGS station where they collect flow and NCRO collects EC, chlorophyll, temp and turbidity"
 OSJ,11313452,Old R at Franks Tract,38.0711111,-121.5788889,624652.3,4214658.4,,,OSJ,usgs,x,x,,"At OSJ USGS collects flow data while NCRO collects temp, EC, turbidity and chlorophyll.  USGS telemeters the data."
 PRI,11313460,San Joaquin R at Prisoners Pt,38.05944444,-121.5572222,626573,4213393.1,,,PRI,usgs,x,x,x,"Boat access only on a pile, not carefully registered here. Flow and vertical datum considered suspect"
+PRYC1,9415020,Point Reyes,37.996,-122.977,,,,noaa,x
 DLC,11336600,Delta Cross Channel near Walnut Grove,38.24477822,-121.5052384,630802.2,4234030.6,,,DLC ,usgs,x,x,x,
 LPS,11336790,Little Potato Slough at Terminous,38.09638889,-121.496111,631868.1,4217577.6,,,LPS,usgs,x,x,x,
 MOK,11336930,Mokelumne R at Andrus Island,38.1061111,-121.571111,625274.8,4218552.5,,,MOK,usgs,x,x,,"At MOK, USGS collects flow data while NCRO collects temp, EC and turbidity.  USGS telemeters the data."
@@ -240,21 +242,18 @@ GZB,368,Grizzly Bay Buoy,38.1231408,-122.0075808,586986.9,4219943,,,GZB,dwr_des,
 ALAM,11180700,Alameda Creek Flood Channel at Union City,37.585833,-122.047,584140.23,4160290.79,,,,usgs,,x,,
 TEA,28,Teal Club at Frank Horan Slough,38.17667,-122.08611,580045,4225811,S28,,,dwr_des,,,,x
 HSL,4,Hill Slough,38.22639,-122.02111,585680,4231386,S4,,,dwr_des,,,,x
-SSW,'382010121402301,Liberty Island at Upper Stair Step,38.3361667,-121.672925,617982,4243947,,,SSW,usgs,x,,,
-PSF,'381424121405601,Prospect Slough Near Five Points,38.23989,-121.68199,615325,4233252,,,PSF,usgs,x,,,
-TOES,'381732121393801,Toe Drain at Five Points,38.29218611,-121.6606028,617130,4239083,,,TOES,usgs,x,,,
-LHTN,11455143,Little Holland Tract at North Breach Near Holland Tract,38.33541,-121.6582,617274,4243882,,,LHTN,usgs,x,x,x,
-LHTSE,11455167,Prospect Slough at Toe Drain Near Courtland,38.33541,-121.6582,617274,4243882,,,LHTSE,usgs,x,x,x,
-CBS,'381502121411201,Cache Slough below Shag Slough,38.25069,-121.68669,614881,4234438,,,CBS,usgs,x,x,x,
-LCTS,'381749121400201,Liberty Cut at Five Points,38.296844,-121.667086,616555,4239591,,,LCTS,usgs,x,x,x,
-LCT,11455146,Liberty Cut at Holland Tract,38.32885,-121.6675306,616465,4243143,,,LCT,usgs,x,x,x,
-JTR,JTR,Jones Tract,37.9202,-121.5165,630392,4197998.7,,,JTR,dwr_ncro,,x,x,"NCRO station, but apparently not on WDL"
-HUP,9414358,Hunters Point,37.73,-122.357,556660.3,4176053.2,,,,noaa,,,,
-SSE,9415265,Suisun Slough Entrance,38.12065452,-122.0737802,581187.1,4219607.1,,,,noaa,,x,,"Not confirmed. No detailed description, defunct 1989"
-CCY,11452500,Cache Creek at Yolo,38.726635,-121.807152,603778.3506,4287183,,,,usgs,,,,
+SSW,'382010121402301,Liberty Island at Upper Stair Step,38.3361667,-121.672925,617982,4243947,,,,usgs,x,,,
+PSF,'381424121405601,Prospect Slough Near Five Points,38.23989,-121.68199,615325,4233252,,,,usgs,x,,,
+TOES,'381732121393801,Toe Drain at Five Points,38.29218611,-121.6606028,617130,4239083,,,,usgs,x,,,
+LHTN,11455143,Little Holland Tract at North Breach Near Holland Tract,38.33541,-121.6582,617274,4243882,,,,usgs,x,x,x,
+LHTSE,11455167,Prospect Slough at Toe Drain Near Courtland,38.33541,-121.6582,617274,4243882,,,,usgs,x,x,x,
+CBS,'381502121411201,Cache Slough below Shag Slough,38.25069,-121.68669,614881,4234438,,,,usgs,x,x,x,
+LCTS,'381749121400201,Liberty Cut at Five Points,38.296844,-121.667086,616555,4239591,,,,usgs,x,x,x,
+LCT,11455146,Liberty Cut at Holland Tract,38.32885,-121.6675306,616465,4243143,,,,usgs,x,x,x,
+CCY,11452500,Cache Creek at Yolo,38.726635,-121.807152,603778.3506,4287183,,,CCY,usgs,,,,
 PCW,11454000,Putah Creek near Winters,38.515186,-122.081917,580133.2256,4263389,,,,usgs,,,,
 WSD,383525121434601,Willow Slough Bypass near Davis,38.590278,-121.729444,610653.3539,4272076,,,,usgs,,,,
-ARF,11446500,American River at Fair Oaks,38.63546,-121.22773,654346.1435,4277827,,,,usgs,,,,
-ARH,A07140,American River at H Street Bridge,38.568611,-121.423889,637297.2836,4270084,,,,dwr,,,,
+AFO,11446500,American River at Fair Oaks,38.63546,-121.22773,654346.1435,4277827,,,AFO,usgs,,,,
+HST,A07140,American River at H Street Bridge,38.568611,-121.423889,637297.2836,4270084,,,HST,dwr,,,,
 BTS,S40,Boynton Slough,38.20528,-122.06111,582201.4519,4228997,,,,dwr_des,,,,
-GSF,S96,Goodyear Slough at Fleet,38.08083,-122.09972,579121.895,4214883,,,,dwr_des,,,,
+FLT,S96,Goodyear Slough at Fleet,38.08083,-122.09972,579121.895,4214883,,,FLT,dwr_des,,,,
