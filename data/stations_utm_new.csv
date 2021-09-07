@@ -43,7 +43,7 @@ vic,VIC,Victoria Island,37.89122605,-121.48825,632927.2,4194823.6,,,VIC,usbr,,,x
 bks,BKS,Barker Slough Pumping Plant,38.27639642,-121.7969582,605228,4237166.9,,,BKS,dwr,,x,x,Slightly moved closer to slough. D1461 site was in another side slough upstream.
 vni,B95580,Venice Island,38.0491,-121.4976,631822.4,4212328.2,,B95580,VNI,dwr,x,,,same as the WDL B95580
 cse,22,Sacramento River at Collinsville,38.07394957,-121.8500958,600859.1,4214643.6,C2B,,CSE,dwr_des,x,,x,
-c3a,70,Sacramento River at Hood,38.36771516,-121.5205061,629247.7,4247651,C3A,,SRH,dwr_des,,,x,"Colocated wiht MWQI """"HOOD"""" Established to replace C3. Location confirmed visually by DES (there is a bogus location north)."
+srh,70,Sacramento River at Hood,38.36771516,-121.5205061,629247.7,4247651,C3A,,SRH,dwr_des,,,x,"Colocated wiht MWQI """"HOOD"""" Established to replace C3. Location confirmed visually by DES (there is a bogus location north)."
 rvb,30,Sacramento River at Rio Vista,38.15974033,-121.6862425,615105,4224354.2,D24A,B91212,RVB,dwr_des,x,,x,DWR Rio Vista site nudged 9m to the east to be always wet
 mrz,40,Sacramento River at Martinez,38.02761665,-122.1405194,575432.5,4209227.7,C6A,,MRZ,dwr_des,x,,x,
 snc,21,Chadbourne Slough at Sunrise Duck Club,38.18503208,-122.0830545,580303.5,4226742.3,S21,,SNC,dwr_des,x,,,Not confirmed
@@ -257,4 +257,3 @@ lhtse,11455167,Prospect Slough at Toe Drain Near Courtland,38.33541,-121.6582,61
 cbs,'381502121411201,Cache Slough below Shag Slough,38.25069,-121.68669,614881,4234438,,,,usgs,x,x,x,
 lcts,'381749121400201,Liberty Cut at Five Points,38.296844,-121.667086,616555,4239591,,,,usgs,x,x,x,
 lct,11455146,Liberty Cut at Holland Tract,38.32885,-121.6675306,616465,4243143,,,,usgs,x,x,x,
-DAR,DAR,DRAINAGE AT ARBOR ROAD,37.768959,-121.419414,639209.9222,4181357.267,,,DAR,dwr_ncro,x,x,x,this data is only available on cdec not on wdl
