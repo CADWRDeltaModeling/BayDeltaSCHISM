@@ -154,4 +154,7 @@
 2021-06-01T08:45     1    3    0.666    0.666    -6.86    10.97    10.0   # Gates opened due to end of control season
 2021-06-03T09:30     1    3    0.666    0.666    -6.86    10.97    10.0   # Continuation of above op after flashboards removed
 2021-08-23T12:18     1    3    0.666    0.666    -6.86    10.97    10.0   # Open on two gates, other closed
-2021-09-01T00:01     1    3    0.666    0.000    -6.86    10.97    10.0   # Tidal ops on two gates, other closed
+2021-09-01T00:01     1    3    0.666    0.000    -6.86    10.97    10.0   # Tidal ops on two gates, other closed. Closure through 10th in log doesn't tally with flow and ignored
+
+
+
