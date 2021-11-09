@@ -77,3 +77,14 @@ water_level,noaa,water_level,elev,Query results are not marked with variable
 predictions,noaa,predictions,predictions,Query results are not marked with variable
 conductivity,noaa,conductivity,ec,Query results are not marked with variable
 water_temperature,noaa,water_temperature,temp,Query results are not marked with variable
+Water Temperature,des,63,water_temperature,
+SpC,des,65,ec,
+Dissolved Oxygen,des,66,do
+Chloride,des,67,cl
+pH,des,68,ph
+Solar radiation,des,70,solar_radiation
+Wind direction,des,71,wind_dir
+Wind velocity,des,81,wind_speed
+Air Temperature,des,156,air_temp
+Stage,des,82,elev
+Turbidity,des,80,turbidity
