@@ -5,6 +5,7 @@ depth,depth,depth,
 wind_speed,wind_speed,wind speed,
 wind_dir,wind_direction,wind_to_dir,"cf standard is a bearing clockwise from north and id the ""to"" direction. There is a ""from"" variant we could add if there are examples."
 solar_radiation,solar_radiation,surface_net_downward_radiative_flux,this may not be correct
+air_temp,air_temperature,,
 temp,water_temperature,sea_water_temperature
 ec,specific_conductance,sea_water_electrical_conductivity,specific conductance seems preferred by collectors?
 salinity,salinity,sea_water_practical_salinity,"this is in psu which is technically not a ""unit"""
