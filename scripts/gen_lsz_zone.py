@@ -165,8 +165,8 @@ k=0
 start_date=average_period[k]
 end_date=average_period[k+1]
     
-start_day=(start_date-model_start).days
-end_day=(end_date-model_start).days
+start_day=(start_date-model_start).days+1
+end_day=(end_date-model_start).days+1
     
 nc_file=data_folder+"schout_%d.nc"%start_day
 neibor_ele_table=0
@@ -207,8 +207,8 @@ for k in range(len(average_period)-1):
     start_date=average_period[k]
     end_date=average_period[k+1]
     
-    start_day=(start_date-model_start).days
-    end_day=(end_date-model_start).days
+    start_day=(start_date-model_start).days+1
+    end_day=(end_date-model_start).days+1
     
     
     salt_time_depth_average=0
