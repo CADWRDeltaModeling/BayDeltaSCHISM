@@ -1,6 +1,14 @@
 # elev.ic
 default: 0.96
 polygons:
+  - name: slr_or_below_bed   # Places the nominal surface right below bed in dry areas
+    type: none
+    attribute: max(0.96,-z-0.01) 
+    vertices: 
+      - [450000.,4000000.]
+      - [700000.,4000000.]
+      - [700000.,4500000.]
+      - [450000.,4500000.]
   - name: ccfb
     type: none
     attribute: 0.525
