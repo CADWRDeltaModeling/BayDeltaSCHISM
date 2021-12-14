@@ -237,8 +237,8 @@ structures:
   - name: west_false_river_barrier_leakage
     type: weir_culvert
     end_points:
-      [[616557., 4212909.],
-       [616653., 4213145.]]
+      [[616524.,4212930.],     #  previous version [[616557., 4212909.], [616653., 4213145.]]
+       [616626.,4213160.]]
     configuration:
       n_duplicates: 1
       elevation: -2.44
