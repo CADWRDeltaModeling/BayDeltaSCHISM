@@ -1,4 +1,20 @@
 polygons: 
+- attribute: '-1.'
+  name: fish_cut_sed
+  type: max
+  vertices:
+  - - 618588.
+    - 4213042.
+  - - 618584.
+    - 4213025.
+  - - 618585.
+    - 4212995.
+  - - 618606.
+    - 4212990
+  - - 618607.
+    - 4213015.
+  - - 618594.
+    - 4213042.
 - attribute: '0.8'
   name: shag_slough_extension
   type: min
