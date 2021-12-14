@@ -101,7 +101,7 @@ orq,11313434,Old R at Quimby Island,38.0272222,-121.5644444,625994.6,4209807.9,,
 fal,11313440,False R near Oakley,38.0558333,-121.6669444,616952.5,4212848.6,,,FAL,usgs,x,x,,"Both FAL and ORQ are USGS station where they collect flow and NCRO collects EC, chlorophyll, temp and turbidity"
 osj,11313452,Old R at Franks Tract,38.0711111,-121.5788889,624652.3,4214658.4,,,OSJ,usgs,x,x,,"At OSJ USGS collects flow data while NCRO collects temp, EC, turbidity and chlorophyll.  USGS telemeters the data."
 pri,11313460,San Joaquin R at Prisoners Pt,38.05944444,-121.5572222,626573,4213393.1,,,PRI,usgs,x,x,x,"Boat access only on a pile, not carefully registered here. Flow and vertical datum considered suspect"
-dlc,11336600,Delta Cross Channel near Walnut Grove,38.24477822,-121.5052384,630802.2,4234030.6,,,DLC ,usgs,x,x,x,
+dlc,11336600,Delta Cross Channel near Walnut Grove,38.24477822,-121.5052384,630802.2,4234030.6,,,DLC,usgs,x,x,x,
 lps,11336790,Little Potato Slough at Terminous,38.09638889,-121.496111,631868.1,4217577.6,,,LPS,usgs,x,x,x,
 mok,11336930,Mokelumne R at Andrus Island,38.1061111,-121.571111,625274.8,4218552.5,,,MOK,usgs,x,x,,"At MOK, USGS collects flow data while NCRO collects temp, EC and turbidity.  USGS telemeters the data."
 tsl,11337080,Threemile Slough near Rio Vista,38.1033333,-121.686111,615196.3,4218095.3,,,TSL,usgs,x,x,,
@@ -269,3 +269,5 @@ c24,'380318121571501,Suisun Bay at Channel Marker 24A Near Bay Point,38.05510,-1
 co5,11455498,Suisun Bay at Channel Marker 5 at Collinsville,38.06578,-121.83581,602123.11,4213753.24,,,C05,usgs,,,x,
 c10,11455495,Suisun Bay at Channel Marker 10 Near Collinsville,38.05983,-121.79989,605282.66,4213133.12,,,C10,usgs,,,x,
 m13,11455485,Sacramento R Below Toland Landing Near Rio Vista,38.07781,-121.76729,608116.21,4215165.61,,,M13,usgs,,,x,
+klup,A0223002,Sacramento River above CBD,38.805210,-121.723720,610819.69,4295934.45,,A0223002,,dwr_ncro,,,x
+knl,A02200,Sacramento River at Knights Landing,38.803348,-121.716391,611458.99,4295736.72,,A02200,,KNL,dwr_ncro,,,x
