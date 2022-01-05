@@ -92,8 +92,14 @@
 2018-06-13T00:00    1   9   0.000   1.000   -1.11   0.61
 2018-11-14T00:00    0   9   1.000   1.000   -1.11   0.61  # Barrier breached (removal completed on 11/28/18)
 2019-07-19T14:45    1   9   1.000   1.000   -1.11   0.61  # Installation closed
-2019-06-13T15:00    1   9   0.000   1.000   -1.11   0.61  # flap gates set to tidal operations
+2019-07-19T15:00    1   9   0.000   1.000   -1.11   0.61  # flap gates set to tidal operations
 2019-10-28T13:10    0   9   1.000   1.000   -1.11   0.61  # Barrier breached (removal completed on 11/11/19)
 2020-05-29T09:00    1   9   0.111   1.000   -1.11   0.61  # Installation closed, one flapgate left open
 2020-06-12T09:00    1   9   0.000   1.000   -1.11   0.61  # All flapgates released to tidal operation
 2020-11-02T14:15    0   9   1.000   1.000   -1.11   0.61  # Barrier breached (removal completed on 11/17/20)     
+2021-05-27T10:00    1   9   0.111   1.000   -1.11   0.61  # one culvert tied open, 8 tidal
+2021-06-01T15:30    1   9   0.000   1.000   -1.11   0.61  # remaining flapgate release to tidal operation
+2021-11-09T00:00    0   9   1.000   1.000   -1.11   0.61  # barrier breached (removal completed on 11/20/20)
+2022-05-27T10:01    1   9   0.110   1.000   -1.11   0.61
+2022-06-01T15:30    1   9   0.000   1.000   -1.11   0.61
+2022-11-02T14:15    0   9   1.000   1.000   -1.11   0.61
