@@ -1,6 +1,15 @@
 # This file was copied from flow_station_xsects_new.yaml on 2/27/2021 and includes the new user-guessable station names and cdec-like id 
 #
 linestrings:
+- agency_id: B95541
+  coordinates:
+  - - 642050.
+    - 4188627.
+  - - 642065.
+    - 4188614.
+  name: MRU
+  station_id: MRU
+  station_name: Middle River at Undine Road
 - agency_id: B95765
   coordinates:
   - - 647569.275
@@ -242,8 +251,8 @@ linestrings:
     - 4234146.061
   - - 630793.781
     - 4234011.499
-  name: 'DLC '
-  station_id: 'DLC '
+  name: DLC
+  station_id: DLC
   station_name: Delta Cross Channel near Walnut Grove
 - agency_id: B95820
   coordinates:
@@ -463,10 +472,10 @@ linestrings:
   station_name: Fisherman's Cut
 - agency_id: OLD
   coordinates:
+  - - 636503.855
+    - 4185230.637  
   - - 636488.244
     - 4185298.635
-  - - 636503.855
-    - 4185230.637
   name: OLD
   station_id: OLD
   station_name: Old River at Tracy Blvd
@@ -787,3 +796,90 @@ linestrings:
   name: chipps
   station_id: chipps
   station_name: chipps
+- comment: Diagnistic on Woodward Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 626886.0
+    - 4197122.0
+  - - 626886.0
+    - 4197282.0
+  name: woodward_w
+  station_id: woodward_west
+  station_name: woodward_west
+- comment: Diagnistic on Woodward Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 627740.0
+    - 4197145.0
+  - - 627740.0
+    - 4197300.0
+  name: woodward_c
+  station_id: woodward_central
+  station_name: woodward_central
+- comment: Diagnistic on Woodward Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 629945.0
+    - 4197203.0
+  - - 629945.0
+    - 4197355.0
+  name: woodward_e
+  station_id: woodward_east
+  station_name: woodward_east
+- comment: Diagnistic on Railroad Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 626658.0
+    - 4200050.0
+  - - 626658.0
+    - 4200110.0
+  name: railroad_sw
+  station_id: railroad_southwest
+  station_name: railroad_southwest
+- comment: Diagnistic on Railroad Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 626700.0
+    - 4200150.0
+  - - 626700.0
+    - 4200250.0
+  name: railroad_nw
+  station_id: railroad_northwest
+  station_name: railroad_northwest
+- comment: Diagnistic on Railroad Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 627530.0
+    - 4200065.0
+  - - 627530.0
+    - 4200140.0
+  name: railroad_s
+  station_id: railroad_southcent
+  station_name: railroad_southcent
+- comment: Diagnistic on Railroad Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 627542.0
+    - 4200165.0
+  - - 627543.0
+    - 4200255.0
+  name: railroad_n
+  station_id: railroad_northcent
+  station_name: railroad_northcent 
+- comment: Diagnistic on Railroad Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 628690.0
+    - 4200080.0
+  - - 628690.0
+    - 4200150.0
+  name: railroad_se
+  station_id: railroad_southeast
+  station_name: railroad_southeast
+- comment: Diagnistic on Railroad Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 628471.
+    - 4200171.0
+  - - 628471.0
+    - 4200260.0
+  name: railroad_ne
+  station_id: railroad_northeast
+  station_name: railroad_northeast  
+  
+
+
+
+
+
