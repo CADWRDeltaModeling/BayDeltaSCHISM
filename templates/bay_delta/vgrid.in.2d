@@ -1,8 +1,0 @@
-2 !ivcor (2: SZ; 1: VQS)
-2 1 1.e6 !nvrt, kz (# of Z-levels); h_s (transition depth between S and Z)
-Z levels
-1  -1.e6
-S levels
-30. 0. 1.e-4  !h_c, theta_b, theta_f
-   1    -1. !first S-level (S-coordinate must be -1)
-   2    0.

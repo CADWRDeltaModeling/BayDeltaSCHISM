@@ -1,1 +1,0 @@
-A "template" is the set of inputs and preprocessing inputs required to generate a Bay-Delta SCHISM run, particularly spatial inputs. Please be aware that this is a release in development and that there are some processes needed to create the mesh that are currently not in the preprocessor. Time data such as boundary data are independent of the preprocessor. 
