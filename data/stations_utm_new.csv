@@ -44,7 +44,7 @@ bks,BKS,Barker Slough Pumping Plant,38.27639642,-121.7969582,605228,4237166.9,,,
 vni,B95580,Venice Island,38.0491,-121.4976,631822.4,4212328.2,,B95580,VNI,dwr,x,,,same as the WDL B95580
 cse,22,Sacramento River at Collinsville,38.07394957,-121.8500958,600859.1,4214643.6,C2B,,CSE,dwr_des,x,,x,
 srh,70,Sacramento River at Hood,38.36771516,-121.5205061,629247.7,4247651,C3A,,SRH,dwr_des,,,x,"Colocated wiht MWQI """"HOOD"""" Established to replace C3. Location confirmed visually by DES (there is a bogus location north)."
-rvb,30,Sacramento River at Rio Vista,38.15974033,-121.6862425,615105.,422435.,D24A,B91212,RVB,dwr_des,x,,x,DWR Rio Vista site nudged 9m to the east and a few meters south to be always wet
+rvb,30,Sacramento River at Rio Vista,38.15974033,-121.6862425,615105,422435,D24A,B91212,RVB,dwr_des,x,,x,DWR Rio Vista site nudged 9m to the east and a few meters south to be always wet
 mrz,40,Sacramento River at Martinez,38.02761665,-122.1405194,575432.5,4209227.7,C6A,,MRZ,dwr_des,x,,x,
 snc,21,Chadbourne Slough at Sunrise Duck Club,38.18503208,-122.0830545,580303.5,4226742.3,S21,,SNC,dwr_des,x,,,Not confirmed
 gys,35,Goodyear Slough at Morrow Island club,38.11908576,-122.0957696,579253,4219416,S35,,GYS,dwr_des,x,,x,Moved 8m to west to be in channel
@@ -61,7 +61,7 @@ sjl,B95765,San Joaquin River near Lathrop,37.81097104,-121.3234822,647576.1,4186
 bdt,B95740,San Joaquin River at Brandt Bridge,37.86457483,-121.3231244,647500.8,4192114.6,,B95740,BDT,dwr_ncro,x,x,x,
 rri,B95660,Stockton Ship Channel at Burns Cut-off,37.96277611,-121.3655772,643575.2,4202944.9,,B95660,RRI,dwr_ncro,x,x,,a station house on the very corner of that final boat dock on Rough and Ready.
 mru,B95541,Middle River at Undine Road,37.83393039,-121.3857254,642052.7,4188617.1,,B95541,MRU,dwr_ncro,,x,x,
-old,B95380,Old River at Tracy Blvd,37.80472564,-121.4495285,636491.6,4185281.5,P12,B95380,OLD,dwr_ncro,x,x,x,"wdl: B95380Q: ADCP station with flow and velocity data. B95380: stage, temp, and EC"
+old,B95380,Old River at Tracy Blvd,37.80472564,-121.4495285,636491.6,4185281.5,P12,B95380,OLD,dwr_ncro,x,x,x,wdl: B95380Q: ADCP station with flow and velocity data. B95380: stage  temp and EC
 sham,s08010,Southampton Shoal Channel LB 6,37.91625,-122.4223333,550775.4,4196680.1,,,,noaa,,,,
 tibc1,tibc1,Tiburon Pier,37.89117018,-122.4461449,548699,4193884.8,,,,noaa,,,x,
 scqc1,scqc1,China Camp,38.00117026,-122.4591436,547485.2,4206082.9,,,,noaa,,,x,
@@ -69,12 +69,11 @@ sffpx,9414290,San Francisco,37.8067,-122.465,547094.8,4184503.1,,,,noaa,x,,,
 pryc1,9415020,Point Reyes,37.996,-122.977,502341.4,4205260.6,,,,noaa,x,,,
 mtyc1,9413450,Monterey,36.605,-121.889,599422.8,4051630.4,,,,noaa,x,,,
 aamc1,9414750,Alameda,37.77161379,-122.2993982,561701.6,4180706.7,,,,noaa,x,,,
-afo,11446500,American River at Fair Oaks,38.63546,-121.22773,654346.1435,4277827,,,AFO,usgs,,,,
-smbr,9414458,San Mateo Bridge,37.58,-122.253,565957.4,4159479,,,,noaa,xx,,,
-rtyc1,9414523,Redwood City,37.506974,-122.2099047,569646.3,4151469.7,,,,noaa,x,,,Nudged
-dumbr2,9414509,Dumbarton Bridge,37.5067,-122.115,578219,4151452.5,,,,noaa,xx,,,
-coycr2,9414575,Coyote Creek,37.465,-122.023,586398.5,4146906.5,,,,noaa,xx,,,
+rtyc1,9414523,Redwood City,37.506974,-122.2099047,569646.3,4151469.7,,,,noaa,x,,,
 richm,9414863,Richmond,37.92820794,-122.3999317,552736,4198019.3,,,,noaa,xx,,,
+#smbr,9414458,San Mateo Bridge,37.58,-122.253,565957.4,4159479,,,,noaa,xx,,,Very brief and old. Please do not uncomment as it breaks downloaders and is not useful
+#dumbr2,9414509,Dumbarton Bridge,37.5067,-122.115,578219,4151452.5,,,,noaa,xx,,,Very brief and old. Please do not uncomment as it breaks downloaders and is not useful
+#coycr2,9414575,Coyote Creek,37.465,-122.023,586398.5,4146906.5,,,,noaa,xx,,,Very brief and old. Please do not uncomment as it breaks downloaders and is not useful
 anc,ANC,Antioch,38.01784713,-121.802883,605075.1,4208474.7,,,ANC,usbr,,,x,
 cll,CLL,Collinsville,38.07394957,-121.8500958,600858.7,4214644.1,,,CLL,usbr,,,x,
 cnt,CNT,Contra Costa,37.99587604,-121.7017029,613995.8,4206152.6,C5,,CNT,usbr,,,x,
@@ -82,6 +81,7 @@ pts,PTS,Pittsburg,38.04316356,-121.8918355,597238.3,4211183.7,,,PTS,usbr,,,x,
 riv,RIV,Rio Vista,38.15916838,-121.6844634,615252.9,4224292.9,D24A,,RIV,usbr,,,x,Under bridge tenders office almost in center of channel
 ver,VER,Vernalis,37.6791908,-121.2648837,653005.8,4171637.9,C10,,VER,usbr,,,x,Relocated from Durham Farry/Airoport Way Bridge to DWR pier where SJR is located
 pct,PCT,Port Chicago,38.05893797,-122.024823,585550.4,4212803.2,C14,,PCT,usbr,,,x,Pier 2 (1 mile upstream from NOAA site)
+afo,11446500,American River at Fair Oaks,38.63546,-121.22773,654346.1435,4277827,,,AFO,usgs,,,,
 mateo,11162765,"SF Bay at San Mateo Bridge Near Foster City, CA",37.58437876,-122.2508005,566147.7,4159966.4,,,,usgs,,,x,
 guad,11169025,"Guadalupe R above Hw 101 at San Jose, CA",37.37410337,-121.9329168,594479.1,4136908.3,,,,usgs,,,,
 coycr,11172175,Coyote Creek above HW 237,37.42243546,-121.9273615,594910,4142276.1,,,,usgs,,,,
@@ -101,7 +101,7 @@ orq,11313434,Old R at Quimby Island,38.0272222,-121.5644444,625994.6,4209807.9,,
 fal,11313440,False R near Oakley,38.0558333,-121.6669444,616952.5,4212848.6,,,FAL,usgs,x,x,,"Both FAL and ORQ are USGS station where they collect flow and NCRO collects EC, chlorophyll, temp and turbidity"
 osj,11313452,Old R at Franks Tract,38.0711111,-121.5788889,624652.3,4214658.4,,,OSJ,usgs,x,x,,"At OSJ USGS collects flow data while NCRO collects temp, EC, turbidity and chlorophyll.  USGS telemeters the data."
 pri,11313460,San Joaquin R at Prisoners Pt,38.05944444,-121.5572222,626573,4213393.1,,,PRI,usgs,x,x,x,"Boat access only on a pile, not carefully registered here. Flow and vertical datum considered suspect"
-dlc,11336600,Delta Cross Channel near Walnut Grove,38.24477822,-121.5052384,630802.2,4234030.6,,,DLC,usgs,x,x,x,
+dlc,11336600,Delta Cross Channel near Walnut Grove,38.24477822,-121.5052384,630802.2,4234030.6,,,DLC ,usgs,x,x,x,
 lps,11336790,Little Potato Slough at Terminous,38.09638889,-121.496111,631868.1,4217577.6,,,LPS,usgs,x,x,x,
 mok,11336930,Mokelumne R at Andrus Island,38.1061111,-121.571111,625274.8,4218552.5,,,MOK,usgs,x,x,,"At MOK, USGS collects flow data while NCRO collects temp, EC and turbidity.  USGS telemeters the data."
 tsl,11337080,Threemile Slough near Rio Vista,38.1033333,-121.686111,615196.3,4218095.3,,,TSL,usgs,x,x,,
@@ -126,13 +126,13 @@ petr,11459150,Petaluma R at Copland Pumping Station,38.23852452,-122.6401691,531
 dumbr,'373025122065901,San Francisco Bay at Old Dumbarton Bridge,37.50694444,-122.1163889,578096,4151478.4,,,,usgs,x,,,
 richb,'375607122264701,San Francisco Bay at Richmond-San Rafael Bridge,37.93527778,-122.4463889,548648.5,4198778.5,,,,usgs,,,x,
 mare,9415218,Mare Island,38.07,-122.25,565785.8,4213847.2,,,,noaa,x,,,
-crock,9415143,Crockett,38.0583,-122.223,568165,4212568.5,,,,noaa,x,,,
 ptchi,9415144,Port Chicago,38.056,-122.0395,584266.1,4212463.8,,,,noaa,x,,,
-brad,9414811,Bradmoor Island,38.18285942,-121.9247926,594166.8,4226650.2,,,,noaa,x,,,"Rogers Duck Club, pier behind shack. Discontinued 2006"
+#crock,9415143,Crockett,38.0583,-122.223,568165,4212568.5,,,,noaa,x,,,Very brief and old. Please do not uncomment as it breaks downloaders and is not useful
+#brad,9414811,Bradmoor Island,38.18285942,-121.9247926,594166.8,4226650.2,,,,noaa,x,,,Very brief and old. Please do not uncomment as it breaks downloaders and is not useful
+#mifw,9415112,Mallard Island Ferry Wharf,38.0433,-121.918,594942.2,4211171.8,,,,noaa,x,,,Very brief and old. Please do not uncomment as it breaks downloaders and is not useful
+#antn,9415064,Antioch,38.02,-121.815,604013.4,4208696.6,,,,noaa,x,,,Very brief and old. Please do not uncomment as it breaks downloaders and is not useful
+#rvno,9415316,Rio Vista,38.145,-121.692,614614.8,4222711.4,,,,noaa,x,,,Very brief and old. Please do not uncomment as it breaks downloaders and is not useful
 bts,40,Boynton Slough,38.20528,-122.06111,582201.4519,4228997,,,,dwr_des,,,,
-mifw,9415112,Mallard Island Ferry Wharf,38.0433,-121.918,594942.2,4211171.8,,,,noaa,x,,,
-antn,9415064,Antioch,38.02,-121.815,604013.4,4208696.6,,,,noaa,x,,,
-rvno,9415316,Rio Vista,38.145,-121.692,614614.8,4222711.4,,,,noaa,x,,,
 rindg,B95620,San Joaquin River at Rindge Pump,37.99721718,-121.4194314,638779.3,4206684.9,,B95620,,dwr_ncro,x,,,
 ist,A02100,Sacramento R at I Street,38.57164649,-121.5168395,630173.3,4272187.3,,A02100,IST,dwr_ncro,x,,,Not confirmed. This station is pegged to I Street bridge in photos based on description.
 gemok,B94100,Georgiana Slough at Mokelumne R,38.13,-121.5802778,624430.5,4221190.9,,B94100,,dwr_ncro,x,,,Not confirmed. Based on lat/long to 1 arc second from Central District
@@ -161,14 +161,14 @@ rsd,B9521600,Rock Slough at Delta Road Bridge                                  ,
 holm,B9524900,Holland Cut at Holland Marina,37.97369444,-121.5812778,624631.5,4203880,,B9524900,HOL,dwr_ncro,,,x,
 wdcut,B9522500,Werner Dredger Cut near Palm Tract,37.96397222,-121.5948333,623426.6,4202761.2,,B9522500,,dwr_ncro,,,x,
 wsd,'383525121434601,Willow Slough Bypass near Davis,38.590278,-121.729444,610653.3539,4272076,,,,usgs,,,,
-bet,B95058,Piper Slough at Bethal Tract,38.03388889,-121.621667,620980,4210523.0,,B95058,BET,dwr_ncro,,,x,"Nudged. Verbal description is """"Russo's Marina at end of Piper Rd"""" but Russo's is a short distance north."
+bet,B95058,Piper Slough at Bethal Tract,38.03388889,-121.621667,620980,4210523,,B95058,BET,dwr_ncro,,,x,"Nudged. Verbal description is """"Russo's Marina at end of Piper Rd"""" but Russo's is a short distance north."
 blp,B9502900,San Joaquin River at Blind Point ,38.0325,-121.719083,612410.9,4210203.7,,B9502900,BLP,dwr_ncro,,,x,Nudged
 rri2,20,Rough and Ready Island,37.96277611,-121.3655772,643575.2,4202944.9,,B95660,RRI,dwr_des,x,x,x,"a station house on the very corner of that final boat dock on Rough and Ready. same as B95660, should be deleted."
 anh,50,San Joaquin at Antioch,38.01784713,-121.802883,605075.1,4208474.7,D12A,,ANH,dwr_des,x,,x,
 msd2,10,San Joaquin at Mossdale Bridge,37.78613049,-121.3064425,649126.1,4183436.8,C7A,B95820,MSD,dwr_des,x,x,x,"Flow transect is 0.25 miles ds from bridge. Was once at bridge, but ferrous metals interfered with"
 fre,A02170,Sacramento River at Fremont Weir (West End),38.75944444,-121.6663889,615789.9,4290918.9,,A02170,FRE,dwr_ncro,x,,,Only source is CDEC
-frew,A02160,Sacramento River at Fremont Weir (East End),38.76527778,-121.6350833,618582,4291614,,A02160,,dwr_ncro,,,,
-por,A02200,Sacramento River at Knights Landing,38.803348,-121.716391,611458.2,4295714.6,,A02200,POR,dwr_ncro,x,,,
+few,A02160,Sacramento River at Fremont Weir (East End),38.76527778,-121.6350833,618582,4291614,,A02160,FEW,dwr_ncro,,,,
+#por,A02200,Sacramento River at Knights Landing,38.803348,-121.716391,611458.2,4295714.6,,A02200,POR,dwr_ncro,x,,,
 dmc,DMC,DMC Headworks,37.78,-121.588,626882.7,4186454,,,DMC,usbr,,,x,Nudged to accommodate model domain
 sur,B95422,Sugar Cut,37.78836111,-121.4193889,639164.7,4183509.3,,B95422,SUR,dwr_ncro,,,x,
 gle,B95320,Grant Line Canal East,37.820258,-121.4348562,637754.4,4187026.5,,B95320,GLE,dwr_ncro,,x,x,"ADCP Flow Station, commence on 1/15/2013; WQ, commence on 2/15/2013"
@@ -182,8 +182,8 @@ lib,11455315,Cache Slough at Liberty Island,38.2431666,-121.6845667,615115,42336
 liy,B91510,Yolo Bypass at Liberty Island ,38.32916667,-121.6938889,614160.9,4243144.8,,B91510,LIY,dwr_ncro,x,,,An additional station (B91510B) records water levels in drainage canal on Liberty Island side of levee
 lir,B91511,Yolo Bypass at Liberty Island (Canal),38.32611111,-121.6938889,614165.7,4242805.8,,B91511,LIR,dwr_ncro,x,,,An additional station (B91510) records water levels on Yolo Bypass side of levee
 smr,11336680,S Mokelumne R at New Hope BR near Walnut Grove,38.2255556,-121.4911111,632073.2,4231917.6,,,SMR,usgs,x,x,x,"flow, stage, velocity available since 1/1/2011, turbidity since 4/16/2015, suspended sediment since 8/4/2012"
-mkn,b94133,N Mokelumne R below Snodgrass Slough,38.223333,-121.506667,630666.9,4231648.1,,,MKN,dwr_ncro,,x,x
-mkn2,11336685,N Mokelumne R near Walnut Grove,38.223333,-121.5072222,630666.9,4231648.1,,,MKN,usgs,,x,x,"flow and velocity available since 12/13/2010, turbidity and suspended since 8/14/2012"
+nmr,11336685,N Mokelumne R near Walnut Grove,38.223333,-121.5072222,630666.9,4231648.1,,,NMR,usgs,,x,x,"flow and velocity available since 12/13/2010, turbidity and suspended since 8/14/2012"
+mkn,B9413300,N Mokelumne R below Snodgrass Slough,38.223333,-121.506667,630666.9,4231648.1,,,MKN,dwr_ncro,,x,x,
 sxs,B91450Q,Steamboat Slough near Sacramento River,38.191267,-121.637881,619281.8,4227913.6,,B91450Q,SXS,dwr_ncro,,x,,"ADCP Flow Station, commence on 6/12/2015"
 fct,B95050,Fisherman's Cut,38.06782222,-121.6488389,618521.7,4214201.8,,B95050Q,FCT,dwr_ncro,,x,,"ADCP Flow Station, commence on 6/5/2015"
 flt,96,Goodyear Slough at Fleet,38.08083,-122.09972,579121.895,4214883,,,FLT,dwr_des,,,,
@@ -198,20 +198,20 @@ ryc,403,Suisun Bay Cutoff Near Ryer,38.083971,-121.995878,588041.6,4215616.3,,,R
 gzl,368,Grizzly Bay,38.12425,-122.038117,584309.0232,4220037.891,,,GZL,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
 sga,B95415,Sugar Cut at Golden Anchor,37.7928598,-121.421495,638981.8,4184006.2,,B95415Q,SGA,dwr_ncro,,x,,"same as B9541400 ar wdl, flow data available since 3/18/2014, water temp & EC since 4/30/2014"
 von,11425500,Sacramento River at Verona,38.774444,-121.597222,621783.2,4292647.4,,,VON,usgs,x,x,,"NWIS: Latitude 38deg46'28"",   Longitude 121deg35'50""   NAD27 (38.77444,-121.597222); Datum of gage: -3.00 feet above   NGVD29; CDEC: 38.77415,-121.59807"
-von2,a0215000,Sacramento River at Verona,38.774444,-121.597222,621783.2,4292647.4,,,VON,dwr_ncro,x,x,,"Need to confirm this is same place as USGS" 
+von2,a0215000,Sacramento River at Verona,38.774444,-121.597222,621783.2,4292647.4,,,VON,dwr_ncro,x,x,,Need to confirm this is same place as USGS 
 smr2,B94150,S.F. Mokelumne River at New Hope Bridge,38.22527778,-121.4908333,632098.1,4231887.1,,B94150,SMR,dwr_ncro,x,,,
-mfv,B91475,Miner Slough at Five Points ,38.29,-121.6447222,618522.3,4238860.6,,B91475,MFV,,x,,,
+mfv,B91475,Miner Slough at Five Points,38.29,-121.6447222,618522.3,4238860.6,,B91475,MFV,dwr_ncro,x,,,
 toen,11455139,Toe Drain at Mallard Road,38.36513889,-121.6377417,619009.8,4247207.4,,,,usgs,,x,x,moved from Toe South
 cm72,11455095,Sacramento River Deep Water Ship Channel Near Freeport,38.47686944,-121.5836417,623525.5,4259677.4,,,,usgs,,x,x,Proposed Effort to Discontinue
 cm66,11455136,Sacramento River Deep Water Ship Channel Near Clarksburg,38.40444444,-121.6145556,620970,4251599.2,,,,usgs,,,x,Proposed Effort to Discontinue
-ult,11455268,Ulatis Creek Near Elmira,38.29416667,-121.7597222,608463.8,4239164.3,,,,usgs,,x,x,
-usc,11455280,Cache Slough Near Hastings Tract Near Rio Vista,38.27555556,-121.7091667,612908.6,4237177.1,,,USC,usgs,,x,x,
+ulc,11455268,Ulatis Creek Near Elmira,38.29416667,-121.7597222,608463.8,4239164.3,,,,usgs,,x,x,
+ucs,11455280,Cache Slough Near Hastings Tract Near Rio Vista,38.27555556,-121.7091667,612908.6,4237177.1,,,UCS,usgs,,x,x,
 ryf,11455385,Cache Slough Above Ryer Island Ferry,38.19395556,-121.6580028,617515.3,4228186.2,,,RYF,usgs,,x,x,Proposal provisional
 confl,11455508,Suisun Bay At Van Sickle Island,38.04953056,-121.88755,597605.9,4211894.6,,,,usgs,,,x,
 has,11455278,Hass Slough Near Elmira,38.29415,-121.7257389,611430.5,4239220.3,,,HAS,usgs,,x,x,
 grizzb,'380631122032201,Grizzly Bay at Suisun Slough,38.10853056,-122.0559806,582761,4218277.6,,,,usgs,,,x,
 gzm,738,Grizzly Bay at Head of Montezuma Slough Buoy,38.1413,-122.0602,582354,4221910,,,,dwr_des,,,x,
-yolo,11453000,Yolo Bypass Near Woodland,38.67777778,-121.6430556,618033.7,4281893.8,,,,usgs,,x,x,
+yby,11453000,Yolo Bypass Near Woodland,38.67777778,-121.6430556,618033.7,4281893.8,,,YBY,usgs,,x,x,
 glcgs,11313240,Grant Line Canal Near Tracy,37.82,-121.5447222,628084.6,4186841.5,,,,usgs,,x,x,
 cm62,11455142,Sacramento River Deep Water Ship Channel Near Courtland,38.34166667,-121.6438889,618511,4244595,,,,usgs,,x,x,
 mld,11185185,Suisun Bay at Mallard Island,38.04277778,-121.9191667,594844.5,4211136.4,,,,usgs,,,,
@@ -228,14 +228,14 @@ mow,MOW,Mowry Slough,37.485,-122.033,585491.4,4149116.2,,,,sfei,,x,,
 nw,NW,Newark Slough,37.513,-122.082,581128.9,4152179.4,,,,sfei,,x,,
 pond,POND,Pond A8 Outlet at Confluence with Alviso Slough,37.424,-121.98,590250.4,4142398,,,,sfei,,x,,
 sm,SM,San Mateo Bridge near surface,37.464,-122.024,586311.2,4146794.6,,,,sfei,,,x,
-sweir,11426000,Sacramento Weir Spill to Yolo Bypass,38.607,-121.554,625889.9,4274151.5,,,,usgs,,x,,
+ssw2,11426000,Sacramento Weir Spill to Yolo Bypass,38.440277,-121.554166,626181,4255656,,,SSW2,usgs,,,x,Only reports hourly flow and not realtime
 sfp17,'374811122235001,San Francisco Bay at Pier 17,37.803,-122.397,553143.4,4184169.8,,,,usgs,,,x,
 mrz2,9415102,Martinez-Amorco Pier,38.035,-122.125,576774.9,4210025.7,,,,noaa,x,,x,
 alvz,11169750,Alviso Slough Near Alviso,37.44,-121.998,588609.4,4144155.7,,,,usgs,,,x,
 dum,'373015122071000,South San Francisco Bay at Dumbarton Bridge,37.504,-122.119,577828.8,4151167.7,,,,usgs,,,x,
 cm,11460090,Corte Madera Creek Near Larkspur,37.943,-122.515,542639,4199638.8,,,,usgs,,,x,
 orm,B95370,Old River upstream of Mountain House Creek,37.7938408,-121.5173813,630537,4183977,,B95370Q,ORM,dwr_ncro,,x,,Quality and flow have different CDEC
-pco,B95410,Paradise Cut Above Old River,37.80197222,-121.4123056,639774,4185031,,B95410,PCO,dwr_ncro,,,x,EC and Temp
+#pco,B95410,Paradise Cut Above Old River,37.80197222,-121.4123056,639774,4185031,,B95410,PCO,dwr_ncro,,,x,EC and Temp
 pdc,B95410,Paradise Cut,37.8020598,-121.4122564,639778,4185041,,B95410Q,PDC,dwr_ncro,,x,x,Flow and WQ
 pcu,B9541050,Paradise Cut Upstream - WQ,37.8010219,-121.373076,643229.4964,4184984.934,,B9541050,,dwr_ncro,,,x,EC and Temp
 pcw,11454000,Putah Creek near Winters,38.515186,-122.081917,580133.2256,4263389,,,,usgs,,,,
@@ -251,7 +251,7 @@ alam,11180700,Alameda Creek Flood Channel at Union City,37.585833,-122.047,58414
 tea,28,Teal Club at Frank Horan Slough,38.17667,-122.08611,580045,4225811,S28,,,dwr_des,,,,x
 hsl,4,Hill Slough,38.22639,-122.02111,585680,4231386,S4,,,dwr_des,,,,x
 hst,A07140,American River at H Street Bridge,38.568611,-121.423889,637297.2836,4270084,,,HST,dwr,,,,
-ssw,'382010121402301,Liberty Island at Upper Stair Step,38.3361667,-121.672925,617982,4243947,,,,usgs,x,,,
+sstw,'382010121402301,Liberty Island at Upper Stair Step,38.3361667,-121.672925,617982,4243947,,,,usgs,x,,,
 psf,'381424121405601,Prospect Slough Near Five Points,38.23989,-121.68199,615325,4233252,,,,usgs,x,,,
 toes,'381732121393801,Toe Drain at Five Points,38.29218611,-121.6606028,617130,4239083,,,,usgs,x,,,
 lhtn,11455143,Little Holland Tract at North Breach Near Holland Tract,38.33541,-121.6582,617274,4243882,,,,usgs,x,x,x,
@@ -269,5 +269,9 @@ c24,'380318121571501,Suisun Bay at Channel Marker 24A Near Bay Point,38.05510,-1
 co5,11455498,Suisun Bay at Channel Marker 5 at Collinsville,38.06578,-121.83581,602123.11,4213753.24,,,C05,usgs,,,x,
 c10,11455495,Suisun Bay at Channel Marker 10 Near Collinsville,38.05983,-121.79989,605282.66,4213133.12,,,C10,usgs,,,x,
 m13,11455485,Sacramento R Below Toland Landing Near Rio Vista,38.07781,-121.76729,608116.21,4215165.61,,,M13,usgs,,,x,
-klup,A0223002,Sacramento River above CBD,38.805210,-121.723720,610819.69,4295934.45,,A0223002,,dwr_ncro,,,x
-knl,A02200,Sacramento River at Knights Landing,38.803348,-121.716391,611458.99,4295736.72,,A02200,,KNL,dwr_ncro,,,x
+knl,A02200,Sacramento River at Knights Landing,38.803348,-121.716391,611458.99,4295736.72,,A02200,KNL,dwr_ncro,,,x,
+klup,A0223002,Sacramento River above CBD,38.805210,-121.723720,610819.69,4295934.45,,A0223002,,dwr_ncro,,,x,
+wlk,11390500,Sacramento River below Wilkins Sl near Grimes,39.00990,-121.82469,601759.47,4318532.21,,,WLK,usgs,,,x,
+ssw,A02108,Sacramento River above Sacramento Weir,38.60805,-121.55930,625441.04,4274267.15,,,SSW,dwr_ncro,,,x,
+ssw2,11426000,Sacramento Weir Spill to Yolo Bypass,38.440277,-121.554166,626181,4255656,,,SSW2,usgs,,,x,Only reports hourly flow and not realtime
+#id,agency_id,name,lat,lon,x,y,d1641_id,wdl_id,cdec_id,agency,stage,flow,quality,notes
