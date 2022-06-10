@@ -1,4 +1,4 @@
-#datetime	   install  ndup op_down op_up    elev	  width	   
+datetime	   install  ndup op_down op_up    elev	  width	   
 1999-09-01T00:00     1    1    1.0    1.0    -2.29    6.10    # Faking modified flashboard (uncalibrated)
 1999-09-27T00:00     1    1    1.0    1.0    -2.29    6.10
 1999-10-15T00:00     1    1    0.0    0.0    -2.29    6.10

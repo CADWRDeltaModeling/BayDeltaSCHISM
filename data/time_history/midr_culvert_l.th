@@ -1,4 +1,4 @@
-#datetime      install ndup op_down   op_up     elev     rad
+datetime      install ndup op_down   op_up     elev     rad
 1999-05-18T13:00     1    3    1.00    1.00    -0.53    0.61
 1999-07-12T12:00     1    3    0.00    1.00    -0.53    0.61
 1999-10-01T00:00     1    3    1.00    1.00    -0.53    0.61

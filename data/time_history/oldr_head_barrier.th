@@ -1,4 +1,4 @@
-#time          install ndup_weir op_down_weir op_up_weir elev_weir width_weir ndup_pipe down_op_pipe up_op_pipe elev_pipe radius_pipe 
+datetime          install ndup_weir op_down_weir op_up_weir elev_weir width_weir ndup_pipe down_op_pipe up_op_pipe elev_pipe radius_pipe 
 1997-05-15T12:00      0      1      1.0        1.0       3.76       50.9          2        1.0         1.0      -0.81      0.61
 2000-04-15T12:00      1      1      1.0        1.0       3.76       50.9          6        1.0         1.0      -0.51      0.61
 2000-04-16T12:00      1      1      1.0        1.0       3.76       50.9          6        0.0         0.0      -0.51      0.61
