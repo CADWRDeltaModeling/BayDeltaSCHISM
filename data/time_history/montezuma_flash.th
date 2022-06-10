@@ -49,5 +49,5 @@ datetime	   install  ndup op_down op_up    elev	  width
 2020-09-08T13:19     1    1    0.0    0.0    -5.34    20.73   # Flashboards installed early due to high salinity conditions.
 2021-06-03T09:30     1    1    1.0    1.0    -5.34    20.73   # Flashboards removed at end of control season
 2021-08-23T12:18     1    1    0.0    0.0    -5.34    20.73   # Flashboards installed early due to high salinity conditions
-2022-06-03T09:30     1    1    1.0    1.0    -5.34    20.73   # Flashboards removed at end of control season      PREDICTED
-2022-09-01T13:20     1    1    0.0    0.0    -5.34    20.73   # Flashboards installed early due to high salinity conditions  PREDICTED
+2022-06-01T00:00     1    1    0.0    0.0    -5.34    20.73   # Flashboards remain in through summer for repairs  PREDICTED
+2022-09-01T13:20     1    1    0.0    0.0    -5.34    20.73   # Flashboards remain in for control season PREDICTED
