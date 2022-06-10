@@ -1,4 +1,4 @@
-#datetime	   install  ndup op_down op_up    elev	  width	   
+datetime	   install  ndup op_down op_up    elev	  width	   
 1999-09-01T00:00     1    1    1.0    1.0    -2.29    6.10    # Faking modified flashboard (uncalibrated)
 1999-09-27T00:00     1    1    1.0    1.0    -2.29    6.10
 1999-10-15T00:00     1    1    0.0    0.0    -2.29    6.10
@@ -49,5 +49,5 @@
 2020-09-08T00:00     1    1    1.0    1.0    -2.29    6.10
 2021-06-03T00:00     1    1    0.0    0.0    -2.29    6.10   # Flashboards removed at end of control season. Flashboards out, boat lock closed
 2021-08-23T12:18     1    1    1.0    1.0    -2.29    6.10   # September operations began due to high salinity. Flashboards in, boat lock open
-2022-06-03T09:45     1    1    0.0    0.0    -2.29    6.10   # Flashboards removed at end of control season. Flashboards out, boat lock closed PREDICTED
-2022-09-01T13:20     1    1    1.0    1.0    -2.29    6.10   # September operations began due to high salinity. Flashboards in, boat lock open PREDICTED
+2022-06-01T00:00     1    1    1.0    1.0    -2.29    6.10   # Flashboards remain in for repairs, boat lock closed PREDICTED
+2022-09-01T00:00     1    1    1.0    1.0    -2.29    6.10   # September operations, flashboards remain in, boat lock open PREDICTED

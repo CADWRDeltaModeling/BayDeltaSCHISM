@@ -79,35 +79,27 @@ structures:
       use_time_series: 1
     reference: montezuma_radial
 
-  - name: grantline_weir
-    type: weir
+  - name: grantline_barrier
+    type: weir_culvert
     end_points:
-      [[636576., 4186940.],
-      [636575., 4187000.]]
+      [[636575.,4186905.],
+       [636575.,4187005.]]
     configuration:
       n_duplicates: 1
-      elevation: 1.00
+      elevation: 1.0
       width: 54.9
       coefficient: 0.8
-      op_downstream: 1.0
-      op_upstream: 1.0
-      use_time_series: 1
-    reference: self
+      op_downstream: 1.
+      op_upstream: 1.
 
-  - name: grantline_culvert
-    type: culvert
-    end_points:
-      [[636576., 4186918.],
-      [636576., 4186940.]]
-    configuration:
-      n_duplicates: 6
-      elevation: -1.28
-      radius: 0.61
-      coefficient: 0.4
-      op_downstream: 0.0
-      op_upstream: 1.0
+      culvert_n_duplicates: 6
+      culvert_elevation: -1.28
+      culvert_radius: 0.61
+      culvert_coefficient: 0.4
+      culvert_op_downstream: 0.0
+      culvert_op_upstream: 1.
       use_time_series: 1
-    reference: grantline_weir
+    reference: self    
 
   - name: midr_weir
     type: weir
@@ -172,13 +164,13 @@ structures:
   - name: oldr_tracy_culvert
     type: culvert
     end_points:
-      [[628259., 4185732.],
-      [628268., 4185749.]]
+      [[628259., 4185726.],
+      [628268., 4185746.]]
     configuration:
       n_duplicates: 9
       elevation: -1.11
       radius: 0.61
-      coefficient: 0.4
+      coefficient: 0.6
       op_downstream: 1.0
       op_upstream: 1.0
       use_time_series: 1
@@ -237,7 +229,7 @@ structures:
   - name: west_false_river_barrier_leakage
     type: weir_culvert
     end_points:
-      [[616524.,4212930.],     #  previous version [[616557., 4212909.], [616653., 4213145.]]
+      [[616524.,4212930.],     #  previous 2015? version [[616557., 4212909.], [616653., 4213145.]]
        [616626.,4213160.]]
     configuration:
       n_duplicates: 1

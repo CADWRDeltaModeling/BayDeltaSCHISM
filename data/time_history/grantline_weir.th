@@ -1,4 +1,4 @@
-#datetime	   install  ndup op_down op_up    elev	  width	   
+datetime	   install  ndup op_down op_up    elev	  width	   
 1999-06-01T00:00     1    1    1.0    1.0    1.01    42.67
 1999-09-26T00:00     0    1    1.0    1.0    1.01    45.72
 2000-06-01T12:00     1    1    1.0    1.0    1.01    42.67
