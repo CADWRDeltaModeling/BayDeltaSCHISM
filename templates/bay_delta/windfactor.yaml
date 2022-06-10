@@ -1,6 +1,6 @@
 polygons:
 - attribute: '1.00'
-  name: delta
+  name: delta1
   type: none
   vertices:
   - - 620046.1009722124
@@ -171,7 +171,7 @@ polygons:
     - 4176350.0
   - - 564380.0772254178
     - 4209733.802207055
-- attribute: '1.0'
+- attribute: '1.1'
   name: upper_san_pablo
   type: none
   vertices:
@@ -280,7 +280,7 @@ polygons:
   - - 563705.9869208742
     - 4214325.541628864
 - attribute: '0.80'
-  name: delta
+  name: delta_main
   type: none
   vertices:
   - - 619935.988825643
@@ -377,7 +377,7 @@ polygons:
     - 4220670.0
   - - 581220.0
     - 4219140.0
-- attribute: '0.85'
+- attribute: '0.95'
   name: suisun_marsh
   type: none
   vertices:
