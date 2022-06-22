@@ -1,4 +1,4 @@
-#datetime	   install  ndup op_down op_up   elev	 width	   
+datetime	   install  ndup op_down op_up   elev	 width	   
 1997-04-16T00:00     1    1    1.0    1.0    1.33    22.9
 1997-10-01T15:30     0    1    1.0    1.0    1.33    22.9
 1999-05-28T00:00     1    1    1.0    1.0    1.33    22.9
@@ -37,9 +37,13 @@
 2015-11-04T09:00     0    1    1.0    1.0    1.33    22.9
 2016-03-25T09:00     1    1    1.0    1.0    1.33    22.9
 2016-10-20T09:00     0    1    1.0    1.0    1.33    22.9	# Not installed in 2017
-2018-04-25T09:00     1    1    1.0    1.0    1.33    22.9
-2018-11-20T09:00     0    1    1.0    1.0    1.33    22.9                                            
+2018-04-02T09:00     1    1    1.0    1.0    1.33    22.9
+2018-11-14T09:00     0    1    1.0    1.0    1.33    22.9   # Barrier breached (removal completed on 11/28/20)                                         
 2019-07-19T14:25     1    1    1.0    1.0    1.33    22.9
-2019-11-11T09:00     0    1    1.0    1.0    1.33    22.9   # Barrier was breached on 10/28/19.  Removal completed on 11/11/19.                                         
+2019-10-28T09:00     0    1    1.0    1.0    1.33    22.9   # Barrier was breached on 10/28/19.  Removal completed on 11/11/19.                                         
 2020-05-29T09:00     1    1    1.0    1.0    1.33    22.9
-2020-11-17T00:00     0    1    1.0    1.0    1.33    22.9   # Barrier breached (removal completed on 11/17/20) 
+2020-11-02T14:15     0    1    1.0    1.0    1.33    22.9   # Barrier breached (removal completed on 11/17/20) 
+2021-05-27T13:00     1    1    1.0    1.0    1.33    22.9   # closed
+2021-11-09T09:30     0    1    1.0    1.0    1.33    22.9   # barrier breached (removal completed on 11/20/20)
+2022-05-28T09:00     1    1    1.0    1.0    1.33    22.9   # closed
+2022-11-02T14:15     0    1    1.0    1.0    1.33    22.9

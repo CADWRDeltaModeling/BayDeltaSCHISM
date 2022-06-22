@@ -105,7 +105,8 @@ ANC,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_
 BKS,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\BKS_hr_degC.csv,0,cdec,deg C,NAVD,PST,0,0
 CLC,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\CLC_hr_degC.csv,0,cdec,degC,NAVD,PST,0,0
 DMC,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\DMC_hr.csv,0,cdec,deg F,NAVD,PST,0,0
-EMM,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\EMM.csv,0,cdec,deg F,NAVD,PST,0,0
+EMM,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_20210913\cdec_emm_temp_2007_2021.csv,0,cdec,deg F,NAVD,PST,0,0
+EMM,upper,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_20210913\cdec_emm_temp_2007_2021.csv,0,cdec,deg F,NAVD,PST,0,0
 FRP,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\FRP_hr.csv,0,cdec,deg F,NAVD,PST,0,0
 HBP,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\HBP_hr_degC.csv,0,cdec,deg C,NAVD,PST,0,0
 HLL,default,temp,\\cnrastore-bdo\BDO_HOME\SCHISM\fielddata\cdec_download_temp_8_21_2015\HLL_hr.csv,0,cdec,deg F,NAVD,PST,0,0

@@ -12,4 +12,6 @@ The ccfb_gate time history was updated around 2017-02-20 as part of Clifton Cour
 
 - Also in 12/2021, revised the 2016 and 2018 time histories for Suisun. (Not done)
 
+- Revised 1/2022, by Ines Ferreira, 2019 oldr_tracy_culvert, 2018 oldr_tracy_weir, 2016 grantline_weir. Grantline_weir and culverts were combined into single file grantline_barrier.th
+
 
