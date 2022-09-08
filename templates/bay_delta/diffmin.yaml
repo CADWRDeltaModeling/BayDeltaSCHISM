@@ -1,6 +1,6 @@
-# This diffmin file was introduced as diffmin_110b.yaml
+# This diffmin file was introduced as diffmin_111.yaml
 # It is primarily tested with the native SCHISM k-eps closure and 
-# has fairly high minimum diffusivity (0.003) in the confluence and other areas
+# has fairly high minimum diffusivity in the confluence and other areas
 smooth:
   iter_total: 100
   kappa: 0.35
@@ -42,7 +42,7 @@ polygons:
     - 4211000.90195997
   - - 575118.9159233818
     - 4211438.337481816
-- attribute: '0.005'
+- attribute: '0.0008'
   name: bridges
   type: none
   vertices:
@@ -90,7 +90,7 @@ polygons:
     - 4212326.736910023
   - - 575881.1852179505
     - 4211432.355011238
-- attribute: '0.004'
+- attribute: '0.0025'
   name: suisun_delta3
   type: none
   vertices:
@@ -142,7 +142,7 @@ polygons:
     - 4210264.32698772
   - - 576496.8607880379
     - 4210453.375388531
-- attribute: '0.001'     #changed
+- attribute: '0.002'     #changed
   name: suisun_delta2
   type: none
   vertices:

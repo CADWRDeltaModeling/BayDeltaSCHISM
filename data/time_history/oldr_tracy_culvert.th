@@ -1,4 +1,4 @@
-#datetime	  install  ndup op_down op_up   elev	rad   
+datetime	  install  ndup op_down op_up   elev	rad   
 1999-06-01T10:30 	1	9	0.000	1.000	-1.11	0.61
 1999-10-03T00:00 	0	9	1.000	1.000	-1.11	0.61   # No info on culverts
 2000-04-16T17:30 	1	9	0.000	1.000	-1.11	0.61   
@@ -100,6 +100,5 @@
 2021-05-27T10:00    1   9   0.111   1.000   -1.11   0.61  # one culvert tied open, 8 tidal
 2021-06-01T15:30    1   9   0.000   1.000   -1.11   0.61  # remaining flapgate release to tidal operation
 2021-11-09T00:00    0   9   1.000   1.000   -1.11   0.61  # barrier breached (removal completed on 11/20/20)
-2022-05-27T10:01    1   9   0.110   1.000   -1.11   0.61  # projected
-2022-06-01T15:30    1   9   0.000   1.000   -1.11   0.61
+2022-06-01T11:00    1   9   0.000   1.000   -1.11   0.61  # all flapgates tidal together
 2022-11-02T14:15    0   9   1.000   1.000   -1.11   0.61
