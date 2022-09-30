@@ -31,6 +31,8 @@ Manuals
 
 `Hydraulic structures manual`
 
+`VisIt`
+
 
 
 
