@@ -1,17 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Bay-Delta SCHISM Project &#8212; Bay-Delta SCHISM</title>
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Getting Started" href="getmodel.html" /> 
@@ -33,7 +35,8 @@
         <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
         <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
         <li><a href="search.html">Search</a>|&nbsp;</li>
- 
+
+        <li class="nav-item nav-item-this"><a href="">Bay-Delta SCHISM Project</a></li> 
       </ul>
     </div>
 
@@ -42,8 +45,9 @@
             <p class="logo"><a href="#">
               <img class="logo" src="_static/dwr_logo_small.png" alt="Logo"/>
             </a></p>
-  <h3><a href="#">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Bay-Delta SCHISM Project</a><ul>
 <li><a class="reference internal" href="#contents">Contents</a><ul>
 </ul>
@@ -54,9 +58,12 @@
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
-  <h4>Next topic</h4>
-  <p class="topless"><a href="getmodel.html"
-                        title="next chapter">Getting Started</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="getmodel.html"
+                          title="next chapter">Getting Started</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -68,12 +75,12 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
 
@@ -82,16 +89,17 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="bay-delta-schism-project">
-<h1>Bay-Delta SCHISM Project<a class="headerlink" href="#bay-delta-schism-project" title="Permalink to this headline">¶</a></h1>
+  <section id="bay-delta-schism-project">
+<h1>Bay-Delta SCHISM Project<a class="headerlink" href="#bay-delta-schism-project" title="Permalink to this heading">¶</a></h1>
 <p>Bay-Delta SCHISM is an application of the 3D open source <a class="reference external" href="http://ccrm.vims.edu/schismweb/">SCHISM</a> hydrodynamic and water quality suite to the San Francisco Bay Delta estuary. The project is a collaboration between the California Department of Water Resources and the Virginia Institute of Marine Sciences (VIMS).</p>
-<div class="section" id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getmodel.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="learning.html">Learning Resources for Bay-Delta SCHISM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="calibration.html">Calibration and References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="help.html">Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="help.html#support">Support</a></li>
@@ -99,9 +107,9 @@
 </div>
 <p>Independent manual web pages are available for <a class="reference external" href="http://cadwrdeltamodeling.github.io/vtools3/">VTools</a> and
 DWR’s Python-based SCHISM Toolset <a class="reference external" href="http://baydeltaoffice.water.ca.gov/modeling/deltamodeling/models/tools/index.html">schimpy</a>.</p>
-</div>
-<div class="section" id="project-description">
-<h2>Project description<a class="headerlink" href="#project-description" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="project-description">
+<h2>Project description<a class="headerlink" href="#project-description" title="Permalink to this heading">¶</a></h2>
 <dl class="simple">
 <dt>The goal of our project is to develop an open-source, cross-scale multidimensional model suitable to answer flow and water quality questions involving large extents of the Bay-Delta system over periods of several years. Target applications include:</dt><dd><ul class="simple">
 <li><p>Habitat creation and conveyance options under BDCP;</p></li>
@@ -116,18 +124,19 @@ DWR’s Python-based SCHISM Toolset <a class="reference external" href="http://b
 <p>Our immediate goal has been to establish a foundation – to develop a sense of global accuracy, requiring that we resolve (or craftily under-resolve) the main mechanisms of hydrodynamics and transport up the estuary and in Delta channels. These include gravitational circulation and exchange flow; periodic stratification; axial convergence; tidal trapping; flood-ebb asymmetry of flow paths, shear dispersion, primary flow streamlines, and perhaps some secondary circulation in large channels.</p>
 <p>Although we expect our general calibration to continue to improve, further work will be focus on project-dependent enhancements. Due to its flexible mesh, the model is easily re-usable in a near field/far field arrangement whereby the base model provides a pre-calibrated background grid for an extension or focal region of study.</p>
 <p>An overview of the Bay-Delta application is given in the <a class="reference external" href="_static/workflow_guide.pdf">workflow guide</a>. Note this guide alludes to the “working title” for SCHISM, SELFE-W.</p>
-</div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
-</div>
+</section>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -145,12 +154,13 @@ DWR’s Python-based SCHISM Toolset <a class="reference external" href="http://b
         <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
         <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
         <li><a href="search.html">Search</a>|&nbsp;</li>
- 
+
+        <li class="nav-item nav-item-this"><a href="">Bay-Delta SCHISM Project</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2014,2020 California Department of Water Resources.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
     </div>
   </body>
 </html>

@@ -4,19 +4,16 @@ Getting Started
 
 Depending on your experience level, you may be learning a 
 new computation environment as well as a new model. 
-We suggest you tackle these separately:
 
-  - Download the model and try the first couple tutorials on a simplified grid using Windows or Linux. 
+  - This page lists the main items you will need to install or acquire.
+  - Download the model and try the first couple tutorials on a simplified grid using Windows or Linux. See the :doc:`learning`. 
   - Try the Bay-Delta preprocessing tools `schimpy <https://cadwrdeltamodeling.github.io/schimpy>`_ in the package for working on the mesh, generating initial and boundary conditions, the ocean boundary and post processing. 
   - Download the code and the ready-to-run :ref:`complete-sample` and use them to configure and test your target high performance computing (HPC) environment.
 
-SCHISM Code
------------
+SCHISM Code or Binaries
+-----------------------
 
-Clone the SCHISM source code from the schism-dev GitHub `repository <https://github.com/schism-dev>`_. If you are working on Windows (which is mostly useful for instruction or reduced size problems), compatible 
-`Windows binaries <https://msb.water.ca.gov/documents/86683/266737/schism_4.1_bin_windows.zip>`_ are available.
-
-
+How you will obtain the model code depends on the operating system. If you are working on Windows (which is mostly useful for instruction or reduced size problems), compatible `Windows binaries <https://msb.water.ca.gov/documents/86683/266737/schism_4.1_bin_windows.zip>`_ are available. This will underperform compared to a Linux cluster. For that, clone the SCHISM source code from the schism-dev GitHub `repository <https://github.com/schism-dev>`_ and compile it for your high performance system. 
 
 The SCHISM numerical methods are an extension of `SELFE v3.1dc <http://www.stccmop.org/knowledge_transfer/software/selfe>`_,
 originally developed as a collaboration between Dr Joseph Zhang and Dr Antonio Baptista
@@ -82,7 +79,7 @@ Links to tools
 These are mostly Windows or Linux tools. If you have information
 about analogous tools on other platforms we will gratefully share it.
 
-* We use `Miniconda Python 3.7 64 bit <https://docs.conda.io/en/latest/miniconda.html>`_. If you use other package management methods you will have to intall from github. Python 3.8 is not tested yet. 
+* We use `Miniconda Python 3.7 through 3.9 64 bit <https://docs.conda.io/en/latest/miniconda.html>`_. If you use other package management methods you will have to intall from github. 
 
 * `Xming XServer for Windows <http://sourceforge.net/projects/xming/>`_ or other tools like MobaXTerm or VcXSrv for connecting to linux clusters using the x11 windows system. 
 

@@ -521,5 +521,5 @@ datetime install ndup op_down op_up elev width height
 2022-04-06T12:00 1 2 1.0 1.0 -3.42 18.29 0.0      # Testing
 2022-05-27T09:45 1 2 1.0 1.0 -3.42 18.29 10.0
 2022-05-31T10:03 1 2 1.0 1.0 -3.42 18.29 0.0      # Current order on 6/10 suggests no more weekends
-2022-07-01T00:00 1 2 1.0 1.0 -3.42 18.29 10.0     # Assume similar to last year. Toggling may happen in fall.
-2022-12-01T10:01 1 2 1.0 1.0 -3.42 18.29 0.0
+2022-07-01T09:45 1 2 1.0 1.0 -3.42 18.29 10.0
+2022-12-01T10:01 1 2 1.0 1.0 -3.42 18.29 0.0      # Assume similar to last year. Toggling may happen in fall.
