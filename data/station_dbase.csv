@@ -23,8 +23,8 @@ mal,60,Sacramento River at Mallard Island,38.04288249,-121.9201106,594757.5,4211
 mhr,B95530,Middle River at Howard Rd Bridge,37.877,-121.3835,642165.8,4193399.5,,B95530,MHR,dwr_ncro,x,,x,
 msd,B95820,San Joaquin at Mossdale Bridge,37.78613049,-121.3064425,649126.1,4183436.8,C7A,B95820,MSD,dwr_ncro,x,x,,Flow transect is 0.25 miles ds from bridge. Was once at bridge but ferrous metals interfered.
 mtb,B95503,Middle River at Tracy Blvd,37.8816,-121.456,635780.8,4193802,,B95503,MTB,dwr_ncro,x,,x,
-oad,B95366,Old River Barrier near DMC (Above),37.81055556,-121.5422222,628312.5,4185763.1,,B95366,OAD,dwr_ncro,x,,x,"At OAD, NCRO collects stage, EC, pH, DO, turbidity and chlorophyll above the temp barrier (B95366 and B953660) and telemeters it.  "
-obd,B95365,Old River below Dam,37.8116,-121.547,627898.6,4185906.3,,B95365,OBD,dwr_ncro,x,,x,At OBD NCRO collects only stage (B95365) and telemeters. 
+oad,B95366,Old River Barrier near DMC (Above),37.81055556,-121.5422222,628312.5,4185763.1,,B95366,OAD,dwr_ncro,x,,x,"At OAD, NCRO collects stage, EC, pH, DO, turbidity and chlorophyll above the temp barrier (B95366 and B9536600) and telemeters it. The B9536600 was collected by WQ group and discontinued 11/27/2017. Some EC/temp is still collected here by surface water group (relayed by Jared Frantzich)"
+obd,B95365,Old River below Dam,37.8116,-121.547,627898.6,4185906.3,,B95365,OBD,dwr_ncro,x,,x,At OBD NCRO collects stage (B95365) and telemeters. 
 bac,B95250,Old River at Bacon Island,37.96791667,-121.5743889,625406.5,4203423.6,,B95250,BAC,dwr_ncro,x,,x,Collocated with USGS 11313405 on USGS pile. Historically across river.
 oh1,B95400,Old River at Head,37.808,-121.329,647096.2,4185827.7,,B95400,OH1,dwr_ncro,x,x,x,
 orb,B95270,Old River at Byron,37.8911,-121.57,625738.9,4194696.3,,B95270,ORB,dwr_ncro,x,,,
@@ -37,6 +37,7 @@ tms,B91160,Sacramento River at Threemile Slough,38.106,-121.7,613974.4,4218374.1
 tpi,B95421,Tom Paine Sl above intake,37.79054048,-121.4187437,639228.5,4183752.9,,B95421,TPI,dwr_ncro,,,x,wdl: B95421 for stage and B9542100 for temp and EC
 tpp,B95425,Tom Paine Sl near Pescadero,37.76724044,-121.3514436,645200.2,4181269.9,,B95425,TPP,dwr_ncro,x,,,
 tps,B95420,Tom Paine Sl above the mouth,37.79054048,-121.4187437,639228.5,4183752.9,,B95420,TPS,dwr_ncro,x,,,
+pdup,B9541050,Paradise Cut Upstream,37.801022,-121.373076,643229,4184985,,B8541050,,dwr_ncro,x,,,
 trp,TRP,Tracy Pumping Plant,37.80027343,-121.584902,626865,4186450,,,TRP,dwr_om,,x,x,Moved from facility to trash rack
 uni,UNI,Union Island,37.82209337,-121.3750095,643018.6,4187320.1,C8,,UNI,usbr,,,x,Historically called bifurcation of Middle and Old Rivers
 vic,VIC,Victoria Island,37.89122605,-121.48825,632927.2,4194823.6,,,VIC,usbr,,,x,Not confirmed
@@ -92,6 +93,7 @@ vcu,11312672,Victoria Canal near Byron,37.8708333,-121.53,629291.6,4192502.2,,,V
 mdm,11312676,Middle R at Middle River,37.94266627,-121.5338075,628839.5,4200455,,,MDM,usgs,x,x,x,
 hlt,11312685,Middle R near Holt,38.00305556,-121.5108985,630737.3,4207200.2,,,HLT,usgs,x,x,x,"USGS collects flow data on a pile they installed.  NCRO collects temp, EC, turbidity and chlorophyll on pile with USGS and uses USGS telemetry.  All data on CDEC"
 odm,11312968,Old R near Delta Mendota Canal,37.81025086,-121.5423248,628312.5,4185763.1,,,ODM,usgs,x,x,," At ODM which is on a pile, USGS collects flow while NCRO collects  temp, pH, EC, DO, turbidity and chlorophyll using USGS telemetry equipment."
+odm2,B9536500,Old River Barrier near DMC (Below),37.81025086,-121.5423248,628312.5,4185763.1,,,ODM,dwr_ncro,x,x,," At ODM which is on a pile, USGS collects flow while NCRO collects  temp, pH, EC, DO, turbidity and chlorophyll using USGS telemetry equipment. This station is below the Dam and is run by the water quality program at NCRO"
 glc,11313240,Grantline Canal,37.82010741,-121.5447222,628084.5,4186853.4,,,GLC,usgs,x,x,,"Replaces a station located on the Tracy Rd Bridge (5 miles east of the piling). Located on pile (B95320).  USGS measures flow whiles NCRO measures temp, EC pH, DO turbidity and chlorophyll.  USGS telemeters this data  "
 oh4,11313315,Old R near Byron,37.89103627,-121.5702283,625718.9,4194688.9,,,OH4,usgs,x,x,x,On bridge
 obi,11313405,Old R at Bacon Island,37.96791667,-121.5743889,625222.5,4203213.9,,,OBI,usgs,x,x,,
@@ -119,7 +121,6 @@ sgg,11455276,Shag Slough at Liberty Island near Courtland,38.3183333,-121.693055
 dws,11455335,Sacramento R Deep Water Ship Channel Near Rio Vista,38.2561111,-121.6666667,616657.3,4235072.2,,,DWS,usgs,x,x,x,
 ryi,11455350,Cache Slough at Ryer Island,38.21292541,-121.66896,616525.5,4230277.3,,,RYI,usgs,x,x,x,
 srv,11455420,Sacramento R at Rio Vista,38.14789999,-121.6898619,614797.6,4223035.8,,,SRV,usgs,x,x,x,"Proposed Effort to Discontinue; The flow station is under the bridge Red Channel Marker 28, transmitted from the DWR station 100' away. The WQ station is downstream a bit and is not confirmed."
-ssa,B95100,San Joaquin River at San Andreas Landing,38.103333,-121.591389,623502.,4218217.,,,SSA,dwr_ncro,,,x
 benbr,11455780,Suisun Bay at Benicia Bridge,38.04492057,-122.1266323,576633.3,4211159,,,,usgs,,,x,
 carqb,11455820,Carquinez Strait at Carquinez Bridge near Crockett,38.0613095,-122.2255241,567940.8,4212900.6,,,,usgs,,,x,
 napr,11458000,Napa R near Napa,38.36851973,-122.3032124,560869,4246934.1,,,,usgs,x,x,,
@@ -136,6 +137,7 @@ ptchi,9415144,Port Chicago,38.056,-122.0395,584266.1,4212463.8,,,,noaa,x,,,
 bts,40,Boynton Slough,38.20528,-122.06111,582201.4519,4228997,,,,dwr_des,,,,
 rindg,B95620,San Joaquin River at Rindge Pump,37.99721718,-121.4194314,638779.3,4206684.9,,B95620,,dwr_ncro,x,,,
 ist,A02100,Sacramento R at I Street,38.57164649,-121.5168395,630173.3,4272187.3,,A02100,IST,dwr_ncro,x,,,Not confirmed. This station is pegged to I Street bridge in photos based on description.
+gsm,B94100,Georgiana Slough at Mokelumne R,38.13,-121.5802778,624430.5,4221190.9,,B94100,,dwr_ncro,x,,,Not confirmed. Based on lat/long to 1 arc second from Central District
 swe,B91650,Sacramento R at Walnut Grove,38.24180921,-121.515902,629874.3,4233686.1,,B91650,SWE,dwr_ncro,x,x,x,Not confirmed. Based on lat/long to 1 arc second from Central District and nudged to pier.
 snod,B91750,Sacramento R at Snodgrass,38.34999607,-121.533782,628119.1,4245666.2,,B91750,,dwr_ncro,x,,,Not confirmed. Based on lat/long to 1 arc second from Central District and nudged to shore.
 sr3,B95060,Threemile Slough at San Joaquin R,38.09002802,-121.6865309,615180.4,4216618.4,,B95060,SR3,dwr_ncro,x,,x,Not confirmed. Based on lat/long to 1 arc second from Central District and nudged to shore.
@@ -146,23 +148,23 @@ bir,B95460,Middle R at Bacon Island,38.00180666,-121.523702,629615.4,4207043.7,,
 mdmzq,B95468,Middle R at Middle R,37.94000114,-121.5330499,628839.5,4200455,,B95468,,dwr_ncro,x,,x,"USGS moved their flow station onto a pile and collects stage, EC, temp and turbidity which is telemetered.  NCRO collects stage, temp and EC on the levee next to the pile but is not telemetered."
 mup,B95500,Middle River at Union Point,37.89083333,-121.4883333,632905.7,4194776.6,,B95500,MUP,dwr_ncro,x,,x,"We had this as Borden HW, NCRO said Union Point"
 mrmow,B95540,Middle R at Mowry,37.83514791,-121.383011,642289.3,4188756.4,,B95540,,dwr_ncro,x,,,Not confirmed. Based on lat/long to 1 arc second from Central District and nudged to pier
-trn,B9561600,Turner Cut near Holt,37.9925,-121.4538889,635762.3,4206110.6,,B9561600,TRN,dwr_ncro,,,x,"USGS collects flow data on a pile they installed.  NCRO collects temp, pH, EC, DO, turbidity, chlorophyll on pile with USGS and uses USGS telemetry."
-vcu2,B9528500,Victoria Canal near Byron,37.8708333,-121.53,629291.6,4192502.2,,B9528500,VCU,dwr_ncro,,,x,Not confirmed. Boat access.
-hlt2,B9545800,Middle R near Holt,38.00305556,-121.5108985,630737.3,4207200.2,,B9545800,HLT,dwr_ncro,,,x,"USGS collects flow data on a pile they installed.  NCRO collects temp, EC, turbidity and chlorophyll on pile with USGS and uses USGS telemetry.  All data on CDEC"
-glc2,B9529500,Grant Line Canal near Clifton Court Forebay - WQ ,37.82013889,-121.5446111,627753,4186838.8,,B9529500,GLC,dwr_ncro,,,x,"USGS measures flow whiles NCRO measures temp, EC pH, DO turbidity and chlorophyll.  USGS telemeters this data  (Station located on USGS pile 5.5 miles west of Tracy Rd. Bridge)"
-hol2,B9512000,Holland Cut near Bethel Island,38.01638889,-121.5819444,624476.9,4208582.2,,B9512000,HOL,dwr_ncro,,,x,"At HOL, USGS collects flow data while NCRO collects EC, temp and turbidity.  USGS telemeters the data."
-orq2,B9520000,Old R at Quimby Island,38.0272222,-121.5644444,625994.6,4209807.9,,B9520000,ORQ,dwr_ncro,,,x,
-fal2,B9504400,False R near Oakley,38.0558333,-121.6669444,616952.5,4212848.6,,B9504400,FAL,dwr_ncro,,,x,"Both FAL and ORQ are USGS station where they collect flow and NCRO collects EC, chlorophyll, temp and turbidity"
-osj2,B9510800,Old R at Franks Tract,38.0711111,-121.5788889,624652.3,4214658.4,,B9510800,OSJ,dwr_ncro,,,x,"At OSJ USGS collects flow data while NCRO collects temp, EC, turbidity and chlorophyll.  USGS telemeters the data."
-mok2,B9409500,Mokelumne River near Highway 12 ,38.1061111,-121.571111,625274.8,4218552.5,,B9409500,MOK,dwr_ncro,,,x,"At MOK, USGS collects flow data while NCRO collects temp, EC and turbidity.  USGS telemeters the data."
+trn,B95616,Turner Cut near Holt,37.9925,-121.4538889,635762.3,4206110.6,,B9561600,TRN,dwr_ncro,,,x,"USGS collects flow data on a pile they installed.  NCRO collects temp, pH, EC, DO, turbidity, chlorophyll on pile with USGS and uses USGS telemetry."
+vcu2,B95285,Victoria Canal near Byron,37.8708333,-121.53,629291.6,4192502.2,,B9528500,VCU,dwr_ncro,,,x,Not confirmed. Boat access.
+hlt2,B95458,Middle R near Holt,38.00305556,-121.5108985,630737.3,4207200.2,,B9545800,HLT,dwr_ncro,,,x,"USGS collects flow data on a pile they installed.  NCRO collects temp, EC, turbidity and chlorophyll on pile with USGS and uses USGS telemetry.  All data on CDEC"
+glc2,B95295,Grant Line Canal near Clifton Court Forebay - WQ ,37.82013889,-121.5446111,627753,4186838.8,,B9529500,GLC,dwr_ncro,,,x,"USGS measures flow whiles NCRO measures temp, EC pH, DO turbidity and chlorophyll.  USGS telemeters this data  (Station located on USGS pile 5.5 miles west of Tracy Rd. Bridge)"
+hol2,B95120,Holland Cut near Bethel Island,38.01638889,-121.5819444,624476.9,4208582.2,,B9512000,HOL,dwr_ncro,,,x,"At HOL, USGS collects flow data while NCRO collects EC, temp and turbidity.  USGS telemeters the data."
+orq2,B95200,Old R at Quimby Island,38.0272222,-121.5644444,625994.6,4209807.9,,B9520000,ORQ,dwr_ncro,,,x,
+fal2,B95044,False R near Oakley,38.0558333,-121.6669444,616952.5,4212848.6,,B9504400,FAL,dwr_ncro,,,x,"Both FAL and ORQ are USGS station where they collect flow and NCRO collects EC, chlorophyll, temp and turbidity"
+osj2,B95108,Old R at Franks Tract,38.0711111,-121.5788889,624652.3,4214658.4,,B9510800,OSJ,dwr_ncro,,,x,"At OSJ USGS collects flow data while NCRO collects temp, EC, turbidity and chlorophyll.  USGS telemeters the data."
+mok2,B94095,Mokelumne River near Highway 12 ,38.1061111,-121.571111,625274.8,4218552.5,,B9409500,MOK,dwr_ncro,,,x,"At MOK, USGS collects flow data while NCRO collects temp, EC and turbidity.  USGS telemeters the data."
 sus,B91479,Steamboat Slough Below Sutter Slough,38.25,-121.6020833,622318.4,4234477.5,,B91479,SUS,dwr_ncro,,,x,"SUS (cdec, 6/10/2015 ->) and B91479 (wdl, 10/1/1990 or 1982) same station or not? same station name, same parameters (temp, ec), but different time period and locations SUS (cdec, 6/10/2015 ->) and B91479 (wdl, 10/1/1990 or 1982) same station or not? same station name, same parameters (temp, ec), but different time period and locations"
 twa,B95378,Old River at Tracy Wildlife Association,37.802833,-121.457444,635798.2,4185059.9,,B95378,TWA,dwr_ncro,,,x,
-rsd,B9521600,Rock Slough at Delta Road Bridge                                  ,37.97675,-121.6200833,621194.1,4204133.5,,B9521600,,dwr_ncro,,,x,
-holm,B9524900,Holland Cut at Holland Marina,37.97369444,-121.5812778,624631.5,4203880,,B9524900,HOL,dwr_ncro,,,x,
-wdcut,B9522500,Werner Dredger Cut near Palm Tract,37.96397222,-121.5948333,623426.6,4202761.2,,B9522500,,dwr_ncro,,,x,
+rsd,B95216,Rock Slough at Delta Road Bridge                                  ,37.97675,-121.6200833,621194.1,4204133.5,,B9521600,,dwr_ncro,,,x,
+holm,B95249,Holland Cut at Holland Marina,37.97369444,-121.5812778,624631.5,4203880,,B9524900,HOL,dwr_ncro,,,x,
+wdcut,B95225,Werner Dredger Cut near Palm Tract,37.96397222,-121.5948333,623426.6,4202761.2,,B9522500,,dwr_ncro,,,x,
 wsd,'383525121434601,Willow Slough Bypass near Davis,38.590278,-121.729444,610653.3539,4272076,,,,usgs,,,,
 bet,B95058,Piper Slough at Bethal Tract,38.03388889,-121.621667,620980,4210523,,B95058,BET,dwr_ncro,,,x,"Nudged. Verbal description is """"Russo's Marina at end of Piper Rd"""" but Russo's is a short distance north."
-blp,B9502900,San Joaquin River at Blind Point ,38.0325,-121.719083,612410.9,4210203.7,,B9502900,BLP,dwr_ncro,,,x,Nudged
+blp,B95029,San Joaquin River at Blind Point ,38.0325,-121.719083,612410.9,4210203.7,,B9502900,BLP,dwr_ncro,,,x,Nudged
 rri2,20,Rough and Ready Island,37.96277611,-121.3655772,643575.2,4202944.9,,B95660,RRI,dwr_des,x,x,x,"a station house on the very corner of that final boat dock on Rough and Ready. same as B95660, should be deleted."
 anh,50,San Joaquin at Antioch,38.01784713,-121.802883,605075.1,4208474.7,D12A,,ANH,dwr_des,x,,x,
 msd2,10,San Joaquin at Mossdale Bridge,37.78613049,-121.3064425,649126.1,4183436.8,C7A,B95820,MSD,dwr_des,x,x,x,"Flow transect is 0.25 miles ds from bridge. Was once at bridge, but ferrous metals interfered with"
@@ -176,29 +178,29 @@ mab,B95502,Middle River above Barrier ,37.8851804,-121.4727615,634300.2,4194175,
 orx,B95390,Old River above Doughty Cut,37.8109973,-121.3865757,642021.8,4186071.2,,B95390,ORX,dwr_ncro,x,x,,"ADCP Flow Station, commence on 1/30/2013"
 sjd,B95760,San Joaquin River above Dos Reis,37.8223312,-121.3177244,648060.2,4187435.7,,B95760,SJD,dwr_ncro,,x,,"ADCP Flow Station, commence on 2/28/2013"
 alk,'374938122251801,San Francisco Bay at Northeast Shore Alcatraz Island,37.82722222,-122.4216667,550895.2,4186802.8,,,,usgs,,,x,"location: unsurveyed, at end of finger pier adjacent to ferry terminal; WQ monitor since November 2013;Interruptions in record were due to malfunction of the sensing and (or) recording instrument and biological interference within the conductivity cell. The probe is set at 6 ft below the water surface at Mean Lower Low Water (MLLW). MLLW is about 16 ft. Daily maximums and minimums sometimes differ from tidal cycle (24.8 hours) maximums and minimums.Specific conductivity records are rated excellent except for the following periods of fouling: Oct. 1, 2, Nov. 2-8, Aug. 19, 20, which are rated good. Water temperature records are rated excellent."
-mho,B9553100,Middle River near Howard Rd Bridge,37.876222,-121.383306,642184.4,4193313.5,,B9553100,MHO,dwr_ncro,,,x,added 6/6/2014
+mho,B95531,Middle River near Howard Rd Bridge,37.876222,-121.383306,642184.4,4193313.5,,B9553100,MHO,dwr_ncro,,,x,added 6/6/2014
 sdi,11455478,Decker Island,38.093367,-121.737267,610748.9,4216702.8,,,SDI,usgs,x,,x,proposal provisional
 lib,11455315,Cache Slough at Liberty Island,38.2431666,-121.6845667,615115,4233613,,,LIB,usgs,x,x,x,Haven't verified that CDEC name is correct. Name slightly different
 liy,B91510,Yolo Bypass at Liberty Island ,38.32916667,-121.6938889,614160.9,4243144.8,,B91510,LIY,dwr_ncro,x,,,An additional station (B91510B) records water levels in drainage canal on Liberty Island side of levee
 lir,B91511,Yolo Bypass at Liberty Island (Canal),38.32611111,-121.6938889,614165.7,4242805.8,,B91511,LIR,dwr_ncro,x,,,An additional station (B91510) records water levels on Yolo Bypass side of levee
 smr,11336680,S Mokelumne R at New Hope BR near Walnut Grove,38.2255556,-121.4911111,632073.2,4231917.6,,,SMR,usgs,x,x,x,"flow, stage, velocity available since 1/1/2011, turbidity since 4/16/2015, suspended sediment since 8/4/2012"
 nmr,11336685,N Mokelumne R near Walnut Grove,38.223333,-121.5072222,630666.9,4231648.1,,,NMR,usgs,,x,x,"flow and velocity available since 12/13/2010, turbidity and suspended since 8/14/2012"
-mkn,B9413300,N Mokelumne R below Snodgrass Slough,38.223333,-121.506667,630666.9,4231648.1,,,MKN,dwr_ncro,,x,x,
-sxs,B91450Q,Steamboat Slough near Sacramento River,38.191267,-121.637881,619281.8,4227913.6,,B91450Q,SXS,dwr_ncro,,x,,"ADCP Flow Station, commence on 6/12/2015"
+mkn,B94133,N Mokelumne R below Snodgrass Slough,38.223333,-121.506667,630666.9,4231648.1,,,MKN,dwr_ncro,,x,x,
+sxs,B91450,Steamboat Slough near Sacramento River,38.191267,-121.637881,619281.8,4227913.6,,B91450Q,SXS,dwr_ncro,,x,,"ADCP Flow Station, commence on 6/12/2015"
 fct,B95050,Fisherman's Cut,38.06782222,-121.6488389,618521.7,4214201.8,,B95050Q,FCT,dwr_ncro,,x,,"ADCP Flow Station, commence on 6/5/2015"
 flt,96,Goodyear Slough at Fleet,38.08083,-122.09972,579121.895,4214883,,,FLT,dwr_des,,,,
-soi,B91250Q,Sacramento River Downstream of Isleton,38.17548,-121.656863,617644.9,4226137.5,,B91250Q,SOI,dwr_ncro,,x,,"ADCP Flow Station, commence on 6/29/2015"
-mir,B91470Q,Miner Slough,38.23602683,-121.666055,616742.9,4232844.4,,B91470Q,MIR,dwr_ncro,,x,,"ADCP Flow Station, commence on 6/12/2015"
+soi,B91250,Sacramento River Downstream of Isleton,38.17548,-121.656863,617644.9,4226137.5,,B91250Q,SOI,dwr_ncro,,x,,"ADCP Flow Station, commence on 6/29/2015"
+mir,B91470,Miner Slough,38.23602683,-121.666055,616742.9,4232844.4,,B91470Q,MIR,dwr_ncro,,x,,"ADCP Flow Station, commence on 6/12/2015"
 twi,405,San Joaquin River at Twitchell Island,38.09746,-121.66872,616731,4217465,,,TWI,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
 ssi,404,Sacramento River near Sherman Island,38.07415,-121.76174,608608.2,4214765.6,,,SSI,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
-bet2,B9504500,Bethel Island at Piper Slough,38.034023,-121.621266,620996.1,4210486.7,,B9504500,BET,dwr_ncro,,,,commence 5/20/2014; relocated from B95058 or BET (Russo's Marina) to a residential dock about 500 feet downstream since 12/5/2017.
+bet2,B95045,Bethel Island at Piper Slough,38.034023,-121.621266,620996.1,4210486.7,,B9504500,BET,dwr_ncro,,,,commence 5/20/2014; relocated from B95058 or BET (Russo's Marina) to a residential dock about 500 feet downstream since 12/5/2017.
 frk,358,"Franks Tract, Mid Tract",38.04642,-121.5981,623008.4,4211892.7,,,FRK,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
 hon,406,Honker Bay,38.0724452,-121.9392323,593045.1,4214379.2,,,HON,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
 ryc,403,Suisun Bay Cutoff Near Ryer,38.083971,-121.995878,588041.6,4215616.3,,,RYC,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
 gzl,368,Grizzly Bay,38.12425,-122.038117,584309.0232,4220037.891,,,GZL,dwr_des,,,,"data available on cdec since 6/19/2015, doesn't exist on wdl as of 10/6/2015"
 sga,B95415,Sugar Cut at Golden Anchor,37.7928598,-121.421495,638981.8,4184006.2,,B95415Q,SGA,dwr_ncro,,x,,"same as B9541400 ar wdl, flow data available since 3/18/2014, water temp & EC since 4/30/2014"
 von,11425500,Sacramento River at Verona,38.774444,-121.597222,621783.2,4292647.4,,,VON,usgs,x,x,,"NWIS: Latitude 38deg46'28"",   Longitude 121deg35'50""   NAD27 (38.77444,-121.597222); Datum of gage: -3.00 feet above   NGVD29; CDEC: 38.77415,-121.59807"
-von2,a0215000,Sacramento River at Verona,38.774444,-121.597222,621783.2,4292647.4,,,VON,dwr_ncro,x,x,,Need to confirm this is same place as USGS 
+von2,a02150,Sacramento River at Verona,38.774444,-121.597222,621783.2,4292647.4,,,VON,dwr_ncro,x,x,,Need to confirm this is same place as USGS 
 smr2,B94150,S.F. Mokelumne River at New Hope Bridge,38.22527778,-121.4908333,632098.1,4231887.1,,B94150,SMR,dwr_ncro,x,,,
 mfv,B91475,Miner Slough at Five Points,38.29,-121.6447222,618522.3,4238860.6,,B91475,MFV,dwr_ncro,x,,,
 toen,11455139,Toe Drain at Mallard Road,38.36513889,-121.6377417,619009.8,4247207.4,,,,usgs,,x,x,moved from Toe South
@@ -210,7 +212,6 @@ ryf,11455385,Cache Slough Above Ryer Island Ferry,38.19395556,-121.6580028,61751
 confl,11455508,Suisun Bay At Van Sickle Island,38.04953056,-121.88755,597605.9,4211894.6,,,,usgs,,,x,
 has,11455278,Hass Slough Near Elmira,38.29415,-121.7257389,611430.5,4239220.3,,,HAS,usgs,,x,x,
 grizzb,'380631122032201,Grizzly Bay at Suisun Slough,38.10853056,-122.0559806,582761,4218277.6,,,,usgs,,,x,
-gsm,B94100,Georgiana Slough at Mokelumne R,38.13,-121.5802778,624430.5,4221190.9,,B94100,,dwr_ncro,x,,,Not confirmed. Based on lat/long to 1 arc second from Central District
 gzm,738,Grizzly Bay at Head of Montezuma Slough Buoy,38.1413,-122.0602,582354,4221910,,,,dwr_des,,,x,
 yby,11453000,Yolo Bypass Near Woodland,38.67777778,-121.6430556,618033.7,4281893.8,,,YBY,usgs,,x,x,
 glcgs,11313240,Grant Line Canal Near Tracy,37.82,-121.5447222,628084.6,4186841.5,,,,usgs,,x,x,
@@ -229,6 +230,7 @@ mow,MOW,Mowry Slough,37.485,-122.033,585491.4,4149116.2,,,,sfei,,x,,
 nw,NW,Newark Slough,37.513,-122.082,581128.9,4152179.4,,,,sfei,,x,,
 pond,POND,Pond A8 Outlet at Confluence with Alviso Slough,37.424,-121.98,590250.4,4142398,,,,sfei,,x,,
 sm,SM,San Mateo Bridge near surface,37.464,-122.024,586311.2,4146794.6,,,,sfei,,,x,
+ssw2,11426000,Sacramento Weir Spill to Yolo Bypass,38.440277,-121.554166,626181,4255656,,,SSW2,usgs,,,x,Only reports hourly flow and not realtime
 sfp17,'374811122235001,San Francisco Bay at Pier 17,37.803,-122.397,553143.4,4184169.8,,,,usgs,,,x,
 mrz2,9415102,Martinez-Amorco Pier,38.035,-122.125,576774.9,4210025.7,,,,noaa,x,,x,
 alvz,11169750,Alviso Slough Near Alviso,37.44,-121.998,588609.4,4144155.7,,,,usgs,,,x,
@@ -237,7 +239,6 @@ cm,11460090,Corte Madera Creek Near Larkspur,37.943,-122.515,542639,4199638.8,,,
 orm,B95370,Old River upstream of Mountain House Creek,37.7938408,-121.5173813,630537,4183977,,B95370Q,ORM,dwr_ncro,,x,,Quality and flow have different CDEC
 #pco,B95410,Paradise Cut Above Old River,37.80197222,-121.4123056,639774,4185031,,B95410,PCO,dwr_ncro,,,x,EC and Temp
 pdc,B95410,Paradise Cut,37.8020598,-121.4122564,639778,4185041,,B95410Q,PDC,dwr_ncro,,x,x,Flow and WQ
-pdup,B9541050,Paradise Cut Upstream,37.801022,-121.373076,643229.,4184985.,,B8541050,,dwr_ncro,x
 pcw,11454000,Putah Creek near Winters,38.515186,-122.081917,580133.2256,4263389,,,,usgs,,,,
 sjc,B95640,San Joaquin River near Buckley Cove,37.98026611,-121.3857175,641772,4204855,,B95640Q,SJC,dwr_ncro,,x,,Dave Huston's replacement for RRI
 dvi,B95880,San Joaquin River at D.V.I. Pump,37.75002778,-121.3028889,649512,4179437,,B95880,,dwr_ncro,,,x,
@@ -260,18 +261,27 @@ cbs,'381502121411201,Cache Slough below Shag Slough,38.25069,-121.68669,614881,4
 lcts,'381749121400201,Liberty Cut at Five Points,38.296844,-121.667086,616555,4239591,,,,usgs,x,x,x,
 lct,11455146,Liberty Cut at Holland Tract,38.32885,-121.6675306,616465,4243143,,,,usgs,x,x,x,
 mrx,B955006,Middle River near Tracy Blvd,37.88141,-121.46739,634779.4549,4193764.353,,B95506,MRX,dwr_ncro,x,,x,
-mhb,11335000,Cosumnes River at Michigan Bar,38.50028,-121.04417,670551.,4263137.,,,,usgs,x,x,x,Used for Cosumnes boundary
-wbr,11325500,Mokelumne River at Woodbridge,38.15861,-121.30250,648720.,4224775.,,,,usgs,x,x,x,Used for Moke boundary
-awb,11446980,American River below Watt Ave Bridge,38.56722,-121.38722,640504.,4269986.,,,,usgs,x,x,x,Used for American temp boundary
-rye,11455385,Cache Slough above Ryer Island Ferry,38.19395556,-121.6580028,617515.,4228186.,,,,usgs,x,x,x,Replaces ryi
+mhb,11335000,Cosumnes River at Michigan Bar,38.50028,-121.04417,670551,4263137,,,,usgs,x,x,x,Used for Cosumnes boundary
+wbr,11325500,Mokelumne River at Woodbridge,38.15861,-121.3025,648720,4224775,,,,usgs,x,x,x,Used for Moke boundary
+awb,11446980,American River below Watt Ave Bridge,38.56722,-121.38722,640504,4269986,,,,usgs,x,x,x,Used for American temp boundary
+rye,11455385,Cache Slough above Ryer Island Ferry,38.19395556,-121.6580028,617515,4228186,,,,usgs,x,x,x,Replaces ryi
 c16,'380356122023701,Suisun Bay at Channel Marker 16 Near Port Chicago,38.06553,-122.04352,583902.55,4213517.57,,,C16,usgs,,,x,
-c24,'380318121571501,Suisun Bay at Channel Marker 24A Near Bay Point,38.05510,-121.95429,591743.04,4212444.61,,,C24,usgs,,,x,
+c24,'380318121571501,Suisun Bay at Channel Marker 24A Near Bay Point,38.0551,-121.95429,591743.04,4212444.61,,,C24,usgs,,,x,
 co5,11455498,Suisun Bay at Channel Marker 5 at Collinsville,38.06578,-121.83581,602123.11,4213753.24,,,C05,usgs,,,x,
 c10,11455495,Suisun Bay at Channel Marker 10 Near Collinsville,38.05983,-121.79989,605282.66,4213133.12,,,C10,usgs,,,x,
 m13,11455485,Sacramento R Below Toland Landing Near Rio Vista,38.07781,-121.76729,608116.21,4215165.61,,,M13,usgs,,,x,
 knl,A02200,Sacramento River at Knights Landing,38.803348,-121.716391,611458.99,4295736.72,,A02200,KNL,dwr_ncro,,,x,
-klup,A0223002,Sacramento River above CBD,38.805210,-121.723720,610819.69,4295934.45,,A0223002,,dwr_ncro,,,x,
-wlk,11390500,Sacramento River below Wilkins Sl near Grimes,39.00990,-121.82469,601759.47,4318532.21,,,WLK,usgs,,,x,
-ssw,A02108,Sacramento River above Sacramento Weir,38.60805,-121.55930,625441.04,4274267.15,,,SSW,dwr_ncro,,,x,
-ssw2,11426000,Sacramento Weir Spill to Yolo Bypass,38.440277,-121.554166,626181,4255656,,,SSW2,usgs,,,x,Only reports hourly flow and not realtime
+klup,A0223002,Sacramento River above CBD,38.80521,-121.72372,610819.69,4295934.45,,A0223002,,dwr_ncro,,,x,
+wlk,11390500,Sacramento River below Wilkins Sl near Grimes,39.0099,-121.82469,601759.47,4318532.21,,,WLK,usgs,,,x,
+ssw,A02108,Sacramento River above Sacramento Weir,38.60805,-121.5593,625441.04,4274267.15,,A02108,SSW,dwr_ncro,,,x,
+ssa,B95100,San Joaquin River at San Andreas Landing,38.103333,-121.591389,623502,4218217,,B95100,SSA,dwr_ncro,,,x,
+otw,B9538900,Old River  downstream of Tracy WW Outfall,37.806422,-121.408642,640088,4185530,,B9538900,,dwr_ncro,,,x,
+oap,B9538600,Old River above Paradise Cut,37.806892,-121.414681,639555,4185573,,B9538600,,dwr_ncro,,,x,
+obp,B9538500,Old River below Paradise Cut,37.804229,-121.420224,639072,4185270,,B9538500,,dwr_ncro,,,x,
+otd,B9538100,Old River above Tracy Drain,37.801982,-121.442831,637086,4184987,,B9538100,,dwr_ncro,,,x,
+obr,B9537400,Old River at Bethany Rd Drain,37.7853,-121.5046,631678,4183047,,B9537400,,dwr_ncro,,,x,
+wkl,B9537100,Wicklund Cut near Moth,37.789726,-121.516244,630645,4183522,,B9537100,,dwr_ncro,,,x,SOR28
+wbb,B9537200,Wicklund Cut at Bethany Rd Bridge,37.780386,-121.517321,630566,4182484,,B9537200,,dwr_ncro,,,x,
+mhc,B9536900,Mountain House Creek,37.796918,-121.525642,629804,4184307,,B9536900,,dwr_ncro,,,x,
+# dup ssw2,11426000,Sacramento Weir Spill to Yolo Bypass,38.440277,-121.554166,626181,4255656,,,SSW2,usgs,,,x,Only reports hourly flow and not realtime
 #id,agency_id,name,lat,lon,x,y,d1641_id,wdl_id,cdec_id,agency,stage,flow,quality,notes
