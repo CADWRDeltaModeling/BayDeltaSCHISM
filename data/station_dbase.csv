@@ -275,13 +275,14 @@ klup,A0223002,Sacramento River above CBD,38.80521,-121.72372,610819.69,4295934.4
 wlk,11390500,Sacramento River below Wilkins Sl near Grimes,39.0099,-121.82469,601759.47,4318532.21,,,WLK,usgs,,,x,
 ssw,A02108,Sacramento River above Sacramento Weir,38.60805,-121.5593,625441.04,4274267.15,,A02108,SSW,dwr_ncro,,,x,
 ssa,B95100,San Joaquin River at San Andreas Landing,38.103333,-121.591389,623502,4218217,,B95100,SSA,dwr_ncro,,,x,
-otw,B9538900,Old River  downstream of Tracy WW Outfall,37.806422,-121.408642,640088,4185530,,B9538900,,dwr_ncro,,,x,
-oap,B9538600,Old River above Paradise Cut,37.806892,-121.414681,639555,4185573,,B9538600,,dwr_ncro,,,x,
-obp,B9538500,Old River below Paradise Cut,37.804229,-121.420224,639072,4185270,,B9538500,,dwr_ncro,,,x,
-otd,B9538100,Old River above Tracy Drain,37.801982,-121.442831,637086,4184987,,B9538100,,dwr_ncro,,,x,
-obr,B9537400,Old River at Bethany Rd Drain,37.7853,-121.5046,631678,4183047,,B9537400,,dwr_ncro,,,x,
-wkl,B9537100,Wicklund Cut near Moth,37.789726,-121.516244,630645,4183522,,B9537100,,dwr_ncro,,,x,SOR28
-wbb,B9537200,Wicklund Cut at Bethany Rd Bridge,37.780386,-121.517321,630566,4182484,,B9537200,,dwr_ncro,,,x,
-mhc,B9536900,Mountain House Creek,37.796918,-121.525642,629804,4184307,,B9536900,,dwr_ncro,,,x,
+otww,B9538900,Old River  downstream of Tracy WW Outfall,37.806422,-121.408642,640088,4185530,,B9538900,,dwr_ncro,,,x,
+pccu,B9538600,Old River at Paradise Cut Confluence Upstream,37.806892,-121.414681,639555,4185573,,B9538600,,dwr_ncro,,,x,
+pccd,B9538500,Old River at Paradise Cut Confluence Downstream,37.804229,-121.420224,639072,4185270,,B9538500,,dwr_ncro,,,x,
+otbd,B9538100,Old River above Tracy Drain,37.801982,-121.442831,637086,4184987,,B9538100,,dwr_ncro,,,x,
+obrd,B9537400,Old River at Bethany Rd Drain,37.7853,-121.5046,631678,4183047,,B9537400,,dwr_ncro,,,x,
+wcnm,B9537100,Wicklund Cut near Mouth,37.789726,-121.516244,630645,4183522,,B9537100,,dwr_ncro,,,x,SOR28
+wcbr,B9537200,Wicklund Cut at Bethany Rd Bridge,37.780386,-121.517321,630566,4182484,,B9537200,,dwr_ncro,,,x,
+mhcm,B9536900,Mountain House Creek,37.796918,-121.525642,629804,4184307,,B9536900,,dwr_ncro,,,x,
+tppa,B9542400,Tom Paine Slough at Paradise Ave,37.774225,-121.382297,642469,4181997,,B9542400,,dwr_ncro,,,x,
 # dup ssw2,11426000,Sacramento Weir Spill to Yolo Bypass,38.440277,-121.554166,626181,4255656,,,SSW2,usgs,,,x,Only reports hourly flow and not realtime
 #id,agency_id,name,lat,lon,x,y,d1641_id,wdl_id,cdec_id,agency,stage,flow,quality,notes
