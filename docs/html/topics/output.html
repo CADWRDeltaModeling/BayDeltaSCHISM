@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Output &#8212; Bay-Delta SCHISM</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Changing the Mesh" href="mesh.html" />
+    <link rel="prev" title="Nudging Files" href="nudging.html" /> 
+  </head><body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="../index.html"><img src="../_static/logo6.png" border="0" alt="Bay-Delta SCHISM"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mesh.html" title="Changing the Mesh"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nudging.html" title="Nudging Files"
+             accesskey="P">previous</a> |</li>
+        <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
+        <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
+        <li><a href="../search.html">Search</a>|&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="../learning.html" accesskey="U">Learning Resources for Bay-Delta SCHISM</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Output</a></li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/dwr_logo_small.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Output</a><ul>
+<li><a class="reference internal" href="#flavors-of-output">Flavors of output</a></li>
+<li><a class="reference internal" href="#what-you-should-plan-in-advance">What you should plan in advance</a></li>
+<li><a class="reference internal" href="#request-station-output">Request station output</a><ul>
+<li><a class="reference internal" href="#station-in">station.in</a></li>
+<li><a class="reference internal" href="#flow-xsects-yaml-and-fluxflags-out">flow_xsects.yaml and fluxflags.out</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#request-dense-output">Request dense output:</a></li>
+<li><a class="reference internal" href="#working-with-staout-files">Working with staout_ files</a></li>
+<li><a class="reference internal" href="#working-with-flux-out-files">Working with flux.out files</a></li>
+<li><a class="reference internal" href="#visualizing-dense-nc-output-in-visit">Visualizing dense (.nc) output in VisIt</a></li>
+<li><a class="reference internal" href="#schism-s-extraction-utilities">SCHISM’s extraction utilities</a></li>
+<li><a class="reference internal" href="#quick-validation-plots">Quick validation plots</a></li>
+<li><a class="reference internal" href="#where-do-we-keep-specialized-postprocessing-materials">Where do we keep specialized postprocessing materials?</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="nudging.html"
+                          title="previous chapter">Nudging Files</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="mesh.html"
+                          title="next chapter">Changing the Mesh</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/topics/output.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="output">
+<h1>Output<a class="headerlink" href="#output" title="Permalink to this heading">¶</a></h1>
+<section id="flavors-of-output">
+<h2>Flavors of output<a class="headerlink" href="#flavors-of-output" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="what-you-should-plan-in-advance">
+<h2>What you should plan in advance<a class="headerlink" href="#what-you-should-plan-in-advance" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="request-station-output">
+<h2>Request station output<a class="headerlink" href="#request-station-output" title="Permalink to this heading">¶</a></h2>
+<section id="station-in">
+<h3>station.in<a class="headerlink" href="#station-in" title="Permalink to this heading">¶</a></h3>
+</section>
+<section id="flow-xsects-yaml-and-fluxflags-out">
+<h3>flow_xsects.yaml and fluxflags.out<a class="headerlink" href="#flow-xsects-yaml-and-fluxflags-out" title="Permalink to this heading">¶</a></h3>
+</section>
+</section>
+<section id="request-dense-output">
+<h2>Request dense output:<a class="headerlink" href="#request-dense-output" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="working-with-staout-files">
+<h2>Working with <a href="#id1"><span class="problematic" id="id2">staout_</span></a> files<a class="headerlink" href="#working-with-staout-files" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="working-with-flux-out-files">
+<h2>Working with flux.out files<a class="headerlink" href="#working-with-flux-out-files" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="visualizing-dense-nc-output-in-visit">
+<h2>Visualizing dense (.nc) output in VisIt<a class="headerlink" href="#visualizing-dense-nc-output-in-visit" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="schism-s-extraction-utilities">
+<h2>SCHISM’s extraction utilities<a class="headerlink" href="#schism-s-extraction-utilities" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="quick-validation-plots">
+<h2>Quick validation plots<a class="headerlink" href="#quick-validation-plots" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="where-do-we-keep-specialized-postprocessing-materials">
+<h2>Where do we keep specialized postprocessing materials?<a class="headerlink" href="#where-do-we-keep-specialized-postprocessing-materials" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="mesh.html" title="Changing the Mesh"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="nudging.html" title="Nudging Files"
+             >previous</a> |</li>
+        <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
+        <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
+        <li><a href="../search.html">Search</a>|&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="../learning.html" >Learning Resources for Bay-Delta SCHISM</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Output</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014,2020 California Department of Water Resources.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    </div>
+  </body>
+</html>
