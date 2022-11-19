@@ -1,11 +1,13 @@
 
 .. _Learning Resources: 
 
-******************************************
-Resources and Manuals for Bay-Delta SCHISM
-******************************************
+***************************************************
+Learning Resources for Bay-Delta SCHISM
+***************************************************
 
-This page gives you links to SCHISM learning resources as well as topical guides on how to obtain, modify, run and interpret the model
+This page is the documentation hub for running the Bay-Delta SCHISM application. It has some ideas for learning to use SCHISM and a how-to topical guide for the application on the Bay-Delta domain. 
+
+For installation instructions please see the `Installation and Getting Started Page <https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/html/getmodel.html>`_.
 
 
 General Resources and Tools
@@ -16,7 +18,7 @@ General Resources and Tools
    :hidden:
 
    Hello SCHISM <https://cadwrdeltamodeling.github.io/HelloSCHISM/html/index.html>
-   Topical Guide to Bay Delta SCHISM <topical.rst>
+   Topical Guide to Bay Delta SCHISM <topical_guide.rst>
    Linux <linux.rst>
    
    

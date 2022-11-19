@@ -28,9 +28,11 @@ import sys, os
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.intersphinx',
               'sphinx.ext.todo',
-              'sphinx.ext.mathjax',] 
-              
-              #'sphinxcontrib.newsfeed'
+              'sphinx.ext.mathjax',
+              'sphinxcontrib.bibtex']
+
+bibtex_bibfiles = ['dms_20221119b.bib']
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
