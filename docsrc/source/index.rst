@@ -8,7 +8,7 @@ Bay-Delta SCHISM Project
 
 Welcome. This is home base for the Bay-Delta SCHISM modeling project.
 
-Bay-Delta SCHISM is an application of the 3D open source `SCHISM <http://ccrm.vims.edu/schismweb/>`_ hydrodynamic and water quality suite to the San Francisco Bay Delta estuary. The project is a collaboration between the California Department of Water Resources and the Virginia Institute of Marine Sciences (VIMS).
+Bay-Delta SCHISM is an application of the 3D open source `SCHISM <http://ccrm.vims.edu/schismweb/>`_ :cite:p:`zhang_new_2015` :cite:p:`zhang_seamless_2016` hydrodynamic and water quality suite to the San Francisco Bay Delta estuary. The project is a collaboration between the California Department of Water Resources and the Virginia Institute of Marine Sciences (VIMS).
 
 
 Contents
@@ -52,9 +52,14 @@ Although we expect our general calibration to continue to improve, further work 
 
 An overview of the Bay-Delta application is given in the `workflow guide <_static/workflow_guide.pdf>`_. Note this guide alludes to the "working title" for SCHISM, SELFE-W.
 
-See :cite:t:`zhang_simulating_2020` and :cite:p:`zhang_simulating_2020`
 
 
+
+
+References
+----------
+
+.. bibliography::
 
 
 

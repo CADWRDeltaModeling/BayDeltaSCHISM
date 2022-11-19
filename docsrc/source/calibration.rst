@@ -10,8 +10,3 @@ the 2014 Annual Report Chapter 7 available on the
 on SCHISM.
 
 
-References
-----------
-
-.. bibliography::
-
