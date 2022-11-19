@@ -291,5 +291,5 @@ epub_copyright = u'2014, Eli Ateljevich, Joseph Zhang, Kijin Nam, Qiang Shu, Rue
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'schismtools': ('../../../schimpy/docs/html',None)}
+intersphinx_mapping = {'schismtools': ('../../../models/schimpy/docs/html',None)}
 
