@@ -2,7 +2,7 @@
 Training
 ========
 
-The next training is scheduled for 2021. Given the pandemic, the workshop will be conducted largely on-line with use of video tuturials. We have developed a training course that includes material on how to run SCHISM, the major assumptions of our Bay-Delta application, tools for applying the model in the Bay-Delta as well visualization of results and introductory material on how to extend the model. The course is interwoven with material on tidal analysis, propagation, numerical modelling and estuary processes as necessary to understand the model inputs.
+The next training is scheduled for 2023. We are cp,[;etomg a training course that includes material on how to run SCHISM, the major assumptions of our Bay-Delta application, tools for applying the model in the Bay-Delta as well visualization of results and introductory material on how to extend the model. The course is interwoven with material on numerical modelling and estuary processes as necessary to understand the model inputs.
 
 
 Support
