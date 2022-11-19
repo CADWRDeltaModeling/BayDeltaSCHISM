@@ -1,7 +1,7 @@
 
-=====================================
-Bay-Delta Templates and Preprocessing
-=====================================
+==================================
+Study Templates and Preprocessing
+==================================
 
 Copy existing run vs preprocess from template?
 ----------------------------------------------
