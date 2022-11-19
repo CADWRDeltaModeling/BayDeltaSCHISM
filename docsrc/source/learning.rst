@@ -1,9 +1,15 @@
 
 .. _Learning Resources: 
 
-
+***************************************
 Learning Resources for Bay-Delta SCHISM
-=======================================
+***************************************
+
+This page gives you links to SCHISM learning resources as well as topical guides on how to obtain, modify, run and interpret the model
+
+
+General Resources and Tools
+===========================
 
 
 .. toctree::
@@ -38,17 +44,22 @@ Getting Help
 
 Please email Eli.Ateljevich@water.ca.gov or Kijin.Nam@water.ca.gov. We will try to help you get going.
 
+VIMS and Other External Resources
+=================================
 
-Bay-Delta Modeling Guide
-------------------------
 
 
+Bay-Delta Modeling Topical Guide
+********************************
+
+The following topic guides take you through what it takes to set up a basic model run using the Bay-Delta SCHISM toolchain. You won't have action items on all the topics for every run, but you should learn generally about the items and where the 'gotchas' are. It is also useful to familiarize yourself with these and other utilities. Or ask us -- we would much rather see an existing utility get better used and refined than have the same tool get reinvented many times.
 
 .. toctree::
   :caption: Topical Guides and Checklists for Essentials/Basic Run
   :maxdepth: 3
   
   Getting the Tools and Setting Up <getmodel>
+  topics/overview.rst
   topics/preprocess.rst
   topics/ocean.rst
   topics/flow_boundary.rst

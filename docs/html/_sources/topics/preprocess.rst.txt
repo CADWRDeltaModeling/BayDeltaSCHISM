@@ -3,8 +3,8 @@
 Bay-Delta Templates and Preprocessing
 =====================================
 
-Copy run or preprocess?
--------------------------
+Copy existing run vs preprocess from template?
+----------------------------------------------
 
 yo
 
