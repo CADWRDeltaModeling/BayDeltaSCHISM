@@ -13,12 +13,12 @@ Using Linux from Windows
 
 You will need tools to:
 
-- connect to the Linux server that serves as a gateway, sometimes called a *server* or on clusters or supercomputers often called the 
-*head node*. 
+- connect to the Linux server that serves as a gateway, sometimes called a *server* or on clusters or supercomputers often called the *head node*. 
 - for graphical applications with windows like browsers and some text editors, you may need something called "XWindow Emulation". 
 - A method to copy files back and forth fast, usually with a secure (ssh) method
 - often you will want to set up an efficient text editor (Visual Studio Code) and VisIT both of which
 adopt a client-server approach to viewing or working on things in Windows that are located on Linux (the server) 
+
 
 Basic connection
 -----------------

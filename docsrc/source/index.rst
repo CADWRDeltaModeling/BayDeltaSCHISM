@@ -28,6 +28,7 @@ Contents
   topical_guide
   calibration
   help
+  refs
 
 
 Independent manual web pages are available for `VTools <http://cadwrdeltamodeling.github.io/vtools3/>`_ and 
@@ -53,13 +54,6 @@ Although we expect our general calibration to continue to improve, further work 
 An overview of the Bay-Delta application is given in the `workflow guide <_static/workflow_guide.pdf>`_. Note this guide alludes to the "working title" for SCHISM, SELFE-W.
 
 
-
-
-
-References
-----------
-
-.. bibliography::
 
 
 
