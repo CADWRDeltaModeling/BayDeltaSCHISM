@@ -1,4 +1,4 @@
-name: py39
+name: schism
 channels:
   - defaults
   - cadwr-dms
