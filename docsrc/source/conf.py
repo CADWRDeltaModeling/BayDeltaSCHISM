@@ -28,9 +28,11 @@ import sys, os
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.intersphinx',
               'sphinx.ext.todo',
-              'sphinx.ext.mathjax',] 
-              
-              #'sphinxcontrib.newsfeed'
+              'sphinx.ext.mathjax',
+              'sphinxcontrib.bibtex']
+
+bibtex_bibfiles = ['dms_20221119b.bib']
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -291,5 +293,5 @@ epub_copyright = u'2014, Eli Ateljevich, Joseph Zhang, Kijin Nam, Qiang Shu, Rue
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'schismtools': ('../../../schimpy/docs/html',None)}
+intersphinx_mapping = {'schismtools': ('../../../models/schimpy/docs/html',None)}
 

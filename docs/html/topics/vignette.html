@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Vignette: Details of a Simple Bay Delta SCHISM at Delta Modeling Section &#8212; Bay-Delta SCHISM</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Study Templates and Preprocessing" href="preprocess.html" />
+    <link rel="prev" title="Overview of Basic Bay-Delta SCHISM Run" href="overview.html" /> 
+  </head><body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="../index.html"><img src="../_static/logo6.png" border="0" alt="Bay-Delta SCHISM"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="preprocess.html" title="Study Templates and Preprocessing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview of Basic Bay-Delta SCHISM Run"
+             accesskey="P">previous</a> |</li>
+        <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
+        <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
+        <li><a href="../search.html">Search</a>|&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="../learning.html" >Learning Resources for Bay-Delta SCHISM</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../topical_guide.html" accesskey="U">Bay-Delta SCHISM Topical Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Vignette: Details of a Simple Bay Delta SCHISM at Delta Modeling Section</a></li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/dwr_logo_small.png" alt="Logo"/>
+            </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Vignette: Details of a Simple Bay Delta SCHISM at Delta Modeling Section</a><ul>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#linux">Linux</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="overview.html"
+                          title="previous chapter">Overview of Basic Bay-Delta SCHISM Run</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="preprocess.html"
+                          title="next chapter">Study Templates and Preprocessing</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/topics/vignette.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="vignette-details-of-a-simple-bay-delta-schism-at-delta-modeling-section">
+<span id="bdschinstr"></span><h1>Vignette: Details of a Simple Bay Delta SCHISM at Delta Modeling Section<a class="headerlink" href="#vignette-details-of-a-simple-bay-delta-schism-at-delta-modeling-section" title="Permalink to this heading">¶</a></h1>
+<p>The process for starting a Bay Delta SCHISM run from scratch involves some pre-processing work on a Windows machine using the schimpy library (<a class="reference external" href="https://github.com/CADWRDeltaModeling/schimpy">https://github.com/CADWRDeltaModeling/schimpy</a>).</p>
+<p>You’ll want to have a conda environment which has the latest version of schimpy in it. For this example that environment is called ‘schism’.</p>
+<section id="windows">
+<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic">
+<li><p>Clone the Bay Delta Schism repository to your Windows machine (ex: D:/schism/bdsch_scratch)</p>
+<ul class="simple">
+<li><p>git clone <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM.git">https://github.com/CADWRDeltaModeling/BayDeltaSCHISM.git</a> (creates a BayDeltaSCHISM folder within bdsch_scratch)</p></li>
+</ul>
+</li>
+<li><p>Move some data</p>
+<ul class="simple">
+<li><p>Copy the “./BayDeltaSCHISM/templates/bay_delta” folder into your base folder and rename (ex: baydeltainputs)</p></li>
+<li><p>You’ll need a .2dm file for the pre-processor, copy this into the baydeltainputs folder</p></li>
+<li><p>Copy “./BayDeltaSCHISM/data/time_history/*.th” files into baydeltainputs folder</p></li>
+<li><p>Copy “./BayDeltaSCHISM/data/flow_station_xsects.yaml” into baydeltainputs folder</p></li>
+</ul>
+</li>
+<li><p>Edit input files</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>main_bay_delta.yaml</dt><dd><ul>
+<li><p>change mesh_inputfile: parameter to match the .2dm file you copied into the project folder</p></li>
+<li><p>check that the vgrid: section contains a vgrid_version: variable set to the SCHISM version being used (5.8 or 5.10)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>dem_4.2_cc.yaml</dt><dd><ul>
+<li><p>check the Dutch Slough DEM location, if unknown then comment output</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>sav_density.yaml</dt><dd><ul>
+<li><p>change “W:/sav” to “//nasbdo/Modeling_Data/sav” for all cases where “W:/sav” is found</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p>Run pre-processor</p>
+<ul class="simple">
+<li><p>in a conda terminal run:</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda activate schimpy</span>
+<span class="go">prepare_schism main_bay_delta</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create Hotstart and Nudging datasets</p>
+<ul>
+<li><p>This can be done in a seperate folder from the repository cloned, and seperate from the model inputs, since you only need a few of the resulting files to copy into the final model folder. (ex: bdsch_scratch/model_hotstart/)</p></li>
+<li><p>Hotstart and Nudging input datasets:</p>
+<blockquote>
+<div><ul>
+<li><p>Use hotstart_nudging_data.py to create the *.csv files necessary for the next step which creates the *.nc files which SCHISM uses</p>
+<blockquote>
+<div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In order to use this utility you’ll need to have dms_datastore in your environment. I created a schism-dms environment which uses <em>this environment.yml file LINK</em></p>
+</div>
+</div></blockquote>
+<ul class="simple">
+<li><p>You’ll need to specify the length of time you’re nudging the data (ex: 7 days)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nudgelen</span> <span class="o">=</span> <span class="n">days</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Also specify the start date that the model will run from (es: May 1, 2009)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">t0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Run hotstart_nudging_data.py in your ‘model_hotstart’ folder to produce ‘hotstart_data_temperature.csv’, ‘hotstart_data_salinity.csv’, ‘nudging_data_temperature.csv’, ‘nudging_data_salinity.csv’</p></li>
+</ul>
+</li>
+<li><p>Download polars .csv data <a class="reference external" href="https://sfbay.wr.usgs.gov/water-quality-database/">here</a></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>go to the year of your start date, select “All” from the drop-down, export csv and save to “model_hotstartUSGS_{year}_saltemp.csv”</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<ul>
+<li><p>Review and QA/QC the downloaded data from the above two steps</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>this step looks for negative temperatures/salinity and evaluates the data for any spikes or other anamolies</p></li>
+<li><p>SCRIPT HERE</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Creating Hotstart and Nudging *.nc Model inputs</p></li>
+</ul>
+<p>This step relies on the schimpy package and uses two files (hotstart.yaml and nudging.yaml) along with a script “hotstart.py”</p>
+<blockquote>
+<div><ul>
+<li><p>hotstart.yaml</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>for all data using ‘extrude_casts:’ replace ‘data:’ entry with the polaris csv file “USGS_{year}_saltemp.csv”</p></li>
+<li><p>for all data using ‘obs_points:’ replace ‘data:’ entry with “hotstart_data_{salinity/temperature}.csv” depending on the ‘variable:’</p></li>
+<li><p>set ‘vgrid_version:’ to 5.8 <em>NOTE: this will be updated in schism_hotstart and schism_nudging so that you can put in the real vgrid_version</em></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>nudging.yaml</p>
+<blockquote>
+<div><ul>
+<li><p>set ‘vgrid_version:’ to 5.8 <em>NOTE: this will be updated in schism_hotstart and schism_nudging so that you can put in the real vgrid_version</em></p></li>
+<li><p>change the run days based on your previous number (ex: 7 days)</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>rnday: 7
+</pre></div>
+</div>
+</li>
+<li><p>change temperature and salinity ‘data:’ to point to “nudging_data_{temperature/salinity}.csv”</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<ul>
+<li><p>This should have created hotstart.nc, SAL_nu_obsroms.nc, SAL_nu_roms.nc, TEM_nu_obsroms.nc, and TEM_nu_roms.nc so copy these files into the model inputs folder “baydeltainputs”</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>rename the hotstart.nc file to something relevant like “hotstart.20090501.nc” or whatever your start date is</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="linux">
+<h2>Linux<a class="headerlink" href="#linux" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic">
+<li><p>Create the folder where you will be running the model (ex: /scratch/dms/{username}/schism/bdsch_scratch_demo)</p>
+<ul class="simple">
+<li><p>from your Windows machine, copy “D:/schism/bdsch_scratch/BayDeltaSCHISM/templates/bay_delta/make_links.py” into your Linux model folder (bdsch_scratch_demo)</p></li>
+<li><p>in the model folder run these commands:</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir sflux</span>
+<span class="go">cd sflux</span>
+<span class="go">python make_links.py</span>
+<span class="go">cd ..</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>copy the contents of your Windows model inputs folder (baydeltainputs) into the Linux model folder (bdsch_scratch_demo)</p></li>
+<li><p>link the following files:</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ln -s bctides.in.3d bctides.in</span>
+<span class="go">ln -s param.nml.clinic param.nml</span>
+<span class="go">ln -s hotstart.20090501.nc hotstart.nc</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="preprocess.html" title="Study Templates and Preprocessing"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview of Basic Bay-Delta SCHISM Run"
+             >previous</a> |</li>
+        <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
+        <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
+        <li><a href="../search.html">Search</a>|&nbsp;</li>
+
+          <li class="nav-item nav-item-1"><a href="../learning.html" >Learning Resources for Bay-Delta SCHISM</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../topical_guide.html" >Bay-Delta SCHISM Topical Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Vignette: Details of a Simple Bay Delta SCHISM at Delta Modeling Section</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014,2020 California Department of Water Resources.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    </div>
+  </body>
+</html>

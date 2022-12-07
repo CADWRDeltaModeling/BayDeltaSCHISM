@@ -16,7 +16,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Getting Started" href="getmodel.html" /> 
+    <link rel="next" title="Installation And Getting Started" href="getmodel.html" /> 
   </head><body>
 
 <div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
@@ -30,7 +30,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="getmodel.html" title="Getting Started"
+          <a href="getmodel.html" title="Installation And Getting Started"
              accesskey="N">next</a> |</li>
         <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
         <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
@@ -62,7 +62,7 @@
   <div>
     <h4>Next topic</h4>
     <p class="topless"><a href="getmodel.html"
-                          title="next chapter">Getting Started</a></p>
+                          title="next chapter">Installation And Getting Started</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -91,18 +91,21 @@
             
   <section id="bay-delta-schism-project">
 <h1>Bay-Delta SCHISM Project<a class="headerlink" href="#bay-delta-schism-project" title="Permalink to this heading">¶</a></h1>
-<p>Bay-Delta SCHISM is an application of the 3D open source <a class="reference external" href="http://ccrm.vims.edu/schismweb/">SCHISM</a> hydrodynamic and water quality suite to the San Francisco Bay Delta estuary. The project is a collaboration between the California Department of Water Resources and the Virginia Institute of Marine Sciences (VIMS).</p>
+<p>Welcome. This is home base for the Bay-Delta SCHISM modeling project.</p>
+<p>Bay-Delta SCHISM is an application of the 3D open source <a class="reference external" href="http://ccrm.vims.edu/schismweb/">SCHISM</a> <span id="id1">[<a class="reference internal" href="refs.html#id4" title="Yinglong J. Zhang, Eli Ateljevich, Hao-Cheng Yu, Chin H. Wu, and Jason C.S. Yu. A new vertical coordinate system for a 3d unstructured-grid model. Ocean Modelling, 85:16–31, 2015. URL: https://linkinghub.elsevier.com/retrieve/pii/S1463500314001437 (visited on 2022-11-05), doi:10.1016/j.ocemod.2014.10.003.">ZAY+15</a>]</span> <span id="id2">[<a class="reference internal" href="refs.html#id5" title="Yinglong J. Zhang, Fei Ye, Emil V. Stanev, and Sebastian Grashorn. Seamless cross-scale modeling with SCHISM. Ocean Modelling, 102:64–81, 2016. doi:10.1016/j.ocemod.2016.05.002.">ZYSG16</a>]</span> hydrodynamic and water quality suite to the San Francisco Bay Delta estuary. The project is a collaboration between the California Department of Water Resources and the Virginia Institute of Marine Sciences (VIMS).</p>
 <section id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getmodel.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getmodel.html">Installation And Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="learning.html">Learning Resources for Bay-Delta SCHISM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="calibration.html">Calibration and References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topical_guide.html">Bay-Delta SCHISM Topical Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calibration.html">Calibration Report and References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="help.html">Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="help.html#support">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refs.html">References</a></li>
 </ul>
 </div>
 <p>Independent manual web pages are available for <a class="reference external" href="http://cadwrdeltamodeling.github.io/vtools3/">VTools</a> and
@@ -112,18 +115,20 @@ DWR’s Python-based SCHISM Toolset <a class="reference external" href="http://b
 <h2>Project description<a class="headerlink" href="#project-description" title="Permalink to this heading">¶</a></h2>
 <dl class="simple">
 <dt>The goal of our project is to develop an open-source, cross-scale multidimensional model suitable to answer flow and water quality questions involving large extents of the Bay-Delta system over periods of several years. Target applications include:</dt><dd><ul class="simple">
-<li><p>Habitat creation and conveyance options under BDCP;</p></li>
+<li><p>Habitat creation and conveyance options under Delta Conveyance Project;</p></li>
+<li><p>Evaluation of conveyance pathways through Clifton Court to minimize transit time for fish</p></li>
+<li><p>Computation of Low Salinity Zone and preferred habitat metrics in Suisun Marsh as part of the DWR’s Incidental Take Permit and associated long term operations agreements;</p></li>
 <li><p>Salinity intrusion changes under drought or sea level rise;</p></li>
-<li><p>Velocity changes following the installation of drought barriers;</p></li>
+<li><p>Salinity benefits, water age and velocity changes following the installation of drought barriers;</p></li>
 <li><p>Fate of mercury produced in the Liberty Island complex;</p></li>
-<li><p>Temperature, flow and food production in the estuary as part of a 3-model full life cycle bioenergetic model of salmon (as participants in the <a class="reference external" href="http://oceanview.pfeg.noaa.gov/sesame/">SESAME</a> project).</p></li>
+<li><p>Provision of high resolution velocity fields for agent based (ELAM) modeling as part of structured decision making to improve salmon migration through the Sacramento River/Steamboat Slough area.</p></li>
 </ul>
 </dd>
 </dl>
 <p>These applications vary a great deal in scope. Some can be studied with our base model with a few quick adjustments, but the last two require focal regions of intense study, multi-disciplinary biogeochemistry, or more careful validation of a particular transport mechanism. In our collaboration with NOAA and NASA in the SESAME project, the flexibility and openness of SELFE (forebearer of SCHISM) allowed swift incorporation of CoSINE, an alternate nutrient model to the standard EcoSIM 2.0 emphasizing the most important constituents for salmon in the system.</p>
 <p>Our immediate goal has been to establish a foundation – to develop a sense of global accuracy, requiring that we resolve (or craftily under-resolve) the main mechanisms of hydrodynamics and transport up the estuary and in Delta channels. These include gravitational circulation and exchange flow; periodic stratification; axial convergence; tidal trapping; flood-ebb asymmetry of flow paths, shear dispersion, primary flow streamlines, and perhaps some secondary circulation in large channels.</p>
 <p>Although we expect our general calibration to continue to improve, further work will be focus on project-dependent enhancements. Due to its flexible mesh, the model is easily re-usable in a near field/far field arrangement whereby the base model provides a pre-calibrated background grid for an extension or focal region of study.</p>
-<p>An overview of the Bay-Delta application is given in the <a class="reference external" href="_static/workflow_guide.pdf">workflow guide</a>. Note this guide alludes to the “working title” for SCHISM, SELFE-W.</p>
+<p>An overview of the Bay-Delta application is given in the <a class="reference external" href="_static/workflow_guide.pdf">workflow guide</a>. Note this guide alludes to the “working title” as SELFE transitioned to SCHISM, SELFE-W.</p>
 </section>
 </section>
 <section id="indices-and-tables">
@@ -149,7 +154,7 @@ DWR’s Python-based SCHISM Toolset <a class="reference external" href="http://b
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="getmodel.html" title="Getting Started"
+          <a href="getmodel.html" title="Installation And Getting Started"
              >next</a> |</li>
         <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
         <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>

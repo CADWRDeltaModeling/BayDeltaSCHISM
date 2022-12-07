@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Getting Started &#8212; Bay-Delta SCHISM</title>
+    <title>Installation And Getting Started &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -40,7 +40,7 @@
         <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
         <li><a href="search.html">Search</a>|&nbsp;</li>
 
-        <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Installation And Getting Started</a></li> 
       </ul>
     </div>
 
@@ -52,10 +52,16 @@
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Getting Started</a><ul>
-<li><a class="reference internal" href="#schism-code-or-binaries">SCHISM Code or Binaries</a></li>
+<li><a class="reference internal" href="#">Installation And Getting Started</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#schism-code-or-binaries">SCHISM Code or Binaries</a><ul>
+<li><a class="reference internal" href="#downloading">Downloading</a></li>
+<li><a class="reference internal" href="#compile-settings">Compile Settings</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#git">Git</a></li>
 <li><a class="reference internal" href="#bay-delta-package">Bay-Delta Package</a></li>
-<li><a class="reference internal" href="#vtools-scripting">VTools Scripting</a></li>
+<li><a class="reference internal" href="#required-python-packages">Required Python Packages</a></li>
 <li><a class="reference internal" href="#bathymetry">Bathymetry</a></li>
 <li><a class="reference internal" href="#complete-sample-inputs">Complete Sample Inputs</a></li>
 <li><a class="reference internal" href="#visit-schism-plug-in">VisIt SCHISM Plug-in</a></li>
@@ -100,30 +106,55 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
-<p>Depending on your experience level, you may be learning a
-new computation environment as well as a new model.</p>
+  <section id="installation-and-getting-started">
+<h1>Installation And Getting Started<a class="headerlink" href="#installation-and-getting-started" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p>Depending on your experience level, you may be installing a bunch of tools, learning a
+new computation environment and/or getting acquainted with a new model. Our experience is that
+folks who take all of that on together tend to struggle. Here are ways you can break it:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>This page lists the main items you will need to install or acquire.</p></li>
-<li><p>Download the model and try the first couple tutorials on a simplified grid using Windows or Linux. See the <a class="reference internal" href="learning.html"><span class="doc">Learning Resources for Bay-Delta SCHISM</span></a>.</p></li>
-<li><p>Try the Bay-Delta preprocessing tools <a class="reference external" href="https://cadwrdeltamodeling.github.io/schimpy">schimpy</a> in the package for working on the mesh, generating initial and boundary conditions, the ocean boundary and post processing.</p></li>
-<li><p>Download the code and the ready-to-run <a class="reference internal" href="#complete-sample"><span class="std std-ref">Complete Sample Inputs</span></a> and use them to configure and test your target high performance computing (HPC) environment.</p></li>
+<li><p>Don’t mix learning the model and learning Linux if you are still familiarizing. Download the model and try the first couple tutorials on Hello SCHISM
+a simplified grid using Windows if that is your platform of preference. See the <a class="reference internal" href="learning.html"><span class="doc">Learning Resources for Bay-Delta SCHISM</span></a>.</p></li>
+<li><p>Be aware of the <a class="reference external" href="https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/html/learning.html">learning resources</a> page which is the hub for documentation for the project.</p></li>
+<li><p>In particular, there is a <a class="reference internal" href="topical_guide.html"><span class="doc">Bay-Delta SCHISM Topical Guide</span></a>. It contains details on how we set up the Bay-Delta SCHISM application, and the table of contents is a good reminder even for experienced users.</p></li>
+<li><p>Explore the Python tools listed below. We will happily answer questions about what tools are available to avoid constant reinvention of the same functionality.</p></li>
+<li><p>If you have just set up the model in a new computing environment, benchmark it on a working example. Download the code and the ready-to-run <a class="reference internal" href="#complete-sample"><span class="std std-ref">Complete Sample Inputs</span></a> and use them to configure and test your target high performance computing (HPC) environment.</p></li>
 </ul>
 </div></blockquote>
+</section>
 <section id="schism-code-or-binaries">
 <h2>SCHISM Code or Binaries<a class="headerlink" href="#schism-code-or-binaries" title="Permalink to this heading">¶</a></h2>
-<p>How you will obtain the model code depends on the operating system. If you are working on Windows (which is mostly useful for instruction or reduced size problems), compatible <a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/schism_4.1_bin_windows.zip">Windows binaries</a> are available. This will underperform compared to a Linux cluster. For that, clone the SCHISM source code from the schism-dev GitHub <a class="reference external" href="https://github.com/schism-dev">repository</a> and compile it for your high performance system.</p>
-<p>The SCHISM numerical methods are an extension of <a class="reference external" href="http://www.stccmop.org/knowledge_transfer/software/selfe">SELFE v3.1dc</a>,
-originally developed as a collaboration between Dr Joseph Zhang and Dr Antonio Baptista
-while the two worked together at the Oregon Health &amp; Science University. SCHISM contains critical optimizations and enhancements developed by Dr Zhang at the Virginia Institute of Marine Sciences, by the DWR Bay-Delta Office and by collaborators in other domains.</p>
+<section id="downloading">
+<h3>Downloading<a class="headerlink" href="#downloading" title="Permalink to this heading">¶</a></h3>
+<p>How you will obtain the model code depends on the operating system. If you are working on Windows (which is mostly useful for instruction or reduced size problems), compatible <a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/schism_4.1_bin_windows.zip">Windows binaries</a> are available. This will underperform compared to a Linux cluster. For that, clone the SCHISM source code from the schism-dev GitHub <a class="reference external" href="https://github.com/schism-dev">repository</a> and compile it for your high performance system. Manuals and build instructions are available on the <a class="reference external" href="http://ccrm.vims.edu/schismweb/">SCHISM Web Site</a></p>
+</section>
+<section id="compile-settings">
+<h3>Compile Settings<a class="headerlink" href="#compile-settings" title="Permalink to this heading">¶</a></h3>
+<p>We compile for Linux using CMake using the SCHISM
+<a class="reference external" href="https://schism-dev.github.io/schism/master/getting-started/compilation.html">instructions for cmake</a></p>
+<p>The bulk of the work is making sure you have a compiler and links to the required libraries.</p>
+<p>For basic hydro-salinity runs we use the following cmake settings for which you will have to modify where GOTM is (also note our basic calibration doesn’t use GOTM):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cmake ../src -DPREC_EVAP=ON -DTVD_LIM=VL -DUSE_GOTM=ON -DGOTM_BASE=~/myscratch/gotm_home
+</pre></div>
+</div>
+<p>Additional settings are needed to model age, sediment, biogeochemistry.</p>
+</section>
+</section>
+<section id="git">
+<h2>Git<a class="headerlink" href="#git" title="Permalink to this heading">¶</a></h2>
+<p>Our materials are mostly distributed on our <a class="reference external" href="https://github.com/CADWRDeltaModeling">GitHub organization page</a></p>
+<p>You will need Git. Instructions are widely available
+online. The basic operation on the command line for cloning a repository looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">CADWRDeltaModeling</span><span class="o">/</span><span class="n">BayDeltaSCHISM</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
 </section>
 <section id="bay-delta-package">
 <h2>Bay-Delta Package<a class="headerlink" href="#bay-delta-package" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Clone the <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM">Bay-Delta Package on GitHub</a></p></li>
-</ul>
+<p>Clone the <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM">Bay-Delta Package on GitHub</a></p>
 <p>The package includes a simulation template corresponding to the calibration, preprocessing tools and several of the tutorials that we will be using in the January hands-on Bay-Delta workshop. Help on the preprocessor and model setup can be found in the <a class="reference external" href="https://cadwrdeltamodeling.github.io/schimpy">schimpy</a> documentation. The package includes a /bin directory that needs to be populated by building the source or grabbing windows binaries if you want to learn on a high quality pc.</p>
 <dl class="simple">
 <dt>The current temporal coverage is calendar 2008-2018. There are several items in the distribution that are large:</dt><dd><ul class="simple">
@@ -133,11 +164,24 @@ while the two worked together at the Oregon Health &amp; Science University. SCH
 </ul>
 </dd>
 </dl>
-<p>These are too big for GitHub and not text based. We are experimenting with GitHub’s large data facility but for the momement after you download the package, you can deploy the command get_big_data.py from python. It will help you acquire what you need without manual downloads.</p>
+<p>These are too big for GitHub and not text based. We are experimenting with <a class="reference external" href="https://dvc.org">DVC</a> but for the momement after you download the package, you can get the data from the CNRA Open Data Portal.</p>
 </section>
-<section id="vtools-scripting">
-<h2>VTools Scripting<a class="headerlink" href="#vtools-scripting" title="Permalink to this heading">¶</a></h2>
-<p>Some pre/postprocessing tools are dependent on <a class="reference external" href="https://cadwrdeltamodeling.github.io/vtools3/">VTools</a>.</p>
+<section id="required-python-packages">
+<h2>Required Python Packages<a class="headerlink" href="#required-python-packages" title="Permalink to this heading">¶</a></h2>
+<p>Our preprocessor is Python based. We recommend, and only support, <a href="#id1"><span class="problematic" id="id2">`</span></a>conda &lt;<a class="reference external" href="https://docs.conda.io/en/latest/">https://docs.conda.io/en/latest/</a>&gt; for package management. Please avoid Anaconda; it is too big
+and we can’t main compatibility between all the libraries if you include that much stuff.
+Instructions for managing Python environments are on our general Delta Modeling documentation page for Python.</p>
+<p>You will want the following tools:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>schimpy [<a class="reference external" href="https://cadwrdeltamodeling.github.io/schimpy">project docs</a>] [<a class="reference external" href="https://github.com/CADWRDeltaModeling/schimpy">code repo</a>] for managing spatial inputs and templates plus utilities</p></li>
+<li><p>vtools3  [<a class="reference external" href="https://cadwrdeltamodeling.github.io/vtools3/">project docs</a>] [<a class="reference external" href="https://github.com/CADWRDeltaModeling/vtools3">code repo</a>] for time series manipulation</p></li>
+<li><p>dms-datastore [<a class="reference external" href="https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html">project docs</a>] [<a class="reference external" href="https://github.com/CADWRDeltaModeling/dms_datastore">code repo</a>] | for managing data from common Bay-Delta sources.</p></li>
+</ul>
+</div></blockquote>
+<p>If you install these with prerequisits you should have most of what you need. Nevertheless,
+work tends to expand in a predictable way and we recommend a slightly larger monolithic environment available [HERE] using instructions for [building an environment with yaml specifications]. We mostly
+provide support for modern versions of the packages on fairly up-to-date Python platforms (often one version behind the latest) when miniconda and environments are used.</p>
 </section>
 <section id="bathymetry">
 <h2>Bathymetry<a class="headerlink" href="#bathymetry" title="Permalink to this heading">¶</a></h2>
@@ -198,7 +242,7 @@ about analogous tools on other platforms we will gratefully share it.</p>
         <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
         <li><a href="search.html">Search</a>|&nbsp;</li>
 
-        <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Installation And Getting Started</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

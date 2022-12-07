@@ -12,8 +12,20 @@
 # var_name: the dwr/vtools code
 # comment: additional notes
 src_var_name,src_name,src_var_id,var_name,comment
+Specific Conductance,dwr_des,Specific Conductance,ec,Marsh version of variable
+SpC,dwr_des,SpC,ec,EMP version of variable
+Water Temperature,dwr_des,Water Temperature,temp,
+Wind direction,dwr_des,Wind direction,wind_dir,
+Wind velocity,dwr_des,Wind velocity,wind_speed,
+Stage,dwr_des,Stage,elev,
+Turbidity,dwr_des,Turbidity,turbidity,
+pH,dwr_des,pH,ph,
+Stage,dwr_des,Stage,elev,
+Dissolved Oxygen,dwr_des,Dissolved Oxygen,do,
+Chlorophyll,dwr_des,Chlorophyll,chl,
 Temperature; water,usgs,10,temp,
-Discharge,usgs,61,flow,"SRS_Name for ID 60 is ""Stream flow, mean. Daily"", while that for ID 61 is ""Stream flow, instantaneous"""
+Stream flow mean,usgs,60,flow,See comment for 61
+Stream flow instantaneous,usgs,61,flow,"src_name for ID 60 is Stream flow, mean. Daily, while that for ID 61 is Stream flow, instantaneous. Eli: should investigate this, we don't want daily. However most Delta stationa are 60"
 stage,usgs,65,elev,
 Specific cond at 25C,usgs,95,ec,
 stage_c,source,233,elev,
@@ -66,25 +78,15 @@ PH VAL,cdec,62,ph,
 CHLORPH,cdec,28,chl,Is this code chl correct?
 RIV STG,cdec,1,elev,
 WIND SP,cdec,9,wind_speed,
-WIND DIR,cdec,10,wind_speed,
+WIND DIR,cdec,10,wind_dir,
 VLOCITY,cdec,21,velocity,is velocity in table yet?
 SOLAR R,cdec,26,solar_radiation,
 TEMP,cdec,4,air_temp,
-TEMP W,cdec,25,temp
+TEMP W,cdec,25,temp,
+TEMP W,cdec,146,temp,
 TURB W,cdec,27,turbidity,
 TURB WF,cdec,221,turbidity,this is FNU -- do we differentiate?
 water_level,noaa,water_level,elev,Query results are not marked with variable
 predictions,noaa,predictions,predictions,Query results are not marked with variable
 conductivity,noaa,conductivity,ec,Query results are not marked with variable
 water_temperature,noaa,water_temperature,temp,Query results are not marked with variable
-Water Temperature,des,63,water_temperature,
-SpC,des,65,ec,
-Dissolved Oxygen,des,66,do
-Chloride,des,67,cl
-pH,des,68,ph
-Solar radiation,des,70,solar_radiation
-Wind direction,des,71,wind_dir
-Wind velocity,des,81,wind_speed
-Air Temperature,des,156,air_temp
-Stage,des,82,elev
-Turbidity,des,80,turbidity

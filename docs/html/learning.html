@@ -16,8 +16,8 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Bay-Delta SCHSIM Tutorials" href="bay_delta_tutorials.html" />
-    <link rel="prev" title="Getting Started" href="getmodel.html" /> 
+    <link rel="next" title="Bay-Delta SCHISM Topical Guide" href="topical_guide.html" />
+    <link rel="prev" title="Installation And Getting Started" href="getmodel.html" /> 
   </head><body>
 
 <div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
@@ -31,10 +31,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="bay_delta_tutorials.html" title="Bay-Delta SCHSIM Tutorials"
+          <a href="topical_guide.html" title="Bay-Delta SCHISM Topical Guide"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="getmodel.html" title="Getting Started"
+          <a href="getmodel.html" title="Installation And Getting Started"
              accesskey="P">previous</a> |</li>
         <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
         <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
@@ -53,7 +53,12 @@
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Learning Resources for Bay-Delta SCHISM</a><ul>
+<li><a class="reference internal" href="#general-resources-and-tools">General Resources and Tools</a><ul>
 <li><a class="reference internal" href="#manuals">Manuals</a></li>
+<li><a class="reference internal" href="#getting-help">Getting Help</a></li>
+<li><a class="reference internal" href="#vims-and-other-external-resources">VIMS and Other External Resources</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -62,12 +67,12 @@
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="getmodel.html"
-                          title="previous chapter">Getting Started</a></p>
+                          title="previous chapter">Installation And Getting Started</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="bay_delta_tutorials.html"
-                          title="next chapter">Bay-Delta SCHSIM Tutorials</a></p>
+    <p class="topless"><a href="topical_guide.html"
+                          title="next chapter">Bay-Delta SCHISM Topical Guide</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -96,19 +101,39 @@
             
   <section id="learning-resources-for-bay-delta-schism">
 <span id="learning-resources"></span><h1>Learning Resources for Bay-Delta SCHISM<a class="headerlink" href="#learning-resources-for-bay-delta-schism" title="Permalink to this heading">¶</a></h1>
+<p>This page is the documentation hub for running the Bay-Delta SCHISM application. It has some ideas for learning to use SCHISM and a how-to topical guide for the application on the Bay-Delta domain.</p>
+<p>For installation instructions please see the <a class="reference external" href="https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/html/getmodel.html">Installation and Getting Started Page</a>.</p>
+<section id="general-resources-and-tools">
+<h2>General Resources and Tools<a class="headerlink" href="#general-resources-and-tools" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 </div>
 <p>Tutorials
 <a class="reference external" href="https://cadwrdeltamodeling.github.io/HelloSCHISM/html/index.html">Hello SCHISM tutorials</a> are a set of SCHISM tutorials that introduce basic features, our preprocessors and can get you running the model quickly (Windows friendly).</p>
-<p><a class="reference external" href="https://cadwrdeltamodeling.github.io/HelloSCHISM/html/index.html">Hello SCHISM tutorials</a> using a simple, contrived domain and associated tutorials.</p>
+<p>The <a class="reference external" href="topical.rst">Bay-Delta SCHISM Topical Guide</a> explains many of the details of setting up and interpreting a full Bay-Delta simulation, making use of the full toolset.</p>
 <p><a class="reference internal" href="bay_delta_tutorials.html"><span class="doc">Bay-Delta Tutorials</span></a> and presentations describe model assumptions and model input preparation for Bay-Delta SCHISM.</p>
-<p><a class="reference internal" href="linux.html"><span class="doc">Linux hints</span></a> for archiving runs</p>
+<p><a class="reference internal" href="linux.html"><span class="doc">Linux hints</span></a> help get you started and avoid some gotchas for things like copying and archiving runs</p>
 <section id="manuals">
-<h2>Manuals<a class="headerlink" href="#manuals" title="Permalink to this heading">¶</a></h2>
+<h3>Manuals<a class="headerlink" href="#manuals" title="Permalink to this heading">¶</a></h3>
 <p><a class="reference external" href="http://ccrm.vims.edu/schismweb/schism_manual.html">SCHISM Manuals</a> are available for SCHISM at the VIMS site.</p>
-<p><a class="reference external" href="https://cadwrdeltamodeling.github.io/schimpy/html/index.html">schimpy user guide and API documentation</a> describe our preprocessors for grids and spatial inputs.</p>
+<p>There is some documentation for our Python libraries online, including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://cadwrdeltamodeling.github.io/schimpy/html/index.html">schimpy</a> and our templates/preprocessors for grids and spatial inputs.</p></li>
+<li><p><a class="reference external" href="https://cadwrdeltamodeling.github.io/vtools3/html/index.html">vtools3</a> an extension to schimpy that includes some time series manipulations we need that go beyond basic <a class="reference external" href="https://pandas.pydata.org/docs/">Pandas</a> which is a prerequisite.</p></li>
+<li><p><a class="reference external" href="https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html">dms_datastore</a> a library for getting data associated with the Bay-Delta.</p></li>
+</ul>
+</div></blockquote>
 <p><cite>Hydraulic structures manual</cite></p>
 <p><cite>VisIt</cite></p>
+</section>
+<section id="getting-help">
+<h3>Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this heading">¶</a></h3>
+<p>Please email <a class="reference external" href="mailto:Eli&#46;Ateljevich&#37;&#52;&#48;water&#46;ca&#46;gov">Eli<span>&#46;</span>Ateljevich<span>&#64;</span>water<span>&#46;</span>ca<span>&#46;</span>gov</a> or <a class="reference external" href="mailto:Kijin&#46;Nam&#37;&#52;&#48;water&#46;ca&#46;gov">Kijin<span>&#46;</span>Nam<span>&#64;</span>water<span>&#46;</span>ca<span>&#46;</span>gov</a>. We will try to help you get going.</p>
+</section>
+<section id="vims-and-other-external-resources">
+<h3>VIMS and Other External Resources<a class="headerlink" href="#vims-and-other-external-resources" title="Permalink to this heading">¶</a></h3>
+<p>The SCHISM mailing list is very helpful. Online manual and other materials available at [link]</p>
+</section>
 </section>
 </section>
 
@@ -126,10 +151,10 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="bay_delta_tutorials.html" title="Bay-Delta SCHSIM Tutorials"
+          <a href="topical_guide.html" title="Bay-Delta SCHISM Topical Guide"
              >next</a> |</li>
         <li class="right" >
-          <a href="getmodel.html" title="Getting Started"
+          <a href="getmodel.html" title="Installation And Getting Started"
              >previous</a> |</li>
         <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
         <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
