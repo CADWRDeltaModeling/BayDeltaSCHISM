@@ -46,4 +46,4 @@ datetime	   install  ndup op_down op_up   elev	 width
 2021-05-27T13:00     1    1    1.0    1.0    1.33    22.9   # closed
 2021-11-09T09:30     0    1    1.0    1.0    1.33    22.9   # barrier breached (removal completed on 11/20/21)
 2022-05-28T09:00     1    1    1.0    1.0    1.33    22.9   # closed
-2022-11-04T00:00     0    1    1.0    1.0    1.33    22.9   # Barrier breached (removal complteed 11/23/22)
+2022-11-04T08:30     0    1    1.0    1.0    1.33    22.9   # Barrier breached (removal complteed 11/23/22)
