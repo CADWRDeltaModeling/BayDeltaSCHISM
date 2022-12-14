@@ -1,8 +1,8 @@
 
 .. _bdschinstr:
 
-Vignette: Details of a Simple Bay Delta SCHISM at Delta Modeling Section
-========================================================================
+Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor
+===============================================================================
 
 The process for starting a Bay Delta SCHISM run from scratch involves some pre-processing work on a Windows machine using the schimpy library (https://github.com/CADWRDeltaModeling/schimpy).
 

@@ -24,9 +24,9 @@
   mdc2 = 30     !same as mdc in .nml
 
 ! Define # of tracers in tracer modules (if enabled)
-!  ntracer_gen = 2 !user defined module (USE_GEN)
-!  ntracer_age = 4 !age calculation (USE_AGE). Must be =2*N where N is # of age tracers
-  sed_class = 3 !SED3D (USE_SED)
+!  ntracer_gen = 1 !user defined module (USE_GEN)
+!  ntracer_age = 2 !age calculation (USE_AGE). Must be =2*N where N is # of age tracers
+!  sed_class = 3 !SED3D (USE_SED)
 !  eco_class = 27 !EcoSim (USE_ECO): must be between [25,60]
 
 ! Global output controls
@@ -70,11 +70,11 @@
 !-----------------------------------------------------------------------
 ! Main ramp option
 !-----------------------------------------------------------------------
-  nramp = 1 !ramp-up option (1: on; 0: off)
-  dramp = 2. !needed if nramp=1; ramp-up period in days
+!  nramp = 1 !ramp-up option (1: on; 0: off)
+!  dramp = 2. !needed if nramp=1; ramp-up period in days
 
-  nrampbc = 1 !ramp-up flag for baroclinic force
-  drampbc = 1. !not used if nrampbc=0
+!  nrampbc = 1 !ramp-up flag for baroclinic force
+!  drampbc = 1. !not used if nrampbc=0
 
 !-----------------------------------------------------------------------
 ! Method for momentum advection. 0: ELM; 1: upwind (not quite working yet)
@@ -139,8 +139,8 @@
            !icou_elfe_wwm/=0 and nchi=1. If icou_elfe_wwm=0, set iwbl=0):
            !1-modified Grant-Madsen formulation; 2-Soulsby (1997)
   hmin_radstress = 1. !min. total water depth used only in radiation stress calculation [m]
-  nrampwafo = 1       !ramp-up option for the wave forces (1: on; 0: off)
-  drampwafo = 1.      !needed if nrampwafo=1; ramp-up period in days
+!  nrampwafo = 1       !ramp-up option for the wave forces (1: on; 0: off)
+!  drampwafo = 1.      !needed if nrampwafo=1; ramp-up period in days
   turbinj = 0.15      !% of depth-induced wave breaking energy injected in turbulence (default: 0.15 (15%), as proposed by Feddersen, 2012)
 
 !-----------------------------------------------------------------------
@@ -199,8 +199,8 @@
 ! the specified values will be taken (no summation).
 !-----------------------------------------------------------------------
   if_source = 1
-  nramp_ss = 1 !needed if if_source=1; ramp-up flag for source/sinks
-  dramp_ss = 4. !needed if if_source=1; ramp-up period in days
+!  nramp_ss = 1 !needed if if_source=1; ramp-up flag for source/sinks
+!  dramp_ss = 4. !needed if if_source=1; ramp-up period in days
 
 !-----------------------------------------------------------------------
 ! Horizontal diffusivity option. if ihdif=1, horizontal diffusivity is given in hdif.gr3
@@ -221,7 +221,7 @@
 !-----------------------------------------------------------------------
   nchi = 1
   dzb_min = 0.7  !needed if nchi=1; min. bottom boundary layer thickness [m].
-  dzb_decay = 0. !needed if nchi=1; a decay const. [-]. should =0
+!  dzb_decay = 0. !needed if nchi=1; a decay const. [-]. should =0
 !  hmin_man = 1. !needed if nchi=-1: min. depth in Manning's formulation [m]
 
 !-----------------------------------------------------------------------
@@ -327,7 +327,7 @@
 ! Behavior when trajectory hits open bnd. If ibtrack_openbnd=0, slide with
 ! tangential vel; otherwise, stop and exit btrack (recommended?)
 !-----------------------------------------------------------------------
-  ibtrack_openbnd = 0 !Default: 0
+!  ibtrack_openbnd = 0 !Default: 0
 
 !-----------------------------------------------------------------------
 ! Wetting and drying.
@@ -430,8 +430,8 @@
 !-----------------------------------------------------------------------
   nws = 2
   wtiminc = 90. !time step for atmos. forcing. Default: same as dt
-  nrampwind = 1 !ramp-up option for atmos. forcing
-  drampwind = 1. !needed if nrampwind/=0; ramp-up period in days
+!  nrampwind = 1 !ramp-up option for atmos. forcing
+!  drampwind = 1. !needed if nrampwind/=0; ramp-up period in days
   iwindoff = 1 !needed only if nws/=0; '1': needs windfactor.gr3
   iwind_form = 0 !needed if nws/=0
   !If impose_net_flux/=0 and nws=2, read in net _surface_ heat flux as var 'dlwrf'
@@ -492,8 +492,12 @@
   vnf1 = 0. !vertical relax \in [0,1]
   vnh2 = 500 !vertical nudging depth 2 (must >vnh1)
   vnf2 = 0. !vertical relax
-
-  step_nu_tr = 10800. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
+  
+! this has to be coordinated with the nudging preparation. We typically 
+! use one hour nudging (3600) which is needed if using data with relatively fast
+! nudging rates  
+!step_nu_tr = 10800. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
+  step_nu_tr = 3600. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
 
 !-----------------------------------------------------------------------
 ! Cut-off depth for cubic spline interpolation near bottom when computing horizontal gradients
@@ -569,7 +573,7 @@
 ! If one of these depths=0 at a node, the code will set all to 0.
 ! If USE_MARSH is on and isav=1, all .gr3 must have constant depths!
 !----------------------------------------------------------------------
-  isav = 0 !on/off flag
+  isav = 1 !on/off flag. Typically on for Bay-Delta
 !  sav_cd = 1.13 !only needed if isav=1. Drag coefficient
 
 !----------------------------------------------------------------------
@@ -618,42 +622,42 @@
 ! Global output options
 ! The variable names that appear in nc output are shown in {}
 !-----------------------------------------------------------------------
-  iof_hydro(1) = 1 !0: off; 1: on - elev. [m]  {elev}
-  iof_hydro(2) = 0 !air pressure [Pa]  {air_pressure}
-  iof_hydro(3) = 0 !air temperature [C] {air_temperature}
-  iof_hydro(4) = 0 !Specific humidity [-] {specific_humidity}
-  iof_hydro(5) = 0 !solar (shortwave) radiation [W/m/m] {solar_radiation}
-  iof_hydro(6) = 0 !sensible flux (positive upward) [W/m/m]  {sensible_flux}
-  iof_hydro(7) = 0 !latent heat flux (positive upward) [W/m/m] {latent_heat}
-  iof_hydro(8) = 0 !upward longwave radiation (positive upward) [W/m/m] {upward_longwave}
-  iof_hydro(9) = 0 !downward longwave radiation (positive downward) [W/m/m] {downward_longwave}
-  iof_hydro(10) = 0 !total flux=-flsu-fllu-(radu-radd) [W/m/m] {total_heat_flux}
-  iof_hydro(11) = 0 !evaporation rate [kg/m/m/s] {evaporation}
-  iof_hydro(12) = 0 !precipitation rate [kg/m/m/s] {precipitation}
-  iof_hydro(13) = 0 !Bottom stress vector [kg/m/s^2(Pa)] {bottom_stress}
-  iof_hydro(14) = 0 !wind velocity vector [m/s] {wind_speed}
-  iof_hydro(15) = 0 !wind stress vector [m^2/s/s] {wind_stress}
-  iof_hydro(16) = 0 !depth-averaged vel vector [m/s] {dahv}
-  iof_hydro(17) = 0 !vertical velocity [m/s] {vertical_velocity}
-  iof_hydro(18) = 1 !water temperature [C] {temp}
-  iof_hydro(19) = 1 !water salinity [PSU] {salt}
-  iof_hydro(20) = 0 !water density [kg/m^3] {water_density}
-  iof_hydro(21) = 0 !eddy diffusivity [m^2/s] {diffusivity}
-  iof_hydro(22) = 0 !eddy viscosity [m^2/s] {viscosity}
-  iof_hydro(23) = 0 !turbulent kinetic energy {TKE}
-  iof_hydro(24) = 0 !turbulent mixing length [m] {mixing_length}
-  iof_hydro(25) = 1 !horizontal vel vector [m/s] {hvel}
-
-  iof_hydro(26) = 0 !horizontal vel vector defined @side [m/s] {hvel_side}
-  iof_hydro(27) = 0 !vertical vel. @elem [m/s] {wvel_elem}
-  iof_hydro(28) = 0 !T @prism centers [C] {temp_elem}
-  iof_hydro(29) = 0 !S @prism centers [PSU] {salt_elem}
-  iof_hydro(30) = 0 !Barotropic pressure gradient force vector (m.s-2) @side centers  {pressure_gradient}
+  iof_hydro(1) = 1 !0: off; 1: on - elev. [m]  {elevation}  2D
+  iof_hydro(2) = 0 !air pressure [Pa]  {airPressure}  2D
+  iof_hydro(3) = 0 !air temperature [C] {airTemperature}  2D
+  iof_hydro(4) = 0 !Specific humidity [-] {specificHumidity}  2D
+  iof_hydro(5) = 0 !Net downward solar (shortwave) radiation after albedo [W/m/m] {solarRadiation}  2D
+  iof_hydro(6) = 0 !sensible flux (positive upward) [W/m/m]  {sensibleHeat}  2D
+  iof_hydro(7) = 0 !latent heat flux (positive upward) [W/m/m] {latentHeat}  2D
+  iof_hydro(8) = 0 !upward longwave radiation (positive upward) [W/m/m] {upwardLongwave}  2D
+  iof_hydro(9) = 0 !downward longwave radiation (positive downward) [W/m/m] {downwardLongwave}  2D
+  iof_hydro(10) = 0 !total flux=-flsu-fllu-(radu-radd) [W/m/m] {totalHeat}  2D
+  iof_hydro(11) = 0 !evaporation rate [kg/m/m/s] {evaporationRate}  2D
+  iof_hydro(12) = 0 !precipitation rate [kg/m/m/s] {precipitationRate}  2D
+  iof_hydro(13) = 0 !Bottom stress vector [kg/m/s^2(Pa)] {bottomStressX,Y}  2D vector
+  iof_hydro(14) = 0 !wind velocity vector [m/s] {windSpeedX,Y}  2D vector
+  iof_hydro(15) = 0 !wind stress vector [m^2/s/s] {windStressX,Y}  2D vector
+  iof_hydro(16) = 0 !depth-averaged vel vector [m/s] {depthAverageVelX,Y}  2D vector
+  iof_hydro(17) = 0 !vertical velocity [m/s] {verticalVelocity}  3D
+  iof_hydro(18) = 1 !water temperature [C] {temperature}  3D
+  iof_hydro(19) = 1 !water salinity [PSU] {salinity}  3D
+  iof_hydro(20) = 0 !water density [kg/m^3] {waterDensity}  3D
+  iof_hydro(21) = 0 !vertical eddy diffusivity [m^2/s] {diffusivity}  3D
+  iof_hydro(22) = 0 !vertical eddy viscosity [m^2/s] {viscosity}  3D
+  iof_hydro(23) = 0 !turbulent kinetic energy {turbulentKineticEner}   3D
+  iof_hydro(24) = 0 !turbulent mixing length [m] {mixingLength}  3D
+  iof_hydro(25) = 1 !z-coord {zCoordinates} 3D - this flag should be on for visIT etc
+  iof_hydro(26) = 1 !horizontal vel vector [m/s] {horizontalVelX,Y} 3D vector
+  iof_hydro(27) = 0 !horizontal vel vector defined @side [m/s] {horizontalSideVelX,Y} 3D vector
+  iof_hydro(28) = 0 !vertical vel. @elem [m/s] {verticalVelAtElement} 3D
+  iof_hydro(29) = 0 !T @prism centers [C] {temperatureAtElement} 3D
+  iof_hydro(30) = 0 !S @prism centers [PSU] {salinityAtElement} 3D
+  iof_hydro(31) = 0 !Barotropic pressure gradient force vector (m.s-2) @side centers  {pressure_gradient} 2D vector
 
 !-----------------------------------------------------------------------
 ! Outputs from optional modules. Only uncomment these if the USE_* is on
 !-----------------------------------------------------------------------
-! Outputs from WWM (USE_WWM must be on in Makefile)
+! Outputs from WWM (USE_WWM must be on in Makefile, otherwise these will be ignored)
 !-----------------------------------------------------------------------
   iof_wwm(1)  = 1 !sig. height (m) {WWM_1}
   iof_wwm(2)  = 1 !Mean average period (sec) - TM01 {WWM_2}
@@ -700,7 +704,7 @@
 
 !-----------------------------------------------------------------------
 ! Specific outputs in SED3D (USE_SED must be on in Makefile;
-! otherwise these are not needed)
+! otherwise these are ignored)
 !-----------------------------------------------------------------------
   iof_sed(1) = 1 !bottom depth _change_ from init. condition (m) {SED_depth_change}
   iof_sed(2) = 1 ! Bed median grain size in the active layer (mm) {SED_D50}

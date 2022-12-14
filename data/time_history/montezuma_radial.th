@@ -167,4 +167,8 @@ datetime      install  ndup  op_down   op_up     elev	  width	   height
 2022-03-08T18:18     1    3    1.000    1.000    -6.86    10.97    10.0   # Operations suspended due to low salinities
 2022-04-07T14:40     1    3    1.000    0.000    -6.86    10.97    10.0   # Operations started due to rising salinity in western marsh
 2022-05-31T23:59     1    3    1.000    1.000    -6.86    10.97    10.0   # Gates opened at end of control season
-2022-09-01T00:00     1    3    1.000    0.000    -6.86    10.97    10.0   # Tidal, predicted
+2022-08-03T06:50     1    3    0.000    0.000    -6.86    10.97    10.0   # Closed for refurbishment
+2022-08-26T16:55     1    3    0.333    0.000    -6.86    10.97    10.0   # Gate 2 returned to open, gate 1 has stoplog
+2022-09-01T00:01     1    3    0.667    0.000    -6.86    10.97    10.0   # Tidal with two gates operating
+2022-09-08T12:41     1    3    0.667    0.333    -6.86    10.97    10.0   # Gate 3 failed to close
+2022-09-08T15:04     1    3    0.667    0.000    -6.86    10.97    10.0   # Gate 3 repaired, tidal
