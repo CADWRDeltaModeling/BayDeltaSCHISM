@@ -105,7 +105,7 @@ find . -name 'hotstart_000???_*.nc'
     Find files that match the pattern, with ? matching a single character. Numerous options to take action like deleting. 
 
 grep
-    Finds a word or phrase in the contents of files or a string. For instance, `grep nday param*.nml` will give you all the lines with nday in it in all the files matching the wildcard param*.nml (check the end day; use start_ to get the start year, month, day).  
+    Finds a word or phrase in the contents of files or a string. For instance, `grep nday param*.nml` will give you all the lines with nday in it in all the files matching the wildcard param*.nml (check the end day; use start\_ to get the start year, month, day).  
 
 ls -al
     This variant of the  file listing command `ls` shows dates as welll as symbolic link targets relationships
