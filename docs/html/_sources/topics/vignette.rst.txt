@@ -52,7 +52,7 @@ Windows
       * change mesh_inputfile: parameter to match the .2dm file you copied into the project folder
       * check that the vgrid: section contains a vgrid_version: variable set to the SCHISM version being used (5.8 or 5.10)
          * ex: vgrid_version: '5.10' # Note that quotation marks are necessary
-      * If you've modified the bathymetric data, then update teh dem yaml file to that .yaml file
+      * If you've modified the bathymetric data, then update the dem yaml file to that .yaml file
       * Add these lines above the sav\_*.gr3 specifications:
       
          .. code-block:: text
@@ -231,15 +231,15 @@ Then you'll need a sflux_inputs.txt file within the sflux folder
 
    .. code-block:: console
 
-      ln -s bctides.in.2d bctides.in
-      ln -s vgrid.in.2d vgrid.in
-      ln -s msource_v20220825.th msource.th 
-      ln -s vsource_20220825_nows_leach1.th vsource.th
-      ln -s vsink_20220825_nows_leach1_sscd1.5.th vsink.th
-      ln -s TEM_1.th temp.th
-      ln -s SAL_1.th salt.th
-      ln -s param.nml.tropic param.nml
-      ln -s launch.tropic.pbs launch.pbs
+      ln -sf bctides.in.2d bctides.in
+      ln -sf vgrid.in.2d vgrid.in
+      ln -sf msource_v20220825.th msource.th 
+      ln -sf vsource_20220825_nows_leach1.th vsource.th
+      ln -sf vsink_20220825_nows_leach1_sscd1.5.th vsink.th
+      ln -sf TEM_1.th temp.th
+      ln -sf SAL_1.th salt.th
+      ln -sf param.nml.tropic param.nml
+      ln -sf launch.tropic.pbs launch.pbs
 
    #. Make the outputs directory
 
@@ -272,6 +272,9 @@ This needs to follow the completion of a Barotropic simulation in order to creat
             The interpolate_variables.in file does not exist somewhere publicly available yet 
 
          * Create symbolic links
+         
+         .. code-block:: console
+
             ln -sf ../hgrid.gr3 bg.gr3
             ln -sf ../hgrid.gr3.fg.gr3
             ln -sf ../vgrid.in.2d vgrid.bg
