@@ -178,7 +178,7 @@
 </dd>
 </dl>
 </li>
-<li><p>If you’ve modified the bathymetric data, then update teh dem yaml file to that .yaml file</p></li>
+<li><p>If you’ve modified the bathymetric data, then update the dem yaml file to that .yaml file</p></li>
 <li><p>Add these lines above the sav_*.gr3 specifications:</p>
 <blockquote>
 <div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sav_cd.gr3:
@@ -511,15 +511,15 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 </ul>
 </li>
 <li><p>Make symbolic links for the Barotropic run</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ln -s bctides.in.2d bctides.in</span>
-<span class="go">ln -s vgrid.in.2d vgrid.in</span>
-<span class="go">ln -s msource_v20220825.th msource.th</span>
-<span class="go">ln -s vsource_20220825_nows_leach1.th vsource.th</span>
-<span class="go">ln -s vsink_20220825_nows_leach1_sscd1.5.th vsink.th</span>
-<span class="go">ln -s TEM_1.th temp.th</span>
-<span class="go">ln -s SAL_1.th salt.th</span>
-<span class="go">ln -s param.nml.tropic param.nml</span>
-<span class="go">ln -s launch.tropic.pbs launch.pbs</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ln -sf bctides.in.2d bctides.in</span>
+<span class="go">ln -sf vgrid.in.2d vgrid.in</span>
+<span class="go">ln -sf msource_v20220825.th msource.th</span>
+<span class="go">ln -sf vsource_20220825_nows_leach1.th vsource.th</span>
+<span class="go">ln -sf vsink_20220825_nows_leach1_sscd1.5.th vsink.th</span>
+<span class="go">ln -sf TEM_1.th temp.th</span>
+<span class="go">ln -sf SAL_1.th salt.th</span>
+<span class="go">ln -sf param.nml.tropic param.nml</span>
+<span class="go">ln -sf launch.tropic.pbs launch.pbs</span>
 </pre></div>
 </div>
 <ol class="arabic simple">
@@ -555,17 +555,20 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 <p>The interpolate_variables.in file does not exist somewhere publicly available yet</p>
 </div>
 <ul class="simple">
-<li><dl class="simple">
-<dt>Create symbolic links</dt><dd><p>ln -sf ../hgrid.gr3 bg.gr3
-ln -sf ../hgrid.gr3.fg.gr3
-ln -sf ../vgrid.in.2d vgrid.bg
-ln -sf ../vgrid.in.3d vgrid.fg</p>
-</dd>
-</dl>
-</li>
+<li><p>Create symbolic links</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ln -sf ../hgrid.gr3 bg.gr3</span>
+<span class="go">ln -sf ../hgrid.gr3.fg.gr3</span>
+<span class="go">ln -sf ../vgrid.in.2d vgrid.bg</span>
+<span class="go">ln -sf ../vgrid.in.3d vgrid.fg</span>
+</pre></div>
+</div>
+<ul class="simple">
 <li><p>Run script to create <em>uv3d.th.nc</em> in a conda environment with schimpy</p></li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">interpolate_variables8</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">module purge</span>
+<span class="go">module load schism/5.10_intel2022.1</span>
+<span class="go">interpolate_variables8</span>
 </pre></div>
 </div>
 <ul class="simple">
