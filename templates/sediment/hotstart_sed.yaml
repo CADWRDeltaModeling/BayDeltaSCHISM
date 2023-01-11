@@ -1,7 +1,7 @@
 hotstart:
     date: 2015-11-08
-    hgrid_input_file: hgrid_utm.gr3
-    vgrid_input_file: vgrid.in.3d.v5.10
+    hgrid_input_file: hgrid.gr3
+    vgrid_input_file: vgrid.in.3d
     vgrid_version: "5.10"
     param_nml: "param.nml.3d"
     output_fn: "hotstart_sed.nc"
@@ -29,12 +29,12 @@ hotstart:
                         extrude_casts:
                             station: /home/knam/repos/schimpy/examples/schism_hotstart/data_in/USGS_polaris_station_locations_xy.csv
                             # data: /home/knam/repos/schimpy/examples/schism_hotstart/data/polaris_2015_2019.csv
-                            data: usgs_2015_11_18.txt
+                            data: ./scripts/usgs_2015_11_18.txt
                             variable: Temperature
                   - region: delta
                     initializer:
                         obs_points:
-                            data: all_stations_temperature_2021-04-20.csv
+                            data: ./scripts/all_stations_temperature_2021-04-20.csv
                             variable: 'temperature'
     salinity:
         initializer:
@@ -51,12 +51,12 @@ hotstart:
                         extrude_casts:
                             station: /home/knam/repos/schimpy/examples/schism_hotstart/data_in/USGS_polaris_station_locations_xy.csv
                             # data: /home/knam/repos/schimpy/examples/schism_hotstart/data_in/polaris_2015_2019.csv
-                            data: usgs_2015_11_18.txt
+                            data: ./scripts/usgs_2015_11_18.txt
                             variable: Salinity
                   - region: delta
                     initializer:
                         obs_points:
-                            data: all_stations_salinity_2021-04-20.csv
+                            data: ./scripts/all_stations_salinity_2021-04-20.csv
                             variable: 'salinity'
     velocity_u:
         initializer:
