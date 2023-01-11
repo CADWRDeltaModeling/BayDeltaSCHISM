@@ -1,0 +1,109 @@
+hotstart:
+    date: 2015-11-08
+    hgrid_input_file: hgrid_utm.gr3
+    vgrid_input_file: vgrid.in.3d.v5.10
+    vgrid_version: "5.10"
+    param_nml: "param.nml.3d"
+    output_fn: "hotstart_sed.nc"
+    crs: "EPSG:32610"
+    elevation:
+        initializer:
+            text_init:
+                data_source: elev.ic
+#    elevation:
+#        initializer:
+#            simple_trend:
+#                value: 0.96 + 1.e-5*(x-500000.)
+    temperature:
+        initializer:
+            patch_init:
+                smoothing: False
+                regions_filename: /home/knam/repos/schimpy/examples/schism_hotstart/shapefile/RegionsPolygon.shp # the attribute 'region' in the shapefile needs to match with the region values below.
+                regions:
+                  - region: ocean
+                    initializer:
+                        simple_trend:
+                            value: 15
+                  - region: estuary
+                    initializer:
+                        extrude_casts:
+                            station: /home/knam/repos/schimpy/examples/schism_hotstart/data_in/USGS_polaris_station_locations_xy.csv
+                            # data: /home/knam/repos/schimpy/examples/schism_hotstart/data/polaris_2015_2019.csv
+                            data: usgs_2015_11_18.txt
+                            variable: Temperature
+                  - region: delta
+                    initializer:
+                        obs_points:
+                            data: all_stations_temperature_2021-04-20.csv
+                            variable: 'temperature'
+    salinity:
+        initializer:
+            patch_init:
+                smoothing: False
+                regions_filename: /home/knam/repos/schimpy/examples/schism_hotstart/shapefile/RegionsPolygon.shp
+                regions:
+                  - region: ocean
+                    initializer:
+                        simple_trend:
+                            value: 33.5
+                  - region: estuary
+                    initializer:
+                        extrude_casts:
+                            station: /home/knam/repos/schimpy/examples/schism_hotstart/data_in/USGS_polaris_station_locations_xy.csv
+                            # data: /home/knam/repos/schimpy/examples/schism_hotstart/data_in/polaris_2015_2019.csv
+                            data: usgs_2015_11_18.txt
+                            variable: Salinity
+                  - region: delta
+                    initializer:
+                        obs_points:
+                            data: all_stations_salinity_2021-04-20.csv
+                            variable: 'salinity'
+    velocity_u:
+        initializer:
+            simple_trend:
+                value: 0.0
+    velocity_v:
+        initializer:
+            simple_trend:
+                values: 0.0
+    velocity_w:
+        initializer:
+            simple_trend:
+                values: 0.0
+    SED_1:
+        initializer:
+            # obs_points:
+            #     data: data/all_stations_turbidity.csv
+            #     variable: SED_1
+            simple_trend:
+                values: 0.0
+    SED_2:
+        initializer:
+            # obs_points:
+            #     data: data/all_stations_turbidity.csv
+            #     variable: SED_2
+            simple_trend:
+                values: 0.0
+    SED_3:
+        initializer:
+            # obs_points:
+            #     data: data/all_stations_turbidity.csv
+            #     variable: SED_3
+            simple_trend:
+                values: 0.0
+    SED3D_dp:
+        initializer:
+            text_init:
+                data_source: hgrid.gr3
+    SED3D_rough:
+        initializer:
+            simple_trend:
+                values: 0.005
+    SED3D_bed:           # 3D bed properties (elem,Nbed, MBEDP). MBEDP=3 represents 3 properties: layer thickness, layer age, layer porosity
+        initializer:
+            simple_trend:
+                values: 1., 0., 0.3
+    SED3D_bedfrac:
+        initializer:
+            simple_trend:
+                values: 0.2, 0.3, 0.5
