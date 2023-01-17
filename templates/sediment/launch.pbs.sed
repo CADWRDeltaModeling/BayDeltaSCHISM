@@ -1,11 +1,11 @@
 #!/bin/bash
 #PBS -q workq
-#PBS -N schismbcg
-#PBS -l select=3:ncpus=24:mpiprocs=24
+#PBS -N schismsed
+#PBS -l select=4:ncpus=24:mpiprocs=24
 #PBS -M hansang.kim@water.ca.gov
 #PBS -m abe
 
-n_cores=72
+n_cores=96
 cd $PBS_O_WORKDIR
 module purge
 module use /opt/intel/oneapi/modulefiles
