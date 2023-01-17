@@ -16,10 +16,8 @@ from schimpy import unit_conversions
 from dms_datastore.read_ts import *
 from dms_datastore import dstore_config
 
-start_date = '2021-04-20'
-end_date = '2021-04-21'
-# start_date = '2015-11-17'
-# end_date = '2015-11-19'
+start_date = '2015-11-18'
+end_date = '2015-11-19'
 
 variables = ['temp','ec']
 repo = "/nasbdo/modeling_data/continuous_station_repo_beta/formatted_1yr/"

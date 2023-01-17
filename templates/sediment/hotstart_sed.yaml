@@ -34,7 +34,7 @@ hotstart:
                   - region: delta
                     initializer:
                         obs_points:
-                            data: ./scripts/all_stations_temperature_2021-04-20.csv
+                            data: ./scripts/all_stations_temperature_2015-11-18.csv
                             variable: 'temperature'
     salinity:
         initializer:
@@ -56,7 +56,7 @@ hotstart:
                   - region: delta
                     initializer:
                         obs_points:
-                            data: ./scripts/all_stations_salinity_2021-04-20.csv
+                            data: ./scripts/all_stations_salinity_2015-11-18.csv
                             variable: 'salinity'
     velocity_u:
         initializer:
