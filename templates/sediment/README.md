@@ -81,11 +81,12 @@ Follow the steps below to prepare common model settings.
     - Note: `rnday`=30 (`param.nml`) and `morph_fac`=100 (`sediment.nml`) will give 3000 effective days of simulation, consistent with Wegen et al. (2010).
     - Run the SCHISM sediment model for BCG.
     - After the run, you may want to rename `outputs` directory to `outputs_bcg`.
+    - Navigate into the BCG outputs directory, and combine the last hotstart outputs using combine_hotstart7 (make sure SCHISM module has been loaded)
+      - For example, if the target hotstart file's name ends with _28800.nc, `combine_hotstart7 -i 28800`
+    - Copy sediment bed information from the BCG run to the existing hotstart file. Run a script as follows in the top of the directory (you may need to change file names accordingly): `python scripts/copy_bed_fraction.py --hotstart_input hotstart.nc --hotstart_bcg outputs_bcg/hotstart_it=28800.nc --hotstart_output hotstart_with_bcg.nc`. Rename the new hotstart with the updated bed composition to `hotstart.nc`.
   - Run SCHISM with the sediment.
     - Create a link to `param.nml.3d` as `param.nml`.
     - Create a link to `sediment.nml.3d` as `sediment.nml`
-    - Copy sediment bed information from the BCG run above. Run a script as follows. You may need to change according to your file names: `python scripts/copy_bed_fraction.py --hotstart_input hotstart.nc --hotstart_bcg outputs/hotstart_it=206400.nc --hotstart_output hotstart_with_bcg.nc`.
-    - Rename the new hotstart with the updated bed composition to `hotstart.nc`.
     - Create an `outputs` directory.
     - Run the SCHISM sediment model for BCG.
 
