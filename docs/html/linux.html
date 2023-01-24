@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Linux Hints for SCHISM &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
@@ -107,9 +108,9 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="linux-hints-for-schism">
-<h1><a class="toc-backref" href="#id3">Linux Hints for SCHISM</a><a class="headerlink" href="#linux-hints-for-schism" title="Permalink to this heading">¶</a></h1>
-<div class="contents topic" id="contents">
+  <section id="linux-hints-for-schism">
+<h1><a class="toc-backref" href="#id3" role="doc-backlink">Linux Hints for SCHISM</a><a class="headerlink" href="#linux-hints-for-schism" title="Permalink to this heading">¶</a></h1>
+<nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#linux-hints-for-schism" id="id3">Linux Hints for SCHISM</a></p>
@@ -133,9 +134,9 @@
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="using-linux-from-windows">
-<h2><a class="toc-backref" href="#id4">Using Linux from Windows</a><a class="headerlink" href="#using-linux-from-windows" title="Permalink to this heading">¶</a></h2>
+</nav>
+<section id="using-linux-from-windows">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Using Linux from Windows</a><a class="headerlink" href="#using-linux-from-windows" title="Permalink to this heading">¶</a></h2>
 <p>You will need tools to:</p>
 <ul class="simple">
 <li><p>connect to the Linux server that serves as a gateway, sometimes called a <em>server</em> or on clusters or supercomputers often called the <em>head node</em>.</p></li>
@@ -144,12 +145,12 @@
 <li><p>often you will want to set up an efficient text editor (Visual Studio Code) and VisIT both of which</p></li>
 </ul>
 <p>adopt a client-server approach to viewing or working on things in Windows that are located on Linux (the server)</p>
-<div class="section" id="basic-connection">
-<h3><a class="toc-backref" href="#id5">Basic connection</a><a class="headerlink" href="#basic-connection" title="Permalink to this heading">¶</a></h3>
+<section id="basic-connection">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Basic connection</a><a class="headerlink" href="#basic-connection" title="Permalink to this heading">¶</a></h3>
 <p>The simplest tools is PutTy, which can also handle passwordless login using rsa tokens. MobaXTerm is an all-in-one tool that can also handle this task (??).</p>
-</div>
-<div class="section" id="copying-files">
-<h3><a class="toc-backref" href="#id6">Copying files</a><a class="headerlink" href="#copying-files" title="Permalink to this heading">¶</a></h3>
+</section>
+<section id="copying-files">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Copying files</a><a class="headerlink" href="#copying-files" title="Permalink to this heading">¶</a></h3>
 <p>Copying between Windows and Linux is best done using WinSCP, which piggybacks on Putty. Two side benefits
 of WinSCP is that you can use your windows-side text editor on Linux-side files just by clicking,
 though this is only going to work well if the file is a managable size. The copies are faster than
@@ -158,27 +159,27 @@ other tools and the filter options are very efficient at narrowing down what you
 <li><p>sta*;flow*;flux*   # For viewing station outout files and output requests</p></li>
 <li><p><em>.gr3;</em>.ic;*.in;*.ll;*.prop;*.nml;*.2d;*.3d;*.clinic;*.tropic;readme*;make_links* | nlayer*.gr3;split_quad.prop</p></li>
 </ul>
-</div>
-<div class="section" id="xwindow-emulation">
-<h3><a class="toc-backref" href="#id7">XWindow Emulation</a><a class="headerlink" href="#xwindow-emulation" title="Permalink to this heading">¶</a></h3>
+</section>
+<section id="xwindow-emulation">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">XWindow Emulation</a><a class="headerlink" href="#xwindow-emulation" title="Permalink to this heading">¶</a></h3>
 <p>You can do this with MobaXTerm, Xming, vcxsrv. These tools provide an engine to emulate graphics.
 These are free products. There may be commercial alternatives such as Hummingbird Exceed. XWindows
 can be slow with some remote servers or connections, and that may not be something your emulation software can speed up.
 For text editing this is the reason a lot of us use VS Code, which uses a client-server approach where
 the graphics are actually done locally on windows.</p>
-</div>
-<div class="section" id="all-in-one-mobaxterm">
-<h3><a class="toc-backref" href="#id8">All-in-one: MobaXTerm</a><a class="headerlink" href="#all-in-one-mobaxterm" title="Permalink to this heading">¶</a></h3>
+</section>
+<section id="all-in-one-mobaxterm">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">All-in-one: MobaXTerm</a><a class="headerlink" href="#all-in-one-mobaxterm" title="Permalink to this heading">¶</a></h3>
 <p>MobaXTerm provides an all-in-one approach to the above tasks, but note that it is markedly inferior
 at some of them. In particular, it is orders of magnitude slower copying files because it uses a slower protocol and it
 lacks good filtering so you have to wait for it to scan directories with thousands of files. As with
 WinSCP, it can open a file for editing using local Windows editors, but since the copying is slower the
 restrictions will be a bit more severe. Anyhow, it is an interesting option and does basic terminal
 work and connections well.</p>
-</div>
-</div>
-<div class="section" id="copying-a-run-safely">
-<h2><a class="toc-backref" href="#id9">Copying a Run Safely</a><a class="headerlink" href="#copying-a-run-safely" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+<section id="copying-a-run-safely">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Copying a Run Safely</a><a class="headerlink" href="#copying-a-run-safely" title="Permalink to this heading">¶</a></h2>
 <p>Do NOT use the linux copy command ‘cp’ to copy a run. A considerable amount of information, particularly symbolic links, will be lost. Instead use rsync:</p>
 <ul class="simple">
 <li><p>Basic command: <a href="#id1"><span class="problematic" id="id2">`</span></a>rsync -avz /path/to/original_sim/ /path_to_dest/</p>
@@ -200,21 +201,21 @@ work and connections well.</p>
 <li><p>Change the contact email in launch.pbs.</p></li>
 <li><p>At this point if the prior simulation was runable the new one should be.</p></li>
 </ul>
-<div class="section" id="special-case-remote-computer-using-rsa-keys">
-<h3><a class="toc-backref" href="#id10">Special Case: Remote Computer Using RSA Keys</a><a class="headerlink" href="#special-case-remote-computer-using-rsa-keys" title="Permalink to this heading">¶</a></h3>
+<section id="special-case-remote-computer-using-rsa-keys">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Special Case: Remote Computer Using RSA Keys</a><a class="headerlink" href="#special-case-remote-computer-using-rsa-keys" title="Permalink to this heading">¶</a></h3>
 <p>We run into this case a lot when copying data from, say, an Azure virtual cluster
 in a situation where password authentication is not used.</p>
 <p><cite>rsync -e ‘ssh -i ~/.ssh/id_rsa_name’ -avz myname&#64;10.7.240.8:/shared/home/myname/simulations/sim_name/ local_sim_name/ –exclude=’outputs.tropic*’ –exclude=’outputs/*.nc’</cite></p>
-</div>
-</div>
-<div class="section" id="symbolic-links">
-<h2><a class="toc-backref" href="#id11">Symbolic links</a><a class="headerlink" href="#symbolic-links" title="Permalink to this heading">¶</a></h2>
-</div>
-<div class="section" id="archives-and-tarballs">
-<h2><a class="toc-backref" href="#id12">Archives and Tarballs</a><a class="headerlink" href="#archives-and-tarballs" title="Permalink to this heading">¶</a></h2>
-</div>
-<div class="section" id="essential-commands-in-a-schism-context">
-<h2><a class="toc-backref" href="#id13">Essential commands in a SCHISM context</a><a class="headerlink" href="#essential-commands-in-a-schism-context" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+<section id="symbolic-links">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Symbolic links</a><a class="headerlink" href="#symbolic-links" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="archives-and-tarballs">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Archives and Tarballs</a><a class="headerlink" href="#archives-and-tarballs" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="essential-commands-in-a-schism-context">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Essential commands in a SCHISM context</a><a class="headerlink" href="#essential-commands-in-a-schism-context" title="Permalink to this heading">¶</a></h2>
 <p>Countless Linux introductions are available online, including some excellent <a class="reference external" href="https://files.fosswire.com/2007/08/fwunixref.pdf">cheat sheets like this</a>. Once you know the commands or vocabulary, it is easy to get more information. You will need <cite>cd</cite>, <cite>ls</cite></p>
 <dl class="simple">
 <dt>cd some_dir</dt><dd><p>Go to the named directory, which may be relative or absolute. Consider pushd some_dir instead if you want to go somewhere temporarily such as to recompile, and then return (with popd)</p>
@@ -236,8 +237,8 @@ in a situation where password authentication is not used.</p>
 <dt>tail -n 15</dt><dd><p>Look at the last 15 lines of a file, default 10. Add -f to keep updating, for instance do this with outputs/mirror.out to check if run is chugging along.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>

@@ -20,6 +20,7 @@ import netCDF4
 import datetime as dtm
 import numpy.ma as ma
 import pandas as pd
+import pdb
 
 squaremetertoacre=0.000247105
 
@@ -142,17 +143,17 @@ def fill_ele_area():
             a=quad_area(x1,y1,x2,y2,x3,y3,x4,y4)
             ele_area[k]=a
 
-model_start=dtm.datetime(2021,4,20)
+model_start=dtm.datetime(2009,2,10)
 
-data_folder="E:\\schism\\2021-edb\\metrics\\edb_2021_edb\\tucp-ntucp\\no-tucp\\"
+data_folder="E:\\temp\\new_nc2\\test_5.10_scripts\\"
 title="no-tucp"
 
 big_salt=9999.0
 
 average_period=[]
-st=dtm.datetime(2021,6,11)
+st=dtm.datetime(2009,7,2)
 dt=dtm.timedelta(days=1)
-et=dtm.datetime(2021,6,14)
+et=dtm.datetime(2009,7,5)
 
 
 
@@ -169,34 +170,43 @@ start_day=(start_date-model_start).days+1
 end_day=(end_date-model_start).days+1
     
 nc_file=data_folder+"schout_%d.nc"%start_day
+nc_file_510=data_folder+"out2d_%d.nc"%start_day
+
 neibor_ele_table=0
 max_ele_at_node=1
+src=None
+is_510_format=False
 if(os.path.exists(nc_file)):
     src=netCDF4.Dataset(nc_file)
-    node_dim  = src.dimensions["nSCHISM_hgrid_node"]
-    face_dim =  src.dimensions["nSCHISM_hgrid_face"]
-    node_num   = node_dim.size
-    face_num   = face_dim.size
-    ele_table  = np.empty((face_num,4))
-    ele_table  = src.variables["SCHISM_hgrid_face_nodes"][:,:]
-    time_dim  = src.dimensions["time"]
-    time_num=time_dim.size
-    ele_area=np.zeros((face_num))
-    node_x=np.empty((node_num))
-    node_y=np.empty((node_num))
-    node_x=src.variables["SCHISM_hgrid_node_x"][:]
-    node_y=src.variables["SCHISM_hgrid_node_y"][:]
-    fill_ele_area()
-    max_node_in_a_cell=4
-    neibor_ele_table,max_ele_at_node=gen_node_neibor_ele(ele_table,max_node_in_a_cell,face_num,node_num)
+elif (os.path.exists(nc_file_510)):
+    src=netCDF4.Dataset(nc_file_510)
+    is_510_format=True
 else:
-    raise nc_file+"is invalid"
+    raise Exception("No valid output file exists\n")
+    
+node_dim  = src.dimensions["nSCHISM_hgrid_node"]
+face_dim =  src.dimensions["nSCHISM_hgrid_face"]
+
+node_num   = node_dim.size
+face_num   = face_dim.size
+ele_table  = np.empty((face_num,4))
+ele_table  = src.variables["SCHISM_hgrid_face_nodes"][:,:]
+time_dim  = src.dimensions["time"]
+time_num=time_dim.size
+ele_area=np.zeros((face_num))
+node_x=np.empty((node_num))
+node_y=np.empty((node_num))
+node_x=src.variables["SCHISM_hgrid_node_x"][:]
+node_y=src.variables["SCHISM_hgrid_node_y"][:]
+fill_ele_area()
+max_node_in_a_cell=4
+neibor_ele_table,max_ele_at_node=gen_node_neibor_ele(ele_table,max_node_in_a_cell,face_num,node_num)
 
 habitat="lsz"
 
 s1=average_period[0]
 s2=average_period[-1]
-output_path=data_folder+"habitat_"+s1.strftime("%m-%d-%Y")+"_"+s2.strftime("%m-%d-%Y")+".nc"
+output_path=data_folder+"schout_"+s1.strftime("%m-%d-%Y")+"_"+s2.strftime("%m-%d-%Y")+".nc"
 dst=netCDF4.Dataset(output_path,'w',format="NETCDF4_CLASSIC")
 
 
@@ -235,7 +245,7 @@ for k in range(len(average_period)-1):
         var.setncattr("mesh","SCHISM_hgrid")
         var.setncattr("data_horizontal_center","elem")
         var.setncattr("data_vertical_center","full")
-        var.setncattr("i23d",1)
+        var.setncattr("i23d",4)
         var.setncattr("ivs",1)
         var=dst.createVariable("wetdry_elem",'i2',("time","nSCHISM_hgrid_face",))
         var.setncattr("mesh","SCHISM_hgrid")
@@ -259,14 +269,16 @@ for k in range(len(average_period)-1):
         var.setncattr("mesh","SCHISM_hgrid")
         var.setncattr("data_horizontal_center","elem")
         var.setncattr("data_vertical_center","full")
-        var.setncattr("i23d",1)
+        var.setncattr("i23d",4)
         var.setncattr("ivs",1)
 
         for name, variable in src.variables.items():
-            if ( name in ["hvel_side","hvel","salt","wetdry_elem","wetdry_node","elev","zcor","time"]):
-                 print ( "skip vel var ")
-          
+            if ( name in ["hvel_side","hvel","salt","wetdry_elem","wetdry_node","elev","zcor","time"]): ## below 5.10 format
+                 print ( "skip var "+name)
+            elif( name in ["dryFlagNode","dryFlagElement","dryFlagSide","elevation"]): ## 5.10 format id
+                 print ("skip var "+name)
             else:
+                print("copy var "+name)
                 dst.createVariable(name, variable.datatype, variable.dimensions)
                 dst.variables[name][:] = src.variables[name][:]
                 
@@ -276,7 +288,7 @@ for k in range(len(average_period)-1):
                         dst.variables[name].setncattr(att_name,src.variables[name].getncattr(att_name))
                 
         src.close()
-   
+    
     salt_time_depth_average=np.zeros((node_num))
     time_frac_less_6=np.zeros((face_num)) 
     wetdry_elem=np.zeros((face_num))
@@ -284,31 +296,50 @@ for k in range(len(average_period)-1):
         
     for i in range(start_day,end_day):
         nc_file=data_folder+"schout_%d.nc"%i
+        out2d_file=""
+        z_file=""
+        if (is_510_format):
+            nc_file=data_folder+"salinity_%d.nc"%i
+            out2d_file=data_folder+"out2d_%d.nc"%i
+            z_file=data_folder+"zCoordinates_%d.nc"%i
         if(os.path.exists(nc_file)):
             src=netCDF4.Dataset(nc_file)
+            out2d_src=None
+            z_src=None
             #depth_average_vel_file=output_path+"depth_average_vel_%d.nc"%i
-            
+            if(is_510_format):
+                out2d_src=netCDF4.Dataset(out2d_file)
+                z_src=netCDF4.Dataset(z_file)
+                
             layer_dim = src.dimensions["nSCHISM_vgrid_layers"]
             time_dim  = src.dimensions["time"]
             node_dim  = src.dimensions["nSCHISM_hgrid_node"]
             two_dim   = src.dimensions["two"]       
             total_levels=layer_dim.size
-            node_bottom_level=src.variables["node_bottom_index"]
-            #node_dry= np.array(src.variables["wetdry_node"])
-            elem_dry= np.array(src.variables["wetdry_elem"])
+            node_bottom_level=None
+            elem_dry=None
             node_num   = node_dim.size
             face_dim =  src.dimensions["nSCHISM_hgrid_face"]
             face_num   = face_dim.size
-            num_step=time_dim.size
+            num_step= time_dim.size
             node_dry=np.zeros((num_step,node_num)) 
-            
-            gen_node_wet_dry(node_dry,elem_dry,num_step,node_num,max_ele_at_node,neibor_ele_table)
+            z=None
+            salt=None
+            if(is_510_format):
+                node_bottom_level=out2d_src.variables["bottom_index_node"]
+                elem_dry= np.array(out2d_src.variables["dryFlagElement"])
+                node_dry= np.array(out2d_src.variables["dryFlagNode"])
+                z=z_src.variables["zCoordinates"][:,:,:]
+                salt=src.variables["salinity"][:,:,:,]
+            else:
+                node_bottom_level=src.variables["node_bottom_index"]
+                elem_dry= np.array(src.variables["wetdry_elem"])
+                gen_node_wet_dry(node_dry,elem_dry,num_step,node_num,max_ele_at_node,neibor_ele_table)
+                z=src.variables["zcor"][:,:,:]
+                salt=src.variables["salt"][:,:,:,]
             
             wetdry_node=wetdry_node+np.sum(node_dry,0)
             wetdry_elem=wetdry_elem+np.sum(elem_dry,0)
-                     
-            z=src.variables["zcor"][:,:,:]
-             
             mask=np.ones(z.shape,dtype=np.int8)
              
             for i in range(node_num):
@@ -317,12 +348,11 @@ for k in range(len(average_period)-1):
              #pdb.set_trace()
             mask_with_dry=mask+node_dry[:,:,np.newaxis]
            
-            zmasked=ma.array(src.variables["zcor"][:,:,:],mask=mask_with_dry)
+            #zmasked=ma.array(src.variables["zcor"][:,:,:],mask=mask_with_dry)
+            zmasked=ma.array(z,mask=mask_with_dry)
             layer_thickness=np.diff(zmasked,axis=2)
             print (np.where(layer_thickness==0))
-             #depth=np.sum(layer_thickness,2)    
-                                
-            salt=src.variables["salt"][:,:,:,]
+           
             salt_aver=0.5*(salt[:,:,1:]+salt[:,:,:-1])
             dry_nodes=np.where(wetdry_node>0)
             #pdb.set_trace()
@@ -336,7 +366,6 @@ for k in range(len(average_period)-1):
             time_average=np.average(depth_average[:,:],axis=0)
             salt_time_depth_average=salt_time_depth_average+time_average/(end_day-start_day) 
             print ("done with ",nc_file)
-            
             src.close()
     
     errarr=np.where(salt_time_depth_average>100) 
