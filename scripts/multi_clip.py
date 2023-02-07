@@ -5,6 +5,8 @@ import os
 import datetime as dtm
 from schimpy.model_time import multi_file_to_elapsed
 
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 # User will need to change the start time and location of BayDeltaSCHISM
 start=dtm.datetime(2009,2,10)
 bds_home = "D:/Delta/BayDeltaSCHISM/"
