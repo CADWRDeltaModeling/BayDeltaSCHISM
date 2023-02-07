@@ -159,6 +159,7 @@ Windows
    * Run files:
 
       * You'll want to run these files in a conda environment that has dms_datastore installed (There's an existing environment.yaml file which will set this up for you)
+      * This might be better to run on Linux/HPC4 so that your machine doesn't interrupt the files and corrupt the .nc files these scripts produce
 
       .. warning::
 
@@ -286,6 +287,7 @@ This needs to follow the completion of a Barotropic simulation in order to creat
 
             module purge
             module load schism/5.10_intel2022.1
+            ulimit -s unlimited 
             interpolate_variables8
 
          * Copy the *uv3d.th.nc* file to the main folder
@@ -316,7 +318,7 @@ This needs to follow the completion of a Barotropic simulation in order to creat
 
       .. code-block:: console
 
-         /home/<USERNAME>/.../src/Utility/Combining_Scripts/combine_hotstart7.exe --iteration 4800
+         combine_hotstart7.exe --iteration 4800
 
       Note that the iteration variable is based on variables in param.nml *nhot_write* which is set to 4800 in this example. 4800 x *dt* = 4800 x 90s = 5 days
 

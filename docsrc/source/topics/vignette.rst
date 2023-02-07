@@ -287,6 +287,7 @@ This needs to follow the completion of a Barotropic simulation in order to creat
 
             module purge
             module load schism/5.10_intel2022.1
+            ulimit -s unlimited 
             interpolate_variables8
 
          * Copy the *uv3d.th.nc* file to the main folder
