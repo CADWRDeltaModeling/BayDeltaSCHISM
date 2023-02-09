@@ -21,39 +21,23 @@ from pyhecdss import get_ts
 from schimpy import model_time
 
 dir = os.path.dirname(__file__)
-
-with open(os.path.join(dir,'config.yaml'), 'r') as f:
-    config = yaml.safe_load(f)
     
-# Read in parameters from the YAML file
-source_map_file = os.path.join(dir,config['file']['source_map_file'])
-schism_flux_file = os.path.join(dir,config['file']['schism_flux_file'])
-schism_salt_file = os.path.join(dir,config['file']['schism_salt_file'])
-schism_temp_file = os.path.join(dir,config['file']['schism_temp_file'])
-out_file_flux = os.path.join(config['file']['out_file_flux'])
-out_file_salt = os.path.join(config['file']['out_file_salt'])
-out_file_temp = os.path.join(config['file']['out_file_temp'])
-boundary_kinds = config['param']['boundary_kinds']
-sd = config['param']['start_date']
-ed = config['param']['end_date']
+source_map_file = 'source_map.csv'
+schism_flux_file = '../data/time_history/flux.th'
+schism_salt_file = '../data/time_history/salt.th'
+schism_temp_file = '../data/time_history/temp.th'
+out_file_flux = 'flux.th.ported'
+out_file_salt = 'salt.th.ported'
+out_file_temp = 'temp.th.ported'
+boundary_kinds = ['flux']
+sd = [2014,1,1]
+ed = [2014,12,31]
 
 dt = minutes(15)
 start_date = pd.Timestamp(sd[0], sd[1], sd[2])
 end_date = pd.Timestamp(ed[0], ed[1], ed[2])
 df_rng = pd.date_range(start_date, end_date, freq=dt)
 source_map = pd.read_csv(source_map_file, header=0)
-
-# Read in the reference SCHISM flux, salt and temperature files 
-# to be used as a starting point and to substitute timeseries not 
-# available from other data sources.
-
-flux = pd.read_csv(schism_flux_file,index_col=0,parse_dates=[0],
-                   sep="\\s+",header=0)
-salt = pd.read_csv(schism_salt_file,header=0,parse_dates=True,
-                   index_col=0,sep="\s+")
-temp = pd.read_csv(schism_temp_file,header=0,parse_dates=True,
-                   index_col=0,sep="\s+")
-
 
 def read_csv(file, var, name,p=2.):
     """
@@ -92,14 +76,26 @@ def read_dss(file,pathname,sch_name=None,p=2.):
 for boundary_kind in boundary_kinds:
 
     source_map = source_map.loc[source_map['boundary_kind'] == boundary_kind]
-
-    if boundary_kind == 'flow':
+    
+    """
+    Read in the reference SCHISM flux, salt and temperature files 
+    to be used as a starting point and to substitute timeseries not 
+    available from other data sources.
+    
+    """
+    if boundary_kind == 'flux':
+        flux = pd.read_csv(schism_flux_file,index_col=0,parse_dates=[0],
+                           sep="\\s+",header=0)
         dd = flux.copy().reindex(df_rng)
         out_file = out_file_flux
     elif boundary_kind == 'ec':
+        salt = pd.read_csv(schism_salt_file,header=0,parse_dates=True,
+                           index_col=0,sep="\s+")
         dd = salt.copy().reindex(df_rng)
         out_file = out_file_salt
     elif boundary_kind == 'temp':
+        temp = pd.read_csv(schism_temp_file,header=0,parse_dates=True,
+                           index_col=0,sep="\s+")
         dd = temp.copy().reindex(df_rng)
         out_file = out_file_temp
 
