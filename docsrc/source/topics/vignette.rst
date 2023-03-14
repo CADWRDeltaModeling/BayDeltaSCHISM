@@ -124,6 +124,7 @@ Windows
       These files don't exist somewhere publicly available yet
 
    * Download Polaris \*.csv data from the USGS data query https://sfbay.wr.usgs.gov/water-quality-database/
+      * Since the hotstart generates based on a USGS cruise, check "//nasbdo/Modeling_Data/usgs_cruise/cruise_inventory.csv" to see what dates are available. You'll want your hotstart date to be near an available cruise date
       * Go to year, show all entries, and export data
       * Save as: hotstart\USGS_2009_saltemp.csv (where 2009 is whichever year you've downloaded)
       * Run *clean_polaris.py* or some other QA/QC on the USGS_2009_saltemp.csv file
