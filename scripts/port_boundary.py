@@ -22,7 +22,7 @@ from schimpy import model_time
 
 dir = os.path.dirname(__file__)
     
-source_map_file = 'port_boundary_map.csv'
+source_map_file = '../examples/port_boundary_examples/port_boundary_map.csv'
 schism_flux_file = '../data/time_history/flux.th'
 schism_salt_file = '../data/time_history/salt.th'
 schism_temp_file = '../data/time_history/temp.th'
