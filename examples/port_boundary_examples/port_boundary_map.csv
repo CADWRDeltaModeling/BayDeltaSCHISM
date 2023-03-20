@@ -4,7 +4,7 @@ ccc_rock,flow,CSV,,monthly_csv_example.csv,CHCCC006,1,CFS_CMS,2,,,ccc rs
 ccc_old,flow,CONSTANT,,,0,,,,,,cccold
 swp,flow,CSV,,monthly_csv_example.csv,CHSWP003,1,CFS_CMS,2,,,swp
 cvp,flow,CSV,,monthly_csv_example.csv,CHDMC004,1,CFS_CMS,2,,,cvp
-sjr,flow,DSS,,hist_v82_1day.dss,/HYDROV8.2.0/RSAN112/FLOW//1DAY/HIST_V82/,-1,CFS_CMS,1,,,sjr
+sjr,flow,DSS,,dsm2_output_example.dss,/HYDROV8.2.0/RSAN112/FLOW//1DAY/HIST_V82/,-1,CFS_CMS,1,,,sjr
 calaveras,flow,CSV,,monthly_csv_example.csv,RCAL009,-1,CFS_CMS,2,,,cal
 east,flow,CSV,TRUE,monthly_csv_example.csv,RCSM075;RMKL070,-1,CFS_CMS,2,(csv.RCSM075+csv.RMKL070),,east
 american,flow,CSV,TRUE,monthly_csv_example.csv,RSAC155,-1,CFS_CMS,2,(flux.american/(flux.sac+flux.american)).mul(csv.RSAC155),,amer
