@@ -4,14 +4,16 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Overview of Basic Bay-Delta SCHISM Run &#8212; Bay-Delta SCHISM</title>
+    <title>Checklists for Simple Examples &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor" href="vignette.html" />
@@ -40,7 +42,7 @@
 
           <li class="nav-item nav-item-1"><a href="../learning.html" >Learning Resources for Bay-Delta SCHISM</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../topical_guide.html" accesskey="U">Bay-Delta SCHISM Topical Guide</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Overview of Basic Bay-Delta SCHISM Run</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Checklists for Simple Examples</a></li> 
       </ul>
     </div>
 
@@ -49,6 +51,22 @@
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/dwr_logo_small.png" alt="Logo"/>
             </a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Checklists for Simple Examples</a><ul>
+<li><a class="reference internal" href="#running-a-completely-processed-setup">Running a Completely Processed Setup</a></li>
+<li><a class="reference internal" href="#simplest-hindcast-runs">Simplest Hindcast Runs</a><ul>
+<li><a class="reference internal" href="#scoping">Scoping</a></li>
+<li><a class="reference internal" href="#obtain-materials">Obtain materials</a></li>
+<li><a class="reference internal" href="#collect-spatial-inputs">Collect Spatial Inputs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="../topical_guide.html"
@@ -84,8 +102,50 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="overview-of-basic-bay-delta-schism-run">
-<h1>Overview of Basic Bay-Delta SCHISM Run<a class="headerlink" href="#overview-of-basic-bay-delta-schism-run" title="Permalink to this heading">¶</a></h1>
+  <section id="checklists-for-simple-examples">
+<h1>Checklists for Simple Examples<a class="headerlink" href="#checklists-for-simple-examples" title="Permalink to this heading">¶</a></h1>
+<section id="running-a-completely-processed-setup">
+<h2>Running a Completely Processed Setup<a class="headerlink" href="#running-a-completely-processed-setup" title="Permalink to this heading">¶</a></h2>
+<p>Benchmark runs are recommended when using SCHISM on a new system or when setting up
+a new machine. In this case the user will have obtained a complete set up as a “tarball” (tar.gz) file or
+copies it using the rsync command.</p>
+<p>The steps are:</p>
+<ul class="simple">
+<li><p>Set up the environment and compile schism (on Windows we provide binaries, but this is not an efficient environment for running the model).</p></li>
+<li><p>Untar the archived run</p></li>
+<li><p>If the atmospheric files are packaged separately, reestablish the linkage using the instructions that we provide in a typical readme** file.</p></li>
+<li><p>Compile the model using instructions on the VIMS website or precompliled binaries for Windows (not typical for full Delta runs)</p></li>
+<li><p>Most clusters use a job manager or queue. We have sample schism.sh shell scripts and PBS launch files that borrow from our own systems, but you may need to find instructions that suit your pattern.</p></li>
+<li><p>Take care of a few typical ‘gotchas’ such as making sure there is a directory named ‘outputs’ and that stack limits are disabled.</p></li>
+</ul>
+<p>While we can provide some support and answer some questions, the details differ from machine to machine. Please note that when you copy runs you should use the rsync command on linux not the generic copy command ‘cp’.</p>
+</section>
+<section id="simplest-hindcast-runs">
+<h2>Simplest Hindcast Runs<a class="headerlink" href="#simplest-hindcast-runs" title="Permalink to this heading">¶</a></h2>
+<p>In this case, simulation is within the historical database we provide in our repository for SCHISM
+, which starts Oct 2006. We are not, however, assuming</p>
+<section id="scoping">
+<h3>Scoping<a class="headerlink" href="#scoping" title="Permalink to this heading">¶</a></h3>
+<p>The main scoping questions are:
+# What is the period of interest?
+# Does the simulation require grid modification?
+# Where will you do the run?</p>
+</section>
+<section id="obtain-materials">
+<h3>Obtain materials<a class="headerlink" href="#obtain-materials" title="Permalink to this heading">¶</a></h3>
+<p>See the</p>
+</section>
+<section id="collect-spatial-inputs">
+<h3>Collect Spatial Inputs<a class="headerlink" href="#collect-spatial-inputs" title="Permalink to this heading">¶</a></h3>
+<p># Preprocess the grid using templates and schimpy
+#</p>
+<p># Prepare elevation boundary
+Subset the historical inputs for run period
+Subset channel depletions for run period
+Create appropriate nudging file for assimilating data
+Perform barotropic run and extract ocean boundary velocity</p>
+</section>
+</section>
 </section>
 
 
@@ -113,12 +173,12 @@
 
           <li class="nav-item nav-item-1"><a href="../learning.html" >Learning Resources for Bay-Delta SCHISM</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../topical_guide.html" >Bay-Delta SCHISM Topical Guide</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Overview of Basic Bay-Delta SCHISM Run</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Checklists for Simple Examples</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2014,2020 California Department of Water Resources.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
     </div>
   </body>
 </html>

@@ -4,17 +4,19 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Bay-Delta SCHISM Topical Guide &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Overview of Basic Bay-Delta SCHISM Run" href="topics/overview.html" />
+    <link rel="next" title="Checklists for Simple Examples" href="topics/overview.html" />
     <link rel="prev" title="Learning Resources for Bay-Delta SCHISM" href="learning.html" /> 
   </head><body>
 
@@ -29,7 +31,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="topics/overview.html" title="Overview of Basic Bay-Delta SCHISM Run"
+          <a href="topics/overview.html" title="Checklists for Simple Examples"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="learning.html" title="Learning Resources for Bay-Delta SCHISM"
@@ -56,7 +58,7 @@
   <div>
     <h4>Next topic</h4>
     <p class="topless"><a href="topics/overview.html"
-                          title="next chapter">Overview of Basic Bay-Delta SCHISM Run</a></p>
+                          title="next chapter">Checklists for Simple Examples</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -105,7 +107,16 @@
 <li class="toctree-l2"><a class="reference internal" href="getmodel.html#links-to-tools">Links to tools</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="topics/overview.html">Overview of Basic Bay-Delta SCHISM Run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/overview.html">Checklists for Simple Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="topics/overview.html#running-a-completely-processed-setup">Running a Completely Processed Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/overview.html#simplest-hindcast-runs">Simplest Hindcast Runs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/overview.html#scoping">Scoping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/overview.html#obtain-materials">Obtain materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/overview.html#collect-spatial-inputs">Collect Spatial Inputs</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="topics/vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="topics/vignette.html#windows">Windows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="topics/vignette.html#linux">Linux</a><ul>
@@ -179,10 +190,15 @@
 <li class="toctree-l2"><a class="reference internal" href="topics/param.html#what-happens-when-schism-versions-get-advanced">What happens when SCHISM versions get advanced?</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="topics/hotstart.html">Hotstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#when-do-you-need-a-hotstart">When do you need a hotstart?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#creating-a-hotstart-for-hydro-salt-temp">Creating a Hotstart for Hydro/Salt/Temp</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/hotstart.html#just-checking">Just checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/hotstart.html">Run Initialization and Restart (Hotstart)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#when-do-you-need-an-initial-condition-or-hotstart">When do you need an initial condition or hotstart?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#what-is-the-difference-between-a-cold-and-hot-start">What is the difference between a cold and hot start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#combining-hotstarts">Combining hotstarts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#choosing-a-good-start-time">Choosing a good start time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#schism-hotstart-creating-a-hotstart-for-hydro-salt-temp">schism_hotstart: Creating a Hotstart for Hydro/Salt/Temp</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/hotstart.html#acquiring-the-data">Acquiring the data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/hotstart.html#configuring-the-hotstart-request-yaml">Configuring the Hotstart request (yaml)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/hotstart.html#running-the-hotstart-generator">Running the hotstart generator</a></li>
 </ul>
 </li>
 </ul>
@@ -306,7 +322,7 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="topics/overview.html" title="Overview of Basic Bay-Delta SCHISM Run"
+          <a href="topics/overview.html" title="Checklists for Simple Examples"
              >next</a> |</li>
         <li class="right" >
           <a href="learning.html" title="Learning Resources for Bay-Delta SCHISM"
@@ -321,7 +337,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2014,2020 California Department of Water Resources.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
     </div>
   </body>
 </html>
