@@ -56,6 +56,7 @@ utility to get a list without doing all this calculation: `hotstart_inventory --
 The best translation of 'restart' in SCHISM is hotstart with ihot=2. 
 
 
+.. _choose_runtime:
 Choosing a good start time
 --------------------------
 By convention, our group chooses start times that coincide with USGS cruises. . Those are the days when you will have the best access 

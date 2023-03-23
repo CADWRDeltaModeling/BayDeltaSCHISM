@@ -23,35 +23,68 @@ The steps are:
 
 While we can provide some support and answer some questions, the details differ from machine to machine. Please note that when you copy runs you should use the rsync command on linux not the generic copy command 'cp'.
 
+
+.. |cbox|   unicode:: U+2610
+
 ======================
-Simplest Hindcast Runs
+Simple Hindcast Runs
 ======================
 
-In this case, simulation is within the historical database we provide in our repository for SCHISM
-, which starts Oct 2006. We are not, however, assuming 
-
-Scoping
--------
-The main scoping questions are:
-# What is the period of interest?
-# Does the simulation require grid modification?
-# Where will you do the run?
-
-Obtain materials
-----------------
-See the 
-
-Collect Spatial Inputs
---------------
-# Preprocess the grid using templates and schimpy
-# 
+|cbox| Choose run dates 
+---------------------------------------------------
+See :ref:`hotstart section <choose_runtime>` on this topic
 
 
-# Prepare elevation boundary
-Subset the historical inputs for run period
-Subset channel depletions for run period
-Create appropriate nudging file for assimilating data
-Perform barotropic run and extract ocean boundary velocity
+|cbox| Apply template to existing mesh
+--------------------------------------
+
+    |cbox| Clone BayDeltaSCHISM from GitHub. Get a fresh copy or `git stash` any changes. 
+    
+    |cbox| Note the git hash code or tag in a readme.
+
+    |cbox| Copy BayDeltaSCHISM/templates/bay_delta to study preprocessing directory `mystudy/bay_delta`
+
+    |cbox| Obtain an SMS .2dm or SCHISM hgrid.gr3 file (e.g. `bay_delta_111_prop605.2dm` and add it to bay_delta_schism)
+
+    |cbox| Change `main_bay_delta.yaml` by pointing the mesh_inputfile to the name of the 
+
+    |cbox| Invoke the preprocessor with the command: `$ prepare_schism main_bay_delta.yaml`
+
+    |cbox| Copy the prepared items (.in, ,gr3, .ll, .prop, .nml) to the launch place.
+
+
+
+|cbox| Collect time series inputs
+------------------------------------------
+
+    |cbox| elev2d.bat
+    
+        |cbox| download NOAA files for coastal stations at SF, Point Reyes, Monterey
+        
+        |cbox| validate that the datum is NAVD88
+        
+        |cbox| runs genelev2D.py
+
+    |cbox| multi_clip
+
+
+|cbox| Hotstart (can be concurrent with barotropic)
+---------------------------------------------------
+
+
+
+|cbox| Nudging (can be concurrent with barotropic)
+--------------------------------------------------
+
+
+
+|cbox| Barotropic warmup
+------------------------
+    |cbox| interpolate_variables7 (or later) script to create uv3D.th.
+    
+    |cbox| move the uv3D.th to the study directory
+    
+    |cbox| delete all the files outputs/* or move /outputs to /outputs.tropic and create an empty /outputs
 
 
 

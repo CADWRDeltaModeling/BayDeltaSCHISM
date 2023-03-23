@@ -56,10 +56,13 @@
     <ul>
 <li><a class="reference internal" href="#">Checklists for Simple Examples</a><ul>
 <li><a class="reference internal" href="#running-a-completely-processed-setup">Running a Completely Processed Setup</a></li>
-<li><a class="reference internal" href="#simplest-hindcast-runs">Simplest Hindcast Runs</a><ul>
-<li><a class="reference internal" href="#scoping">Scoping</a></li>
-<li><a class="reference internal" href="#obtain-materials">Obtain materials</a></li>
-<li><a class="reference internal" href="#collect-spatial-inputs">Collect Spatial Inputs</a></li>
+<li><a class="reference internal" href="#simple-hindcast-runs">Simple Hindcast Runs</a><ul>
+<li><a class="reference internal" href="#cbox-choose-run-dates">☐ Choose run dates</a></li>
+<li><a class="reference internal" href="#cbox-apply-template-to-existing-mesh">☐ Apply template to existing mesh</a></li>
+<li><a class="reference internal" href="#cbox-collect-time-series-inputs">☐ Collect time series inputs</a></li>
+<li><a class="reference internal" href="#cbox-hotstart-can-be-concurrent-with-barotropic">☐ Hotstart (can be concurrent with barotropic)</a></li>
+<li><a class="reference internal" href="#cbox-nudging-can-be-concurrent-with-barotropic">☐ Nudging (can be concurrent with barotropic)</a></li>
+<li><a class="reference internal" href="#cbox-barotropic-warmup">☐ Barotropic warmup</a></li>
 </ul>
 </li>
 </ul>
@@ -120,30 +123,49 @@ copies it using the rsync command.</p>
 </ul>
 <p>While we can provide some support and answer some questions, the details differ from machine to machine. Please note that when you copy runs you should use the rsync command on linux not the generic copy command ‘cp’.</p>
 </section>
-<section id="simplest-hindcast-runs">
-<h2>Simplest Hindcast Runs<a class="headerlink" href="#simplest-hindcast-runs" title="Permalink to this heading">¶</a></h2>
-<p>In this case, simulation is within the historical database we provide in our repository for SCHISM
-, which starts Oct 2006. We are not, however, assuming</p>
-<section id="scoping">
-<h3>Scoping<a class="headerlink" href="#scoping" title="Permalink to this heading">¶</a></h3>
-<p>The main scoping questions are:
-# What is the period of interest?
-# Does the simulation require grid modification?
-# Where will you do the run?</p>
+<section id="simple-hindcast-runs">
+<h2>Simple Hindcast Runs<a class="headerlink" href="#simple-hindcast-runs" title="Permalink to this heading">¶</a></h2>
+<section id="cbox-choose-run-dates">
+<h3>☐ Choose run dates<a class="headerlink" href="#cbox-choose-run-dates" title="Permalink to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="hotstart.html#choose-runtime"><span class="std std-ref">hotstart section</span></a> on this topic</p>
 </section>
-<section id="obtain-materials">
-<h3>Obtain materials<a class="headerlink" href="#obtain-materials" title="Permalink to this heading">¶</a></h3>
-<p>See the</p>
+<section id="cbox-apply-template-to-existing-mesh">
+<h3>☐ Apply template to existing mesh<a class="headerlink" href="#cbox-apply-template-to-existing-mesh" title="Permalink to this heading">¶</a></h3>
+<blockquote>
+<div><p>☐ Clone BayDeltaSCHISM from GitHub. Get a fresh copy or <cite>git stash</cite> any changes.</p>
+<p>☐ Note the git hash code or tag in a readme.</p>
+<p>☐ Copy BayDeltaSCHISM/templates/bay_delta to study preprocessing directory <cite>mystudy/bay_delta</cite></p>
+<p>☐ Obtain an SMS .2dm or SCHISM hgrid.gr3 file (e.g. <cite>bay_delta_111_prop605.2dm</cite> and add it to bay_delta_schism)</p>
+<p>☐ Change <cite>main_bay_delta.yaml</cite> by pointing the mesh_inputfile to the name of the</p>
+<p>☐ Invoke the preprocessor with the command: <cite>$ prepare_schism main_bay_delta.yaml</cite></p>
+<p>☐ Copy the prepared items (.in, ,gr3, .ll, .prop, .nml) to the launch place.</p>
+</div></blockquote>
 </section>
-<section id="collect-spatial-inputs">
-<h3>Collect Spatial Inputs<a class="headerlink" href="#collect-spatial-inputs" title="Permalink to this heading">¶</a></h3>
-<p># Preprocess the grid using templates and schimpy
-#</p>
-<p># Prepare elevation boundary
-Subset the historical inputs for run period
-Subset channel depletions for run period
-Create appropriate nudging file for assimilating data
-Perform barotropic run and extract ocean boundary velocity</p>
+<section id="cbox-collect-time-series-inputs">
+<h3>☐ Collect time series inputs<a class="headerlink" href="#cbox-collect-time-series-inputs" title="Permalink to this heading">¶</a></h3>
+<blockquote>
+<div><p>☐ elev2d.bat</p>
+<blockquote>
+<div><p>☐ download NOAA files for coastal stations at SF, Point Reyes, Monterey</p>
+<p>☐ validate that the datum is NAVD88</p>
+<p>☐ runs genelev2D.py</p>
+</div></blockquote>
+<p>☐ multi_clip</p>
+</div></blockquote>
+</section>
+<section id="cbox-hotstart-can-be-concurrent-with-barotropic">
+<h3>☐ Hotstart (can be concurrent with barotropic)<a class="headerlink" href="#cbox-hotstart-can-be-concurrent-with-barotropic" title="Permalink to this heading">¶</a></h3>
+</section>
+<section id="cbox-nudging-can-be-concurrent-with-barotropic">
+<h3>☐ Nudging (can be concurrent with barotropic)<a class="headerlink" href="#cbox-nudging-can-be-concurrent-with-barotropic" title="Permalink to this heading">¶</a></h3>
+</section>
+<section id="cbox-barotropic-warmup">
+<h3>☐ Barotropic warmup<a class="headerlink" href="#cbox-barotropic-warmup" title="Permalink to this heading">¶</a></h3>
+<blockquote>
+<div><p>☐ interpolate_variables7 (or later) script to create uv3D.th.</p>
+<p>☐ move the uv3D.th to the study directory</p>
+<p>☐ delete all the files outputs/* or move /outputs to /outputs.tropic and create an empty /outputs</p>
+</div></blockquote>
 </section>
 </section>
 </section>
