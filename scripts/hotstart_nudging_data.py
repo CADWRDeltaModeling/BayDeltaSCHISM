@@ -11,7 +11,12 @@ import pandas as pd
 import os
 
 
-station_df=station_dbase()
+## Items you may want to change
+
+t0 = pd.Timestamp(2021,4,20)
+nudgelen =days(30)
+
+
 stations = ['anh','benbr','hsl','bts','snc','ibs','cyg','hun','bdl',
             'fmb','msl','cll','gzl','ryc','hon',
             'c24','pct','flt','mrz','pct','mal','pts','carqb','benbr',
@@ -23,10 +28,14 @@ stations = ['anh','benbr','hsl','bts','snc','ibs','cyg','hun','bdl',
             'nmr','sus','sss','sut','snod','gln','rye','ryf','rvb','mir','dws','lib','ucs','has',
             'srh','awb','afo','hst','ist','ssw','von','few','fre','wlk','gys','god','sal']
 
+# Stations where an "upper" and "lower" sublocation occur and we must distinguish the upper
+add_upper = ["anh","cll","mrz","emm","mal","pts"] 
 
-add_upper = ["anh","cll","mrz","emm","mal","pts"]
-t0 = pd.Timestamp(2021,4,20)
-nudgelen =days(30)
+##  
+
+
+station_df=station_dbase()
+
 buf = days(5)
 sdata = t0 - buf
 edata = t0 + nudgelen + buf
@@ -120,7 +129,8 @@ print("reindexing and printing")
 
 for label_var in all_vars:
     nudging_dfs[label_var].to_csv(f"nudging_data_{label_var}.csv",sep=",",float_format="%.2f")
-    nudging_dfs[label_var].reindex(columns=obs_xy.site).to_csv(f"nudging_data_{label_var}_b.csv",sep=",",float_format="%.2f")
+    # Deprecated
+    #nudging_dfs[label_var].reindex(columns=obs_xy.site).to_csv(f"nudging_data_{label_var}_b.csv",sep=",",float_format="%.2f")
 
 
 obs_xy = obs_xy.set_index("site",drop=True)
