@@ -60,11 +60,14 @@ See :ref:`hotstart section <choose_runtime>` on this topic
 
     |cbox| Change `main_bay_delta.yaml` by pointing the mesh_inputfile to the name of the 
 
+    |cbox| Make sure your flow transect file (flow_station_xsect.yaml) contains what you want
+
     |cbox| Invoke the preprocessor with the command: `$ prepare_schism main_bay_delta.yaml`
 
-    |cbox| Copy the prepared items (.in, ,gr3, .ll, .prop, .nml) to the launch place.
+    |cbox| Copy the prepared items (.in, ,gr3, .ll, .prop, .nml) to the launch place. 
 
-
+    
+    
 
 |cbox| Collect time series inputs
 ------------------------------------------
@@ -99,9 +102,10 @@ See :ref:`hotstart section <choose_runtime>` on this topic
     |cbox| delete all the files outputs/* or move /outputs to /outputs.tropic and create an empty /outputs
 
 
+|cbox| Baroclinic simulation
+----------------------------
 
-
-
+    |cbox| finalize your station.in output request
 
 
 

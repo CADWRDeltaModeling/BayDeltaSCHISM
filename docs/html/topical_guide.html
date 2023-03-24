@@ -116,6 +116,7 @@
 <li class="toctree-l3"><a class="reference internal" href="topics/overview.html#cbox-hotstart-can-be-concurrent-with-barotropic">☐ Hotstart (can be concurrent with barotropic)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="topics/overview.html#cbox-nudging-can-be-concurrent-with-barotropic">☐ Nudging (can be concurrent with barotropic)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="topics/overview.html#cbox-barotropic-warmup">☐ Barotropic warmup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/overview.html#cbox-baroclinic-simulation">☐ Baroclinic simulation</a></li>
 </ul>
 </li>
 </ul>
@@ -141,12 +142,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="topics/ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="topics/flow_boundary.html">Flow boundaries</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#where-is-the-data">Where is the data?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#what-files-do-i-need">What files do I need?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/flow_boundary.html">Inflow/Outflow Boundaries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#where-are-the-data">Where are the data?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#clipping-to-run-dates-and-conversion-to-elapsed-time">Clipping to run dates and conversion to elapsed time</a></li>
-<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#what-if-i-have-to-add-a-boundary">What if I have to add a boundary?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#converting-boundaries-from-other-sources">Converting Boundaries From Other Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#what-if-i-have-to-add-or-move-a-boundary">What if I have to add or move a boundary?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#adding-data-from-other-sources-e-g-forecasts-other-models">Adding Data From Other Sources (e.g. Forecasts, other models)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="topics/atmospheric.html">Atmospheric setup</a><ul>
@@ -234,35 +234,17 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Topical Guides and Checklists for Common Extenstions</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="topics/mesh.html">Changing the Mesh</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#getting-to-know-sms">Getting to know SMS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#presentation-basic-meshing-considerations-for-schism">Presentation: basic meshing considerations for SCHISM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#video">Video</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#recap-checklist">Recap/checklist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/mesh.html">Horizontal Mesh</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#meshing">Meshing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#meshing-considerations-for-schism">Meshing considerations for SCHISM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#getting-to-know-sms">Getting to know SMS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#building-the-bay-delta-mesh-the-standard-way">Building the Bay-Delta mesh the standard way</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#presentation-meshing-consideration-for-marshes-and-restoration">Presentation: Meshing consideration for marshes and restoration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc">Merging/Stitching SMS mesh/maps (new work, flooded islands, etc)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#presentation-clip-dems-utility-efficient-use-of-dems-in-sms">Presentation: clip_dems utility … efficient use of DEMS in SMS</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id1">Video</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id2">Recap/checklist</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#presentation-building-and-populating-the-bay-delta-mesh-the-standard-way">Presentation: Building and populating the Bay-Delta mesh the standard way</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id3">Video</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id4">Recap/checklist</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#merging-sms-mesh-map-efforts-new-work-flooded-islands-etc">Merging SMS mesh/map efforts (new work, flooded islands, etc)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#stitching-in-new-work">Stitching in new work</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#adding-flooded-islands">Adding flooded islands</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id5">Video</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id6">Recap/checklist</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#checklist-after-you-change-the-mesh">Checklist after you change the mesh</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#depth-enforcement">Depth enforcement</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#attaching-boundaries">Attaching boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#vertical-mesh-setup">Vertical mesh setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#checklist-for-after-you-change-the-mesh">Checklist for after you change the mesh</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="topics/problems.html">Common Problems and Diagnosis</a><ul>

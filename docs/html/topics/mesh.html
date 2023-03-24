@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Changing the Mesh &#8212; Bay-Delta SCHISM</title>
+    <title>Horizontal Mesh &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -42,7 +42,7 @@
 
           <li class="nav-item nav-item-1"><a href="../learning.html" >Learning Resources for Bay-Delta SCHISM</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../topical_guide.html" accesskey="U">Bay-Delta SCHISM Topical Guide</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Changing the Mesh</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Horizontal Mesh</a></li> 
       </ul>
     </div>
 
@@ -54,35 +54,31 @@
   <div>
     <h3><a href="../index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Changing the Mesh</a><ul>
-<li><a class="reference internal" href="#getting-to-know-sms">Getting to know SMS</a></li>
-<li><a class="reference internal" href="#presentation-basic-meshing-considerations-for-schism">Presentation: basic meshing considerations for SCHISM</a><ul>
-<li><a class="reference internal" href="#video">Video</a></li>
+<li><a class="reference internal" href="#">Horizontal Mesh</a><ul>
+<li><a class="reference internal" href="#meshing">Meshing</a><ul>
+<li><a class="reference internal" href="#meshing-considerations-for-schism">Meshing considerations for SCHISM</a><ul>
+<li><a class="reference internal" href="#video-joseph-zhang-schism-summit">Video (Joseph Zhang, SCHISM summit)</a></li>
 <li><a class="reference internal" href="#recap-checklist">Recap/checklist</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#presentation-clip-dems-utility-efficient-use-of-dems-in-sms">Presentation: clip_dems utility … efficient use of DEMS in SMS</a><ul>
-<li><a class="reference internal" href="#id1">Video</a></li>
+<li><a class="reference internal" href="#getting-to-know-sms">Getting to know SMS</a><ul>
+<li><a class="reference internal" href="#video-eli-ateljevich">Video (Eli Ateljevich)</a></li>
+<li><a class="reference internal" href="#sample-data">Sample Data</a></li>
+<li><a class="reference internal" href="#id1">Recap checklist</a></li>
+<li><a class="reference internal" href="#presentation-clip-dems-and-efficient-use-of-dems">Presentation: clip_dems and efficient use of DEMS</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-the-bay-delta-mesh-the-standard-way">Building the Bay-Delta mesh the standard way</a></li>
+<li><a class="reference internal" href="#presentation-meshing-consideration-for-marshes-and-restoration">Presentation: Meshing consideration for marshes and restoration</a></li>
+<li><a class="reference internal" href="#merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc">Merging/Stitching SMS mesh/maps (new work, flooded islands, etc)</a><ul>
+<li><a class="reference internal" href="#video">Video</a></li>
 <li><a class="reference internal" href="#id2">Recap/checklist</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#presentation-building-and-populating-the-bay-delta-mesh-the-standard-way">Presentation: Building and populating the Bay-Delta mesh the standard way</a><ul>
-<li><a class="reference internal" href="#id3">Video</a></li>
-<li><a class="reference internal" href="#id4">Recap/checklist</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#merging-sms-mesh-map-efforts-new-work-flooded-islands-etc">Merging SMS mesh/map efforts (new work, flooded islands, etc)</a><ul>
-<li><a class="reference internal" href="#stitching-in-new-work">Stitching in new work</a></li>
-<li><a class="reference internal" href="#adding-flooded-islands">Adding flooded islands</a></li>
-<li><a class="reference internal" href="#id5">Video</a></li>
-<li><a class="reference internal" href="#id6">Recap/checklist</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#checklist-after-you-change-the-mesh">Checklist after you change the mesh</a><ul>
-<li><a class="reference internal" href="#depth-enforcement">Depth enforcement</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#attaching-boundaries">Attaching boundaries</a></li>
+<li><a class="reference internal" href="#vertical-mesh-setup">Vertical mesh setup</a></li>
+<li><a class="reference internal" href="#checklist-for-after-you-change-the-mesh">Checklist for after you change the mesh</a></li>
 </ul>
 </li>
 </ul>
@@ -123,63 +119,108 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="changing-the-mesh">
-<h1>Changing the Mesh<a class="headerlink" href="#changing-the-mesh" title="Permalink to this heading">¶</a></h1>
-<section id="getting-to-know-sms">
-<h2>Getting to know SMS<a class="headerlink" href="#getting-to-know-sms" title="Permalink to this heading">¶</a></h2>
-</section>
-<section id="presentation-basic-meshing-considerations-for-schism">
-<h2>Presentation: basic meshing considerations for SCHISM<a class="headerlink" href="#presentation-basic-meshing-considerations-for-schism" title="Permalink to this heading">¶</a></h2>
-<section id="video">
-<h3>Video<a class="headerlink" href="#video" title="Permalink to this heading">¶</a></h3>
+  <section id="horizontal-mesh">
+<h1>Horizontal Mesh<a class="headerlink" href="#horizontal-mesh" title="Permalink to this heading">¶</a></h1>
+<p>The format of the SCHISM horizontal mesh is described in the <a class="reference external" href="https://schism-dev.github.io/schism/master/index.html">SCHISM manual</a>.</p>
+<p>Users will find that SCHISM projects require refinement or extension. There are a few reasons:</p>
+<ul class="simple">
+<li><p>SCHISM modeling is often used for</p>
+<ul>
+<li><p>focused analysis, requiring refinement</p></li>
+<li><p>sea level rise, requiring upstream extension or gridding of exposed areas.</p></li>
+<li><p>restoration areas.</p></li>
+</ul>
+</li>
+<li><p>The spatial parameterization is varied or parameterized, so there is no extensive “calibration” of a new mesh</p></li>
+</ul>
+<p>Here we will cover:</p>
+<ul class="simple">
+<li><p>Best practices for horizontal gridding</p></li>
+<li><p>Attaching boundaries</p></li>
+<li><p><a class="reference internal" href="#change-mesh"><span class="std std-ref">Checklist</span></a> for after changing the grid or boundaries.</p></li>
+<li><p>Vertical grid.</p></li>
+</ul>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#meshing" id="id3">Meshing</a></p>
+<ul>
+<li><p><a class="reference internal" href="#meshing-considerations-for-schism" id="id4">Meshing considerations for SCHISM</a></p></li>
+<li><p><a class="reference internal" href="#getting-to-know-sms" id="id5">Getting to know SMS</a></p></li>
+<li><p><a class="reference internal" href="#building-the-bay-delta-mesh-the-standard-way" id="id6">Building the Bay-Delta mesh the standard way</a></p></li>
+<li><p><a class="reference internal" href="#presentation-meshing-consideration-for-marshes-and-restoration" id="id7">Presentation: Meshing consideration for marshes and restoration</a></p></li>
+<li><p><a class="reference internal" href="#merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc" id="id8">Merging/Stitching SMS mesh/maps (new work, flooded islands, etc)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#vertical-mesh-setup" id="id9">Vertical mesh setup</a></p></li>
+<li><p><a class="reference internal" href="#checklist-for-after-you-change-the-mesh" id="id10">Checklist for after you change the mesh</a></p></li>
+</ul>
+</nav>
+<section id="meshing">
+<h2>Meshing<a class="headerlink" href="#meshing" title="Permalink to this heading">¶</a></h2>
+<section id="meshing-considerations-for-schism">
+<h3>Meshing considerations for SCHISM<a class="headerlink" href="#meshing-considerations-for-schism" title="Permalink to this heading">¶</a></h3>
+<section id="video-joseph-zhang-schism-summit">
+<h4>Video (Joseph Zhang, SCHISM summit)<a class="headerlink" href="#video-joseph-zhang-schism-summit" title="Permalink to this heading">¶</a></h4>
+<p>Video (Joseph Zhang #2)</p>
 </section>
 <section id="recap-checklist">
-<h3>Recap/checklist<a class="headerlink" href="#recap-checklist" title="Permalink to this heading">¶</a></h3>
+<h4>Recap/checklist<a class="headerlink" href="#recap-checklist" title="Permalink to this heading">¶</a></h4>
 </section>
 </section>
-<section id="presentation-clip-dems-utility-efficient-use-of-dems-in-sms">
-<h2>Presentation: clip_dems utility … efficient use of DEMS in SMS<a class="headerlink" href="#presentation-clip-dems-utility-efficient-use-of-dems-in-sms" title="Permalink to this heading">¶</a></h2>
+<section id="getting-to-know-sms">
+<h3>Getting to know SMS<a class="headerlink" href="#getting-to-know-sms" title="Permalink to this heading">¶</a></h3>
+<section id="video-eli-ateljevich">
+<h4>Video (Eli Ateljevich)<a class="headerlink" href="#video-eli-ateljevich" title="Permalink to this heading">¶</a></h4>
+</section>
+<section id="sample-data">
+<h4>Sample Data<a class="headerlink" href="#sample-data" title="Permalink to this heading">¶</a></h4>
+</section>
 <section id="id1">
-<h3>Video<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
+<h4>Recap checklist<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h4>
+</section>
+<section id="presentation-clip-dems-and-efficient-use-of-dems">
+<h4>Presentation: clip_dems and efficient use of DEMS<a class="headerlink" href="#presentation-clip-dems-and-efficient-use-of-dems" title="Permalink to this heading">¶</a></h4>
+</section>
+</section>
+<section id="building-the-bay-delta-mesh-the-standard-way">
+<h3>Building the Bay-Delta mesh the standard way<a class="headerlink" href="#building-the-bay-delta-mesh-the-standard-way" title="Permalink to this heading">¶</a></h3>
+</section>
+<section id="presentation-meshing-consideration-for-marshes-and-restoration">
+<h3>Presentation: Meshing consideration for marshes and restoration<a class="headerlink" href="#presentation-meshing-consideration-for-marshes-and-restoration" title="Permalink to this heading">¶</a></h3>
+</section>
+<section id="merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc">
+<h3>Merging/Stitching SMS mesh/maps (new work, flooded islands, etc)<a class="headerlink" href="#merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc" title="Permalink to this heading">¶</a></h3>
+<section id="video">
+<h4>Video<a class="headerlink" href="#video" title="Permalink to this heading">¶</a></h4>
 </section>
 <section id="id2">
-<h3>Recap/checklist<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
+<h4>Recap/checklist<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h4>
 </section>
 </section>
-<section id="presentation-building-and-populating-the-bay-delta-mesh-the-standard-way">
-<h2>Presentation: Building and populating the Bay-Delta mesh the standard way<a class="headerlink" href="#presentation-building-and-populating-the-bay-delta-mesh-the-standard-way" title="Permalink to this heading">¶</a></h2>
-<section id="id3">
-<h3>Video<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
 </section>
-<section id="id4">
-<h3>Recap/checklist<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
+<section id="vertical-mesh-setup">
+<h2>Vertical mesh setup<a class="headerlink" href="#vertical-mesh-setup" title="Permalink to this heading">¶</a></h2>
 </section>
-</section>
-<section id="merging-sms-mesh-map-efforts-new-work-flooded-islands-etc">
-<h2>Merging SMS mesh/map efforts (new work, flooded islands, etc)<a class="headerlink" href="#merging-sms-mesh-map-efforts-new-work-flooded-islands-etc" title="Permalink to this heading">¶</a></h2>
-<section id="stitching-in-new-work">
-<h3>Stitching in new work<a class="headerlink" href="#stitching-in-new-work" title="Permalink to this heading">¶</a></h3>
-</section>
-<section id="adding-flooded-islands">
-<h3>Adding flooded islands<a class="headerlink" href="#adding-flooded-islands" title="Permalink to this heading">¶</a></h3>
-</section>
-<section id="id5">
-<h3>Video<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
-</section>
-<section id="id6">
-<h3>Recap/checklist<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
-</section>
-</section>
-<section id="checklist-after-you-change-the-mesh">
-<h2>Checklist after you change the mesh<a class="headerlink" href="#checklist-after-you-change-the-mesh" title="Permalink to this heading">¶</a></h2>
-<p>Polygons in yaml are still OK
-^^^^^^^^^^^^^^^^^^^^^^^^%^^^^</p>
-<section id="depth-enforcement">
-<h3>Depth enforcement<a class="headerlink" href="#depth-enforcement" title="Permalink to this heading">¶</a></h3>
-</section>
-</section>
-<section id="attaching-boundaries">
-<h2>Attaching boundaries<a class="headerlink" href="#attaching-boundaries" title="Permalink to this heading">¶</a></h2>
+<section id="checklist-for-after-you-change-the-mesh">
+<span id="change-mesh"></span><h2>Checklist for after you change the mesh<a class="headerlink" href="#checklist-for-after-you-change-the-mesh" title="Permalink to this heading">¶</a></h2>
+<p>Changing the mesh tends to have consequences in places people forget to think about, though most are
+straightforward or obvious. This is a checklist of gotchas that arise outside the gridding environment.</p>
+<p>☐ Are boundaries still in the proper place?</p>
+<p>☐ If boundaries moved, is depth enforcement preventing dry boundaries still in right place?</p>
+<p>☐ Are flow cross sections in changed area still aligned?</p>
+<p>☐ Are the node pairs that define hydraulic structure locations still correct?</p>
+<p>☐ Are polygons used to define spatial inputs appopriate for new area?</p>
+<p>☐ If grid was extended, do yaml polygons cover extended domain?</p>
+<p>☐ Are sources excluded?</p>
+<p>☐ Do you have submerged aquatic vegetation? Assumptions? Consider changing those file</p>
+<p>☐ Old hotstarts not valid on new mesh, utilities will interpolate on new grid</p>
+<p>☐ Old nudging files not valid on new mesh. Re-do.</p>
+<p>☐ If refining/coarsening extensively on main channel, consider the effect on momentum and the algorithm.</p>
+<p>☐ Mesh quality:</p>
+<blockquote>
+<div><p>☐ Skew and area warnings in preprocessor.</p>
+</div></blockquote>
 </section>
 </section>
 
@@ -208,7 +249,7 @@
 
           <li class="nav-item nav-item-1"><a href="../learning.html" >Learning Resources for Bay-Delta SCHISM</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../topical_guide.html" >Bay-Delta SCHISM Topical Guide</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Changing the Mesh</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Horizontal Mesh</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
