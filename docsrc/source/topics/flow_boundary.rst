@@ -1,31 +1,53 @@
 
 
 
-###############
-Flow boundaries
-###############
+#########################
+Inflow/Outflow Boundaries
+#########################
 
-Where is the data?
+Inflow/outflow boundaries locations specified in `hgrid.gr3`, usually with the preprocessor identifying the start 
+and end of the string of nodes. The fact that a boundary is a flow or tracer
+boundaries is specified in `bctides.in`. The actual data are provided in `flux.th` for flow
+and `SAL_1.th`, `TEM_1.th` for other tracers. For info on the .th file format, 
+you can refer to the `SCHISM manual <https://schism-dev.github.io/schism/master/input-output/optional-inputs.html#th-ascii>`_
+on the topic.
+
+
+Where are the data?
 ##################
 
-What files do I need?
-#####################
+In BayDeltaSCHISM/data we provide flux.th, salinity.th (maps to SAL_1.th) and temperature.th (maps to TEM_1.th) that go back to roughly
+2008. Before that, operations were different and some of our better data sources were unavailable.
 
 
 Clipping to run dates and conversion to elapsed time
 ####################################################
 
+The .th format uses elapsed seconds from run start for time and has no headers. Our data are provided in what we call dated format. We mix it down before
+the run.
 
-What if I have to add a boundary?
-#################################
 
-Converting Boundaries From Other Sources
-########################################
+What if I have to add or move a boundary?
+#########################################
+
+Moving the grid relative to the boundary or a boundary relative to the grid has consequences in some far flung places. 
+You'll want to cover our :ref:`checklist <change_mesh>` of consequences and consider which apply to your case.
+
+Please also note that our boundary condition file is constructed, in order, from our most common boundaries. If you add a boundary you may have to
+inject a column into the flux.th file.
+
+
+Adding Data From Other Sources (e.g. Forecasts, other models)
+#############################################################
+
+
+The :file:`port_boundary.py` script in BayDeltaSCHISM/scripts/  contains utilities 
+to convert or graft outputs from various data formats (other models or forecasts) onto 
+files in SCHISM time history (.th) formats. 
+
 .. currentmodule:: port_boundary
 .. autofunction:: read_csv
 
-The :file:`port_boundary.py` script in BayDeltaSCHISM/scripts/  contains utilities 
-to convert outputs from other models (or various data formats) into SCHISM time history (.th) formats.
 
   **File Descriptions**
 

@@ -63,6 +63,7 @@
 <li><a class="reference internal" href="#cbox-hotstart-can-be-concurrent-with-barotropic">☐ Hotstart (can be concurrent with barotropic)</a></li>
 <li><a class="reference internal" href="#cbox-nudging-can-be-concurrent-with-barotropic">☐ Nudging (can be concurrent with barotropic)</a></li>
 <li><a class="reference internal" href="#cbox-barotropic-warmup">☐ Barotropic warmup</a></li>
+<li><a class="reference internal" href="#cbox-baroclinic-simulation">☐ Baroclinic simulation</a></li>
 </ul>
 </li>
 </ul>
@@ -141,6 +142,7 @@ copies the run using the rsync command (don’t use copy command <cite>cp</cite>
 <p>☐ Copy BayDeltaSCHISM/templates/bay_delta to study preprocessing directory <cite>mystudy/bay_delta</cite></p>
 <p>☐ Obtain an SMS .2dm or SCHISM hgrid.gr3 file (e.g. <cite>bay_delta_111_prop605.2dm</cite> and add it to bay_delta_schism)</p>
 <p>☐ Change <cite>main_bay_delta.yaml</cite> by pointing the mesh_inputfile to the name of the</p>
+<p>☐ Make sure your flow transect file (flow_station_xsect.yaml) contains what you want</p>
 <p>☐ Invoke the preprocessor with the command: <cite>$ prepare_schism main_bay_delta.yaml</cite></p>
 <p>☐ Copy the prepared items (.in, ,gr3, .ll, .prop, .nml) to the launch place.</p>
 </div></blockquote>
@@ -169,6 +171,12 @@ copies the run using the rsync command (don’t use copy command <cite>cp</cite>
 <div><p>☐ interpolate_variables7 (or later) script to create uv3D.th.</p>
 <p>☐ move the uv3D.th to the study directory</p>
 <p>☐ delete all the files outputs/* or move /outputs to /outputs.tropic and create an empty /outputs</p>
+</div></blockquote>
+</section>
+<section id="cbox-baroclinic-simulation">
+<h3>☐ Baroclinic simulation<a class="headerlink" href="#cbox-baroclinic-simulation" title="Permalink to this heading">¶</a></h3>
+<blockquote>
+<div><p>☐ finalize your station.in output request</p>
 </div></blockquote>
 </section>
 </section>
