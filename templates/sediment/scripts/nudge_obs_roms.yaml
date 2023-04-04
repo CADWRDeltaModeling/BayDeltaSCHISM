@@ -20,7 +20,7 @@ nudging:
             - [496487, 4137742]
         interpolant: 
             method: nearest
-            data: //nasbdo/modeling_data/roms/cencoos_ca_roms/cencoos_ca_roms_das_  #this should only be a path for ROMS data.
+            data: //nasbdo/modeling_data/roms/cencoos_ca_roms/raw/cencoos_ca_roms_das_  #this should only be a path for ROMS data.
             dt: 1H  #time step in the input nc file.
             variables: 
                 - name: temperature
