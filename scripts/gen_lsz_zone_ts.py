@@ -246,7 +246,7 @@ for k in range(len(average_period)-1):
     
     
     salt_time_depth_average=0
-    time_frac_less_6=0
+    #time_frac_less_6=0
     wetdry_elem=0
     wetdry_node=0
     #surface_salt_time_average=0
