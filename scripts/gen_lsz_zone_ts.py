@@ -130,7 +130,7 @@ def fill_ele_area():
         x3=node_x[i]
         y3=node_y[i]
         i=node_id_lst[3]-1
-        if not(np.isfinite(i)):
+        if not(np.isfinite(i)): ## schout use garbage
             a=triangle_area(x1,y1,x2,y2,x3,y3)
             ele_area[k]=a
         else:
@@ -139,7 +139,30 @@ def fill_ele_area():
             y4=node_y[i]
             a=quad_area(x1,y1,x2,y2,x3,y3,x4,y4)
             ele_area[k]=a
-
+            
+def fill_ele_area510():
+    for k in range(face_num):
+        node_id_lst=ele_table[k,:]
+        
+        i=node_id_lst[0]-1
+        x1=node_x[i]
+        y1=node_y[i]
+        i=node_id_lst[1]-1
+        x2=node_x[i]
+        y2=node_y[i]
+        i=node_id_lst[2]-1
+        x3=node_x[i]
+        y3=node_y[i]
+        i=node_id_lst[3]-1
+        if (i==-2): ## out2d use -1
+            a=triangle_area(x1,y1,x2,y2,x3,y3)
+            ele_area[k]=a
+        else:
+            
+            x4=node_x[i]
+            y4=node_y[i]
+            a=quad_area(x1,y1,x2,y2,x3,y3,x4,y4)
+            ele_area[k]=a
 model_start=dtm.datetime(2021,4,20)
 
 data_folder="./sample_nc/"
@@ -196,7 +219,10 @@ node_x=np.empty((node_num))
 node_y=np.empty((node_num))
 node_x=src.variables["SCHISM_hgrid_node_x"][:]
 node_y=src.variables["SCHISM_hgrid_node_y"][:]
-fill_ele_area()
+if is_510_format:
+     fill_ele_area510()
+else:
+     fill_ele_area()
 max_node_in_a_cell=4
 neibor_ele_table,max_ele_at_node=gen_node_neibor_ele(ele_table,max_node_in_a_cell,face_num,node_num)
 
@@ -390,7 +416,7 @@ for k in range(len(average_period)-1):
             ele_depth_average_inst=face_aver_inst(depth_average,node_num,face_num)
             less_than_6=np.where(ele_depth_average_inst<6.0,1.0,0.0)
             less_than_6_sum=np.sum(less_than_6,0)
-            time_frac_less_6=time_frac_less_6+less_than_6_sum/(time_dim.size)/len(average_period)
+            time_frac_less_6=time_frac_less_6+less_than_6_sum/(time_dim.size)/(len(average_period)-1)
             time_average=np.average(depth_average[:,:],axis=0)
             salt_time_depth_average=salt_time_depth_average+time_average/(end_day-start_day) 
             print ("done with ",nc_file)
@@ -407,7 +433,7 @@ for k in range(len(average_period)-1):
     this_lsz_area=np.dot(is_lsz,ele_area)
     total_lsz_area=np.sum(this_lsz_area)
     is_lsz2=np.where((face_salt_val<7.0)&(face_salt_val>6.0),2,0)
-    this_lsz_area2=np.dot(is_lsz2,ele_area)
+    this_lsz_area2=np.dot(is_lsz2,ele_area)/2.0
     total_lsz_area2=np.sum(this_lsz_area2)
     is_lsz=is_lsz+is_lsz2
     row_temp=[average_period[k].strftime("%Y-%m-%d")]
