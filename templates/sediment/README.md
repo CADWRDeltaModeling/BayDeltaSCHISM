@@ -9,9 +9,29 @@ See CHANGES.md to find out changes.
 (In the future, different scenarios are managed by forking and branching.)
 
 ## Prerequisites
-- Preprocessing steps requires SCHISM Python package, `schimpy`. The source codes of `schimpy` is available at [GitHub](https://github.com/CADWRDeltaModeling/schimpy/), and the package is available via Anaconda channel `cadwr-dms`.
+### Python packages
+- Preprocessing steps requires SCHISM Python package, `schimpy`. The source codes of `schimpy` is available at [GitHub](https://github.com/CADWRDeltaModeling/schimpy/).
   - It is recommended that `schipmy` is installed in an environment that supports Anaconda and python 3 features on HPC (http://dwrrhapp0179.ad.water.ca.gov/gitea/knam/hpc2_conda_environments)
-- Clone or download `BayDeltaSCHISM` from [GitHub BayDeltaSCHISM](https://github.com/CADWRDeltaModeling/BayDeltaSCHISM) in a separate directory.
+  - To install `schimpy`, first navigate to the folder containing the source code, then type in
+  ``
+  git checkout 5f6eb51
+  ``
+  to select the correct version is installed. Then, type in
+  ``
+  pip install -e .
+  ``
+- Another required package is `dms_datastore`, which is used to download time series from the web. The source code of `dms_datastore` is also available at [Github](https://github.com/CADWRDeltaModeling/dms_datastore).
+  - To install `dms_datastore`, first navigate to the folder containing the source code, then type in
+  ``
+  git checkout fe52928
+  ``
+  to select the correct version is installed. Then, type in
+  ``
+  pip install -e .
+  ``
+
+### BayDeltaSCHISM
+Clone or download `BayDeltaSCHISM` from [GitHub BayDeltaSCHISM](https://github.com/CADWRDeltaModeling/BayDeltaSCHISM) in a separate directory. It contains supplemental input files.
 
 ## Using DVC
 To manage some large input files, the repository uses `DVC`. (See [DVC Website](https://dvc.org/) and [GitHub](https://github.com/iterative/dvc).) `DVC` is a Python package. When you use Anaconda, `DVC` can be installed by `conda install -c conda-forge dvc`. (Create a new Conda environment if you do not want to disturb your Conoda environments.) Refer to DVC GitHub README if you use different Python environments.
