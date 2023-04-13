@@ -1,0 +1,179 @@
+hotstart: 
+    date: 2015-01-22
+    hgrid_input_file: hgrid.gr3
+    vgrid_input_file: vgrid.in.3d  
+    vgrid_version:5.8    
+    elevation:           
+        initializer: 
+            simple_trend: 
+                value: 0.96      
+    temperature:
+        initializer: 
+            patch_init: 
+                smoothing: False
+                regions_filename: ../shapefile/DomainPolygons.shp   
+                regions: 
+                  - region: ocean
+                    initializer: 
+                        simple_trend:
+                            value: 14
+                  - region: estuary
+                    initializer: 
+                        extrude_casts: 
+                            station: ../data_in/USGS_polaris_station_locations_xy.csv
+                            data: ../data_in/polaris_wqdata_2015.csv
+                            variable: Temperature (Degrees Celsius)
+                  - region: delta
+                    initializer: 
+                        obs_points:
+                            data: ../data_in/all_stations_temperature.csv  
+                            variable: 'temperature'
+    salinity:
+        initializer: 
+            patch_init: 
+                smoothing: False
+                regions_filename: ../shapefile/DomainPolygons.shp     
+                regions: 
+                  - region: ocean
+                    initializer: 
+                        simple_trend:
+                            value: 33.5
+                  - region: estuary
+                    initializer: 
+                        extrude_casts: 
+                            station: ../data_in/USGS_polaris_station_locations_xy.csv
+                            data: ../data_in/polaris_wqdata_2015.csv
+                            variable: Salinity
+                  - region: delta
+                    initializer: 
+                        obs_points:
+                            data: ../data_in/all_stations_salinity.csv  
+                            variable: 'salinity'                              
+    velocity_u:
+        initializer: 
+            simple_trend:
+                value: 0.0
+    velocity_v:
+        initializer: 
+            simple_trend:
+                values: 0.0  
+    velocity_w:  
+        initializer: 
+            simple_trend:
+                values: 0.0 
+    ICM_1:
+        initializer: 
+            obs_points:
+                data: ../data_in/merged_data_cosine.csv  
+                variable: 'chla'
+                ratio: 0.9*0.1
+    ICM_2:
+        initializer: 
+            obs_points:
+                data: ../data_in/merged_data_icm.csv  
+                variable: 'chla'
+                ratio: 0.9*0.01
+    ICM_3:  
+        initializer: 
+            obs_points:
+                data: ../data_in/merged_data_icm.csv  
+                variable: 'chla'
+                ratio: 0.8
+    ICM_4:  
+        initializer: 
+            obs_points:
+                data: ../data_in/merged_data_icm.csv  
+                variable: 'chla'
+                ratio: 0.1
+    ICM_5: 
+        initializer: 
+            obs_points:
+                data: ../data_in/merged_data_icm.csv  
+                variable: 'chla'
+                ratio: 0.1*0.01  
+    ICM_6:   
+        initializer: 
+            simple_trend: 
+                value: 0.0              
+    ICM_7:   
+        initializer: 
+            simple_trend: 
+                value: 37*3.1
+    ICM_8: 
+        initializer: 
+            simple_trend: 
+                value: 37*3.1
+    ICM_9:
+        centering: prism    
+        initializer: 
+            simple_trend: 
+                value: 0.0  
+    ICM_10:   
+        initializer: 
+            simple_trend: 
+                value: 37*0.5             
+    ICM_11:
+        initializer: 
+            simple_trend: 
+                value: 37*0.5
+    ICM_12: 
+        initializer: 
+            obs_points:
+                data: ../data_in/merged_data_icm.csv  
+                variable: 'nh4'   
+    ICM_13:   
+        initializer: 
+            obs_points:
+                data: ../data_in/merged_data_icm.csv  
+                variable: 'nox'   
+    ICM_14:  
+        initializer: 
+            simple_trend: 
+                value: 0.0    
+    ICM_15:   
+        initializer: 
+            simple_trend: 
+                value: 37*0.0625/14*31
+    ICM_16:   
+        initializer: 
+            simple_trend: 
+                value: 37*0.0625/14*31 
+    ICM_17:   
+        initializer: 
+            simple_trend: 
+                value: 37*0.0625/14*31 
+    ICM_18:   
+        initializer: 
+            simple_trend: 
+                value: 0.0   
+    ICM_19:   
+        initializer: 
+            obs_points:
+                data: ../data_in/merged_data_icm.csv  
+                variable: 'sio2' 
+    ICM_20:  
+        initializer: 
+            simple_trend: 
+                value: 0.0 
+    ICM_21:    
+        initializer: 
+            obs_points:
+                data: ../data_in/merged_data_icm.csv  
+                variable: 'do' 
+    ICM_22:   
+        initializer: 
+            simple_trend: 
+                value: 0.0  
+    ICM_23:   
+        initializer: 
+            obs_points:
+                data: ../data_in/merged_data_icm.csv  
+                variable: 'ta'   
+    ICM_24:   
+        initializer: 
+            simple_trend: 
+                value: 100.0  
+    ICM_25:    
+        initializer: 
+            simple_trend: 
+                value: 100.0                  
