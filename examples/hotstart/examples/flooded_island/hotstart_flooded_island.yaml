@@ -1,0 +1,77 @@
+hotstart: 
+    date: 2021-04-20
+    hgrid_input_file: ../../data_in/hgrid.gr3                     # hgrid needs to be in utm coordinates. 
+    vgrid_input_file: ../../data_in/vgrid.in.3d  
+    vgrid_version: "5.10"
+    elevation:
+        initializer: 
+            patch_init: 
+                smoothing: False
+                regions_filename: ./shapefile/jones_region_projection.shp #the attribute 'region' in the shapefile needs to match with the region values below.  
+                allow_overlap: True                
+                regions: 
+                  - region: bay_delta
+                    initializer:
+                        hotstart_nc:
+                            data_source: ../../data_in/baseline/hotstart_it_28800.nc   
+                            source_hgrid: ../../data_in/baseline/hgrid.gr3              #only assign it if source_hgrid is different from hgrid_input_file. 
+                            source_vgrid: ../../data_in/baseline/vgrid.in.3d            #only assign it if source_vgrid is different from vgrid_input_file. 
+                            source_vgrid_version: "5.10" 
+                  - region: jones
+                    initializer: 
+                        simple_trend: 
+                            values: -z-0.1 
+    temperature:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/baseline/hotstart_it_28800.nc 
+                source_hgrid: ../../data_in/baseline/hgrid.gr3   
+                source_vgrid: ../../data_in/baseline/vgrid.in.3d    
+                source_vgrid_version: "5.10" 
+                distance_threshold: 10
+                method: nearest            
+    salinity:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/baseline/hotstart_it_28800.nc                 
+                source_hgrid: ../../data_in/baseline/hgrid.gr3   
+                source_vgrid: ../../data_in/baseline/vgrid.in.3d    
+                source_vgrid_version: "5.10" 
+                distance_threshold: 10
+                method: nearest           
+    tke:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/baseline/hotstart_it_28800.nc   
+                source_hgrid: ../../data_in/baseline/hgrid.gr3 
+                source_vgrid: ../../data_in/baseline/vgrid.in.3d  
+                source_vgrid_version: "5.10" 
+                distance_threshold: 10     
+                method: nearest             
+    velocity_w:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/baseline/hotstart_it_28800.nc 
+                source_hgrid: ../../data_in/baseline/hgrid.gr3 
+                source_vgrid: ../../data_in/baseline/vgrid.in.3d
+                source_vgrid_version: "5.10" 
+                distance_threshold: 10     
+                method: nearest            
+    velocity_u:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/baseline/hotstart_it_28800.nc   
+                source_hgrid: ../../data_in/baseline/hgrid.gr3
+                source_vgrid: ../../data_in/baseline/vgrid.in.3d     
+                source_vgrid_version: "5.10" 
+                distance_threshold: 10 
+                method: nearest            
+    velocity_v:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/baseline/hotstart_it_28800.nc   
+                source_hgrid: ../../data_in/baseline/hgrid.gr3 
+                source_vgrid: ../../data_in/baseline/vgrid.in.3d
+                source_vgrid_version: "5.10" 
+                distance_threshold: 10
+                method: nearest            
