@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
@@ -16,7 +17,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Study Templates and Preprocessing" href="preprocess.html" />
-    <link rel="prev" title="Overview of Basic Bay-Delta SCHISM Run" href="overview.html" /> 
+    <link rel="prev" title="Checklists for Simple Examples" href="overview.html" /> 
   </head><body>
 
 <div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
@@ -33,7 +34,7 @@
           <a href="preprocess.html" title="Study Templates and Preprocessing"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="overview.html" title="Overview of Basic Bay-Delta SCHISM Run"
+          <a href="overview.html" title="Checklists for Simple Examples"
              accesskey="P">previous</a> |</li>
         <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
         <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>
@@ -68,7 +69,7 @@
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="overview.html"
-                          title="previous chapter">Overview of Basic Bay-Delta SCHISM Run</a></p>
+                          title="previous chapter">Checklists for Simple Examples</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -100,11 +101,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="vignette-hindcast-bay-delta-schism-at-delta-modeling-section-with-preprocessor">
+  <section id="vignette-hindcast-bay-delta-schism-at-delta-modeling-section-with-preprocessor">
 <span id="bdschinstr"></span><h1>Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor<a class="headerlink" href="#vignette-hindcast-bay-delta-schism-at-delta-modeling-section-with-preprocessor" title="Permalink to this heading">¶</a></h1>
 <p>The process for starting a Bay Delta SCHISM run from scratch involves some pre-processing work on a Windows machine using the schimpy library (<a class="reference external" href="https://github.com/CADWRDeltaModeling/schimpy">https://github.com/CADWRDeltaModeling/schimpy</a>).</p>
 <p>You’ll want to have a conda environment which has the latest version of schimpy in it. For this example that environment is called ‘schism’.</p>
-<div class="section" id="windows">
+<section id="windows">
 <h2>Windows<a class="headerlink" href="#windows" title="Permalink to this heading">¶</a></h2>
 <ol class="arabic">
 <li><p>Clone the Bay Delta Schism repository to your Windows machine (ex: D:/schism/bdsch_scratch)</p>
@@ -305,6 +306,7 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 <ul>
 <li><dl class="simple">
 <dt>Download Polaris *.csv data from the USGS data query <a class="reference external" href="https://sfbay.wr.usgs.gov/water-quality-database/">https://sfbay.wr.usgs.gov/water-quality-database/</a></dt><dd><ul class="simple">
+<li><p>Since the hotstart generates based on a USGS cruise, check “//nasbdo/Modeling_Data/usgs_cruise/cruise_inventory.csv” to see what dates are available. You’ll want your hotstart date to be near an available cruise date</p></li>
 <li><p>Go to year, show all entries, and export data</p></li>
 <li><p>Save as: hotstartUSGS_2009_saltemp.csv (where 2009 is whichever year you’ve downloaded)</p></li>
 <li><dl class="simple">
@@ -392,6 +394,7 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 <blockquote>
 <div><ul class="simple">
 <li><p>You’ll want to run these files in a conda environment that has dms_datastore installed (There’s an existing environment.yaml file which will set this up for you)</p></li>
+<li><p>This might be better to run on Linux/HPC4 so that your machine doesn’t interrupt the files and corrupt the .nc files these scripts produce</p></li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -461,8 +464,8 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 </ul>
 </li>
 </ol>
-</div>
-<div class="section" id="linux">
+</section>
+<section id="linux">
 <h2>Linux<a class="headerlink" href="#linux" title="Permalink to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Create the folder where you will be running the model (ex: /scratch/dms/{username}/schism/bdsch_scratch_demo)</p>
@@ -471,7 +474,7 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 </ul>
 </li>
 </ol>
-<div class="section" id="barotropic">
+<section id="barotropic">
 <h3>Barotropic<a class="headerlink" href="#barotropic" title="Permalink to this heading">¶</a></h3>
 <ol class="arabic">
 <li><p>Make symbolic links for sflux files</p>
@@ -537,8 +540,8 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 </li>
 </ol>
 <p>This will run the Barotropic model without nudging or hotstart data and then you will use the Barotropic results to generate a flow boundary at the ocean in order to stabilize perturbations in the model.</p>
-</div>
-<div class="section" id="baroclinic">
+</section>
+<section id="baroclinic">
 <h3>Baroclinic<a class="headerlink" href="#baroclinic" title="Permalink to this heading">¶</a></h3>
 <p>This needs to follow the completion of a Barotropic simulation in order to create the ocean boundary flows. At this stage the hotstart and nudging files created in the Windows portion are used on the temperature and salinity fields.</p>
 <blockquote>
@@ -568,6 +571,7 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 </ul>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">module purge</span>
 <span class="go">module load schism/5.10_intel2022.1</span>
+<span class="go">ulimit -s unlimited</span>
 <span class="go">interpolate_variables8</span>
 </pre></div>
 </div>
@@ -601,7 +605,7 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 <ul class="simple">
 <li><p>Run combine_hotstart7 on last timestep output to hotstart within the outputs</p></li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">/home/&lt;USERNAME&gt;/.../src/Utility/Combining_Scripts/combine_hotstart7.exe --iteration 4800</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">combine_hotstart7.exe --iteration 4800</span>
 </pre></div>
 </div>
 <p>Note that the iteration variable is based on variables in param.nml <em>nhot_write</em> which is set to 4800 in this example. 4800 x <em>dt</em> = 4800 x 90s = 5 days</p>
@@ -629,9 +633,9 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 </li>
 </ol>
 </div></blockquote>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -650,7 +654,7 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
           <a href="preprocess.html" title="Study Templates and Preprocessing"
              >next</a> |</li>
         <li class="right" >
-          <a href="overview.html" title="Overview of Basic Bay-Delta SCHISM Run"
+          <a href="overview.html" title="Checklists for Simple Examples"
              >previous</a> |</li>
         <li><a href="https://water.ca.gov/Library/Modeling-and-Analysis/Bay-Delta-Region-models-and-tools"> Delta Modeling Section</a>|&nbsp;</li>
         <li><a href="https://github.com/CADWRDeltaModeling">GitHub</a>|&nbsp;</li>

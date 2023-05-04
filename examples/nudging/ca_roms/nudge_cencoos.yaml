@@ -1,0 +1,34 @@
+nudging:
+    start_date: 2022-08-01
+    rnday: 9  #24 total run time in days
+    step_nu_tr: 1H
+    hgrid_input_file: ./schism_inputs/hgrid.gr3
+    vgrid_input_file: ./schism_inputs/vgrid.in.new
+    vgrid_version: '5.10'
+    default: 0.
+    crs: 'EPSG:26910' #projection does not need to be defined if the projected coordinates are used consistently. 
+    output_suffix: 'roms' # the suffix for output files, e.g, TEM nudging file will be named 'TEM_nu.nc'
+    polygons:
+      - name: ocean
+        type: 3dfield
+        attribute: max(0., min(1. / 2. / 86400., 1. / 2. / 86400. * (((x - 542699.) ** 2 / 32.3e3 / 32.3e3 + (y - 4183642.) **2 / 32.3e3 / 32.3e3) - 1.) / ((41.e3 / 32.3e3) ** 2 - 1.)))
+        vertices:
+            - [497085, 4213519]
+            - [531756, 4214317]
+            - [550885, 4170246]
+            - [552280, 4136745]
+            - [496487, 4137742]
+        interpolant: 
+            method: nearest
+            data: //cnrastore-bdo/Modeling_Data/roms/cencoos_ca_roms/processed/cencoos_hourly_pst  #cencoos ROMS data available from 2014-01-01 to 2022-09-14.
+            # data: //cnrastore-bdo/Modeling_Data/roms/sfb_forecast/ca_subSFB_fcst_hourly_pst       #sfb ROMS data available from 2005-01-01 to 2014-04-29. 
+            dt: 1H  #time step in the input nc file.
+            vcoords: Z    # Z coordinates or S coordinates. For Z coordinates, depths are directly given, for S coordinats, depths need to be calculated.  
+            variables: 
+                - name: temperature
+                  varname: temp  #variable name in the netcdf file/default is temp if not provided.
+                  none_values: 10 # values for pts outside bg grid in nc
+                  offset: 0.0 #only for temperature (optional).
+                - name: salinity
+                  varname: salt  #variable name in the netcdf file/default is temp if not provided.
+                  none_values: 33.5           

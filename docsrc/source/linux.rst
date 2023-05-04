@@ -52,7 +52,7 @@ restrictions will be a bit more severe. Anyhow, it is an interesting option and 
 work and connections well.
  
 
-
+.. _linux_hints:
 Copying a Run Safely
 ====================
 Do NOT use the linux copy command 'cp' to copy a run. A considerable amount of information, particularly symbolic links, will be lost. Instead use rsync:

@@ -124,6 +124,7 @@ Windows
       These files don't exist somewhere publicly available yet
 
    * Download Polaris \*.csv data from the USGS data query https://sfbay.wr.usgs.gov/water-quality-database/
+      * Since the hotstart generates based on a USGS cruise, check "//nasbdo/Modeling_Data/usgs_cruise/cruise_inventory.csv" to see what dates are available. You'll want your hotstart date to be near an available cruise date
       * Go to year, show all entries, and export data
       * Save as: hotstart\USGS_2009_saltemp.csv (where 2009 is whichever year you've downloaded)
       * Run *clean_polaris.py* or some other QA/QC on the USGS_2009_saltemp.csv file
@@ -159,6 +160,7 @@ Windows
    * Run files:
 
       * You'll want to run these files in a conda environment that has dms_datastore installed (There's an existing environment.yaml file which will set this up for you)
+      * This might be better to run on Linux/HPC4 so that your machine doesn't interrupt the files and corrupt the .nc files these scripts produce
 
       .. warning::
 
@@ -286,6 +288,7 @@ This needs to follow the completion of a Barotropic simulation in order to creat
 
             module purge
             module load schism/5.10_intel2022.1
+            ulimit -s unlimited 
             interpolate_variables8
 
          * Copy the *uv3d.th.nc* file to the main folder
@@ -316,7 +319,7 @@ This needs to follow the completion of a Barotropic simulation in order to creat
 
       .. code-block:: console
 
-         /home/<USERNAME>/.../src/Utility/Combining_Scripts/combine_hotstart7.exe --iteration 4800
+         combine_hotstart7.exe --iteration 4800
 
       Note that the iteration variable is based on variables in param.nml *nhot_write* which is set to 4800 in this example. 4800 x *dt* = 4800 x 90s = 5 days
 
