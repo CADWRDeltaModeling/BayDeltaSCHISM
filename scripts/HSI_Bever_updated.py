@@ -216,9 +216,10 @@ for k in range(len(average_period)-1):
     
     #Set variables, attributes for output file
     if(k==0):
-        
+       
         for name in src.ncattrs():
             dst.setncattr(name, src.getncattr(name))
+        dst.setncattr("source","SCHISM model output version v10") ## force to be 5.8 NC format
         for name, dimension in src.dimensions.items():
             if not(name=="time"):
                 dst.createDimension(name, len(dimension))

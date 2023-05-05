@@ -156,6 +156,7 @@ for k in range(len(average_period)-1):
         
         for name in src.ncattrs():
             dst.setncattr(name, src.getncattr(name))
+        src.setncattr("source","SCHISM model output version v10") ## force to be 5.8 NC format
         for name, dimension in src.dimensions.items():
             if not(name=="time"):
                 dst.createDimension(name, len(dimension))
@@ -176,7 +177,7 @@ for k in range(len(average_period)-1):
         var.setncattr("mesh","SCHISM_hgrid")
         var.setncattr("data_horizontal_center","elem")
         var.setncattr("data_vertical_center","full")
-        var.setncattr("i23d",1)
+        var.setncattr("i23d",4)
         var.setncattr("ivs",1)
         var=dst.createVariable("average_salt",'f4',("time","nSCHISM_hgrid_node"))
         var.setncattr("mesh","SCHISM_hgrid")
