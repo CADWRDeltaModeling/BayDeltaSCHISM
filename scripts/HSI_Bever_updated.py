@@ -13,6 +13,7 @@ from math import exp
 from osgeo import ogr
 import json
 import pandas as pd
+from zone_utils import *
 
 ele_table=0
 ele_area=0
@@ -30,149 +31,6 @@ def records(file):
         feature = layer.GetFeature(i)
         yield json.loads(feature.ExportToJson())
 
-def gen_node_neibor_ele(mesh_node,max_node_in_a_cell,num_ele,num_node):
-    num_ele_at_node=(np.zeros((num_node))).astype(int)
-    for i in range(num_ele):
-        for j in range(max_node_in_a_cell):
-            if(mesh_node[i][j]>0):
-                nodeid=mesh_node[i][j]-1
-                num_ele_at_node[nodeid]=num_ele_at_node[nodeid]+1
-
-    max_ele_at_node=int(np.max(num_ele_at_node))
-    num_ele_at_node[:]=np.zeros((num_node)).astype(int)
-    out_neibor_ele=np.empty((num_node,max_ele_at_node))
-    out_neibor_ele[:,:]=np.nan
-    for i in range(num_ele):
-        for j in range(max_node_in_a_cell):
-            if(mesh_node[i][j]>0):
-                nodeid=mesh_node[i][j]-1
-                loc=num_ele_at_node[nodeid]
-                out_neibor_ele[nodeid,loc]=i
-                num_ele_at_node[nodeid]=loc+1
-    return out_neibor_ele,max_ele_at_node
-
-
-def gen_node_wet_dry(node_wet_dry,ele_wet_dry,num_step,num_node,max_ele_at_node,el):
-    
-    for t in range(num_step):
-        for i in range(num_node):
-            all_dry=True
-            for j in range(max_ele_at_node):
-
-                if(not(np.isnan(el[i,j]))):
-                    dry=ele_wet_dry[t,int(el[i,j])]
-                    if(dry==0):
-                        all_dry=False
-                        break
-            if(all_dry):
-                node_wet_dry[t,i]=1
-            else:
-                node_wet_dry[t,i]=0
-   
-
-def face_aver(node_depth_average,node_num,face_num):
-    a1=np.zeros((face_num))
-    a2=np.zeros((face_num))
-    a3=np.zeros((face_num))
-    a4=np.zeros((face_num))
-    id1=ele_table[:,0]-1
-    id2=ele_table[:,1]-1
-    id3=ele_table[:,2]-1
-    id4=ele_table[:,3]-1
-    a1=node_depth_average[id1]
-    a2=node_depth_average[id2]
-    a3=node_depth_average[id3]
-    node_num=np.where(id4<0,3.0,4.0)
-    
-    for j in range(face_num):
-        if (id4[j]>=0):
-            a4[j]=node_depth_average[id4[j]]
-        else:
-            a4[j]=0.0
-            
-    #a4=np.select([id4<0,id4>=0],[0.0,node_depth_average[id4]])
-    face_val=(a1+a2+a3+a4)/node_num
-    return face_val
-
-def face_aver_inst(inst_node_depth_average,node_num,face_num):
-    a1=np.zeros((face_num))
-    a2=np.zeros((face_num))
-    a3=np.zeros((face_num))
-    a4=np.zeros((face_num))
-    id1=ele_table[:,0]-1
-    id2=ele_table[:,1]-1
-    id3=ele_table[:,2]-1
-    id4=ele_table[:,3]-1
-    #id4_f = id4.filled(-99999)
-    a1=inst_node_depth_average[:,id1]
-    a2=inst_node_depth_average[:,id2]
-    a3=inst_node_depth_average[:,id3]
-    node_num=np.where(id4<0,3.0,4.0)
-    a4=np.zeros(a3.shape)
-    at=np.zeros((a3.shape[0]))
-    for i in range(a3.shape[0]):
-        at=inst_node_depth_average[i,:]    
-        for j in range(face_num):
-            if (id4[j]>=0):
-                a4[i,j]=at[id4[j]]
-            else:
-                a4[i,j]=0.0
-    face_val=(a1+a2+a3+a4)/node_num
-    return face_val
-
-def triangle_area(x1, y1, x2, y2, x3, y3):
-    return abs(0.5*(x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2)))
-
-def quad_area(x1, y1, x2, y2, x3, y3,x4,y4):
-    a1=triangle_area(x1,y1,x2,y2,x4,y4)
-    a2=triangle_area(x2,y2,x3,y3,x4,y4)
-    return a1+a2
-
-def fill_ele_area():
-    for k in range(face_num):
-        node_id_lst=ele_table[k,:]
-        
-        i=node_id_lst[0]-1
-        x1=node_x[i]
-        y1=node_y[i]
-        i=node_id_lst[1]-1
-        x2=node_x[i]
-        y2=node_y[i]
-        i=node_id_lst[2]-1
-        x3=node_x[i]
-        y3=node_y[i]
-        i=node_id_lst[3]-1
-        if not(np.isfinite(i)):
-            a=triangle_area(x1,y1,x2,y2,x3,y3)
-            ele_area[k]=a
-        else:           
-            x4=node_x[i]
-            y4=node_y[i]
-            a=quad_area(x1,y1,x2,y2,x3,y3,x4,y4)
-            ele_area[k]=a
-def fill_ele_area510():
-    for k in range(face_num):
-        node_id_lst=ele_table[k,:]
-        
-        i=node_id_lst[0]-1
-        x1=node_x[i]
-        y1=node_y[i]
-        i=node_id_lst[1]-1
-        x2=node_x[i]
-        y2=node_y[i]
-        i=node_id_lst[2]-1
-        x3=node_x[i]
-        y3=node_y[i]
-        i=node_id_lst[3]-1
-        if (i==-2): ## out2d use -1
-            a=triangle_area(x1,y1,x2,y2,x3,y3)
-            ele_area[k]=a
-        else:
-            
-            x4=node_x[i]
-            y4=node_y[i]
-            a=quad_area(x1,y1,x2,y2,x3,y3,x4,y4)
-            ele_area[k]=a
 
 
 ########----------MODIFY
@@ -325,9 +183,9 @@ node_y=np.empty((node_num))
 node_x=src.variables["SCHISM_hgrid_node_x"][:]
 node_y=src.variables["SCHISM_hgrid_node_y"][:]
 if is_510_format:
-     fill_ele_area510()
+     fill_ele_area510(face_num,ele_table,node_x,node_y,ele_area)
 else:
-     fill_ele_area()
+     fill_ele_area(face_num,ele_table,node_x,node_y,ele_area)
 max_node_in_a_cell=4
 neibor_ele_table,max_ele_at_node=gen_node_neibor_ele(ele_table,max_node_in_a_cell,face_num,node_num)
 
@@ -695,15 +553,15 @@ for qq in quantiles:
 
 #-----------HSI--------
 print("Calculating Suitability Indices")
-salt_frac_face=face_aver_inst(salt_frac_dataset,node_num,face_num)
+salt_frac_face=face_aver_inst(salt_frac_dataset,node_num,face_num,ele_table)
 
-vel_face=face_aver_inst(hvel_dataset,node_num,face_num)
+vel_face=face_aver_inst(hvel_dataset,node_num,face_num,ele_table)
 
 #Temperature factors
-tempface = face_aver_inst(temperature_quantile_datasets[0],node_num,face_num)
+tempface = face_aver_inst(temperature_quantile_datasets[0],node_num,face_num,ele_table)
 level = np.where(tempface<24.0,1,0)
 for qq in range(1,len(quantiles)):
-    tempface = face_aver_inst(temperature_quantile_datasets[qq],node_num,face_num)
+    tempface = face_aver_inst(temperature_quantile_datasets[qq],node_num,face_num,ele_table)
     level += np.where(tempface<24.0,1,0)
     
 temperature_face = np.select([level==0,level==1, level==2, level==3, level==4],quantile_factors)    
@@ -712,11 +570,11 @@ dst.variables["SI_Temp"][:,:] = temperature_face
 
 #Turbidity factors
 turbface_quantiles = []
-turbface = face_aver_inst(turbidity_quantile_datasets[0],node_num,face_num)
+turbface = face_aver_inst(turbidity_quantile_datasets[0],node_num,face_num,ele_table)
 level = np.where(turbface>12.0,1,0)
 turbface_quantiles.append(turbface)
 for qq in range(1,len(quantiles)):
-    turbface = face_aver_inst(turbidity_quantile_datasets[qq],node_num,face_num)
+    turbface = face_aver_inst(turbidity_quantile_datasets[qq],node_num,face_num,ele_table)
     level += np.where(turbface>12.0,1,0)
     turbface_quantiles.append(turbface)
     
