@@ -1,0 +1,6 @@
+[core]
+    remote = sanstore
+['remote "sanstore"']
+    url = /sanstore/dvc
+['remote "nasbdo"']
+    url = //nasbdo/Delta_Mod/Share/DVC
