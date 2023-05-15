@@ -4,7 +4,9 @@
 """
 
 from schismviz.suxarray import *
+import xarray as xr
 from shapely import distance
+import numpy as np
 
 ###############################################################################################
 #
@@ -19,67 +21,58 @@ fine_path = ".//hgrid.gr3"
 fine_mesh=read_hgrid_gr3(fine_path)
 
 # Build map and weights
-f_c_ele_map = []
-f_c_ele_wghts = []
+
 map_f = open(".//mapped_dwr_new.txt",'w')
-out_str=""
 
-ii=0
-for node in fine_mesh.node_points:
-    #find encompassing element
-    containingCoarseEle=coarse_mesh.find_element_at(node.x,node.y)
-   
-    #for jj in range(nCoarseEle):
-    if(containingCoarseEle):
-        #get point list
 
-        jj=containingCoarseEle[0]
-        print(ii)
-        coarse_element_nodes=coarse_mesh.Mesh2_face_nodes.isel(nSCHISM_hgrid_face=jj)
-        valid_coarse_nodes=coarse_element_nodes[coarse_element_nodes>0]
-        f_c_ele_map.append(valid_coarse_nodes) ## suxarray default index startint from 1
+fine_nodes=fine_mesh.node_points
 
-            #compute and save weighting factors
-        weights = []
-        loc=0
-        
-        for pid in valid_coarse_nodes:
-            dist=distance(Point(coarse_mesh.Mesh2_node_x[pid-1],coarse_mesh.Mesh2_node_y[pid-1]),node)
-            dist2 = dist*dist
-                
-            if(dist2 > 0):
-                weights.append(1.0/dist2)
-            else:
-                weights.clear()
-                weights=[0.0]*len(coarse_element_nodes)
-                weights[loc]=1.0
-                break
-            loc=loc+1
-             
-        f_c_ele_wghts.append(weights)                   
-    else :
-        #find closest element 
-        closest=coarse_mesh.node_spatial_tree.nearest(node) 
-        f_c_ele_map.append([closest]) 
-        f_c_ele_wghts.append([1])
-   
-    
+coarse_face_id_from_fine_node=coarse_mesh.elem_strtree.query(fine_nodes)
+coarse_face_nodes=coarse_mesh.Mesh2_face_nodes.values
+# Create an empty array to store the node mapping. `-1` is the fill value.
+map_to_coarse_nodes=np.full((fine_mesh.nMesh2_node,3),-1,dtype=int)
 
-        
-    numElNodes=len(f_c_ele_map[ii])
-    
-    numElNodes=len(valid_coarse_nodes)
-    out_str=out_str+("{0} {1}".format(ii+1, numElNodes))
-    #pdb.set_trace()
-    for jj in range(numElNodes): #1-based index
+map_to_coarse_nodes[coarse_face_id_from_fine_node[0],:]=coarse_face_nodes[coarse_face_id_from_fine_node[1]][:,:3]-1
+fine_nodes_not_found=list(set(range(fine_mesh.nMesh2_node))-set(coarse_face_id_from_fine_node[0]))
+fine_nodes_not_found.sort()
 
-          out_str=out_str+(" {0}".format(f_c_ele_map[ii][jj]))
-    for jj in range(numElNodes):    
+coarse_nodes_nearest=xr.apply_ufunc(lambda p: coarse_mesh.node_strtree.nearest(p),
+                                    fine_nodes.isel(nSCHISM_hgrid_node=fine_nodes_not_found),
+                                    vectorize=True,dask="parallelized")
+map_to_coarse_nodes[fine_nodes_not_found,0]=coarse_nodes_nearest
 
-          out_str=out_str+(" {0}".format(f_c_ele_wghts[ii][jj]))
-        
-    out_str=out_str+"\n"
+da_map_to_coarse_nodes = xr.DataArray(map_to_coarse_nodes,
+                                      dims=('nSCHISM_hgrid_node', 'three'),
+                                      coords={'nSCHISM_hgrid_node': fine_mesh.ds.nSCHISM_hgrid_node},
+                                      attrs={'_FillValue': -1, 'start_index': 0},
+                                      name='map_to_coarse_nodes')
 
-    ii=ii+1
-map.write(out_str)
-map_f.close()
+def _calculate_weight(conn, points):
+    """ Calculate distance between a point and a set of points.
+    """
+    x = coarse_mesh.Mesh2_node_x.values[conn]
+    y = coarse_mesh.Mesh2_node_y.values[conn]
+    xy = np.array([p.xy for p in points])
+    dist = np.apply_along_axis(np.linalg.norm, 1, np.stack((x, y), axis=1) - xy)
+    weight = np.reciprocal(dist)
+    # Find where we see the infinite values
+    mask = np.where(np.isinf(weight))
+    # Adjust the weights for the node
+    weight[mask[0], :] = 0.
+    weight[mask] = 1.
+    return weight
+
+chunk_size = None
+da_weight = xr.apply_ufunc(_calculate_weight,
+               da_map_to_coarse_nodes.chunk({'nSCHISM_hgrid_node': chunk_size}),
+               fine_nodes.chunk({'nSCHISM_hgrid_node': chunk_size}),
+               input_core_dims=[['three'], []],
+               output_core_dims=[['three']],
+               dask='parallelized',
+               output_dtypes=float).persist()
+
+# Create a dataset and save it
+ds_map_and_weight = da_map_to_coarse_nodes.to_dataset(name=da_map_to_coarse_nodes.name)
+ds_map_and_weight['weight'] = da_weight
+path_map_and_weight = 'map_and_weight.nc'
+ds_map_and_weight.to_netcdf(path_map_and_weight)
