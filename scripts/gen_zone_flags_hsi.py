@@ -42,7 +42,7 @@ def fill_ele_area510():
         x3=node_x[i]
         y3=node_y[i]
         i=node_id_lst[3]-1
-        if (i==-2): ## out2d use -1
+        if (i==-2): ## out2d use -1 for the last invalid id index of a triangle element
             a=triangle_area(x1,y1,x2,y2,x3,y3)
             ele_area[k]=a
         else:
