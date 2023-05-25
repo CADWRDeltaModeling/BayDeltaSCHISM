@@ -2,10 +2,10 @@ from setuptools import setup
 import versioneer
 
 requirements = [
-    schimpy,
-    suxarray,
-    vtools,
-    dms_datastore
+    'schimpy',
+    'suxarray',
+    'vtools',
+    'dms_datastore'
 ]
 
 setup(
