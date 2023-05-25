@@ -1,7 +1,7 @@
 # bdschism
 
 Tools for launching and evaluating Bay-Delta SCHISM runs. This package is for Bay-Delta tasks that benefit from a real deployment. These include
-consolidating steps inherent to our typical workflow. 
+consolidating steps inherent to our typical workflow.
 
 
 Installation
