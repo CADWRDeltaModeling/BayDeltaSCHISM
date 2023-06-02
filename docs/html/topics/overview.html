@@ -4,8 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Basic Checklists &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
@@ -106,9 +105,9 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="basic-checklists">
+  <div class="section" id="basic-checklists">
 <h1>Basic Checklists<a class="headerlink" href="#basic-checklists" title="Permalink to this heading">¶</a></h1>
-<section id="running-a-processed-setup">
+<div class="section" id="running-a-processed-setup">
 <h2>Running a Processed Setup<a class="headerlink" href="#running-a-processed-setup" title="Permalink to this heading">¶</a></h2>
 <p>Prepackaged runs are common for testing SCHISM on a new system or rerunning a model
 from another user delivered as a bundle. In this case the user will have
@@ -127,14 +126,14 @@ copies the run using the rsync command (don’t use copy command <cite>cp</cite>
 <p>☐ Create a directory called <cite>outputs</cite></p>
 <p>☐ Take care of any ‘gotchas’ such as making sure there is a directory named ‘outputs’ and that stack limits are disabled.</p>
 <p>* Windows is good for learning but not typical for full Delta runs</p>
-</section>
-<section id="simple-hindcast-runs">
+</div>
+<div class="section" id="simple-hindcast-runs">
 <h2>Simple Hindcast Runs<a class="headerlink" href="#simple-hindcast-runs" title="Permalink to this heading">¶</a></h2>
-<section id="cbox-choose-run-dates">
+<div class="section" id="cbox-choose-run-dates">
 <h3>☐ Choose run dates<a class="headerlink" href="#cbox-choose-run-dates" title="Permalink to this heading">¶</a></h3>
 <p>See <a class="reference internal" href="hotstart.html#choose-runtime"><span class="std std-ref">hotstart section</span></a> on this topic</p>
-</section>
-<section id="cbox-apply-template-to-existing-mesh">
+</div>
+<div class="section" id="cbox-apply-template-to-existing-mesh">
 <h3>☐ Apply template to existing mesh<a class="headerlink" href="#cbox-apply-template-to-existing-mesh" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>☐ Clone BayDeltaSCHISM from GitHub. Get a fresh copy or <cite>git stash</cite> any changes.</p>
@@ -146,8 +145,8 @@ copies the run using the rsync command (don’t use copy command <cite>cp</cite>
 <p>☐ Invoke the preprocessor with the command: <cite>$ prepare_schism main_bay_delta.yaml</cite></p>
 <p>☐ Copy the prepared items (.in, ,gr3, .ll, .prop, .nml) to the launch place.</p>
 </div></blockquote>
-</section>
-<section id="cbox-collect-time-series-inputs">
+</div>
+<div class="section" id="cbox-collect-time-series-inputs">
 <h3>☐ Collect time series inputs<a class="headerlink" href="#cbox-collect-time-series-inputs" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>☐ elev2d.bat</p>
@@ -158,29 +157,29 @@ copies the run using the rsync command (don’t use copy command <cite>cp</cite>
 </div></blockquote>
 <p>☐ multi_clip</p>
 </div></blockquote>
-</section>
-<section id="cbox-hotstart-can-be-concurrent-with-barotropic">
+</div>
+<div class="section" id="cbox-hotstart-can-be-concurrent-with-barotropic">
 <h3>☐ Hotstart (can be concurrent with barotropic)<a class="headerlink" href="#cbox-hotstart-can-be-concurrent-with-barotropic" title="Permalink to this heading">¶</a></h3>
-</section>
-<section id="cbox-nudging-can-be-concurrent-with-barotropic">
+</div>
+<div class="section" id="cbox-nudging-can-be-concurrent-with-barotropic">
 <h3>☐ Nudging (can be concurrent with barotropic)<a class="headerlink" href="#cbox-nudging-can-be-concurrent-with-barotropic" title="Permalink to this heading">¶</a></h3>
-</section>
-<section id="cbox-barotropic-warmup">
+</div>
+<div class="section" id="cbox-barotropic-warmup">
 <h3>☐ Barotropic warmup<a class="headerlink" href="#cbox-barotropic-warmup" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>☐ interpolate_variables7 (or later) script to create uv3D.th.</p>
 <p>☐ move the uv3D.th to the study directory</p>
 <p>☐ delete all the files outputs/* or move /outputs to /outputs.tropic and create an empty /outputs</p>
 </div></blockquote>
-</section>
-<section id="cbox-baroclinic-simulation">
+</div>
+<div class="section" id="cbox-baroclinic-simulation">
 <h3>☐ Baroclinic simulation<a class="headerlink" href="#cbox-baroclinic-simulation" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>☐ finalize your station.in output request</p>
 </div></blockquote>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
             <div class="clearer"></div>
