@@ -16,7 +16,7 @@
   ibc = 0 !Baroclinic option
   ibtp = 1
 
-  rnday = 260 ! 700 !total run time in days
+  rnday = 90 !total run time in days
   dt = 90. !Time step in sec
 
 ! Grid for WWM (USE_WWM)
