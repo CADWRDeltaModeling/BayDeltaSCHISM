@@ -44,8 +44,8 @@ def uv3d(bg_dir='.',
     vgrid_fg : str
         Name of the (3D) baroclinic vgrid file
         
-    interp_input_file : [None | str]
-        Name of interpolate_variables.in file. If None, will use an internal version with nday as template
+    interp_template : [None | str]
+        Name of interpolate_variables.in file. If None, will use an internal version with nday as template.
   
     nday :  int 
         Number of days to process.  If None, param.nml is parsed in tropic_dir and the
