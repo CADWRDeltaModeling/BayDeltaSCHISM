@@ -1,31 +1,34 @@
 
 
-def uv3d(tropic_dir='.',
-         tropic_output_dir=None,
+def uv3d(bg_dir='.',
+         bg_output_dir=None,
          clinic_dir=None,
          hgrid_bg='hgrid.gr3',
          hgrid_fg=None,
          vgrid_bg='vgrid.in.2d',
          vgrid_fg='vgrid.in.3d',
-         interp_input = None,
+         interp_template = None,
          nday = None,
          
          ):
-    """ Processes barotropic output directory to uv3d.th.nc
+    """ Runs interpolate_variables utility to generate uv3d.th.nc. 
+    
+    This is based on facilitating a barotropic run, but with a a modified
+    interp_template file you could do far field to near field cases.     
     
     The default, run in the barotropic directory, will run without input
     
     Parameters
     ----------
     
-    tropic_dir : str
-        Name of barotropic study directory
+    bg_dir : str
+        Name of background simulation (e.g. larger or barotropic) directory
         
-    tropic_output_dir :str
-        Name of output directory in tropic_dir. If None, will try outputs.tropic then outputs
+    bg_output_dir :str
+        Name of output directory in background. If None, will try outputs.tropic then outputs
   
-    clinic_dir : str
-        Name of baroclinic run directory. If None, will copy from tropic_dir
+    fg_dir : str
+        Name of foreground oclinic run directory. If None, will copy from tropic_dir
         
     hgrid_bg : str
         Name of hgrid.gr3 file in tropic_, which will be linked to bg.gr3 This will almost never change,
@@ -49,7 +52,7 @@ def uv3d(tropic_dir='.',
         full length of the run is used
     
     write_clinic: bool
-        If true, the file will be produced in clinic_dir. Otherwise will be done in place in tropic output
+        If true, the file will be moved to run_dir. Otherwise will be done in place in outputs
 
         
     Notes
@@ -341,7 +344,7 @@ Documentation
 1. Typical planning run setup
 2. Get these new features going.
 
-    
+    9
 schimpy enhancement:
 1. Specify output directory (done)
 2. Environmental variables
@@ -349,6 +352,7 @@ schimpy enhancement:
 4. Make sure everyone understand sources and improve them.
 5. Include station.in and allow extension.
 6. Implement uses of include feature: depth_enforcement, dem list, station list, sources and sinks.
+
 
 
     
