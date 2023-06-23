@@ -1,0 +1,362 @@
+
+
+def uv3d(tropic_dir='.',
+         tropic_output_dir=None,
+         clinic_dir=None,
+         hgrid_bg='hgrid.gr3',
+         hgrid_fg=None,
+         vgrid_bg='vgrid.in.2d',
+         vgrid_fg='vgrid.in.3d',
+         interp_input = None,
+         nday = None,
+         
+         ):
+    """ Processes barotropic output directory to uv3d.th.nc
+    
+    The default, run in the barotropic directory, will run without input
+    
+    Parameters
+    ----------
+    
+    tropic_dir : str
+        Name of barotropic study directory
+        
+    tropic_output_dir :str
+        Name of output directory in tropic_dir. If None, will try outputs.tropic then outputs
+  
+    clinic_dir : str
+        Name of baroclinic run directory. If None, will copy from tropic_dir
+        
+    hgrid_bg : str
+        Name of hgrid.gr3 file in tropic_, which will be linked to bg.gr3 This will almost never change,
+        but could if you use a larger barotropic mesh which is a recommended practice.
+        
+    hgrid_fg : str
+        Name of hgrid.gr3 file in clinic_, which will be linked to fg.gr3. This will almost never change,
+        but could if you use a smaller baroclinic mesh.
+        
+    vgrid_bg : str
+        Name of the (2D barotropic) vgrid file 
+        
+    vgrid_fg : str
+        Name of the (3D) baroclinic vgrid file
+        
+    interp_input_file : [None | str]
+        Name of interpolate_variables.in file. If None, will use an internal version with nday as template
+  
+    nday :  int 
+        Number of days to process.  If None, param.nml is parsed in tropic_dir and the
+        full length of the run is used
+    
+    write_clinic: bool
+        If true, the file will be produced in clinic_dir. Otherwise will be done in place in tropic output
+
+        
+    Notes
+    -----
+    
+    Side effect is uv3D.th.nc, which may be moved to the baroclinic directory. The file
+    uv3D.th.nc is produced by the interpolate_variables script, the current version
+    of which is interpolate_variables7 (can move to config later). It expects four links,
+    bg.gr3 -> tropic hgrid.gr3, fg.gr3 -> clinic/hgrid.gr3, vgrid.bg -> vgrid.in.2d and
+    vgrid.fg -> vgrid.in.3d. The defaults will take care of the normal case. There 
+    are reasonable extensions (supersetting the grid for tropic and near field modeling)
+    that are in use and make it reasonable to prepare for modifications. The script also
+    expects a file called interpolate_variables.in, which you can find in the templates
+    and which doesn't normally change for our standard runs except for the number of days
+    (second arg on the first line). This could of course be inferred from param.nml.tropic.    
+    
+    """
+    
+    interp_exe = "interpolate_variables7"
+    
+    
+    # This content for the file interpolate_variables.in will work with the interpolate_variables
+    # for all normal runs. 
+    # The user would want to change if they are isolating a subdomain
+    interpolate_template = f"3 {nday}  !ifile ndays. ifile=1: generate elev2D.th; =2: salt3D.th and temp3D.th; =3: uv3D.th); ndays is the # of days needed;\n1 1   !total # of boundary segments that need *3D.th, followed by list of boundary segment indices\n0     !0: normal; 1: more outputs for debug"
+    
+        
+        
+        
+        
+def set_nudging(suffix,workdir='.',param_check='param.nml'):
+    """ This is a utility to set up nudging files based on a naming convention common for BayDeltaSCHISM
+    
+    Parameters
+    ---------
+    
+    suffix: str
+        This is the suffix used when preparing the nudging/gr files. For instance "obshycom" in SAL_nu_obshycom.nc
+        
+    workdir : str
+        Directory where the links and changes are made        
+        
+    The script will identify nudging gr3 files and point the schism names to the suffix names. This 
+    function depends on either a config or some conventions to define expectations. It also requires that
+    we be able to identify the possibilities, either programatically or with a dictionaries for lookup,
+    something like:
+    
+    target_link = {"salinity_nudge_{suffix}.gr3" : "SAL_nudge_{suffix}.gr3",
+                   "temperature_nudge_{suffix}.gr3": "TEM_nudge_{suffix}.gr3",
+                   "SAL_nu_{suffix}.nc" : "SAL_nu_{suffix}.nc",
+                   "TEM_nu_{suffix}.nc": "TEM_nu_{suffix}.nc",               
+
+    If it is easier to change the preprocessing scripts, let me know. Might want to ask Zhenlin and 
+    Kijin what sediment or other tracers will look like. 
+    It would be nice if that ended up here soon, but salt and temp are a win. Some connection with param
+    could also be used, with the script printing out, perhaps early in the process,
+    which variables are scheduled for nudging using
+    nc files, and which are "nudge to IC" option. This could also be the basis of the search for variables
+    beyond SAL_ and TEM_. Again, SAL and TEM are a win.
+    
+    One idea I have is that maybe the name "salinity_nudge_{suffix}.gr3" should be "SAL_nudge_{suffix}.gr3"
+    or that SAL and TEM should be the only allowed exceptions. It would be helpful to have the
+    expectation that usually the file names will be as-expected up to the suffix:
+    "BLAH_nudge.gr3" -> "BLAH_nudge.gr3"
+
+    """    
+        
+def run_or_outputs(workdir):
+    """ Infer whether directory is a run directory or output directory
+
+    Raises an exception if it doesn't seem like either. Output is based on
+    mirror.out. Input is based on param.nml.
+    """
+        
+def hotstart_inventory(workdir='.',
+                       paramfile=None,
+                       start=None,dt=None
+                       ):
+    """ Create an inventory of hotstarts or expected hotstarts.
+    
+    Parameters
+    ----------
+    
+    workdir : str
+        Directory to inventory. If it is an outputs directory, the inventory 
+    comprise existing hotstarts. 
+    
+    paramfile : str
+       Name of param.nml file, expected in workdir or workdir/.. If None, then
+       both start and dt must be supplied. If all three are None, the name "param.nml" will
+       be attempted
+       
+    start : Convertible to Datetime
+       Start date of run. If None inferred from paramfile. Error if 
+    
+    dt : int
+       dt in seconds, for instance perhaps 90s for clinic or 120s for tropic. This
+       is needed to intepret the so-called iteration number in the hotstart labels 
+       which are really time step numbers.
+       
+    
+    Returns
+    -------
+        Dataframe, if programatic, listing hotstarts.  Should look like "Date, Iteration" pairs. CLI should print it out.
+    
+    Notes
+    -----
+        If the listing is done in the run dir, this will be the expected hotstarts. If 
+        it is in the outputs dir, it will be an inventory of existing hotstarts.
+
+    
+    """
+    
+    
+def combine_hotstarts(workdir,
+                     start,
+                     dt,
+                     paramfile,
+                     hotlist=[],
+                     before=None,
+                     after=None,
+                     move=True)
+                     
+    """ Combines hotstarts and renames them to the Bay-Delta standard naming convention
+        and optionally moves them to the parent directory.
+    
+        
+        Parameters
+        ----------
+        
+        workdir : str
+            An outputs directory or directory with an outputs directory.
+            
+        start : Convertible to date
+            Optional, start date of run
+        
+        dt : int
+            Optional, dt of run in seconds             
+    
+        paramfile : str
+            Name of param.nml file. Assumes ../param.nml. If named, start and dt
+        must be omitted or consistent
+
+        hotlist : convertible to list
+            List of iteration numbers or dates. Incompatible with before/after
+            
+        before :  convertible to date or long integer
+            Max date or iteration # to convert, inclusive. If 
+            only `before` is specified, then one hotstart is produced at or before that date. This is the usual desired outcome because you will usually need 
+            to "back up at least to X". 
+            
+        after  : convertible to date or long integer
+            Min date or iteration # to convert, inclusive. The main reason for this
+            option is to avoid combining warm up time.             
+            
+        move : boolean or str
+            Moves the combined file to the study directory or the named directory relative
+            to where the script is run.
+            
+        mod : modifier for name
+            
+        Raises
+        ------
+
+            ValueError
+                If the request is empty or the action will produce an overwrite. The
+        script is safe in this regard.                
+            
+        Notes
+        -----
+        The native schism naming convention for hotstarts is hotstart_it=12345.nc
+        This is based on "iteration number" (actually time step) and
+        is difficult to interpret in terms of geophysical time. The way you  
+        calculate the iteration number for a hotstart 10 days into a run with a 90s time
+        step is iter = (10d*86400s/d)/90s.
+        
+        The BayDeltaSCHISM convention is hotstart.{mod}.20210524.123456.nc. 
+        This format communicates time and sorts in order lexicographically.
+    
+        This script recognizes that we will almost never want to leave
+        the combined hotstart in /outputs. To use it, we need to move it to 
+        the study directory or an archive.
+        
+        Losing a hotstart is a big deal so checking is done.
+    
+        The CLI produces a message that verifies tha
+
+def rm_hotstarts(workdir,
+                 start,
+                 dt,
+                 paramfile,
+                 hotlist=[],
+                 before=None,
+                 after=None)
+    """ Deletes uncombined hotstarts. Params similar to above """
+
+
+def cleanup(workdir):
+    """ Cleans a run directory (?) or outputs directory.
+        This will be implemented in terms of delete_patterns (see below) plus a config file.
+        
+        Parameters
+        ----------
+        
+        workdir: str 
+            Run directory or output directory
+            
+    Examples include mirror.out, local_to_global etc.
+    Examples in run directory ?? estuary.gr3,... maybe wait on this.
+
+    """
+    
+    delete_filelist(pkg_resources("run_cleanup.yaml"))
+    
+
+************ Infrastructural ***************************************
+
+def text_subst_tree(envvars, struct):
+    """ recursively evaluates text substitution with first priority to
+        envvars dictionary and second to system envvars. Then applies them
+        to struct assuming it is a tree and not all members are text (e.g. yaml)
+    
+        Parameters
+        ----------
+            envvars : dict
+            
+            Dictionary of text substitutions, possibly with dependencies
+            
+            struct : tree
+            Nested structure of dictionaries and lists
+            
+        Returns
+        -------
+        struct with in-place substitutions    
+        
+        Raises
+        
+        KeyError
+             Incomplete        
+    
+        Example
+        -------
+        
+        os.sys.env = {"foo" : "bar"}
+        
+        envvars = {"foo" : "lish", "another" : "de{foo}"}
+        
+        yaml structure:
+        run_name: {foo}
+        run_type: {another}
+
+        Produces:
+        run_name: lish
+        another: delish
+
+        but without foo entry in yaml it would produce:
+
+        run_name: bar
+        run_type: barlish        
+       
+    
+    
+    """
+
+
+def delete_patterns(filelist):
+    """ Deletes all files on list or file of listings. Includes wildcards. 
+    Parameters
+    ----------
+    
+    filelist : list or file containing list or yaml list
+    
+    List of wildcard patterns to delete
+    
+    """
+    
+def move_patterns(filelist):
+    """ Moves files based on a dictionary or file of pairs 
+    Parameters
+    ----------
+    
+    filelist : dictionary, file or yaml section that is dictionary-like
+
+    Intepreted as sources and destinations. Wilds not allowed (?)    
+
+    """
+
+Documentation
+1. Typical planning run setup
+2. Get these new features going.
+
+    
+schimpy enhancement:
+1. Specify output directory (done)
+2. Environmental variables
+3. Include bctides (some design needed)
+4. Make sure everyone understand sources and improve them.
+5. Include station.in and allow extension.
+6. Implement uses of include feature: depth_enforcement, dem list, station list, sources and sinks.
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+  
