@@ -1,0 +1,42 @@
+name: schism
+channels:
+  - conda-forge
+  - defaults
+  - cadwr-dms
+dependencies:
+  - python=3.9
+  - pip  
+  - dms-datastore
+  - schimpy
+  - shapely<2
+  - vtools3  
+  - cfunits
+  - xarray
+  - netcdf4
+  - pandas
+  - dask
+  - numba
+  - scipy  
+  - statsmodels
+  - scikit-learn
+  - nodepy  
+  - sympy
+  - palettable
+  - openpyxl  
+  - bokeh
+  - hvplot
+  - seaborn  
+  - bleach
+  - pyhecdss
+  - ipykernel
+# Note, though these are listed below as if conda would use pip
+# we do not recommend that you uncomment and use conda to install them. 
+# Instead, if you want a developer install, leave these libraries above
+# which helps ensure that conda rather than pip handles the dependencies of each. 
+# Then do a github clone, go to the parent directory and run `pip install --no-deps -e .`  
+#  - pip:
+#    - "--editable=git+https://github.com/CADWRDeltaModeling/vtools3#egg=vtools3"
+#    - "--editable=git+https://github.com/CADWRDeltaModeling/schimpy#egg=schimpy"
+#    - "--editable=git+https://github.com/CADWRDeltaModeling/dms_datastore#egg=dms_datastore"
+
+
