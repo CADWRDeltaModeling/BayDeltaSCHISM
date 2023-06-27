@@ -18,7 +18,7 @@ hotstart:
         initializer:
             patch_init:
                 smoothing: False
-                regions_filename: /home/knam/repos/schimpy/examples/schism_hotstart/shapefile/RegionsPolygon.shp # the attribute 'region' in the shapefile needs to match with the region values below.
+                regions_filename: /scratch/dms/knam/repos/schimpy_build/examples/schism_hotstart/shapefile/RegionsPolygon.shp # the attribute 'region' in the shapefile needs to match with the region values below.
                 regions:
                   - region: ocean
                     initializer:
@@ -27,7 +27,7 @@ hotstart:
                   - region: estuary
                     initializer:
                         extrude_casts:
-                            station: /home/knam/repos/schimpy/examples/schism_hotstart/data_in/USGS_polaris_station_locations_xy.csv
+                            station: /scratch/dms/knam/repos/schimpy_build/examples/schism_hotstart/data_in/USGS_polaris_station_locations_xy.csv
                             # data: /home/knam/repos/schimpy/examples/schism_hotstart/data/polaris_2015_2019.csv
                             data: ./scripts/usgs_2015_11_18.txt
                             variable: Temperature
@@ -40,7 +40,7 @@ hotstart:
         initializer:
             patch_init:
                 smoothing: False
-                regions_filename: /home/knam/repos/schimpy/examples/schism_hotstart/shapefile/RegionsPolygon.shp
+                regions_filename: /scratch/dms/knam/repos/schimpy_build/examples/schism_hotstart/shapefile/RegionsPolygon.shp
                 regions:
                   - region: ocean
                     initializer:
@@ -49,7 +49,7 @@ hotstart:
                   - region: estuary
                     initializer:
                         extrude_casts:
-                            station: /home/knam/repos/schimpy/examples/schism_hotstart/data_in/USGS_polaris_station_locations_xy.csv
+                            station: /scratch/dms/knam/repos/schimpy_build/examples/schism_hotstart/data_in/USGS_polaris_station_locations_xy.csv
                             # data: /home/knam/repos/schimpy/examples/schism_hotstart/data_in/polaris_2015_2019.csv
                             data: ./scripts/usgs_2015_11_18.txt
                             variable: Salinity

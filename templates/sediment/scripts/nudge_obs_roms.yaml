@@ -1,6 +1,6 @@
 nudging:
     start_date: 2015-11-18
-    rnday: 30  #24 total run time in days
+    rnday: 90  #total run time in days
     step_nu_tr: 1H
     hgrid_input_file: ../hgrid.gr3
     vgrid_input_file: ../vgrid.in.3d

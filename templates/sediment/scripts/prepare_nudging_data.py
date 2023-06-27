@@ -23,7 +23,7 @@ stations = ['anh','benbr','hsl','bts','snc','cyg','hun','bdl','fmb','msl','cll',
 
 add_upper = ["anh","cll","mrz","emm","mal","pts"]
 t0 = pd.Timestamp(2015,11,18)
-nudgelen =days(30)
+nudgelen =days(90)
 
 station_df = station_df.loc[stations]
 
