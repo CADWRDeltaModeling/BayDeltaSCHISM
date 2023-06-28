@@ -57,7 +57,9 @@ Follow the steps below to prepare common model settings.
   - Create an ocean surface boundary time series file, `elev2D.th.nc`.
     - A script in the following steps uses tools from `schimpy`. Please set up the package in your Python environment.
     - Navigate into `scripts` directory, and run `generate_elev2d.py`.
-  - Navigate into `sflux` directory, and generate links to atmospheric data files by running `make_links.py`. (The file contains hard-wired dates and locations of data files for DWR HPCs. Update the codes if necessary.)
+  - Generate links to atmospheric data
+    - Create `sflux` folder, and copy `BayDeltaSCHISM/template/bay_delta/sflux_inputs.txt` into it.
+    - Navigate into the `sflux` folder. Run `BayDeltaSCHISM/template/bay_delta/make_links_full.py`. The file contains hard-wired dates and locations of data files for DWR HPCs. Update the codes if necessary.
 
 ### Run a 2D hydrodynamics simulation.
   - Create `outputs` directory if it does not exists.
