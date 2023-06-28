@@ -50,10 +50,10 @@ Follow the steps below to prepare common model settings.
     - Run `prepare_schism main_bay_delta_hpc.yaml` in your command line (or shell). (Activate the Python environment with `schimpy` before running the script if `schimpy` is installed in a Python environment.) The whole process can take a couple of hours. This step will populate SCHISM native spatial input files such as `.gr3` and `.prop`.
       * If this step is performed on a Delta Modeling Section office Windows machine, use `main_bay_delta.yaml` instead of `main_bay_delta_hpc.yaml`.
     - It may be necessary to first run `dvc pull` to prepare grid files.
-  - Create gate and boundary time series files, such as gate and flux `th` files using the data from `BayDeltaSCHISM` repository.
-    - Run `prepare_th.py` at the top of the input directory as follows after replacing the location of `BayDeltaSCHIM` repository that you cloned somewhere else: `python scripts/prepare_th.py --dir_th __your_BayDeltaSCHISM_directory__ --list_of_th scripts/list_th.txt --start '2015-11-18'`. For example, if your BayDeltaSCHISM is cloned at `/home/foo/BayDeltaSCHISM`, the command would be `python scripts/prepare_th.py --dir_th /home/foo/BayDeltaSCHISM --list_of_th scripts/list_th.txt --start '2015-11-18'`. This will populate th files.
-  - Create Delta depletion time series files
-    * Run `prepare_th.py` at the top of the input directory similarly to the previous step but with a different list file as follows: `python scripts/prepare_th.py --dir_th dcd --list_of_th scripts/list_dcd.txt --start '2015-11-18'`. This will generate three th files: `vsource.th`, `vsink.th`, and `msource.th`.
+  - Create gate and boundary time series files, as well as source and sink files.
+    - Copy `BayDeltaSCHISM/bdschism/bdschism/multi_clip.py` into the working directory.
+    - Open the file and specify the file path (bds_home) and start date as necessary.
+    - Run `multi_clip.py`.
   - Create an ocean surface boundary time series file, `elev2D.th.nc`.
     - A script in the following steps uses tools from `schimpy`. Please set up the package in your Python environment.
     - Navigate into `scripts` directory, and run `generate_elev2d.py`.
