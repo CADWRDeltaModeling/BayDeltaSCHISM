@@ -61,6 +61,7 @@ Follow the steps below to prepare common model settings.
   - Generate links to atmospheric data
     - Create `sflux` folder, and copy `BayDeltaSCHISM/template/bay_delta/sflux_inputs.txt` into it.
     - Navigate into the `sflux` folder. Run `BayDeltaSCHISM/template/bay_delta/make_links_full.py`. The file contains hard-wired dates and locations of data files for DWR HPCs. Update the codes if necessary.
+  - Generate `station.in` by running `station` in schimpy environment.
 
 ### Run a 2D hydrodynamics simulation.
   - Create `outputs` directory if it does not exists.
