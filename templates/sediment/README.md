@@ -47,6 +47,7 @@ This README and scripts in the repositories are mainly intended to run on our HP
 Follow the steps below to prepare common model settings.
 
   - Create SCHISM native spatial input files.
+    - Copy the layer files (`minmaxlayer_slr_0_mod105.\*`) from `BayDeltaSCHISM/template/bay_delta/` into the working directory.
     - Run `prepare_schism main_bay_delta_hpc.yaml` in your command line (or shell). (Activate the Python environment with `schimpy` before running the script if `schimpy` is installed in a Python environment.) The whole process can take a couple of hours. This step will populate SCHISM native spatial input files such as `.gr3` and `.prop`.
       * If this step is performed on a Delta Modeling Section office Windows machine, use `main_bay_delta.yaml` instead of `main_bay_delta_hpc.yaml`.
     - It may be necessary to first run `dvc pull` to prepare grid files.
