@@ -91,10 +91,6 @@ flux.dat
 # Linux cache files
 .nfs*
 
-/SED_1.th
-/SED_2.th
-/SED_3.th
-/bay_delta_110_hist.2dm
 scripts/noaa*.csv
 scripts/all_stations_*.csv
 scripts/SAL_nu*.nc

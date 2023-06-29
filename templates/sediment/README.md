@@ -33,11 +33,6 @@ See CHANGES.md to find out changes.
 ### BayDeltaSCHISM
 Clone or download `BayDeltaSCHISM` from [GitHub BayDeltaSCHISM](https://github.com/CADWRDeltaModeling/BayDeltaSCHISM) in a separate directory. It contains supplemental input files.
 
-## Using DVC
-To manage some large input files, the repository uses `DVC`. (See [DVC Website](https://dvc.org/) and [GitHub](https://github.com/iterative/dvc).) `DVC` is a Python package. When you use Anaconda, `DVC` can be installed by `conda install -c conda-forge dvc`. (Create a new Conda environment if you do not want to disturb your Conoda environments.) Refer to DVC GitHub README if you use different Python environments.
-
-Cloning this repository would not pull data files that are managed by `DVC`. To pull data files from the `DVC` repository, just run `dvc pull` in case of running it on the DWR HPC's. (If you run `dvc pull` on Windows with access to the Section shared directory, try `dvc pull -r nasbdo`.)
-
 ## Note
 This README and scripts in the repositories are mainly intended to run on our HPCs.
 
@@ -48,9 +43,9 @@ Follow the steps below to prepare common model settings.
 
   - Create SCHISM native spatial input files.
     - Copy the layer files (`minmaxlayer_slr_0_mod105.\*`) from `BayDeltaSCHISM/template/bay_delta/` into the working directory.
+    - Copy the mesh file (`bay_delta_110_hist.2dm`) from `//nasbdo/schism/mesh_files/` into the working directory.    
     - Run `prepare_schism main_bay_delta_hpc.yaml` in your command line (or shell). (Activate the Python environment with `schimpy` before running the script if `schimpy` is installed in a Python environment.) The whole process can take a couple of hours. This step will populate SCHISM native spatial input files such as `.gr3` and `.prop`.
       * If this step is performed on a Delta Modeling Section office Windows machine, use `main_bay_delta.yaml` instead of `main_bay_delta_hpc.yaml`.
-    - It may be necessary to first run `dvc pull` to prepare grid files.
   - Create gate and boundary time series files, as well as source and sink files.
     - Copy `BayDeltaSCHISM/bdschism/bdschism/multi_clip.py` into the working directory.
     - Open the file and specify the file path (bds_home) and start date as necessary.
