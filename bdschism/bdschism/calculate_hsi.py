@@ -2,8 +2,8 @@
 
 It is based on the previous script `hsi_Bever_updated.py`.
 
-NOTE: Use the master branch of suxarray as of 2023-06-20
-and uxarray hash ec7c8c057b1.
+NOTE: Use the master branch of suxarray as of 2023-06-30
+and uxarray v2023.06.
 """
 from pathlib import Path
 import logging
@@ -69,8 +69,13 @@ def main(path_study, path_input, do_depthaverage):
         ds = suxarray.helper.read_schism_nc(list_paths, chunks=chunks)
         list_ds.append(ds)
 
-    grid = sx.Grid(xr.merge(list_ds))
-    print(grid.ds)
+    ds = xr.merge(list_ds)
+    if sx.get_topology_variable(ds) is None:
+        ds = sx.add_topology_variable(ds)
+    ds = sx.coerce_mesh_name(ds)
+
+    # grid = sx.Grid(ds)
+    sx_ds = sx.Dataset(ds, sxgrid=sx.Grid(ds))
 
     # Chunking for parallel processing
     # Rule of thumb is about 100MB per chunk.
@@ -82,7 +87,7 @@ def main(path_study, path_input, do_depthaverage):
     if do_depthaverage:
         logger.info("Calculating depth-averaged salinity...")
         # TODO Move these into suxarray
-        da_depth_averaged_salinity = grid.depth_average("salinity")
+        da_depth_averaged_salinity = sx_ds.depth_average("salinity")
         da_depth_averaged_salinity.name = "depth_averaged_salinity"
         da_depth_averaged_salinity.attrs["units"] = "psu"
         da_depth_averaged_salinity.attrs["long_name"] = "depth-averaged salinity"
@@ -94,7 +99,7 @@ def main(path_study, path_input, do_depthaverage):
         )
 
         logger.info("Calculating depth-averaged hvel x...")
-        da_depth_averaged_hvel_x = grid.depth_average("horizontalVelX")
+        da_depth_averaged_hvel_x = sx_ds.depth_average("horizontalVelX")
         da_depth_averaged_hvel_x.name = "depth_averaged_hvel_x"
         da_depth_averaged_hvel_x.attrs["units"] = "m2 s-1"
         da_depth_averaged_hvel_x.attrs[
@@ -104,7 +109,7 @@ def main(path_study, path_input, do_depthaverage):
         (da_depth_averaged_hvel_x.to_dataset().to_netcdf(path_depth_averaged_hvel_x))
 
         logger.info("Calculating depth-averaged hvel y...")
-        da_depth_averaged_hvel_y = grid.depth_average("horizontalVelY")
+        da_depth_averaged_hvel_y = sx_ds.depth_average("horizontalVelY")
         da_depth_averaged_hvel_y.name = "depth_averaged_hvel_y"
         da_depth_averaged_hvel_y.attrs["units"] = "m2 s-1"
         da_depth_averaged_hvel_y.attrs[
@@ -149,12 +154,12 @@ def main(path_study, path_input, do_depthaverage):
     da_depth_averaged_hvel_mag_daily_max.name = "depth_averaged_hvel_mag_daily_max"
     da_depth_averaged_hvel_mag_daily_max.attrs["units"] = "m s-1"
 
-    da_depth_averaged_hvel_mag_daily_max_at_face = grid.face_average(
+    da_depth_averaged_hvel_mag_daily_max_at_face = sx_ds.face_average(
         da_depth_averaged_hvel_mag_daily_max
     )
     da_depth_averaged_hvel_mag_daily_max_at_face = (
         da_depth_averaged_hvel_mag_daily_max_at_face.assign_coords(
-            nMesh2_face=np.arange(grid.nMesh2_face)
+            nMesh2_face=np.arange(sx_ds.sxgrid.nMesh2_face)
         )
     )
 
@@ -167,7 +172,7 @@ def main(path_study, path_input, do_depthaverage):
     da_daily_salinity_fraction_under_6 = shift_30min_up(
         da_daily_salinity_fraction_under_6
     )
-    da_salinity_fraction_under_6_at_face = grid.face_average(
+    da_salinity_fraction_under_6_at_face = sx_ds.face_average(
         da_daily_salinity_fraction_under_6
     )
 
@@ -186,11 +191,11 @@ def main(path_study, path_input, do_depthaverage):
 
     da_temperature_quantile = (
         da_temperature_quantile.isel(
-            nSCHISM_hgrid_node=ds_grid_mapping.map_to_coarse_nodes
+            nMesh2_node=ds_grid_mapping.map_to_coarse_nodes
         )
         * ds_grid_mapping.weight
     ).sum(dim="three") / ds_grid_mapping.weight.sum(dim="three")
-    da_temperature_quantile_at_face = grid.face_average(da_temperature_quantile)
+    da_temperature_quantile_at_face = sx_ds.face_average(da_temperature_quantile)
     da_temperature_quantile_at_face.name = "temperature_quantile"
     da_temperature_quantile_at_face.attrs["units"] = "degC"
     n_periods = da_temperature_quantile.time.size
@@ -204,11 +209,11 @@ def main(path_study, path_input, do_depthaverage):
     da_turbidity_quantile = xr.apply_ufunc(np.exp, da_turbidity_quantile)
     da_turbidity_quantile = (
         da_turbidity_quantile.isel(
-            nSCHISM_hgrid_node=ds_grid_mapping.map_to_coarse_nodes
+            nMesh2_node=ds_grid_mapping.map_to_coarse_nodes
         )
         * ds_grid_mapping.weight
     ).sum(dim="three") / ds_grid_mapping.weight.sum(dim="three")
-    da_turbidity_quantile_at_face = grid.face_average(da_turbidity_quantile)
+    da_turbidity_quantile_at_face = sx_ds.face_average(da_turbidity_quantile)
     da_turbidity_quantile_at_face.name = "turbidity_quantile"
     da_turbidity_quantile_at_face.attrs["units"] = "degC"
     n_periods = da_turbidity_quantile.time.size
@@ -318,8 +323,8 @@ def main(path_study, path_input, do_depthaverage):
     df_region_points = pd.read_csv(path_region_points, header=0)
     list_regions = df_region_points["SUBREGION"].unique()
 
-    da_face_areas = grid.compute_face_areas()
-    da_face_areas = da_face_areas.rename({"nSCHISM_hgrid_face": "nMesh2_face"})
+    da_face_areas = sx_ds.sxgrid.compute_face_areas()
+    # da_face_areas = da_face_areas.rename({"nMesh2_face": "nMesh2_face"})
 
     logger.info("Calculating HSI areas for each region...")
     list_areas_hsi = []
@@ -408,7 +413,7 @@ def read_quantile_data(path_csv_pattern):
         dfs.append(df)
     da_result = xr.DataArray(
         np.stack([df.values for df in dfs]),
-        dims=["quantile", "time", "nSCHISM_hgrid_node"],
+        dims=["quantile", "time", "nMesh2_node"],
         coords={"quantile": quantiles},
     )
     return da_result
@@ -416,32 +421,32 @@ def read_quantile_data(path_csv_pattern):
 
 def map_grids(coarse_path, fine_path, map_path):
     # Read coarse grid
-    coarse_mesh = sx.read_hgrid_gr3(coarse_path)
+    coarse_grid = sx.read_hgrid_gr3(coarse_path)
 
     # Read fine grid
-    fine_mesh = sx.read_hgrid_gr3(fine_path)
+    fine_grid = sx.read_hgrid_gr3(fine_path)
 
-    fine_nodes = fine_mesh.node_points
+    fine_nodes = fine_grid.node_points
 
-    coarse_face_id_from_fine_node = coarse_mesh.elem_strtree.query(
+    coarse_face_id_from_fine_node = coarse_grid.elem_strtree.query(
         fine_nodes, predicate="intersects"
     )
-    coarse_face_nodes = coarse_mesh.Mesh2_face_nodes.values
+    coarse_face_nodes = coarse_grid.Mesh2_face_nodes.values
     # Create an empty array to store the node mapping. `-1` is the fill value.
-    map_to_coarse_nodes = np.full((fine_mesh.nMesh2_node, 3), -1, dtype=int)
+    map_to_coarse_nodes = np.full((fine_grid.nMesh2_node, 3), -1, dtype=int)
 
     map_to_coarse_nodes[coarse_face_id_from_fine_node[0], :] = coarse_face_nodes[
         coarse_face_id_from_fine_node[1]
     ][:, :3]
     fine_nodes_not_found = list(
-        set(range(fine_mesh.nMesh2_node)) - set(coarse_face_id_from_fine_node[0])
+        set(range(fine_grid.nMesh2_node)) - set(coarse_face_id_from_fine_node[0])
     )
 
     if len(fine_nodes_not_found) > 0:
         fine_nodes_not_found.sort()
         coarse_nodes_nearest = xr.apply_ufunc(
-            lambda p: coarse_mesh.node_strtree.nearest(p),
-            fine_nodes.isel(nSCHISM_hgrid_node=fine_nodes_not_found),
+            lambda p: coarse_grid.node_strtree.nearest(p),
+            fine_nodes.isel(nMesh2_node=fine_nodes_not_found),
             vectorize=True,
             dask="parallelized",
         )
@@ -449,16 +454,15 @@ def map_grids(coarse_path, fine_path, map_path):
 
     da_map_to_coarse_nodes = xr.DataArray(
         map_to_coarse_nodes,
-        dims=("nSCHISM_hgrid_node", "three"),
-        coords={"nSCHISM_hgrid_node": fine_mesh.ds.nSCHISM_hgrid_node},
+        dims=("nMesh2_node", "three"),
         attrs={"_FillValue": -1, "start_index": 0},
         name="map_to_coarse_nodes",
     )
 
     def _calculate_weight(conn, points):
         """Calculate distance between a point and a set of points."""
-        x = coarse_mesh.Mesh2_node_x.values[conn]
-        y = coarse_mesh.Mesh2_node_y.values[conn]
+        x = coarse_grid.Mesh2_node_x.values[conn]
+        y = coarse_grid.Mesh2_node_y.values[conn]
         xy = np.array([p.xy for p in points])
         dist = np.apply_along_axis(np.linalg.norm, 1, np.stack((x, y), axis=1) - xy)
         weight = np.reciprocal(dist)
@@ -473,8 +477,8 @@ def map_grids(coarse_path, fine_path, map_path):
     chunk_size = None
     da_weight = xr.apply_ufunc(
         _calculate_weight,
-        da_map_to_coarse_nodes.chunk({"nSCHISM_hgrid_node": chunk_size}),
-        fine_nodes.chunk({"nSCHISM_hgrid_node": chunk_size}),
+        da_map_to_coarse_nodes.chunk({"nMesh2_node": chunk_size}),
+        fine_nodes.chunk({"nMesh2_node": chunk_size}),
         input_core_dims=[["three"], []],
         output_core_dims=[["three"]],
         dask="parallelized",
