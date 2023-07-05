@@ -28,17 +28,12 @@ Windows
       * "./BayDeltaSCHISM/data/stations" folder contents
       * "./BayDeltaSCHISM/scripts/multi_clip.py"
    * You'll need a .2dm file for the pre-processor, copy this into the baydeltainputs folder
-   * Need launch.pbs files
-      * launch.tropic.pbs
-      * launch.clinic.pbs 
-         .. warning::
-
-            These files don't exist somewhere publicly available yet
-
-   * schism.sh file
-      .. warning::
-
-         These files don't exist somewhere publicly available yet
+   * Launch file for submitting jobs
+      * Download `launch.pbs`_
+         .. _launch.pbs: https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/examples/linux/launch.pbs
+   * Shell script file for running SCHISM binary
+      * Download `schism.sh`_
+         .. _schism.sh: https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/examples/linux/schism.sh
 
    * Download `noaa_stations.txt`_
       .. _noaa_stations.txt: https://github.com/CADWRDeltaModeling/dms_datastore/blob/master/dms_datastore/example/noaa_stations.txt
