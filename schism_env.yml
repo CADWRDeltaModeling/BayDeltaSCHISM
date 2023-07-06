@@ -1,36 +1,37 @@
 name: schism
 channels:
-  - conda-forge
-  - defaults
+  - conda-forge            # Note: the order listed in yaml is not enforced by conda
+  - defaults               # For predictable behavior, set your conda config
   - cadwr-dms
 dependencies:
-  - python=3.9
-  - pip  
-  - dms-datastore
-  - schimpy
-  - shapely<2
-  - vtools3  
+  - python>=3.9,<3.10
+  - schimpy>=1.6.4         # Recommended for compatibiltiy with current code
+  - vtools3>=3.7.5
+  - dms-datastore>=0.0.16
+  - pandas>=1.5            # Below here minimum versions are to reduce solve space
+  - numpy>=1.20
+  - xarray>=2022.11
+  - netcdf4>=1.5.7
+  - dask>=2022.11
+  - numba>=0.56
+  - scipy>=1.8
+  - scikit-learn>=1.1.0
+  - bokeh>=2.4
+  - hvplot>=0.8
+  - statsmodels>=0.13.2
+  - pip>=22.2 
+  - geopandas>0.9
   - cfunits
-  - xarray
-  - netcdf4
-  - pandas
-  - dask
-  - numba
-  - scipy  
-  - statsmodels
-  - scikit-learn
   - nodepy  
   - sympy
   - palettable
-  - openpyxl  
-  - bokeh
-  - hvplot
-  - seaborn  
+  - openpyxl
+  - seaborn
   - bleach
   - pyhecdss
   - ipykernel
 # Note, though these are listed below as if conda would use pip
-# we do not recommend that you uncomment and use conda to install them. 
+# we do not recommend that you uncomment and use conda to install them via pip. 
 # Instead, if you want a developer install, leave these libraries above
 # which helps ensure that conda rather than pip handles the dependencies of each. 
 # Then do a github clone, go to the parent directory and run `pip install --no-deps -e .`  
