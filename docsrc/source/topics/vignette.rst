@@ -228,13 +228,13 @@ Then you'll need a sflux_inputs.txt file within the sflux folder
 
    .. code-block:: console
 
-      ln -sf bctides.in.2d bctides.in
-      ln -sf vgrid.in.2d vgrid.in
-      ln -sf msource_v20220825.th msource.th 
-      ln -sf vsource_20220825_nows_leach1.th vsource.th
-      ln -sf vsink_20220825_nows_leach1_sscd1.5.th vsink.th
-      ln -sf TEM_1.th temp.th
-      ln -sf SAL_1.th salt.th
+      ln -f bctides.in.2d bctides.in
+      ln -f vgrid.in.2d vgrid.in
+      ln -f msource_v20220825.th msource.th 
+      ln -f vsource_20220825_nows_leach1.th vsource.th
+      ln -f vsink_20220825_nows_leach1_sscd1.5.th vsink.th
+      ln -f TEM_1.th temp.th
+      ln -f SAL_1.th salt.th
       ln -sf param.nml.tropic param.nml
       ln -sf launch.tropic.pbs launch.pbs
 
