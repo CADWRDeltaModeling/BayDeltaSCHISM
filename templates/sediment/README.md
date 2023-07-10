@@ -42,7 +42,7 @@ This README and scripts in the repositories are mainly intended to run on our HP
 Follow the steps below to prepare common model settings.
 
   - Create SCHISM native spatial input files.
-    - Copy the layer files (`minmaxlayer_slr_0_mod105.\*`) from `BayDeltaSCHISM/template/bay_delta/` into the working directory.
+    - Copy the layer files (`minmaxlayer_slr_0_mod105.*`) from `BayDeltaSCHISM/template/bay_delta/` into the working directory.
     - Copy the mesh file (`bay_delta_110_hist.2dm`) from `//nasbdo/schism/mesh_files/` into the working directory.    
     - Run `prepare_schism main_bay_delta_hpc.yaml` in your command line (or shell). (Activate the Python environment with `schimpy` before running the script if `schimpy` is installed in a Python environment.) The whole process can take a couple of hours. This step will populate SCHISM native spatial input files such as `.gr3` and `.prop`.
       * If this step is performed on a Delta Modeling Section office Windows machine, use `main_bay_delta.yaml` instead of `main_bay_delta_hpc.yaml`.
@@ -65,12 +65,12 @@ Follow the steps below to prepare common model settings.
   - Copy or create a link to `vgrid.in.2d` as `vgrid.in`.
   - Run SCHISM.
     - On HPC4, use `schism/5.10_intel2022.1` module. It comes with a few variants of schism binaries, and `pschism_PREC_EVAP_GOTM_TVD-VL` can be used for this 2D mode run.
+    - Job can be submitted with `qsub launch.pbs.2d`.
 
 ### Prepare a 3D hydrodynamics-sediment simulation.
   - Create `uv3D.th.nc`
-    - With SCHISM v5.10, it is no longer required to combine variables.
     - Run `interpolate_variables8` inside `outputs` directory (make sure SCHISM module has been loaded).
-      - Copy `interpolate_variables.in` into the 2D outputs directory.
+      - Copy `BayDeltaSCHISM/template/bay_delta/interpolate_variables.in` into the 2D outputs directory.
       - Copy or link to `hgrid.gr3` in the 2D outputs directory as  `fg.gr3` and `bg.gr3`
       - Copy or link to `vgrid.in.3d` in the 2D outputs directory as `vgrid.fg`.
       - Run `interpolate_variables8` in the 2D outputs directory. It will generate `uv3D.th.nc`. If segmentation fault error is encountered, run `ulimit -s unlimited` first.
@@ -103,11 +103,12 @@ Follow the steps below to prepare common model settings.
     - Navigate into the BCG outputs directory, and combine the last hotstart outputs using combine_hotstart7 (make sure SCHISM module has been loaded)
       - For example, if the target hotstart file's name ends with _28800.nc, `combine_hotstart7 -i 28800`
     - Copy sediment bed information from the BCG run to the existing hotstart file. Run a script as follows in the top of the directory (you may need to change file names accordingly): `python scripts/copy_bed_fraction.py --hotstart_input hotstart.nc --hotstart_bcg outputs_bcg/hotstart_it=28800.nc --hotstart_output hotstart_with_bcg.nc`. Rename the new hotstart with the updated bed composition to `hotstart.nc`.
+    - Job can be submitted with `qsub launch.pbs.sed`.
   - Run SCHISM with the sediment.
     - Create a link to `param.nml.3d` as `param.nml`.
     - Create a link to `sediment.nml.3d` as `sediment.nml`
     - Create an `outputs` directory.
-    - Run the SCHISM sediment model for BCG.
+    - Run the SCHISM sediment model for BCG (`qsub launch.pbs.sed`).
 
 ## Contact
 Please contact Kijin Nam <knam@water.ca.gov> for questions.
