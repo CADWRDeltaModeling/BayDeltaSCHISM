@@ -4,15 +4,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Basic Checklists &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor" href="vignette.html" />
@@ -105,9 +104,9 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="basic-checklists">
+  <section id="basic-checklists">
 <h1>Basic Checklists<a class="headerlink" href="#basic-checklists" title="Permalink to this heading">¶</a></h1>
-<div class="section" id="running-a-processed-setup">
+<section id="running-a-processed-setup">
 <h2>Running a Processed Setup<a class="headerlink" href="#running-a-processed-setup" title="Permalink to this heading">¶</a></h2>
 <p>Prepackaged runs are common for testing SCHISM on a new system or rerunning a model
 from another user delivered as a bundle. In this case the user will have
@@ -126,14 +125,14 @@ copies the run using the rsync command (don’t use copy command <cite>cp</cite>
 <p>☐ Create a directory called <cite>outputs</cite></p>
 <p>☐ Take care of any ‘gotchas’ such as making sure there is a directory named ‘outputs’ and that stack limits are disabled.</p>
 <p>* Windows is good for learning but not typical for full Delta runs</p>
-</div>
-<div class="section" id="simple-hindcast-runs">
+</section>
+<section id="simple-hindcast-runs">
 <h2>Simple Hindcast Runs<a class="headerlink" href="#simple-hindcast-runs" title="Permalink to this heading">¶</a></h2>
-<div class="section" id="cbox-choose-run-dates">
+<section id="cbox-choose-run-dates">
 <h3>☐ Choose run dates<a class="headerlink" href="#cbox-choose-run-dates" title="Permalink to this heading">¶</a></h3>
 <p>See <a class="reference internal" href="hotstart.html#choose-runtime"><span class="std std-ref">hotstart section</span></a> on this topic</p>
-</div>
-<div class="section" id="cbox-apply-template-to-existing-mesh">
+</section>
+<section id="cbox-apply-template-to-existing-mesh">
 <h3>☐ Apply template to existing mesh<a class="headerlink" href="#cbox-apply-template-to-existing-mesh" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>☐ Clone BayDeltaSCHISM from GitHub. Get a fresh copy or <cite>git stash</cite> any changes.</p>
@@ -145,8 +144,8 @@ copies the run using the rsync command (don’t use copy command <cite>cp</cite>
 <p>☐ Invoke the preprocessor with the command: <cite>$ prepare_schism main_bay_delta.yaml</cite></p>
 <p>☐ Copy the prepared items (.in, ,gr3, .ll, .prop, .nml) to the launch place.</p>
 </div></blockquote>
-</div>
-<div class="section" id="cbox-collect-time-series-inputs">
+</section>
+<section id="cbox-collect-time-series-inputs">
 <h3>☐ Collect time series inputs<a class="headerlink" href="#cbox-collect-time-series-inputs" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>☐ elev2d.bat</p>
@@ -157,29 +156,29 @@ copies the run using the rsync command (don’t use copy command <cite>cp</cite>
 </div></blockquote>
 <p>☐ multi_clip</p>
 </div></blockquote>
-</div>
-<div class="section" id="cbox-hotstart-can-be-concurrent-with-barotropic">
+</section>
+<section id="cbox-hotstart-can-be-concurrent-with-barotropic">
 <h3>☐ Hotstart (can be concurrent with barotropic)<a class="headerlink" href="#cbox-hotstart-can-be-concurrent-with-barotropic" title="Permalink to this heading">¶</a></h3>
-</div>
-<div class="section" id="cbox-nudging-can-be-concurrent-with-barotropic">
+</section>
+<section id="cbox-nudging-can-be-concurrent-with-barotropic">
 <h3>☐ Nudging (can be concurrent with barotropic)<a class="headerlink" href="#cbox-nudging-can-be-concurrent-with-barotropic" title="Permalink to this heading">¶</a></h3>
-</div>
-<div class="section" id="cbox-barotropic-warmup">
+</section>
+<section id="cbox-barotropic-warmup">
 <h3>☐ Barotropic warmup<a class="headerlink" href="#cbox-barotropic-warmup" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>☐ interpolate_variables7 (or later) script to create uv3D.th.</p>
 <p>☐ move the uv3D.th to the study directory</p>
 <p>☐ delete all the files outputs/* or move /outputs to /outputs.tropic and create an empty /outputs</p>
 </div></blockquote>
-</div>
-<div class="section" id="cbox-baroclinic-simulation">
+</section>
+<section id="cbox-baroclinic-simulation">
 <h3>☐ Baroclinic simulation<a class="headerlink" href="#cbox-baroclinic-simulation" title="Permalink to this heading">¶</a></h3>
 <blockquote>
 <div><p>☐ finalize your station.in output request</p>
 </div></blockquote>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -211,7 +210,7 @@ copies the run using the rsync command (don’t use copy command <cite>cp</cite>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2014,2020 California Department of Water Resources.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
     </div>
   </body>
 </html>

@@ -4,15 +4,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Study Templates and Preprocessing" href="preprocess.html" />
@@ -100,11 +99,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="vignette-hindcast-bay-delta-schism-at-delta-modeling-section-with-preprocessor">
+  <section id="vignette-hindcast-bay-delta-schism-at-delta-modeling-section-with-preprocessor">
 <span id="bdschinstr"></span><h1>Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor<a class="headerlink" href="#vignette-hindcast-bay-delta-schism-at-delta-modeling-section-with-preprocessor" title="Permalink to this heading">¶</a></h1>
 <p>The process for starting a Bay Delta SCHISM run from scratch involves some pre-processing work on a Windows machine using the schimpy library (<a class="reference external" href="https://github.com/CADWRDeltaModeling/schimpy">https://github.com/CADWRDeltaModeling/schimpy</a>).</p>
 <p>You’ll want to have a conda environment which has the latest version of schimpy in it. For this example that environment is called ‘schism’.</p>
-<div class="section" id="windows">
+<section id="windows">
 <h2>Windows<a class="headerlink" href="#windows" title="Permalink to this heading">¶</a></h2>
 <ol class="arabic">
 <li><p>Clone the Bay Delta Schism repository to your Windows machine (ex: D:/schism/bdsch_scratch)</p>
@@ -117,9 +116,9 @@
 </div>
 </li>
 <li><p>Create a directory on Windows where you’ll build model inputs (“./baydeltainputs”) and copy the following files into it:</p>
-<ul>
+<ul class="simple">
 <li><dl class="simple">
-<dt>From “./BayDeltaSCHISM”:</dt><dd><ul class="simple">
+<dt>From “./BayDeltaSCHISM”:</dt><dd><ul>
 <li><p>“./BayDeltaSCHISM/templates/bay_delta” folder contents</p></li>
 <li><p>“./BayDeltaSCHISM/data/flow_station_xsects.yaml”</p></li>
 <li><p>“./BayDeltaSCHISM/data/stations” folder contents</p></li>
@@ -129,26 +128,23 @@
 </dl>
 </li>
 <li><p>You’ll need a .2dm file for the pre-processor, copy this into the baydeltainputs folder</p></li>
-<li><dl>
-<dt>Need launch.pbs files</dt><dd><ul>
-<li><p>launch.tropic.pbs</p></li>
-<li><dl>
-<dt>launch.clinic.pbs</dt><dd><div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>These files don’t exist somewhere publicly available yet</p>
-</div>
-</dd>
+<li><dl class="simple">
+<dt>Launch file for submitting jobs</dt><dd><ul>
+<li><dl class="simple">
+<dt>Download <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/examples/linux/launch.pbs">launch.pbs</a></dt><dd></dd>
 </dl>
 </li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl>
-<dt>schism.sh file</dt><dd><div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>These files don’t exist somewhere publicly available yet</p>
-</div>
+<li><dl class="simple">
+<dt>Shell script file for running SCHISM binary</dt><dd><ul>
+<li><dl class="simple">
+<dt>Download <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/examples/linux/schism.sh">schism.sh</a></dt><dd></dd>
+</dl>
+</li>
+</ul>
 </dd>
 </dl>
 </li>
@@ -463,8 +459,8 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 </ul>
 </li>
 </ol>
-</div>
-<div class="section" id="linux">
+</section>
+<section id="linux">
 <h2>Linux<a class="headerlink" href="#linux" title="Permalink to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Create the folder where you will be running the model (ex: /scratch/dms/{username}/schism/bdsch_scratch_demo)</p>
@@ -473,7 +469,7 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 </ul>
 </li>
 </ol>
-<div class="section" id="barotropic">
+<section id="barotropic">
 <h3>Barotropic<a class="headerlink" href="#barotropic" title="Permalink to this heading">¶</a></h3>
 <ol class="arabic">
 <li><p>Make symbolic links for sflux files</p>
@@ -539,8 +535,8 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 </li>
 </ol>
 <p>This will run the Barotropic model without nudging or hotstart data and then you will use the Barotropic results to generate a flow boundary at the ocean in order to stabilize perturbations in the model.</p>
-</div>
-<div class="section" id="baroclinic">
+</section>
+<section id="baroclinic">
 <h3>Baroclinic<a class="headerlink" href="#baroclinic" title="Permalink to this heading">¶</a></h3>
 <p>This needs to follow the completion of a Barotropic simulation in order to create the ocean boundary flows. At this stage the hotstart and nudging files created in the Windows portion are used on the temperature and salinity fields.</p>
 <blockquote>
@@ -632,9 +628,9 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
 </li>
 </ol>
 </div></blockquote>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -666,7 +662,7 @@ bds_home = &quot;&lt;BAYDELTASCHISM REPOSITORY LOCATION&gt;&quot;
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2014,2020 California Department of Water Resources.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
     </div>
   </body>
 </html>

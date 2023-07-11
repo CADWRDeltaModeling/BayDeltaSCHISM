@@ -4,15 +4,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Run Initialization and Restart (Hotstart) &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Nudging Files" href="nudging.html" />
@@ -104,9 +103,9 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="run-initialization-and-restart-hotstart">
+  <section id="run-initialization-and-restart-hotstart">
 <h1>Run Initialization and Restart (Hotstart)<a class="headerlink" href="#run-initialization-and-restart-hotstart" title="Permalink to this heading">¶</a></h1>
-<div class="section" id="when-do-you-need-an-initial-condition-or-hotstart">
+<section id="when-do-you-need-an-initial-condition-or-hotstart">
 <h2>When do you need an initial condition or hotstart?<a class="headerlink" href="#when-do-you-need-an-initial-condition-or-hotstart" title="Permalink to this heading">¶</a></h2>
 <p>You should use a hotstart or initialization for every study if you include salinity transport or other tracers.
 The need for this may be unfamiliar if you are coming from a lower dimensional model or less
@@ -117,8 +116,8 @@ resolved 3D model. There are two reasons:</p>
 </ul>
 <p>We mostly do barotropic runs (no salinity or transport) as a warmup to generate our ocean boundary. For
 that a cold start from very basic (zero velocity, flat water elevation) is fine.</p>
-</div>
-<div class="section" id="what-is-the-difference-between-a-cold-and-hot-start">
+</section>
+<section id="what-is-the-difference-between-a-cold-and-hot-start">
 <h2>What is the difference between a cold and hot start<a class="headerlink" href="#what-is-the-difference-between-a-cold-and-hot-start" title="Permalink to this heading">¶</a></h2>
 <p>A cold start means values are initialized from very simple and well behaved values. Typically velocity is zero
 and the water surface is flat. This avoids “mini-tsunamis”.  Cold starts are invoked using <cite>ihot=0</cite> in the control file <cite>param.nml</cite>.
@@ -138,8 +137,8 @@ invoking a new set of modules or backing up and restart a failed run. In this ca
 generated using per-processor hotstart file in the outputs directory.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="combining-hotstarts">
+</section>
+<section id="combining-hotstarts">
 <h2>Combining hotstarts<a class="headerlink" href="#combining-hotstarts" title="Permalink to this heading">¶</a></h2>
 <p>In order to combine hotstarts you need to have the combine_hotstart utility on path. The actual name of the utility will be
 something like <cite>combine_hotstart7</cite>, where the ‘7’ part is a version that may evolve if the hotstart format changes.
@@ -153,9 +152,9 @@ The real interpretation is time step. So if the iteration is 24000, dt=90 second
 of the run plus 24000*90 seconds. This is tedious, so if you have a <cite>schimpy</cite> installation on your machine, you can use the hotstart_inventory command line
 utility to get a list without doing all this calculation: <cite>hotstart_inventory –dt=90 –start=2021-04-20</cite>.</p>
 <p>The best translation of ‘restart’ in SCHISM is hotstart with ihot=2.</p>
-</div>
-<div class="section" id="choosing-a-good-start-time">
-<h2>Choosing a good start time<a class="headerlink" href="#choosing-a-good-start-time" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="choosing-a-good-start-time">
+<span id="choose-runtime"></span><h2>Choosing a good start time<a class="headerlink" href="#choosing-a-good-start-time" title="Permalink to this heading">¶</a></h2>
 <p>By convention, our group chooses start times that coincide with USGS cruises. . Those are the days when you will have the best access
 to details on salinity and temperature in the Bay.  Note that many cruises are partial, involving only say 20 stops and covering perhaps only the
 South Bay. You will want a date with a complete cruise. At the Delta Modeling Section we keep an inventory of these.</p>
@@ -170,32 +169,36 @@ run with observed data and looking at the near term consequences of an action. U
 up fast and accurately. If we are doing longer term planning simulations or if there is branching into alternatives, nudging may not have a role.
 Also labeling must be exceedingly clear. NEVER REPORT AS GENERAL MODEL ACCURACY STATISTICS ANY RESULTS USING MODELS THAT ARE ACTIVELY NUDGED INSIDE THE GOLDEN GATE.</p>
 <p>The two pictures below show the common initialization sequences, as well as the extension into the main study period.</p>
-<div class="figure align-default" id="id7">
+<figure class="align-default" id="id7">
 <img alt="../_images/initialization1.png" class="with-border" src="../_images/initialization1.png" />
-<p class="caption"><span class="caption-text">Simple initialization without nudging using Delta observations data.  * = Prefer USGS cruise date.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
-<div class="figure align-default" id="id8">
+<figcaption>
+<p><span class="caption-text">Simple initialization without nudging using Delta observations data.  * = Prefer USGS cruise date.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id8">
 <img alt="../_images/initialization2.png" class="with-border" src="../_images/initialization2.png" />
-<p class="caption"><span class="caption-text">Simple initialization with nudging using Delta data to spin up the model fast and accurately,
+<figcaption>
+<p><span class="caption-text">Simple initialization with nudging using Delta data to spin up the model fast and accurately,
 before halting and restarting without nudging for the main study.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-<div class="section" id="schism-hotstart-creating-a-hotstart-for-hydro-salt-temp">
+</figcaption>
+</figure>
+</section>
+<section id="schism-hotstart-creating-a-hotstart-for-hydro-salt-temp">
 <h2>schism_hotstart: Creating a Hotstart for Hydro/Salt/Temp<a class="headerlink" href="#schism-hotstart-creating-a-hotstart-for-hydro-salt-temp" title="Permalink to this heading">¶</a></h2>
-<div class="section" id="acquiring-the-data">
+<section id="acquiring-the-data">
 <h3>Acquiring the data<a class="headerlink" href="#acquiring-the-data" title="Permalink to this heading">¶</a></h3>
 <p>It is hard to generalize all the different systems used by modeling groups to gather up observed data. The short answer is that for a hotstart you will
 need a USGS cruise file (downloading the whole year is fine, that is the way their interface looks at the time of writing).</p>
 <p>If you are using in-Delta observations you will also need QA/QC’d data at least for the instant of the hotstart. Our scripts work with our data managment protocols.</p>
-</div>
-<div class="section" id="configuring-the-hotstart-request-yaml">
+</section>
+<section id="configuring-the-hotstart-request-yaml">
 <h3>Configuring the Hotstart request (yaml)<a class="headerlink" href="#configuring-the-hotstart-request-yaml" title="Permalink to this heading">¶</a></h3>
-</div>
-<div class="section" id="running-the-hotstart-generator">
+</section>
+<section id="running-the-hotstart-generator">
 <h3>Running the hotstart generator<a class="headerlink" href="#running-the-hotstart-generator" title="Permalink to this heading">¶</a></h3>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -227,7 +230,7 @@ need a USGS cruise file (downloading the whole year is fine, that is the way the
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2014,2020 California Department of Water Resources.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
     </div>
   </body>
 </html>
