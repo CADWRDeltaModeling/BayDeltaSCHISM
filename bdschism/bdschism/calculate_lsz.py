@@ -21,12 +21,15 @@ def create_argparser():
 
 
 def main():
+    """Calculate LSZ less than 6.0 and 7.0"""
+    # Create an argument parser
     argparser = create_argparser()
     args = argparser.parse_args()
 
     path_out2d = args.path_out2d
     path_salinity_nc = args.path_salinity_nc
 
+    # Read just one out2d file to get the mesh information
     ds_out2d = suxarray.helper.read_schism_nc(path_out2d)
     if sx.get_topology_variable(ds_out2d) is None:
         ds_out2d = sx.add_topology_variable(ds_out2d)
@@ -36,11 +39,16 @@ def main():
     sx_ds = sx.Dataset(ds_out2d, sxgrid=sx.Grid(ds_out2d))
     da_face_areas = sx_ds.sxgrid.compute_face_areas()
 
+    # Read processed depth-average salinity at face
     logging.info("Reading postprocessed depth-averaged data...")
+    # The chunk size can be optimized depending on the available memory
     chunks = {"time": 48}
     ds_salinity = xr.open_dataset(path_salinity_nc, chunks=chunks)
     da_depth_averaged_salinity_at_face = ds_salinity["depth_averaged_salinity_at_face"]
 
+    # Calculate LSZ less than 6.0 and 7.0
+    # NOTE These thresholds are hard-coded for now.
+    # The loop can be factored out.
     thresholds = [6.0, 7.0]
     for threshold in thresholds:
         logging.info(f"Calculating LSZ less than {threshold}...")
@@ -60,7 +68,7 @@ def main():
         da_lsz_total_threshold.attrs["units"] = "m2"
 
         da_lsz_total_threshold.to_netcdf(f"lsz_less_than_{threshold}.nc")
-        da_lsz_total_threshold.to_dataframe().to_csv("lsz_less_than_{threshold}.csv")
+        da_lsz_total_threshold.to_dataframe().to_csv(f"lsz_less_than_{threshold}.csv")
 
     logging.info("Done")
 

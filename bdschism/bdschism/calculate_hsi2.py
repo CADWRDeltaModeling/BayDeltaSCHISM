@@ -166,6 +166,7 @@ def main():
     da_hsi_final.attrs["long_name"] = "Habitat Suitability Index"
     path_hsi = path_postprocess / "hsi.nc"
     da_hsi_final.to_dataset().to_netcdf(path_hsi)
+    logging.info("Done...")
 
 
 def interpolate_turbidity_cutoff_probability(turb, levels):
