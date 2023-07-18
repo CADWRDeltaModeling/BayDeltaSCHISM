@@ -91,7 +91,7 @@ def main():
         da_temperature_quantile, date_start, sx_ds, ds_grid_mapping
     )
     path_out_temperature = path_out / "temperature_quantile_at_face.nc"
-    da_temperature_quantile_fine_at_face.name = "temperature_quantile"
+    da_temperature_quantile_fine_at_face.name = "temperature_quantile_at_face"
     encoding = {f"{da_temperature_quantile_fine_at_face.name}": {"dtype": "float32"}}
     da_temperature_quantile_fine_at_face.to_dataset().to_netcdf(
         path_out_temperature, encoding=encoding
@@ -107,7 +107,7 @@ def main():
         da_turbidity_quantile, date_start, sx_ds, ds_grid_mapping
     )
     path_out_turbidity = path_out / "turbidity_quantile_at_face.nc"
-    da_turbidity_quantile_fine_at_face.name = "turbidity_quantile"
+    da_turbidity_quantile_fine_at_face.name = "turbidity_quantile_at_face"
     encoding = {f"{da_turbidity_quantile_fine_at_face.name}": {"dtype": "float32"}}
     da_turbidity_quantile_fine_at_face.to_dataset().to_netcdf(
         path_out_turbidity, encoding=encoding
@@ -156,7 +156,7 @@ def read_quantile_data(path_csv_pattern):
         df = pd.read_csv(path_file, header=None)
         dfs.append(df)
     da_result = xr.DataArray(
-        np.stack([df.values for df in dfs]),
+        np.stack([df.iloc[:, 1:].values for df in dfs]),
         dims=["quantile", "time", "nMesh2_node"],
         coords={"quantile": quantiles},
     )
