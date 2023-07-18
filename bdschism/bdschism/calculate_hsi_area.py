@@ -61,12 +61,13 @@ def main():
 
     path_subregions_nc = path_common / "subregion_hsi.nc"
     ds_subregions = xr.open_dataset(path_subregions_nc)
-    ds_subregions = xr.decode_cf(ds_subregions)
-    ds_subregions = ds_subregions.rename({"nSCHISM_hgrid_face": "nMesh2_face"})
+    # ds_subregions = xr.decode_cf(ds_subregions)
+    # ds_subregions = ds_subregions.rename({"nSCHISM_hgrid_face": "nMesh2_face"})
 
-    path_region_points = path_common / "region_pointsUTM.csv"
-    df_region_points = pd.read_csv(path_region_points, header=0)
-    list_regions = df_region_points["SUBREGION"].unique()
+    # path_region_points = path_common / "region_pointsUTM.csv"
+    # df_region_points = pd.read_csv(path_region_points, header=0)
+    # list_regions = df_region_points["SUBREGION"].unique()
+    list_regions = list(ds_subregions.keys())
 
     list_areas_hsi = []
     list_total_areas = []
