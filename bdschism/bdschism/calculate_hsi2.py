@@ -4,12 +4,10 @@
 from pathlib import Path
 import logging
 import argparse
-import datetime
 import numpy as np
 import pandas as pd
 import xarray as xr
 import suxarray as sx
-import suxarray.helper
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
@@ -20,18 +18,18 @@ logging.basicConfig(
 
 def create_argparser():
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("--path_study", type=lambda s: Path(s))
+    # argparser.add_argument("--path_study", type=lambda s: Path(s))
     argparser.add_argument("--path_common", type=lambda s: Path(s))
     argparser.add_argument("--path_postprocess", default=".", type=lambda s: Path(s))
-    argparser.add_argument(
-        "--date_base", type=lambda s: datetime.datetime.strptime(s, "%Y-%m-%d")
-    )
-    argparser.add_argument(
-        "--date_start", type=lambda s: datetime.datetime.strptime(s, "%Y-%m-%d")
-    )
-    argparser.add_argument(
-        "--date_end", type=lambda s: datetime.datetime.strptime(s, "%Y-%m-%d")
-    )
+    # argparser.add_argument(
+    #     "--date_base", type=lambda s: datetime.datetime.strptime(s, "%Y-%m-%d")
+    # )
+    # argparser.add_argument(
+    #     "--date_start", type=lambda s: datetime.datetime.strptime(s, "%Y-%m-%d")
+    # )
+    # argparser.add_argument(
+    #     "--date_end", type=lambda s: datetime.datetime.strptime(s, "%Y-%m-%d")
+    # )
     return argparser
 
 
@@ -39,16 +37,16 @@ def main():
     argparser = create_argparser()
     args = argparser.parse_args()
 
-    path_study = Path(args.path_study)
+    # path_study = Path(args.path_study)
     path_common = Path(args.path_common)
     path_postprocess = Path(args.path_postprocess)
-    date_base = args.date_base
-    year = date_base.year
-    date_start = args.date_start
-    date_end = args.date_end
+    # date_base = args.date_base
+    # year = date_base.year
+    # date_start = args.date_start
+    # date_end = args.date_end
 
-    day_start = (date_start - date_base).days + 1
-    day_end = (date_end - date_base).days + 1
+    # day_start = (date_start - date_base).days + 1
+    # day_end = (date_end - date_base).days + 1
 
     # sx_ds = read_out2d_and_create_grid(path_study, day_start, day_end)
 
@@ -72,9 +70,12 @@ def main():
     ds_depth_averaged_horizontalVelY_at_face = xr.open_dataset(
         path_depth_averaged_horizontalVelY_at_face, chunks=chunks
     )
-
-    path_map = path_common / "grid_mapping_and_weight.nc"
-    ds_grid_mapping = xr.open_dataset(path_map, mask_and_scale=False)
+    year = (
+        ds_depth_averaged_salinity_at_face.time.values[0]
+        .astype("datetime64[Y]")
+        .astype(int)
+        + 1970
+    )
 
     logging.info("Read quantile data...")
 
@@ -87,7 +88,10 @@ def main():
         ds_temperature_quantile_at_face.temperature_quantile_at_face
     )
     n_periods = da_temperature_quantile_at_face.time.size
-    timestamps = pd.date_range(start=f"{year}-07-01", freq="1D", periods=n_periods)
+    # Replace with the actual year
+    start_date_jul = pd.to_datetime(da_temperature_quantile_at_face.time.values[0])
+    start_date = pd.to_datetime(f"{year}-{start_date_jul.month}-{start_date_jul.day}")
+    timestamps = pd.date_range(start=start_date, freq="1D", periods=n_periods)
     da_temperature_quantile_at_face = da_temperature_quantile_at_face.assign_coords(
         time=timestamps
     )
@@ -100,7 +104,9 @@ def main():
         ds_turbidity_quantile_at_face.turbidity_quantile_at_face
     )
     n_periods = da_turbidity_quantile_at_face.time.size
-    timestamps = pd.date_range(start=f"{year}-07-01", freq="1D", periods=n_periods)
+    start_date_jul = pd.to_datetime(da_temperature_quantile_at_face.time.values[0])
+    start_date = pd.to_datetime(f"{year}-{start_date_jul.month}-{start_date_jul.day}")
+    timestamps = pd.date_range(start=start_date, freq="1D", periods=n_periods)
     da_turbidity_quantile_at_face = da_turbidity_quantile_at_face.assign_coords(
         time=timestamps
     )
@@ -150,8 +156,7 @@ def main():
         dask="parallelized",
     )
     da_depth_averaged_hvel_mag_daily_max_at_face = (
-        da_depth_averaged_hvel_mag_at_face.resample(time="1D", origin="start")
-        .max()
+        da_depth_averaged_hvel_mag_at_face.resample(time="1D", origin="start").max()
     )
     da_depth_averaged_hvel_mag_daily_max_at_face = shift_30min_up(
         da_depth_averaged_hvel_mag_daily_max_at_face
@@ -198,33 +203,6 @@ def interpolate_turbidity_cutoff_probability(turb, levels):
 def shift_30min_up(da):
     """Shift time coordinate 30 minutes up"""
     return da.assign_coords(time=da.coords["time"] - pd.to_timedelta("30m"))
-
-
-def read_out2d_and_create_grid(path_study, day_start, day_end):
-    logging.info("Reading out2d files...")
-    output_items = {
-        "out2d": "outputs/out2d_{}.nc",
-    }
-    chunks = {"time": 2}
-    list_nc_paths = {
-        k: [v.format(i) for i in range(day_start, day_end + 1)]
-        for k, v in output_items.items()
-    }
-
-    list_ds = []
-    for _, v in list_nc_paths.items():
-        list_paths = [str(path_study / v[i]) for i in range(len(v))]
-        ds = suxarray.helper.read_schism_nc(list_paths, chunks=chunks)
-        list_ds.append(ds)
-
-    ds = xr.merge(list_ds)
-    if sx.get_topology_variable(ds) is None:
-        ds = sx.add_topology_variable(ds)
-    ds = sx.coerce_mesh_name(ds)
-
-    logging.info("Creating a grid object...")
-    sx_ds = sx.Dataset(ds, sxgrid=sx.Grid(ds))
-    return sx_ds
 
 
 if __name__ == "__main__":
