@@ -85,7 +85,7 @@ def main():
             da_face_areas_in_region = da_face_areas.where(da_elem_idx, drop=True)
             da_area_lsz = xr.dot(
                 da_face_areas_in_region,
-                da_salinity_less_than_threshold.where(da_elem_idx, drop=True),
+                da_salinity_less_than_threshold_daily.where(da_elem_idx, drop=True),
                 dims="nMesh2_face",
             )
             list_areas.append(da_area_lsz)
