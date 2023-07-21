@@ -1,7 +1,11 @@
 import argparse
+from schimpy import param
+import subprocess
+import os
 
 
 def uv3d(
+    param_nml="param.nml",
     bg_dir=".",
     bg_output_dir=None,
     fg_dir=None,
@@ -22,6 +26,9 @@ def uv3d(
 
     Parameters
     ----------
+
+    param_nml : str
+        Name of parameter file
 
     bg_dir : str
         Name of background simulation (e.g. larger or barotropic) directory
@@ -87,6 +94,11 @@ def create_arg_parser():
         description="Runs interpolate_variables utility to generate uv3d.th.nc. "
     )
     parser.add_argument(
+        "--param_nml",
+        default="param.nml",
+        help="Name of parameter file (str)",
+    )
+    parser.add_argument(
         "--bg_dir",
         default=".",
         help="Name of background simulation (e.g. larger or barotropic) directory (str)",
@@ -99,7 +111,7 @@ def create_arg_parser():
     parser.add_argument(
         "--fg_dir",
         default=None,
-        help="Name of foreground oclinic run directory. If None, will copy from tropic_dir (str)",
+        help="Name of foreground baroclinic run directory. If None, will copy from tropic_dir (str)",
     )
     parser.add_argument(
         "--hgrid_bg",
@@ -109,7 +121,7 @@ def create_arg_parser():
     )
     parser.add_argument(
         "--hgrid_fg",
-        default=None,
+        default="hgrid.gr3",
         help="Name of hgrid.gr3 file in clinic_, which will be linked to fg.gr3. This will almost never change, "
         "but could if you use a smaller baroclinic mesh (str)",
     )
@@ -147,6 +159,7 @@ def main():
     """Main function"""
     parser = create_arg_parser()
     args = parser.parse_args()
+    param_nml = args.param_nml
     bg_dir = args.bg_dir
     bg_output_dir = args.bg_output_dir
     fg_dir = args.fg_dir
@@ -157,6 +170,46 @@ def main():
     interp_template = args.interp_template
     nday = args.nday
     write_clinic = args.write_clinic
+
+    # Parse param.nml
+    params = param.read_params(param_nml)
+
+    #
+    # Assign values to parameters if None given
+    #
+    if bg_output_dir is None:
+        if os.path.exists("outputs.tropic"):
+            bg_output_dir = "outputs.tropic"
+        elif os.path.exists("outputs"):
+            bg_output_dir = "outputs"
+        else:
+            raise ValueError("bg_output_dir does not exist!")
+
+    if interp_template is None:
+        # Generate interpolate_variables.in?
+        raise NotImplementedError("interpolate_variables does not exist!")
+
+    if nday is None:
+        nday = params["rnday"]
+
+    #
+    # Place a copy of interpolate_variables.in in the output folder
+    #
+    subprocess.run("cp " + interp_template + " ", shell=True)
+
+    # Create symbolic links
+    subprocess.run("ln -sf " + hgrid_bg + " bg.gr3", shell=True)
+    subprocess.run("ln -sf " + hgrid_fg + " fg.gr3", shell=True)
+    subprocess.run("ln -sf " + vgrid_bg + " vgrid.bg", shell=True)
+    subprocess.run("ln -sf " + vgrid_fg + " vgrid.fg", shell=True)
+
+    # Place interpolate_variables.in in the outputs folder
+
+    # Load SCHISM module and execute interpolate_variables
+    # subprocess.run("module purge", shell=True)
+    # subprocess.run("module load schism/5.10_intel2022.1", shell=True)
+    # subprocess.run("ulimit -s unlimited", shell=True)
+    # subprocess.run("interpolate_variables8", shell=True)
 
 
 if __name__ == "__main__":
