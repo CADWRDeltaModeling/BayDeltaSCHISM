@@ -54,7 +54,7 @@ fi
 source activate suxarray
 
 echo "Run HSI calculation..."
-python ${path_script}/calculate_hsi2.py --path_study . --path_common $PATH_COMMON --date_base "2016-04-27" --date_start 2016-07-01 --date_end 2016-11-25
+python ${path_script}/calculate_hsi2.py --path_common $PATH_COMMON --path_postprocess .
 
 echo "Run HSI area calculation..."
 python ${path_script}/calculate_hsi_area.py --path_out2d ${PATH_COMMON}/out2d_100.nc --path_hsi hsi.nc --path_common $PATH_COMMON
