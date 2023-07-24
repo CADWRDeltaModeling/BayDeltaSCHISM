@@ -161,10 +161,64 @@ def main():
     da_depth_averaged_hvel_mag_daily_max_at_face = shift_30min_up(
         da_depth_averaged_hvel_mag_daily_max_at_face
     )
-    da_hsi = (
-        0.67 * da_daily_salinity_fraction_under_6_at_face
-        + 0.33 * da_depth_averaged_hvel_mag_daily_max_at_face
+
+    def calculate_si_velocity(v):
+        condlist = [
+            v < 0.5,
+            (v < 0.71) * (v >= 0.5),
+            (v < 0.82) * (v >= 0.71),
+            (v < 0.89) * (v >= 0.82),
+            (v < 1.02) * (v >= 0.89),
+            (v < 1.1) * (v >= 1.02),
+            v >= 1.1,
+        ]
+        funclist = [
+            1.0,
+            lambda v: -0.4655 * v + 1.233,
+            lambda v: -1.8608 * v + 2.228,
+            lambda v: -3.0193 * v + 3.179,
+            lambda v: -1.5059 * v + 1.836,
+            lambda v: -2.4432 * v + 2.792,
+            lambda v: -0.0859 * v + 0.194,
+        ]
+        return np.piecewise(v, condlist, funclist)
+
+    da_si_velocity = xr.apply_ufunc(
+        calculate_si_velocity,
+        da_depth_averaged_hvel_mag_daily_max_at_face,
+        output_dtypes=float,
+        dask="parallelized",
     )
+
+    def calculate_si_salinity(v):
+        condlist = [
+            v < 0.195,
+            (v < 0.448) * (v >= 0.195),
+            (v < 0.723) * (v >= 0.448),
+            (v < 0.802) * (v >= 0.723),
+            (v < 0.839) * (v >= 0.802),
+            (v < 0.949) * (v >= 0.839),
+            v >= 0.949,
+        ]
+        funclist = [
+            lambda v: 0.1537 * v + 0.069,
+            lambda v: 0.7937 * v - 0.055,
+            lambda v: 0.7273 * v - 0.025,
+            lambda v: 2.5386 * v - 1.334,
+            lambda v: 5.3637 * v - 3.600,
+            lambda v: 0.8902 * v + 0.155,
+            1.0,
+        ]
+        return np.piecewise(v, condlist, funclist)
+
+    da_si_salinity = xr.apply_ufunc(
+        calculate_si_salinity,
+        da_daily_salinity_fraction_under_6_at_face,
+        output_dtypes=float,
+        dask="parallelized",
+    )
+
+    da_hsi = 0.67 * da_si_salinity + 0.33 * da_si_velocity
     da_hsi_final = (1.0 - 0.6 * da_probability) * da_hsi * da_si_temperature
     da_hsi_final.name = "hsi"
     da_hsi_final.attrs["units"] = "dimensionless"
