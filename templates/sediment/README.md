@@ -14,18 +14,10 @@ See CHANGES.md to find out changes.
   - It is recommended that `schipmy` is installed in an environment that supports Anaconda and python 3 features on HPC (http://dwrrhapp0179.ad.water.ca.gov/gitea/knam/hpc2_conda_environments)
   - To install `schimpy`, first navigate to the folder containing the source code, then type in
   ``
-  git checkout 5f6eb51
-  ``
-  to select the correct version is installed. Then, type in
-  ``
   pip install -e .
   ``
 - Another required package is `dms_datastore`, which is used to download time series from the web. The source code of `dms_datastore` is also available at [Github](https://github.com/CADWRDeltaModeling/dms_datastore).
   - To install `dms_datastore`, first navigate to the folder containing the source code, then type in
-  ``
-  git checkout fe52928
-  ``
-  to select the correct version is installed. Then, type in
   ``
   pip install -e .
   ``
