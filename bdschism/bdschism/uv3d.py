@@ -198,10 +198,10 @@ def main():
     subprocess.run("cp " + interp_template + " ", shell=True)
 
     # Create symbolic links
-    subprocess.run("ln -sf " + hgrid_bg + " bg.gr3", shell=True)
-    subprocess.run("ln -sf " + hgrid_fg + " fg.gr3", shell=True)
-    subprocess.run("ln -sf " + vgrid_bg + " vgrid.bg", shell=True)
-    subprocess.run("ln -sf " + vgrid_fg + " vgrid.fg", shell=True)
+    os.symlink(hgrid_bg, "bg.gr3")
+    os.symlink(hgrid_fg, "fg.gr3")
+    os.symlink(vgrid_bg, "vgrid.bg")
+    os.symlink(vgrid_fg, "vgrid.fg")
 
     # Place interpolate_variables.in in the outputs folder
 
