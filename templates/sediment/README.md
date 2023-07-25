@@ -43,12 +43,14 @@ Follow the steps below to prepare common model settings.
     - Open the file and specify the file path (bds_home) and start date as necessary.
     - Run `multi_clip.py`.
   - Create an ocean surface boundary time series file, `elev2D.th.nc`.
-    - A script in the following steps uses tools from `schimpy`. Please set up the package in your Python environment.
-    - Navigate into `scripts` directory, and run `generate_elev2d.py`.
+    - Copy `BayDeltaSCHISM/bdschism/bdschism/elev2D.bat` into the working directory.
+    - Open the batch file and specify the values for the function arguments.
+    - Run the batch file. In a Linux environment, use `bash elev2D.bat`.
   - Generate links to atmospheric data
-    - Create `sflux` folder, and copy `BayDeltaSCHISM/template/bay_delta/sflux_inputs.txt` into it.
-    - Navigate into the `sflux` folder. Run `BayDeltaSCHISM/template/bay_delta/make_links_full.py`. The file contains hard-wired dates and locations of data files for DWR HPCs. Update the codes if necessary.
-  - Generate `station.in` by running `station` in schimpy environment.
+    - Create `sflux` folder, and copy `sflux_inputs.txt` and `make_links_full.py` from `BayDeltaSCHISM/template/bay_delta/` into it.
+    - Navigate into the `sflux` folder, and run `make_links_full.py`. The file contains hard-wired dates and locations of data files for DWR HPCs. Modify the script as necessary.
+    - Remove the descriptive suffixes from the filenames for `msource.th`, `vsource.th`, and `vsink.th`.
+  - Navigate back into the working directory and generate `station.in` by running `station` in schimpy environment.
 
 ### Run a 2D hydrodynamics simulation.
   - Create `outputs` directory if it does not exists.
