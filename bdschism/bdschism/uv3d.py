@@ -2,6 +2,8 @@ import argparse
 from schimpy import param
 import subprocess
 import os
+import shutil
+import errno
 
 
 def uv3d(
@@ -37,7 +39,7 @@ def uv3d(
         Name of output directory in background. If None, will try outputs.tropic then outputs
 
     fg_dir : str
-        Name of foreground oclinic run directory. If None, will copy from tropic_dir
+        Name of foreground baroclinic run directory. If None, will copy from tropic_dir
 
     hgrid_bg : str
         Name of hgrid.gr3 file in tropic_, which will be linked to bg.gr3 This will almost never change,
@@ -155,6 +157,18 @@ def create_arg_parser():
     return parser
 
 
+def symlink_force(target, link_name):
+    """Force-create symbolic links ('ln -sf' in Linux)"""
+    try:
+        os.symlink(target, link_name)
+    except OSError as e:
+        if e.errno == errno.EEXIST:
+            os.remove(link_name)
+            os.symlink(target, link_name)
+        else:
+            raise
+
+
 def main():
     """Main function"""
     parser = create_arg_parser()
@@ -171,45 +185,97 @@ def main():
     nday = args.nday
     write_clinic = args.write_clinic
 
+    #
     # Parse param.nml
+    #
     params = param.read_params(param_nml)
 
     #
-    # Assign values to parameters if None given
+    # Validate directory paths
     #
+
+    # bg_dir
+    try:
+        assert os.path.exists(bg_dir)
+    except AssertionError:
+        print("Path does not exist: " + bg_dir)
+    bg_dir = os.path.abspath(bg_dir)
+
+    # bg_output_dir
     if bg_output_dir is None:
-        if os.path.exists("outputs.tropic"):
+        if os.path.exists(os.path.join(bg_dir, "outputs.tropic")):
             bg_output_dir = "outputs.tropic"
-        elif os.path.exists("outputs"):
+        elif os.path.exists(os.path.join(bg_dir, "outputs")):
             bg_output_dir = "outputs"
         else:
-            raise ValueError("bg_output_dir does not exist!")
+            print("Invalid path:" + bg_output_dir)
+            raise ValueError
 
+    # Directory in which interpolate_variables executable will be run
+    interp_dir = os.path.join(bg_dir, bg_output_dir)
+    try:
+        assert os.path.exists(interp_dir)
+    except AssertionError:
+        print("Path does not exist: " + interp_dir)
+
+    # fg_dir
+    if fg_dir is None:
+        fg_dir = bg_dir
+
+    #
+    # Make sure "interpolate_variables.in" is present
+    #
     if interp_template is None:
-        # Generate interpolate_variables.in?
-        raise NotImplementedError("interpolate_variables does not exist!")
+        if nday is None:
+            nday = params["rnday"]
 
-    if nday is None:
-        nday = params["rnday"]
+        f = open(os.path.join(interp_dir, "interpolate_variables.in"), "w")
+        f.write(f"3 {nday}\n")
+        f.write("1 1\n")
+        f.write("0")
+        f.close()
+
+    else:
+        if os.path.abspath(interp_template) == os.path.join(
+            interp_dir, "interpolate_variables.in"
+        ):
+            pass
+
+        else:
+            print(
+                os.path.abspath(interp_template)
+                + "\ncopied to\n"
+                + os.path.join(interp_dir, "interpolate_variables.in")
+            )
+            shutil.copy(
+                interp_template, os.path.join(interp_dir, "interpolate_variables.in")
+            )
+
+        if nday is not None:
+            print("Argument 'nday' is not accepted when interp_template is specified.")
+            raise ValueError
 
     #
-    # Place a copy of interpolate_variables.in in the output folder
-    #
-    subprocess.run("cp " + interp_template + " ", shell=True)
-
     # Create symbolic links
-    os.symlink(hgrid_bg, "bg.gr3")
-    os.symlink(hgrid_fg, "fg.gr3")
-    os.symlink(vgrid_bg, "vgrid.bg")
-    os.symlink(vgrid_fg, "vgrid.fg")
+    #
+    symlink_force(os.path.join(bg_dir, hgrid_bg), os.path.join(interp_dir, "bg.gr3"))
+    symlink_force(os.path.join(bg_dir, hgrid_fg), os.path.join(interp_dir, "fg.gr3"))
+    symlink_force(os.path.join(bg_dir, vgrid_bg), os.path.join(interp_dir, "vgrid.bg"))
+    symlink_force(os.path.join(bg_dir, vgrid_fg), os.path.join(interp_dir, "vgrid.fg"))
 
-    # Place interpolate_variables.in in the outputs folder
-
+    """
+    #
     # Load SCHISM module and execute interpolate_variables
-    # subprocess.run("module purge", shell=True)
-    # subprocess.run("module load schism/5.10_intel2022.1", shell=True)
-    # subprocess.run("ulimit -s unlimited", shell=True)
-    # subprocess.run("interpolate_variables8", shell=True)
+    #
+    os.chdir(interp_dir)
+    subprocess.run("module purge", shell=True)
+    subprocess.run("module load schism/5.10_intel2022.1", shell=True)
+    subprocess.run(["ulimit","-s","unlimited"], shell=True)
+    subprocess.run(["interpolate_variables8"], shell=True)
+
+    if write_clinic == True:
+        shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(bg_dir, "uv3D.th.nc"))
+    """
 
 
 if __name__ == "__main__":
