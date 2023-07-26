@@ -69,15 +69,13 @@ def main(coarse_path, fine_path, map_path):
         fine_nodes_not_found.sort()
         coarse_nodes_nearest = xr.apply_ufunc(lambda p: coarse_mesh.node_strtree.nearest(p),
                                               fine_nodes.isel(
-                                                  nSCHISM_hgrid_node=fine_nodes_not_found),
+                                                  nMesh2_node=fine_nodes_not_found),
                                               vectorize=True,
                                               dask="parallelized")
         map_to_coarse_nodes[fine_nodes_not_found, 0] = coarse_nodes_nearest
 
     da_map_to_coarse_nodes = xr.DataArray(map_to_coarse_nodes,
-                                          dims=('nSCHISM_hgrid_node', 'three'),
-                                          coords={'nSCHISM_hgrid_node':
-                                                  fine_mesh.ds.nSCHISM_hgrid_node},
+                                          dims=('nMesh2_node', 'three'),
                                           attrs={'_FillValue': -1,
                                                  'start_index': 0},
                                           name='map_to_coarse_nodes')
@@ -100,8 +98,8 @@ def main(coarse_path, fine_path, map_path):
 
     chunk_size = None
     da_weight = xr.apply_ufunc(_calculate_weight,
-                               da_map_to_coarse_nodes.chunk({'nSCHISM_hgrid_node': chunk_size}),
-                               fine_nodes.chunk({'nSCHISM_hgrid_node': chunk_size}),
+                               da_map_to_coarse_nodes.chunk({'nMesh2_node': chunk_size}),
+                               fine_nodes.chunk({'nMesh2_node': chunk_size}),
                                input_core_dims=[['three'], []],
                                output_core_dims=[['three']],
                                dask='parallelized',
