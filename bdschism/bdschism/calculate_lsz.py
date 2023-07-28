@@ -59,11 +59,14 @@ def main():
     thresholds = [6.0, 7.0]
     for threshold in thresholds:
         logging.info(f"Calculating LSZ less than {threshold}...")
-        da_salinity_less_than_threshold = xr.where(
-            da_depth_averaged_salinity_at_face < threshold, 1.0, 0.0
-        )
-        da_salinity_less_than_threshold_daily = (
-            da_salinity_less_than_threshold.resample(time="1D", origin="start").mean()
+        da_salinity_interp = da_depth_averaged_salinity_at_face.chunk(
+            {"time": -1, "nMesh2_face": 2000}
+        ).interpolate_na(dim="time", limit=4)
+        da_salinity_daily = da_salinity_interp.resample(
+            time="1D", origin="start", skipna=False
+        ).mean()
+        da_salinity_less_than_threshold_daily = xr.where(
+            da_salinity_daily < threshold, 1.0, 0.0
         )
         da_salinity_less_than_threshold_daily = shift_30min_up(
             da_salinity_less_than_threshold_daily
