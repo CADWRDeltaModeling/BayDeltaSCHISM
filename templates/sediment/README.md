@@ -65,11 +65,9 @@ Follow the steps below to prepare common model settings.
   - Add sediment information to input files. Some of the input files used in the previous steps do not include sediment information, and sediment information needs to be augmented as follows:
     * Add sediment information to `msource.th` by running `add_sed_to_msource.py`: Run `python scripts/add_sed_to_msource.py --n_sediments 3` in the study directory. This will create `msource_sed.th` with island return flow sediment concentrations that use ambient suspended sediment concentrations. Rename `msource_sed.th` to `msource.th`.
   - Create an initial condition file, `hotstart.nc`:
-    - Run `create_hotstart_sed.py`.
-      - First, navigate into `scripts` directory, then run `hotstart_get_time_slice.py` to generate timeseries pertaining to the Delta.
-      - Following files are also required (specified in `hotstart_sed.yaml`):
-        - `usgs_cruise_station.txt`: It is available from the `BayDeltaSCHISM` repository. The file is copied to `scripts` for convenience.
-        - `usgs_2015_11_18.txt`: Field data from the USGS Polaris cruise. This one can be found in `scripts` directory.
+    - First, navigate into `scripts` directory, then run `hotstart_get_time_slice.py` to generate timeseries pertaining to the Delta.
+    - In the working directory, create a link to `sediment.nml.3d` as `sediment.nml`.
+    - Run `create_hotstart_sed.py` in the working directory.
     - Rename `hotstart_sed.nc` to `hotstart.nc`. Be careful as not to overwrite existing `hotstart.nc`.
 
 ### Run the 3D hydrodynamics with sediment option.

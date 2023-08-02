@@ -18,7 +18,7 @@ hotstart:
         initializer:
             patch_init:
                 smoothing: False
-                regions_filename: /scratch/dms/knam/repos/schimpy_build/examples/schism_hotstart/shapefile/RegionsPolygon.shp # the attribute 'region' in the shapefile needs to match with the region values below.
+                regions_filename: ../../examples/hotstart/shapefile/hotstart_regions.shp # the attribute 'region' in the shapefile needs to match with the region values below.
                 regions:
                   - region: ocean
                     initializer:
@@ -27,7 +27,7 @@ hotstart:
                   - region: estuary
                     initializer:
                         extrude_casts:
-                            station: /scratch/dms/knam/repos/schimpy_build/examples/schism_hotstart/data_in/USGS_polaris_station_locations_xy.csv
+                            station: ../../examples/hotstart/data_in/usgs_polaris_station_locations_xy.csv
                             # data: /home/knam/repos/schimpy/examples/schism_hotstart/data/polaris_2015_2019.csv
                             data: ./scripts/usgs_2015_11_18.txt
                             variable: Temperature
@@ -36,11 +36,22 @@ hotstart:
                         obs_points:
                             data: ./scripts/all_stations_temperature_2015-11-18.csv
                             variable: 'temperature'
+                  - region: suisun_marsh
+                    initializer:
+                        obs_points:
+                            data: ./hotstart_data_temperature.csv
+                            variable: 'temperature'
+                  - region: suisun_bay
+                    initializer:
+                        extrude_casts:
+                            station: ../../examples/hotstart/data_in/usgs_polaris_station_locations_xy.csv
+                            data: //nasbdo/modeling_data/usgs_cruise/usgs_cruise_2015.csv
+                            variable: "Temperature (Degrees Celsius)"
     salinity:
         initializer:
             patch_init:
                 smoothing: False
-                regions_filename: /scratch/dms/knam/repos/schimpy_build/examples/schism_hotstart/shapefile/RegionsPolygon.shp
+                regions_filename: ../../examples/hotstart/shapefile/hotstart_regions.shp
                 regions:
                   - region: ocean
                     initializer:
@@ -49,7 +60,7 @@ hotstart:
                   - region: estuary
                     initializer:
                         extrude_casts:
-                            station: /scratch/dms/knam/repos/schimpy_build/examples/schism_hotstart/data_in/USGS_polaris_station_locations_xy.csv
+                            station: ../../examples/hotstart/data_in/usgs_polaris_station_locations_xy.csv
                             # data: /home/knam/repos/schimpy/examples/schism_hotstart/data_in/polaris_2015_2019.csv
                             data: ./scripts/usgs_2015_11_18.txt
                             variable: Salinity
@@ -58,6 +69,17 @@ hotstart:
                         obs_points:
                             data: ./scripts/all_stations_salinity_2015-11-18.csv
                             variable: 'salinity'
+                  - region: suisun_marsh
+                    initializer:
+                        obs_points:
+                            data: ./hotstart_data_salinity.csv
+                            variable: 'salinity'
+                  - region: suisun_bay
+                    initializer:
+                        extrude_casts:
+                            station: ../../examples/hotstart/data_in/usgs_polaris_station_locations_xy.csv
+                            data: //nasbdo/modeling_data/usgs_cruise/usgs_cruise_2015.csv
+                            variable: Salinity
     velocity_u:
         initializer:
             simple_trend:

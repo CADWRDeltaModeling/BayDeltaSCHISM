@@ -1,5 +1,4 @@
 Date,Time,Station Number,Depth,Salinity,Temperature
-MM/DD/YYYY,24 hr.,,[meters],[psu],[°C]
  11/18/2015,0645,18.0,1.0,30.22,14.45
  11/18/2015,0645,18.0,2.0,31.10,14.31
  11/18/2015,0645,18.0,3.0,31.76,14.23

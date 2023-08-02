@@ -17,7 +17,7 @@ modules = ['TEM', 'SAL', 'SED']
 hotstart_fn = "hotstart_sed.nc"  # output hotstart file
 
 # create a hotstart file for SCHISM
-h = sh.hotstart(yaml_fn, modules=modules)
+h = sh.hotstart(yaml_fn, modules=modules, crs ='EPSG:26910')
 h.create_hotstart()
 hnc = h.nc_dataset
 hnc.to_netcdf(hotstart_fn)
