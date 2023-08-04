@@ -10,7 +10,7 @@ nudging:
     output_suffix: 'obsroms' # the suffix for output files, e.g, TEM nudging file will be named 'TEM_nu_obsroms.nc' and 'temperature_nudge_obsroms.nc'
     polygons:
       - name: ocean
-        type: roms
+        type: 3dfield
         attribute: max(0., min(1. / 2. / 86400., 1. / 2. / 86400. * (((x - 542699.) ** 2 / 32.3e3 / 32.3e3 + (y - 4183642.) **2 / 32.3e3 / 32.3e3) - 1.) / ((41.e3 / 32.3e3) ** 2 - 1.)))
         vertices:
             - [497085, 4213519]
@@ -20,13 +20,16 @@ nudging:
             - [496487, 4137742]
         interpolant: 
             method: nearest
-            data: //nasbdo/modeling_data/roms/cencoos_ca_roms/raw/cencoos_ca_roms_das_  #this should only be a path for ROMS data.
+            data: /nasbdo/modeling_data/roms/cencoos_ca_roms/processed/cencoos_hourly_pst
             dt: 1H  #time step in the input nc file.
+            vcoords: Z    # Z coordinates or S coordinates. For Z coordinates,
             variables: 
                 - name: temperature
+                  varname: temp
                   none_values: 10 # values for pts outside bg grid in nc
                   offset: 0.0 #only for temperature (optional).
                 - name: salinity
+                  varname: salt
                   none_values: 33.5           
       - name: obs_region  #define multiple points of observation at the same time . 
         type: obs  # mutliple observational points
