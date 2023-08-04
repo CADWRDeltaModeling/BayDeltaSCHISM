@@ -1,51 +1,51 @@
 nudging:
-    start_date: 2015-11-18
-    rnday: 90  #total run time in days
-    step_nu_tr: 1H
-    hgrid_input_file: ../hgrid.gr3
-    vgrid_input_file: ../vgrid.in.3d
-    vgrid_version: '5.10'
-    default: 0.
-    crs: 'EPSG:26910' #this is the default crs for the bay-delta system. 
-    output_suffix: 'obsroms' # the suffix for output files, e.g, TEM nudging file will be named 'TEM_nu_obsroms.nc' and 'temperature_nudge_obsroms.nc'
-    polygons:
-      - name: ocean
-        type: 3dfield
-        attribute: max(0., min(1. / 2. / 86400., 1. / 2. / 86400. * (((x - 542699.) ** 2 / 32.3e3 / 32.3e3 + (y - 4183642.) **2 / 32.3e3 / 32.3e3) - 1.) / ((41.e3 / 32.3e3) ** 2 - 1.)))
-        vertices:
-            - [497085, 4213519]
-            - [531756, 4214317]
-            - [550885, 4170246]
-            - [552280, 4136745]
-            - [496487, 4137742]
-        interpolant: 
-            method: nearest
-            data: /nasbdo/modeling_data/roms/cencoos_ca_roms/processed/cencoos_hourly_pst
-            dt: 1H  #time step in the input nc file.
-            vcoords: Z    # Z coordinates or S coordinates. For Z coordinates,
-            variables: 
-                - name: temperature
-                  varname: temp
-                  none_values: 10 # values for pts outside bg grid in nc
-                  offset: 0.0 #only for temperature (optional).
-                - name: salinity
-                  varname: salt
-                  none_values: 33.5           
-      - name: obs_region  #define multiple points of observation at the same time . 
-        type: obs  # mutliple observational points
-        vertices: None
-        attribute: 
-            kernel: gaussian
-            xy: ./obs_xy.csv     #or obs.nc; must include ['site','x','y'] in the key.             
-            length_scale: 1000
-            time_scale: 1H
-        interpolant: 
-            method: inverse_distance #interpolate using inverse distance weighing from obs of multiple points; nearest can also be used here.            
-            data: 
-            variables: 
-                - name: temperature
-                  data: ./nudging_data_temperature.csv  #this could be a csv file or a netcdf file (time series required). 
-                  none_values: ambient
-                - name: salinity
-                  data: ./nudging_data_salinity.csv
-                  none_values: ambient
+  start_date: 2015-11-18
+  rnday: 90 #total run time in days
+  step_nu_tr: 1H
+  hgrid_input_file: ../hgrid.gr3
+  vgrid_input_file: ../vgrid.in.3d
+  vgrid_version: "5.10"
+  default: 0.
+  crs: "EPSG:26910" #this is the default crs for the bay-delta system.
+  output_suffix: "obsroms" # the suffix for output files, e.g, TEM nudging file will be named 'TEM_nu_obsroms.nc' and 'temperature_nudge_obsroms.nc'
+  polygons:
+    - name: ocean
+      type: 3dfield
+      attribute: max(0., min(1. / 2. / 86400., 1. / 2. / 86400. * (((x - 542699.) ** 2 / 32.3e3 / 32.3e3 + (y - 4183642.) **2 / 32.3e3 / 32.3e3) - 1.) / ((41.e3 / 32.3e3) ** 2 - 1.)))
+      vertices:
+        - [497085, 4213519]
+        - [531756, 4214317]
+        - [550885, 4170246]
+        - [552280, 4136745]
+        - [496487, 4137742]
+      interpolant:
+        method: nearest
+        data: /nasbdo/modeling_data/roms/cencoos_ca_roms/processed/cencoos_hourly_pst
+        dt: 1H #time step in the input nc file.
+        vcoords: Z # Z coordinates or S coordinates. For Z coordinates,
+        variables:
+          - name: temperature
+            varname: temp
+            none_values: 10 # values for pts outside bg grid in nc
+            offset: 0.0 #only for temperature (optional).
+          - name: salinity
+            varname: salt
+            none_values: 33.5
+    - name: obs_region #define multiple points of observation at the same time .
+      type: obs # mutliple observational points
+      vertices: None
+      attribute:
+        kernel: gaussian
+        xy: ./obs_xy.csv #or obs.nc; must include ['site','x','y'] in the key.
+        length_scale: 1000
+        time_scale: 1H
+      interpolant:
+        method: inverse_distance #interpolate using inverse distance weighing from obs of multiple points; nearest can also be used here.
+        data:
+        variables:
+          - name: temperature
+            data: ./nudging_data_temperature.csv #this could be a csv file or a netcdf file (time series required).
+            none_values: ambient
+          - name: salinity
+            data: ./nudging_data_salinity.csv
+            none_values: ambient
