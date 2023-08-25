@@ -1,0 +1,1 @@
+This directory contains scripts and polygons used for suitable habitat calculations. Some overlap with material in the main bdschism directory, which we hopefullly will thin out.

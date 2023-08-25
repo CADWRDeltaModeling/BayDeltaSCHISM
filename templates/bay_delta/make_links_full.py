@@ -17,6 +17,8 @@ def make_links():
     dt = datetime.timedelta(days=1)
     end = datetime.date(eyear,emonth,eday)
     current = start
+    if (current >= end):
+        print(f'ERROR: Start date {start.strftime("%b %d, %Y")} is after end date {end.strftime("%b %d, %Y")}')
     nfile = 0
     while (current <= end):
         # Air data

@@ -1,0 +1,87 @@
+# Main input file for default bay_delta template based on version 110 of the mesh
+# Note that there are both hist and "current condition" (cc) versions of some files
+# You will need to copy station_flow_xsects from the /data directory as well as the 
+# mesh file
+
+mesh:
+  mesh_inputfile: bay_delta_110_hist.2dm
+  split_quad:
+    minangle: 30.
+    maxangle: 140.
+    propfile: split_quad.prop
+  small_areas:
+    warn: 10.
+    fail: 4.  
+  # includes restoration sites at top of list
+  dem_list: !include dem_4.2_hist_hpc.yaml
+  depth_optimization: !include depth_opt_params.yaml
+  open_boundaries: !include open_boundary.yaml
+  depth_enforcement: !include depth_enforcement.yaml   # Introduced as depth_enforcement_itp_suisunshallow2.yaml  
+  ll_outputfile: hgrid.ll
+  gr3_outputfile: hgrid.gr3
+
+# Note this file is in the /data directory and relative location needs to be set
+flow_outputs:
+#  include: station_flow_xsects.yaml
+  include: flow_station_xsects.yaml
+  outputfile: fluxflag.prop
+
+gr3:
+  xlsc.gr3:
+    default: 0.1
+  diffmin.gr3: !include diffmin.yaml # Updated 110b
+  rough.gr3: !include rough.yaml     # Updated 110b
+
+  #  default: 1.5e-5
+  diffmax.gr3:
+    default: 1.0
+  windrot_geo2proj.gr3:
+    default: 0.0
+  windfactor.gr3: !include windfactor.yaml   # Updated 110b
+  manning.gr3:
+    default: 0.025
+  elev.ic: !include elev.yaml
+  estuary.gr3: !include estuary.yaml      # Introduced as estuary3 during SLR study, biggger area
+  SAL_nudge.gr3: !include SAL_nudge.yaml
+  TEM_nudge.gr3: !include TEM_nudge.yaml
+#  sav_N.gr3: !include veg_density_sherman.yaml
+#  sav_D.gr3: !include veg_diameter_sherman.yaml
+#  sav_h.gr3: !include veg_height_sherman.yaml
+  krvel.gr3: !include krvel.yaml
+  #rough.gr3:     # Approximately what Works with GOTM k-eps. Documentation pending
+  #  default: 4.e-5
+  #diffmin.gr3:   # Approximately what works with GOTM k-eps. Documentation pending
+  #  default: 1.e-5  
+  albedo.gr3:
+    default: 0.1
+  watertype.gr3:
+    default: 7.
+  bedthick.ic:
+    default: 1.0
+  bed_frac_1.ic:
+    default: 0.1
+  bed_frac_2.ic:
+    default: 0.4
+  bed_frac_3.ic:
+    default: 0.5
+  SED_hvar_1.ic:
+    default: 0.
+  SED_hvar_2.ic:
+    default: 0.
+  SED_hvar_3.ic:
+    default: 0.
+prop:
+  tvd.prop: !include tvd.yaml
+hydraulics:
+  include: hydraulic_structures.yaml    # Includes West False River 2015 installation
+  outputfile: hydraulics.in
+sources_sinks:
+  # Includes Delta and Suisun, including distribution modifications in 2020.
+  # See the _2019 variant for older locations  
+  include: source_sink.yaml  
+  outputfile: source_sink.in
+vgrid:
+    vgrid_out: vgrid.in.3d
+    minmaxlayerfile: minmaxlayer_slr_0_mod105.shp 
+    eta: 1.5
+    vgrid_version: "5.10"

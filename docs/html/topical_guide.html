@@ -10,13 +10,11 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Overview of Basic Bay-Delta SCHISM Run" href="topics/overview.html" />
+    <link rel="next" title="Basic Checklists" href="topics/overview.html" />
     <link rel="prev" title="Learning Resources for Bay-Delta SCHISM" href="learning.html" /> 
   </head><body>
 
@@ -31,7 +29,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="topics/overview.html" title="Overview of Basic Bay-Delta SCHISM Run"
+          <a href="topics/overview.html" title="Basic Checklists"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="learning.html" title="Learning Resources for Bay-Delta SCHISM"
@@ -58,7 +56,7 @@
   <div>
     <h4>Next topic</h4>
     <p class="topless"><a href="topics/overview.html"
-                          title="next chapter">Overview of Basic Bay-Delta SCHISM Run</a></p>
+                          title="next chapter">Basic Checklists</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -107,10 +105,27 @@
 <li class="toctree-l2"><a class="reference internal" href="getmodel.html#links-to-tools">Links to tools</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="topics/overview.html">Overview of Basic Bay-Delta SCHISM Run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/overview.html">Basic Checklists</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="topics/overview.html#running-a-processed-setup">Running a Processed Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/overview.html#simple-hindcast-runs">Simple Hindcast Runs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/overview.html#cbox-choose-run-dates">☐ Choose run dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/overview.html#cbox-apply-template-to-existing-mesh">☐ Apply template to existing mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/overview.html#cbox-collect-time-series-inputs">☐ Collect time series inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/overview.html#cbox-hotstart-can-be-concurrent-with-barotropic">☐ Hotstart (can be concurrent with barotropic)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/overview.html#cbox-nudging-can-be-concurrent-with-barotropic">☐ Nudging (can be concurrent with barotropic)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/overview.html#cbox-barotropic-warmup">☐ Barotropic warmup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/overview.html#cbox-baroclinic-simulation">☐ Baroclinic simulation</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="topics/vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="topics/vignette.html#windows">Windows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="topics/vignette.html#linux">Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/vignette.html#linux">Linux</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/vignette.html#barotropic">Barotropic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/vignette.html#baroclinic">Baroclinic</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="topics/preprocess.html">Study Templates and Preprocessing</a><ul>
@@ -125,11 +140,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="topics/ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="topics/flow_boundary.html">Flow boundaries</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#where-is-the-data">Where is the data?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#what-files-do-i-need">What files do I need?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/flow_boundary.html">Inflow/Outflow Boundaries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#where-are-the-data">Where are the data?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#clipping-to-run-dates-and-conversion-to-elapsed-time">Clipping to run dates and conversion to elapsed time</a></li>
-<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#what-if-i-have-to-add-a-boundary">What if I have to add a boundary?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#what-if-i-have-to-add-or-move-a-boundary">What if I have to add or move a boundary?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/flow_boundary.html#adding-data-from-other-sources-e-g-forecasts-other-models">Adding Data From Other Sources (e.g. Forecasts, other models)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="topics/atmospheric.html">Atmospheric setup</a><ul>
@@ -176,10 +191,15 @@
 <li class="toctree-l2"><a class="reference internal" href="topics/param.html#what-happens-when-schism-versions-get-advanced">What happens when SCHISM versions get advanced?</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="topics/hotstart.html">Hotstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#when-do-you-need-a-hotstart">When do you need a hotstart?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#creating-a-hotstart-for-hydro-salt-temp">Creating a Hotstart for Hydro/Salt/Temp</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/hotstart.html#just-checking">Just checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/hotstart.html">Run Initialization and Restart (Hotstart)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#when-do-you-need-an-initial-condition-or-hotstart">When do you need an initial condition or hotstart?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#what-is-the-difference-between-a-cold-and-hot-start">What is the difference between a cold and hot start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#combining-hotstarts">Combining hotstarts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#choosing-a-good-start-time">Choosing a good start time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/hotstart.html#schism-hotstart-creating-a-hotstart-for-hydro-salt-temp">schism_hotstart: Creating a Hotstart for Hydro/Salt/Temp</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/hotstart.html#acquiring-the-data">Acquiring the data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/hotstart.html#configuring-the-hotstart-request-yaml">Configuring the Hotstart request (yaml)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/hotstart.html#running-the-hotstart-generator">Running the hotstart generator</a></li>
 </ul>
 </li>
 </ul>
@@ -212,35 +232,17 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Topical Guides and Checklists for Common Extenstions</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="topics/mesh.html">Changing the Mesh</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#getting-to-know-sms">Getting to know SMS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#presentation-basic-meshing-considerations-for-schism">Presentation: basic meshing considerations for SCHISM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#video">Video</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#recap-checklist">Recap/checklist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="topics/mesh.html">Horizontal Mesh</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#meshing">Meshing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#meshing-considerations-for-schism">Meshing considerations for SCHISM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#getting-to-know-sms">Getting to know SMS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#building-the-bay-delta-mesh-the-standard-way">Building the Bay-Delta mesh the standard way</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#presentation-meshing-consideration-for-marshes-and-restoration">Presentation: Meshing consideration for marshes and restoration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc">Merging/Stitching SMS mesh/maps (new work, flooded islands, etc)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#presentation-clip-dems-utility-efficient-use-of-dems-in-sms">Presentation: clip_dems utility … efficient use of DEMS in SMS</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id1">Video</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id2">Recap/checklist</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#presentation-building-and-populating-the-bay-delta-mesh-the-standard-way">Presentation: Building and populating the Bay-Delta mesh the standard way</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id3">Video</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id4">Recap/checklist</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#merging-sms-mesh-map-efforts-new-work-flooded-islands-etc">Merging SMS mesh/map efforts (new work, flooded islands, etc)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#stitching-in-new-work">Stitching in new work</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#adding-flooded-islands">Adding flooded islands</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id5">Video</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#id6">Recap/checklist</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#checklist-after-you-change-the-mesh">Checklist after you change the mesh</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="topics/mesh.html#depth-enforcement">Depth enforcement</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#attaching-boundaries">Attaching boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#vertical-mesh-setup">Vertical mesh setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/mesh.html#checklist-for-after-you-change-the-mesh">Checklist for after you change the mesh</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="topics/problems.html">Common Problems and Diagnosis</a><ul>
@@ -303,7 +305,7 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="topics/overview.html" title="Overview of Basic Bay-Delta SCHISM Run"
+          <a href="topics/overview.html" title="Basic Checklists"
              >next</a> |</li>
         <li class="right" >
           <a href="learning.html" title="Learning Resources for Bay-Delta SCHISM"
@@ -318,7 +320,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2014,2020 California Department of Water Resources.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
     </div>
   </body>
 </html>

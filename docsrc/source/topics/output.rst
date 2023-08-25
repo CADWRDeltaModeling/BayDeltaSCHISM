@@ -25,7 +25,7 @@ Request dense output:
 ---------------------
 
 
-Working with staout_ files
+Working with staout\_ files
 ---------------------------
 
 Working with flux.out files

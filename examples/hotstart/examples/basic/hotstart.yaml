@@ -1,0 +1,87 @@
+hotstart: 
+    date: 2021-04-20
+    hgrid_input_file: ../../data_in/hgrid.gr3               # hgrid needs to be in utm coordinates. 
+    vgrid_input_file: ../../data_in/vgrid.in.3d 
+    vgrid_version: "5.10"
+    elevation:  
+        initializer: 
+            simple_trend: 
+                value: max(0.97,-z-0.01)      #x, y, and z coordinate based equation (x and y are utm based)
+    temperature:
+        initializer: 
+            patch_init: 
+                smoothing: False
+                regions_filename: ../../shapefile/hotstart_regions.shp # the attribute 'region' in the shapefile needs to match with the region values below.
+                # Note that for the shapefile, in the cases when only a small portion of the domain require special treatment, only polygons for these regions need to be defined in the shapefile, and 
+                # the rest of the domain will be automatically assigned a region name 'other'. 
+                allow_overlap: False
+                allow_incomplete: False
+                regions: 
+                  - region: ocean
+                    initializer: 
+                        simple_trend:
+                            value: 14
+                  - region: estuary
+                    initializer: 
+                        extrude_casts: 
+                            station: ../../data_in/USGS_polaris_station_locations_xy.csv
+                            data: ../../data_in/polaris_transect_2021-04-20.csv
+                            variable: "Temperature (Degrees Celsius)"
+                  - region: delta
+                    initializer: 
+                        obs_points:
+                            data: ../../data_in/all_stations_temperature_2021-04-20.csv  
+                            variable: 'temperature'
+                  - region: suisun_marsh
+                    initializer: 
+                        obs_points:
+                            data: ../../data_in/all_stations_temperature_2021-04-20.csv  
+                            variable: 'temperature'       
+                  - region: suisun_bay
+                    initializer: 
+                        obs_points:
+                            data: ../../data_in/all_stations_temperature_2021-04-20.csv  
+                            variable: 'temperature'                            
+    salinity:
+        initializer: 
+            patch_init: 
+                smoothing: False
+                regions_filename: ../../shapefile/hotstart_regions.shp #the attribute 'region' in the shapefile needs to match with the region values below.     
+                regions: 
+                  - region: ocean
+                    initializer: 
+                        simple_trend:
+                            value: 33.5
+                  - region: estuary
+                    initializer: 
+                        extrude_casts: 
+                            station: ../../data_in/USGS_polaris_station_locations_xy.csv
+                            data: ../../data_in/polaris_transect_2021-04-20.csv
+                            variable: Salinity
+                  - region: delta
+                    initializer: 
+                        obs_points:
+                            data: ../../data_in/all_stations_salinity_2021-04-20.csv  
+                            variable: 'salinity'   
+                  - region: suisun_marsh
+                    initializer: 
+                        obs_points:
+                            data: ../../data_in/all_stations_salinity_2021-04-20.csv  
+                            variable: 'salinity'       
+                  - region: suisun_bay
+                    initializer: 
+                        obs_points:
+                            data: ../../data_in/all_stations_salinity_2021-04-20.csv  
+                            variable: 'salinity'                               
+    velocity_u:
+        initializer: 
+            simple_trend:
+                value: 0.0
+    velocity_v:
+        initializer: 
+            simple_trend:
+                values: 0.0  
+    velocity_w:
+        initializer: 
+            simple_trend:
+                values: 0.0 

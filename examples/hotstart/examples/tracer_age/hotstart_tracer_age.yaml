@@ -1,0 +1,61 @@
+hotstart: 
+    date: 2021-04-20
+    hgrid_input_file: ../../data_in/hgrid.gr3               # hgrid needs to be in utm coordinates. 
+    vgrid_input_file: ../../data_in/vgrid.in.3d 
+    vgrid_version: "5.10"
+    param_nml: ./param.nml.clinic # param_nml does not need to be defined unless any of ['SED', 'AGE', 'GEN', 'ECO'] is turned on.
+    elevation:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/hotstart.nc   #only assign source_hgrid and source_vgrid if they are different from the destination grid. 
+    temperature:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/hotstart.nc         
+    salinity:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/hotstart.nc 
+    tke:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/hotstart.nc             
+    velocity_w:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/hotstart.nc             
+    velocity_u:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/hotstart.nc           
+    velocity_v:
+        initializer: 
+            hotstart_nc:
+                data_source: ../../data_in/hotstart.nc        
+    GEN_1:
+        initializer:    
+            patch_init:
+                smoothing: False
+                regions_filename: ../../shapefile/age.shp
+                allow_overlap: True
+                regions:
+                  - region: bay_delta
+                    initializer:
+                        simple_trend:
+                            value: 0.0                  
+                  - region: sdelta
+                    initializer: 
+                        simple_trend:
+                            value: 0.0
+                  - region: sjr
+                    initializer: 
+                        simple_trend:
+                            value: 1.0                          
+    AGE_1:
+        initializer:     
+            simple_trend: 
+                value: 0.0
+    AGE_2:
+        initializer:     
+            simple_trend: 
+                value: 0.0             

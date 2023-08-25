@@ -1,0 +1,13 @@
+#!/bin/bash
+#PBS -q workq
+#PBS -N schism
+#PBS -l select=3:ncpus=24:mpiprocs=24
+#PBS -M jane.doe@water.ca.gov
+#PBS -m abe
+
+n_cores=72
+cd $PBS_O_WORKDIR
+module use /opt/intel/oneapi/modulefiles
+module load compiler/2022.1.0
+module load mpi/2021.6.0
+mpiexec --rsh=ssh -n $n_cores bash ./schism.sh
