@@ -1,14 +1,17 @@
 name: schism
 channels:
   - conda-forge            # Note: the order listed in yaml is not enforced by conda
-  - defaults               # For predictable behavior, set your conda config
+  - nodefaults               # For predictable behavior, set your conda config
   - cadwr-dms
 dependencies:
-  - python>=3.9,<3.10
+  - python>=3.9,<3.12
   - schimpy>=1.6.4         # Recommended for compatibiltiy with current code
   - vtools3>=3.7.5
-  - dms-datastore>=0.0.16
-  - pandas>=1.5            # Below here minimum versions are to reduce solve space
+  - dms-datastore>=0.1.0
+  - pydelmod
+  - pyhecdss
+  - suxarray  
+  - pandas>=2            # Below here minimum versions are to reduce solve space
   - numpy>=1.20
   - xarray>=2022.11
   - netcdf4>=1.5.7
@@ -39,5 +42,3 @@ dependencies:
 #    - "--editable=git+https://github.com/CADWRDeltaModeling/vtools3#egg=vtools3"
 #    - "--editable=git+https://github.com/CADWRDeltaModeling/schimpy#egg=schimpy"
 #    - "--editable=git+https://github.com/CADWRDeltaModeling/dms_datastore#egg=dms_datastore"
-
-
