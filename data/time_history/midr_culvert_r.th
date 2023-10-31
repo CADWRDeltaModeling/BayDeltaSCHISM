@@ -57,13 +57,15 @@ datetime      install ndup op_down   op_up     elev     rad
 2018-11-26T00:00     1    3    1.00    1.00    -0.53    0.61     
 2019-07-03T16:30     1    3    0.00    1.00    -0.53    0.61         
 2019-11-21T00:00     1    3    1.00    1.00    -0.53    0.61     
-2020-05-26T00:00     1    3    0.33    1.00    -0.53    0.61     #  Not sure whether the flapgate that remained open was on righ or left side.    
+2020-05-26T00:00     1    3    0.33    1.00    -0.53    0.61     # Not sure whether the flapgate that remained open was on righ or left side.    
 2020-06-12T00:00     1    3    0.00    1.00    -0.53    0.61         
 2020-11-02T11:00     1    3    1.00    1.00    -0.53    0.61     
 2021-05-15T10:00     1    3    0.00    1.00    -0.53    0.61    # weir closed, all culverts tidally op
 2021-11-08T10:45     1    3    1.00    1.00    -0.53    0.61    # barrier breached
 2022-06-01T16:30     1    3    0.00    1.00    -0.53    0.61    # All flap gates tidal 
 2022-11-17T11:00     1    3    1.00    1.00    -0.53    0.61    # breach
+2023-07-27T13:30     1    3    0.00    1.00    -0.53    0.61    # All flap gates tidal 
+2023-10-31T11:00     1    3    1.00    1.00    -0.53    0.61    # estimated breach date and time
 
 
 
