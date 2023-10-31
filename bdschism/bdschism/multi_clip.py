@@ -31,13 +31,16 @@ multi_file_to_elapsed(inputs,'.',start)
 # However, you may want to restore the versioned names to make the versions easier to figure
 # out later. This will requre symbolic links.
 for inp  in inputs:
-    meta = None
     with open(inp,'r') as f:
         meta = f.readline()
         if not meta.startswith("# version"): 
-            raise ValueError("Version expected in first line of file")
-        meta = meta.split(":")[1].strip().replace("_dated","").replace("_daily","")
-    orig = os.path.split(inp)[1].replace("_dated","").replace("daily","")
-    print(f"Moving {orig} to {meta}")
-    os.replace(orig,meta)    
+            do_rename = False
+            print(f"Version expected in first line of file. Skipping renaming {inp}.")
+        else:
+            do_rename = True
+            meta = meta.split(":")[1].strip().replace("_dated","").replace("_daily","")
+    if do_rename:
+        orig = os.path.split(inp)[1].replace("_dated","").replace("daily","")
+        print(f"Moving {orig} to {meta}")
+        os.replace(orig,meta)
  

@@ -18,6 +18,7 @@ import click
 import xarray as xr
 import suxarray as sx
 import suxarray.helper
+from dask.diagnostics import ProgressBar
 
 
 logging.basicConfig(
@@ -25,6 +26,7 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.INFO,
 )
+ProgressBar().register()
 
 
 @click.command()
@@ -75,7 +77,6 @@ def calculate_depth_average(varname, path_study, date_base, date_start, date_end
         ds = sx.add_topology_variable(ds)
     ds = sx.coerce_mesh_name(ds)
 
-    # grid = sx.Grid(ds)
     sx_ds = sx.Dataset(ds, sxgrid=sx.Grid(ds))
 
     path_depth_averaged_var = f"depth_averaged_{varname}.nc"
@@ -90,6 +91,19 @@ def calculate_depth_average(varname, path_study, date_base, date_start, date_end
     encoding = {f"{da_depth_averaged_var.name}": {"dtype": "float32"}}
     da_depth_averaged_var.to_dataset().to_netcdf(
         path_depth_averaged_var, encoding=encoding
+    )
+
+    chunks = {"time": 48 * 8}
+    da_depth_averaged_var = xr.open_dataset(path_depth_averaged_var, chunks=chunks)[
+        f"depth_averaged_{varname}"
+    ]
+    logger.info("Calculating depth averaged values at face.")
+    da_depth_averaged_var_at_face = sx_ds.face_average(da_depth_averaged_var)
+    da_depth_averaged_var_at_face.name = f"depth_averaged_{varname}_at_face"
+    encoding = {f"{da_depth_averaged_var_at_face.name}": {"dtype": "float32"}}
+    path_depth_averaged_var_at_face = f"depth_averaged_{varname}_at_face.nc"
+    da_depth_averaged_var_at_face.to_dataset().to_netcdf(
+        path_depth_averaged_var_at_face, encoding=encoding
     )
 
     logger.info("Finished calculating depth averaged values.")

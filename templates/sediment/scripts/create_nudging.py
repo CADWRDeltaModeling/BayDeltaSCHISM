@@ -6,13 +6,13 @@ visualize the results.
 @author: zzhang
 """
 
-from schimpy import schism_nudging
+from schimpy import nudging
 from schimpy.schism_mesh import read_mesh
 import xarray as xr
 import matplotlib.pyplot as plt
 
 yaml_fn = 'nudge_obs_roms.yaml'
 
-nudging = schism_nudging.nudging(yaml_fn,proj4 ='EPSG:32610')
+nudging = nudging.nudging(yaml_fn,proj4 ='EPSG:32610')
 nudging.read_yaml()
 nudging.create_nudging()
