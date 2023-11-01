@@ -540,4 +540,20 @@ datetime install ndup op_down op_up elev width height
 2022-11-18T10:11 1 2 1.0 1.0 -3.42 18.29 10.0     # Rio Vista/salinity
 2022-11-21T10:30 1 2 1.0 1.0 -3.42 18.29  0.0     # Rio Vista
 2022-11-25T09:20 1 2 1.0 1.0 -3.42 18.29 10.0     # Rio Vista/salinity
-2022-11-28T10:00 1 2 1.0 1.0 -3.42 18.29  0.0     # Possible seasonal closing (estimated)
+2022-11-28T10:00 1 2 1.0 1.0 -3.42 18.29  0.0     # Seasonal closing
+2023-06-23T09:50 1 2 1.0 1.0 -3.42 18.29 10.0     # Summer 2023 opening
+2023-09-05T10:07 1 2 1.0 1.0 -3.42 18.29  0.0     # Collinsville salinity requirement
+2023-09-08T10:07 1 2 1.0 1.0 -3.42 18.29 10.0     # Delta salinity/weekend recreation
+2023-09-11T09:41 1 2 1.0 1.0 -3.42 18.29  0.0     # Collinsville salinity requirement
+2023-09-15T09:32 1 2 1.0 1.0 -3.42 18.29 10.0     # Delta salinity/weekend recreation
+2023-09-18T09:45 1 2 1.0 1.0 -3.42 18.29  0.0     # Collinsville salinity requirement
+2023-09-22T09:34 1 2 1.0 1.0 -3.42 18.29 10.0     # Delta salinity/weekend recreation
+2023-09-25T09:55 1 2 1.0 1.0 -3.42 18.29  0.0     # Collinsville salinity requirement
+2023-09-29T09:50 1 2 1.0 1.0 -3.42 18.29 10.0     # Delta salinity/weekend recreation
+2023-10-02T09:52 1 2 1.0 1.0 -3.42 18.29  0.0     # Collinsville salinity requirement
+2023-10-06T09:35 1 2 1.0 1.0 -3.42 18.29 10.0     # Delta salinity/weekend recreation
+2023-10-09T08:42 1 2 1.0 1.0 -3.42 18.29  0.0     # Collinsville salinity requirement
+2023-10-13T09:30 1 2 1.0 1.0 -3.42 18.29 10.0     # Delta salinity/weekend recreation
+2023-10-16T10:13 1 2 1.0 1.0 -3.42 18.29  0.0     # Collinsville salinity requirement
+2023-10-20T10:03 1 2 1.0 1.0 -3.42 18.29 10.0     # Delta salinity/weekend recreation
+2023-11-28T10:00 1 2 1.0 1.0 -3.42 18.29  0.0     # Seasonal closing (estimated)
