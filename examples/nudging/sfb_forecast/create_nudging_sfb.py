@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 
 yaml_fn = 'nudge_roms.yaml'
 
-nudging = nudging.nudging(yaml_fn,proj4 ='EPSG:32610')
+nudging = nudging.nudging(yaml_fn,proj4 ='EPSG:26910')
 nudging.read_yaml()
 nudging.create_nudging()
 r1 = nudging.info['polygons'][0]

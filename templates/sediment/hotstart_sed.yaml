@@ -5,7 +5,7 @@ hotstart:
     vgrid_version: "5.10"
     param_nml: "param.nml.3d"
     output_fn: "hotstart_sed.nc"
-    crs: "EPSG:32610"
+    crs: "EPSG:26910"
     elevation:
         initializer:
             text_init:
