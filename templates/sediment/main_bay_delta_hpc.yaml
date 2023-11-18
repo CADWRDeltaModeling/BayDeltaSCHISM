@@ -70,6 +70,7 @@ gr3:
     default: 0.
   SED_hvar_3.ic:
     default: 0.
+  wwmbnd.gr3: !include wwmbnd.yaml
 prop:
   tvd.prop: !include tvd.yaml
 hydraulics:
