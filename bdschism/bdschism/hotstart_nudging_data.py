@@ -68,7 +68,7 @@ for label_var in all_vars:
             continue
         try:
             subloc='upper' if ndx in add_upper else None
-            meta,ts = read_ts_repo(ndx,var,subloc = subloc,
+            ts = read_ts_repo(ndx,var,subloc = subloc,
                  repo=repo,
                  src_priority='infer')
             ts = ts.loc[sdata:edata]
