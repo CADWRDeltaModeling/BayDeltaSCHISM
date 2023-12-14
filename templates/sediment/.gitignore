@@ -51,6 +51,7 @@ delta_cross_channel.th
 flux.th
 grantline_culvert.th
 grantline_weir.th
+grantline_barrier.th
 midr_culvert_l.th
 midr_culvert_r.th
 midr_weir.th
@@ -66,7 +67,9 @@ oldr_head_barrier.th
 oldr_tracy_culvert.th
 oldr_tracy_weir.th
 west_false_river_barrier_leakage.th
+SAL_nu.nc
 TEM_nu.nc
+hgrid_WWM.gr3
 
 # Run outputs
 *.prop
@@ -80,6 +83,7 @@ systest.dat
 total.dat
 total_TR.dat
 flux.dat
+wwmcheck.nml
 
 # Other run outputs
 *.o*
@@ -102,3 +106,6 @@ scripts/hotstart_data_temperature.csv
 scripts/nudging_data_salinity.csv
 scripts/nudging_data_temperature.csv
 scripts/obs_xy.csv
+
+# Wind data
+glob*

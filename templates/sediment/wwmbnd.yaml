@@ -1,3 +1,4 @@
+default: 0.0
 polygons:
 - attribute: '1.0'
   name: wwmbnd 
@@ -41,3 +42,4 @@ polygons:
     - 4204204.270646523
   - - 502392.7508491184
     - 4204756.70112207
+
