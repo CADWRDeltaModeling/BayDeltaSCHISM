@@ -8,8 +8,10 @@ emonth = 1
 bday = 7
 eday = 1
 
-src_dir = "/scratch/dms/BayDeltaSCHISM/Data/atmos/baydelta_sflux_v20190802"
-src_dir_narr = "/scratch/dms/BayDeltaSCHISM/Data/atmos/NARR"
+src_dir = "/scratch/dms/BayDeltaSCHISM/Data/atmos/baydelta_sflux_v20220916" # HPC4
+#src_dir = "/scratch/data/atmos/baydelta_sflux_v20220916" # HPC5
+src_dir_narr = "/scratch/dms/BayDeltaSCHISM/Data/atmos/NARR" # HPC4
+#src_dir_narr = "/scratch/data/atmos/NARR" # HPC5
 link_dir = os.getcwd()
 
 def make_links():
