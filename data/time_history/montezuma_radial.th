@@ -176,4 +176,11 @@ datetime      install  ndup  op_down   op_up     elev	  width	   height
 2023-06-11T11:13     1    3    0.667    0.667    -6.86    10.97    10.0   # No change radial gate but flashboards opened
 2023-08-14T13:18     1    3    0.667    0.667    -6.86    10.97    10.0   # No change radial gate but flashboards installed for 100TAF
 2023-08-15T00:02     1    3    0.667    0.000    -6.86    10.97    10.0   # Gate 1 closed, other two operating tidally for 100TAF
-2023-10-18T00:01     1    3    0.667    0.667    -6.86    10.97    10.0   # End 100TAF, radial gates open
+2023-10-18T00:01     1    3    0.667    0.667    -6.86    10.97    10.0   # End 100TAF, radial gates open. Ops through end of year approximate
+2023-11-06T07:42     1    3    0.000    0.000    -6.86    10.97    10.0   # Gates closed for refurbishment work.  Gate 3 was installed and Gate 2 was sent for refurbishment.
+2023-11-21T09:42     1    3    0.333    0.333    -6.86    10.97    10.0   # Gate 3 opened to freshen up Montezuma Slough.  Gate 1 is down due an electrical issue. 
+2023-11-27T10:00     1    3    0.333    0.000    -6.86    10.97    10.0   # Manual Tidal operations started for Gate 3 due to rising salinties.  Operations are manual due to downstream water level data being supsect.  Gate 1 is still out due to electrical issues.  
+2023-12-02T13:45     1    3    0.667    0.000    -6.86    10.97    10.0   # Gate 1 fixed and returned to service.   Gates 1 and 3 still in manual operation mode due to problems with downstream sensor.
+2023-12-05T14:00     1    3    0.667    0.000    -6.86    10.97    10.0   # Downstream sensor fixed and Tidal Mode resumed for gate openings.  However, now the velocity meter is malfunctioning and gate openings are manual.  
+2023-12-15T22:42     1    3    0.333    0.000    -6.86    10.97    10.0   # Gate 1 cannot stay open and was closed to prevent damage.  Gate 3 is not opening and closing at the correct times.  Some operators are using manual operations and some are using tidal operations.    
+2023-12-19T15:31     1    3    0.667    0.000    -6.86    10.97    10.0   # The brakes were replaced for Gate 1 and it was returned to service.   Both gates are operated manually due to sensor malfunctions.
