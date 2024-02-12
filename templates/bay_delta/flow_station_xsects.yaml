@@ -39,10 +39,10 @@ linestrings:
   station_name: Holland Cut near Bethel Island
 - agency_id: '11312672'
   coordinates:
-  - - 629198.665
-    - 4192667.414
-  - - 629307.439
-    - 4192471.962
+  - - 629253.000
+    - 4192669.000
+  - - 629341.000
+    - 4192524.000
   name: VCU
   station_id: VCU
   station_name: Victoria Canal near Byron
@@ -93,10 +93,10 @@ linestrings:
   station_name: Middle R near Holt
 - agency_id: '11313200'
   coordinates:
-  - - 627665.421
-    - 4186786.0
-  - - 627741.234
-    - 4186890.13
+  - - 627643.000
+    - 4186818.000
+  - - 627707.000
+    - 4186903.000
   name: GLC
   station_id: GLC
   station_name: Grantline Canal
@@ -138,10 +138,10 @@ linestrings:
   station_name: Sacramento R above Delta Cross Channel
 - agency_id: '11455315'
   coordinates:
-  - - 615289.0
-    - 4233530.0
-  - - 615108.0
-    - 4233660.0
+  - - 615303.8
+    - 4233449.7
+  - - 615085.9
+    - 4233624.3
   name: LIB
   station_id: LIB
   station_name: Cache Slough at Liberty Island
@@ -156,10 +156,10 @@ linestrings:
   station_name: Little Potato Slough at Terminous
 - agency_id: B95400
   coordinates:
-  - - 647104.286
-    - 4185797.343
-  - - 647080.168
-    - 4185886.434
+  - - 647094.31
+    - 4185814.45
+  - - 647083.0
+    - 4185870.01
   name: OH1
   station_id: OH1
   station_name: Old River at Head
@@ -192,10 +192,10 @@ linestrings:
   station_name: Sacramento R at Freeport
 - agency_id: '11455335'
   coordinates:
-  - - 616739.008
-    - 4235055.987
-  - - 616443.732
-    - 4235134.568
+  - - 616745.9
+    - 4235091.4
+  - - 616468.1
+    - 4235156.2
   name: DWS
   station_id: DWS
   station_name: Sacramento R Deep Water Ship Channel Near Rio Vista
@@ -238,19 +238,19 @@ linestrings:
 
 - agency_id: '11313433'
   coordinates:
-  - - 616698.677
-    - 4207960.421
-  - - 616682.199
-    - 4208137.845
+  - - 616715.3
+    - 4207997.7
+  - - 616698.3
+    - 4208116.5
   name: DSJ
   station_id: DSJ
   station_name: Dutch Sl below Jersey Island
 - agency_id: '11336600'
   coordinates:
-  - - 630841.155
-    - 4234146.061
-  - - 630793.781
-    - 4234011.499
+  - - 630847.0
+    - 4234125.9
+  - - 630813.4
+    - 4234015.8
   name: DLC
   station_id: DLC
   station_name: Delta Cross Channel near Walnut Grove
@@ -301,10 +301,10 @@ linestrings:
   station_name: Liberty Cut at Liberty Island near Courtland
 - agency_id: '11303500'
   coordinates:
-  - - 652961.368
-    - 4171664.592
-  - - 653110.701
-    - 4171565.49
+  - - 653008.000
+    - 4171692.000
+  - - 653134.000
+    - 4171595.000
   name: VNS
   station_id: VNS
   station_name: San Joaquin R near Vernalis
@@ -328,10 +328,10 @@ linestrings:
   station_name: Miner Slough at HW 84 Bridge
 - agency_id: '11313440'
   coordinates:
-  - - 616936.777
-    - 4212749.768
-  - - 616989.189
-    - 4213081.138
+  - - 616949.4
+    - 4212795.0
+  - - 616986.12
+    - 4213048.37
   name: FAL
   station_id: FAL
   station_name: False R near Oakley
@@ -355,10 +355,10 @@ linestrings:
   station_name: Turner Cut near Holt
 - agency_id: B95740
   coordinates:
-  - - 647462.704
-    - 4192050.748
-  - - 647513.157
-    - 4192138.803
+  - - 647481.75
+    - 4192053.12
+  - - 647517.86
+    - 4192126.55
   name: BDT
   station_id: BDT
   station_name: San Joaquin River at Brandt Bridge
@@ -373,10 +373,10 @@ linestrings:
   station_name: West Canal near Clifton Court Intake
 - agency_id: TRP
   coordinates:
-  - - 626865.0
-    - 4186430.0
-  - - 626853.0
-    - 4186470.0
+  - - 626874.0
+    - 4186437.0
+  - - 626862.0
+    - 4186464.0
   name: TRP
   station_id: TRP
   station_name: Tracy Pumping Plant
@@ -400,28 +400,28 @@ linestrings:
   station_name: San Joaquin R at Jersey Point
 - agency_id: '11313405'
   coordinates:
-  - - 625222.491
-    - 4203449.917
-  - - 625434.158
-    - 4203416.844
+  - - 625222.000
+    - 4203408.000
+  - - 625424.000
+    - 4203372.000
   name: OBI
   station_id: OBI
   station_name: Old R at Bacon Island
 - agency_id: B95502
   coordinates:
-  - - 634271.89
-    - 4194102.094
-  - - 634301.524
-    - 4194202.107
+  - - 634309.000
+    - 4194103.000
+  - - 634331.000
+    - 4194181.000
   name: MAB
   station_id: MAB
   station_name: 'Middle River above Barrier '
 - agency_id: B95320
   coordinates:
-  - - 637753.873
-    - 4186934.256
-  - - 637752.671
-    - 4187066.547
+  - - 637767.000
+    - 4186962.000
+  - - 637767.000
+    - 4187038.000
   name: GLE
   station_id: GLE
   station_name: Grant Line Canal East
@@ -463,37 +463,37 @@ linestrings:
   station_name: N Mokelumne R near Walnut Grove
 - agency_id: B95050Q
   coordinates:
-  - - 618644.0
-    - 4214196.0
-  - - 618493.0
-    - 4214196.0
+  - - 618623.9
+    - 4214247.9
+  - - 618492.9
+    - 4214246.8
   name: FCT
   station_id: FCT
   station_name: Fisherman's Cut
 - agency_id: OLD
   coordinates:
-  - - 636503.855
-    - 4185230.637  
-  - - 636488.244
-    - 4185298.635
+  - - 636507.000
+    - 4185228.000
+  - - 636502.000
+    - 4185300.000
   name: OLD
   station_id: OLD
   station_name: Old River at Tracy Blvd
 - agency_id: PCO
   coordinates:
-  - - 639774.958
-    - 4185020.134
-  - - 639789.246
-    - 4185098.716
+  - - 639792.000
+    - 4185034.000
+  - - 639795.000
+    - 4185089.000
   name: PCO
   station_id: PCO
   station_name: Paradise Cut Above Old River
 - agency_id: SGA
   coordinates:
-  - - 638963.311
-    - 4184002.355
-  - - 639047.944
-    - 4184018.636
+  - - 638979.000
+    - 4183989.000
+  - - 639036.0
+    - 4184023.0
   name: SGA
   station_id: SGA
   station_name: Sugar Cut at Golden Anchor
@@ -517,10 +517,10 @@ linestrings:
   station_name: Old River upstream of Mountain House Creek
 - agency_id: B95325
   coordinates:
-  - - 638618.
-    - 4186419.
-  - - 638707.
-    - 4186505.
+  - - 638626.000
+    - 4186416.000
+  - - 638709.000
+    - 4186492.000
   name: DGL
   station_id: DGL
   station_name: Doughty Cut above Grant Line Canal
@@ -661,6 +661,33 @@ linestrings:
   name: FMB
   station_id: FMB
   station_name: First Mallard Branch
+- agency_id: WWC
+  coordinates:
+  - - 627005.485
+    - 4197120.0
+  - - 626992.563
+    - 4197290.0
+  name: WWC
+  station_id: WWC
+  station_name: Woodward Cut
+- agency_id: RRC_S
+  coordinates:
+  - - 626844.276
+    - 4200060.0
+  - - 626844.276
+    - 4200116.0
+  name: RRC_S
+  station_id: RRC_S
+  station_name: Railroad Cut South
+- agency_id: RRC_N
+  coordinates:
+  - - 626914.586
+    - 4200150.0
+  - - 626914.586
+    - 4200250.0
+  name: RRC_S
+  station_id: RRC_S
+  station_name: Railroad Cut North
 - comment: Diagnistic, not in station database
   coordinates:
   - - 581350.0
@@ -699,10 +726,10 @@ linestrings:
   station_name: crossover_c12
 - comment: Diagnistic, not in station database
   coordinates:
-  - - 593648.12
-    - 4226916.679
-  - - 593913.223
-    - 4226925.419
+  - - 593742.2
+    - 4226879.0
+  - - 593854.5
+    - 4226927.1
   name: west_nurse_sl
   station_id: west_nurse_sl
   station_name: west_nurse_sl
@@ -726,19 +753,19 @@ linestrings:
   station_name: mzm_gate_downstream
 - comment: Diagnistic, not in station database
   coordinates:
-  - - 597822.398
-    - 4216316.377
-  - - 597920.294
-    - 4216360.033
+  - - 597822.55
+    - 4216323.11
+  - - 597905.34
+    - 4216372.22
   name: mzm_gate_upstream
   station_id: mzm_gate_upstream
   station_name: mzm_gate_upstream
 - comment: Diagnistic, not in station database
   coordinates:
-  - - 584362.184
-    - 4227833.025
-  - - 584389.965
-    - 4227727.192
+  - - 584362.71
+    - 4227805.84
+  - - 584375.36
+    - 4227752.5
   name: connection_st_west
   station_id: connection_st_west
   station_name: connection_st_west
@@ -753,10 +780,10 @@ linestrings:
   station_name: connection_st_east
 - comment: Diagnistic, not in station database
   coordinates:
-  - - 592986.26
-    - 4224686.075
-  - - 592949.218
-    - 4225059.138
+  - - 592950.0
+    - 4224828.1
+  - - 592937.4
+    - 4224978.4
   name: nurse_sl_west
   station_id: nurse_sl_west
   station_name: nurse_sl_west
@@ -764,8 +791,8 @@ linestrings:
   coordinates:
   - - 593576.282
     - 4225344.889
-  - - 593758.845
-    - 4225175.555
+  - - 593695.845
+    - 4225236.555
   name: nurse_sl_east_north
   station_id: nurse_sl_east_north
   station_name: nurse_sl_east_north
@@ -780,10 +807,10 @@ linestrings:
   station_name: nurse_sl_east_south
 - comment: Diagnistic, not in station database
   coordinates:
-  - - 576510.0
-    - 4209337.0
-  - - 575594.0
-    - 4211015.0
+  - - 576921.0
+    - 4209649.4
+  - - 576093.4
+    - 4210908.7
   name: martinez
   station_id: martinez
   station_name: martinez
@@ -796,15 +823,6 @@ linestrings:
   name: chipps
   station_id: chipps
   station_name: chipps
-- comment: Diagnistic on Woodward Cut, to be augmented by real deployment in 2021
-  coordinates:
-  - - 626886.0
-    - 4197122.0
-  - - 626886.0
-    - 4197282.0
-  name: woodward_w
-  station_id: woodward_west
-  station_name: woodward_west
 - comment: Diagnistic on Woodward Cut, to be augmented by real deployment in 2021
   coordinates:
   - - 627740.0
@@ -823,24 +841,6 @@ linestrings:
   name: woodward_e
   station_id: woodward_east
   station_name: woodward_east
-- comment: Diagnistic on Railroad Cut, to be augmented by real deployment in 2021
-  coordinates:
-  - - 626658.0
-    - 4200050.0
-  - - 626658.0
-    - 4200110.0
-  name: railroad_sw
-  station_id: railroad_southwest
-  station_name: railroad_southwest
-- comment: Diagnistic on Railroad Cut, to be augmented by real deployment in 2021
-  coordinates:
-  - - 626700.0
-    - 4200150.0
-  - - 626700.0
-    - 4200250.0
-  name: railroad_nw
-  station_id: railroad_northwest
-  station_name: railroad_northwest
 - comment: Diagnistic on Railroad Cut, to be augmented by real deployment in 2021
   coordinates:
   - - 627530.0
@@ -877,9 +877,12 @@ linestrings:
   name: railroad_ne
   station_id: railroad_northeast
   station_name: railroad_northeast  
-  
-
-
-
-
-
+- comment: Diagnostic on Paradise Cut Weir
+  coordinates:
+  - - 648849.75
+    - 4180514.84
+  - - 648844.73
+    - 4180597.55
+  name: paradise_cut_weir
+  station_id: paradise_cut_weir
+  station_name: paradise_cut_weir
