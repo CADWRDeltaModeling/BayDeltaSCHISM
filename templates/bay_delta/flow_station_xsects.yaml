@@ -670,23 +670,23 @@ linestrings:
   name: WWC
   station_id: WWC
   station_name: Woodward Cut
-- agency_id: RRC_S
+- agency_id: RRCS
   coordinates:
   - - 626844.276
     - 4200060.0
   - - 626844.276
     - 4200116.0
-  name: RRC_S
-  station_id: RRC_S
+  name: RRCS
+  station_id: RRCS
   station_name: Railroad Cut South
-- agency_id: RRC_N
+- agency_id: RRCN
   coordinates:
   - - 626914.586
     - 4200150.0
   - - 626914.586
     - 4200250.0
-  name: RRC_S
-  station_id: RRC_S
+  name: RRCN
+  station_id: RRCN
   station_name: Railroad Cut North
 - comment: Diagnistic, not in station database
   coordinates:
