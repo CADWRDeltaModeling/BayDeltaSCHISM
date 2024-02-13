@@ -73,7 +73,7 @@ linestrings:
     - 4241167.2
   name: haas_thalwag2
   type: none
-- attribute: '-4.2'
+- attribute: min(z,-4.2)
   coordinates:
   - - 615002.9
     - 4242799.600000001
@@ -86,8 +86,8 @@ linestrings:
   - - 615309.3
     - 4243103.3
   name: stairstep_block3
-  type: max
-- attribute: '-5.8'
+  type: none
+- attribute: min(z,-5.8)
   coordinates:
   - - 616201.4
     - 4243898.0
@@ -124,8 +124,8 @@ linestrings:
   - - 616434.8
     - 4242924.2
   name: liberty_cut_west5
-  type: max
-- attribute: '-6.5'
+  type: none
+- attribute: min(z,-6.5)
   coordinates:
   - - 616436.5
     - 4242909.5
@@ -138,16 +138,16 @@ linestrings:
   - - 616446.2000000001
     - 4242300.5
   name: liberty_cut_west4
-  type: max
-- attribute: '-5'
+  type: none
+- attribute: min(z,-5)
   coordinates:
   - - 616446.2000000001
     - 4242300.5
   - - 616452.2000000001
     - 4241944.7
   name: liberty_cut_west3b
-  type: max
-- attribute: '-6.'
+  type: none
+- attribute: min(z,-6.)
   coordinates:
   - - 616451.4
     - 4241935.7
@@ -158,8 +158,8 @@ linestrings:
   - - 616466.0
     - 4241537.5
   name: liberty_cut_west3
-  type: max
-- attribute: '-3.7'
+  type: none
+- attribute: min(z,-3.7)
   coordinates:
   - - 616535.4
     - 4243749.7
@@ -172,8 +172,8 @@ linestrings:
   - - 616542.5
     - 4243358.0
   name: liberty_cut_21b
-  type: max
-- attribute: '-4.1'
+  type: none
+- attribute: min(z,-4.1)
   coordinates:
   - - 616542.5
     - 4243349.8
@@ -190,16 +190,16 @@ linestrings:
   - - 616551.4
     - 4242332.2
   name: liberty_cut21
-  type: max
-- attribute: '-4.0'
+  type: none
+- attribute: min(z,-4.0)
   coordinates:
   - - 616557.7000000001
     - 4242261.4
   - - 616562.7000000001
     - 4241961.2
   name: liberty_cut20
-  type: max
-- attribute: '-4.0'
+  type: none
+- attribute: min(z,-4.0)
   coordinates:
   - - 616563.3
     - 4241950.5
@@ -212,16 +212,16 @@ linestrings:
   - - 616580.2000000001
     - 4240970.2
   name: libert_cut19
-  type: max
-- attribute: '-3.9'
+  type: none
+- attribute: min(z,-3.9)
   coordinates:
   - - 616580.2000000001
     - 4240965.2
   - - 616581.5
     - 4240700.100000001
   name: liberty_cut18
-  type: max
-- attribute: '-4.0'
+  type: none
+- attribute: min(z,-4.0)
   coordinates:
   - - 616580.9
     - 4240694.4
@@ -232,16 +232,16 @@ linestrings:
   - - 616585.0
     - 4240339.4
   name: liberty_cut17
-  type: max
-- attribute: '-3.9'
+  type: none
+- attribute: min(z,-3.9)
   coordinates:
   - - 616585.0
     - 4240328.600000001
   - - 616588.6
     - 4240163.4
   name: liberty_cut16
-  type: max
-- attribute: '-5.4'
+  type: none
+- attribute: min(z,-5.4)
   coordinates:
   - - 616464.7000000001
     - 4241390.100000001
@@ -260,24 +260,24 @@ linestrings:
   - - 616476.6
     - 4240444.4
   name: liberty_cut_west2
-  type: max
-- attribute: '-4.0'
+  type: none
+- attribute: min(z,-4.0)
   coordinates:
   - - 616476.0
     - 4240436.3
   - - 616478.5
     - 4240322.5
   name: liberty_cut_west1
-  type: max
-- attribute: '-3.8'
+  type: none
+- attribute: min(z,-3.8)
   coordinates:
   - - 616590.9
     - 4239935.4
   - - 616590.9
     - 4239811.5
   name: liberty_cut15
-  type: max
-- attribute: '-4.3'
+  type: none
+- attribute: min(z,-4.3)
   coordinates:
   - - 616593.1
     - 4239782.7
@@ -286,8 +286,8 @@ linestrings:
   - - 616597.6
     - 4239420.9
   name: liberty_cut14
-  type: max
-- attribute: '-4.2'
+  type: none
+- attribute: min(z,-4.2)
   coordinates:
   - - 616599.8
     - 4239277.100000001
@@ -300,8 +300,8 @@ linestrings:
   - - 616637.4
     - 4239128.4
   name: liberty_cut10
-  type: max
-- attribute: '-4.5'
+  type: none
+- attribute: min(z,-4.5)
   coordinates:
   - - 617046.0
     - 4238875.0
@@ -312,8 +312,8 @@ linestrings:
   - - 617122.6181076161
     - 4239241.642656791
   name: toe_drain_sw11
-  type: max
-- attribute: '-3.85'
+  type: none
+- attribute: min(z,-3.85)
   coordinates:
   - - 617507.8
     - 4241468.100000001
@@ -328,8 +328,8 @@ linestrings:
   - - 617619.8
     - 4242178.4
   name: toe_drain_sw6
-  type: max
-- attribute: '-3.9'
+  type: none
+- attribute: min(z,-3.9)
   coordinates:
   - - 617645.8
     - 4242294.8
@@ -338,8 +338,8 @@ linestrings:
   - - 617704.4091262207
     - 4242676.963383122
   name: toe_drain_sw4
-  type: max
-- attribute: '-4.15'
+  type: none
+- attribute: min(z,-4.15)
   coordinates:
   - - 617797.6
     - 4243201.8
@@ -352,8 +352,8 @@ linestrings:
   - - 617868.2000000001
     - 4243583.5
   name: toe_drain_sw2
-  type: max
-- attribute: '-4.1'
+  type: none
+- attribute: min(z,-4.1)
   coordinates:
   - - 617871.5
     - 4243601.8
@@ -382,8 +382,8 @@ linestrings:
   - - 618362.8
     - 4245459.8
   name: toe_drain_sw1
-  type: max
-- attribute: '-4.25'
+  type: none
+- attribute: min(z,-4.25)
   coordinates:
   - - 618064.8
     - 4245478.9
@@ -398,8 +398,8 @@ linestrings:
   - - 618347.8
     - 4245464.8
   name: stairstep_block13
-  type: max
-- attribute: '-4.3'
+  type: none
+- attribute: min(z,-4.3)
   coordinates:
   - - 617983.5
     - 4245487.2
@@ -408,16 +408,16 @@ linestrings:
   - - 617688.1
     - 4245489.7
   name: stairstep_block12
-  type: max
-- attribute: '-4.0'
+  type: none
+- attribute: min(z,-4.0)
   coordinates:
   - - 617626.7000000001
     - 4245493.8
   - - 617431.7000000001
     - 4245494.7
   name: stairstep_block11
-  type: max
-- attribute: '-4.1'
+  type: none
+- attribute: min(z,-4.1)
   coordinates:
   - - 617411.4
     - 4245495.600000001
@@ -440,8 +440,8 @@ linestrings:
   - - 617363.4
     - 4245035.7
   name: stairstep_block10
-  type: max
-- attribute: '-3.'
+  type: none
+- attribute: min(z,-3.)
   coordinates:
   - - 617364.8
     - 4244944.4
@@ -454,16 +454,16 @@ linestrings:
   - - 617360.8
     - 4244115.7
   name: stairstep10e
-  type: max
-- attribute: '-4.1'
+  type: none
+- attribute: min(z,-4.1)
   coordinates:
   - - 618178.0
     - 4245568.8
   - - 618070.8
     - 4245568.8
   name: stairstop_block13n
-  type: max
-- attribute: '-4.2'
+  type: none
+- attribute: min(z,-4.2)
   coordinates:
   - - 617574.6
     - 4245561.9
@@ -476,8 +476,8 @@ linestrings:
   - - 617369.6
     - 4245551.4
   name: stairstep_block10n
-  type: max
-- attribute: '-3.6'
+  type: none
+- attribute: min(z,-3.6)
   coordinates:
   - - 617331.7000000001
     - 4245526.9
@@ -488,7 +488,7 @@ linestrings:
   - - 617318.56
     - 4245452.53
   name: stairstep_block10w
-  type: max
+  type: none
 - attribute: local_max
   coordinates:
   - - 617318.56
@@ -538,7 +538,7 @@ linestrings:
   - - 617309.7000000001
     - 4244354.600000001
   name: stairstep_n11
-  type: max
+  type: none
 - attribute: local_max
   coordinates:
   - - 617304.7000000001
@@ -552,8 +552,8 @@ linestrings:
   - - 617302.2000000001
     - 4244155.9
   name: stairstep_n10
-  type: max
-- attribute: '-4.2'
+  type: none
+- attribute: min(z,-4.2)
   coordinates:
   - - 617301.2000000001
     - 4244110.8
@@ -566,8 +566,8 @@ linestrings:
   - - 617256.5
     - 4243963.8
   name: stairstep_block9
-  type: max
-- attribute: '-4.1'
+  type: none
+- attribute: min(z,-4.1)
   coordinates:
   - - 617191.3
     - 4243956.8
@@ -578,8 +578,8 @@ linestrings:
   - - 617093.7000000001
     - 4243946.2
   name: stairstep_block8c
-  type: max
-- attribute: '-4.1'
+  type: none
+- attribute: min(z,-4.1)
   coordinates:
   - - 616956.9
     - 4243943.100000001
@@ -594,16 +594,16 @@ linestrings:
   - - 616589.52
     - 4243962.26
   name: stairstep_block7
-  type: max
-- attribute: '-4.0'
+  type: none
+- attribute: min(z,-4.0)
   coordinates:
   - - 616535.8
     - 4243765.100000001
   - - 616537.0
     - 4243867.2
   name: liberty_block8a
-  type: max
-- attribute: '-5'
+  type: none
+- attribute: min(z,-5)
   coordinates:
   - - 616538.2000000001
     - 4243877.4
@@ -614,8 +614,8 @@ linestrings:
   - - 616603.2568672315
     - 4243884.7154733455
   name: stairstep_block8b
-  type: max
-- attribute: '-4.3'
+  type: none
+- attribute: min(z,-4.3)
   coordinates:
   - - 616491.1
     - 4244154.2
@@ -634,8 +634,8 @@ linestrings:
   - - 616092.1
     - 4243991.5
   name: stairstep_block6
-  type: max
-- attribute: '-4.2'
+  type: none
+- attribute: min(z,-4.2)
   coordinates:
   - - 615991.7000000001
     - 4243996.8
@@ -654,8 +654,8 @@ linestrings:
   - - 615701.5
     - 4243824.4
   name: stairstep_block5
-  type: max
-- attribute: '-5.8'
+  type: none
+- attribute: min(z,-5.8)
   coordinates:
   - - 615886.0
     - 4243910.600000001
@@ -680,8 +680,8 @@ linestrings:
   - - 615797.5
     - 4243198.8
   name: stairstep_block4
-  type: max
-- attribute: '-4.2'
+  type: none
+- attribute: min(z,-4.2)
   coordinates:
   - - 615797.9
     - 4243190.7
@@ -694,16 +694,16 @@ linestrings:
   - - 615776.91
     - 4243112.0600000005
   name: stairstep_block3
-  type: max
-- attribute: '-4'
+  type: none
+- attribute: min(z,-4)
   coordinates:
   - - 615424.7000000001
     - 4243105.2
   - - 615672.9
     - 4243106.5
   name: stairstep_block4a
-  type: max
-- attribute: '-2.8'
+  type: none
+- attribute: min(z,-2.8)
   coordinates:
   - - 616704.8
     - 4237980.9
@@ -712,38 +712,38 @@ linestrings:
   - - 616660.8
     - 4237471.7
   name: liberty_cut3
-  type: max
-# - attribute: '-3.0'
-  # coordinates:
-  # - - 616653.2000000001
-    # - 4237247.4
-  # - - 616651.7000000001
-    # - 4237161.0
-  # - - 616641.1
-    # - 4237106.5
-  # - - 616629.0
-    # - 4237062.5
-  # - - 616574.4
-    # - 4236986.8
-  # - - 616519.9
-    # - 4236903.4
-  # - - 616472.9
-    # - 4236814.0
-  # - - 616422.9
-    # - 4236694.3
-  # - - 616382.0
-    # - 4236567.0
-  # - - 616328.9
-    # - 4236436.7
-  # - - 616245.6
-    # - 4236263.9
-  # - - 616218.3
-    # - 4236188.100000001
-  # - - 616219.8
-    # - 4236097.2
-  # name: liberty_cut1
-  # type: max
-- attribute: '-3.5'
+  type: none
+- attribute: min(z,-3.5)
+                
+                         
+                 
+                         
+                 
+                
+                 
+                
+                 
+                
+                 
+                
+                 
+                
+                 
+                
+                 
+                
+                 
+                
+                 
+                
+                 
+                
+                         
+                
+                 
+                      
+             
+                   
   coordinates:
   - - 616166.0
     - 4235031.5
@@ -770,8 +770,8 @@ linestrings:
   - - 615990.0
     - 4234468.100000001
   name: toe_drain_exit5
-  type: max
-- attribute: '-3.5'
+  type: none
+- attribute: min(z,-3.5)
   coordinates:
   - - 615643.7000000001
     - 4233920.600000001
@@ -804,8 +804,8 @@ linestrings:
   - - 615285.6
     - 4233278.0
   name: sta_11455315_east_levee
-  type: max
-- attribute: '-3.6'
+  type: none
+- attribute: min(z,-3.6)
   coordinates:
   - - 615036.0
     - 4233672.4
@@ -816,8 +816,8 @@ linestrings:
   - - 614903.0
     - 4233782.600000001
   name: sta_11455315_west_levee
-  type: max
-- attribute: '-3.6'
+  type: none
+- attribute: min(z,-3.6)
   coordinates:
   - - 614901.1
     - 4233802.5
@@ -836,16 +836,16 @@ linestrings:
   - - 614979.9
     - 4234086.5
   name: sta_11455315_west_levee1
-  type: max
-- attribute: '-4.1'
+  type: none
+- attribute: min(z,-4.1)
   coordinates:
   - - 614319.2000000001
     - 4242360.0
   - - 614388.8
     - 4242362.2
   name: stairstep_n1
-  type: max
-- attribute: '-4.2'
+  type: none
+- attribute: min(z,-4.2)
   coordinates:
   - - 614502.6
     - 4242367.8
@@ -866,16 +866,16 @@ linestrings:
   - - 614935.1
     - 4242491.2
   name: stairstep_n3
-  type: max
-- attribute: '-3.9'
+  type: none
+- attribute: min(z,-3.9)
   coordinates:
   - - 614923.9
     - 4242521.600000001
   - - 614923.4
     - 4242699.4
   name: stairstep_n4
-  type: max
-- attribute: '-4.'
+  type: none
+- attribute: min(z,-4.)
   coordinates:
   - - 614932.5
     - 4242790.7
@@ -884,16 +884,16 @@ linestrings:
   - - 614937.8
     - 4242878.9
   name: stairstep_n5
-  type: max
-- attribute: '-3.9'
+  type: none
+- attribute: min(z,-3.9)
   coordinates:
   - - 615557.3
     - 4243213.8
   - - 615185.9
     - 4243204.0
   name: stairstep_n6
-  type: max
-- attribute: '-1.8'
+  type: none
+- attribute: max(z,1.8)
   coordinates:
   - - 616508.4
     - 4244042.100000001
@@ -906,8 +906,8 @@ linestrings:
   - - 616616.2000000001
     - 4244446.0
   name: liberty_cut_north
-  type: max
-- attribute: '-4.2'
+  type: none
+- attribute: min(z,-4.2)
   coordinates:
   - - 616541.1
     - 4244011.600000001
@@ -920,8 +920,8 @@ linestrings:
   - - 616626.0
     - 4244400.3
   name: stairstep_n8
-  type: max
-- attribute: '-4.15'
+  type: none
+- attribute: min(z,-4.15)
   coordinates:
   - - 617360.8
     - 4244115.7
@@ -930,8 +930,8 @@ linestrings:
   - - 617335.8
     - 4243894.100000001
   name: stairstep_block9
-  type: max
-- attribute: '-4.2'
+  type: none
+- attribute: min(z,-4.2)
   coordinates:
   - - 616624.2000000001
     - 4239084.100000001
@@ -942,16 +942,16 @@ linestrings:
   - - 616651.7000000001
     - 4238905.7
   name: liberty_cut8
-  type: max
-- attribute: '-4.'
+  type: none
+- attribute: min(z,-4.)
   coordinates:
   - - 616915.3
     - 4238867.3
   - - 616754.6
     - 4238825.2
   name: liberty_cut9
-  type: max
-- attribute: '-3.7'
+  type: none
+- attribute: min(z,-3.7)
   coordinates:
   - - 616884.0
     - 4238552.7
@@ -968,8 +968,8 @@ linestrings:
   - - 617003.7000000001
     - 4238789.7
   name: liberty_cut5
-  type: max
-- attribute: '-3.6'
+  type: none
+- attribute: min(z,-3.6)
   coordinates:
   - - 614423.2000000001
     - 4235022.9
@@ -1008,8 +1008,8 @@ linestrings:
   - - 614767.9932427735
     - 4234180.787289016
   name: liberty_levees2
-  type: max
-- attribute: '-0.25'
+  type: none
+- attribute: min(z,-0.25)
   coordinates:
   - - 614793.5
     - 4234114.7
@@ -1042,15 +1042,15 @@ linestrings:
   - - 614162.1
     - 4233966.9
   name: liberty_levees3
-  type: max
+  type: none
 - attribute: local_max
   coordinates:
   - - 615993.1
     - 4243954.0
-  - - 615877.70
+  - - 615877.7
     - 4243953.0
   - - 615824.9
-    - 4243949.10
+    - 4243949.1
   - - 615791.4
     - 4243939.7
   - - 615762.3
@@ -1081,19 +1081,19 @@ linestrings:
     - 4243332.9
   - - 615742.3
     - 4243287.1
-  - - 615744.70
+  - - 615744.7
     - 4243194.4
   name: stairstep_block2
   type: none
-- attribute: '1.'
+- attribute: max(z,1)
   coordinates:
   - - 614431.6
     - 4236448.600000001
   - - 614471.7320833334
     - 4236437.426875002
   name: cross_levee
-  type: max
-- attribute: '-4.2'
+  type: none
+- attribute: min(z,-4.2)
   coordinates:
   - - 616603.2568672315
     - 4243884.7154733455
@@ -1106,8 +1106,8 @@ linestrings:
   - - 617232.5
     - 4243882.9
   name: stairstep_block8
-  type: max
-- attribute: '-4.0'
+  type: none
+- attribute: min(z,-4.0)
   coordinates:
   - - 617704.4091262207
     - 4242676.963383122
@@ -1122,8 +1122,8 @@ linestrings:
   - - 617796.0
     - 4243187.7
   name: toe_drain_sw3
-  type: max
-- attribute: '-3.2'
+  type: none
+- attribute: min(z,-3.2)
   coordinates:
   - - 617246.8194851868
     - 4239992.076544284
@@ -1132,40 +1132,40 @@ linestrings:
   - - 617276.8597040819
     - 4240164.117858176
   name: toe_drain_sw3b
-  type: max
-- attribute: '-3.8'
+  type: none
+- attribute: min(z,-3.8)
   coordinates:
   - - 617167.8242276043
     - 4239522.763823682
   - - 617167.9570364435
     - 4239523.589715749
   name: toe_drain_sw8
-  type: max
-- attribute: '-3.0'
+  type: none
+- attribute: min(z,-3.0)
   coordinates:
   - - 617144.2838644742
     - 4239376.374477419
   - - 617167.8242276043
     - 4239522.763823682
   name: toe_drain_sw11
-  type: max
-- attribute: '-3.6'
+  type: none
+- attribute: min(z,-3.6)
   coordinates:
   - - 617133.9112891766
     - 4239311.871032485
   - - 617144.2838644742
     - 4239376.374477419
   name: toe_drain_sw12
-  type: max
-- attribute: '-3.0'
+  type: none
+- attribute: min(z,-3.0)
   coordinates:
   - - 617122.6181076161
     - 4239241.642656791
   - - 617133.9112891766
     - 4239311.871032485
   name: toe_drain_sw13
-  type: max
-- attribute: '-3.8'
+  type: none
+- attribute: min(z,-3.8)
   coordinates:
   - - 617168.2056573279
     - 4239525.13580272
@@ -1178,8 +1178,8 @@ linestrings:
   - - 617246.8194851868
     - 4239992.076544284
   name: toe_drain_sw8
-  type: max
-- attribute: '-3.3'
+  type: none
+- attribute: min(z,-3.3)
   coordinates:
   - - 617276.8597040819
     - 4240164.117858176
@@ -1208,70 +1208,111 @@ linestrings:
   - - 617481.4
     - 4241306.2
   name: toe_drain_sw7
-  type: max
-- attribute: '-3.8'
+  type: none
+- attribute: min(z,-3.8)
   coordinates:
   - - 617167.9570364435
     - 4239523.589715749
   - - 617168.2056573279
     - 4239525.13580272
   name: toe_drain_sw8
-  type: max
-- name: miner_1
+           
+               
   type: none
-  attribute: local_max
-  widen_left: True
+- attribute: local_max
+                  
   coordinates:
-  - [619848.0,4239024.5]
-  - [619810.3,4239037.0]
-  - [619812.9,4239045.0]
-  - [619774.8,4239055.5]
-  - [619755.8,4239061.5]
-- name: miner2
+  - - 619848.0
+    - 4239024.5
+  - - 619810.3
+    - 4239037.0
+  - - 619812.9
+    - 4239045.0
+  - - 619774.8
+    - 4239055.5
+  - - 619755.8
+    - 4239061.5
+  name: miner_1
   type: none
-  attribute: local_max
+  widen_left: '1'
+- attribute: local_max
   coordinates:
-  - [619593.0,4239131.3]
-  - [619565.1,4239128.0]
-  - [619802.7,4239089.4]
-  - [619774.4,4239098.5]
-  - [619739.0,4239103.9]
-  - [619708.4,4239111.9]
-  - [619677.0,4239119.6]
-  - [619630.2,4239128.7]
-- name: miner3
+  - - 619593.0
+    - 4239131.3
+  - - 619565.1
+    - 4239128.0
+  - - 619802.7
+    - 4239089.4
+  - - 619774.4
+    - 4239098.5
+  - - 619739.0
+    - 4239103.9
+  - - 619708.4
+    - 4239111.9
+  - - 619677.0
+    - 4239119.6
+  - - 619630.2
+    - 4239128.7
+  name: miner2
   type: none
-  attribute: local_max
+  widen_left: '1'
+- attribute: local_max
   coordinates:
-  - [620883.5,4238937.9]
-  - [620838.7,4238949.1]
-  - [620788.6,4238961.6]
-  - [620759.6,4238966.9]
-  - [620723.1,4238970.3]
-- name: american1
+  - - 620883.5
+    - 4238937.9
+  - - 620838.7
+    - 4238949.1
+  - - 620788.6
+    - 4238961.6
+  - - 620759.6
+    - 4238966.9
+  - - 620723.1
+    - 4238970.3
+  name: miner3
   type: none
-  attribute: local_max
+  widen_left: '1'
+- attribute: local_max
   coordinates:
-  - [637463.4,4270830.9]
-  - [637452.6,4270769.0]
-  - [637439.4,4270712.0] 
-  - [637504.2,4271183.3]
-  - [637475.6,4271103.9]
-  - [637458.7,4271025.8]
-  - [637461.3,4270959.4]
-  - [637468.8,4270925.1]
-- name: american2
+  - - 637463.4
+    - 4270830.9
+  - - 637452.6
+    - 4270769.0
+  - - 637439.4
+    - 4270712.0
+  - - 637504.2
+    - 4271183.3
+  - - 637475.6
+    - 4271103.9
+  - - 637458.7
+    - 4271025.8
+  - - 637461.3
+    - 4270959.4
+  - - 637468.8
+    - 4270925.1
+  name: american1
   type: none
-  attribute: local_max
+  widen_left: '1'
+- attribute: local_max
   coordinates:
-  - [638904.3,4269177.4]
-  - [638856.7,4269169.7]
-  - [639160.4,4269205.8]
-  - [639108.9,4269181.3]
-  - [639062.6,4269169.7]
-  - [639020.1,4269165.8]
-  - [638978.9,4269171.0]
-  - [638940.3,4269178.7]
+  - - 638904.3
+    - 4269177.4
+  - - 638856.7
+    - 4269169.7
+  - - 639160.4
+    - 4269205.8
+  - - 639108.9
+    - 4269181.3
+  - - 639062.6
+    - 4269169.7
+  - - 639020.1
+    - 4269165.8
+  - - 638978.9
+    - 4269171.0
+  - - 638940.3
+    - 4269178.7
+  name: american2
+  type: none
+  widen_left: '1'
 - attribute: local_max
   coordinates:
   - - 616660.3
@@ -1286,6 +1327,7 @@ linestrings:
     - 4239213.2
   name: holland_entrance1
   type: none
+  widen_left: '1'
 - attribute: local_max
   coordinates:
   - - 616780.0
@@ -1296,6 +1338,7 @@ linestrings:
     - 4238410.5
   name: toe_entrance2
   type: none
+  widen_left: '1'
 - attribute: local_max
   coordinates:
   - - 616817.9
@@ -1310,34 +1353,34 @@ linestrings:
     - 4238410.3
   name: toe_entrance1
   type: none
-- attribute: '-2.5'
-  coordinates:
-  - - 617052.1
-    - 4238894.9
-  - - 617064.5
-    - 4238927.600000001
-  - - 617071.0
-    - 4238953.7
-  - - 617078.3
-    - 4238990.0
-  - - 617083.3
-    - 4239035.0
-  - - 617091.8
-    - 4239082.0
-  - - 617102.3
-    - 4239144.600000001
-  - - 617109.1
-    - 4239178.100000001
-  - - 617116.6
-    - 4239214.7
-  - - 617156.9
-    - 4239475.8
-  - - 617176.1
-    - 4239588.0
-  - - 617176.7000000001
-    - 4239600.4
-  name: toe_crest1
-  type: max
+  widen_left: '1'
+              
+              
+               
+              
+                       
+              
+               
+              
+               
+              
+               
+              
+               
+              
+                       
+              
+                       
+              
+               
+              
+               
+              
+               
+                       
+               
+                  
+           
 - attribute: local_max
   coordinates:
   - - 616467.7000000001
@@ -1354,6 +1397,7 @@ linestrings:
     - 4236675.2
   name: toe_thalwag_1
   type: none
+  widen_left: '1'
 - attribute: local_max
   coordinates:
   - - 616739.2000000001
@@ -1390,6 +1434,7 @@ linestrings:
     - 4239079.2
   name: prospect_thalwag3
   type: none
+  widen_left: '1'
 - attribute: local_max
   coordinates:
   - - 616753.6
@@ -1408,6 +1453,7 @@ linestrings:
     - 4238959.100000001
   name: prospect_thalwag2
   type: none
+  widen_left: '1'
 - attribute: local_max
   coordinates:
   - - 616678.2000000001
@@ -1420,6 +1466,7 @@ linestrings:
     - 4238857.3
   name: prospect_thalwag1
   type: none
+  widen_left: '1'
 - attribute: local_max
   coordinates:
   - - 617330.5
@@ -1454,6 +1501,7 @@ linestrings:
     - 4244913.8
   name: last_stairstep_thalwag1
   type: none
+  widen_left: '1'
 - attribute: local_max
   coordinates:
   - - 617340.2000000001
@@ -1474,6 +1522,7 @@ linestrings:
     - 4245516.01
   name: last_stairstep_thalwag_2
   type: none
+  widen_left: '1'
 - attribute: local_max
   coordinates:
   - - 616123.6
@@ -1486,6 +1535,7 @@ linestrings:
     - 4243804.9
   name: wildlands_entrance
   type: none
+  widen_left: '1'
 - attribute: local_max
   coordinates:
   - - 616123.6
@@ -1497,10 +1547,14 @@ linestrings:
   - - 616126.9
     - 4243804.9
   name: wildlands_entrance
-  type: none  
-- name: liberty_crest_near_holland
-  coordinates:  
-  - [616489.,4239515.]
-  - [616500.,4239835.]
-  type: max
-  attribute: -3.95
+  type: none
+  widen_left: '1'
+- attribute: min(z,-3.95)
+  coordinates:
+  - - 616489.0
+    - 4239515.0
+  - - 616500.0
+    - 4239835.0
+  name: liberty_crest_near_holland
+  type: none
+  widen_left: '1'
