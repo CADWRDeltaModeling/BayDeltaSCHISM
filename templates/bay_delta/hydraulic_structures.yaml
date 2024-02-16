@@ -104,8 +104,8 @@ structures:
   - name: midr_weir
     type: weir
     end_points:
-      [[633467., 4194186.],
-      [633465., 4194223.]]
+      [[633467.35, 4194186.76],
+      [633467.13, 4194225.14]]
     configuration:
       n_duplicates: 1
       elevation: 1.00
@@ -119,8 +119,8 @@ structures:
   - name: midr_culvert_l
     type: culvert
     end_points:
-      [[633468., 4194169.],
-      [633467., 4194186.]]
+      [[633466.54, 4194168.72],
+      [633467.35, 4194186.76]]
     configuration:
       n_duplicates: 3
       elevation: -0.53
@@ -134,8 +134,8 @@ structures:
   - name: midr_culvert_r
     type: culvert
     end_points:
-      [[633465., 4194223.],
-      [633463., 4194239.]]
+      [[633467.13, 4194225.14],
+      [633465.27, 4194243.48]]
     configuration:
       n_duplicates: 3
       elevation: -0.53
@@ -149,8 +149,8 @@ structures:
   - name: oldr_tracy_weir
     type: weir
     end_points:
-      [[628268., 4185749.],
-      [628290., 4185790.]]
+      [[628269.22, 4185748.0],
+      [628290.88, 4185790.63]]
     configuration:
       n_duplicates: 1
       elevation: 1.33
@@ -164,8 +164,8 @@ structures:
   - name: oldr_tracy_culvert
     type: culvert
     end_points:
-      [[628259., 4185726.],
-      [628268., 4185746.]]
+      [[628258.01, 4185725.3],
+      [628269.22, 4185748.0]]
     configuration:
       n_duplicates: 9
       elevation: -1.11
@@ -179,8 +179,8 @@ structures:
   - name: tom_paine
     type: culvert
     end_points:
-      [[639242., 4183710.],
-      [639285., 4183738.]]
+      [[639240.49, 4183710.97],
+      [639270.75, 4183739.65]]
     configuration:
       n_duplicates: 6
       elevation: -0.35
@@ -193,8 +193,8 @@ structures:
   - name: oldr_head_barrier
     type: weir_culvert
     end_points:
-      [[647182., 4185811.],
-      [647196., 4185874.]]
+      [[647182.24, 4185809.06],
+      [647196.51, 4185878.68]]
     configuration:
       n_duplicates: 1
       elevation: -0.7
