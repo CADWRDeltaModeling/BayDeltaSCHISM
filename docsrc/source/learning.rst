@@ -17,13 +17,13 @@ General Resources and Tools
 .. toctree::
    :hidden:
 
-   Hello SCHISM <https://cadwrdeltamodeling.github.io/HelloSCHISM/html/index.html>
+   Hello SCHISM <https://cadwrdeltamodeling.github.io/HelloSCHISM/>
    Topical Guide to Bay Delta SCHISM <topical_guide.rst>
    Linux <linux.rst>
    
    
 Tutorials
-`Hello SCHISM tutorials <https://cadwrdeltamodeling.github.io/HelloSCHISM/html/index.html>`_ are a set of SCHISM tutorials that introduce basic features, our preprocessors and can get you running the model quickly (Windows friendly).
+`Hello SCHISM tutorials <https://cadwrdeltamodeling.github.io/HelloSCHISM/l>`_ are a set of SCHISM tutorials that introduce basic features, our preprocessors and can get you running the model quickly (Windows friendly).
 
 The :doc:`Bay-Delta SCHISM Topical Guide <topical_guide>` explains many of the details of setting up and interpreting a full Bay-Delta simulation, making use of the full toolset. 
 
@@ -39,7 +39,7 @@ Manuals
 
 There is some documentation for our Python libraries online, including:
 
-  * `schimpy <https://cadwrdeltamodeling.github.io/schimpy/html/index.html>`_ and our templates/preprocessors for grids and spatial inputs.
+  * `schimpy <https://cadwrdeltamodeling.github.io/schimpy/>`_ and our templates/preprocessors for grids and spatial inputs.
   * `vtools3 <https://cadwrdeltamodeling.github.io/vtools3/html/index.html>`_ an extension to schimpy that includes some time series manipulations we need that go beyond basic `Pandas <https://pandas.pydata.org/docs/>`_ which is a prerequisite. 
   * `dms_datastore <https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html>`_ a library for getting data associated with the Bay-Delta.
 
