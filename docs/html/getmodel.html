@@ -4,14 +4,15 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Installation And Getting Started &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Learning Resources for Bay-Delta SCHISM" href="learning.html" />
@@ -104,9 +105,9 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="installation-and-getting-started">
+  <div class="section" id="installation-and-getting-started">
 <h1>Installation And Getting Started<a class="headerlink" href="#installation-and-getting-started" title="Permalink to this heading">¶</a></h1>
-<section id="overview">
+<div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
 <p>Depending on your experience level, you may be installing a bunch of tools, learning a
 new computation environment and/or getting acquainted with a new model. Our experience is that
@@ -114,7 +115,7 @@ folks who take all of that on together tend to struggle. Here are ways you can b
 <blockquote>
 <div><ul class="simple">
 <li><p>This page lists the main items you will need to install or acquire.</p></li>
-<li><p>Don’t mix learning the model and learning Linux if you are still familiarizing. Download the model and try the first couple tutorials on <a class="reference external" href="https://cadwrdeltamodeling.github.io/HelloSCHISM/html/index.html">Hello SCHISM</a>
+<li><p>Don’t mix learning the model and learning Linux if you are still familiarizing. Download the model and try the first couple tutorials on <a class="reference external" href="https://cadwrdeltamodeling.github.io/HelloSCHISM/">Hello SCHISM</a>
 a simplified grid using Windows if that is your platform of preference. See the <a class="reference internal" href="learning.html"><span class="doc">Learning Resources for Bay-Delta SCHISM</span></a>.</p></li>
 <li><p>Be aware of the <a class="reference external" href="https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/html/learning.html">learning resources</a> page which is the hub for documentation for the project.</p></li>
 <li><p>In particular, there is a <a class="reference internal" href="topical_guide.html"><span class="doc">Bay-Delta SCHISM Topical Guide</span></a>. It contains details on how we set up the Bay-Delta SCHISM application, and the table of contents is a good reminder even for experienced users.</p></li>
@@ -122,14 +123,14 @@ a simplified grid using Windows if that is your platform of preference. See the 
 <li><p>If you have just set up the model in a new computing environment, benchmark it on a working example. Download the code and the ready-to-run <a class="reference internal" href="#complete-sample"><span class="std std-ref">Complete Sample Inputs</span></a> and use them to configure and test your target high performance computing (HPC) environment.</p></li>
 </ul>
 </div></blockquote>
-</section>
-<section id="schism-code-or-binaries">
+</div>
+<div class="section" id="schism-code-or-binaries">
 <h2>SCHISM Code or Binaries<a class="headerlink" href="#schism-code-or-binaries" title="Permalink to this heading">¶</a></h2>
-<section id="downloading">
+<div class="section" id="downloading">
 <h3>Downloading<a class="headerlink" href="#downloading" title="Permalink to this heading">¶</a></h3>
 <p>How you will obtain the model code depends on the operating system. If you are working on Windows (which is mostly useful for instruction or reduced size problems), compatible <a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/schism_4.1_bin_windows.zip">Windows binaries</a> are available. This will underperform compared to a Linux cluster. For that, clone the SCHISM source code from the schism-dev GitHub <a class="reference external" href="https://github.com/schism-dev">repository</a> and compile it for your high performance system. Manuals and build instructions are available on the <a class="reference external" href="http://ccrm.vims.edu/schismweb/">SCHISM Web Site</a></p>
-</section>
-<section id="compile-settings">
+</div>
+<div class="section" id="compile-settings">
 <h3>Compile Settings<a class="headerlink" href="#compile-settings" title="Permalink to this heading">¶</a></h3>
 <p>We compile for Linux using CMake using the SCHISM
 <a class="reference external" href="https://schism-dev.github.io/schism/master/getting-started/compilation.html">instructions for cmake</a></p>
@@ -139,9 +140,9 @@ a simplified grid using Windows if that is your platform of preference. See the 
 </pre></div>
 </div>
 <p>Additional settings are needed to model age, sediment, biogeochemistry.</p>
-</section>
-</section>
-<section id="git">
+</div>
+</div>
+<div class="section" id="git">
 <h2>Git<a class="headerlink" href="#git" title="Permalink to this heading">¶</a></h2>
 <p>Our materials are mostly distributed on our <a class="reference external" href="https://github.com/CADWRDeltaModeling">GitHub organization page</a></p>
 <p>You will need Git. Instructions are widely available
@@ -149,8 +150,8 @@ online. The basic operation on the command line for cloning a repository looks l
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">CADWRDeltaModeling</span><span class="o">/</span><span class="n">BayDeltaSCHISM</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-</section>
-<section id="bay-delta-package">
+</div>
+<div class="section" id="bay-delta-package">
 <h2>Bay-Delta Package<a class="headerlink" href="#bay-delta-package" title="Permalink to this heading">¶</a></h2>
 <p>Clone the <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM">Bay-Delta Package on GitHub</a></p>
 <p>The package includes a simulation template corresponding to the calibration, preprocessing tools and several of the tutorials that we will be using in the January hands-on Bay-Delta workshop. Help on the preprocessor and model setup can be found in the <a class="reference external" href="https://cadwrdeltamodeling.github.io/schimpy">schimpy</a> documentation. The package includes a /bin directory that needs to be populated by building the source or grabbing windows binaries if you want to learn on a high quality pc.</p>
@@ -163,8 +164,8 @@ online. The basic operation on the command line for cloning a repository looks l
 </dd>
 </dl>
 <p>These are too big for GitHub and not text based. We are experimenting with <a class="reference external" href="https://dvc.org">DVC</a> but for the momement after you download the package, you can get the data from the CNRA Open Data Portal.</p>
-</section>
-<section id="required-python-packages">
+</div>
+<div class="section" id="required-python-packages">
 <h2>Required Python Packages<a class="headerlink" href="#required-python-packages" title="Permalink to this heading">¶</a></h2>
 <p>Our preprocessor is Python based. We recommend, and only support, <a href="#id1"><span class="problematic" id="id2">`</span></a>conda &lt;<a class="reference external" href="https://docs.conda.io/en/latest/">https://docs.conda.io/en/latest/</a>&gt; for package management. Please avoid Anaconda; it is too big
 and we can’t main compatibility between all the libraries if you include that much stuff.
@@ -181,21 +182,21 @@ Instructions for managing Python environments are on our general Delta Modeling 
 work tends to expand in a predictable way and we recommend a broader environment available
 at the Bay-Delta SCHISM <cite>repo &lt;https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/environment_py39.yml&gt;</cite>  using instructions for [building an environment with yaml specifications]. We mostly
 provide support for modern versions of the packages on fairly up-to-date Python platforms (often one version behind the latest) when miniconda and environments are used. We welcome feedback on our choice of libraries and making the package more useful.</p>
-</section>
-<section id="bathymetry">
+</div>
+<div class="section" id="bathymetry">
 <h2>Bathymetry<a class="headerlink" href="#bathymetry" title="Permalink to this heading">¶</a></h2>
 <p>The Bay-Delta Package already contains our latest bathymetry in geo-tiff form, processed as we use them to populate our mesh. Our bathymetry collection is available at the
 <a class="reference external" href="https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2">CNRA open portal bathymetry page</a>. Note however, that what goes in the model is the <a class="reference external" href="https://data.cnra.ca.gov/dataset/bay-delta-schism-processed-bathymetry">processed bathymetry</a>.</p>
-</section>
-<section id="complete-sample-inputs">
+</div>
+<div class="section" id="complete-sample-inputs">
 <span id="complete-sample"></span><h2>Complete Sample Inputs<a class="headerlink" href="#complete-sample-inputs" title="Permalink to this heading">¶</a></h2>
 <p>Interested users may want to explore their options as far as clusters
 and high performance environments without the confounding challenge of
 learning the preprocessor.</p>
 <p><a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/preprocessed_sample.tar.gz">Complete 21-day sample inputs</a></p>
 <p>includes a complete directory of inputs for a late August - early September 2013 baroclinic run with salt transport, sample PBS launching script (pbs.sh) and launching script (run.sh) that we use with our  cluster’s job scheduler.</p>
-</section>
-<section id="visit-schism-plug-in">
+</div>
+<div class="section" id="visit-schism-plug-in">
 <h2>VisIt SCHISM Plug-in<a class="headerlink" href="#visit-schism-plug-in" title="Permalink to this heading">¶</a></h2>
 <p><a class="reference external" href="http://visit.llnl.gov/">VisIt</a> is a visualization toolkit for high performance
 numerical simulations. Note there is a visit-users forum and mailing list described at the
@@ -205,8 +206,8 @@ numerical simulations. Note there is a visit-users forum and mailing list descri
 * <a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/visit_plugin_1.0.0_visit2.7_win64_vs2010.zip">Compiled Windows binaries for 2.7</a>
 * <a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/visit_plugin_1.0.0_visit2.8_win64_vs2012.zip">Compiled Windows binaries for 2.8</a></p>
 <p>You may notice Visit documentation is becoming antiquated but still usable – the software is supported by a vigorous wiki and forum on the <a class="reference external" href="http://visitusers.org">VisIt community site</a>. We also offer the document <a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/visit_plugin_instruction.pdf">VisIT for SELFE users</a></p>
-</section>
-<section id="links-to-tools">
+</div>
+<div class="section" id="links-to-tools">
 <h2>Links to tools<a class="headerlink" href="#links-to-tools" title="Permalink to this heading">¶</a></h2>
 <p>These are mostly Windows or Linux tools. If you have information
 about analogous tools on other platforms we will gratefully share it.</p>
@@ -215,8 +216,8 @@ about analogous tools on other platforms we will gratefully share it.</p>
 <li><p><a class="reference external" href="http://sourceforge.net/projects/xming/">Xming XServer for Windows</a> or other tools like MobaXTerm or VcXSrv for connecting to linux clusters using the x11 windows system.</p></li>
 <li><p><a class="reference external" href="http://winscp.net/eng/index.php">WinSCP</a> for transfering files to and from linux servers.</p></li>
 </ul>
-</section>
-</section>
+</div>
+</div>
 
 
             <div class="clearer"></div>
@@ -246,7 +247,7 @@ about analogous tools on other platforms we will gratefully share it.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2014,2020 California Department of Water Resources.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
     </div>
   </body>
 </html>

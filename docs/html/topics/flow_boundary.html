@@ -4,14 +4,15 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inflow/Outflow Boundaries &#8212; Bay-Delta SCHISM</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Atmospheric setup" href="atmospheric.html" />
@@ -97,7 +98,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="inflow-outflow-boundaries">
+  <div class="section" id="inflow-outflow-boundaries">
 <h1>Inflow/Outflow Boundaries<a class="headerlink" href="#inflow-outflow-boundaries" title="Permalink to this heading">¶</a></h1>
 <p>Inflow/outflow boundaries locations specified in <cite>hgrid.gr3</cite>, usually with the preprocessor identifying the start
 and end of the string of nodes. The fact that a boundary is a flow or tracer
@@ -105,30 +106,30 @@ boundaries is specified in <cite>bctides.in</cite>. The actual data are provided
 and <cite>SAL_1.th</cite>, <cite>TEM_1.th</cite> for other tracers. For info on the .th file format,
 you can refer to the <a class="reference external" href="https://schism-dev.github.io/schism/master/input-output/optional-inputs.html#th-ascii">SCHISM manual</a>
 on the topic.</p>
-<section id="where-are-the-data">
+<div class="section" id="where-are-the-data">
 <h2>Where are the data?<a class="headerlink" href="#where-are-the-data" title="Permalink to this heading">¶</a></h2>
 <p>In BayDeltaSCHISM/data we provide flux.th, salinity.th (maps to SAL_1.th) and temperature.th (maps to TEM_1.th) that go back to roughly
 2008. Before that, operations were different and some of our better data sources were unavailable.</p>
-</section>
-<section id="clipping-to-run-dates-and-conversion-to-elapsed-time">
+</div>
+<div class="section" id="clipping-to-run-dates-and-conversion-to-elapsed-time">
 <h2>Clipping to run dates and conversion to elapsed time<a class="headerlink" href="#clipping-to-run-dates-and-conversion-to-elapsed-time" title="Permalink to this heading">¶</a></h2>
 <p>The .th format uses elapsed seconds from run start for time and has no headers. Our data are provided in what we call dated format. We mix it down before
 the run.</p>
-</section>
-<section id="what-if-i-have-to-add-or-move-a-boundary">
+</div>
+<div class="section" id="what-if-i-have-to-add-or-move-a-boundary">
 <h2>What if I have to add or move a boundary?<a class="headerlink" href="#what-if-i-have-to-add-or-move-a-boundary" title="Permalink to this heading">¶</a></h2>
 <p>Moving the grid relative to the boundary or a boundary relative to the grid has consequences in some far flung places.
 You’ll want to cover our <a class="reference internal" href="mesh.html#change-mesh"><span class="std std-ref">checklist</span></a> of consequences and consider which apply to your case.</p>
 <p>Please also note that our boundary condition file is constructed, in order, from our most common boundaries. If you add a boundary you may have to
 inject a column into the flux.th file.</p>
-</section>
-<section id="adding-data-from-other-sources-e-g-forecasts-other-models">
+</div>
+<div class="section" id="adding-data-from-other-sources-e-g-forecasts-other-models">
 <h2>Adding Data From Other Sources (e.g. Forecasts, other models)<a class="headerlink" href="#adding-data-from-other-sources-e-g-forecasts-other-models" title="Permalink to this heading">¶</a></h2>
 <p>The <code class="file docutils literal notranslate"><span class="pre">port_boundary.py</span></code> script in BayDeltaSCHISM/scripts/  contains utilities
 to convert or graft outputs from various data formats (other models or forecasts) onto
 files in SCHISM time history (.th) formats.</p>
-</section>
-</section>
+</div>
+</div>
 
 
             <div class="clearer"></div>
@@ -160,7 +161,7 @@ files in SCHISM time history (.th) formats.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2014,2020 California Department of Water Resources.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
     </div>
   </body>
 </html>

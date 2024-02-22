@@ -23,7 +23,7 @@ General Resources and Tools
    
    
 Tutorials
-`Hello SCHISM tutorials <https://cadwrdeltamodeling.github.io/HelloSCHISM/l>`_ are a set of SCHISM tutorials that introduce basic features, our preprocessors and can get you running the model quickly (Windows friendly).
+`Hello SCHISM tutorials <https://cadwrdeltamodeling.github.io/HelloSCHISM/>`_ are a set of SCHISM tutorials that introduce basic features, our preprocessors and can get you running the model quickly (Windows friendly).
 
 The :doc:`Bay-Delta SCHISM Topical Guide <topical_guide>` explains many of the details of setting up and interpreting a full Bay-Delta simulation, making use of the full toolset. 
 
