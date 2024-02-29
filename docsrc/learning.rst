@@ -7,7 +7,7 @@ Learning Resources for Bay-Delta SCHISM
 
 This page is the documentation hub for running the Bay-Delta SCHISM application. It has some ideas for learning to use SCHISM and a how-to topical guide for the application on the Bay-Delta domain. 
 
-For installation instructions please see the `Installation and Getting Started Page <https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/html/getmodel.html>`_.
+For installation instructions please see the `Installation and Getting Started Page <https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/getmodel.html>`_.
 
 
 General Resources and Tools
@@ -40,7 +40,7 @@ Manuals
 There is some documentation for our Python libraries online, including:
 
   * `schimpy <https://cadwrdeltamodeling.github.io/schimpy/>`_ and our templates/preprocessors for grids and spatial inputs.
-  * `vtools3 <https://cadwrdeltamodeling.github.io/vtools3/html/index.html>`_ an extension to schimpy that includes some time series manipulations we need that go beyond basic `Pandas <https://pandas.pydata.org/docs/>`_ which is a prerequisite. 
+  * `vtools3 <https://cadwrdeltamodeling.github.io/vtools3/index.html>`_ an extension to schimpy that includes some time series manipulations we need that go beyond basic `Pandas <https://pandas.pydata.org/docs/>`_ which is a prerequisite. 
   * `dms_datastore <https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html>`_ a library for getting data associated with the Bay-Delta.
 
 `Hydraulic structures manual`
