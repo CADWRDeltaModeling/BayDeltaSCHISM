@@ -35,7 +35,7 @@ Contents
 
 
 Independent manual web pages are available for `VTools <http://cadwrdeltamodeling.github.io/vtools3/>`_ and 
-DWR's Python-based SCHISM Toolset `schimpy <http://baydeltaoffice.water.ca.gov/modeling/deltamodeling/models/tools/index.html>`_.
+DWR's Python-based SCHISM Toolset `schimpy <https://cadwrdeltamodeling.github.io/schimpy/>`_.
 
   
 Project description
