@@ -1,0 +1,13 @@
+# furo==2021.11.16
+sphinx>=5.0
+sphinx-design
+sphinx-argparse  
+sphinxcontrib-bibtex
+sphinx_rtd_theme
+ghp-import # for GitHub Pages import
+nbsphinx
+numpydoc
+docutils
+matplotlib # needed for matplotlib.sphinxext.mathmply
+ipython    # neededd for IPython.sphinxext.ipython_directive
+pip
