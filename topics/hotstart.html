@@ -1,0 +1,288 @@
+<!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. --><!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Run Initialization and Restart (Hotstart) &mdash; Bay-Delta SCHISM</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=ca842793"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Nudging Files" href="nudging.html" />
+    <link rel="prev" title="Key Run Parameters and Gotchas" href="param.html" />
+    <link href="../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo3.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bay-Delta SCHISM Project</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getmodel.html">Installation And Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../learning.html">Learning Resources for Bay-Delta SCHISM</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../learning.html#general-resources-and-tools">General Resources and Tools</a><ul class="current">
+<li class="toctree-l3"><a class="reference external" href="https://cadwrdeltamodeling.github.io/HelloSCHISM/">Hello SCHISM</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../topical_guide.html">Topical Guide to Bay Delta SCHISM</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../getmodel.html">Getting the Tools and Setting Up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview.html">Basic Checklists</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html">Study Templates and Preprocessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="barotropic.html">Barotropic Warmup and uv3D.th.nc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="baroclinic.html">From Barotropic to Baroclinic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Run Initialization and Restart (Hotstart)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="output.html">Output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mesh.html">Horizontal Mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="age.html">Simulating water age</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vegetation.html">Submerged Aquatic Vegetation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sources.html">Sources, Sinks, Delta Channel Depletions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structures.html">Hydraulic Structures of the Delta</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities and Scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../linux.html">Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../learning.html#manuals">Manuals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../learning.html#getting-help">Getting Help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../learning.html#vims-and-other-external-resources">VIMS and Other External Resources</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../topical_guide.html">Bay-Delta SCHISM Topical Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getmodel.html">Getting the Tools and Setting Up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Basic Checklists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html">Study Templates and Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barotropic.html">Barotropic Warmup and uv3D.th.nc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="baroclinic.html">From Barotropic to Baroclinic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Run Initialization and Restart (Hotstart)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#when-do-you-need-an-initial-condition-or-hotstart">When do you need an initial condition or hotstart?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-the-difference-between-a-cold-and-hot-start">What is the difference between a cold and hot start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#combining-hotstarts">Combining hotstarts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#choosing-a-good-start-time">Choosing a good start time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#schism-hotstart-creating-a-hotstart-for-hydro-salt-temp">schism_hotstart: Creating a Hotstart for Hydro/Salt/Temp</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acquiring-the-data">Acquiring the data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-the-hotstart-request-yaml">Configuring the Hotstart request (yaml)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-hotstart-generator">Running the hotstart generator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mesh.html">Horizontal Mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="age.html">Simulating water age</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vegetation.html">Submerged Aquatic Vegetation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html">Sources, Sinks, Delta Channel Depletions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structures.html">Hydraulic Structures of the Delta</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities and Scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../calibration.html">Calibration Report and References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help.html#support">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Bay-Delta SCHISM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. -->
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="run-initialization-and-restart-hotstart">
+<h1>Run Initialization and Restart (Hotstart)<a class="headerlink" href="#run-initialization-and-restart-hotstart" title="Link to this heading"></a></h1>
+<section id="when-do-you-need-an-initial-condition-or-hotstart">
+<h2>When do you need an initial condition or hotstart?<a class="headerlink" href="#when-do-you-need-an-initial-condition-or-hotstart" title="Link to this heading"></a></h2>
+<p>You should use a hotstart or initialization for every study if you include salinity transport or other tracers.
+The need for this may be unfamiliar if you are coming from a lower dimensional model or less
+resolved 3D model. There are two reasons:</p>
+<ul class="simple">
+<li><p>the domain is really big, so moving the salt in correctly via a cold start would take many months and</p></li>
+<li><p>if salinity is only coming in from the ocean a sharp baroclinic barrier shock will develop with possibly odd behavior.</p></li>
+</ul>
+<p>We mostly do barotropic runs (no salinity or transport) as a warmup to generate our ocean boundary. For
+that a cold start from very basic (zero velocity, flat water elevation) is fine.</p>
+</section>
+<section id="what-is-the-difference-between-a-cold-and-hot-start">
+<h2>What is the difference between a cold and hot start<a class="headerlink" href="#what-is-the-difference-between-a-cold-and-hot-start" title="Link to this heading"></a></h2>
+<p>A cold start means values are initialized from very simple and well behaved values. Typically velocity is zero
+and the water surface is flat. This avoids “mini-tsunamis”.  Cold starts are invoked using <cite>ihot=0</cite> in the control file <cite>param.nml</cite>.
+You also need plausible values for initialization. If you our using our schism templates and requires some
+initial conditions be provided in the form of text <a href="#id1"><span class="problematic" id="id2">*</span></a>.ic files which are like <a href="#id3"><span class="problematic" id="id4">*</span></a>.gr3 files with values at each node,
+but don’t have mesh topology in the file (and <cite>param.nml.tropic</cite> control file suggestions for a barotropic run)
+then a cold start is assumed and the text initialization file elev.ic (and any other <a href="#id5"><span class="problematic" id="id6">*</span></a>.ic file) will be built.</p>
+<p>A hotstart means initializing a model with non-trivial values. There are two main cases:</p>
+<dl class="simple">
+<dt>ihot=1 (initial condition)</dt><dd><dl class="simple">
+<dt>Start of run. In this case the hotstart file is compiled by the user using interpolated data. Often for this case</dt><dd><p>the assumptions for elev and velocity are simplified and the details are supplied for tracers like temperature/salinity</p>
+</dd>
+</dl>
+</dd>
+<dt>ihot=2: (restart)</dt><dd><p>Restart of run. This is used in case you are transitioning to new conditions like study alternatives,
+invoking a new set of modules or backing up and restart a failed run. In this case the hotstart file is
+generated using per-processor hotstart file in the outputs directory.</p>
+</dd>
+</dl>
+</section>
+<section id="combining-hotstarts">
+<h2>Combining hotstarts<a class="headerlink" href="#combining-hotstarts" title="Link to this heading"></a></h2>
+<p>In order to combine hotstarts you need to have the combine_hotstart utility on path. The actual name of the utility will be
+something like <cite>combine_hotstart7</cite>, where the ‘7’ part is a version that may evolve if the hotstart format changes.
+The hotstart combining command is invoked in the outputs directory and requires specification of an iteration number:
+<cite>combine_hotstart7 -i 24000</cite>. It will take the many per-processor files associated with the iteration
+(hotstart_000000_24000.nc, hotstart_000001_24000.nc, etc) and generate a single hotstart with a name like
+<cite>hotstart_it=24000.nc</cite>. We prefer that you move this out of the outputs directory and rename it according to the following convention:
+<cite>hotstart.20210515.24000.nc</cite>.</p>
+<p>To do this you will need to know how to associate real dates with the iteration. Actually iteration is a possibly confusing term.
+The real interpretation is time step. So if the iteration is 24000, dt=90 seconds, then the time stamp of the hotstart is the start time
+of the run plus 24000*90 seconds. This is tedious, so if you have a <cite>schimpy</cite> installation on your machine, you can use the hotstart_inventory command line
+utility to get a list without doing all this calculation: <cite>hotstart_inventory –dt=90 –start=2021-04-20</cite>.</p>
+<p>The best translation of ‘restart’ in SCHISM is hotstart with ihot=2.</p>
+</section>
+<section id="choosing-a-good-start-time">
+<span id="choose-runtime"></span><h2>Choosing a good start time<a class="headerlink" href="#choosing-a-good-start-time" title="Link to this heading"></a></h2>
+<p>By convention, our group chooses start times that coincide with USGS cruises. . Those are the days when you will have the best access
+to details on salinity and temperature in the Bay.  Note that many cruises are partial, involving only say 20 stops and covering perhaps only the
+South Bay. You will want a date with a complete cruise. At the Delta Modeling Section we keep an inventory of these.</p>
+<p>Hotstart files are not trivially exchangeable when the grid changes or if you change modules (for instance, adding AGE midway through).
+However, if you have a hotstart from another grid or simulation, the schism_hotstart
+utility does have an option for initializing by interpolating from the prior hotstart onto the current mesh.</p>
+<p>For model initialization, you will also need to consider your strategy for nudging. Nudging means the pushing of the model towards data, which
+can tremendously speed up the initialization process and make it more accurate.  We use nudging
+at all times at the ocean boundary for salt and temperature, essentially using it as a softer and wider boundary layer.
+We also sometimes use nudging based on observations in the Delta if we are doing an operational
+run with observed data and looking at the near term consequences of an action. Under these conditions, one usually wants the model to be spun
+up fast and accurately. If we are doing longer term planning simulations or if there is branching into alternatives, nudging may not have a role.
+Also labeling must be exceedingly clear. NEVER REPORT AS GENERAL MODEL ACCURACY STATISTICS ANY RESULTS USING MODELS THAT ARE ACTIVELY NUDGED INSIDE THE GOLDEN GATE.</p>
+<p>The two pictures below show the common initialization sequences, as well as the extension into the main study period.</p>
+<figure class="align-default" id="id7">
+<img alt="../_images/initialization1.png" class="with-border" src="../_images/initialization1.png" />
+<figcaption>
+<p><span class="caption-text">Simple initialization without nudging using Delta observations data.  * = Prefer USGS cruise date.</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id8">
+<img alt="../_images/initialization2.png" class="with-border" src="../_images/initialization2.png" />
+<figcaption>
+<p><span class="caption-text">Simple initialization with nudging using Delta data to spin up the model fast and accurately,
+before halting and restarting without nudging for the main study.</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="schism-hotstart-creating-a-hotstart-for-hydro-salt-temp">
+<h2>schism_hotstart: Creating a Hotstart for Hydro/Salt/Temp<a class="headerlink" href="#schism-hotstart-creating-a-hotstart-for-hydro-salt-temp" title="Link to this heading"></a></h2>
+<section id="acquiring-the-data">
+<h3>Acquiring the data<a class="headerlink" href="#acquiring-the-data" title="Link to this heading"></a></h3>
+<p>It is hard to generalize all the different systems used by modeling groups to gather up observed data. The short answer is that for a hotstart you will
+need a USGS cruise file (downloading the whole year is fine, that is the way their interface looks at the time of writing).</p>
+<p>If you are using in-Delta observations you will also need QA/QC’d data at least for the instant of the hotstart. Our scripts work with our data managment protocols.</p>
+</section>
+<section id="configuring-the-hotstart-request-yaml">
+<h3>Configuring the Hotstart request (yaml)<a class="headerlink" href="#configuring-the-hotstart-request-yaml" title="Link to this heading"></a></h3>
+</section>
+<section id="running-the-hotstart-generator">
+<h3>Running the hotstart generator<a class="headerlink" href="#running-the-hotstart-generator" title="Link to this heading"></a></h3>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="param.html" class="btn btn-neutral float-left" title="Key Run Parameters and Gotchas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="nudging.html" class="btn btn-neutral float-right" title="Nudging Files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014,2020 California Department of Water Resources.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: white;
+    }
+    /* Sidebar */
+    .wy-nav-side {
+      background: #86989B; /* existing theme was AFC1C4 and 86989B and CA7900 and white */
+      
+    }
+  </style>
+
+
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. --><!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizontal Mesh &mdash; Bay-Delta SCHISM</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=ca842793"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Common Problems and Diagnosis" href="problems.html" />
+    <link rel="prev" title="Output" href="output.html" />
+    <link href="../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo3.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bay-Delta SCHISM Project</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getmodel.html">Installation And Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../learning.html">Learning Resources for Bay-Delta SCHISM</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../learning.html#general-resources-and-tools">General Resources and Tools</a><ul class="current">
+<li class="toctree-l3"><a class="reference external" href="https://cadwrdeltamodeling.github.io/HelloSCHISM/">Hello SCHISM</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../topical_guide.html">Topical Guide to Bay Delta SCHISM</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../getmodel.html">Getting the Tools and Setting Up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview.html">Basic Checklists</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html">Study Templates and Preprocessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="barotropic.html">Barotropic Warmup and uv3D.th.nc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="baroclinic.html">From Barotropic to Baroclinic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hotstart.html">Run Initialization and Restart (Hotstart)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="output.html">Output</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Horizontal Mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="age.html">Simulating water age</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vegetation.html">Submerged Aquatic Vegetation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sources.html">Sources, Sinks, Delta Channel Depletions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structures.html">Hydraulic Structures of the Delta</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities and Scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../linux.html">Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../learning.html#manuals">Manuals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../learning.html#getting-help">Getting Help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../learning.html#vims-and-other-external-resources">VIMS and Other External Resources</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../topical_guide.html">Bay-Delta SCHISM Topical Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getmodel.html">Getting the Tools and Setting Up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Basic Checklists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html">Study Templates and Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barotropic.html">Barotropic Warmup and uv3D.th.nc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="baroclinic.html">From Barotropic to Baroclinic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hotstart.html">Run Initialization and Restart (Hotstart)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">Output</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Horizontal Mesh</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#meshing">Meshing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#meshing-considerations-for-schism">Meshing considerations for SCHISM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-to-know-sms">Getting to know SMS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-the-bay-delta-mesh-the-standard-way">Building the Bay-Delta mesh the standard way</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#presentation-meshing-consideration-for-marshes-and-restoration">Presentation: Meshing consideration for marshes and restoration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc">Merging/Stitching SMS mesh/maps (new work, flooded islands, etc)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#vertical-mesh-setup">Vertical mesh setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#checklist-for-after-you-change-the-mesh">Checklist for after you change the mesh</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="age.html">Simulating water age</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vegetation.html">Submerged Aquatic Vegetation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html">Sources, Sinks, Delta Channel Depletions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structures.html">Hydraulic Structures of the Delta</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities and Scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../calibration.html">Calibration Report and References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help.html#support">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Bay-Delta SCHISM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. -->
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="horizontal-mesh">
+<h1>Horizontal Mesh<a class="headerlink" href="#horizontal-mesh" title="Link to this heading"></a></h1>
+<p>The format of the SCHISM horizontal mesh is described in the <a class="reference external" href="https://schism-dev.github.io/schism/master/index.html">SCHISM manual</a>.</p>
+<p>Users will find that SCHISM projects require refinement or extension. There are a few reasons:</p>
+<ul class="simple">
+<li><p>SCHISM modeling is often used for</p>
+<ul>
+<li><p>focused analysis, requiring refinement</p></li>
+<li><p>sea level rise, requiring upstream extension or gridding of exposed areas.</p></li>
+<li><p>restoration areas.</p></li>
+</ul>
+</li>
+<li><p>The spatial parameterization is varied or parameterized, so there is no extensive “calibration” of a new mesh</p></li>
+</ul>
+<p>Here we will cover:</p>
+<ul class="simple">
+<li><p>Best practices for horizontal gridding</p></li>
+<li><p>Attaching boundaries</p></li>
+<li><p><a class="reference internal" href="#change-mesh"><span class="std std-ref">Checklist</span></a> for after changing the grid or boundaries.</p></li>
+<li><p>Vertical grid.</p></li>
+</ul>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#meshing" id="id3">Meshing</a></p>
+<ul>
+<li><p><a class="reference internal" href="#meshing-considerations-for-schism" id="id4">Meshing considerations for SCHISM</a></p></li>
+<li><p><a class="reference internal" href="#getting-to-know-sms" id="id5">Getting to know SMS</a></p></li>
+<li><p><a class="reference internal" href="#building-the-bay-delta-mesh-the-standard-way" id="id6">Building the Bay-Delta mesh the standard way</a></p></li>
+<li><p><a class="reference internal" href="#presentation-meshing-consideration-for-marshes-and-restoration" id="id7">Presentation: Meshing consideration for marshes and restoration</a></p></li>
+<li><p><a class="reference internal" href="#merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc" id="id8">Merging/Stitching SMS mesh/maps (new work, flooded islands, etc)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#vertical-mesh-setup" id="id9">Vertical mesh setup</a></p></li>
+<li><p><a class="reference internal" href="#checklist-for-after-you-change-the-mesh" id="id10">Checklist for after you change the mesh</a></p></li>
+</ul>
+</nav>
+<section id="meshing">
+<h2>Meshing<a class="headerlink" href="#meshing" title="Link to this heading"></a></h2>
+<section id="meshing-considerations-for-schism">
+<h3>Meshing considerations for SCHISM<a class="headerlink" href="#meshing-considerations-for-schism" title="Link to this heading"></a></h3>
+<section id="video-joseph-zhang-schism-summit">
+<h4>Video (Joseph Zhang, SCHISM summit)<a class="headerlink" href="#video-joseph-zhang-schism-summit" title="Link to this heading"></a></h4>
+<p>Video (Joseph Zhang #2)</p>
+</section>
+<section id="recap-checklist">
+<h4>Recap/checklist<a class="headerlink" href="#recap-checklist" title="Link to this heading"></a></h4>
+</section>
+</section>
+<section id="getting-to-know-sms">
+<h3>Getting to know SMS<a class="headerlink" href="#getting-to-know-sms" title="Link to this heading"></a></h3>
+<section id="video-eli-ateljevich">
+<h4>Video (Eli Ateljevich)<a class="headerlink" href="#video-eli-ateljevich" title="Link to this heading"></a></h4>
+</section>
+<section id="sample-data">
+<h4>Sample Data<a class="headerlink" href="#sample-data" title="Link to this heading"></a></h4>
+</section>
+<section id="id1">
+<h4>Recap checklist<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+</section>
+<section id="presentation-clip-dems-and-efficient-use-of-dems">
+<h4>Presentation: clip_dems and efficient use of DEMS<a class="headerlink" href="#presentation-clip-dems-and-efficient-use-of-dems" title="Link to this heading"></a></h4>
+</section>
+</section>
+<section id="building-the-bay-delta-mesh-the-standard-way">
+<h3>Building the Bay-Delta mesh the standard way<a class="headerlink" href="#building-the-bay-delta-mesh-the-standard-way" title="Link to this heading"></a></h3>
+</section>
+<section id="presentation-meshing-consideration-for-marshes-and-restoration">
+<h3>Presentation: Meshing consideration for marshes and restoration<a class="headerlink" href="#presentation-meshing-consideration-for-marshes-and-restoration" title="Link to this heading"></a></h3>
+</section>
+<section id="merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc">
+<h3>Merging/Stitching SMS mesh/maps (new work, flooded islands, etc)<a class="headerlink" href="#merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc" title="Link to this heading"></a></h3>
+<section id="video">
+<h4>Video<a class="headerlink" href="#video" title="Link to this heading"></a></h4>
+</section>
+<section id="id2">
+<h4>Recap/checklist<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+</section>
+</section>
+</section>
+<section id="vertical-mesh-setup">
+<h2>Vertical mesh setup<a class="headerlink" href="#vertical-mesh-setup" title="Link to this heading"></a></h2>
+</section>
+<section id="checklist-for-after-you-change-the-mesh">
+<span id="change-mesh"></span><h2>Checklist for after you change the mesh<a class="headerlink" href="#checklist-for-after-you-change-the-mesh" title="Link to this heading"></a></h2>
+<p>Changing the mesh tends to have consequences in places people forget to think about, though most are
+straightforward or obvious. This is a checklist of gotchas that arise outside the gridding environment.</p>
+<p>☐ Are boundaries still in the proper place?</p>
+<p>☐ If boundaries moved, is depth enforcement preventing dry boundaries still in right place?</p>
+<p>☐ Are flow cross sections in changed area still aligned?</p>
+<p>☐ Are the node pairs that define hydraulic structure locations still correct?</p>
+<p>☐ Are polygons used to define spatial inputs appopriate for new area?</p>
+<p>☐ If grid was extended, do yaml polygons cover extended domain?</p>
+<p>☐ Are sources excluded?</p>
+<p>☐ Do you have submerged aquatic vegetation? Assumptions? Consider changing those file</p>
+<p>☐ Old hotstarts not valid on new mesh, utilities will interpolate on new grid</p>
+<p>☐ Old nudging files not valid on new mesh. Re-do.</p>
+<p>☐ If refining/coarsening extensively on main channel, consider the effect on momentum and the algorithm.</p>
+<p>☐ Mesh quality:</p>
+<blockquote>
+<div><p>☐ Skew and area warnings in preprocessor.</p>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="output.html" class="btn btn-neutral float-left" title="Output" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="problems.html" class="btn btn-neutral float-right" title="Common Problems and Diagnosis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014,2020 California Department of Water Resources.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: white;
+    }
+    /* Sidebar */
+    .wy-nav-side {
+      background: #86989B; /* existing theme was AFC1C4 and 86989B and CA7900 and white */
+      
+    }
+  </style>
+
+
+</body>
+</html>
