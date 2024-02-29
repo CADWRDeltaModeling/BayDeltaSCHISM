@@ -114,9 +114,10 @@ numerical simulations. Note there is a visit-users forum and mailing list descri
 `visit-users.org web site <http://visitusers.org/>`_. VisIt accesses specific data sources using plugins. At the time of writing, ours plugin works for SCHISM NetCDF UGRID 0.9 output from SCHISM. We do not distribute the base VisIt and since VisIt and the plugin version should be coordinated exactly.  
 
 SCHISM plugins:
-* `Source code for 2.7 <https://msb.water.ca.gov/documents/86683/266737/visit_plugin_1.0.0.source.zip>`_
-* `Compiled Windows binaries for 2.7 <https://msb.water.ca.gov/documents/86683/266737/visit_plugin_1.0.0_visit2.7_win64_vs2010.zip>`_
-* `Compiled Windows binaries for 2.8 <https://msb.water.ca.gov/documents/86683/266737/visit_plugin_1.0.0_visit2.8_win64_vs2012.zip>`_
+* `Source code  <https://github.com/schism-dev/schism_visit_plugin/archive/refs/tags/1.1.0.zip>`_
+* `Compiled Windows binaries for 2.13.3 <https://github.com/schism-dev/schism_visit_plugin/releases/download/1.1.0/schism_plugin_visit2.13.3_win64_vs2012_tag_1.1.0.zip>`_
+* `Compiled Windows binaries for 3.1.4 <https://github.com/schism-dev/schism_visit_plugin/releases/download/1.1.0/schism_plugin_visit3.1.4_win64_vs2017_tag_1.1.0.zip>`_
+* `Compiled Windows binaries for 3.3.1 <https://github.com/schism-dev/schism_visit_plugin/releases/download/1.1.0/schism_plugin_visit3.3.1_win64_vs2017_tag_1.1.0.zip>`_
 
 You may notice Visit documentation is becoming antiquated but still usable -- the software is supported by a vigorous wiki and forum on the `VisIt community site <http://visitusers.org>`_. We also offer the document `VisIT for SELFE users <https://msb.water.ca.gov/documents/86683/266737/visit_plugin_instruction.pdf>`_
 
