@@ -13,7 +13,7 @@ folks who take all of that on together tend to struggle. Here are ways you can b
   - This page lists the main items you will need to install or acquire.
   - Don't mix learning the model and learning Linux if you are still familiarizing. Download the model and try the first couple tutorials on `Hello SCHISM <https://cadwrdeltamodeling.github.io/HelloSCHISM/>`_
     a simplified grid using Windows if that is your platform of preference. See the :doc:`learning`. 
-  - Be aware of the `learning resources    <https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/html/learning.html>`_ page which is the hub for documentation for the project.
+  - Be aware of the `learning resources    <https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/learning.html>`_ page which is the hub for documentation for the project.
   - In particular, there is a :doc:`topical_guide`. It contains details on how we set up the Bay-Delta SCHISM application, and the table of contents is a good reminder even for experienced users. 
   - Explore the Python tools listed below. We will happily answer questions about what tools are available to avoid constant reinvention of the same functionality.  
   - If you have just set up the model in a new computing environment, benchmark it on a working example. Download the code and the ready-to-run :ref:`complete-sample` and use them to configure and test your target high performance computing (HPC) environment.
