@@ -1,4 +1,6 @@
 
+.. _getstarted:
+
 ================================
 Installation And Getting Started 
 ================================
