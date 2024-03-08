@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Submerged Aquatic Vegetation &mdash; Bay-Delta SCHISM</title>
+  <title>Vegetation &mdash; Bay-Delta SCHISM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -72,7 +72,7 @@
 <li class="toctree-l4"><a class="reference internal" href="mesh.html">Horizontal Mesh</a></li>
 <li class="toctree-l4"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a></li>
 <li class="toctree-l4"><a class="reference internal" href="age.html">Simulating water age</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Submerged Aquatic Vegetation</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Vegetation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sources.html">Sources, Sinks, Delta Channel Depletions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="structures.html">Hydraulic Structures of the Delta</a></li>
@@ -104,8 +104,8 @@
 <li class="toctree-l2"><a class="reference internal" href="mesh.html">Horizontal Mesh</a></li>
 <li class="toctree-l2"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="age.html">Simulating water age</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Submerged Aquatic Vegetation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#vegetation-in-schism">Vegetation in SCHISM</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Vegetation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#aquatic-vegetation-in-schism">Aquatic Vegetation in SCHISM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#approximations-and-preprocessor">Approximations and preprocessor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#effective-stem-density">Effective Stem Density</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#height">Height</a></li>
@@ -138,13 +138,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="submerged-aquatic-vegetation">
-<h1>Submerged Aquatic Vegetation<a class="headerlink" href="#submerged-aquatic-vegetation" title="Link to this heading"></a></h1>
-<section id="vegetation-in-schism">
-<h2>Vegetation in SCHISM<a class="headerlink" href="#vegetation-in-schism" title="Link to this heading"></a></h2>
-<p>In Bay-Delta SCHISM, the modeling of SAV is on in most runs by default, with data in or approximations in
+  <section id="vegetation">
+<h1>Vegetation<a class="headerlink" href="#vegetation" title="Link to this heading"></a></h1>
+<section id="aquatic-vegetation-in-schism">
+<h2>Aquatic Vegetation in SCHISM<a class="headerlink" href="#aquatic-vegetation-in-schism" title="Link to this heading"></a></h2>
+<p>In Bay-Delta SCHISM, the modeling of submerged aquatic vegetation (SAV)
+is on by default, with data in or approximations in
 Franks Tract, Cache Complex, South Delta.</p>
-<p>SCHISM has a submerged aquatic vegetation module  introduced by <span id="id1">[<a class="reference internal" href="../refs.html#id3" title="Yinglong J. Zhang, Nathan Gerdts, Eli Ateljevich, and Kijin Nam. Simulating vegetation effects on flows in 3d using an unstructured grid model: model development and validation. Ocean Dynamics, 2020. URL: http://link.springer.com/10.1007/s10236-019-01333-8 (visited on 2022-11-05), doi:10.1007/s10236-019-01333-8.">ZGAN20</a>]</span>, and covered in
+<p>SCHISM has a submerged aquatic vegetation module  introduced by <span id="id1">[<a class="reference internal" href="../refs.html#id4" title="Yinglong J. Zhang, Nathan Gerdts, Eli Ateljevich, and Kijin Nam. Simulating vegetation effects on flows in 3d using an unstructured grid model: model development and validation. Ocean Dynamics, 2020. URL: http://link.springer.com/10.1007/s10236-019-01333-8 (visited on 2022-11-05), doi:10.1007/s10236-019-01333-8.">ZGAN20</a>]</span>, and covered in
 online manual which includes the effects of drag within the canopy,
 and simple representation of turbulence production. Biogeochemical linkages (shading, nutrient competition) are also included
 in the water quality/ecological modules. In the instances where we have introduced vegetation</p>
