@@ -9,12 +9,11 @@ Vegetation in SCHISM
 In Bay-Delta SCHISM, the modeling of SAV is on in most runs by default, with data in or approximations in 
 Franks Tract, Cache Complex, South Delta.
 
-SCHISM has a submerged aquatic vegetation module  introduced by \citet{zhang_simulating_2020}, and covered in 
+SCHISM has a submerged aquatic vegetation module  introduced by :cite:t:{zhang_simulating_2020}, and covered in 
 online manual which includes the effects of drag within the canopy, 
 and simple representation of turbulence production. Biogeochemical linkages (shading, nutrient competition) are also included 
 in the water quality/ecological modules. In the instances where we have introduced vegetation
- (Cache Complex, Franks Tract, South Delta, Sherman Lake) 
- it has helped reproduced the distribution of physical flow.
+ (Cache Complex, Franks Tract, South Delta, Sherman Lake)  it has helped reproduced the distribution of physical flow.
 
 SCHISM can model submerged vegetation (example: Egeria Densa) or with a suitably high 
 canopy emergent vegetation vegetation, such as tule. Primrose can also be 
@@ -71,8 +70,9 @@ Given lack of detailed knowledge of the drag coefficient diameter and stem densi
 a single degree of freedom. We fix the diameter and density and use what is effectively an 
 "effective stem density" that tries to take into account most of the spatial variation. 
 
-The template has formulas for effective density based on depth using high and low values only, consistent with
- analysis who found that most Egeria densa grew between depths of 2m and -1m MLLW. 
+The template has formulas for effective density based on depth using high and low values only, 
+consistent for the most part with the :cite:t:{university_of_california_davis_physical_2016} 
+conclusion that most Egeria densa grew between depths of 2m and -1m MLLW. 
  
 In areas where we have imagery, we use processed Normalized Density Vegetation Index from the Ustin lab at UC Davis. 
 These are, we hope, representative, although we do not swap them out for particular years unless the role
@@ -99,8 +99,6 @@ do not bin or assign values in away that is much more specific than none-low-hig
       - - 622760.2566469825
         - 4191499.7722536493
         ....
-
- 
  
 Height 
 ^^^^^^
