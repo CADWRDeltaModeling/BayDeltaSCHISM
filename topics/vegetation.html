@@ -104,7 +104,13 @@
 <li class="toctree-l2"><a class="reference internal" href="mesh.html">Horizontal Mesh</a></li>
 <li class="toctree-l2"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="age.html">Simulating water age</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Submerged Aquatic Vegetation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Submerged Aquatic Vegetation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vegetation-in-schism">Vegetation in SCHISM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#approximations-and-preprocessor">Approximations and preprocessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#effective-stem-density">Effective Stem Density</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#height">Height</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Sources, Sinks, Delta Channel Depletions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structures.html">Hydraulic Structures of the Delta</a></li>
@@ -134,6 +140,122 @@
              
   <section id="submerged-aquatic-vegetation">
 <h1>Submerged Aquatic Vegetation<a class="headerlink" href="#submerged-aquatic-vegetation" title="Link to this heading"></a></h1>
+<section id="vegetation-in-schism">
+<h2>Vegetation in SCHISM<a class="headerlink" href="#vegetation-in-schism" title="Link to this heading"></a></h2>
+<p>In Bay-Delta SCHISM, the modeling of SAV is on in most runs by default, with data in or approximations in
+Franks Tract, Cache Complex, South Delta.</p>
+<p>SCHISM has a submerged aquatic vegetation module  introduced by citet{zhang_simulating_2020}, and covered in
+online manual which includes the effects of drag within the canopy,
+and simple representation of turbulence production. Biogeochemical linkages (shading, nutrient competition) are also included
+in the water quality/ecological modules. In the instances where we have introduced vegetation</p>
+<blockquote>
+<div><p>(Cache Complex, Franks Tract, South Delta, Sherman Lake)
+it has helped reproduced the distribution of physical flow.</p>
+</div></blockquote>
+<p>SCHISM can model submerged vegetation (example: Egeria Densa) or with a suitably high
+canopy emergent vegetation vegetation, such as tule. Primrose can also be
+approximated as emergent. Accommodation must be made for patchy floating species such
+as hyacinth.</p>
+<p>In SCHISM, vegetation is enabled using the parameter isav=1 in the control file param.nml. For turbulence production
+the native “SCHISM” turbulence closures must be used, not GOTM.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Vegetation Files</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>SCHISM file name</p></th>
+<th class="head"><p>Example preprocessor name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sav_N.gr3</p></td>
+<td><p>sav_density.yaml</p></td>
+<td><p>stem density per square meter</p></td>
+</tr>
+<tr class="row-odd"><td><p>sav_D.gr3</p></td>
+<td><p>sav_diameter</p></td>
+<td><p>stem diameter</p></td>
+</tr>
+<tr class="row-even"><td><p>sav_cd.gr3</p></td>
+<td><p>constant</p></td>
+<td><p>coefficient of drag (we use 1.13)</p></td>
+</tr>
+<tr class="row-odd"><td><p>sav_h.gr3</p></td>
+<td><p>sav_height.yaml</p></td>
+<td><p>canopy height</p></td>
+</tr>
+</tbody>
+</table>
+<p>The first three parameters are multiplied by one another. There is rarely enough data to depict them all,
+a point revisited below. Canopy height is from the bed. We usually assume the canopy reaches -0.25cm NAVD
+which is a compromise based on the fact that apparent effective density diminishes in the upper centimeters.</p>
+</section>
+<section id="approximations-and-preprocessor">
+<h2>Approximations and preprocessor<a class="headerlink" href="#approximations-and-preprocessor" title="Link to this heading"></a></h2>
+<p>Key challenges when modeling vegetation with SCHISM are:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>sufficiency of data and converting to useful parameters and</p></li>
+<li><p>need to include sufficient vertical resolution to allow a boundary layer over the vegetation</p></li>
+</ol>
+</div></blockquote>
+<p>Done right, strong shear above and below the canopy can be obtained. Done crudely, the approximation is nothing
+more than an added body force inducing a kind of “friction” over the entire water column that is lacking in
+3D models (roughness is just at the bed).</p>
+</section>
+<section id="effective-stem-density">
+<h2>Effective Stem Density<a class="headerlink" href="#effective-stem-density" title="Link to this heading"></a></h2>
+<p>Given lack of detailed knowledge of the drag coefficient diameter and stem density, there is effectively
+a single degree of freedom. We fix the diameter and density and use what is effectively an
+“effective stem density” that tries to take into account most of the spatial variation.</p>
+<dl class="simple">
+<dt>The template has formulas for effective density based on depth using high and low values only, consistent with</dt><dd><p>analysis who found that most Egeria densa grew between depths of 2m and -1m MLLW.</p>
+</dd>
+</dl>
+<p>In areas where we have imagery, we use processed Normalized Density Vegetation Index from the Ustin lab at UC Davis.
+These are, we hope, representative, although we do not swap them out for particular years unless the role
+of vegetation pattern is the focus of investigation. The images give a good relative sense of density and
+have also been used to categorize vegetation. Each image is usually examined as a histogram, as the absolute
+value of NDVI relative to visual ground truth tends to drift. A “no vegetation” level is typically assigned for
+values less than a threshold around -0.05, but as you can see from the bin value -0.2 things were adjusted downward
+and we have noticed that in Clifton Court in particular submerged vegetation seems to be observed for NDVI lower than the
+“classic” low end values. High values are often NDVI &gt; 0.2 but again the scale is shifted down a bit below. We
+do not bin or assign values in away that is much more specific than none-low-high or none-low-medium-high.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">- attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, &#39;//path/to/delta_NDVI.tif&#39;,</span>
+<span class="go">    bins=[-998.,-0.2,0,0.4,1.0],</span>
+<span class="go">    mapped_values=[-999., 0., 10., 30., 60., -999.],</span>
+<span class="go">    mask_value=0.,</span>
+<span class="go">    fill_value=-0.21)</span>
+<span class="go">  name: Clifton Court</span>
+<span class="go">  type: none</span>
+<span class="go">  imports: schimpy.raster_to_nodes</span>
+<span class="go">  vertices:</span>
+<span class="go">  - - 622760.2566469825</span>
+<span class="go">    - 4191499.7722536493</span>
+<span class="go">    ....</span>
+</pre></div>
+</div>
+</section>
+<section id="height">
+<h2>Height<a class="headerlink" href="#height" title="Link to this heading"></a></h2>
+<p>Template formulas usually enforce a minimum height of (say 0.25m below),
+a maximum (say 1.5m below) and assume that the vegetation grow to a height that reaches just
+below a typical low water mark where we assume 0.4m NAVD is a good generic
+low water mark. Here is a sample from <cite>sav_height.yaml</cite>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">- name: Franks Tract</span>
+<span class="go">  type: none</span>
+<span class="go">  attribute: &#39;max(0.25,min(1.5,z+0.25))&#39;</span>
+<span class="go">  vertices:</span>
+<span class="go">     ... coordinates</span>
+</pre></div>
+</div>
+<p>When a mix of emergent and submerged vegetation is required, a more complex formula is required. Usually emergent
+vegetation is represented as a very high value.</p>
+</section>
 </section>
 
 
