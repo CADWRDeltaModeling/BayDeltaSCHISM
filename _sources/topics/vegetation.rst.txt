@@ -100,6 +100,8 @@ do not bin or assign values in away that is much more specific than none-low-hig
       - - 622760.2566469825
         - 4191499.7722536493
         ....
+        
+The :external:py:func:`schimpy.raster_to_nodes.raster_to_nodes` manual page has more info on this function.
  
 Height 
 ^^^^^^
