@@ -1,12 +1,13 @@
 
 
-============================
-Submerged Aquatic Vegetation
-============================
+==========
+Vegetation
+==========
 
-Vegetation in SCHISM
-^^^^^^^^^^^^^^^^^^^^
-In Bay-Delta SCHISM, the modeling of SAV is on in most runs by default, with data in or approximations in 
+Aquatic Vegetation in SCHISM
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In Bay-Delta SCHISM, the modeling of submerged aquatic vegetation (SAV)
+is on by default, with data in or approximations in 
 Franks Tract, Cache Complex, South Delta.
 
 SCHISM has a submerged aquatic vegetation module  introduced by :cite:p:`zhang_simulating_2020`, and covered in 
