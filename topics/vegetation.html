@@ -144,13 +144,12 @@
 <h2>Vegetation in SCHISM<a class="headerlink" href="#vegetation-in-schism" title="Link to this heading"></a></h2>
 <p>In Bay-Delta SCHISM, the modeling of SAV is on in most runs by default, with data in or approximations in
 Franks Tract, Cache Complex, South Delta.</p>
-<p>SCHISM has a submerged aquatic vegetation module  introduced by citet{zhang_simulating_2020}, and covered in
+<p>SCHISM has a submerged aquatic vegetation module  introduced by <span id="id1">[<a class="reference internal" href="../refs.html#id3" title="Yinglong J. Zhang, Nathan Gerdts, Eli Ateljevich, and Kijin Nam. Simulating vegetation effects on flows in 3d using an unstructured grid model: model development and validation. Ocean Dynamics, 2020. URL: http://link.springer.com/10.1007/s10236-019-01333-8 (visited on 2022-11-05), doi:10.1007/s10236-019-01333-8.">ZGAN20</a>]</span>, and covered in
 online manual which includes the effects of drag within the canopy,
 and simple representation of turbulence production. Biogeochemical linkages (shading, nutrient competition) are also included
 in the water quality/ecological modules. In the instances where we have introduced vegetation</p>
 <blockquote>
-<div><p>(Cache Complex, Franks Tract, South Delta, Sherman Lake)
-it has helped reproduced the distribution of physical flow.</p>
+<div><p>(Cache Complex, Franks Tract, South Delta, Sherman Lake)  it has helped reproduced the distribution of physical flow.</p>
 </div></blockquote>
 <p>SCHISM can model submerged vegetation (example: Egeria Densa) or with a suitably high
 canopy emergent vegetation vegetation, such as tule. Primrose can also be
@@ -158,8 +157,8 @@ approximated as emergent. Accommodation must be made for patchy floating species
 as hyacinth.</p>
 <p>In SCHISM, vegetation is enabled using the parameter isav=1 in the control file param.nml. For turbulence production
 the native “SCHISM” turbulence closures must be used, not GOTM.</p>
-<table class="docutils align-default" id="id1">
-<caption><span class="caption-text">Vegetation Files</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Vegetation Files</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 25.0%" />
@@ -212,10 +211,9 @@ more than an added body force inducing a kind of “friction” over the entire 
 <p>Given lack of detailed knowledge of the drag coefficient diameter and stem density, there is effectively
 a single degree of freedom. We fix the diameter and density and use what is effectively an
 “effective stem density” that tries to take into account most of the spatial variation.</p>
-<dl class="simple">
-<dt>The template has formulas for effective density based on depth using high and low values only, consistent with</dt><dd><p>analysis who found that most Egeria densa grew between depths of 2m and -1m MLLW.</p>
-</dd>
-</dl>
+<p>The template has formulas for effective density based on depth using high and low values only,
+consistent for the most part with the :cite:p`university_of_california_davis_physical_2016`
+conclusion that most Egeria densa grew between depths of 2m and -1m MLLW.</p>
 <p>In areas where we have imagery, we use processed Normalized Density Vegetation Index from the Ustin lab at UC Davis.
 These are, we hope, representative, although we do not swap them out for particular years unless the role
 of vegetation pattern is the focus of investigation. The images give a good relative sense of density and
