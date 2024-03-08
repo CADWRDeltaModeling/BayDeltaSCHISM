@@ -297,6 +297,7 @@ epub_copyright = u'2014, Eli Ateljevich, Joseph Zhang, Kijin Nam, Qiang Shu, Rue
 #epub_tocdup = True
 
 
-# Example configuration for intersphinx: refer to the Python standard library.
+# Configuration for intersphinx: refer to the Python standard library.
+# It is worth checking if objects.inv in the site below is empty.
 intersphinx_mapping = {'schismtools': ('https://github.com/CADWRDeltaModeling/schimpy/tree/gh-pages',None)}
-
+tls_verify = False
