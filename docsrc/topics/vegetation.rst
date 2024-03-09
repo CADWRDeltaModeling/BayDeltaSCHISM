@@ -68,21 +68,28 @@ Effective Stem Density
 
 Given lack of detailed knowledge of the drag coefficient diameter and stem density, there is effectively 
 a single degree of freedom. We fix the diameter and density and use what is effectively an 
-"effective stem density" that tries to take into account most of the spatial variation. 
+"effective stem density" that tries to take into account most of the spatial variation. In the past we have used
+stem densities of 20-30 per meter squared (lower) and 30-60 per meter squared (heavy) coupled with a drag
+coefficient of 0.26. You may also see legacy files where the stem density is much lower and the drag higher, but
+with the product on the same order of magnitude (for instance 8 stems/m^2 and drag 1.13). We believe that 
+the stem density O(10) is more correct. Using both high drag of 1.13 and stem density of say 80 will produce
+way too much dissipation, something you will quickly see if you try it.
 
-The template has formulas for effective density based on depth using high and low values only, 
-consistent for the most part with the :cite:p:`university_of_california_davis_physical_2016` 
-conclusion that most Egeria densa grew between depths of 2m and -1m MLLW. 
+At times when we don't have remote sensing, the template has included that attempt to fake effective density 
+based on depth, using only one high and one low value, consistent for the most part with the :cite:p:`university_of_california_davis_physical_2016` 
+conclusion that most Egeria densa grew between depths of 2m and -1m MLLW and assuming that density is higher in water that
+is less than 0.9m at low water. 
  
 In areas where we have imagery, we use processed Normalized Density Vegetation Index from the Ustin lab at UC Davis. 
-These are, we hope, representative, although we do not swap them out for particular years unless the role
-of vegetation pattern is the focus of investigation. The images give a good relative sense of density and
-have also been used to categorize vegetation. Each image is usually examined as a histogram, as the absolute
-value of NDVI relative to visual ground truth tends to drift. A "no vegetation" level is typically assigned for
-values less than a threshold around -0.05, but as you can see from the bin value -0.2 things were adjusted downward
-and we have noticed that in Clifton Court in particular submerged vegetation seems to be observed for NDVI lower than the 
-"classic" low end values. High values are often NDVI > 0.2 but again the scale is shifted down a bit below. We
-do not bin or assign values in away that is much more specific than none-low-high or none-low-medium-high.
+More properly, these are modified mNDVI with more attention on the cusp of the red band and slightly lower values than
+ordinary mDVI. These are, we hope, representative systematically, although we tend to leave them in place across years unless 
+vegetation pattern change is the focus of investigation and there is no mechanism at the time of writing for modulating
+them seasonally. The images give a good relative sense of density and have also been used to categorize vegetation. 
+Each image is usually examined as a histogram, as the absolute
+value of mNDVI relative to visual ground truth tends to drift. A "no vegetation" or zero density is typically assigned for
+values of mNDVI less than a threshold around -0.05, but we have included the example below where the bin value for the low veg
+category was adjusted downward to -0.2. In the inputs, high values are often assigned for NDVI > 0.2 but again 
+the scale is shifted down a bit below. We do not bin or assign values in away that is more specific than none-low-high or none-low-medium-high.
 
 
 .. code-block:: console
@@ -100,26 +107,28 @@ do not bin or assign values in away that is much more specific than none-low-hig
         - 4191499.7722536493
         ....
         
-The :external:py:func:`schimpy.raster_to_nodes.raster_to_nodes` manual page has more info on this function.
+The :external:py:func:`schimpy.raster_to_nodes.raster_to_nodes` manual page has more info on this function. Index `i` in the 
+mapped values is applied between `i-1` and `i` in the bins. The mapped values have to be larger than the number of bins,
+which is an artifact of the numpy digitize method used to implement the function.
  
 Height 
 ^^^^^^
 
 Template formulas usually enforce a minimum height of (say 0.25m below), 
-a maximum (say 1.5m below) and assume that the vegetation grow to a height that reaches just 
-below a typical low water mark where we assume 0.4m NAVD is a good generic 
-low water mark. Here is a sample from `sav_height.yaml`:
+a maximum (say 1.0m below) and assume that the vegetation grow to a effective height that reaches just 
+below a typical low water mark, slightly lower than the highest whorl you'd see in a boat). 
+Here is a sample from `sav_height.yaml`:
 
 .. code-block:: console
 
    - name: Franks Tract
      type: none
-     attribute: 'max(0.25,min(1.5,z+0.25))'
+     attribute: 'max(0.25,min(1.0,z-0.01))'
      vertices:
         ... coordinates
 
-When a mix of emergent and submerged vegetation is required, a more complex formula is required. Usually emergent
-vegetation is represented as a very high value.
+When a mix of emergent and submerged vegetation is required, a more complex formula is required. Emergent
+vegetation is represented using exaggerated height.
 
 
 
