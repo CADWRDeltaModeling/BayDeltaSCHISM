@@ -7,11 +7,11 @@ if "%SPHINXBUILD%" == "" (
 )
 set BUILDDIR=../docs
 set PDFBUILDDDIR="d:/temp/pdftmp"
-set PDF=../bay_delta_schism.pdf
+set PDF=../schism_tools.pdf
 echo %BUILDDIR%
 
-set ALLSPHINXOPTS=-d %BUILDDIR%/doctrees %SPHINXOPTS% .
-set I18NSPHINXOPTS=%SPHINXOPTS% .
+set ALLSPHINXOPTS=-d %BUILDDIR%/doctrees %SPHINXOPTS% source
+set I18NSPHINXOPTS=%SPHINXOPTS% source
 if NOT "%PAPER%" == "" (
 	set ALLSPHINXOPTS=-D latex_paper_size=%PAPER% %ALLSPHINXOPTS%
 	set I18NSPHINXOPTS=-D latex_paper_size=%PAPER% %I18NSPHINXOPTS%
