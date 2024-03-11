@@ -300,6 +300,6 @@ epub_copyright = u'2014, Eli Ateljevich, Joseph Zhang, Kijin Nam, Qiang Shu, Rue
 # Configuration for intersphinx: note use of "raw in URL.
 # It is worth checking if objects.inv in the site below is empty.
 
-intersphinx_mapping = {'schimpy': ('https://github.com/CADWRDeltaModeling/schimpy/raw/gh-pages',None)}
+intersphinx_mapping = {'schimpy': ('https://github.com/CADWRDeltaModeling/schimpy/tree/gh-pages','https://github.com/CADWRDeltaModeling/schimpy/raw/gh-pages/objects.inv')}
 tls_verify = False
 
