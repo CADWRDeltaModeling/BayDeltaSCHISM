@@ -4,10 +4,12 @@ channels:
   - nodefaults               # For predictable behavior, set your conda config
   - cadwr-dms
 dependencies:
-  - python>=3.9,<3.12
+  - python>=3.9,<3.11
   - schimpy>=1.6.4         # Recommended for compatibiltiy with current code
   - vtools3>=3.7.5
   - dms-datastore>=0.1.0
+  - libgdal
+  - pyogrio
   - pydelmod
   - pyhecdss
   - suxarray  
