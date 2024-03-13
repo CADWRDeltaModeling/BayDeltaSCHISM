@@ -146,36 +146,6 @@ structures:
       use_time_series: 1
     reference: midr_weir
 
-  - name: oldr_tracy_weir
-    type: weir
-    end_points:
-      [[628269.22, 4185748.0],
-      [628290.88, 4185790.63]]
-    configuration:
-      n_duplicates: 1
-      elevation: 1.33
-      width: 22.9
-      coefficient: 0.8
-      op_downstream: 1.0
-      op_upstream: 1.0
-      use_time_series: 0
-    reference: self
-
-  - name: oldr_tracy_culvert
-    type: culvert
-    end_points:
-      [[628258.01, 4185725.3],
-      [628269.22, 4185748.0]]
-    configuration:
-      n_duplicates: 9
-      elevation: -1.11
-      radius: 0.61
-      coefficient: 0.6
-      op_downstream: 1.0
-      op_upstream: 1.0
-      use_time_series: 0
-    reference: oldr_tracy_weir
-
   - name: oldr_tracy_barrier
     type: weir_culvert
     end_points:
