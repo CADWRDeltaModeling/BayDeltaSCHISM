@@ -460,7 +460,7 @@ polygons:
     - 4187011.8177857753
   - - 625154.4953713971
     - 4186427.0513153113
-- attribute: numpy.where(raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//cnrastore-bdo/Modeling_Data/sav/processed_tif_2022_2021/P2021_type_of_aqVeg.tif',
+- attribute: numpy.where(raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//nasbdo/modeling_data/sav/processed_tif_2022_2021/P2021_type_of_aqVeg.tif',
     bins=[-998.,1.01,2.01,3.], mapped_values=[-999.,1.,2.,3.,-999.],mask_value=0.,fill_value=1.)<1.98,max(0.25,min(1.25,z-0.1)),99.)
   name: south_delta
   imports: schimpy.raster_to_nodes  

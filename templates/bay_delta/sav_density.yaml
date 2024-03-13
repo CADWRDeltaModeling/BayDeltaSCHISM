@@ -357,7 +357,7 @@ polygons:
 - name: Cache West
   type: none
   imports: schimpy.raster_to_nodes   
-  attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, 'W:/sav/remote_sensing_2020_request/delta_2015_19_27_NDVIonly_mosaic_msksav_LI.tif', bins=[-998.,-0.4,-0.1,0.4,1.0], mapped_values=[-999., 0., 10., 30., 60., -999.],mask_value=0.,fill_value=-0.41) 
+  attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//nasbdo/modeling_data/sav/remote_sensing_2020_request/delta_2015_19_27_NDVIonly_mosaic_msksav_LI.tif', bins=[-998.,-0.4,-0.1,0.4,1.0], mapped_values=[-999., 0., 10., 30., 60., -999.],mask_value=0.,fill_value=-0.41)
   imports: schimpy.raster_to_nodes  
   vertices:
   - - 616450.7710045724
@@ -545,7 +545,7 @@ polygons:
 - name: Cache East
   type: none
   imports: schimpy.raster_to_nodes   
-  attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, 'W:/sav/remote_sensing_2020_request/delta_2015_19_27_NDVIonly_mosaic_msksav_LI.tif', bins=[-998.,-0.4,-0.1,0.4,1.0], mapped_values=[-999., 0., 10., 30., 60., -999.],mask_value=0.,fill_value=-0.41)  
+  attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//nasbdo/modeling_data/sav/remote_sensing_2020_request/delta_2015_19_27_NDVIonly_mosaic_msksav_LI.tif', bins=[-998.,-0.4,-0.1,0.4,1.0], mapped_values=[-999., 0., 10., 30., 60., -999.],mask_value=0.,fill_value=-0.41)
   imports: schimpy.raster_to_nodes 
   vertices:
   - - 615795.5133659088
@@ -566,7 +566,7 @@ polygons:
     - 4246035.310051623
   - - 615795.5133659088
     - 4245994.574062904
-- attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, 'W:/sav/remote_sensing_2020_request/delta_2015_43_47_NDVI_mosaic_msksav_FT_SI.tif',
+- attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//nasbdo/modeling_data/sav/remote_sensing_2020_request/delta_2015_43_47_NDVI_mosaic_msksav_FT_SI.tif',
     bins=[-998.,-0.4,0,0.4,0.7,1.0], mapped_values=[-999., 0., 10., 20., 30., 60., -999.],mask_value=0.,fill_value=-0.5)
   name: Sherman Lake
   type: none
