@@ -127,9 +127,9 @@ Links to tools
 These are mostly Windows or Linux tools. If you have information
 about analogous tools on other platforms we will gratefully share it.
 
-* We use `Miniconda Python 3.7 through 3.9 64 bit <https://docs.conda.io/en/latest/miniconda.html>`_. If you use other package management methods you will have to intall from github. 
+* We use `Miniconda Python 3.9 through 3.11 64 bit <https://docs.conda.io/en/latest/miniconda.html>`_. If you use other package management methods you will have to intall our libraries from github and manage dependencies. 
 
-* `Xming XServer for Windows <http://sourceforge.net/projects/xming/>`_ or other tools like MobaXTerm or VcXSrv for connecting to linux clusters using the x11 windows system. 
+* Tools like MobaXTerm or VS Code that can make terminal connections to linux clusters, in some cases using the x11 windows system which allows applications with windows. Note this recommendation has gotten old and many users now prefer VS Code. 
 
 * `WinSCP <http://winscp.net/eng/index.php>`_ for transfering files to and from linux servers.
 
