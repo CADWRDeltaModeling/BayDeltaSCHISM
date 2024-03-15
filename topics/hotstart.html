@@ -76,7 +76,7 @@
 <li class="toctree-l4"><a class="reference internal" href="vegetation.html">Vegetation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sources.html">Sources, Sinks, Delta Channel Depletions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="structures.html">Hydraulic Structures of the Delta</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structures.html">Hydraulic Structures</a></li>
 <li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities and Scripts</a></li>
 </ul>
 </li>
@@ -100,10 +100,10 @@
 <li class="toctree-l2"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Run Initialization and Restart (Hotstart)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#when-do-you-need-an-initial-condition-or-hotstart">When do you need an initial condition or hotstart?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#what-is-the-difference-between-a-cold-and-hot-start">What is the difference between a cold and hot start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-the-difference-between-a-cold-and-hot-start">What is the difference between a cold and hot start?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#combining-hotstarts">Combining hotstarts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#choosing-a-good-start-time">Choosing a good start time</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#schism-hotstart-creating-a-hotstart-for-hydro-salt-temp">schism_hotstart: Creating a Hotstart for Hydro/Salt/Temp</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-hotstart-for-hydro-salt-temp-with-schism-hotstart">Creating a Hotstart for Hydro/Salt/Temp with schism_hotstart</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#acquiring-the-data">Acquiring the data</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#configuring-the-hotstart-request-yaml">Configuring the Hotstart request (yaml)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#running-the-hotstart-generator">Running the hotstart generator</a></li>
@@ -121,7 +121,7 @@
 <li class="toctree-l2"><a class="reference internal" href="vegetation.html">Vegetation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Sources, Sinks, Delta Channel Depletions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="structures.html">Hydraulic Structures of the Delta</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structures.html">Hydraulic Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities and Scripts</a></li>
 </ul>
 </li>
@@ -147,27 +147,30 @@
            <div itemprop="articleBody">
              
   <section id="run-initialization-and-restart-hotstart">
-<h1>Run Initialization and Restart (Hotstart)<a class="headerlink" href="#run-initialization-and-restart-hotstart" title="Link to this heading"></a></h1>
+<span id="hotstart"></span><h1>Run Initialization and Restart (Hotstart)<a class="headerlink" href="#run-initialization-and-restart-hotstart" title="Link to this heading"></a></h1>
 <section id="when-do-you-need-an-initial-condition-or-hotstart">
 <h2>When do you need an initial condition or hotstart?<a class="headerlink" href="#when-do-you-need-an-initial-condition-or-hotstart" title="Link to this heading"></a></h2>
 <p>You should use a hotstart or initialization for every study if you include salinity transport or other tracers.
 The need for this may be unfamiliar if you are coming from a lower dimensional model or less
 resolved 3D model. There are two reasons:</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><p>the domain is really big, so moving the salt in correctly via a cold start would take many months and</p></li>
 <li><p>if salinity is only coming in from the ocean a sharp baroclinic barrier shock will develop with possibly odd behavior.</p></li>
 </ul>
+</div></blockquote>
 <p>We mostly do barotropic runs (no salinity or transport) as a warmup to generate our ocean boundary. For
 that a cold start from very basic (zero velocity, flat water elevation) is fine.</p>
 </section>
 <section id="what-is-the-difference-between-a-cold-and-hot-start">
-<h2>What is the difference between a cold and hot start<a class="headerlink" href="#what-is-the-difference-between-a-cold-and-hot-start" title="Link to this heading"></a></h2>
+<h2>What is the difference between a cold and hot start?<a class="headerlink" href="#what-is-the-difference-between-a-cold-and-hot-start" title="Link to this heading"></a></h2>
 <p>A cold start means values are initialized from very simple and well behaved values. Typically velocity is zero
-and the water surface is flat. This avoids “mini-tsunamis”.  Cold starts are invoked using <cite>ihot=0</cite> in the control file <cite>param.nml</cite>.
-You also need plausible values for initialization. If you our using our schism templates and requires some
-initial conditions be provided in the form of text <a href="#id1"><span class="problematic" id="id2">*</span></a>.ic files which are like <a href="#id3"><span class="problematic" id="id4">*</span></a>.gr3 files with values at each node,
+and the water surface is flat. This avoids “mini-tsunamis”.  Cold starts are invoked using <cite>ihot=0</cite>
+in the control file <cite>param.nml</cite>. You also need plausible values for initialization.
+If you our using our schism templates and requires some
+initial conditions be provided in the form of text *.ic files which are like *.gr3 files with values at each node,
 but don’t have mesh topology in the file (and <cite>param.nml.tropic</cite> control file suggestions for a barotropic run)
-then a cold start is assumed and the text initialization file elev.ic (and any other <a href="#id5"><span class="problematic" id="id6">*</span></a>.ic file) will be built.</p>
+then a cold start is assumed and the text initialization file elev.ic (and any other <a href="#id1"><span class="problematic" id="id2">*</span></a>.ic file) will be built.</p>
 <p>A hotstart means initializing a model with non-trivial values. There are two main cases:</p>
 <dl class="simple">
 <dt>ihot=1 (initial condition)</dt><dd><dl class="simple">
@@ -183,7 +186,7 @@ generated using per-processor hotstart file in the outputs directory.</p>
 </section>
 <section id="combining-hotstarts">
 <h2>Combining hotstarts<a class="headerlink" href="#combining-hotstarts" title="Link to this heading"></a></h2>
-<p>In order to combine hotstarts you need to have the combine_hotstart utility on path. The actual name of the utility will be
+<p>In order to combine hotstarts for a restart you need to have the combine_hotstart utility on path. The actual name of the utility will be
 something like <cite>combine_hotstart7</cite>, where the ‘7’ part is a version that may evolve if the hotstart format changes.
 The hotstart combining command is invoked in the outputs directory and requires specification of an iteration number:
 <cite>combine_hotstart7 -i 24000</cite>. It will take the many per-processor files associated with the iteration
@@ -212,27 +215,30 @@ run with observed data and looking at the near term consequences of an action. U
 up fast and accurately. If we are doing longer term planning simulations or if there is branching into alternatives, nudging may not have a role.
 Also labeling must be exceedingly clear. NEVER REPORT AS GENERAL MODEL ACCURACY STATISTICS ANY RESULTS USING MODELS THAT ARE ACTIVELY NUDGED INSIDE THE GOLDEN GATE.</p>
 <p>The two pictures below show the common initialization sequences, as well as the extension into the main study period.</p>
-<figure class="align-default" id="id7">
+<figure class="align-default" id="id3">
 <img alt="../_images/initialization1.png" class="with-border" src="../_images/initialization1.png" />
 <figcaption>
-<p><span class="caption-text">Simple initialization without nudging using Delta observations data.  * = Prefer USGS cruise date.</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-text">Simple initialization without nudging using Delta observations data.  * = Prefer USGS cruise date.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<figure class="align-default" id="id8">
+<figure class="align-default" id="id4">
 <img alt="../_images/initialization2.png" class="with-border" src="../_images/initialization2.png" />
 <figcaption>
 <p><span class="caption-text">Simple initialization with nudging using Delta data to spin up the model fast and accurately,
-before halting and restarting without nudging for the main study.</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+before halting and restarting without nudging for the main study.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
-<section id="schism-hotstart-creating-a-hotstart-for-hydro-salt-temp">
-<h2>schism_hotstart: Creating a Hotstart for Hydro/Salt/Temp<a class="headerlink" href="#schism-hotstart-creating-a-hotstart-for-hydro-salt-temp" title="Link to this heading"></a></h2>
+<section id="creating-a-hotstart-for-hydro-salt-temp-with-schism-hotstart">
+<h2>Creating a Hotstart for Hydro/Salt/Temp with schism_hotstart<a class="headerlink" href="#creating-a-hotstart-for-hydro-salt-temp-with-schism-hotstart" title="Link to this heading"></a></h2>
 <section id="acquiring-the-data">
 <h3>Acquiring the data<a class="headerlink" href="#acquiring-the-data" title="Link to this heading"></a></h3>
-<p>It is hard to generalize all the different systems used by modeling groups to gather up observed data. The short answer is that for a hotstart you will
-need a USGS cruise file (downloading the whole year is fine, that is the way their interface looks at the time of writing).</p>
-<p>If you are using in-Delta observations you will also need QA/QC’d data at least for the instant of the hotstart. Our scripts work with our data managment protocols.</p>
+<p>It is hard to generalize all the different systems used by modeling groups to gather up observed data.
+The short answer is that for a hotstart you will need a USGS cruise file (downloading the whole year is fine,
+that is the way their interface looks at the time of writing).</p>
+<p>If you are using in-Delta observations you will also need QA/QC’d data at least for the instant of the hotstart.
+Within the Delta Modeling Section, the script that does gathers these is <cite>BayDeltaSCHISM/bdschism/bdschism/hotstart_nudging_data.py</cite>.
+That script assumes a data repository full of observed data from multiple agencies that is not yet disseminated. If you need help, please contact us.</p>
 </section>
 <section id="configuring-the-hotstart-request-yaml">
 <h3>Configuring the Hotstart request (yaml)<a class="headerlink" href="#configuring-the-hotstart-request-yaml" title="Link to this heading"></a></h3>
