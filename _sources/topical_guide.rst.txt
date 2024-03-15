@@ -22,13 +22,11 @@ ________________________
 
 
   topics/overview.rst
- 
   topics/preprocess.rst
   topics/ocean.rst
   topics/flow_boundary.rst
   topics/atmospheric.rst
   topics/barotropic.rst
-  topics/baroclinic.rst
   topics/param.rst  
   topics/hotstart.rst
   topics/nudging.rst

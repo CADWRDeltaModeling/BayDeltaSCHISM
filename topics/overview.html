@@ -21,7 +21,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Spatial Data (grids, parameterts) and the Preprocessor" href="preprocess.html" />
+    <link rel="next" title="Spatial Data and the Preprocessor" href="preprocess.html" />
     <link rel="prev" title="Running a Existing Setup" href="processed_run.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
@@ -59,12 +59,11 @@
 <li class="toctree-l4"><a class="reference internal" href="../getmodel.html">Getting the Tools and Setting Up</a></li>
 <li class="toctree-l4"><a class="reference internal" href="processed_run.html">Running a Preprepared Setup</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Overview of a Bay-Delta SCHISM Run</a></li>
-<li class="toctree-l4"><a class="reference internal" href="preprocess.html">Spatial Data (grids, parameterts) and the Preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html">Spatial Data and the Preprocessor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
 <li class="toctree-l4"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="barotropic.html">Barotropic Warmup and uv3D.th.nc</a></li>
-<li class="toctree-l4"><a class="reference internal" href="baroclinic.html">From Barotropic to Baroclinic</a></li>
 <li class="toctree-l4"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
 <li class="toctree-l4"><a class="reference internal" href="hotstart.html">Run Initialization and Restart (Hotstart)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
@@ -105,12 +104,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#final-assembly">Final Assembly</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="preprocess.html">Spatial Data (grids, parameterts) and the Preprocessor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html">Spatial Data and the Preprocessor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="barotropic.html">Barotropic Warmup and uv3D.th.nc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="baroclinic.html">From Barotropic to Baroclinic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hotstart.html">Run Initialization and Restart (Hotstart)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
@@ -190,7 +188,7 @@ nomenclature or tactics that are potentially a bit new.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>prepare_schism<span class="w"> </span>main_bay_delta.yaml
 </pre></div>
 </div>
-<p>If you just want to modify a few things you can do that with a stripped down input file. Once you are done generating the inputs you will need to copy over files to the ultimate launch directory. See <a class="reference internal" href="preprocess.html#copyfiles"><span class="std std-ref">Structure and Files</span></a>.</p>
+<p>If you just want to modify a few things you can do that with a stripped down input file. Once you are done generating the inputs you will need to copy over files to the ultimate launch directory. See <a class="reference internal" href="preprocess.html#copyfiles"><span class="std std-ref">Where to? Required files and directory structure</span></a>.</p>
 </section>
 </section>
 <section id="time-dependent-data">
@@ -257,7 +255,7 @@ Nudging is a crude form of data assimilation that is used either to generate a s
 <div><ol class="arabic simple">
 <li><p>Run the preprocessor</p></li>
 <li><p>Copy the resulting spatial inputs over to Linux with a tool like WinSCP</p></li>
-<li><p>Subset the time boundary conditions (*.th) and copy to the same directory (<a class="reference internal" href="preprocess.html#copyfiles"><span class="std std-ref">Structure and Files</span></a>)</p></li>
+<li><p>Subset the time boundary conditions (*.th) and copy to the same directory (<a class="reference internal" href="preprocess.html#copyfiles"><span class="std std-ref">Where to? Required files and directory structure</span></a>)</p></li>
 <li><p>Remotely log into the head node of the cluster and submit to the job management system. For more on the layout of a typical cluster and how you log in see [REF]</p></li>
 </ol>
 </div></blockquote>
@@ -269,7 +267,7 @@ Nudging is a crude form of data assimilation that is used either to generate a s
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="processed_run.html" class="btn btn-neutral float-left" title="Running a Existing Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="preprocess.html" class="btn btn-neutral float-right" title="Spatial Data (grids, parameterts) and the Preprocessor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="preprocess.html" class="btn btn-neutral float-right" title="Spatial Data and the Preprocessor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

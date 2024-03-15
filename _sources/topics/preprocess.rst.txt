@@ -1,19 +1,29 @@
 
-======================================================
-Spatial Data (grids, parameterts) and the Preprocessor
-======================================================
+=================================
+Spatial Data and the Preprocessor
+=================================
 
-Copy existing run vs preprocess from template?
-----------------------------------------------
+Do I need it? Copy existing run vs preprocess from template?
+------------------------------------------------------------
 
 
 Running the preprocessor
 ------------------------
 
+Applying the template
+^^^^^^^^^^^^^^^^^^^^^
+
+Partial preprocessing for modification
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Configuring the input (yaml)
+----------------------------
+
+
 .. _copyfiles:
 
-Structure and Files
--------------------
+Where to? Required files and directory structure
+-------------------------------------------------
 
 Need to complete
 
