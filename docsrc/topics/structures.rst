@@ -1,9 +1,9 @@
 
+.. _structures:
 
-
-#################################
-Hydraulic Structures of the Delta
-#################################
+####################
+Hydraulic Structures
+####################
 
 Where is the documentation?
 ---------------------------
@@ -15,6 +15,6 @@ Preventing dry boundary messages
 --------------------------------
 
 
-Interpreting Bay-Delta examples
--------------------------------
+Important Bay-Delta examples
+----------------------------
 

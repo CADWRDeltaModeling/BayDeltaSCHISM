@@ -1,4 +1,5 @@
 
+.. _hotstart:
 
 =========================================
 Run Initialization and Restart (Hotstart)
@@ -11,19 +12,20 @@ You should use a hotstart or initialization for every study if you include salin
 The need for this may be unfamiliar if you are coming from a lower dimensional model or less
 resolved 3D model. There are two reasons:
 
-- the domain is really big, so moving the salt in correctly via a cold start would take many months and 
-- if salinity is only coming in from the ocean a sharp baroclinic barrier shock will develop with possibly odd behavior. 
+  * the domain is really big, so moving the salt in correctly via a cold start would take many months and 
+  * if salinity is only coming in from the ocean a sharp baroclinic barrier shock will develop with possibly odd behavior. 
 
 We mostly do barotropic runs (no salinity or transport) as a warmup to generate our ocean boundary. For
 that a cold start from very basic (zero velocity, flat water elevation) is fine.
 
-What is the difference between a cold and hot start
+What is the difference between a cold and hot start?
 -----------------------------------------------------
 
 A cold start means values are initialized from very simple and well behaved values. Typically velocity is zero
-and the water surface is flat. This avoids "mini-tsunamis".  Cold starts are invoked using `ihot=0` in the control file `param.nml`. 
-You also need plausible values for initialization. If you our using our schism templates and requires some 
-initial conditions be provided in the form of text *.ic files which are like *.gr3 files with values at each node, 
+and the water surface is flat. This avoids "mini-tsunamis".  Cold starts are invoked using `ihot=0` 
+in the control file `param.nml`. You also need plausible values for initialization. 
+If you our using our schism templates and requires some 
+initial conditions be provided in the form of text \*.ic files which are like \*.gr3 files with values at each node, 
 but don't have mesh topology in the file (and `param.nml.tropic` control file suggestions for a barotropic run) 
 then a cold start is assumed and the text initialization file elev.ic (and any other *.ic file) will be built.
 
@@ -40,7 +42,7 @@ ihot=2: (restart)
           
 Combining hotstarts
 -------------------
-In order to combine hotstarts you need to have the combine_hotstart utility on path. The actual name of the utility will be
+In order to combine hotstarts for a restart you need to have the combine_hotstart utility on path. The actual name of the utility will be
 something like `combine_hotstart7`, where the '7' part is a version that may evolve if the hotstart format changes.
 The hotstart combining command is invoked in the outputs directory and requires specification of an iteration number:
 `combine_hotstart7 -i 24000`. It will take the many per-processor files associated with the iteration 
@@ -91,8 +93,8 @@ The two pictures below show the common initialization sequences, as well as the 
 
 
 
-schism_hotstart: Creating a Hotstart for Hydro/Salt/Temp
---------------------------------------------------------
+Creating a Hotstart for Hydro/Salt/Temp with schism_hotstart
+------------------------------------------------------------
 
 
 
@@ -100,11 +102,15 @@ schism_hotstart: Creating a Hotstart for Hydro/Salt/Temp
 Acquiring the data
 ^^^^^^^^^^^^^^^^^^
 
-It is hard to generalize all the different systems used by modeling groups to gather up observed data. The short answer is that for a hotstart you will
-need a USGS cruise file (downloading the whole year is fine, that is the way their interface looks at the time of writing). 
+It is hard to generalize all the different systems used by modeling groups to gather up observed data. 
+The short answer is that for a hotstart you will need a USGS cruise file (downloading the whole year is fine, 
+that is the way their interface looks at the time of writing). 
 
 
-If you are using in-Delta observations you will also need QA/QC'd data at least for the instant of the hotstart. Our scripts work with our data managment protocols.
+If you are using in-Delta observations you will also need QA/QC'd data at least for the instant of the hotstart.
+Within the Delta Modeling Section, the script that does gathers these is `BayDeltaSCHISM/bdschism/bdschism/hotstart_nudging_data.py`. 
+That script assumes a data repository full of observed data from multiple agencies that is not yet disseminated. If you need help, please contact us. 
+
 
 
 Configuring the Hotstart request (yaml)

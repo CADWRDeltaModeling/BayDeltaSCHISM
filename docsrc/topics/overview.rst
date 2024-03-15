@@ -122,13 +122,13 @@ Besides the high performance platform there are a few concepts or bits of nomenc
 .. _tropic:
 
 *barotropic warm up:*
-At the beginning of a new study, or for each alternative with large landscape or sea level differences, we do a preliminary simulation in barotropic mode (in 2D no density, very diffusive settings). The only purpose of this run is to extract a reasonally dampened ocean boundary condition for the rest of the study. The output of this step is a file called `uv3D.th.nc`. For more information ... 
+At the beginning of a new study, or for each alternative with large landscape or sea level differences, we do a preliminary simulation in barotropic mode (in 2D no density, very diffusive settings). The only purpose of this run is to extract a reasonally dampened ocean boundary condition for the rest of the study. The output of this step is a file called `uv3D.th.nc`. For more information see :ref:
 
 *hotstart:*
-This is the name of the file used for initializing the model or restarting it to change inputs or recover from an error. 
+This is the name of the file used for initializing the model or restarting it to change inputs or recover from an error. See :ref:`hotstart`.
 
 *hydraulic structures:*
-This is the term used for gates and barriers. 
+This is the term used for gates and barriers. See :ref:`structures`.
 
 *nudging:*
 Nudging is a crude form of data assimilation that is used either to generate a sponge-like boundary condition on the coastal boundary or to aid with spin-up of the model in a hindcast.
