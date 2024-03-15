@@ -226,8 +226,10 @@ online. The basic operation on the command line for cloning a repository looks l
 </section>
 <section id="required-python-packages">
 <h2>Required Python Packages<a class="headerlink" href="#required-python-packages" title="Link to this heading"></a></h2>
-<p>Our preprocessor is Python based. We recommend, and only support, <a href="#id1"><span class="problematic" id="id2">`</span></a>conda &lt;<a class="reference external" href="https://docs.conda.io/en/latest/">https://docs.conda.io/en/latest/</a>&gt; for package management. Please avoid Anaconda; it is too big
-and we can’t main compatibility between all the libraries if you include that much stuff.
+<p>Our preprocessor is Python based.
+We recommend, and only support, <cite>conda &lt;https://docs.conda.io/en/latest/&gt;</cite> for package management.
+Please avoid Anaconda; it is too big
+and we can’t ensure compatibility between all the libraries if you include that much stuff.
 Instructions for managing Python environments are on our general Delta Modeling documentation page for Python.</p>
 <p>You will want the following tools:</p>
 <blockquote>
@@ -237,10 +239,9 @@ Instructions for managing Python environments are on our general Delta Modeling 
 <li><p>dms-datastore [<a class="reference external" href="https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html">project docs</a>] [<a class="reference external" href="https://github.com/CADWRDeltaModeling/dms_datastore">code repo</a>] | for managing data from common Bay-Delta sources.</p></li>
 </ul>
 </div></blockquote>
-<p>If you install these with prerequisites you should have most of what you need. Nevertheless,
-work tends to expand in a predictable way and we recommend a broader environment available
-at the Bay-Delta SCHISM <cite>repo &lt;https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/environment_py39.yml&gt;</cite>  using instructions for [building an environment with yaml specifications]. We mostly
-provide support for modern versions of the packages on fairly up-to-date Python platforms (often one version behind the latest) when miniconda and environments are used. We welcome feedback on our choice of libraries and making the package more useful.</p>
+<p>Work tends to expand in a predictable way and we recommend a broader environment available
+at the Bay-Delta SCHISM <cite>repo &lt;https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/schism_env.yml&gt;</cite>.
+We can provide modest support for modern versions of the packages on fairly up-to-date Python platforms.</p>
 </section>
 <section id="bathymetry">
 <h2>Bathymetry<a class="headerlink" href="#bathymetry" title="Link to this heading"></a></h2>

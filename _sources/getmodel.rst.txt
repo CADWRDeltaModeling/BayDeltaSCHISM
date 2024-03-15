@@ -74,8 +74,10 @@ These are too big for GitHub and not text based. We are experimenting with `DVC 
 Required Python Packages
 ------------------------
 
-Our preprocessor is Python based. We recommend, and only support, `conda <https://docs.conda.io/en/latest/> for package management. Please avoid Anaconda; it is too big 
-and we can't main compatibility between all the libraries if you include that much stuff. 
+Our preprocessor is Python based. 
+We recommend, and only support, `conda <https://docs.conda.io/en/latest/>` for package management. 
+Please avoid Anaconda; it is too big 
+and we can't ensure compatibility between all the libraries if you include that much stuff. 
 Instructions for managing Python environments are on our general Delta Modeling documentation page for Python. 
 
 You will want the following tools:
@@ -84,10 +86,9 @@ You will want the following tools:
   * vtools3  [`project docs <https://cadwrdeltamodeling.github.io/vtools3/>`_] [`code repo <https://github.com/CADWRDeltaModeling/vtools3>`_] for time series manipulation
   * dms-datastore [`project docs <https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html>`_] [`code repo <https://github.com/CADWRDeltaModeling/dms_datastore>`_] | for managing data from common Bay-Delta sources.
 
-If you install these with prerequisites you should have most of what you need. Nevertheless, 
-work tends to expand in a predictable way and we recommend a broader environment available 
-at the Bay-Delta SCHISM `repo <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/environment_py39.yml>`  using instructions for [building an environment with yaml specifications]. We mostly
-provide support for modern versions of the packages on fairly up-to-date Python platforms (often one version behind the latest) when miniconda and environments are used. We welcome feedback on our choice of libraries and making the package more useful.
+Work tends to expand in a predictable way and we recommend a broader environment available 
+at the Bay-Delta SCHISM `repo <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/schism_env.yml>`.
+We can provide modest support for modern versions of the packages on fairly up-to-date Python platforms.
 
 Bathymetry
 ----------
