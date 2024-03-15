@@ -1,30 +1,22 @@
 
-==================================
-Study Templates and Preprocessing
-==================================
+======================================================
+Spatial Data (grids, parameterts) and the Preprocessor
+======================================================
 
 Copy existing run vs preprocess from template?
 ----------------------------------------------
 
-yo
 
 Running the preprocessor
 ------------------------
 
-yo
+.. _copyfiles:
 
-Files you will need to copy over
---------------------------------
+Structure and Files
+-------------------
 
+Need to complete
 
-Best ways to copy files and simulations
----------------------------------------
-
-Windows to Linux
-^^^^^^^^^^^^^^^^
-
-Copying a run on Linux
-^^^^^^^^^^^^^^^^^^^^^^
 
 
 

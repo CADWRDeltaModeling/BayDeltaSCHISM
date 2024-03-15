@@ -5,7 +5,7 @@
 Learning Resources for Bay-Delta SCHISM
 ***************************************************
 
-This page is the documentation hub for running the Bay-Delta SCHISM application. It has some ideas for learning to use SCHISM and a how-to topical guide for the application on the Bay-Delta domain. 
+This page is the documentation hub for running the Bay-Delta SCHISM application. It has some ideas for learning to use SCHISM and a how-to user guide for the application on the Bay-Delta domain. 
 
 For installation instructions please see the `Installation and Getting Started Page <https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/getmodel.html>`_.
 
@@ -18,14 +18,14 @@ General Resources and Tools
    :hidden:
 
    Hello SCHISM <https://cadwrdeltamodeling.github.io/HelloSCHISM/>
-   Topical Guide to Bay Delta SCHISM <topical_guide.rst>
+   Bay Delta SCHISM User Guide <topical_guide.rst>
    Linux <linux.rst>
    
    
 Tutorials
 `Hello SCHISM tutorials <https://cadwrdeltamodeling.github.io/HelloSCHISM/>`_ are a set of SCHISM tutorials that introduce basic features, our preprocessors and can get you running the model quickly (Windows friendly).
 
-The :doc:`Bay-Delta SCHISM Topical Guide <topical_guide>` explains many of the details of setting up and interpreting a full Bay-Delta simulation, making use of the full toolset. 
+The :doc:`Bay Delta SCHISM User Guide <topical_guide>` explains many of the details of setting up and interpreting a full Bay-Delta simulation, making use of the full toolset. 
 
 
 :doc:`Bay-Delta Tutorials <bay_delta_tutorials>` and presentations describe model assumptions and model input preparation for Bay-Delta SCHISM.
