@@ -104,10 +104,7 @@ Interested users may want to explore their options as far as clusters
 and high performance environments without the confounding challenge of 
 learning the preprocessor. 
 
-`Complete 21-day sample inputs <https://msb.water.ca.gov/documents/86683/266737/preprocessed_sample.tar.gz>`_
-
-includes a complete directory of inputs for a late August - early September 2013 baroclinic run with salt transport, sample PBS launching script (pbs.sh) and launching script (run.sh) that we use with our  cluster's job scheduler.
-
+A complete 21 day sample is under construction (March 2024).
 
 VisIt SCHISM Plug-in
 -----------------------

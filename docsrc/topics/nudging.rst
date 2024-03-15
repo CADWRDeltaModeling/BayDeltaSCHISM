@@ -3,8 +3,15 @@
 Nudging Files
 =============
 
-Introduction: Do I need nudging?
---------------------------------
+Introduction: What is nudging?
+------------------------------
+
+Do I need nudging?
+------------------
+
+
+Prepping the data
+-----------------
 
 Sequencing your run
 -------------------
