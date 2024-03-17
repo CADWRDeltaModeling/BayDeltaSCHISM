@@ -33,6 +33,7 @@ extensions = ['sphinx.ext.autodoc',
 
 bibtex_bibfiles = ['dms_20221119b.bib']
 
+numfig = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
