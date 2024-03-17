@@ -18,8 +18,15 @@ directed into the computational domain. For baroclinic hydrodynamics using layer
 boundary conditions is potentially infinite, time varying, and discretization dependent. 
 
 The upshot is that we have two choices for the ocean boundary. We can choose to clamp only water levels, 
-which is underspecified and potentially allows baroclinic modes to "flare up" (:numref:`flareup`) if the model is not diffusive enough. Or we can specifiy velocity if we have data or a guess, and this potentially stabilizes the boundary.
+which is underspecified and potentially allows baroclinic modes to "flare up" (:numref:`flareup`) if the model is not diffusive enough. Or we can specifiy velocity, which is in general overdetermined, and this potentially stabilizes the boundary. 
 
+There are two methods of specifying velocity that have been used with the model:
+
+  * force the model using estimates from a coastal open model such as the West Coast Forecasting System. 
+  * do a preliminary 2D barotropic run and harvest boundary values from that. 
+
+The coastal model solution makes sense in some operational scenarios, which focus on recent and observable scenarios. The barotropic-baroclinic solution is widely used in Bay-Delta SCHISM, as it applies to hypothetical hydrologies landscape change
+and sea level rise.
 
 .. _flareup:
 
