@@ -79,7 +79,7 @@ product as instead of 20-60 stems/m^2 and drag 0.28. We use higher stem density 
 than the highest point values in part to make up for the reduced drag resulting from gaps and subgrid heterogeneity. 
 
 At times when remote sensing was not available, the template included estimates based on heuristics about depth, 
-using only one high and one low value, consistent for the most part with the :cite:p:`university_of_california_davis_physical_2016` 
+using only one high and one low value, consistent for the most part with the :cite:p:`durand_2016` 
 conclusion that most Egeria densa grew between depths of 2m and -1m MLLW and assuming that density is higher in water that
 is less than 0.9m at low water. 
  

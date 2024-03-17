@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Barotropic Warmup and uv3D.th.nc &mdash; Bay-Delta SCHISM</title>
+  <title>Ocean Boundary Stabilization: Barotropic Warmup &mdash; Bay-Delta SCHISM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -63,7 +63,7 @@
 <li class="toctree-l4"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
 <li class="toctree-l4"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Barotropic Warmup and uv3D.th.nc</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Ocean Boundary Stabilization: Barotropic Warmup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
 <li class="toctree-l4"><a class="reference internal" href="hotstart.html">Run Initialization and Restart (Hotstart)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
@@ -96,20 +96,14 @@
 <li class="toctree-l2"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Barotropic Warmup and uv3D.th.nc</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#presentation">Presentation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#recap">Recap</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Ocean Boundary Stabilization: Barotropic Warmup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#set-up">Set up</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#bctides-in">bctides.in</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#param-nml">param.nml</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#vgrid-in">vgrid.in</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#run-interpolate-variables-to-get-uv3d-th-nc">Run interpolate_variables to get uv3D.th.nc</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#move-the-outputs-directory-aside">Move the outputs directory aside</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
@@ -149,16 +143,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="barotropic-warmup-and-uv3d-th-nc">
-<span id="barotropic"></span><h1>Barotropic Warmup and uv3D.th.nc<a class="headerlink" href="#barotropic-warmup-and-uv3d-th-nc" title="Link to this heading"></a></h1>
+  <section id="ocean-boundary-stabilization-barotropic-warmup">
+<span id="barotropic"></span><h1>Ocean Boundary Stabilization: Barotropic Warmup<a class="headerlink" href="#ocean-boundary-stabilization-barotropic-warmup" title="Link to this heading"></a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
-<section id="presentation">
-<h3>Presentation<a class="headerlink" href="#presentation" title="Link to this heading"></a></h3>
-</section>
-<section id="recap">
-<h3>Recap<a class="headerlink" href="#recap" title="Link to this heading"></a></h3>
-</section>
+<p>This section describes some issues with the a common practice with Bay-Delta SCHISM: a barotropic warmup run.</p>
+<p>The idea and potential need for a barotropic warm up harks to the well-posedness of the hydrostatic, layered 3D-equations.
+The pertinent reference is <span id="id1">[<a class="reference internal" href="../refs.html#id3" title="Joseph Oliger and Arne Sundström. Theoretical and practical aspects of some initial boundary value problems in fluid dynamics. SIAM Journal on Applied Mathematics, 35(3):419–446, 1978. URL: http://epubs.siam.org/doi/10.1137/0135035 (visited on 2022-11-03), doi:10.1137/0135035.">OS78</a>]</span>. The idea is that we are allowed one boundary
+condition per “incoming characteristic”. For transport of tracers (salinity, temperature, etc) this is the same as one
+boundary condition per incoming flow. This has a very intuitive feel – we can only specify concentrations for flows
+directed into the computational domain. For baroclinic hydrodynamics using layered equations, the number of
+boundary conditions is potentially infinite, time varying, and discretization dependent.</p>
+<p>The upshot is that we have two choices for the ocean boundary. We can choose to clamp only water levels,
+which is underspecified and potentially allows baroclinic modes to “flare up” (<a class="reference internal" href="#flareup"><span class="std std-numref">Fig. 1</span></a>) if the model is not diffusive enough. Or we can specifiy velocity, which is in general overdetermined, and this potentially stabilizes the boundary.</p>
+<p>There are two methods of specifying velocity that have been used with the model:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>force the model using estimates from a coastal open model such as the West Coast Forecasting System.</p></li>
+<li><p>do a preliminary 2D barotropic run and harvest boundary values from that.</p></li>
+</ul>
+</div></blockquote>
+<p>The coastal model solution makes sense in some operational scenarios, which focus on recent and observable scenarios. The barotropic-baroclinic solution is widely used in Bay-Delta SCHISM, as it applies to hypothetical hydrologies landscape change
+and sea level rise.</p>
+<figure class="align-default" id="id2">
+<span id="flareup"></span><img alt="../_images/ocean_flareup.png" class="with-border" src="../_images/ocean_flareup.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Velocity flareup right near boundary due to stimulation of baroclinic modes.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
 </section>
 <section id="set-up">
 <h2>Set up<a class="headerlink" href="#set-up" title="Link to this heading"></a></h2>
@@ -170,13 +182,13 @@
 </section>
 <section id="vgrid-in">
 <h3>vgrid.in<a class="headerlink" href="#vgrid-in" title="Link to this heading"></a></h3>
-</section>
-</section>
 <section id="run-interpolate-variables-to-get-uv3d-th-nc">
-<h2>Run interpolate_variables to get uv3D.th.nc<a class="headerlink" href="#run-interpolate-variables-to-get-uv3d-th-nc" title="Link to this heading"></a></h2>
+<h4>Run interpolate_variables to get uv3D.th.nc<a class="headerlink" href="#run-interpolate-variables-to-get-uv3d-th-nc" title="Link to this heading"></a></h4>
 </section>
 <section id="move-the-outputs-directory-aside">
-<h2>Move the outputs directory aside<a class="headerlink" href="#move-the-outputs-directory-aside" title="Link to this heading"></a></h2>
+<h4>Move the outputs directory aside<a class="headerlink" href="#move-the-outputs-directory-aside" title="Link to this heading"></a></h4>
+</section>
+</section>
 </section>
 </section>
 

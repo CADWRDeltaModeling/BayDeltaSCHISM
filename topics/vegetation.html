@@ -63,7 +63,7 @@
 <li class="toctree-l4"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
 <li class="toctree-l4"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="barotropic.html">Barotropic Warmup and uv3D.th.nc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="barotropic.html">Ocean Boundary Stabilization: Barotropic Warmup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
 <li class="toctree-l4"><a class="reference internal" href="hotstart.html">Run Initialization and Restart (Hotstart)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
@@ -96,7 +96,7 @@
 <li class="toctree-l2"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="barotropic.html">Barotropic Warmup and uv3D.th.nc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barotropic.html">Ocean Boundary Stabilization: Barotropic Warmup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hotstart.html">Run Initialization and Restart (Hotstart)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
@@ -147,7 +147,7 @@
 <p>In Bay-Delta SCHISM, the modeling of submerged aquatic vegetation (SAV)
 is on by default, with data in or approximations in
 Franks Tract, Cache Complex, South Delta.</p>
-<p>SCHISM has a submerged aquatic vegetation module  introduced by <span id="id1">[<a class="reference internal" href="../refs.html#id4" title="Yinglong J. Zhang, Nathan Gerdts, Eli Ateljevich, and Kijin Nam. Simulating vegetation effects on flows in 3d using an unstructured grid model: model development and validation. Ocean Dynamics, 2020. URL: http://link.springer.com/10.1007/s10236-019-01333-8 (visited on 2022-11-05), doi:10.1007/s10236-019-01333-8.">ZGAN20</a>]</span>, and covered in
+<p>SCHISM has a submerged aquatic vegetation module  introduced by <span id="id1">[<a class="reference internal" href="../refs.html#id5" title="Yinglong J. Zhang, Nathan Gerdts, Eli Ateljevich, and Kijin Nam. Simulating vegetation effects on flows in 3d using an unstructured grid model: model development and validation. Ocean Dynamics, 2020. URL: http://link.springer.com/10.1007/s10236-019-01333-8 (visited on 2022-11-05), doi:10.1007/s10236-019-01333-8.">ZGAN20</a>]</span>, and covered in
 online manual which includes the effects of drag within the canopy,
 and simple representation of turbulence production. Biogeochemical linkages (shading, nutrient competition) are also included
 in the water quality/ecological modules. In the instances where we have introduced vegetation (Cache Complex, Franks Tract, South Delta, Sherman Lake)  it has helped reproduced the distribution of physical flow.</p>
@@ -158,7 +158,7 @@ as hyacinth.</p>
 <p>In SCHISM, vegetation is enabled using the parameter isav=1 in the control file param.nml. For turbulence production
 the native “SCHISM” turbulence closures must be used, not GOTM.</p>
 <table class="docutils align-default" id="id3">
-<caption><span class="caption-text">Vegetation Files</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Vegetation Files</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 25.0%" />
@@ -219,7 +219,7 @@ the product in this case is the same general magnitude. For instance, for a fixe
 product as instead of 20-60 stems/m^2 and drag 0.28. We use higher stem density O(10) to O(100); the values are lower
 than the highest point values in part to make up for the reduced drag resulting from gaps and subgrid heterogeneity.</p>
 <p>At times when remote sensing was not available, the template included estimates based on heuristics about depth,
-using only one high and one low value, consistent for the most part with the <span id="id2">[<a class="reference internal" href="../refs.html#id3">UniversityoCaliforniaDavisDF+</a>]</span>
+using only one high and one low value, consistent for the most part with the <span id="id2">[<a class="reference internal" href="../refs.html#id4" title="John Durand, William Fleenor, Richard and McElreath, Max Planck Institute for Evolutionary Anthropology, Maria J. Santos, and Peter and and Moyle. Physical controls on the distribution of the submersed aquatic weed egeria densa in the sacramento-san joaquin delta, california and implications for habitat restoration. San Francisco Estuary and Watershed Science, 2016. URL: http://escholarship.org/uc/item/85c9h479, doi:10.15447/sfews.2016v14iss1art4.">DFaM+16</a>]</span>
 conclusion that most Egeria densa grew between depths of 2m and -1m MLLW and assuming that density is higher in water that
 is less than 0.9m at low water.</p>
 <p>In areas where we have imagery, we use processed Normalized Density Vegetation Index from the Ustin lab at UC Davis.

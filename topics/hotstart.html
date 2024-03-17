@@ -63,7 +63,7 @@
 <li class="toctree-l4"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
 <li class="toctree-l4"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="barotropic.html">Barotropic Warmup and uv3D.th.nc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="barotropic.html">Ocean Boundary Stabilization: Barotropic Warmup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Run Initialization and Restart (Hotstart)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
@@ -96,7 +96,7 @@
 <li class="toctree-l2"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="barotropic.html">Barotropic Warmup and uv3D.th.nc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barotropic.html">Ocean Boundary Stabilization: Barotropic Warmup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Run Initialization and Restart (Hotstart)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#when-do-you-need-an-initial-condition-or-hotstart">When do you need an initial condition or hotstart?</a></li>
@@ -218,13 +218,13 @@ Also labeling must be exceedingly clear. NEVER REPORT AS GENERAL MODEL ACCURACY 
 <figure class="align-default" id="id3">
 <img alt="../_images/initialization1.png" class="with-border" src="../_images/initialization1.png" />
 <figcaption>
-<p><span class="caption-text">Simple initialization without nudging using Delta observations data.  * = Prefer USGS cruise date.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Simple initialization without nudging using Delta observations data.  * = Prefer USGS cruise date.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id4">
 <img alt="../_images/initialization2.png" class="with-border" src="../_images/initialization2.png" />
 <figcaption>
-<p><span class="caption-text">Simple initialization with nudging using Delta data to spin up the model fast and accurately,
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Simple initialization with nudging using Delta data to spin up the model fast and accurately,
 before halting and restarting without nudging for the main study.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
