@@ -28,7 +28,7 @@ Contents
 
   getmodel
   learning
-  topical_guide
+  user_guide
   calibration
   help
   refs

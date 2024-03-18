@@ -31,6 +31,7 @@ ________________________
   topics/hotstart.rst
   topics/nudging.rst
   topics/output.rst  
+  topics/vegetation.rst  
   topics/vignette.rst
   topics/checklists.rst 
   
@@ -40,13 +41,12 @@ ________________________
 .. _topical:
 
 .. toctree::
-  :caption: Topical Guides for Common Tasks and Extensions
+  :caption: Advanced Tasks and Concepts
   :maxdepth: 3
   
   topics/mesh.rst
   topics/problems.rst
   topics/age.rst
-  topics/vegetation.rst  
   topics/sea_level_rise.rst
   topics/sources.rst
   topics/structures.rst
