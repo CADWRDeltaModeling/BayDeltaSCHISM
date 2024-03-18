@@ -149,8 +149,8 @@
   <section id="required-files-directory-structure-and-recommended-study-practices">
 <span id="filesdirs"></span><h1>Required Files, Directory Structure and Recommended Study Practices<a class="headerlink" href="#required-files-directory-structure-and-recommended-study-practices" title="Link to this heading"></a></h1>
 <p>New users often want to simply know an inventory of what files are required to get one basic model run going.
-This section provides that list. The section also addresses good practices for organizing a study that is reproducible,
-particularly one that spans several hypothetical alternatives.</p>
+This section provides that list. The section also describes practices for organizing a study that is reproducible,
+and spans several hypothetical alternatives.</p>
 <p>You will need to move data around. Users who are new to Linux or who are preprocessing on Windows and copying to Linux
 should check out the <a class="reference internal" href="../linux.html#linuxhints"><span class="std std-ref">Linux Hints for SCHISM</span></a>, which covers several types of transfer
 as well as the indispensible topic of <a class="reference internal" href="../linux.html#symlink"><span class="std std-ref">symbolic links</span></a> for organinzing files.</p>
@@ -168,16 +168,15 @@ as well as the indispensible topic of <a class="reference internal" href="../lin
 <section id="launch-directory">
 <h3>Launch directory<a class="headerlink" href="#launch-directory" title="Link to this heading"></a></h3>
 <p>The table is an inventory of files needed for a typical Bay-Delta SCHISM run. All the spatial inputs and driver files
-are copied over by the preprocessor.  This inventory will inevitably occur if we change, say, the number or names of hydraulic structures.
-It will also be expanded when you use new modules, as indicated elsewhere in the user guide.
+are copied over by the preprocessor.  This inventory will inevitably occur if we change, say, the number or names of hydraulic structures. It will also be expanded when you use new modules, as indicated elsewhere in the user guide.
 The items in bold are <a class="reference internal" href="../linux.html#symlink"><span class="std std-ref">symbolic links</span></a>. These links follow the required SCHISM name but
-point to more the similar but more detailed or version controlled names in brackets, choices of
-which would change between modeling periods or be modified in accordance with the rest of the user gude.
+point to more the similar but more detailed or version controlled names in brackets, the specific
+names of which evolve over time or are modified in accordance with the rest of the user gude.
 Some files (<cite>param.nml</cite>,`bctides.in`,`vgrid.in`,nudging) are almost
-always links. The links are currently created manually, although we are contemplating ways to make it more automatic.</p>
+always links and are described in the section on the <a class="reference internal" href="barotropic.html#barotropic"><span class="std std-ref">barotropic warmup run</span></a>. The links are currently created manually, although we are contemplating ways to make it more automatic.</p>
 <p>Some of the most important files like the horizontal grid (<cite>hgrid.gr3</cite>) are covered extensively in this user guide.
-Others are populated in very simple ways and seldom changed. For definitions,
-the intrested user can consult the <a class="reference external" href="https://schism-dev.github.io/schism/master/input-output/optional-inputs.html">optional input page of the SCHISM Manual at VIMS</a>.</p>
+Others files are on more subjects like albedo, populated in very simple ways and seldom changed.
+For documentation, the interested user can consult the <a class="reference external" href="https://schism-dev.github.io/schism/master/input-output/optional-inputs.html">optional input page of the SCHISM Manual at VIMS</a>.</p>
 <table class="docutils align-default" id="id1">
 <caption><span class="caption-number">Table 1 </span><span class="caption-text">Files for a SCHISM Run</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
 <colgroup>
@@ -349,7 +348,7 @@ the intrested user can consult the <a class="reference external" href="https://s
 <td></td>
 <td></td>
 <td></td>
-<td><p>[vsink_20230206_nows_leach1_sscd1.6_daily.th]</p></td>
+<td><p>[vsink_20230206.th]</p></td>
 <td></td>
 </tr>
 <tr class="row-even"><td></td>
@@ -363,7 +362,7 @@ the intrested user can consult the <a class="reference external" href="https://s
 <td></td>
 <td></td>
 <td></td>
-<td><p>[vsource_20230206_nows_leach1.th]</p></td>
+<td><p>[vsource_20230206.th]</p></td>
 <td></td>
 </tr>
 <tr class="row-even"><td></td>
@@ -385,11 +384,11 @@ the intrested user can consult the <a class="reference external" href="https://s
 </section>
 <section id="output-directory">
 <h3>Output directory<a class="headerlink" href="#output-directory" title="Link to this heading"></a></h3>
-<p>SCHI <cite>outputs</cite>. It will be empty but you need to make sure it is there.</p>
+<p>SCHISM requires a directory called <cite>outputs</cite>. It will be empty at the beginning of the launch.</p>
 </section>
 <section id="atmospheric-sflux-directory">
 <h3>Atmospheric (sflux) directory<a class="headerlink" href="#atmospheric-sflux-directory" title="Link to this heading"></a></h3>
-<p>The atmostpheric input (sflux) directory is a bit distinctive:</p>
+<p>The atmostpheric input directory is called <cite>sflux</cite>. It is a bit distinctive:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>It is the only place we put <a class="reference internal" href="../linux.html#symlink"><span class="std std-ref">symbolic links</span></a> to resources outside the immediate study directory</p></li>

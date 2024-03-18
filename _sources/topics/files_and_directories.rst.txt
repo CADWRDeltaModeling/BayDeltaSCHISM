@@ -6,8 +6,8 @@ Required Files, Directory Structure and Recommended Study Practices
 ###################################################################
 
 New users often want to simply know an inventory of what files are required to get one basic model run going. 
-This section provides that list. The section also addresses good practices for organizing a study that is reproducible, 
-particularly one that spans several hypothetical alternatives. 
+This section provides that list. The section also describes practices for organizing a study that is reproducible, 
+and spans several hypothetical alternatives. 
 
 You will need to move data around. Users who are new to Linux or who are preprocessing on Windows and copying to Linux 
 should check out the :ref:`linuxhints`, which covers several types of transfer 
@@ -29,17 +29,16 @@ Launch directory
 ^^^^^^^^^^^^^^^^
 
 The table is an inventory of files needed for a typical Bay-Delta SCHISM run. All the spatial inputs and driver files
-are copied over by the preprocessor.  This inventory will inevitably occur if we change, say, the number or names of hydraulic structures. 
-It will also be expanded when you use new modules, as indicated elsewhere in the user guide.
+are copied over by the preprocessor.  This inventory will inevitably occur if we change, say, the number or names of hydraulic structures. It will also be expanded when you use new modules, as indicated elsewhere in the user guide.
 The items in bold are :ref:`symbolic links <symlink>`. These links follow the required SCHISM name but
-point to more the similar but more detailed or version controlled names in brackets, choices of 
-which would change between modeling periods or be modified in accordance with the rest of the user gude. 
+point to more the similar but more detailed or version controlled names in brackets, the specific
+names of which evolve over time or are modified in accordance with the rest of the user gude. 
 Some files (`param.nml`,`bctides.in`,`vgrid.in`,nudging) are almost
-always links. The links are currently created manually, although we are contemplating ways to make it more automatic.
+always links and are described in the section on the :ref:`barotropic warmup run <barotropic>`. The links are currently created manually, although we are contemplating ways to make it more automatic.
 
 Some of the most important files like the horizontal grid (`hgrid.gr3`) are covered extensively in this user guide.
-Others are populated in very simple ways and seldom changed. For definitions, 
-the intrested user can consult the `optional input page of the SCHISM Manual at VIMS <https://schism-dev.github.io/schism/master/input-output/optional-inputs.html>`_.
+Others files are on more subjects like albedo, populated in very simple ways and seldom changed. 
+For documentation, the interested user can consult the `optional input page of the SCHISM Manual at VIMS <https://schism-dev.github.io/schism/master/input-output/optional-inputs.html>`_.
 
 .. csv-table:: Files for a SCHISM Run
    :file: filesdirslist.csv
@@ -49,13 +48,13 @@ the intrested user can consult the `optional input page of the SCHISM Manual at 
 Output directory
 ^^^^^^^^^^^^^^^^
 
-SCHI `outputs`. It will be empty but you need to make sure it is there. 
+SCHISM requires a directory called `outputs`. It will be empty at the beginning of the launch. 
 
 
 Atmospheric (sflux) directory
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The atmostpheric input (sflux) directory is a bit distinctive:
+The atmostpheric input directory is called `sflux`. It is a bit distinctive:
 
   * It is the only place we put :ref:`symbolic links <symlink>` to resources outside the immediate study directory
   * We share a common database across simulations from a similar era. These are on all our cluster file systems and we distribute on CNRA open data portal. Note that these often point to the original source as in the :ref:`example <examplesfluxdir>` below.
