@@ -22,6 +22,7 @@ ________________________
 
 
   topics/overview.rst
+  topics/files_and_directories  
   topics/preprocess.rst
   topics/ocean.rst
   topics/flow_boundary.rst
@@ -33,7 +34,7 @@ ________________________
   topics/output.rst  
   topics/vegetation.rst  
   topics/vignette.rst
-  topics/checklists.rst 
+  topics/checklists.rst
   
 ________________________
 

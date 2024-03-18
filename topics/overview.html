@@ -21,7 +21,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Spatial Data and the Preprocessor" href="preprocess.html" />
+    <link rel="next" title="Required Files, Directory Structure and Recommended Study Practices" href="files_and_directories.html" />
     <link rel="prev" title="Running a Existing Setup" href="processed_run.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
@@ -59,6 +59,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../getmodel.html">Getting the Tools and Setting Up</a></li>
 <li class="toctree-l4"><a class="reference internal" href="processed_run.html">Running a Preprepared Setup</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Overview of a Bay-Delta SCHISM Run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="files_and_directories.html">Required Files, Directory Structure and Recommended Study Practices</a></li>
 <li class="toctree-l4"><a class="reference internal" href="preprocess.html">Spatial Data and the Preprocessor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
@@ -101,9 +102,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#files-that-change-with-both-mesh-and-dates">Files that Change with Both Mesh and Dates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#driver-files-param-tropic-nml-param-clinic-nml">Driver Files (param.tropic.nml, param.clinic.nml)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#other-nomenclature-and-concepts">Other Nomenclature and Concepts</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#final-assembly">Final Assembly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#organizing-the-launch-directory">Organizing the Launch Directory</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="files_and_directories.html">Required Files, Directory Structure and Recommended Study Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocess.html">Spatial Data and the Preprocessor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
@@ -247,18 +249,20 @@ This is the term used for gates and barriers. See <a class="reference internal" 
 <p><em>nudging:</em>
 Nudging is a crude form of data assimilation that is used either to generate a sponge-like boundary condition on the coastal boundary or to aid with spin-up of the model in a hindcast.</p>
 </section>
-<section id="final-assembly">
-<h2>Final Assembly<a class="headerlink" href="#final-assembly" title="Link to this heading"></a></h2>
-<p>We do our work on clusters, but we are evenly divided between folks who prep on Windows and others who prep on Linux.</p>
-<p>As you gather up your run, generally the work flow looks like this:</p>
+<section id="organizing-the-launch-directory">
+<h2>Organizing the Launch Directory<a class="headerlink" href="#organizing-the-launch-directory" title="Link to this heading"></a></h2>
+<p>We do our work on clusters, but we are divided between folks who prep on Windows and move the run to Linux
+and others who do the prep work on Linux.</p>
+<p>The overall work flow looks like this:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>Run the preprocessor</p></li>
-<li><p>Copy the resulting spatial inputs over to Linux with a tool like WinSCP</p></li>
-<li><p>Subset the time boundary conditions (*.th) and copy to the same directory (<a class="reference internal" href="preprocess.html#copyfiles"><span class="std std-ref">Where to? Required files and directory structure</span></a>)</p></li>
-<li><p>Remotely log into the head node of the cluster and submit to the job management system. For more on the layout of a typical cluster and how you log in see [REF]</p></li>
+<li><p>Run the preprocessor to reconstitute spatial inputs and pipe the output to the study directory.</p></li>
+<li><p>Run scripts for subsetting boundary time series.</p></li>
+<li><p>If on Windows, copy the resulting files over to Linux with a tool like WinSCP</p></li>
+<li><p>Remotely log into the head node of the cluster and submit to the job management system. For more on the layout of a typical cluster and how you log in <a class="reference internal" href="files_and_directories.html#filesdirs"><span class="std std-ref">Required Files, Directory Structure and Recommended Study Practices</span></a></p></li>
 </ol>
 </div></blockquote>
+<p>We recommend you be familiar with the <a class="reference internal" href="files_and_directories.html#filesdirs"><span class="std std-ref">inventory of required files and organization options</span></a>. For DWR users working on Linux, please make sure that your spatial templates is done independently and not all mixed together with the run input.</p>
 </section>
 </section>
 
@@ -267,7 +271,7 @@ Nudging is a crude form of data assimilation that is used either to generate a s
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="processed_run.html" class="btn btn-neutral float-left" title="Running a Existing Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="preprocess.html" class="btn btn-neutral float-right" title="Spatial Data and the Preprocessor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="files_and_directories.html" class="btn btn-neutral float-right" title="Required Files, Directory Structure and Recommended Study Practices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

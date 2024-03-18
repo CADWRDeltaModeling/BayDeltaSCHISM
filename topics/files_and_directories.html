@@ -1,0 +1,525 @@
+<!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. --><!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Required Files, Directory Structure and Recommended Study Practices &mdash; Bay-Delta SCHISM</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=ca842793"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Spatial Data and the Preprocessor" href="preprocess.html" />
+    <link rel="prev" title="Overview of a Bay-Delta SCHISM Run" href="overview.html" />
+    <link href="../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo6.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Bay-Delta SCHISM Project</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getmodel.html">Installation And Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../learning.html">Learning Resources for Bay-Delta SCHISM</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../learning.html#general-resources-and-tools">General Resources and Tools</a><ul class="current">
+<li class="toctree-l3"><a class="reference external" href="https://cadwrdeltamodeling.github.io/HelloSCHISM/">Hello SCHISM</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../user_guide.html">Bay Delta SCHISM User Guide</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../getmodel.html">Getting the Tools and Setting Up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="processed_run.html">Running a Preprepared Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="overview.html">Overview of a Bay-Delta SCHISM Run</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Required Files, Directory Structure and Recommended Study Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html">Spatial Data and the Preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="barotropic.html">Ocean Boundary Stabilization: Barotropic Warmup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hotstart.html">Run Initialization and Restart (Hotstart)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="output.html">Output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vegetation.html">Vegetation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="checklists.html">Checklists</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mesh.html">Horizontal Mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="age.html">Simulating water age</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sources.html">Sources, Sinks, Delta Channel Depletions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structures.html">Hydraulic Structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities and Scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../linux.html">Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../learning.html#manuals">Manuals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../learning.html#getting-help">Getting Help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../learning.html#vims-and-other-external-resources">VIMS and Other External Resources</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../user_guide.html">Bay-Delta SCHISM User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getmodel.html">Getting the Tools and Setting Up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processed_run.html">Running a Preprepared Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview of a Bay-Delta SCHISM Run</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Required Files, Directory Structure and Recommended Study Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#required-files-and-structure">Required files and structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#schism-launch-directory-structure">SCHISM launch directory structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#launch-directory">Launch directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#output-directory">Output directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#atmospheric-sflux-directory">Atmospheric (sflux) directory</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#study-layout">Study layout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html">Spatial Data and the Preprocessor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barotropic.html">Ocean Boundary Stabilization: Barotropic Warmup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="param.html">Key Run Parameters and Gotchas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hotstart.html">Run Initialization and Restart (Hotstart)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nudging.html">Nudging Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vegetation.html">Vegetation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checklists.html">Checklists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mesh.html">Horizontal Mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="age.html">Simulating water age</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html">Sources, Sinks, Delta Channel Depletions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structures.html">Hydraulic Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities and Scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../calibration.html">Calibration Report and References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help.html#support">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../refs.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Bay-Delta SCHISM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. -->
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="required-files-directory-structure-and-recommended-study-practices">
+<span id="filesdirs"></span><h1>Required Files, Directory Structure and Recommended Study Practices<a class="headerlink" href="#required-files-directory-structure-and-recommended-study-practices" title="Link to this heading"></a></h1>
+<p>New users often want to simply know an inventory of what files are required to get one basic model run going.
+This section provides that list. The section also addresses good practices for organizing a study that is reproducible,
+particularly one that spans several hypothetical alternatives.</p>
+<p>You will need to move data around. Users who are new to Linux or who are preprocessing on Windows and copying to Linux
+should check out the <a class="reference internal" href="../linux.html#linuxhints"><span class="std std-ref">Linux Hints for SCHISM</span></a>, which covers several types of transfer
+as well as the indispensible topic of <a class="reference internal" href="../linux.html#symlink"><span class="std std-ref">symbolic links</span></a> for organinzing files.</p>
+<section id="required-files-and-structure">
+<h2>Required files and structure<a class="headerlink" href="#required-files-and-structure" title="Link to this heading"></a></h2>
+<section id="schism-launch-directory-structure">
+<h3>SCHISM launch directory structure<a class="headerlink" href="#schism-launch-directory-structure" title="Link to this heading"></a></h3>
+<p>A basic SCHISM launch directory has a top level directory, an <cite>outputs</cite> directory and a <cite>sflux</cite> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>studyname    # See inventory below
+├── outputs  # Empty, but required
+└── sflux    # Mostly generated links, see below
+</pre></div>
+</div>
+</section>
+<section id="launch-directory">
+<h3>Launch directory<a class="headerlink" href="#launch-directory" title="Link to this heading"></a></h3>
+<p>The table is an inventory of files needed for a typical Bay-Delta SCHISM run. All the spatial inputs and driver files
+are copied over by the preprocessor.  This inventory will inevitably occur if we change, say, the number or names of hydraulic structures.
+It will also be expanded when you use new modules, as indicated elsewhere in the user guide.
+The items in bold are <a class="reference internal" href="../linux.html#symlink"><span class="std std-ref">symbolic links</span></a>. These links follow the required SCHISM name but
+point to more the similar but more detailed or version controlled names in brackets, choices of
+which would change between modeling periods or be modified in accordance with the rest of the user gude.
+Some files (<cite>param.nml</cite>,`bctides.in`,`vgrid.in`,nudging) are almost
+always links. The links are currently created manually, although we are contemplating ways to make it more automatic.</p>
+<p>Some of the most important files like the horizontal grid (<cite>hgrid.gr3</cite>) are covered extensively in this user guide.
+Others are populated in very simple ways and seldom changed. For definitions,
+the intrested user can consult the <a class="reference external" href="https://schism-dev.github.io/schism/master/input-output/optional-inputs.html">optional input page of the SCHISM Manual at VIMS</a>.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Files for a SCHISM Run</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+<col style="width: 16.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>*.gr3/ic/ll</p></th>
+<th class="head"><p>*.in</p></th>
+<th class="head"><p>*.nc</p></th>
+<th class="head"><p>*.prop</p></th>
+<th class="head"><p>*.th</p></th>
+<th class="head"><p>*.nml</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>albedo.gr3</p></td>
+<td><p><strong>bctides.in</strong></p></td>
+<td><p>elev2D.th.nc</p></td>
+<td><p>fluxflag.prop</p></td>
+<td><p>ccfb_gate.th</p></td>
+<td><p><strong>param.nml</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>diffmax.gr3</p></td>
+<td><p>[bctides.in.2d]</p></td>
+<td><p>[hotstart.20160427.0.nc]</p></td>
+<td><p>tvd.prop</p></td>
+<td><p>delta_cross_channel.th</p></td>
+<td><p>[param.nml.clinic]</p></td>
+</tr>
+<tr class="row-even"><td><p>diffmin.gr3</p></td>
+<td><p>[bctides.in.3d]</p></td>
+<td><p><strong>hotstart.nc</strong></p></td>
+<td></td>
+<td><p>[flux_base.th]</p></td>
+<td><p>[param.nml.tropic]</p></td>
+</tr>
+<tr class="row-odd"><td><p>estuary.gr3</p></td>
+<td><p>hydraulics.in</p></td>
+<td><p><strong>SAL_nu.nc</strong></p></td>
+<td></td>
+<td><p><strong>flux.th</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>hgrid.gr3</p></td>
+<td><p>source_sink.in</p></td>
+<td><p>[SAL_nu_obsroms.nc]</p></td>
+<td></td>
+<td><p>grantline_barrier.th</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>krvel.gr3</p></td>
+<td><p>station.in</p></td>
+<td><p>[SAL_nu_roms.nc]</p></td>
+<td></td>
+<td><p>grantline_culvert.th</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>manning.gr3</p></td>
+<td><p><strong>vgrid.in</strong></p></td>
+<td><p><strong>TEM_nu.nc</strong></p></td>
+<td></td>
+<td><p>grantline_weir.th</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>rough.gr3</p></td>
+<td><p>[vgrid.in.2d]</p></td>
+<td><p>[TEM_nu_obsroms.nc]</p></td>
+<td></td>
+<td><p>midr_culvert_l.th</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>[salinity_nudge_obsroms.gr3]</p></td>
+<td><p>[vgrid.in.3d]</p></td>
+<td><p>[TEM_nu_roms.nc]</p></td>
+<td></td>
+<td><p>midr_culvert_r.th</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>[salinity_nudge_roms.gr3]</p></td>
+<td></td>
+<td><p>uv3D.th.nc</p></td>
+<td></td>
+<td><p>midr_weir.th</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>SAL_nudge.gr3</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>montezuma_boat_lock.th</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>sav_cd.gr3</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>montezuma_flash.th</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>sav_D.gr3</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>montezuma_radial.th</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>sav_h.gr3</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>msource.th</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>sav_N.gr3</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>[msource_v20230206.th]</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>TEM_nudge.gr3</strong></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>oldr_head_barrier.th</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>[temperature_nudge_obsroms.gr3]</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>oldr_tracy_culvert.th</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>[temperature_nudge_roms.gr3]</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>oldr_tracy_weir.th</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>watertype.gr3</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>SAL_1.th</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>windfactor.gr3</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>TEM_1.th</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>windrot_geo2proj.gr3</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>tom_paine_sl_culvert.th</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>xlsc.gr3</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>[vsink_20230206_nows_leach1_sscd1.6_daily.th]</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>vsink.th</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>[vsource_20230206_nows_leach1.th]</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>vsource.th</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>[west_false_river_barrier_leakage.th]</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="output-directory">
+<h3>Output directory<a class="headerlink" href="#output-directory" title="Link to this heading"></a></h3>
+<p>SCHI <cite>outputs</cite>. It will be empty but you need to make sure it is there.</p>
+</section>
+<section id="atmospheric-sflux-directory">
+<h3>Atmospheric (sflux) directory<a class="headerlink" href="#atmospheric-sflux-directory" title="Link to this heading"></a></h3>
+<p>The atmostpheric input (sflux) directory is a bit distinctive:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>It is the only place we put <a class="reference internal" href="../linux.html#symlink"><span class="std std-ref">symbolic links</span></a> to resources outside the immediate study directory</p></li>
+<li><p>We share a common database across simulations from a similar era. These are on all our cluster file systems and we distribute on CNRA open data portal. Note that these often point to the original source as in the <a class="reference internal" href="#examplesfluxdir"><span class="std std-ref">example</span></a> below.</p></li>
+<li><p>During the copying-over phase this directory initially only has two files:</p>
+<ul>
+<li><p>sflux_inputs.txt which is boilerplate that never changes and</p></li>
+</ul>
+</li>
+<li><p>make_links_full.py which contains links that are adjusted to populate all the symbolic links.</p></li>
+</ul>
+</div></blockquote>
+<p>So in the preprocessor you would have this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">copy_resources</span><span class="p">:</span>
+<span class="o">...</span>
+<span class="n">sflux</span><span class="o">/</span><span class="n">sflux_inputs</span><span class="o">.</span><span class="n">txt</span>   <span class="c1"># the boilerplate file</span>
+<span class="n">sflux</span><span class="o">/</span><span class="n">make_links_full</span><span class="o">.</span><span class="n">py</span> <span class="c1"># adjusted to point to the atmospheric files</span>
+</pre></div>
+</div>
+<p id="examplesfluxdir">Once you go to the study and run make_links_ful.py, the contents should look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/sflux
+├── make_links_full.py
+├── sflux_air_1.0001.nc -&gt; ../../../data/atmos/baydelta_sflux_v20220916/baydelta_schism_air_20160427.nc
+├── sflux_air_1.0002.nc -&gt; ../../../data/atmos/baydelta_sflux_v20220916/baydelta_schism_air_20160428.nc
+├── sflux_air_1.0003.nc -&gt; ../../../data/atmos/baydelta_sflux_v20220916/baydelta_schism_air_20160429.nc
+├── ...
+├── sflux_inputs.txt
+├── sflux_rad_1.0001.nc -&gt; ../../../data/atmos/NARR/2016_04/narr_prc.2016_04_27.nc
+├── sflux_rad_1.0002.nc -&gt; ../../../data/atmos/NARR/2016_04/narr_prc.2016_04_28.nc
+├── sflux_rad_1.0003.nc -&gt; ../../../data/atmos/NARR/2016_04/narr_prc.2016_04_29.nc
+...
+├── sflux_rad_1.0001.nc -&gt; ../../../data/atmos/NARR/2016_04/narr_rad.2016_04_27.nc
+├── sflux_rad_1.0002.nc -&gt; ../../../data/atmos/NARR/2016_04/narr_rad.2016_04_28.nc
+├── sflux_rad_1.0003.nc -&gt; ../../../data/atmos/NARR/2016_04/narr_rad.2016_04_29.nc
+├── ...
+</pre></div>
+</div>
+</section>
+</section>
+<section id="study-layout">
+<h2>Study layout<a class="headerlink" href="#study-layout" title="Link to this heading"></a></h2>
+<p>The overall structure of a study is discretionary. There are workflows that make transfer, sharing and reuse easier.
+The examples here are starting points – ultimately what you change depends on whether you have physical changes (e.g. restoration)
+or forcing changes (years, operations). Your choices also may depend on whether you are prepping on Windows and moving
+to Linux (see example below) or doing everything on Linux.</p>
+<p>It is recommended, and a standard in the Delta Modeling Section, that you isolate isolate the preprocessing template input (e.g. yaml) from the SCHISM native input (e.g. gr3).</p>
+<p>Here a possible study layout, commonly used in our group, for a simple study with one mesh, two sets of inputs time series
+run for each of two widely separated years, so a total of four simulations (base_2010, base_2020, alt_2010, alt_2020):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/study_dir.
+├───preprocessing           # bay_delta template, modified for study
+│   ├───simulation_inputs   # could stage your processed inputs here (Windows) or pipe preprocessor output to simulation directory\*
+├───hotstart_nudge
+│   │───20100312            # 2010 start years
+│   └───20200120            # 2020
+├───simulations
+│   ├───base_2010           # schism launch directory for one alternative
+│   │   │───sflux
+│   │   │───outputs
+│   │   └───outputs.tropic  # Generated during the barotropic warmup run and moved
+│   ├───base_2020           # schism launch dir for second alternative
+...
+│   └───alt_2020
+└───th_files
+│   │───elapsed_2010        # Could collect and stage your elapsed time series here and move them (e.g. Windows) or do it in simulation directory
+│   └───project_2010_base   # Preprocessed, datetime stamped files go here
+</pre></div>
+</div>
+<p>*The preprocessor has a key word <cite>output_dir</cite> which defaults to “simulation_input”. You might consider changing this to the run directory but please don’t use “.”.</p>
+<p>For a run that has two different physical domains (e.g. with and without restoration) studied over one period you might do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>study_dir
+├───base                     # schism launch directory
+│   ├───hotstart_nudging     # hotstarts/nudging files change with new grid or new period
+│   ├───outputs
+│   ├───preprocess           # bay_delta template input, output_dir=.. to move inputs parent dir
+│   └───sflux                # links to outside database of atmospheric
+├───restoration
+│   ├───hotstart_nudging
+│   ├───outputs
+│   ├───preprocess
+│   └───sflux
+└───th_files
+        ├───elapsed              # staging point for /project and repo time series converted to elapsed
+        └───project              # any study specific time series in datetime-stamped form
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview of a Bay-Delta SCHISM Run" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="preprocess.html" class="btn btn-neutral float-right" title="Spatial Data and the Preprocessor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014,2020 California Department of Water Resources.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: white;
+    }
+    /* Sidebar */
+    .wy-nav-side {
+      background: #86989B; /* existing theme was AFC1C4 and 86989B and CA7900 and white */
+      
+    }
+  </style>
+
+
+</body>
+</html>

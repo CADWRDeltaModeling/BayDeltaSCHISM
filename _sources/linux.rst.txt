@@ -1,3 +1,6 @@
+
+.. _linuxhints:
+
 ***********************
 Linux Hints for SCHISM
 ***********************
@@ -13,16 +16,17 @@ Using Linux from Windows
 
 You will need tools to:
 
-- connect to the Linux server that serves as a gateway, sometimes called a *server* or on clusters or supercomputers often called the *head node*. 
-- for graphical applications with windows like browsers and some text editors, you may need something called "XWindow Emulation". 
-- A method to copy files back and forth fast, usually with a secure (ssh) method
-- often you will want to set up an efficient text editor (Visual Studio Code) and VisIT both of which
-adopt a client-server approach to viewing or working on things in Windows that are located on Linux (the server) 
+  * connect to the Linux server that serves as a gateway, sometimes called a *server* or on clusters or supercomputers often called the *head node*. 
+  * for graphical applications with windows like browsers and some text editors, you may need something called "XWindow Emulation". 
+  * A method to copy files back and forth fast, usually with a secure (ssh) method
+  * often you will want to set up an efficient text editor (Visual Studio Code) and VisIT both of which adopt a client-server approach to viewing or working on things in Windows that are located on Linux (the server) 
 
 
 Basic connection
 -----------------
 The simplest tools is PutTy, which can also handle passwordless login using rsa tokens. MobaXTerm is an all-in-one tool that can also handle this task (??).
+
+.. copyfile:
 
 Copying files
 -------------
@@ -31,8 +35,10 @@ of WinSCP is that you can use your windows-side text editor on Linux-side files 
 though this is only going to work well if the file is a managable size. The copies are faster than
 other tools and the filter options are very efficient at narrowing down what you are looking at in a directory with hundreds of fi. Two particularly convenient filters are these: 
 
-- sta*;flow*;flux*   # For viewing station outout files and output requests
-- *.gr3;*.ic;*.in;*.ll;*.prop;*.nml;*.2d;*.3d;*.clinic;*.tropic;readme*;make_links* | nlayer*.gr3;split_quad.prop
+.. code-block: console
+
+  sta*;flow*;flux*   # For viewing station outout files and output requests
+  *.gr3;*.ic;*.in;\*.ll;\*.prop;\*.nml;\*.2d;*.3d;*.clinic;*.tropic;readme*;make_links* | nlayer*.gr3;split_quad.prop
 
 XWindow Emulation
 -----------------
@@ -53,12 +59,13 @@ work and connections well.
  
 
 .. _linux_hints:
+
 Copying a Run Safely
 ====================
+
 Do NOT use the linux copy command 'cp' to copy a run. A considerable amount of information, particularly symbolic links, will be lost. Instead use rsync:
 
 - Basic command: `rsync -avz /path/to/original_sim/ /path_to_dest/
-
   - The trailing slash on original_sim/ is important. There are many explanations online: search 'rsync trailing slash'.
   - Symbolic links will be preserved.  
   - If you want to move rather than copy, use --remove-source-files
@@ -80,9 +87,26 @@ in a situation where password authentication is not used.
 
 `rsync -e 'ssh -i ~/.ssh/id_rsa_name' -avz myname@10.7.240.8:/shared/home/myname/simulations/sim_name/ local_sim_name/ --exclude='outputs.tropic*' --exclude='outputs/*.nc'`
 
+.. _symlink:
 
 Symbolic links
-=================
+==============
+
+In Linux (and more rarely in Windows) a symbolic link is something that looks like a file and acts like a file but is
+actually a pointer or shutcut to another file or folder. So for instance SCHISM may require a file for inflow boundaries 
+called `flux.th` and you may prefer to work with a versioned name `flux_alt2.th`. To make this work you could make a symbolic
+link that points to the file: 
+
+ .. code-block:: console
+    
+	$ ln -s flux_alt2.th flux.th
+
+The `-s` just means symbolic. The next argument is the file/path and the last is the link name. Inside simulation directories we
+recommend very simple, local links. Don't try to economize -- it turns into a mess. The one exception is the `sflux` directory.
+This directory is for atmospheric inputs, and we almost always use a script (called `make_links_full.py`) to make symbolic links
+with the required name pointing to resources that are shared and that identify their source.
+
+
 
 Archives and Tarballs
 =======================

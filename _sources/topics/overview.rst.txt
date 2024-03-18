@@ -134,18 +134,21 @@ This is the term used for gates and barriers. See :ref:`structures`.
 Nudging is a crude form of data assimilation that is used either to generate a sponge-like boundary condition on the coastal boundary or to aid with spin-up of the model in a hindcast.
 
 
-==============
-Final Assembly
-==============
+===============================
+Organizing the Launch Directory
+===============================
 
-We do our work on clusters, but we are evenly divided between folks who prep on Windows and others who prep on Linux.
+We do our work on clusters, but we are divided between folks who prep on Windows and move the run to Linux
+and others who do the prep work on Linux.
 
-As you gather up your run, generally the work flow looks like this:
+The overall work flow looks like this:
 
-  #. Run the preprocessor 
-  #. Copy the resulting spatial inputs over to Linux with a tool like WinSCP
-  #. Subset the time boundary conditions (\*.th) and copy to the same directory (:ref:`copyfiles`)
-  #. Remotely log into the head node of the cluster and submit to the job management system. For more on the layout of a typical cluster and how you log in see [REF]
+  #. Run the preprocessor to reconstitute spatial inputs and pipe the output to the study directory.
+  #. Run scripts for subsetting boundary time series.
+  #. If on Windows, copy the resulting files over to Linux with a tool like WinSCP
+  #. Remotely log into the head node of the cluster and submit to the job management system. For more on the layout of a typical cluster and how you log in :ref:`filesdirs`
+
+We recommend you be familiar with the :ref:`inventory of required files and organization options <filesdirs>`. For DWR users working on Linux, please make sure that your spatial templates is done independently and not all mixed together with the run input.
 
 
 
