@@ -1,7 +1,7 @@
 
-=================================
-Spatial Data and the Preprocessor
-=================================
+===================================
+Grid, Spatial Data and Preprocessor
+===================================
 
 Do I need it? Copy existing run vs preprocess from template?
 ------------------------------------------------------------
