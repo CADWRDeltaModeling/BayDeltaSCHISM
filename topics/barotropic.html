@@ -60,7 +60,7 @@
 <li class="toctree-l4"><a class="reference internal" href="processed_run.html">Running a Preprepared Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="overview.html">Overview of a Bay-Delta SCHISM Run</a></li>
 <li class="toctree-l4"><a class="reference internal" href="files_and_directories.html">Required Files, Directory Structure and Recommended Study Practices</a></li>
-<li class="toctree-l4"><a class="reference internal" href="preprocess.html">Spatial Data and the Preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html">Grid, Spatial Data and Preprocessor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
 <li class="toctree-l4"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
@@ -94,13 +94,13 @@
 <li class="toctree-l2"><a class="reference internal" href="processed_run.html">Running a Preprepared Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html">Overview of a Bay-Delta SCHISM Run</a></li>
 <li class="toctree-l2"><a class="reference internal" href="files_and_directories.html">Required Files, Directory Structure and Recommended Study Practices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocess.html">Spatial Data and the Preprocessor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html">Grid, Spatial Data and Preprocessor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Ocean Boundary Stabilization: Barotropic Warmup</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#set-up">Set up</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#workflow">Workflow</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#bctides-in">bctides.in</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#param-nml">param.nml</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#vgrid-in">vgrid.in</a></li>
@@ -165,7 +165,7 @@ which is underspecified and potentially allows baroclinic modes to “flare up�
 <li><p>do a preliminary 2D barotropic run and harvest boundary values from that.</p></li>
 </ul>
 </div></blockquote>
-<p>The coastal model solution makes sense in some operational scenarios, which focus on recent and observable scenarios. The barotropic-baroclinic solution is widely used in Bay-Delta SCHISM, as it applies to hypothetical hydrologies landscape change
+<p>The coastal model solution makes sense in some operational scenarios, which focus on recent and observable scenarios. The alternative barotropic-baroclinic solution is widely used in Bay-Delta SCHISM, as it applies to hypothetical hydrologies landscape change
 and sea level rise.</p>
 <figure class="align-default" id="id2">
 <span id="flareup"></span><img alt="../_images/ocean_flareup.png" class="with-border" src="../_images/ocean_flareup.png" />
@@ -174,8 +174,29 @@ and sea level rise.</p>
 </figcaption>
 </figure>
 </section>
-<section id="set-up">
-<h2>Set up<a class="headerlink" href="#set-up" title="Link to this heading"></a></h2>
+<section id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Link to this heading"></a></h2>
+<p>The barotropic warmup run is done with these steps:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Linking <cite>param.nml</cite> to <cite>param.nml.tropic</cite>, <cite>bctides.in</cite> to <cite>bctides.in.2d</cite> and <cite>vgrid.in</cite> to <cite>vgrid.in.2d</cite>. So for instance in the case of param.nml: <cite>ln -d param.nml.tropic param.nml</cite></p></li>
+<li><p>Make sure the start time and length (<cite>rnday</cite>) is the same as your period.</p></li>
+<li><p>Adjust the number of processors. You rarely want more than 96 processors for a barotropic run. It not only won’t scale, it may degrade performance.</p></li>
+<li><p>Run the run.</p></li>
+<li><p>Run the <cite>interpolate_variables</cite> script (see below) to interpolate the velocity output to the 3d grid. This creates the file <cite>uv3D.th.nc</cite> which contains velocities for the ocean boundary. This is the only product we really want from the barotropic run, although running it is also a cheap way of discovering issues.</p></li>
+<li><p>Move the <cite>outputs</cite> to <cite>outputs.tropic</cite> and create an empty <cite>outputs</cite> directory for the 3D run. You don’t need to keep this forever if you have your uv3D.th.nc, but we typically keep it around for a while.</p></li>
+</ol>
+</div></blockquote>
+<dl class="simple">
+<dt>The baroclinic follow on is done with these steps:</dt><dd><ol class="arabic simple">
+<li><p>Linking <cite>param.nml</cite> to <cite>param.nml.clinic</cite>, <cite>bctides.in</cite> to <cite>bctides.in.3d</cite> and <cite>vgrid.in</cite> to <cite>vgrid.in.3d</cite>. So for instance in the case of param.nml: <cite>ln -d param.nml.clinic param.nml</cite>.</p></li>
+<li><p>Make sure you have the required nudging and hotstart files.</p></li>
+<li><p>Check the run dates and make sure <cite>ihot=1</cite> (start using a hotstart file rather than coldstart).</p></li>
+<li><p>Run the simulation.</p></li>
+</ol>
+</dd>
+</dl>
+<p>Note that technically you do not have to have <cite>hotstart.in.nc</cite> or the nudging files ready for the barotropic run. They only come into play for the baroclinic step.</p>
 <section id="bctides-in">
 <h3>bctides.in<a class="headerlink" href="#bctides-in" title="Link to this heading"></a></h3>
 </section>
