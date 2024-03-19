@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Extract station xyz from a x2 route UTM file. The resulting station file conforms to SCHISM
-bp station format. Stations along bay route start from 65km from San Francisco and end at confluence,
-Station along mzm start from 18km from Marinez end at confluence, Station along Sac starts from confluence
-and end 25km upstream of sac river, Station along San Joaquin route starts from confluence and end 25km 
-upstream of San Joaquin River. Their depth are defined as relativly to surface. ONLY surface or bottom
-stations are available, surface station set elevation to 0 and bottom station set elevation to -10000.0.
-station xyz are output as  Bay route, San Joaquin, Sac and MZM in order.
-
+Extract station xyz from a x2 route UTM file. The resulting station file
+conforms to SCHISM bp station format. Stations along bay route start from
+65km from San Francisco and end at confluence, Station along mzm start
+from 18km from Marinez end at confluence, Station along Sac starts from
+confluence and end 25km upstream of sac river, Station along San Joaquin
+route starts from confluence and end 25km upstream of San Joaquin River.
+Their depth are defined as relativly to surface. ONLY surface or bottom
+stations are available, surface station set elevation to 0 and bottom
+station set elevation to -10000.0. station xyz are output as  Bay route,
+San Joaquin, Sac and MZM in order.
 """
 
 import numpy as np
@@ -23,10 +25,13 @@ def create_arg_parser():
     # Read in the input file
     parser = argparse.ArgumentParser(
         description="""
-                       Convert X2 route dense point to SCHISM bp station format with specified sampling interval.
+                       Convert X2 route dense point to SCHISM bp station format
+                       with specified sampling interval.
 
-                     Usage:
-                           extract_x2_station_xyz.py x2route.csv --out x2_stations.bp --sampling_interval 200 --bay_min_distance 65000 --sac_max_distance 25000 --sjr_max_distance 25000
+                    Usage:
+                     extract_x2_station_xyz.py x2route.csv --out x2_stations.bp
+                      --sampling_interval 200 --bay_min_distance 65000
+                      --sac_max_distance 25000 --sjr_max_distance 25000
                      """)
     parser.add_argument(
         'x2route',
@@ -41,39 +46,40 @@ def create_arg_parser():
         default=200,
         required=False,
         type=float,
-        help='sampling distance along original x2 route for SCHISM output stations in meter')
+        help="sampling distance along original x2 route for SCHISM output \
+        stations in meter")
 
     parser.add_argument(
         '--bay_min_distance',
         default=65000.0,
         type=float,
         required=False,
-        help='starting distance to sample station in the Bay measuring from San Francisco in meter')
+        help='starting distance to sample station in the Bay measuring \
+            from San Francisco in meter')
 
     parser.add_argument(
         '--sac_max_distance',
         default=25000,
         type=float,
         required=False,
-        help='end sampling distance distance to sample station in the Sacramento River measuring from the Confluence in meter')
+        help='end sampling distance distance to sample station in the \
+            Sacramento River measuring from the Confluence in meter')
 
     parser.add_argument(
         '--sjr_max_distance',
         default=25000,
         type=float,
         required=False,
-        help='end sampling distance distance to sample station in the San Joaquin River measuring from the Confluence in meter')
+        help='end sampling distance distance to sample station in the \
+            San Joaquin River measuring from the Confluence in meter')
 
     return parser
 
 
-def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance, sanjoaquin_max_distance, sac_max_distance):
+def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance,
+                 sanjoaquin_max_distance, sac_max_distance):
     x2_route_file = "x2route.csv"
     x2_route = pd.read_table(x2_route_file, sep=",", skiprows=1)
-    surface_x2_xyz = 0
-    bottom_x2_xyz = 0
-
-
     bay_points_dist = x2_route.loc[(x2_route['path'] == 'bay')]["distance"]
 
     bay_route_length = np.max(bay_points_dist)
@@ -91,15 +97,15 @@ def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance, sanjoaqu
     bay_pt_every_200m = range(0, len(bay_points), 200)
     sanjoaquin_pt_every_200m = range(0, len(sanjoaquin_points), 200)
     sac_pt_every_200m = range(0, len(sac_points), 200)
-
     surface_out_frame = pd.concat([bay_points.iloc[bay_pt_every_200m],
-                                  sanjoaquin_points.iloc[sanjoaquin_pt_every_200m], sac_points.iloc[sac_pt_every_200m]])
-
+                                  sanjoaquin_points.iloc[sanjoaquin_pt_every_200m], 
+                                  sac_points.iloc[sac_pt_every_200m]])
     surface_elev = 0.0
     surface_out_frame["z"] = surface_elev
 
     bottom_out_frame = pd.concat([bay_points.iloc[bay_pt_every_200m],
-                                 sanjoaquin_points.iloc[sanjoaquin_pt_every_200m], sac_points.iloc[sac_pt_every_200m]])
+                                 sanjoaquin_points.iloc[sanjoaquin_pt_every_200m],
+                                 sac_points.iloc[sac_pt_every_200m]])
 
     header = ["x", "y", "z"]
 
@@ -123,7 +129,8 @@ def main():
     args = parser.parse_args()
 
     x2_route2_bp(args.x2route, args.out, args.sampling_interval,
-                 args.bay_min_distance, args.sjr_max_distance, args.sac_max_distance)
+                 args.bay_min_distance, args.sjr_max_distance,
+                 args.sac_max_distance)
 
 
 if __name__ == "__main__":
