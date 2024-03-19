@@ -20,7 +20,7 @@ hotstart:
                   - region: estuary
                     initializer: 
                         extrude_casts: 
-                            station: ../data_in/USGS_polaris_station_locations_xy.csv
+                            station: ../data_in/usgs_cruise_station.csv
                             data: ../data_in/polaris_wqdata_2015.csv
                             variable: Temperature (Degrees Celsius)
                   - region: delta
@@ -41,7 +41,7 @@ hotstart:
                   - region: estuary
                     initializer: 
                         extrude_casts: 
-                            station: ../data_in/USGS_polaris_station_locations_xy.csv
+                            station: ../data_in/usgs_cruise_station.csv
                             data: ../data_in/polaris_wqdata_2015.csv
                             variable: Salinity
                   - region: delta
