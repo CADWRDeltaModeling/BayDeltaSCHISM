@@ -88,7 +88,7 @@ structures:
       n_duplicates: 1
       elevation: 1.0
       width: 54.9
-      coefficient: 0.8
+      coefficient: 0.9
       op_downstream: 1.
       op_upstream: 1.
 
@@ -110,7 +110,7 @@ structures:
       n_duplicates: 1
       elevation: 1.00
       width: 42.7
-      coefficient: 0.8
+      coefficient: 0.9
       op_downstream: 1.0
       op_upstream: 1.0
       use_time_series: 1
@@ -155,7 +155,7 @@ structures:
       n_duplicates: 1
       elevation: 1.33
       width: 22.9
-      coefficient: 0.8
+      coefficient: 0.9
       op_downstream: 1.0
       op_upstream: 1.0
 
