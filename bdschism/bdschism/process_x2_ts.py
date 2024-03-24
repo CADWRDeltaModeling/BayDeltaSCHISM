@@ -27,6 +27,7 @@ import datetime as dtm
 import pandas as pd
 from dateutil.parser import parse
 
+
 westmost_bay_dist = 65000
 westmost_mzm_dist = 18000
 eastmost_sac_dist = 25000
@@ -45,9 +46,9 @@ def interpolate_x2(ts_len, salt, x2_criteria):
         sanjoaquin_salt = salt[i, len_bay_pt:len_bay_pt + len_sanjoaquin_pt]
         sac_salt = salt[i, len_bay_pt + len_sanjoaquin_pt:len_bay_pt +
                    len_sanjoaquin_pt + len_sac_pt]
-        mzm_salt = salt[i, len_bay_pt + len_sanjoaquin_pt +
-                   len_sac_pt:len_bay_pt + len_sanjoaquin_pt +
-                   len_sac_pt + len_mzm_pt]
+        # mzm_salt = salt[i, len_bay_pt + len_sanjoaquin_pt +
+        #            len_sac_pt:len_bay_pt + len_sanjoaquin_pt +
+        #            len_sac_pt + len_mzm_pt]
         # search in bay stations first
         k = len(bay_salt) - np.searchsorted(bay_salt[::-1], x2_criteria)
         x2_loc = []
@@ -62,16 +63,16 @@ def interpolate_x2(ts_len, salt, x2_criteria):
             x2_loc.append(dx2)
             x2_dist_sac.append(dx2)
             x2_dist_sanjoaquin.append(dx2)
-            j = len(mzm_salt) - np.searchsorted(mzm_salt[::-1], x2_criteria)
-            if ((j > 0) and (j < len_mzm_pt)):
-                s1 = mzm_salt[j - 1]
-                s2 = mzm_salt[j]
-                d1 = mzm_pt_meas[j - 1]
-                d2 = mzm_pt_meas[j]
-                dx2 = d1 + (x2_criteria - s1) * (d2 - d1) / (s2 - s1)
-                x2_loc.append(dx2)
-            else:
-                x2_loc.append(mzm_distance)
+            # j = len(mzm_salt) - np.searchsorted(mzm_salt[::-1], x2_criteria)
+            # if ((j > 0) and (j < len_mzm_pt)):
+            #     s1 = mzm_salt[j - 1]
+            #     s2 = mzm_salt[j]
+            #     d1 = mzm_pt_meas[j - 1]
+            #     d2 = mzm_pt_meas[j]
+            #     dx2 = d1 + (x2_criteria - s1) * (d2 - d1) / (s2 - s1)
+            #     x2_loc.append(dx2)
+            # else:
+            #     x2_loc.append(mzm_distance)
             x2_loc.append(0.0)
             x2_loc.append(0.0)
         elif (k == 0):
@@ -152,44 +153,47 @@ model_start = parse(st)
 
 x2_route_file = args.x2route
 # x2_route_file="x2route.csv"
-x2_route = pd.read_table(x2_route_file, sep=",")
-surface_x2_xyz = 0
-bottom_x2_xyz = 0
-
-bay_points = x2_route.loc[(x2_route['RID'] == 'bay') & (x2_route['MEAS']
-                                                        > westmost_bay_dist)]
-mzm_points = x2_route.loc[(x2_route['RID'] == 'montezuma') & (x2_route['MEAS']
-                                                        > westmost_mzm_dist)]
-sanjoaquin_points = x2_route.loc[(x2_route['RID'] == 'san_joaquin')
-                            & (x2_route['MEAS'] < eastmost_sanjoaquin_dist)]
-sac_points = x2_route.loc[(x2_route['RID'] == 'sacramento') &
-                           (x2_route['MEAS'] < eastmost_sac_dist)]
+x2_route = pd.read_table(x2_route_file, sep=",",skiprows=1)
+# surface_x2_xyz = 0
+# bottom_x2_xyz = 0
 
 
-bay_distance = bay_points.loc[:, "SHAPE_LENG"].values[0]
-mzm_distance = mzm_points.loc[:, "SHAPE_LENG"].values[0]
-sanjoaquin_distance = sanjoaquin_points.loc[:, "SHAPE_LENG"].values[0]
-sac_distance = sac_points.loc[:, "SHAPE_LENG"].values[0]
+bay_points = x2_route.loc[(x2_route['path'] == 'bay') & \
+                          (x2_route['distance']> westmost_bay_dist)]
+bay_distance = bay_points.loc[:, "distance"].values[-1]
+# mzm_points = x2_route.loc[(x2_route['path'] == 'montezuma') & (x2_route['distance']
+#                                                         > westmost_mzm_dist)]
+sanjoaquin_points = x2_route.loc[(x2_route['path'] == 'sjr')&\
+                                 (x2_route['distance']<\
+                                  eastmost_sanjoaquin_dist+bay_distance)]
+sac_points = x2_route.loc[(x2_route['path'] == 'sac') &\
+                          (x2_route['distance'] <
+                           eastmost_sac_dist+bay_distance)]
+
+
+
+#mzm_distance = mzm_points.loc[:, "SHAPE_LENG"].values[0]
+sanjoaquin_distance = sanjoaquin_points.loc[:, "distance"].values[-1]-bay_distance
+sac_distance = sac_points.loc[:, "distance"].values[-1]-bay_distance
 
 bay_pt_every_200m = range(0, len(bay_points), 200)
-mzm_pt_every_500m = range(0, len(mzm_points), 500)
+#mzm_pt_every_500m = range(0, len(mzm_points), 500)
 sanjoaquin_pt_every_200m = range(0, len(sanjoaquin_points), 200)
 sac_pt_every_200m = range(0, len(sac_points), 200)
 
 len_bay_pt = len(bay_pt_every_200m)
-len_mzm_pt = len(mzm_pt_every_500m)
+#len_mzm_pt = len(mzm_pt_every_500m)
 len_sanjoaquin_pt = len(sanjoaquin_pt_every_200m)
 len_sac_pt = len(sac_pt_every_200m)
 
-surface_num_stations = len_bay_pt + len_mzm_pt + len_sanjoaquin_pt + len_sac_pt
+surface_num_stations = len_bay_pt +  len_sanjoaquin_pt + len_sac_pt
 bottom_num_stations = surface_num_stations
 
 
-bay_pt_meas = bay_points.iloc[bay_pt_every_200m]['MEAS'].values
-mzm_pt_meas = mzm_points.iloc[mzm_pt_every_500m]['MEAS'].values
-sanjoaquin_pt_meas = sanjoaquin_points.iloc[sanjoaquin_pt_every_200m]
-['MEAS'].values
-sac_pt_meas = sac_points.iloc[sac_pt_every_200m]['MEAS'].values
+bay_pt_meas = bay_points.iloc[bay_pt_every_200m]['distance'].values
+#mzm_pt_meas = mzm_points.iloc[mzm_pt_every_500m]['MEAS'].values
+sanjoaquin_pt_meas = sanjoaquin_points.iloc[sanjoaquin_pt_every_200m]['distance'].values
+sac_pt_meas = sac_points.iloc[sac_pt_every_200m]['distance'].values
 
 
 surface_x2_criteria = 1.36

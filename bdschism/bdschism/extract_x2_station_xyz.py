@@ -83,15 +83,15 @@ def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance,
     bay_points_dist = x2_route.loc[(x2_route['path'] == 'bay')]["distance"]
 
     bay_route_length = np.max(bay_points_dist)
-
+    
     sanjoaquin_max_distance = sanjoaquin_max_distance+bay_route_length
     sac_max_distance = sac_max_distance+bay_route_length
 
     bay_points = x2_route.loc[(x2_route['path'] == 'bay') & (
         x2_route['distance'] > bay_min_distance)]
-    sanjoaquin_points = x2_route.loc[(x2_route['path'] == 'san_joaquin') & (
+    sanjoaquin_points = x2_route.loc[(x2_route['path'] == 'sjr') & (
         x2_route['distance'] < sanjoaquin_max_distance)]
-    sac_points = x2_route.loc[(x2_route['path'] == 'sacramento') & (
+    sac_points = x2_route.loc[(x2_route['path'] == 'sac') & (
         x2_route['distance'] < sac_max_distance)]
 
     bay_pt_every_200m = range(0, len(bay_points), 200)
@@ -119,7 +119,7 @@ def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance,
 
     x2_out_frame.index = new_id
 
-    x2_out_frame.to_csv(out, columns=header, sep=" ", header=False)
+    x2_out_frame.to_csv(out, columns=header, sep=" ", header=[str(len(x2_out_frame)),None,None])
 
 
 def main():
