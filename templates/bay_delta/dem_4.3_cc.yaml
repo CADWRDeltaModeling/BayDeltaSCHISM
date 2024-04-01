@@ -24,18 +24,14 @@ dem_list:
   - //nasbdo/modeling_data/restoration/yolo_flyway/DEM/dem_yolo_flyway_1m_20200228.tif
 
 
-  #South Delta
-  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/GLC_2m_smoothed_4_3_10102023.tif
-  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/MID_2m_smoothed_4_3_10102023.tif
-  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/OLD_2m_smoothed_4_3_10102023.tif
-  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/ORC_2m_smoothed_4_3_10102023.tif
-  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/ORS_2m_smoothed_4_3_10162023.tif
-  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/PRC_2m_smoothed_4_3_10102023.tif
-  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/SJRN_2m_smoothed_4_3_10112023.tif
-  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/SJRS_2m_smoothed_4_3_1010202.tif
-  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/TPS_smoothed_4_3_11052023.tif
-  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/VTC_smoothed_4_3_11052023.tif
+  #South and Central Delta
   - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/dem_southdelta_2m_smoothed_4_3_11032023.tif
+  - //nasbdo/modeling_data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part1_2m_20181120_smooth_4_3_160.tif
+  - //nasbdo/modeling_data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part2_2m_20181120_smooth_4_3_160.tif
+  - //nasbdo/modeling_data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part3_2m_20181120_smooth_4_3_160.tif
+  - //nasbdo/modeling_data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part6_2m_20181120_smooth_4_3_160.tif
+  - //nasbdo/modeling_data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part7_2m_20181120_smooth_4_3_160.tif
+
 
   #Yolo Bypass
   - //nasbdo/modeling_data/bathymetry/renamed_no_version/dem_yolo_part1_2m_20181012_smooth_4_3_160.tif
