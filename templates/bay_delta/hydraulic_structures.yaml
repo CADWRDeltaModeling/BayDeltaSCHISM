@@ -88,14 +88,14 @@ structures:
       n_duplicates: 1
       elevation: 1.0
       width: 54.9
-      coefficient: 0.9
+      coefficient: 0.8
       op_downstream: 1.
       op_upstream: 1.
 
       culvert_n_duplicates: 6
       culvert_elevation: -1.28
       culvert_radius: 0.61
-      culvert_coefficient: 0.4
+      culvert_coefficient: 0.3  
       culvert_op_downstream: 0.0
       culvert_op_upstream: 1.
       use_time_series: 1
@@ -110,7 +110,7 @@ structures:
       n_duplicates: 1
       elevation: 1.00
       width: 42.7
-      coefficient: 0.9
+      coefficient: 0.8
       op_downstream: 1.0
       op_upstream: 1.0
       use_time_series: 1
@@ -125,7 +125,7 @@ structures:
       n_duplicates: 3
       elevation: -0.53
       radius: 0.61
-      coefficient: 0.4
+      coefficient: 0.3
       op_downstream: 0.0
       op_upstream: 1.0
       use_time_series: 1
@@ -140,7 +140,7 @@ structures:
       n_duplicates: 3
       elevation: -0.53
       radius: 0.61
-      coefficient: 0.4
+      coefficient: 0.3
       op_downstream: 0.0
       op_upstream: 1.0
       use_time_series: 1
@@ -155,14 +155,14 @@ structures:
       n_duplicates: 1
       elevation: 1.33
       width: 22.9
-      coefficient: 0.9
+      coefficient: 0.8
       op_downstream: 1.0
       op_upstream: 1.0
 
       culvert_n_duplicates: 9
       culvert_elevation: -1.11
       culvert_radius: 0.61
-      culvert_coefficient: 0.6
+      culvert_coefficient: 0.3
       culvert_op_downstream: 1.0
       culvert_op_upstream: 1.0
       use_time_series: 1
@@ -177,7 +177,7 @@ structures:
       n_duplicates: 6
       elevation: -0.35
       radius: 0.57
-      coefficient: 0.4
+      coefficient: 0.3
       op_downstream: 0.0
       op_upstream: 1.0
       use_time_series: 0
