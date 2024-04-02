@@ -886,3 +886,48 @@ linestrings:
   name: paradise_cut_weir
   station_id: paradise_cut_weir
   station_name: paradise_cut_weir
+- comment: Preliminary location for null zone ADCP
+  name: orfu
+  station_name: orfu
+  station_id: orfu
+  coordinates:
+  - - 633804.3 
+    - 4183090.0
+  - - 633760.0
+    -  4183137.6
+- comment: Preliminary location for null zone ADCP
+  name: oaad
+  station_name: oaad
+  station_id: oaad
+  coordinates:
+  - - 632220. 
+    - 4182736.
+  - - 632322.2
+    -  4182745.0 
+- comment: pdup_bridge_south
+  name: pdup_br_south
+  station_name: pdup_br_south
+  station_id: pdup_br_south
+  coordinates:
+  - - 643568.
+    - 4184832.
+  - - 643602.0
+    - 4184868.
+- comment: pdup_br_north
+  name: pdup_br_north
+  station_name: pdup_br_north
+  station_id: pdup_br_north
+  coordinates:
+  - - 643705.
+    - 4184979.
+  - - 643726. 
+    - 4185011.
+- comment: diagnostic
+  name: tompaine_flux
+  station_name: tompaine_flux
+  station_id: tompaine_flux
+  coordinates:
+  - - 639290.
+    - 4183662.
+  - - 639323.
+    - 4183685.
