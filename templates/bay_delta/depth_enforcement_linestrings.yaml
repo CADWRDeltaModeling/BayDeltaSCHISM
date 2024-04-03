@@ -2188,6 +2188,7 @@ linestrings:
     - 4194565.5
 - attribute: local_max
   name: middle2
+  coordinates:
   - - 632715.4
     - 4194958.2
   - - 632817.2000000001
@@ -2208,6 +2209,7 @@ linestrings:
     - 4194571.9
 - attribute: local_max
   name: middle3
+  coordinates:
   - - 632859.9
     - 4194699.1
   - - 632824.5
