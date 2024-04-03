@@ -39,14 +39,15 @@ the native "SCHISM" turbulence closures must be used, not GOTM.
      - stem diameter
    * - sav_cd.gr3
      - constant
-     - coefficient of drag (we use 1.13)
+     - coefficient of drag (we currently use 0.20 to 0.28, but see text below)
    * - sav_h.gr3
      - sav_height.yaml
      - canopy height
 
 
-The first three parameters are multiplied by one another. There is rarely enough data to depict them all, 
-a point revisited below. Canopy height is from the bed. We usually assume the canopy reaches -0.25cm NAVD
+The first three parameters are multiplied by one another. There is rarely enough data to make them 
+statistically identifiable individually, a point revisited below. 
+Canopy height is from the bed. We usually assume the canopy reaches -0.15cm NAVD in the main Delta.
 which is a compromise based on the fact that apparent effective density diminishes in the upper centimeters.
 
 Approximations and preprocessor
@@ -54,29 +55,24 @@ Approximations and preprocessor
 
 Key challenges when modeling vegetation with SCHISM are:
 
-  #. sufficiency of data and converting to useful parameters and
-  #. need to include sufficient vertical resolution to allow a boundary layer over the vegetation
-
-Done right, strong shear above and below the canopy can be obtained. Done crudely, the approximation is nothing 
-more than an added body force inducing a kind of "friction" over the entire water column that is lacking in
-3D models (roughness is just at the bed).
-
+  #. data coverage
+  #. interpretation of data as effective density
+  #. including enough vertical resolution to allow a boundary layer over the vegetation
 
 
 Effective Stem Density
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Given lack of detailed knowledge of the drag coefficient diameter and stem density, there is effectively 
-a single degree of freedom and a degree of subjective fitting particularly when it comes to the overall density of the
-vegetation field. 
+Because we usually don't have detailed knowledge of the drag coefficient diameter and stem density
+and because they all end up multiplied by one another, there is effectively 
+a single degree of freedom when it comes to the overall density of the vegetation field. 
 
-We fix the diameter and density and use what is effectively an "effective stem density" that accounts for variation in drag,
+We fix the diameter and density and use an "effective stem density" that accounts for variation in drag,
 subgrid heterogeneity of the field as well as point values of stem density. In the past we have used
 stem densities of 10-30 per meter squared (lower-medium) and 30-60 per meter squared (heavy) coupled with a drag
-coefficient of 0.26. You may see legacy files where the stem density is much lower and the drag higher, but
-the product in this case is the same general magnitude. For instance, for a fixed diameter 8 stems/m^2 and drag 1.13 give the same 
-product as instead of 20-60 stems/m^2 and drag 0.28. We use higher stem density O(10) to O(100); the values are lower 
-than the highest point values in part to make up for the reduced drag resulting from gaps and subgrid heterogeneity. 
+coefficient of 0.20 to 0.26. You may see legacy files where the stem density is much lower and the drag higher, but
+the product in this case is the same general magnitude. For instance, for a fixed diameter 8 stems/m^2 and drag 1.13 
+give the same product as instead of 20-60 stems/m^2 and drag 0.28. 
 
 At times when remote sensing was not available, the template included estimates based on heuristics about depth, 
 using only one high and one low value, consistent for the most part with the :cite:p:`durand_2016` 
@@ -84,13 +80,14 @@ conclusion that most Egeria densa grew between depths of 2m and -1m MLLW and ass
 is less than 0.9m at low water. 
  
 In areas where we have imagery, we use processed Normalized Density Vegetation Index from the Ustin lab at UC Davis. 
-More properly, these are modified NDVI (mNDVI) with more attention in the margins of the red band and slightly lower values than
-ordinary NDVI. Representative fields are left in place across years unless vegetation pattern change is the focus of investigation. 
-The NVDI images give an improved spatial distribution of effective density but absolute
-values vary between captures so there is still a reliance on field descriptions.  A "no vegetation" or zero density is typically assigned for
-values of mNDVI less than a threshold around -0.05, but for some issues the histogram is clustered lower and the low vegetation 
-band in areas of known vegetation appears to reaches as low as -0.40.
-We do not bin or assign values in away that is more specific than none-low-high or none-low-medium-high.
+More properly, these are modified NDVI (mNDVI) with more attention in the margins of the 
+red band and slightly lower values than ordinary NDVI. The NVDI image is often the best 
+source of information on spatial distribution of effective density. However, NDVI is not
+as accurate in the water as it is for terrestrial vegetation. Absolute values 
+vary between captures so there is still a reliance on field descriptions and a degree of fitting on overall strength
+based on looking at the histogram and breaking it into a "no", "low" and "high" bracket.
+The "no vegetation" or zero density is typically assigned for mNDVI < -0.05, but for some 
+images histogram is clustered at lower values. 
 
 
 .. code-block:: console
