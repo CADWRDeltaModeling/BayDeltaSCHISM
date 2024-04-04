@@ -25,7 +25,9 @@ dem_list:
 
 
   #South and Central Delta
-  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/dem_southdelta_2m_smoothed_4_3_11032023.tif
+  - //nasbdo/modeling_data/bathymetry/dem_release_v4.3/south_delta_dem_2023/2m_dem_smooth/dem_2m_southdelta_ccfb_smoothed_4_3_20240403.tif
+  - //nasbdo/modeling_data/bathymetry/dem_release_v4.4/2m_dem_smoothed/WWC_2m_20240403_smoothed_4_3.tif
+  - //nasbdo/modeling_data/bathymetry/dem_release_v4.4/2m_dem_smoothed/RRC_2m_20240403_smoothed_4_3.tif
   - //nasbdo/modeling_data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part1_2m_20181120_smooth_4_3_160.tif
   - //nasbdo/modeling_data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part2_2m_20181120_smooth_4_3_160.tif
   - //nasbdo/modeling_data/bathymetry/renamed_no_version/dem_ccfb_south_delta_san_joaquin_rvr_part3_2m_20181120_smooth_4_3_160.tif
