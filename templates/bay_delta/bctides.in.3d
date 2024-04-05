@@ -10,10 +10,10 @@
 0.074318
 1.
 4 0 1 0 0 ! ccc_rock_slough
-2 0 1 0 0 ! ccc_old
+4 0 1 0 0 ! ccc_old
 4 0 1 0 0 ! swp 
-6 0 1 0 0 ! cvp 
-8 0 1 1 1 ! sjr
+5 0 1 0 0 ! cvp
+13 0 1 1 1 ! sjr
 1.
 1.
 2 0 1 1 2 ! calaveras
@@ -43,4 +43,4 @@
 1.
 0.074318
 1.
-3 0 1 0 0 ! ccc_victoria
+5 0 1 0 0 ! ccc_victoria
