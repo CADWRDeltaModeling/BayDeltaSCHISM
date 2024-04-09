@@ -77,8 +77,15 @@ hydraulics:
 sources_sinks:
   # Includes Delta and Suisun, including distribution modifications in 2020.
   # See the _2019 variant for older locations  
-  include: source_sink.yaml  
-  outputfile: source_sink.in
+    sinks:
+        include:
+        - sink_delta.yaml
+        - sink_suisun.yaml
+    sources:
+        include:
+        - source_delta.yaml
+        - source_suisun.yaml
+    outputfile: source_sink.in
 vgrid:
     vgrid_out: vgrid.in.3d
     minmaxlayerfile: minmaxlayer_slr_0_mod105.shp 
