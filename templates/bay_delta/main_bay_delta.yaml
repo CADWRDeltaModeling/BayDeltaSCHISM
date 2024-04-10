@@ -79,11 +79,13 @@ sources_sinks:
   # See the _2019 variant for older locations  
     sinks:
         include:
-        - sink_delta.yaml
+        - sink_dcd.yaml
+        - sink_mss.yaml
         - sink_suisun.yaml
     sources:
         include:
-        - source_delta.yaml
+        - source_dcd.yaml
+        - source_mss.yaml
         - source_suisun.yaml
     outputfile: source_sink.in
 vgrid:
