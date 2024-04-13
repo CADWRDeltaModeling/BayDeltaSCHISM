@@ -51,7 +51,7 @@ def create_arg_parser():
 
     parser.add_argument(
         '--bay_min_distance',
-        default=65000.0,
+        default=55000.0,
         type=float,
         required=False,
         help='starting distance to sample station in the Bay measuring \
@@ -83,16 +83,27 @@ def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance,
     bay_points_dist = x2_route.loc[(x2_route['path'] == 'bay')]["distance"]
 
     bay_route_length = np.max(bay_points_dist)
-    
+    bay_route_npt = len(bay_points_dist)
+    print(f"original bay route nump points {bay_route_npt} and length {bay_route_length}")
+
     sanjoaquin_max_distance = sanjoaquin_max_distance+bay_route_length
     sac_max_distance = sac_max_distance+bay_route_length
+       
+
 
     bay_points = x2_route.loc[(x2_route['path'] == 'bay') & (
         x2_route['distance'] > bay_min_distance)]
+
     sanjoaquin_points = x2_route.loc[(x2_route['path'] == 'sjr') & (
         x2_route['distance'] < sanjoaquin_max_distance)]
     sac_points = x2_route.loc[(x2_route['path'] == 'sac') & (
         x2_route['distance'] < sac_max_distance)]
+
+    sjr_route_npt = len(sanjoaquin_points)
+    print(f"original sjr route nump points {sjr_route_npt} and length {sanjoaquin_max_distance}")
+    sac_route_npt = len(sac_points)
+    print(f"original sac route nump points {sac_route_npt} and length {sac_max_distance}")
+
 
     bay_pt_every_200m = range(0, len(bay_points), 200)
     sanjoaquin_pt_every_200m = range(0, len(sanjoaquin_points), 200)
@@ -100,6 +111,7 @@ def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance,
     surface_out_frame = pd.concat([bay_points.iloc[bay_pt_every_200m],
                                   sanjoaquin_points.iloc[sanjoaquin_pt_every_200m], 
                                   sac_points.iloc[sac_pt_every_200m]])
+
     surface_elev = 0.0
     surface_out_frame["z"] = surface_elev
 
@@ -118,8 +130,12 @@ def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance,
     new_id = range(1, 2*len(surface_out_frame)+1)
 
     x2_out_frame.index = new_id
+    print(x2_out_frame)
+    print(f"writing to {out}")
 
-    x2_out_frame.to_csv(out, columns=header, sep=" ", header=[str(len(x2_out_frame)),None,None])
+    x2_out_frame.to_csv(out, columns=header, sep=" ", header=False)
+    return x2_out_frame
+
 
 
 def main():
