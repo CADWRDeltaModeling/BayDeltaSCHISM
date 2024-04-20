@@ -4,7 +4,7 @@
 # mesh file
 
 mesh:
-  mesh_inputfile: bay_delta_111_prop_605.2dm   # cc vs hist requires coordination with dem_list.yaml which has variants of same names
+  mesh_inputfile: bay_delta_113_beta10.2dm   # cc vs hist requires coordination with dem_list.yaml which has variants of same names
   split_quad:
     minangle: 30.
     maxangle: 140.
@@ -15,16 +15,18 @@ mesh:
   # includes restoration sites at top of list
   dem_list: 
     include: 
-      - dem_4.2_cc.yaml
+      - dem_4.3_cc.yaml
   depth_optimization: !include depth_opt_params.yaml
   open_boundaries: !include open_boundary.yaml
   depth_enforcement: 
     polygons:
       include: 
         - depth_enforcement_polygons.yaml
+        - depth_enforcement_ss_polygons.yaml
     linestrings:
       include: 
         - depth_enforcement_linestrings.yaml
+        - depth_enforcement_ss_linestrings.yaml
   ll_outputfile: hgrid.ll
   gr3_outputfile: hgrid.gr3
 

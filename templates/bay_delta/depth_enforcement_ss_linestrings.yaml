@@ -1,0 +1,93 @@
+linestrings:
+- attribute: local_max
+  coordinates:
+  - - 644631.
+    - 4181658.
+  - - 644652.
+    - 4181659.
+  - - 644672.
+    - 4181655.
+  name: node_152
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 643548.
+    - 4181589.
+  - - 643564.
+    - 4181589.
+  - - 643584.
+    - 4181589.
+  name: node_153
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 642791.
+    - 4181355.
+  - - 642806.
+    - 4181349.
+  - - 642819.
+    - 4181345.
+  name: node_154
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 642159.
+    - 4181603.
+  - - 642159.
+    - 4181589.
+  name: node_155
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 641834.
+    - 4182330.
+  - - 641842.
+    - 4182327.
+  name: node_156
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 641421.
+    - 4181887.
+  - - 641828.
+    - 4181892.
+  name: node_157
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 640650.
+    - 4182827.
+  - - 640658.
+    - 4182833.
+  name: node_158
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 642322.
+    - 4187773.
+  - - 642326.
+    - 4187764.
+  - - 642329.
+    - 4187756.
+  name: node_104
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 643067.
+    - 4200882.
+  - - 643107.
+    - 4200862.
+  - - 643146.
+    - 4200845.
+  name: node_138
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 642295.
+    - 4202580.
+  - - 642280.
+    - 4202538.
+  - - 642271.
+    - 4202501.
+  name: node_139
+  type: none
