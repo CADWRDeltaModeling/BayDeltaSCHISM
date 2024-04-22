@@ -63,13 +63,19 @@ Clone the `Bay-Delta Package on GitHub <https://github.com/CADWRDeltaModeling/Ba
 
 The package includes a simulation template corresponding to the calibration, preprocessing tools and several of the tutorials that we will be using in the January hands-on Bay-Delta workshop. Help on the preprocessor and model setup can be found in the `schimpy <https://cadwrdeltamodeling.github.io/schimpy>`_ documentation. The package includes a /bin directory that needs to be populated by building the source or grabbing windows binaries if you want to learn on a high quality pc. 
 
-The current temporal coverage is calendar 2008-2018. There are several items in the distribution that are large:
+The current temporal coverage is calendar 2008-2023. There are several items in the distribution that are large and binary and distributed on the CNRA open data portal:
   * `SCHISM-compatible atmospheric data <https://data.cnra.ca.gov/dataset/bay-delta-schism-atmospheric-collection-v1-0>`_ which includes interpolated field data for wind, air pressure, and specific humidity, as well as reformatted `North American Regional Reanalysis results <https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr>`_ for radiation and precipitation. 
   * `CenCOOS ROMS model output <https://data.cnra.ca.gov/dataset/bay-delta-schism-coastal-roms-dataset-for-boundary-relaxation-draft>`_ for forcing salinity and temperature on the boundary
   * `Processed bathymetry data <https://data.cnra.ca.gov/dataset/bay-delta-schism-processed-bathymetry>`_ for populating the model. This is based on our `Version 4.2 Bay-Delta Bathymetry release <https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2>`_ with added smoothing steps to eliminate subgrid curvature (it preserves slope). 
 
-These are too big for GitHub and not text based. We are experimenting with `DVC <https://dvc.org>`_ but for the momement after you download the package, you can get the data from the CNRA Open Data Portal. 
+Updates and transitions occur over the years. For instance, after 2020 we have moved from our own interpolated product to NOAA's HRRR reanalysis product for wind.
+Also in 2020, we moved to Hycom for coastal salinity and temperature and other air properties (humidity, etc) and to Hycom for coastal data. We
+are still in the process of making these materials public and as we do so superseded links will carry messages.
 
+One of the most common questions we get is "what is the official package". If you are starting with SCHISM 
+we recommend using the master branch of the repository for the latest (somewhat beta) product or, 
+if replicability is paramount, a Git tagged version. It is always appropriate to ask this question. Our goal is that the sum of the VIMS code, our repo and the "big" data
+sources are enough not only to grid the model but also to do things 
 
 Required Python Packages
 ------------------------
