@@ -1,3 +1,0 @@
-
-Bay-Delta SCHSIM Tutorials
-****************************

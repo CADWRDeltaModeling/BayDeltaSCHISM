@@ -1,5 +1,7 @@
 hotstart: 
     date: 2021-04-20
+    run_start: default
+    time_step: 90
     hgrid_input_file: ../../data_in/hgrid.gr3               # hgrid needs to be in utm coordinates. 
     vgrid_input_file: ../../data_in/vgrid.in.3d 
     vgrid_version: "5.10"
@@ -24,7 +26,7 @@ hotstart:
                   - region: estuary
                     initializer: 
                         extrude_casts: 
-                            station: ../../data_in/USGS_polaris_station_locations_xy.csv
+                            station: ../../data_in/usgs_cruise_station.csv
                             data: ../../data_in/polaris_transect_2021-04-20.csv
                             variable: "Temperature (Degrees Celsius)"
                   - region: delta
@@ -55,7 +57,7 @@ hotstart:
                   - region: estuary
                     initializer: 
                         extrude_casts: 
-                            station: ../../data_in/USGS_polaris_station_locations_xy.csv
+                            station: ../../data_in/usgs_cruise_station.csv
                             data: ../../data_in/polaris_transect_2021-04-20.csv
                             variable: Salinity
                   - region: delta

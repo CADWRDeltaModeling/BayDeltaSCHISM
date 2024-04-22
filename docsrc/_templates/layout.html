@@ -1,0 +1,31 @@
+{% extends "!layout.html" %}
+{% include "breadcrumbs.html" %}
+
+{% block extrahead %}
+    <link href="{{ pathto("_static/style.css", True) }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block footer %} {{ super() }}
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: white;
+    }
+    /* Sidebar */
+    .wy-nav-side {
+      background: #86989B; /* existing theme was AFC1C4 and 86989B and CA7900 and white */
+      
+    }
+  </style>
+{% endblock %}
+
+{% block rootrellink %}
+        <li><a href="{{ pathto('index') }}">home</a>|&nbsp;</li>
+        <li><a href="{{ pathto('search') }}">search</a>|&nbsp;</li>
+{% endblock %}
+
+{# put the sidebar before the body #}
+{% block sidebar1 %}{{ sidebar() }}{% endblock %}
+{% block sidebar2 %}{% endblock %}
+
