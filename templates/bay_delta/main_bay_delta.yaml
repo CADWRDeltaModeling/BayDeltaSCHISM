@@ -83,12 +83,14 @@ sources_sinks:
         include:
         - sink_dcd.yaml
         - sink_mss.yaml
+        - sink_nullzone.yaml
         - sink_suisun.yaml
     sources:
         include:
         - source_dcd.yaml
         - source_mss.yaml
         - source_suisun.yaml
+        - source_potw.yaml
     outputfile: source_sink.in
 vgrid:
     vgrid_out: vgrid.in.3d
