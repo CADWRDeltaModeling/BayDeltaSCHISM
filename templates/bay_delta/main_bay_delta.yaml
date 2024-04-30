@@ -97,3 +97,4 @@ vgrid:
     minmaxlayerfile: minmaxlayer_slr_0_mod105.shp 
     eta: 1.5
     vgrid_version: '5.10'
+prepro_output_dir: ./
