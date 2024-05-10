@@ -479,15 +479,15 @@ linestrings:
   name: OLD
   station_id: OLD
   station_name: Old River at Tracy Blvd
-- agency_id: PCO
+- agency_id: PDC
   coordinates:
   - - 639792.000
     - 4185034.000
   - - 639795.000
     - 4185089.000
-  name: PCO
-  station_id: PCO
-  station_name: Paradise Cut Above Old River
+  name: PDC
+  station_id: PDC
+  station_name: Paradise Cut
 - agency_id: SGA
   coordinates:
   - - 638979.000
