@@ -891,43 +891,43 @@ linestrings:
   station_name: orfu
   station_id: orfu
   coordinates:
-  - - 633804.3 
-    - 4183090.0
-  - - 633760.0
-    -  4183137.6
+  - - 633807.
+    - 4183093.0
+  - - 633764.0
+    -  4183141.
 - comment: Preliminary location for null zone ADCP
   name: oaad
   station_name: oaad
   station_id: oaad
   coordinates:
   - - 632220. 
-    - 4182736.
-  - - 632322.2
-    -  4182745.0 
-- comment: pdup_bridge_south
-  name: pdup_br_south
-  station_name: pdup_br_south
-  station_id: pdup_br_south
+    - 4182733.
+  - - 632324.
+    -  4182738.0
+- comment: pcsb
+  name: pcsb
+  station_name: pcsb
+  station_id: pcsb
   coordinates:
-  - - 643568.
-    - 4184832.
-  - - 643602.0
-    - 4184868.
-- comment: pdup_br_north
-  name: pdup_br_north
-  station_name: pdup_br_north
-  station_id: pdup_br_north
+  - - 643561.
+    - 4184837.
+  - - 643595.
+    - 4184875.
+- comment: pcnb
+  name: pcnb
+  station_name: pcnb
+  station_id: pcnb
   coordinates:
-  - - 643705.
-    - 4184979.
-  - - 643726. 
-    - 4185011.
+  - - 643709.
+    - 4184980.
+  - - 643725.
+    - 4185007.
 - comment: diagnostic
   name: tompaine_flux
   station_name: tompaine_flux
   station_id: tompaine_flux
   coordinates:
   - - 639290.
-    - 4183662.
+    - 4183660.
   - - 639323.
     - 4183685.
