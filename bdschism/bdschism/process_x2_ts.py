@@ -94,9 +94,9 @@ def main():
 def main_hardwire():
     st = "2010-05-20" #args.start
     model_start = parse(st)
-    x2_route_file = "x2route.csv" #args.x2route
+    x2_route_file = "x2route_broad_slough.csv" #args.x2route
     x2out="testout.csv"
-    salt_out = "7_7/fort.18"
+    salt_out = "fort.18"
     process_x2(salt_out,st,x2_route_file,x2out) 
 
 if __name__ == "__main__":
