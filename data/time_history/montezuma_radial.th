@@ -184,3 +184,5 @@ datetime      install  ndup  op_down   op_up     elev	  width	   height
 2023-12-05T14:00     1    3    0.667    0.000    -6.86    10.97    10.0   # Downstream sensor fixed and Tidal Mode resumed for gate openings.  However, now the velocity meter is malfunctioning and gate openings are manual.  
 2023-12-15T22:42     1    3    0.333    0.000    -6.86    10.97    10.0   # Gate 1 cannot stay open and was closed to prevent damage.  Gate 3 is not opening and closing at the correct times.  Some operators are using manual operations and some are using tidal operations.    
 2023-12-19T15:31     1    3    0.667    0.000    -6.86    10.97    10.0   # The brakes were replaced for Gate 1 and it was returned to service.   Both gates are operated manually due to sensor malfunctions.
+2024-01-18T11:55     1    3    0.667    0.000    -6.86    10.97    10.0   # Downstream sensor fixed and Tidal Mode resumed for gate openings.  The velocity meter is still malfunctioning and gate openings are manual.  \
+2024-01-29T08:15     1    3    0.667    0.667    -6.86    10.97    10.0   # Ops suspended due to declining salinities and more rain on the way.
