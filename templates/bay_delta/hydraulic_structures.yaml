@@ -101,6 +101,22 @@ structures:
       use_time_series: 1
     reference: self    
 
+  - name: grantline_partial_weir
+    type: weir
+    end_points:
+      [[636580.,4186893.],
+       [636575.,4186938.]]
+    configuration:
+      n_duplicates: 1
+      elevation: 1.
+      width: 15.
+      height: 1000.
+      coefficient: 0.
+      op_downstream: 0.
+      op_upstream: 0.
+      use_time_series: 0
+    reference: self
+
   - name: midr_weir
     type: weir
     end_points:
