@@ -931,3 +931,48 @@ linestrings:
     - 4183660.
   - - 639323.
     - 4183685.
+- comment: diagnostic
+  coordinates:
+  - - 637206.000
+    - 4186943.000
+  - - 637206.000
+    - 4187012.000
+  name: GLE2
+  station_id: GLE2
+  station_name: Grant Line diagnostic
+- comment: diagnostic
+  coordinates:
+  - - 636643.000
+    - 4186910.000
+  - - 636643.000
+    - 4187007.000
+  name: GLE3
+  station_id: GLE3
+  station_name: Grant Line diagnostic
+- comment: diagnostic
+  coordinates:
+  - - 636936.
+    - 4184982.
+  - - 636967.
+    - 4185052.
+  name: old_flux_1
+  station_id: old_flux_1
+  station_name: old_flux_1
+- comment: diagnostic
+  coordinates:
+  - - 636343.
+    - 4185062.
+  - - 636264.
+    - 4185108.
+  name: old_flux_2
+  station_id: old_flux_2
+  station_name: old_flux_2
+- comment: diagnostic
+  coordinates:
+  - - 635808.
+    - 4185016.
+  - - 635794.
+    - 4185070.
+  name: old_flux_3
+  station_id: old_flux_3
+  station_name: old_flux_3
