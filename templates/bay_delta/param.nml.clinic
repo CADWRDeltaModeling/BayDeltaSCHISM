@@ -477,7 +477,7 @@
 ! nudging for a tracer is to set its nudged values to -9999
 !-----------------------------------------------------------------------
   inu_tr(1) = 2 !T
-  inu_tr(2) = 1 !S
+  inu_tr(2) = 2 !S
   inu_tr(3) = 0 !GEN
   inu_tr(4) = 0 !Age
   inu_tr(5) = 0 !SED3D
