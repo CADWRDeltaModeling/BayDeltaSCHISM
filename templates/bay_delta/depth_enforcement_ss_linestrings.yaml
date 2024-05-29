@@ -1,3 +1,4 @@
+# These depth enforcement linestrings are for making sure sources and sinks are not too shallow
 linestrings:
 - attribute: local_max
   coordinates:
