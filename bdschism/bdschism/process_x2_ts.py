@@ -100,5 +100,5 @@ def main_hardwire():
     process_x2(salt_out,st,x2_route_file,x2out) 
 
 if __name__ == "__main__":
-    main_hardwire()
+    main()
 
