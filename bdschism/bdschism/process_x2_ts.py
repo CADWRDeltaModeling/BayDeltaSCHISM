@@ -82,14 +82,14 @@ def process_x2(salt_data_file,model_start,x2_route_file,output_file):
     #plt.show()
 
 def main():
-    parser = create_arg_parser
+    parser = create_arg_parser()
     args = parser.parse_args()
     st = args.start
     model_start = parse(st)
     x2_route_file = args.x2route
     outfile= args.output
     salt_out = args.salt_data_file
-    process_x2(salt_out,salt_data_file,st,x2_route_file,outfile)
+    process_x2(salt_out,st,x2_route_file,outfile)
 
 def main_hardwire():
     st = "2010-05-20" #args.start
