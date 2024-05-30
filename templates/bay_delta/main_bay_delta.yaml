@@ -27,6 +27,7 @@ mesh:
       include: 
         - depth_enforcement_linestrings.yaml
         - depth_enforcement_ss_linestrings.yaml
+        - depth_enforcement_sjr_linestrings.yaml
   ll_outputfile: hgrid.ll
   gr3_outputfile: hgrid.gr3
 
@@ -42,7 +43,7 @@ gr3:
   diffmin.gr3: !include diffmin.yaml # Updated for bathymetry 4.2 (post 110b) and modified 111
   #rough.gr3: !include rough.yaml     # Updated for bathymetry 4.2 (post 110b) modified version below for sav
   #rough_110b_native_sav.gr3: !include rough_110b_native_sav_dem42.yaml
-  rough.gr3: !include rough.yaml  # Updated 111
+  rough.gr3: !include rough_20240527.yaml  # Updated 111
   
   #  default: 1.5e-5
   diffmax.gr3:
