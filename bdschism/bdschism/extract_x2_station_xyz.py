@@ -30,7 +30,7 @@ def create_arg_parser():
 
                     Usage:
                      extract_x2_station_xyz.py x2route.csv --out x2_stations.bp
-                      --sampling_interval 200 --bay_min_distance 65000
+                      --sampling_interval 200 --bay_min_distance 30000
                       --sac_max_distance 25000 --sjr_max_distance 25000
                      """)
     parser.add_argument(
@@ -51,7 +51,7 @@ def create_arg_parser():
 
     parser.add_argument(
         '--bay_min_distance',
-        default=55000.0,
+        default=30000.0,
         type=float,
         required=False,
         help='starting distance to sample station in the Bay measuring \
