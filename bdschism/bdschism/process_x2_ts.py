@@ -68,7 +68,7 @@ def process_x2(salt_data_file,model_start,x2_route_file,output_file):
     ts_out.index=dr
     ts_out=ts_out.resample('1D').mean()
     out = None    # This variable is output for the x2_rout2_pb routine, not this one
-    locs = x2_route2_bp(x2_route_file, out, sample_interval=200, bay_min_distance=55000,
+    locs = x2_route2_bp(x2_route_file, out, sample_interval=200, bay_min_distance=30000,
                     sanjoaquin_max_distance=25000, sac_max_distance=25000)
     ts_out.columns = locs.index
     baypathbot = (locs.z < -200) & locs.path.isin(['bay','sac'])
