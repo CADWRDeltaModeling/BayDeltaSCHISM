@@ -15,7 +15,7 @@ San Joaquin, Sac and MZM in order.
 import numpy as np
 import pandas as pd
 import argparse
-
+import pdb
 
 def create_arg_parser():
     """ Create an argument parser
@@ -35,8 +35,12 @@ def create_arg_parser():
                      """)
     parser.add_argument(
         'x2route',
-        default=None,
         help='csv file of x2 station location and distance')
+    
+    parser.add_argument(
+        'route_id',
+        help='id of the route on the east side, it should be one of \
+        "sac","sjr" "mzm"')
 
     parser.add_argument('--out', default="x2_station.bp", required=False,
                         help='x2 schism station out file')
@@ -58,27 +62,20 @@ def create_arg_parser():
             from San Francisco in meter')
 
     parser.add_argument(
-        '--sac_max_distance',
+        '--east_max_distance',
         default=25000,
         type=float,
         required=False,
         help='end sampling distance distance to sample station in the \
-            Sacramento River measuring from the Confluence in meter')
+            east side of X2 route measuring from the Confluence in meter')
 
-    parser.add_argument(
-        '--sjr_max_distance',
-        default=25000,
-        type=float,
-        required=False,
-        help='end sampling distance distance to sample station in the \
-            San Joaquin River measuring from the Confluence in meter')
 
     return parser
 
 
-def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance,
-                 sanjoaquin_max_distance, sac_max_distance):
-    x2_route_file = "x2route.csv"
+def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance,rid,
+                 max_distance):
+    #x2_route_file = "x2route.csv"
     x2_route = pd.read_table(x2_route_file, sep=",", skiprows=1)
     bay_points_dist = x2_route.loc[(x2_route['path'] == 'bay')]["distance"]
 
@@ -86,38 +83,29 @@ def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance,
     bay_route_npt = len(bay_points_dist)
     print(f"original bay route nump points {bay_route_npt} and length {bay_route_length}")
 
-    sanjoaquin_max_distance = sanjoaquin_max_distance+bay_route_length
-    sac_max_distance = sac_max_distance+bay_route_length
-       
-
+    max_distance = max_distance+bay_route_length
 
     bay_points = x2_route.loc[(x2_route['path'] == 'bay') & (
         x2_route['distance'] > bay_min_distance)]
 
-    sanjoaquin_points = x2_route.loc[(x2_route['path'] == 'sjr') & (
-        x2_route['distance'] < sanjoaquin_max_distance)]
-    sac_points = x2_route.loc[(x2_route['path'] == 'sac') & (
-        x2_route['distance'] < sac_max_distance)]
+    east_route_points = x2_route.loc[(x2_route['path'] == rid) & (
+        x2_route['distance'] < max_distance)]
 
-    sjr_route_npt = len(sanjoaquin_points)
-    print(f"original sjr route nump points {sjr_route_npt} and length {sanjoaquin_max_distance}")
-    sac_route_npt = len(sac_points)
-    print(f"original sac route nump points {sac_route_npt} and length {sac_max_distance}")
+    east_route_npt = len(east_route_points)
+    print(f"original sjr route nump points {east_route_npt} and length {max_distance}")
 
-
-    bay_pt_every_200m = range(0, len(bay_points), 200)
-    sanjoaquin_pt_every_200m = range(0, len(sanjoaquin_points), 200)
-    sac_pt_every_200m = range(0, len(sac_points), 200)
-    surface_out_frame = pd.concat([bay_points.iloc[bay_pt_every_200m],
-                                  sanjoaquin_points.iloc[sanjoaquin_pt_every_200m], 
-                                  sac_points.iloc[sac_pt_every_200m]])
+    bay_pt_every_interval = range(0, len(bay_points), sample_interval)
+    east_route_pt_every_interval = range(0, len(east_route_points), sample_interval)
+    surface_out_frame = pd.concat([bay_points.iloc[bay_pt_every_interval],
+                                  east_route_points.iloc[east_route_pt_every_interval]]
+                                  )
 
     surface_elev = 0.0
     surface_out_frame["z"] = surface_elev
 
-    bottom_out_frame = pd.concat([bay_points.iloc[bay_pt_every_200m],
-                                 sanjoaquin_points.iloc[sanjoaquin_pt_every_200m],
-                                 sac_points.iloc[sac_pt_every_200m]])
+    bottom_out_frame = pd.concat([bay_points.iloc[bay_pt_every_interval],
+                                 east_route_points.iloc[east_route_pt_every_interval]]
+                                )
 
     header = ["x", "y", "z"]
 
@@ -145,8 +133,7 @@ def main():
     args = parser.parse_args()
 
     x2_route2_bp(args.x2route, args.out, args.sampling_interval,
-                 args.bay_min_distance, args.sjr_max_distance,
-                 args.sac_max_distance)
+                 args.bay_min_distance, args.route_id, args.east_max_distance)
 
 
 if __name__ == "__main__":

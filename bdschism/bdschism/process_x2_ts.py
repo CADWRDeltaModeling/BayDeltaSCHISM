@@ -37,8 +37,10 @@ def create_arg_parser():
                     help='path to salinity data harvested using read_xyz* utility')   
     parser.add_argument('--start', default=None,
                     help='model start date, e.g. 2010-05-20')
-    parser.add_argument('--x2route', default="./x2route.csv",
+    parser.add_argument('--x2route', 
                     help='X2 route in cvs format')
+    parser.add_argument('--east_route_id', 
+                    help='id of east side of route, one of sjr,sac and mzm')
     parser.add_argument('--output', default="x2.csv",
                     help = 'path of csv output')
     return parser
@@ -56,7 +58,7 @@ def find_x2(transect,thresh=2.,convert_km=0.001,distance_bias=0.75):
     final_x2 = (x2*convert_km-distance_bias)
     return final_x2
 
-def process_x2(salt_data_file,model_start,x2_route_file,output_file):
+def process_x2(salt_data_file,rid,model_start,x2_route_file,output_file):
     """Process  x2, currently just along bay,sac path
     """
     print(f"salt_data_file: {salt_data_file} model_start={model_start} output_file={output_file}")
@@ -68,10 +70,14 @@ def process_x2(salt_data_file,model_start,x2_route_file,output_file):
     ts_out.index=dr
     ts_out=ts_out.resample('1D').mean()
     out = None    # This variable is output for the x2_rout2_pb routine, not this one
-    locs = x2_route2_bp(x2_route_file, out, sample_interval=200, bay_min_distance=30000,
-                    sanjoaquin_max_distance=25000, sac_max_distance=25000)
+    sample_interval = 200
+    bay_min_distance = 30000
+    max_distance = 25000
+    locs = x2_route2_bp(x2_route_file, out, sample_interval,
+                        bay_min_distance,rid, max_distance)
+   
     ts_out.columns = locs.index
-    baypathbot = (locs.z < -200) & locs.path.isin(['bay','sac'])
+    baypathbot = (locs.z < -200) & locs.path.isin(['bay','sac','sjr','mzm'])
     salt_sac = ts_out.loc[:,baypathbot]
     salt_locs = locs.loc[baypathbot]
     salt_sac.columns = salt_locs.distance
@@ -89,15 +95,17 @@ def main():
     x2_route_file = args.x2route
     outfile= args.output
     salt_out = args.salt_data_file
-    process_x2(salt_out,st,x2_route_file,outfile)
+    rid = args.east_route_id
+    process_x2(salt_out,rid,st,x2_route_file,outfile)
 
 def main_hardwire():
     st = "2010-05-20" #args.start
     model_start = parse(st)
     x2_route_file = "x2route_broad_slough.csv" #args.x2route
+    rid = "sjr"
     x2out="testout.csv"
     salt_out = "fort.18"
-    process_x2(salt_out,st,x2_route_file,x2out) 
+    process_x2(salt_out,rid,st,x2_route_file,x2out) 
 
 if __name__ == "__main__":
     main()
