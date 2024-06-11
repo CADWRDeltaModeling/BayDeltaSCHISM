@@ -73,6 +73,8 @@ def process_x2(salt_data_file,rid,model_start,x2_route_file,output_file):
     sample_interval = 200
     bay_min_distance = 30000
     max_distance = 25000
+    if rid=="mzm":
+        max_distance = 60000 
     locs = x2_route2_bp(x2_route_file, out, sample_interval,
                         bay_min_distance,rid, max_distance)
    
