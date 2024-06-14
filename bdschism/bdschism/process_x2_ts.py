@@ -66,7 +66,8 @@ def process_x2(salt_data_file,rid,model_start,x2_route_file,output_file):
     delta_t=(ts_out.index[1]-ts_out.index[0])*24*60
     freqstr=f"{int(delta_t)}min"
     print(f"Detected frequency = {freqstr}")
-    dr = pd.date_range(start=model_start,periods=ts_out.shape[0],freq=freqstr)
+    dr = pd.date_range(start=model_start+pd.Timedelta(days=ts_out.index[0]),
+                       periods=ts_out.shape[0],freq=freqstr)
     ts_out.index=dr
     ts_out=ts_out.resample('1D').mean()
     out = None    # This variable is output for the x2_rout2_pb routine, not this one
@@ -77,7 +78,6 @@ def process_x2(salt_data_file,rid,model_start,x2_route_file,output_file):
         max_distance = 60000 
     locs = x2_route2_bp(x2_route_file, out, sample_interval,
                         bay_min_distance,rid, max_distance)
-   
     ts_out.columns = locs.index
     baypathbot = (locs.z < -200) & locs.path.isin(['bay','sac','sjr','mzm'])
     salt_sac = ts_out.loc[:,baypathbot]
@@ -98,7 +98,7 @@ def main():
     outfile= args.output
     salt_out = args.salt_data_file
     rid = args.east_route_id
-    process_x2(salt_out,rid,st,x2_route_file,outfile)
+    process_x2(salt_out,rid,model_start,x2_route_file,outfile)
 
 def main_hardwire():
     st = "2010-05-20" #args.start
