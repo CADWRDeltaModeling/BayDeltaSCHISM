@@ -94,8 +94,10 @@ def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance,rid,
     east_route_npt = len(east_route_points)
     print(f"original sjr route nump points {east_route_npt} and length {max_distance}")
 
-    bay_pt_every_interval = range(0, len(bay_points), sample_interval)
-    east_route_pt_every_interval = range(0, len(east_route_points), sample_interval)
+    delta_d =  x2_route["distance"][1]-x2_route["distance"][0]
+    sample_step = int(sample_interval/delta_d)
+    bay_pt_every_interval = range(0, len(bay_points), sample_step)
+    east_route_pt_every_interval = range(0, len(east_route_points), sample_step)
     surface_out_frame = pd.concat([bay_points.iloc[bay_pt_every_interval],
                                   east_route_points.iloc[east_route_pt_every_interval]]
                                   )
