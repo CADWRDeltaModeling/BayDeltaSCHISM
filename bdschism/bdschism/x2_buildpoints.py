@@ -29,102 +29,88 @@ def create_arg_parser():
                        with specified sampling interval.
 
                     Usage:
-                     extract_x2_station_xyz.py x2route.csv --out x2_stations.bp
-                      --sampling_interval 200 --bay_min_distance 30000
-                      --sac_max_distance 25000 --sjr_max_distance 25000
+                     x2_buildpoints.py --x2route_sac x2route_bay_sac.csv 
+                      --x2route_alt x2route_bay_nysjr.csv 
+                      --interval 200 --minkm 30
                      """)
     parser.add_argument(
-        'x2route',
-        help='csv file of x2 station location and distance')
+        '--x2route_sac',
+        help='csv file of x2 station location and distance representing the bay-sac route')
     
     parser.add_argument(
-        'route_id',
+        '--x2route_alt',
+        help='csv file containing eastern continuation of route')
+        
+    parser.add_argument(
+        '--route_id',
         help='id of the route on the east side, it should be one of \
-        "sac","sjr" "mzm"')
+        "sac","nysjr","sjr","mzm", where "sjr" means the broad slough route')
 
-    parser.add_argument('--out', default="x2_station.bp", required=False,
-                        help='x2 schism station out file')
+    parser.add_argument('--bpout', default=None, required=False,
+                        help='x2 schism station out file. If none, inferred from the route inputs')
 
     parser.add_argument(
-        '--sampling_interval',
+        '--interval',
         default=200,
         required=False,
         type=float,
-        help="sampling distance along original x2 route for SCHISM output \
-        stations in meter")
-
-    parser.add_argument(
-        '--bay_min_distance',
-        default=30000.0,
-        type=float,
-        required=False,
-        help='starting distance to sample station in the Bay measuring \
-            from San Francisco in meter')
-
-    parser.add_argument(
-        '--east_max_distance',
-        default=25000,
-        type=float,
-        required=False,
-        help='end sampling distance distance to sample station in the \
-            east side of X2 route measuring from the Confluence in meter')
-
+        help="sampling distance along original x2 route")
+    
+    parser.add_argument('--minkm',
+                        default=35.,
+                        type=float,
+                        help='minimum X2km position to consider in output, to west will be truncated')
 
     return parser
 
 
-def x2_route2_bp(x2_route_file, out, sample_interval, bay_min_distance,rid,
-                 max_distance):
-    #x2_route_file = "x2route.csv"
-    x2_route = pd.read_table(x2_route_file, sep=",", skiprows=1)
-    bay_points_dist = x2_route.loc[(x2_route['path'] == 'bay')]["distance"]
+x2_route_descr = {"sac":"Sacramento","nysjr":"New York Slough to SJR","sjr":"SJR on Broad Slough","mzm":"Montezuma Slough"}
 
-    bay_route_length = np.max(bay_points_dist)
-    bay_route_npt = len(bay_points_dist)
-    print(f"original bay route nump points {bay_route_npt} and length {bay_route_length}")
 
-    max_distance = max_distance+bay_route_length
+def x2_route2_bp(x2_route_file,interval,route_id=None,bpout=None,minkm=35):
+    x2_route_all = pd.read_csv(x2_route_file, sep=",", 
+                           header=0,comment="#",
+                           usecols=["path","distance","x","y"],
+                           dtype={"distance":float})
+    
+    x2_route = x2_route_all.loc[x2_route_all.path.isin(["bay","sac"])]
+    
+    if bpout is None:
+        bpout = f"x2_bay_{route_id}.bp"
+    
+    if route_id != "sac":       
+        alt_route = x2_route_all.loc[x2_route_all.path == route_id]
+        if len(alt_route)==0:
+            raise ValueError(f"route_id {route_id} not found in alt route path column")        
+        alt_start = alt_route.distance.min()
+        x2_route = x2_route.loc[x2_route.distance<alt_start,:]
+        x2_route = pd.concat([x2_route,alt_route])
 
-    bay_points = x2_route.loc[(x2_route['path'] == 'bay') & (
-        x2_route['distance'] > bay_min_distance)]
+    x2_route = x2_route.set_index("distance",drop=False)
+    
+    x2_route.to_csv("debug.csv")
+    new_index = np.arange(x2_route.distance.min(),
+                          x2_route.distance.max(),
+                          interval,dtype=float)
+    x2_route = x2_route.drop("path",axis=1)
+    x2_route=x2_route.reindex(x2_route.index.union(new_index)).interpolate().loc[new_index]
 
-    east_route_points = x2_route.loc[(x2_route['path'] == rid) & (
-        x2_route['distance'] < max_distance)]
-
-    east_route_npt = len(east_route_points)
-    print(f"original sjr route nump points {east_route_npt} and length {max_distance}")
-
-    delta_d =  x2_route["distance"][1]-x2_route["distance"][0]
-    sample_step = int(sample_interval/delta_d)
-    bay_pt_every_interval = range(0, len(bay_points), sample_step)
-    east_route_pt_every_interval = range(0, len(east_route_points), sample_step)
-    surface_out_frame = pd.concat([bay_points.iloc[bay_pt_every_interval],
-                                  east_route_points.iloc[east_route_pt_every_interval]]
-                                  )
-
-    surface_elev = 0.0
-    surface_out_frame["z"] = surface_elev
-
-    bottom_out_frame = pd.concat([bay_points.iloc[bay_pt_every_interval],
-                                 east_route_points.iloc[east_route_pt_every_interval]]
-                                )
-
-    header = ["x", "y", "z"]
-
+    print(x2_route.index)
     bottom_elev = -10000.0
+    x2_route['z'] = bottom_elev
+    x2_route = x2_route.loc[x2_route.distance >= minkm*1000.]   
+    x2_route=x2_route.reset_index(drop=True)
+    x2_route.index = x2_route.index + 1 # one-based index
+ 
+    print(x2_route.head())
 
-    bottom_out_frame.loc[:, "z"] = bottom_elev
-
-    x2_out_frame = pd.concat([surface_out_frame, bottom_out_frame])
-
-    new_id = range(1, 2*len(surface_out_frame)+1)
-
-    x2_out_frame.index = new_id
-    print(x2_out_frame)
-    print(f"writing to {out}")
-
-    x2_out_frame.to_csv(out, columns=header, sep=" ", header=False)
-    return x2_out_frame
+    with open(bpout,"w",newline="\n",) as bp:
+        bp.write(f"point x y z distance  ! X2 transect on route {x2_route_descr[route_id]}\n")
+        bp.write(f"{len(x2_route)}  ! Number of points\n")
+        x2_route[["x","y","z","distance"]].to_csv(bp, header=False,
+                                                   sep=" ", index=True,
+                                                   float_format="%.1f")
+    return x2_route
 
 
 
@@ -134,9 +120,10 @@ def main():
     parser = create_arg_parser()
     args = parser.parse_args()
 
-    x2_route2_bp(args.x2route, args.out, args.sampling_interval,
-                 args.bay_min_distance, args.route_id, args.east_max_distance)
+    x2_route2_bp(args.x2route_sac, args.interval, args.route_id,args.bpout, args.minkm)
 
+def main_fixed():
+    x2_route2_bp("x2route.csv",200,route_id="sac",bpout=None,minkm=35)
 
 if __name__ == "__main__":
     main()
