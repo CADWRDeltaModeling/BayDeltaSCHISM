@@ -19,7 +19,7 @@ output: x2 on surface and bottom location time series in csv format,
 
 import numpy as np
 import argparse
-from extract_x2_station_xyz import x2_route2_bp
+from x2_buildpoints import x2_route2_bp
 # import matplotlib.pylab as plt
 
 import datetime as dtm
