@@ -1,10 +1,7 @@
-# Main input file for default bay_delta template based on version 110 of the mesh
-# Note that there are both hist and "current condition" (cc) versions of some files
-# You will need to copy station_flow_xsects from the /data directory as well as the 
-# mesh file
+# Main input file for default bay_delta template based on version 113 of the mesh
 
 mesh:
-  mesh_inputfile: bay_delta_113_beta10.2dm   # cc vs hist requires coordination with dem_list.yaml which has variants of same names
+  mesh_inputfile: ./bay_delta_113.2dm   # cc vs hist requires coordination with dem_list.yaml which has variants of same names
   split_quad:
     minangle: 30.
     maxangle: 140.
@@ -40,11 +37,9 @@ flow_outputs:
 gr3:
   xlsc.gr3:
     default: 0.1
-  diffmin.gr3: !include diffmin.yaml # Updated for bathymetry 4.2 (post 110b) and modified 111
-  #rough.gr3: !include rough.yaml     # Updated for bathymetry 4.2 (post 110b) modified version below for sav
-  #rough_110b_native_sav.gr3: !include rough_110b_native_sav_dem42.yaml
-  rough.gr3: !include rough_20240527.yaml  # Updated 111
-  
+  diffmin.gr3: !include diffmin.yaml # Updated for MSS grid 2024-06-04
+  rough.gr3: !include rough.yaml  # Updated for MSS grid 2024-06-04
+
   #  default: 1.5e-5
   diffmax.gr3:
     default: 1.0
@@ -62,7 +57,7 @@ gr3:
   sav_D.gr3: !include sav_diameter.yaml
   sav_h.gr3: !include sav_height.yaml
   sav_cd.gr3: 
-    default: 0.28
+    default: 0.56
   krvel.gr3: !include krvel.yaml
   #rough.gr3:     # Approximately what Works with GOTM k-eps. Documentation pending
   #  default: 4.e-5
@@ -77,6 +72,7 @@ prop:
 hydraulics:
   include: hydraulic_structures.yaml    # Includes West False River 2015 installation
   outputfile: hydraulics.in
+
 sources_sinks:
   # Includes Delta and Suisun, including distribution modifications in 2020.
   # See the _2019 variant for older locations  
@@ -93,9 +89,21 @@ sources_sinks:
         - source_suisun.yaml
         - source_potw.yaml
     outputfile: source_sink.in
+
 vgrid:
     vgrid_out: vgrid.in.3d
     minmaxlayerfile: minmaxlayer_slr_0_mod105.shp 
     eta: 1.5
     vgrid_version: '5.10'
-prepro_output_dir: ./
+    
+copy_resources: 
+  - bctides.in.2d
+  - bctides.in.3d
+  - sflux_inputs.txt
+  - vgrid.in.2d
+  - param.nml.clinic
+  - param.nml.tropic
+  - interpolate_variables.in
+  - station.in
+    
+prepro_output_dir: ./prepro_out

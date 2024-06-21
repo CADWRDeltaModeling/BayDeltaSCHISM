@@ -90,7 +90,7 @@ polygons:
     - 4212326.736910023
   - - 575881.1852179505
     - 4211432.355011238
-- attribute: '0.0025'
+- attribute: '0.0055'
   name: suisun_delta3
   type: none
   vertices:
