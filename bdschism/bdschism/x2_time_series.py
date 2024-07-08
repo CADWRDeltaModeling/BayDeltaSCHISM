@@ -77,6 +77,8 @@ def process_x2(salt_data_file,route_file, model_start, output_file):
 
     ts_out.columns = route_df.distance
     x2_prelim = ts_out.apply(find_x2,axis=1) 
+    x2_prelim.index.name = "date"
+    x2_prelim.name = "x2"
     x2_prelim.to_csv(output_file,float_format="%.1f")
 
 def default_outname(bpname):
