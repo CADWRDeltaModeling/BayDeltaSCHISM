@@ -25,6 +25,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from dateutil.parser import parse
 
+import re
+import os
 
 # plt.style.use(['seaborn-talk','seaborn-colorblind'])
 def create_arg_parser():
@@ -52,18 +54,37 @@ def find_x2(transect,thresh=2.,convert_km=0.001,distance_bias=0.0):
     final_x2 = (x2*convert_km-distance_bias)
     return final_x2
 
-def process_x2(salt_data_file,route_file, model_start, output_file):
+def get_start_date_from_param(param_in):
+
+    with open(param_in, 'r') as param:
+        for line in param.readlines():
+            if 'start_year' in line:
+                sy =  int(re.findall(r'\b\d+\b', line)[0])
+            elif 'start_month' in line:
+                sm =  int(re.findall(r'\b\d+\b', line)[0])
+            elif 'start_day' in line:
+                sd =  int(re.findall(r'\b\d+\b', line)[0])
+                
+    start_date = dtm.datetime(sy, sm, sd)
+    
+    return start_date
+
+def process_x2(salt_data_file,route_file, model_extract_date, output_file):
     """Process  x2 into a time series
     """
-    print(f"salt_data_file: {salt_data_file} model_start={model_start} output_file={output_file}")
+    model_start_date = get_start_date_from_param("../param.nml")
+    print(f"salt_data_file: {salt_data_file} model_start_date={model_start_date} output_file={output_file} model_extract_date={model_extract_date}")
     ts_out = pd.read_csv(salt_data_file, sep="\s+", header=None,index_col=0)
     delta_t=(ts_out.index[1]-ts_out.index[0])*24*60
     freqstr=f"{int(delta_t)}min"
     #print(f"Detected frequency = {freqstr}")
-    dr = pd.date_range(start=model_start+pd.Timedelta(days=ts_out.index[0]),
+    dr = pd.date_range(start=model_start_date+pd.Timedelta(days=ts_out.index[0]),
                        periods=ts_out.shape[0],freq=freqstr)
     ts_out.index=dr
     ts_out=ts_out.resample('1D').mean()
+
+    if ts_out.index[0].to_pydatetime() != model_extract_date:
+        raise ValueError(f"The fort.18 file being evaluated is {ts_out.index[0].to_pydatetime()} and does not match expected extraction date {model_extract_date}")
 
     if route_file.endswith("bp"):
         route_df = pd.read_csv(route_file,sep="\s+",index_col=0,skiprows=[1],header=0,comment="!")
@@ -100,9 +121,11 @@ def main():
     process_x2(salt_out,x2route,model_start,outfile)
 
 def main_hardwire():
-    st = "2006-11-14" #args.start
+    model_out_dir = "/scratch/tomkovic/DSP_code/model/schism/azure_dsp_2024_lhc_v3/simulations/baseline_lhc_4/outputs"
+    os.chdir(model_out_dir)
+    st = "2006-11-23" #args.start
     model_start = parse(st)
-    x2_route_file = "x2route_sac.bp" #args.x2route
+    x2_route_file = "x2_bay_sac.bp" #args.x2route
     x2out=default_outname(x2_route_file)
     salt_out = "fort.18"
     process_x2(salt_out,x2_route_file,model_start,x2out) 
