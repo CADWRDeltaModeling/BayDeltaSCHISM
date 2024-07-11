@@ -34,11 +34,15 @@ def create_arg_parser():
     parser.add_argument('--salt_data_file', default=None,
                     help='path to salinity data harvested using read_xyz* utility, e.g. fort.18')   
     parser.add_argument('--start', default=None,
-                    help='model start date, e.g. 2010-05-20')
+                    help='model extraction start date, e.g. 2010-05-20')
+    parser.add_argument('--model_start', default=None,
+                    help='model simulation start date, e.g. 2010-05-01')
     parser.add_argument('--x2route', 
                     help='X2 route file name in bp format with xyz plus extra column describing distance')
     parser.add_argument('--output', default=None,
                     help = 'path of csv output')
+    parser.add_argument('--param', default=None,
+                    help = 'path of param.nml file to extract start date')
     return parser
 
 def find_x2(transect,thresh=2.,convert_km=0.001,distance_bias=0.0):
@@ -69,10 +73,11 @@ def get_start_date_from_param(param_in):
     
     return start_date
 
-def process_x2(salt_data_file,route_file, model_extract_date, output_file):
+def process_x2(salt_data_file,route_file, model_extract_date, output_file, param_in=None, model_start_date=None):
     """Process  x2 into a time series
     """
-    model_start_date = get_start_date_from_param("../param.nml")
+    if param_in is not None:
+        model_start_date = get_start_date_from_param(param_in)
     print(f"salt_data_file: {salt_data_file} model_start_date={model_start_date} output_file={output_file} model_extract_date={model_extract_date}")
     ts_out = pd.read_csv(salt_data_file, sep="\s+", header=None,index_col=0)
     delta_t=(ts_out.index[1]-ts_out.index[0])*24*60
@@ -118,12 +123,14 @@ def main():
     if outfile is None:
         outfile = default_outname(x2route)
     salt_out = args.salt_data_file
-    process_x2(salt_out,x2route,model_start,outfile)
+    param_in = args.param
+    model_start = args.model_start
+    process_x2(salt_out,x2route,model_start,outfile,param_in=param_in, model_start_date=model_start)
 
 def main_hardwire():
     model_out_dir = "/scratch/tomkovic/DSP_code/model/schism/azure_dsp_2024_lhc_v3/simulations/baseline_lhc_4/outputs"
     os.chdir(model_out_dir)
-    st = "2006-11-23" #args.start
+    st = "2006-11-14" #args.start
     model_start = parse(st)
     x2_route_file = "x2_bay_sac.bp" #args.x2route
     x2out=default_outname(x2_route_file)
