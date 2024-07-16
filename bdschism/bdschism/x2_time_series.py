@@ -78,6 +78,9 @@ def process_x2(salt_data_file,route_file, model_extract_date, output_file, param
     """
     if param_in is not None:
         model_start_date = get_start_date_from_param(param_in)
+    elif model_start_date is not None and isinstance(model_start_date, str):
+        st = model_start_date.split('-')
+        model_start_date = dtm.datetime(int(st[0]),int(st[1]),int(st[2]))
     print(f"salt_data_file: {salt_data_file} model_start_date={model_start_date} output_file={output_file} model_extract_date={model_extract_date}")
     ts_out = pd.read_csv(salt_data_file, sep="\s+", header=None,index_col=0)
     delta_t=(ts_out.index[1]-ts_out.index[0])*24*60
@@ -99,7 +102,7 @@ def process_x2(salt_data_file,route_file, model_extract_date, output_file, param
     ncols = ts_out.shape[1]
     nroute = len(route_df)
     if ncols != nroute:
-        raise ValueError("Number of columns in salt output {ncols} must match number of locations in bp file {nroute}")
+        raise ValueError(f"Number of columns in salt output {ncols} must match number of locations in bp file {nroute}")
 
     ts_out.columns = route_df.distance
     x2_prelim = ts_out.apply(find_x2,axis=1) 
@@ -116,26 +119,33 @@ def default_outname(bpname):
 def main():
     parser = create_arg_parser()
     args = parser.parse_args()
-    st = args.start
-    model_start = parse(st)
+    salt_out = args.salt_data_file
     x2route = args.x2route
+    st = args.start.split('-')
+    model_start = dtm.datetime(int(st[0]),int(st[1]),int(st[2]))
     outfile= args.output
     if outfile is None:
         outfile = default_outname(x2route)
-    salt_out = args.salt_data_file
+
     param_in = args.param
-    model_start = args.model_start
-    process_x2(salt_out,x2route,model_start,outfile,param_in=param_in, model_start_date=model_start)
+    model_start_date = args.model_start
+
+    process_x2(salt_out,x2route,model_start,outfile,param_in=param_in, model_start_date=model_start_date)
 
 def main_hardwire():
     model_out_dir = "/scratch/tomkovic/DSP_code/model/schism/azure_dsp_2024_lhc_v3/simulations/baseline_lhc_4/outputs"
     os.chdir(model_out_dir)
-    st = "2006-11-14" #args.start
-    model_start = parse(st)
-    x2_route_file = "x2_bay_sac.bp" #args.x2route
-    x2out=default_outname(x2_route_file)
+    
     salt_out = "fort.18"
-    process_x2(salt_out,x2_route_file,model_start,x2out) 
+    x2route = "x2_bay_sjr.bp" #args.x2route
+    st = "2007-02-21".split('-')
+    model_start = dtm.datetime(int(st[0]),int(st[1]),int(st[2]))
+    outfile = "x2out_x2_bay_sjr_100.csv"
+
+    param_in = None # "../param.nml.clinic"
+    model_start_date = "2006-11-14" # None
+
+    process_x2(salt_out,x2route,model_start,outfile,param_in=param_in, model_start_date=model_start_date) 
 
 if __name__ == "__main__":
     main()
