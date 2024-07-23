@@ -26,6 +26,7 @@ dependencies:
   - statsmodels>=0.13.2
   - pip>=22.2 
   - geopandas>0.9
+  - rtree
   - cfunits
   - nodepy  
   - sympy
