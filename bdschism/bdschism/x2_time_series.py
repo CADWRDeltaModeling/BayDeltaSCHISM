@@ -108,6 +108,7 @@ def process_x2(salt_data_file,route_file, model_extract_date, output_file, param
         raise ValueError(f"Number of columns in salt output {ncols} must match number of locations in bp file {nroute}")
 
     ts_out.columns = route_df.distance
+    ts_out = ts_out.head(1)
     x2_prelim = ts_out.apply(find_x2,axis=1) 
     x2_prelim.index.name = "date"
     x2_prelim.name = "x2"
@@ -136,14 +137,14 @@ def main():
     process_x2(salt_out,x2route,model_start,outfile,param_in=param_in, model_start_date=model_start_date)
 
 def main_hardwire():
-    model_out_dir = "/scratch/tomkovic/DSP_code/model/schism/azure_dsp_2024_lhc_v3/simulations/baseline_lhc_4/outputs"
+    model_out_dir = "/scratch/tomkovic/DSP_code/model/schism/azure_dsp_2024_lhc_v3/simulations/baseline_lhc_5/outputs"
     os.chdir(model_out_dir)
     
     salt_out = "fort.18"
-    x2route = "x2_bay_sjr.bp" #args.x2route
-    st = "2007-02-21".split('-')
+    x2route = "x2_bay_sac.bp" #args.x2route
+    st = "2006-11-15".split('-')
     model_start = dtm.datetime(int(st[0]),int(st[1]),int(st[2]))
-    outfile = "x2out_x2_bay_sjr_100.csv"
+    outfile = "x2out_x2_bay_sac_2.csv"
 
     param_in = None # "../param.nml.clinic"
     model_start_date = "2006-11-14" # None
