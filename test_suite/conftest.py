@@ -1,27 +1,23 @@
 # content of conftest.py
 import pytest
+import schimpy.param as parms
 import os
+
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--repo", action="store", default="repo_dir", help="Repository name"
+        "--sim_dir", action="store", default=".", help="Home directory of run (where param.nml sits)"
     )
 
 
-@pytest.fixture
-def repo_home(request):
-    return request.config.getoption("--repo")
+@pytest.fixture(scope="module")
+def sim_dir(request):
+    loc = request.config.getoption("--sim_dir")
+    return os.path.abspath(loc)
+
+@pytest.fixture(scope="module")
+def params(sim_dir):
+    fname = os.path.join(sim_dir,"param.nml")
+    return parms.read_params(fname)
     
-@pytest.fixture    
-def repo_raw(request):
-    return os.path.join(request.config.getoption("--repo"),"raw")        
-
-@pytest.fixture    
-def repo_formatted(request):
-    return os.path.join(request.config.getoption("--repo"),"formatted")        
-
-@pytest.fixture    
-def repo_screened(request):
-    return os.path.join(request.config.getoption("--repo"),"screened")
-
     
