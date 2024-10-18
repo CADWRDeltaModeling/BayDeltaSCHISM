@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Checklists &mdash; Bay-Delta SCHISM</title>
+  <title>Test Suite for Prechecking Runs &mdash; Bay-Delta SCHISM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Test Suite for Prechecking Runs" href="run_tests.html" />
-    <link rel="prev" title="Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor" href="vignette.html" />
+    <link rel="next" title="Horizontal Mesh" href="mesh.html" />
+    <link rel="prev" title="Checklists" href="checklists.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -69,8 +69,8 @@
 <li class="toctree-l4"><a class="reference internal" href="output.html">Output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vegetation.html">Vegetation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Checklists</a></li>
-<li class="toctree-l4"><a class="reference internal" href="run_tests.html">Test Suite for Prechecking Runs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="checklists.html">Checklists</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Test Suite for Prechecking Runs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mesh.html">Horizontal Mesh</a></li>
 <li class="toctree-l4"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a></li>
 <li class="toctree-l4"><a class="reference internal" href="age.html">Simulating water age</a></li>
@@ -104,21 +104,18 @@
 <li class="toctree-l2"><a class="reference internal" href="output.html">Output</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vegetation.html">Vegetation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Checklists</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#running-a-processed-setup">Running a Processed Setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#simple-hindcast-runs">Simple Hindcast Runs</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cbox-choose-run-dates">☐ Choose run dates</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cbox-apply-template-to-existing-mesh">☐ Apply template to existing mesh</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cbox-collect-time-series-inputs">☐ Collect time series inputs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cbox-hotstart-can-be-concurrent-with-barotropic">☐ Hotstart (can be concurrent with barotropic)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cbox-nudging-can-be-concurrent-with-barotropic">☐ Nudging (can be concurrent with barotropic)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cbox-barotropic-warmup">☐ Barotropic warmup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cbox-baroclinic-simulation">☐ Baroclinic simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checklists.html">Checklists</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Test Suite for Prechecking Runs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-tests">Using the Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-run-tests">Writing Run Tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#basics-of-testing">Basics of testing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test-fixtures">Test Fixtures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#markers">Markers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#what-to-test">What to test</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="run_tests.html">Test Suite for Prechecking Runs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mesh.html">Horizontal Mesh</a></li>
 <li class="toctree-l2"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="age.html">Simulating water age</a></li>
@@ -149,78 +146,86 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="checklists">
-<span id="id1"></span><h1>Checklists<a class="headerlink" href="#checklists" title="Link to this heading"></a></h1>
-<section id="running-a-processed-setup">
-<h2>Running a Processed Setup<a class="headerlink" href="#running-a-processed-setup" title="Link to this heading"></a></h2>
-<p>Prepackaged runs are common for testing SCHISM on a new system or rerunning a model
-from another user delivered as a bundle. In this case the user will have
-obtained a complete set up as a “tarball” (tar.gz) file or
-copies the run using the rsync command (don’t use copy command <cite>cp</cite>). See <a class="reference internal" href="../linux.html#linux-hints"><span class="std std-ref">Linux hints</span></a>.</p>
-<p>The steps are:</p>
-<p>☐ Set up the environment and compile schism</p>
-<p>☐ Untar the archived run</p>
-<p>☐ If the atmospheric files are packaged separately, reestablish the linkage using the instructions in the readme file.</p>
-<p>☐ Compile the model using instructions on the VIMS website or precompliled binaries for Windows*</p>
-<dl>
-<dt>☐ Most clusters use a job manager and you submit to queue. Usually you need to adapt</dt><dd><p>☐ schism.sh to point to executable and load dependencies</p>
-<p>☐ launch files such as launch.pbs (user name, number of cores and cpus per core, name of run)</p>
+  <section id="test-suite-for-prechecking-runs">
+<h1>Test Suite for Prechecking Runs<a class="headerlink" href="#test-suite-for-prechecking-runs" title="Link to this heading"></a></h1>
+<section id="using-the-tests">
+<h2>Using the Tests<a class="headerlink" href="#using-the-tests" title="Link to this heading"></a></h2>
+<p>Bay-Delta SCHISM is a complex application and many setup issues recur. The project contains a pre-check suite
+for finding some of these repeat errors. Some tests SCHISM input consistency in general, many others
+invoke Bay-Delta domain-specific relationships.</p>
+<p>The suite is contained in the <cite>test_suite</cite> directory of Bay-Delta SCHISM. The testing system is based on pytest, the ubiquitous testing
+framework for Python. For those who are unfamiliar, pytest takes care of launching tests, counting successes and failures and tracking
+simulation information as <em>fixtures</em>. Some of this is lingo. See the <a class="reference external" href="https://docs.pytest.org/">pytest web site</a></p>
+<p>To run the tests you will first of all need to make sure your environment has pytest in it. Remember, you are not just adding this to
+your developer environment to test code, but to launch it as a user in everyday modeling. The
+<a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/schism_env.yml">recommended environment</a> has pytest in it.</p>
+<p>Then you use a command like the following:</p>
+<blockquote>
+<div><p>sim_dir$ pytest /path/to/BayDeltaSCHISM/test_suite –sim_dir=.</p>
+</div></blockquote>
+<p>Note that the <cite>–sim_dir=.</cite> part of the command is actually the default, so you can omit this if you launch the testing framework in the study directory
+you are testing. The path <cite>/path/to/BayDeltaSCHISM/test_suite</cite> is a pointer to your Bay-Delta SCHISM installation subdirectory.</p>
+<p>To make it simpler, we recommend setting an alias on the command line or in your .bashrc file:</p>
+<blockquote>
+<div><p>alias schism_pretest=’pytest /path/to/BayDeltaSCHISM/test_suite’</p>
+</div></blockquote>
+</section>
+<section id="writing-run-tests">
+<h2>Writing Run Tests<a class="headerlink" href="#writing-run-tests" title="Link to this heading"></a></h2>
+<section id="basics-of-testing">
+<h3>Basics of testing<a class="headerlink" href="#basics-of-testing" title="Link to this heading"></a></h3>
+<p>Leaving aside some quibbles over conventions, a test is just a function that has a name that starts
+with <cite>test_</cite> and that contains a python assert statement that contains the items to be tested and a message for failure:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>def test_silly():</dt><dd><p>assert 1 == 2, “One is not equal to two”</p>
 </dd>
 </dl>
-<p>☐ Create a directory called <cite>outputs</cite></p>
-<p>☐ Take care of any ‘gotchas’ such as making sure there is a directory named ‘outputs’ and that stack limits are disabled.</p>
-<p>* Windows is good for learning but not typical for full Delta runs</p>
+</div></blockquote>
+<p>Bay-Delta SCHISM run tests are housed in the <cite>/test_suite</cite> directory of your Bay-Delta SCHISM installation.
+They are usually launched in the simulation directory or you can name the simulation directory in your pytest command as
+in the introductory example.</p>
 </section>
-<section id="simple-hindcast-runs">
-<h2>Simple Hindcast Runs<a class="headerlink" href="#simple-hindcast-runs" title="Link to this heading"></a></h2>
-<section id="cbox-choose-run-dates">
-<h3>☐ Choose run dates<a class="headerlink" href="#cbox-choose-run-dates" title="Link to this heading"></a></h3>
-<p>See <a class="reference internal" href="hotstart.html#choose-runtime"><span class="std std-ref">hotstart section</span></a> on this topic</p>
+<section id="test-fixtures">
+<h3>Test Fixtures<a class="headerlink" href="#test-fixtures" title="Link to this heading"></a></h3>
+<p>You will need to know the concepts of a <em>test fixture</em>, if only to make use of a small number of super important
+fixtures that are already defined. You can read about test fixtures on the <a class="reference external" href="https://docs.pytest.org/">pytest web site</a></p>
+<p>First, there is the <cite>sim_dir</cite> fixture. Please use this rather than writing tests that assume
+the test is run in the simulation directory.
+A trivial example that uses <cite>sim_dir</cite> looks like this:</p>
+<dl class="simple">
+<dt>def test_param_exists(sim_dir):</dt><dd><p>assert os.path.exists(os.path.join(sim_dir,”param.nml”)), “Simulation directory must contain ‘param.nml’”</p>
+</dd>
+</dl>
+<p>A second indispensible fixture is <cite>params</cite>. This fetches the run parameters in <cite>param.nml</cite> using the <cite>param.py</cite> module.
+You should avoid parse <cite>param.nml</cite> with your own code.</p>
+<p>A third proposal allows run-specific variables in a testconfig.yaml file that is in <cite>sim_dir</cite>.</p>
 </section>
-<section id="cbox-apply-template-to-existing-mesh">
-<h3>☐ Apply template to existing mesh<a class="headerlink" href="#cbox-apply-template-to-existing-mesh" title="Link to this heading"></a></h3>
+<section id="markers">
+<h3>Markers<a class="headerlink" href="#markers" title="Link to this heading"></a></h3>
+<p>You can learn about markers on the <a class="reference external" href="https://docs.pytest.org/">pytest web site</a>. You can use them to categorize tests.
+Please use the <cite>prerun</cite> marker:</p>
 <blockquote>
-<div><p>☐ Clone BayDeltaSCHISM from GitHub. Get a fresh copy or <cite>git stash</cite> any changes.</p>
-<p>☐ Note the git hash code or tag in a readme.</p>
-<p>☐ Copy BayDeltaSCHISM/templates/bay_delta to study preprocessing directory <cite>mystudy/bay_delta</cite></p>
-<p>☐ Obtain an SMS .2dm or SCHISM hgrid.gr3 file (e.g. <cite>bay_delta_111_prop605.2dm</cite> and add it to bay_delta folder)</p>
-<p>☐ Change <cite>main_bay_delta.yaml</cite> by pointing the mesh_inputfile to the name of the mesh</p>
-<p>☐ Make sure your flow transect file (flow_station_xsect.yaml) contains output you want</p>
-<p>☐ Invoke the preprocessor with the command: <cite>$ prepare_schism main_bay_delta.yaml</cite></p>
-<p>☐ Copy the prepared items (.in, ,gr3, .ll, .prop, .nml) to the launch place.</p>
+<div><p>&#64;pytest.mark.prerun
+def test_something():</p>
+<blockquote>
+<div><p>assert 1==2</p>
+</div></blockquote>
 </div></blockquote>
 </section>
-<section id="cbox-collect-time-series-inputs">
-<h3>☐ Collect time series inputs<a class="headerlink" href="#cbox-collect-time-series-inputs" title="Link to this heading"></a></h3>
-<blockquote>
-<div><p>☐ These steps are the two steps in BayDeltaSCHISM/bdschism/bdschism elev2d.bat, which you would adapt</p>
-<blockquote>
-<div><p>☐ download NOAA files for coastal stations at SF, Point Reyes, Monterey using download_noaa</p>
-<p>☐ validate that the datum shown in the file is NAVD88 as this has been somewhat unpredictable</p>
-<p>☐ run the genelev2D, a utility that installs with <cite>schimpy</cite>. For details try genelev2D –help</p>
-</div></blockquote>
-<p>☐ Adapt and run the multi_clip.py example in BayDeltaSCHISM/bdschism/bdschism to subset boundary/source data for your period.</p>
-</div></blockquote>
-</section>
-<section id="cbox-hotstart-can-be-concurrent-with-barotropic">
-<h3>☐ Hotstart (can be concurrent with barotropic)<a class="headerlink" href="#cbox-hotstart-can-be-concurrent-with-barotropic" title="Link to this heading"></a></h3>
-</section>
-<section id="cbox-nudging-can-be-concurrent-with-barotropic">
-<h3>☐ Nudging (can be concurrent with barotropic)<a class="headerlink" href="#cbox-nudging-can-be-concurrent-with-barotropic" title="Link to this heading"></a></h3>
-</section>
-<section id="cbox-barotropic-warmup">
-<h3>☐ Barotropic warmup<a class="headerlink" href="#cbox-barotropic-warmup" title="Link to this heading"></a></h3>
-<blockquote>
-<div><p>☐ interpolate_variables7 (or later) script to create uv3D.th.</p>
-<p>☐ move the uv3D.th to the study directory</p>
-<p>☐ delete all the files outputs/* or move /outputs to /outputs.tropic and create an empty /outputs</p>
-</div></blockquote>
-</section>
-<section id="cbox-baroclinic-simulation">
-<h3>☐ Baroclinic simulation<a class="headerlink" href="#cbox-baroclinic-simulation" title="Link to this heading"></a></h3>
-<blockquote>
-<div><p>☐ finalize your station.in output request</p>
-</div></blockquote>
+<section id="what-to-test">
+<h3>What to test<a class="headerlink" href="#what-to-test" title="Link to this heading"></a></h3>
+<p>Start with what is broken or what perenially gets out of synch. The Bay-Delta SCHISM testing suite has the feel of being <em>regression tests</em>.
+Regression tests are basically checking for things that have gone wrong before. Examples:</p>
+<ul class="simple">
+<li><p>Source and sink (channel depletion) time series have different numbers of columns than the number of sources and sinks declared in <cite>source_sink.in</cite>. This is a generic SCHISM issue.</p></li>
+<li><dl class="simple">
+<dt>Suisun marsh radial gate, flashboard and boatlock structures are operated in nonsense ways. For instance:</dt><dd><p>the radial gates (montezuma_radial) are operated tidally while the flashboards (montezuma_flashboards) are out. This is an example of domain-specific insight. One of the issues of course is that run checks may slow down users in developing strong knowledge of the region.</p>
+</dd>
+</dl>
+</li>
+<li><p>Legacy files such as param.nml or flow_xsects.yaml are used in runs without reviewing them for and out-of-date entries.</p></li>
+</ul>
 </section>
 </section>
 </section>
@@ -229,8 +234,8 @@ copies the run using the rsync command (don’t use copy command <cite>cp</cite>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="vignette.html" class="btn btn-neutral float-left" title="Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="run_tests.html" class="btn btn-neutral float-right" title="Test Suite for Prechecking Runs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="checklists.html" class="btn btn-neutral float-left" title="Checklists" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mesh.html" class="btn btn-neutral float-right" title="Horizontal Mesh" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

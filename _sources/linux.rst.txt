@@ -33,7 +33,8 @@ Copying files
 Copying between Windows and Linux is best done using WinSCP, which piggybacks on Putty. Two side benefits
 of WinSCP is that you can use your windows-side text editor on Linux-side files just by clicking, 
 though this is only going to work well if the file is a managable size. The copies are faster than
-other tools and the filter options are very efficient at narrowing down what you are looking at in a directory with hundreds of fi. Two particularly convenient filters are these: 
+other tools and the filter options are very efficient at narrowing down what you are looking at in a directory with hundreds of files. 
+Two particularly convenient filters are these: 
 
 .. code-block: console
 

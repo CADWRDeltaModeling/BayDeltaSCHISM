@@ -35,6 +35,7 @@ ________________________
   topics/vegetation.rst  
   topics/vignette.rst
   topics/checklists.rst
+  topics/run_tests.rst
   
 ________________________
 
