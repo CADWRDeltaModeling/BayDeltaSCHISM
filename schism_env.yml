@@ -8,6 +8,7 @@ dependencies:
   - schimpy>=1.6.4         # Recommended for compatibiltiy with current code
   - vtools3>=3.7.5
   - dms-datastore>=0.1.0
+  - numpy<2
   - libgdal
   - pyogrio
   - pydelmod
