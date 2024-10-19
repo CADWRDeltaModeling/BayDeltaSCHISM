@@ -1,12 +1,22 @@
+#Dates of elev2D.th.nc should agree with run start date
 #Average tide level in elev2D.th.nc should be sensible for NAVD88 tides on shelf
-#Montezuma flash should be closed and boatlock open when tidally operating
+
+#Suisun gate flash should be closed always when boatlock open
+#Suisun flash should be closed when tidally operating
+#Suisun gate radial operation should be at most briefly fully closed. In pseudo code
+    both_closed = (radial.open == 0) & (radial.closed == 0)
+	assert total_annual(both_closed) < 7days
+
 #Hotstart should have no nans
-#Vgrid should have no locations with zero layers
+#Vgrid should have no grid locations with zero layers
 #Options in param.nml/bctides etc should consistently point to tropic or clinic
-#nudging should point to consistent file suffix.
+#hgrid.ll check order of lat and lon. using local values
+#No gate th detritis: files should not be present with names that look like Delta gates if not present
+#Can we check CCF?
+
+Incomplete ideas:
+#Nudging should point to consistent file suffix.
 #can we internalize an ipre=1 launch and parse output?
 
-# Arrange
-@pytest.fixture
-def fruit_bowl():
-    return [Fruit("apple"), Fruit("banana")]
+[DONE]
+#msource # columns multiple of vsource # columns 
