@@ -160,6 +160,9 @@ for boundary_kind in boundary_kinds:
         elif source_kind == 'CONSTANT':
             # Simply fill with a constant specified.
             dd[name] = float(var)
+            dfi["datetime"] = df_rng
+            dfi = dfi.set_index("datetime")
+            dfi[name] = [float(var)]*len(df_rng)
             print(f"Updating SCHISM {name} with constant value of {var}")
 
         # Do conversions.
@@ -177,9 +180,9 @@ for boundary_kind in boundary_kinds:
         # Update the dataframe.
         dd.update(dfi, overwrite=True)
 
-        print(dfi)
+        #print(dfi)
 
-    print(dd)
+    #print(dd)
 
     # Format the outputs.
     dd.index.name = 'datetime'
