@@ -53,3 +53,4 @@ datetime	   install  ndup op_down op_up    elev	  width
 2022-09-01T00:00     1    1    1.0    1.0    -2.29    6.10   # September operations, flashboards remain in, boat lock open
 2023-06-11T11:13     1    1    0.0    0.0    -2.29    6.10   # Flashboards removed at end of control season. Flashboards out, boat lock closed
 2023-08-14T13:18     1    1    1.0    1.0    -2.29    6.10   # Flashboards installed for 100TAF op, boat lock open
+2024-01-01T00:00     1    1    1.0    1.0    -2.29    6.10   # Flashboards continue to be installed in 2024 so boatlock open

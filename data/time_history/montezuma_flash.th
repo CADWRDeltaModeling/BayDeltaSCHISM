@@ -53,4 +53,4 @@ datetime	   install  ndup op_down op_up    elev	  width
 2022-09-01T13:20     1    1    0.0    0.0    -5.34    20.73   # Flashboards remain in for control season
 2023-06-11T11:13     1    1    1.0    1.0    -5.34    20.73   # Flashboards removed at end of control season
 2023-08-14T13:18     1    1    0.0    0.0    -5.34    20.73   # Flashboards installed early to meet 100TAF
-
+2024-01-01T00:00     1    1    0.0    0.0    -5.34    20.73   # Flashboards continue to be closed through 2024
