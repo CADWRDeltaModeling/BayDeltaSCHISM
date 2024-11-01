@@ -84,3 +84,6 @@ datetime	     install ndup_weir op_down_weir op_up_weir elev_weir width_weir ndu
 2022-06-06T16:30     1    1    1.0    1.00   1.01    38.10    6    1.00   1.00   -1.28    0.61  # closure
 2022-06-07T08:30     1    1    1.0    1.00   1.01    38.10    6    0.00   1.00   -1.28    0.61  # flap gates all tidal together
 2022-11-07T13:00     0    1    1.0    1.00   1.01    38.10    6    1.00   1.00   -1.28    0.61  # breach and flap gates open. Not installed in 2023
+2024-07-18T11:30     1    1    1.0    1.00   1.01    38.10    6    1.00   1.00   -1.28    0.61  # closure (delayed)
+2024-07-18T13:45     1    1    1.0    1.00   1.01    38.10    6    0.00   1.00   -1.28    0.61  # flap gates all tidal together
+2024-11-01T13:00     0    1    1.0    1.00   1.01    38.10    6    1.00   1.00   -1.28    0.61  # breach and flap gates open. 
