@@ -7,6 +7,9 @@ Output
 Flavors of output
 -----------------
 
+
+
+
 What you should plan in advance
 -------------------------------
 
