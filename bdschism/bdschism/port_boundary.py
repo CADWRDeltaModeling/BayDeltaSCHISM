@@ -39,8 +39,8 @@ sd = config['param']['start_date']
 ed = config['param']['end_date']
 
 dt = minutes(15)
-start_date = pd.Timestamp(sd[0], sd[1], sd[2])
-end_date = pd.Timestamp(ed[0], ed[1], ed[2])
+start_date = pd.Timestamp(year=sd[0], month=sd[1], day=sd[2])
+end_date = pd.Timestamp(year=ed[0], month=ed[1], day=ed[2])
 df_rng = pd.date_range(start_date, end_date, freq=dt)
 source_map = pd.read_csv(source_map_file, header=0)
 
@@ -56,6 +56,7 @@ temp = pd.read_csv(schism_temp_file, header=0, parse_dates=True,
                    index_col=0, sep="\\s+")
 
 
+dss_e2_freq ={"1HOUR":"H","1DAY":"D"}
 def read_csv(file, var, name, p=2.):
     """
     Reads in a csv file of monthly boundary conditions and interpolates
@@ -80,14 +81,17 @@ def read_dss(file, pathname, sch_name=None, p=2.):
     print(pathname)
     ts = get_ts(os.path.join(dir, file), pathname)
     for tsi in ts:
-        b = (tsi[0].columns.values[0]).split("/")[2]
-        c = (tsi[0].columns.values[0]).split("/")[3]
-        f = (tsi[0].columns.values[0]).split("/")[6]
+        path_lst = (tsi[0].columns.values[0]).split("/")
+        path_e = path_lst[5]
+        tt = tsi[0][start_date:end_date]
+        pidx = pd.period_range(start_date, tt.index[-1], freq=dss_e2_freq[path_e])
+        ptt = pd.DataFrame(tt.values[:,0], pidx)
         if p != 0:
-            ts15min[[sch_name]] = rhistinterp(tsi[0], dt, p=p).reindex(df_rng)
+            ts15min[[sch_name]] = rhistinterp(ptt, dt, p=p).reindex(df_rng)
+        elif p == 0:
+            ts15min[[sch_name]] = rhistinterp(ptt, dt).reindex(df_rng)
         else:
             ts15min[[sch_name]] = tsi[0]
-        print("Reading " + b + " " + f)
     if ts15min.empty:
         raise ValueError(f'Warning: DSS data not found for {b}')
     return ts15min
@@ -119,11 +123,11 @@ for boundary_kind in boundary_kinds:
         p = row['rhistinterp_p']
         formula = row['formula']
         print(f"processing {name}")
-
+        
         if source_kind == 'SCHISM':
             # Simplest case: use existing reference SCHISM data; do nothing
             print("Use existing SCHISM input")
-
+            
         elif source_kind == 'CSV':
             # Substitute in an interpolated monthly forecast
             if derived:
@@ -143,14 +147,22 @@ for boundary_kind in boundary_kinds:
         elif source_kind == 'DSS':
             # Substitute in CalSim value.
             if derived:
-                vars = var.split(';')
+                vars_lst = var.split(';')
                 print(f"Updating SCHISM {name} with derived timeseries\
                     expression: {formula}")
                 dss = pd.DataFrame()
-                for pn in vars:
+                
+                for pn in vars_lst:
                     b = pn.split("/")[2]
                     dss[[b]] = read_dss(source_file, pathname=pn,
                                         sch_name=name, p=p)
+                ## quick fix for to use last year pattern as formula
+                ## input
+                clip_1ybackward_start = start_date - pd.DateOffset(years=1)
+                clip_1ybackward_end = end_date - pd.DateOffset(years=1)
+                flux_clipped = flux[clip_1ybackward_start:clip_1ybackward_end]
+                ## reset clipped flux index to dss year
+                flux_clipped.index = flux_clipped.index.map(lambda x: x.replace(year=start_date.year))
                 dts = eval(formula).to_frame(name).reindex(df_rng)
                 dfi = ts_gaussian_filter(dts, sigma=100)
             else:
@@ -162,9 +174,10 @@ for boundary_kind in boundary_kinds:
             dd[name] = float(var)
             dfi["datetime"] = df_rng
             dfi = dfi.set_index("datetime")
+            
             dfi[name] = [float(var)]*len(df_rng)
             print(f"Updating SCHISM {name} with constant value of {var}")
-
+  
         # Do conversions.
         if convert == 'CFS_CMS':
             dfi = dfi * CFS2CMS * sign
