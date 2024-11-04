@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from dms_datastore.read_ts import *
 from dms_datastore.dstore_config import *
 from dms_datastore.read_multi import *
-from schimpy.unit_conversions import *
+from vtools.functions.unit_conversions import *
 from vtools.data.vtime import days
 import glob
 import pandas as pd
@@ -13,8 +13,8 @@ import os
 
 ## Items you may want to change
 
-t0 = pd.Timestamp(2021,4,20)
-nudgelen =days(30)
+t0 = pd.Timestamp(2024,0,17)
+nudgelen =days(11)
 
 
 stations = ['anh','benbr','hsl','bts','snc','ibs','cyg','hun','bdl',
@@ -44,7 +44,7 @@ station_df = station_df.loc[stations]
 
 repo = "//cnrastore-bdo/Modeling_Data/continuous_station_repo_beta/formatted_1yr"
 no_such_file = []
-tndx = pd.date_range(t0,t0+nudgelen,freq='H')
+tndx = pd.date_range(t0,t0+nudgelen,freq='h')
 all_vars = ["temperature","salinity"]
 used_stations = set()
 nudging_dfs = {}
