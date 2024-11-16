@@ -48,7 +48,8 @@ with `test_` and that contains a python assert statement that contains the items
   def test_silly():
       assert 1 == 2, "One is not equal to two"
 
-Bay-Delta SCHISM run tests are housed in the `/test_suite` directory of your Bay-Delta SCHISM installation.
+Bay-Delta SCHISM run tests are housed in the `/test_suite` directory of your Bay-Delta SCHISM installation. 
+Any test scripts in this directory will be run when you launch pytest with the `/test_suite` directory.
 They are usually launched in the simulation directory or you can name the simulation directory in your pytest command as
 in the introductory example.  
 
@@ -64,6 +65,8 @@ A trivial example that uses `sim_dir` looks like this:
 def test_param_exists(sim_dir):
     assert os.path.exists(os.path.join(sim_dir,"param.nml")), "Simulation directory must contain 'param.nml'"
 
+Where `sim_dir` is applied as an input to he test_param_exists function.
+This calls the `sim_dir` fixture function found in conftest.py and then submits the output of that function to the test_param_exists function.
 A second indispensible fixture is `params`. This fetches the run parameters in `param.nml` using the `param.py` module. 
 You should avoid parse `param.nml` with your own code.
 
@@ -79,7 +82,10 @@ Please use the `prerun` marker:
 
   @pytest.mark.prerun
   def test_something():
-    assert 1==2
+    assert 1==2, "Failure message"
+
+The marker will be ran upon calling pytest and any assert statement that fails (ex: 1==2) will trigger the following 'Failure message'. 
+That's where you can add helpful information about what the test failure is and how to fix it.
 
 What to test
 ============
@@ -87,11 +93,11 @@ What to test
 Start with what is broken or what perenially gets out of synch. The Bay-Delta SCHISM testing suite has the feel of being *regression tests*.
 Regression tests are basically checking for things that have gone wrong before. Examples:
 
-* Source and sink (channel depletion) time series have different numbers of columns than the number of sources and sinks declared in `source_sink.in`. This is a generic SCHISM issue.
+* Source and sink (channel depletion) time series have different numbers of columns than the number of sources and sinks declared in `source_sink.in`. This is a generic SCHISM issue. This would be housed in `test_source_sink.py <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_source_sink.py>`
 * Suisun marsh radial gate, flashboard and boatlock structures are operated in nonsense ways. For instance:
 	the radial gates (montezuma_radial) are operated tidally while the flashboards (montezuma_flashboards) are out. This is an example of domain-specific insight. One of the issues of course is that run checks may slow down users in developing strong knowledge of the region. 
 * Legacy files such as param.nml or flow_xsects.yaml are used in runs without reviewing them for and out-of-date entries.
-
+* elev2D.th.nc start date matches param.nml start date, see `test_elev2d.py <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_elev2d.py>`
 
 
 
