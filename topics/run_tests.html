@@ -183,6 +183,7 @@ with <cite>test_</cite> and that contains a python assert statement that contain
 </dl>
 </div></blockquote>
 <p>Bay-Delta SCHISM run tests are housed in the <cite>/test_suite</cite> directory of your Bay-Delta SCHISM installation.
+Any test scripts in this directory will be run when you launch pytest with the <cite>/test_suite</cite> directory.
 They are usually launched in the simulation directory or you can name the simulation directory in your pytest command as
 in the introductory example.</p>
 </section>
@@ -197,7 +198,9 @@ A trivial example that uses <cite>sim_dir</cite> looks like this:</p>
 <dt>def test_param_exists(sim_dir):</dt><dd><p>assert os.path.exists(os.path.join(sim_dir,”param.nml”)), “Simulation directory must contain ‘param.nml’”</p>
 </dd>
 </dl>
-<p>A second indispensible fixture is <cite>params</cite>. This fetches the run parameters in <cite>param.nml</cite> using the <cite>param.py</cite> module.
+<p>Where <cite>sim_dir</cite> is applied as an input to he test_param_exists function.
+This calls the <cite>sim_dir</cite> fixture function found in conftest.py and then submits the output of that function to the test_param_exists function.
+A second indispensible fixture is <cite>params</cite>. This fetches the run parameters in <cite>param.nml</cite> using the <cite>param.py</cite> module.
 You should avoid parse <cite>param.nml</cite> with your own code.</p>
 <p>A third proposal allows run-specific variables in a testconfig.yaml file that is in <cite>sim_dir</cite>.</p>
 </section>
@@ -209,22 +212,25 @@ Please use the <cite>prerun</cite> marker:</p>
 <div><p>&#64;pytest.mark.prerun
 def test_something():</p>
 <blockquote>
-<div><p>assert 1==2</p>
+<div><p>assert 1==2, “Failure message”</p>
 </div></blockquote>
 </div></blockquote>
+<p>The marker will be ran upon calling pytest and any assert statement that fails (ex: 1==2) will trigger the following ‘Failure message’.
+That’s where you can add helpful information about what the test failure is and how to fix it.</p>
 </section>
 <section id="what-to-test">
 <h3>What to test<a class="headerlink" href="#what-to-test" title="Link to this heading"></a></h3>
 <p>Start with what is broken or what perenially gets out of synch. The Bay-Delta SCHISM testing suite has the feel of being <em>regression tests</em>.
 Regression tests are basically checking for things that have gone wrong before. Examples:</p>
 <ul class="simple">
-<li><p>Source and sink (channel depletion) time series have different numbers of columns than the number of sources and sinks declared in <cite>source_sink.in</cite>. This is a generic SCHISM issue.</p></li>
+<li><p>Source and sink (channel depletion) time series have different numbers of columns than the number of sources and sinks declared in <cite>source_sink.in</cite>. This is a generic SCHISM issue. This would be housed in <cite>test_source_sink.py &lt;https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_source_sink.py&gt;</cite></p></li>
 <li><dl class="simple">
 <dt>Suisun marsh radial gate, flashboard and boatlock structures are operated in nonsense ways. For instance:</dt><dd><p>the radial gates (montezuma_radial) are operated tidally while the flashboards (montezuma_flashboards) are out. This is an example of domain-specific insight. One of the issues of course is that run checks may slow down users in developing strong knowledge of the region.</p>
 </dd>
 </dl>
 </li>
 <li><p>Legacy files such as param.nml or flow_xsects.yaml are used in runs without reviewing them for and out-of-date entries.</p></li>
+<li><p>elev2D.th.nc start date matches param.nml start date, see <cite>test_elev2d.py &lt;https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_elev2d.py&gt;</cite></p></li>
 </ul>
 </section>
 </section>
