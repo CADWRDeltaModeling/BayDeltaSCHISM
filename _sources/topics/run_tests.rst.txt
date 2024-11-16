@@ -93,11 +93,11 @@ What to test
 Start with what is broken or what perenially gets out of synch. The Bay-Delta SCHISM testing suite has the feel of being *regression tests*.
 Regression tests are basically checking for things that have gone wrong before. Examples:
 
-* Source and sink (channel depletion) time series have different numbers of columns than the number of sources and sinks declared in `source_sink.in`. This is a generic SCHISM issue. This would be housed in `test_source_sink.py <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_source_sink.py>`
+* Source and sink (channel depletion) time series have different numbers of columns than the number of sources and sinks declared in `source_sink.in`. This is a generic SCHISM issue. This would be housed in `test_source_sink.py <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_source_sink.py>`_
 * Suisun marsh radial gate, flashboard and boatlock structures are operated in nonsense ways. For instance:
 	the radial gates (montezuma_radial) are operated tidally while the flashboards (montezuma_flashboards) are out. This is an example of domain-specific insight. One of the issues of course is that run checks may slow down users in developing strong knowledge of the region. 
 * Legacy files such as param.nml or flow_xsects.yaml are used in runs without reviewing them for and out-of-date entries.
-* elev2D.th.nc start date matches param.nml start date, see `test_elev2d.py <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_elev2d.py>`
+* elev2D.th.nc start date matches param.nml start date, see `test_elev2d.py <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_elev2d.py>`_
 
 
 

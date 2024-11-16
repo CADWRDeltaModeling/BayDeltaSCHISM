@@ -223,14 +223,14 @@ That’s where you can add helpful information about what the test failure is an
 <p>Start with what is broken or what perenially gets out of synch. The Bay-Delta SCHISM testing suite has the feel of being <em>regression tests</em>.
 Regression tests are basically checking for things that have gone wrong before. Examples:</p>
 <ul class="simple">
-<li><p>Source and sink (channel depletion) time series have different numbers of columns than the number of sources and sinks declared in <cite>source_sink.in</cite>. This is a generic SCHISM issue. This would be housed in <cite>test_source_sink.py &lt;https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_source_sink.py&gt;</cite></p></li>
+<li><p>Source and sink (channel depletion) time series have different numbers of columns than the number of sources and sinks declared in <cite>source_sink.in</cite>. This is a generic SCHISM issue. This would be housed in <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_source_sink.py">test_source_sink.py</a></p></li>
 <li><dl class="simple">
 <dt>Suisun marsh radial gate, flashboard and boatlock structures are operated in nonsense ways. For instance:</dt><dd><p>the radial gates (montezuma_radial) are operated tidally while the flashboards (montezuma_flashboards) are out. This is an example of domain-specific insight. One of the issues of course is that run checks may slow down users in developing strong knowledge of the region.</p>
 </dd>
 </dl>
 </li>
 <li><p>Legacy files such as param.nml or flow_xsects.yaml are used in runs without reviewing them for and out-of-date entries.</p></li>
-<li><p>elev2D.th.nc start date matches param.nml start date, see <cite>test_elev2d.py &lt;https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_elev2d.py&gt;</cite></p></li>
+<li><p>elev2D.th.nc start date matches param.nml start date, see <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/test_suite/test_elev2d.py">test_elev2d.py</a></p></li>
 </ul>
 </section>
 </section>
