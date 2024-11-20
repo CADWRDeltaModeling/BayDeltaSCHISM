@@ -16,13 +16,13 @@ def nudge_nc_modules(sim_dir, params):
                2: 'SAL',
                3: 'GEN', # TODO: check the tracer names from here down
                4: 'AGE',
-               5: 'SED3D',
-               6: 'EcoSim',
+               5: 'SED',
+               6: 'ECO',
                7: 'ICM',
-               8: 'CoSINE',
+               8: 'COS',
                9: 'FIB',
-               10: 'TIMOR',
-               11: 'FABM'}
+               10: 'TIMOR-NOT-ACTIVE',
+               11: 'FBM'}
 
     for i in range(1, 12):
         if params._namelist['OPT'][f'inu_tr({i})']['value'] == 2:
