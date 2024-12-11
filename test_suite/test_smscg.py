@@ -22,35 +22,35 @@ def smscg_dfs(sim_dir, params):
 
 @pytest.mark.prerun
 def test_smscg_boatlock(sim_dir, params, smscg_dfs):
-    """ Checks that the boatlock operations coincide with radial operations """
+    """ Checks that the boatlock is open whenever the radial gates are operated tidally (op_up=0) """
 
     boat, flash, radial = smscg_dfs 
 
     # Compare the 4th column (op_up) of `boat` with `radial`, ensuring alignment
     aligned_boat = boat.iloc[:, 3].reindex(radial.index)
-    matches = aligned_boat == radial.iloc[:, 3]
+    matches = (radial.iloc[:, 3]==0) & (aligned_boat.iloc[:,3]==0)
     matches_seconds = datetime_elapsed(matches,reftime=params.run_start)
     
     print("Boatlock Error Times ----------------")
     for match, sec in zip(matches.index[matches].values, matches_seconds.index[matches].values):
         print(f"Seconds: {sec}, Datetime: {match}")
-    assert (~matches).all(), f"montezuma_boat_lock operation should not match montezuma_radial operation."
+    assert (~matches).all(), f"montezuma_boat_lock should not be closed when montezuma_radial is in tidal operation."
 
 @pytest.mark.prerun
 def test_smscg_flash(sim_dir, params, smscg_dfs):
-    """ Checks that the boatlock operations coincide with radial operations """
+    """ Checks that the flashboards are closed when the radial gates are operated tidally (op_up=0) """
 
     boat, flash, radial = smscg_dfs 
 
     # Compare the 4th column (op_up) of `flash` with `radial`, ensuring oposing alignment
     aligned_flash = flash.iloc[:, 3].reindex(radial.index)
-    matches = aligned_flash != radial.iloc[:, 3]
+    matches = (radial.iloc[:, 3]==0) & (aligned_flash.iloc[:,3]==0)
     matches_seconds = datetime_elapsed(matches,reftime=params.run_start)
     
     print("Flash Error Times ----------------")
     for match, sec in zip(matches.index[matches].values, matches_seconds.index[matches].values):
         print(f"Seconds: {sec}, Datetime: {match}")
-    assert (~matches).all(), f"montezuma_flash operation should opose montezuma_radial operation."
+    assert (~matches).all(), f"montezuma_flash should not be open when montezuma_radial is in tidal operation."
 
 @pytest.mark.prerun
 def test_smscg_radial_tides(sim_dir, params, smscg_dfs):
@@ -82,4 +82,4 @@ def test_smscg_radial_open(sim_dir, params, smscg_dfs):
     for match, sec in zip(matches.index[matches].values, matches_seconds.index[matches].values):
         print(f"Seconds: {sec}, Datetime: {match}")
 
-    assert (~matches).all(), f"montezuma_radial open condition not correct. op_up should be 1.0 when op_down is 1.0."
+    assert (~matches).all(), f"montezuma_radial open condition not correct. op_down should be 1.0 when op_up is 1.0."
