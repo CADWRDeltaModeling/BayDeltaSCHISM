@@ -8,20 +8,20 @@ mesh:
     propfile: split_quad.prop
   small_areas:
     warn: 10.
-    fail: 4.  
+    fail: 4.
   # includes restoration sites at top of list
-  dem_list: 
-    include: 
+  dem_list:
+    include:
       - dem_4.3_cc.yaml
   depth_optimization: !include depth_opt_params.yaml
   open_boundaries: !include open_boundary.yaml
-  depth_enforcement: 
+  depth_enforcement:
     polygons:
-      include: 
+      include:
         - depth_enforcement_polygons.yaml
         - depth_enforcement_ss_polygons.yaml
     linestrings:
-      include: 
+      include:
         - depth_enforcement_linestrings.yaml
         - depth_enforcement_ss_linestrings.yaml
         - depth_enforcement_sjr_linestrings.yaml
@@ -31,7 +31,7 @@ mesh:
 # Note this file is in the /data directory and relative location needs to be set
 # This should come from flow_station_xsects_new.yaml with newer ids.
 flow_outputs:
-  include: flow_station_xsects.yaml 
+  include: flow_station_xsects.yaml
   outputfile: fluxflag.prop
 
 gr3:
@@ -56,13 +56,13 @@ gr3:
   sav_N.gr3: !include sav_density.yaml
   sav_D.gr3: !include sav_diameter.yaml
   sav_h.gr3: !include sav_height.yaml
-  sav_cd.gr3: 
+  sav_cd.gr3:
     default: 0.56
   krvel.gr3: !include krvel.yaml
   #rough.gr3:     # Approximately what Works with GOTM k-eps. Documentation pending
   #  default: 4.e-5
   #diffmin.gr3:   # Approximately what works with GOTM k-eps. Documentation pending
-  #  default: 1.e-5  
+  #  default: 1.e-5
   albedo.gr3:
     default: 0.1
   watertype.gr3:
@@ -75,7 +75,7 @@ hydraulics:
 
 sources_sinks:
   # Includes Delta and Suisun, including distribution modifications in 2020.
-  # See the _2019 variant for older locations  
+  # See the _2019 variant for older locations
     sinks:
         include:
         - sink_dcd.yaml
@@ -93,18 +93,18 @@ sources_sinks:
 
 vgrid:
     vgrid_out: vgrid.in.3d
-    minmaxlayerfile: minmaxlayer_slr_0_mod105.shp 
+    minmaxlayerfile: minmaxlayer_slr_0_mod105.shp
     eta: 1.5
     vgrid_version: '5.10'
-    
-copy_resources: 
-  - bctides.in.2d
-  - bctides.in.3d
-  - sflux_inputs.txt
-  - vgrid.in.2d
-  - param.nml.clinic
-  - param.nml.tropic
-  - interpolate_variables.in
-  - station.in
-    
+
+copy_resources:
+  bctides.in.2d: bctides.in.2d
+  bctides.in.3d: bctides.in.3d
+  sflux_inputs.txt: sflux_inputs.txt
+  vgrid.in.2d: vgrid.in.2d
+  param.nml.clinic: param.nml.clinic
+  param.nml.tropic: param.nml.tropic
+  interpolate_variables.in: interpolate_variables.in
+  station.in: station.in
+
 prepro_output_dir: ./prepro_out
