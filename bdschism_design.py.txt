@@ -83,7 +83,7 @@ def uv3d(bg_dir='.',
         
         
         
-def set_nudging(suffix,workdir='.',param_check='param.nml'):
+def set_nudging(suffix,workdir='.'):
     """ This is a utility to set up nudging files based on a naming convention common for BayDeltaSCHISM
     
     Parameters
@@ -100,8 +100,8 @@ def set_nudging(suffix,workdir='.',param_check='param.nml'):
     we be able to identify the possibilities, either programatically or with a dictionaries for lookup,
     something like:
     
-    target_link = {"salinity_nudge_{suffix}.gr3" : "SAL_nudge_{suffix}.gr3",
-                   "temperature_nudge_{suffix}.gr3": "TEM_nudge_{suffix}.gr3",
+    target_link = {"SAL_nudge_{suffix}.gr3" : "SAL_nudge_{suffix}.gr3",
+                   "TEM_nudge_{suffix}.gr3": "TEM_nudge_{suffix}.gr3",
                    "SAL_nu_{suffix}.nc" : "SAL_nu_{suffix}.nc",
                    "TEM_nu_{suffix}.nc": "TEM_nu_{suffix}.nc",               
 
