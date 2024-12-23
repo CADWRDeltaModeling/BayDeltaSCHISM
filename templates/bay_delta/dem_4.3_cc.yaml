@@ -1,10 +1,9 @@
 dem_list:
-  # This is adopted from the "official" 4.2 used for the 10 year hindcast and has 
-  # restoration areas added in an ad hoc way to create a cc mesh
+  # This stacked list mostly contains items from release 4.2 which on DWR systems are kept in a folder with the 
+  # unfortunate name "renamed_no_version". For the South Delta, items from upcoming releases 4.3 and 4.4 are used
+  # These have not been bundlned to CNRA yet so you may have to request them.
 
-  # High res around Dutch Slough that is compatible with Dutch Slough
   - //nasbdo/modeling_data/restoration/dutch_slough/DEM/dem_dutch_slough_1m_20200311.tif
-
   - //nasbdo/modeling_data/bathymetry/renamed_no_version/dem_montezuma_sl_2m_20200909.tif
 
   #North Delta
