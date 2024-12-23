@@ -426,7 +426,7 @@ polygons:
     - 4191697.0133058466
 - name: south_delta_experiment
   type: none
-  attribute: '0.0'    # was'0.02'
+  attribute: '0.02'    # was'0.02'
   vertices:
   - - 635040.0
     - 4196640.0

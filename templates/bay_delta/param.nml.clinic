@@ -16,7 +16,7 @@
   ibc = 0 !Baroclinic option
   ibtp = 1
 
-  rnday = 260 !total run time in days
+  rnday = 1096 !total run time in days
   dt = 90. !Time step in sec
 
 ! Grid for WWM (USE_WWM)
@@ -39,9 +39,9 @@
 ! Optional parameters. The values shown below are default unless otherwise noted
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ! Starting time
-  start_year = 2018 !int
-  start_month = 5 !int
-  start_day = 7 !int
+  start_year = 2021 !int
+  start_month = 1 !int
+  start_day = 1 !int
   start_hour = 0 !double
   utc_start = 8 !double
 
@@ -201,6 +201,10 @@
   if_source = 1
 !  nramp_ss = 1 !needed if if_source=1; ramp-up flag for source/sinks
 !  dramp_ss = 4. !needed if if_source=1; ramp-up period in days
+
+! Level to introduce tracers. Originally -9 (bottom) now 0 (full water column)
+  lev_tr_source(1) = 0 !T
+  lev_tr_source(2) = 0 !S
 
 !-----------------------------------------------------------------------
 ! Horizontal diffusivity option. if ihdif=1, horizontal diffusivity is given in hdif.gr3
@@ -477,7 +481,7 @@
 ! nudging for a tracer is to set its nudged values to -9999
 !-----------------------------------------------------------------------
   inu_tr(1) = 2 !T
-  inu_tr(2) = 1 !S
+  inu_tr(2) = 2 !S
   inu_tr(3) = 0 !GEN
   inu_tr(4) = 0 !Age
   inu_tr(5) = 0 !SED3D
@@ -639,7 +643,7 @@
   iof_hydro(15) = 0 !wind stress vector [m^2/s/s] {windStressX,Y}  2D vector
   iof_hydro(16) = 0 !depth-averaged vel vector [m/s] {depthAverageVelX,Y}  2D vector
   iof_hydro(17) = 0 !vertical velocity [m/s] {verticalVelocity}  3D
-  iof_hydro(18) = 1 !water temperature [C] {temperature}  3D
+  iof_hydro(18) = 0 !water temperature [C] {temperature}  3D
   iof_hydro(19) = 1 !water salinity [PSU] {salinity}  3D
   iof_hydro(20) = 0 !water density [kg/m^3] {waterDensity}  3D
   iof_hydro(21) = 0 !vertical eddy diffusivity [m^2/s] {diffusivity}  3D
@@ -706,28 +710,28 @@
 ! Specific outputs in SED3D (USE_SED must be on in Makefile;
 ! otherwise these are ignored)
 !-----------------------------------------------------------------------
-  iof_sed(1) = 1 !bottom depth _change_ from init. condition (m) {SED_depth_change}
-  iof_sed(2) = 1 ! Bed median grain size in the active layer (mm) {SED_D50}
-  iof_sed(3) = 1 ! Bottom shear stress (Pa) {SED_bed_stress}
-  iof_sed(4) = 1 ! Bottom roughness lenghth (mm) {SED_bed_roughness}
-  iof_sed(5) = 1 ! total suspended concentration (g/L) {SED_TSC}
-  iof_sed(6) = 1 ! total bed thickness @elem (m) {bed_thickness}
-  iof_sed(7) = 0 ! total bed age over all layers @elem (sec) {bed_age}
-  iof_sed(8) = 0 ! Sediment transport roughness length @elem (m) (z0st_elem) {z0st}
-  iof_sed(9) = 0 !current-ripples roughness length @elem (m) (z0cr_elem) {z0cr}
-  iof_sed(10) = 0 !sand-waves roughness length (m) @elem (z0sw_elem) {z0sw}
-  iof_sed(11) = 0 !wave-ripples roughness length @elem (m) (z0wr_elem) {z0wr}
+!  iof_sed(1) = 1 !bottom depth _change_ from init. condition (m) {SED_depth_change}
+!  iof_sed(2) = 1 ! Bed median grain size in the active layer (mm) {SED_D50}
+!  iof_sed(3) = 1 ! Bottom shear stress (Pa) {SED_bed_stress}
+!  iof_sed(4) = 1 ! Bottom roughness lenghth (mm) {SED_bed_roughness}
+!  iof_sed(5) = 1 ! total suspended concentration (g/L) {SED_TSC}
+!  iof_sed(6) = 1 ! total bed thickness @elem (m) {bed_thickness}
+!  iof_sed(7) = 0 ! total bed age over all layers @elem (sec) {bed_age}
+!  iof_sed(8) = 0 ! Sediment transport roughness length @elem (m) (z0st_elem) {z0st}
+!  iof_sed(9) = 0 !current-ripples roughness length @elem (m) (z0cr_elem) {z0cr}
+!  iof_sed(10) = 0 !sand-waves roughness length (m) @elem (z0sw_elem) {z0sw}
+!  iof_sed(11) = 0 !wave-ripples roughness length @elem (m) (z0wr_elem) {z0wr}
 
 !  Example of using 2 classes
-  iof_sed(12) = 1 !conc. of 1st class (one output need by each class) [g/L] {SED3D_1}
-  iof_sed(13) = 1 !Bedload transport rate vector (kg.m-1.s-1) for 1st tracer (one output need by tracer) {SED_bdld_1}
-  iof_sed(14) = 1 !Bed fraction 1st tracer (one output need by each class) [-] {SED_bedfrac_1}
-  iof_sed(15) = 1 !conc. of 2nd class {SED3D_2}
-  iof_sed(16) = 1 !Bedload transport of 2nd class {SED_bdld_2}
-  iof_sed(17) = 1 !Bed fraction of 2nd class {SED_bedfrac_3}
-  iof_sed(18) = 1
-  iof_sed(19) = 1
-  iof_sed(20) = 1
+!  iof_sed(12) = 1 !conc. of 1st class (one output need by each class) [g/L] {SED3D_1}
+!  iof_sed(13) = 1 !Bedload transport rate vector (kg.m-1.s-1) for 1st tracer (one output need by tracer) {SED_bdld_1}
+!  iof_sed(14) = 1 !Bed fraction 1st tracer (one output need by each class) [-] {SED_bedfrac_1}
+!  iof_sed(15) = 1 !conc. of 2nd class {SED3D_2}
+!  iof_sed(16) = 1 !Bedload transport of 2nd class {SED_bdld_2}
+!  iof_sed(17) = 1 !Bed fraction of 2nd class {SED_bedfrac_3}
+!  iof_sed(18) = 1
+!  iof_sed(19) = 1
+!  iof_sed(20) = 1
 
 !-----------------------------------------------------------------------
 ! EcoSim outputs

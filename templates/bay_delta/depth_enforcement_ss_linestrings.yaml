@@ -1,0 +1,186 @@
+# These depth enforcement linestrings are for making sure sources and sinks are not too shallow
+linestrings:
+- attribute: local_max
+  coordinates:
+  - - 644631.
+    - 4181658.
+  - - 644652.
+    - 4181659.
+  - - 644672.
+    - 4181655.
+  name: node_152
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 643548.
+    - 4181589.
+  - - 643564.
+    - 4181589.
+  - - 643584.
+    - 4181589.
+  name: node_153
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 642791.
+    - 4181355.
+  - - 642806.
+    - 4181349.
+  - - 642819.
+    - 4181345.
+  name: node_154
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 642159.
+    - 4181603.
+  - - 642159.
+    - 4181589.
+  name: node_155
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 641834.
+    - 4182330.
+  - - 641842.
+    - 4182327.
+  name: node_156
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 641421.
+    - 4181887.
+  - - 641428.
+    - 4181892.
+  name: node_157
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 640650.
+    - 4182827.
+  - - 640658.
+    - 4182833.
+  name: node_158
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 642322.
+    - 4187773.
+  - - 642326.
+    - 4187764.
+  - - 642329.
+    - 4187756.
+  name: node_104
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 643067.
+    - 4200882.
+  - - 643107.
+    - 4200862.
+  - - 643146.
+    - 4200845.
+  name: node_138
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 642295.
+    - 4202580.
+  - - 642280.
+    - 4202538.
+  - - 642271.
+    - 4202501.
+  name: node_139
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 641376.
+    - 4181879.
+  - - 641396.
+    - 4181886.
+  - - 641415.
+    - 4181895.
+  - - 641429.
+    - 4181903.
+  name: node_157
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 642937.
+    - 4181307.
+  - - 642954.
+    - 4181307.
+  - - 642972.
+    - 4181308.
+  - - 642992.
+    - 4181309.
+  name: node_154
+  type: none
+- attribute: max(z,0.1)
+  coordinates:
+  - - 643101.
+    - 4185316.
+  - - 643120.
+    - 4185307.
+  - - 643136.
+    - 4185298.
+  - - 643155.
+    - 4185294.
+  name: node_803
+  type: none
+- attribute: max(z,0.1)
+  coordinates:
+  - - 642784.
+    - 4185337.
+  - - 642804.
+    - 4185335.
+  - - 642823.
+    - 4185334.
+  - - 642843.
+    - 4185336.
+  name: node_804
+  type: none
+- attribute: local_max
+  coordinates:
+  - - 643682.
+    - 4184755.
+  - - 643697.
+    - 4184741.
+  - - 643712.
+    - 4184726.
+  name: node_807
+  type: none
+- attribute: max(z,0.1)
+  coordinates:
+  - - 644062.
+    - 4184096.
+  - - 644072.
+    - 4184077.
+  - - 644081.
+    - 4184059.
+  - - 644089.
+    - 4184041.
+  name: node_806
+  type: none
+- attribute: max(z,0.1)
+  coordinates:
+  - - 644433.
+    - 4183688.
+  - - 644451.
+    - 4183688.
+  - - 644468.
+    - 4183689.
+  - - 644488.
+    - 4183690.
+  name: node_805
+  type: none
+- attribute: max(z,0.1)
+  coordinates:
+  - - 645314.
+    - 4183272.
+  - - 645327.
+    - 4183274.
+  - - 645336.
+    - 4183276.
+  name: node_166
+  type: none

@@ -82,8 +82,8 @@ structures:
   - name: grantline_barrier
     type: weir_culvert
     end_points:
-      [[636575.,4186905.],
-       [636575.,4187005.]]
+      [[636575.,4186939.],
+       [636572.,4187003.]]
     configuration:
       n_duplicates: 1
       elevation: 1.0
@@ -95,17 +95,33 @@ structures:
       culvert_n_duplicates: 6
       culvert_elevation: -1.28
       culvert_radius: 0.61
-      culvert_coefficient: 0.4
+      culvert_coefficient: 0.3  
       culvert_op_downstream: 0.0
       culvert_op_upstream: 1.
       use_time_series: 1
     reference: self    
 
+  - name: grantline_partial_weir
+    type: weir
+    end_points:
+      [[636580.,4186893.],
+       [636575.,4186938.]]
+    configuration:
+      n_duplicates: 1
+      elevation: 1.
+      width: 15.
+      height: 1000.
+      coefficient: 0.
+      op_downstream: 0.
+      op_upstream: 0.
+      use_time_series: 0
+    reference: self
+
   - name: midr_weir
     type: weir
     end_points:
-      [[633467., 4194186.],
-      [633465., 4194223.]]
+      [[633467.35, 4194186.76],
+      [633467.13, 4194225.14]]
     configuration:
       n_duplicates: 1
       elevation: 1.00
@@ -119,13 +135,13 @@ structures:
   - name: midr_culvert_l
     type: culvert
     end_points:
-      [[633468., 4194169.],
-      [633467., 4194186.]]
+      [[633466.54, 4194168.72],
+      [633467.35, 4194186.76]]
     configuration:
       n_duplicates: 3
       elevation: -0.53
       radius: 0.61
-      coefficient: 0.4
+      coefficient: 0.3
       op_downstream: 0.0
       op_upstream: 1.0
       use_time_series: 1
@@ -134,23 +150,23 @@ structures:
   - name: midr_culvert_r
     type: culvert
     end_points:
-      [[633465., 4194223.],
-      [633463., 4194239.]]
+      [[633467.13, 4194225.14],
+      [633465.27, 4194243.48]]
     configuration:
       n_duplicates: 3
       elevation: -0.53
       radius: 0.61
-      coefficient: 0.4
+      coefficient: 0.3
       op_downstream: 0.0
       op_upstream: 1.0
       use_time_series: 1
     reference: midr_weir
 
-  - name: oldr_tracy_weir
-    type: weir
+  - name: oldr_tracy_barrier
+    type: weir_culvert
     end_points:
-      [[628268., 4185749.],
-      [628290., 4185790.]]
+      [[628258.01, 4185725.3],
+      [628290.88, 4185790.63]]
     configuration:
       n_duplicates: 1
       elevation: 1.33
@@ -158,34 +174,26 @@ structures:
       coefficient: 0.8
       op_downstream: 1.0
       op_upstream: 1.0
+
+      culvert_n_duplicates: 9
+      culvert_elevation: -1.11
+      culvert_radius: 0.61
+      culvert_coefficient: 0.3
+      culvert_op_downstream: 1.0
+      culvert_op_upstream: 1.0
       use_time_series: 1
     reference: self
-
-  - name: oldr_tracy_culvert
-    type: culvert
-    end_points:
-      [[628259., 4185726.],
-      [628268., 4185746.]]
-    configuration:
-      n_duplicates: 9
-      elevation: -1.11
-      radius: 0.61
-      coefficient: 0.6
-      op_downstream: 1.0
-      op_upstream: 1.0
-      use_time_series: 1
-    reference: oldr_tracy_weir
 
   - name: tom_paine
     type: culvert
     end_points:
-      [[639242., 4183710.],
-      [639285., 4183738.]]
+      [[639240.49, 4183710.97],
+      [639270.75, 4183739.65]]
     configuration:
       n_duplicates: 6
       elevation: -0.35
       radius: 0.57
-      coefficient: 0.4
+      coefficient: 0.3
       op_downstream: 0.0
       op_upstream: 1.0
       use_time_series: 0
@@ -193,8 +201,8 @@ structures:
   - name: oldr_head_barrier
     type: weir_culvert
     end_points:
-      [[647182., 4185811.],
-      [647196., 4185874.]]
+      [[647182.24, 4185809.06],
+      [647196.51, 4185878.68]]
     configuration:
       n_duplicates: 1
       elevation: -0.7
