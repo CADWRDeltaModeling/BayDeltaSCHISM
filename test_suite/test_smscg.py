@@ -42,9 +42,9 @@ def test_smscg_flash(sim_dir, params, smscg_dfs):
 
     boat, flash, radial = smscg_dfs 
 
-    # Compare the 4th column (op_up) of `flash` with `radial`, ensuring oposing alignment
+    # Compare the 4th column (op_up) of `flash` with `radial`, ensuring that when radial gates are tidally operated, the flashboards are closed
     aligned_flash = flash.iloc[:].reindex(radial.index)
-    matches = (radial.iloc[:, 3]==0) & (aligned_flash.iloc[:,3]==0)
+    matches = (radial.iloc[:, 3]==0) & (aligned_flash.iloc[:,3]!=0)
     matches_seconds = datetime_elapsed(matches,reftime=params.run_start)
     
     print("Flash Error Times ----------------")
