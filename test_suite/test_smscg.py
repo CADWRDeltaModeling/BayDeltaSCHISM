@@ -27,7 +27,7 @@ def test_smscg_boatlock(sim_dir, params, smscg_dfs):
     boat, flash, radial = smscg_dfs 
 
     # Compare the 4th column (op_up) of `boat` with `radial`, ensuring alignment
-    aligned_boat = boat.iloc[:, 3].reindex(radial.index)
+    aligned_boat = boat.iloc[:].reindex(radial.index)
     matches = (radial.iloc[:, 3]==0) & (aligned_boat.iloc[:,3]==0)
     matches_seconds = datetime_elapsed(matches,reftime=params.run_start)
     
@@ -43,7 +43,7 @@ def test_smscg_flash(sim_dir, params, smscg_dfs):
     boat, flash, radial = smscg_dfs 
 
     # Compare the 4th column (op_up) of `flash` with `radial`, ensuring oposing alignment
-    aligned_flash = flash.iloc[:, 3].reindex(radial.index)
+    aligned_flash = flash.iloc[:].reindex(radial.index)
     matches = (radial.iloc[:, 3]==0) & (aligned_flash.iloc[:,3]==0)
     matches_seconds = datetime_elapsed(matches,reftime=params.run_start)
     
