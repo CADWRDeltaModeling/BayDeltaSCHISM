@@ -10,13 +10,14 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # User will need to change the start time and location of BayDeltaSCHISM
 start=dtm.datetime(2009,2,10)
 bds_home = "D:/Delta/BayDeltaSCHISM/"
+outdir = "./"
 
 th_repo = os.path.join(bds_home,"data/time_history/*.th")
-multi_file_to_elapsed(th_repo,".",start)
+multi_file_to_elapsed(th_repo,outdir,start)
 
 # This changes salt and temp to the official schism input names
-os.replace("salt.th","SAL_1.th")
-os.replace("temp.th","TEM_1.th")
+os.replace(os.path.join(outdir,"salt.th"),os.path.join(outdir,"SAL_1.th"))
+os.replace(os.path.join(outdir,"temp.th"),os.path.join(outdir,"TEM_1.th"))
 
 # Points to the channel depletions in BayDeltaSCHISM
 # For some near-real time projects this needs to be updated more rapidly
@@ -25,7 +26,7 @@ dcd_daily = ["vsink_dated.th",
              "vsource_dated.th",
              "msource_dated.th"]
 inputs = [os.path.join(dcd_repo,fname) for fname in dcd_daily]
-multi_file_to_elapsed(inputs,'.',start)
+multi_file_to_elapsed(inputs,outdir,start)
 
 # At this point vsource.in is named vsource.in, which is the simplest treatment
 # However, you may want to restore the versioned names to make the versions easier to figure
