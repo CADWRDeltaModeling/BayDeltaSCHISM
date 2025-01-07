@@ -12,6 +12,7 @@ src_dir = "/scratch/dms/BayDeltaSCHISM/Data/atmos/baydelta_sflux_v20220916" # HP
 #src_dir = "/scratch/data/atmos/baydelta_sflux_v20220916" # HPC5
 src_dir_narr = "/scratch/dms/BayDeltaSCHISM/Data/atmos/NARR" # HPC4
 #src_dir_narr = "/scratch/data/atmos/NARR" # HPC5
+src_dir_hrrr = "/scratch/data/atmos/hrrr/" # HPC5
 link_dir = os.getcwd()
 
 def make_links():
@@ -30,6 +31,13 @@ def make_links():
         # src_str_air = os.path.join(src_dir_narr, "%4d_%02d/narr_air.%4d_%02d_%02d.nc" % (current.year, current.month, current.year, current.month, current.day))
         src_str_rad = os.path.join(src_dir_narr, "%4d_%02d/narr_rad.%4d_%02d_%02d.nc" % (current.year, current.month, current.year, current.month, current.day))
         src_str_prc = os.path.join(src_dir_narr, "%4d_%02d/narr_prc.%4d_%02d_%02d.nc" % (current.year, current.month, current.year, current.month, current.day))
+
+        ### HRRR
+        #src_str_atm = os.path.join(src_dir_hrrr,"%4d/hrrr_%4d%02d%02d00.nc" % (current.year, current.year, current.month, current.day))
+        #src_str_air = src_str_atm
+        #src_str_rad = src_str_atm
+        #src_str_prc = src_str_atm
+
         nfile += 1
         link_str_air = os.path.join(link_dir, "sflux_air_1.%04d.nc" % (nfile))
         link_str_rad = os.path.join(link_dir, "sflux_rad_1.%04d.nc" % (nfile))
