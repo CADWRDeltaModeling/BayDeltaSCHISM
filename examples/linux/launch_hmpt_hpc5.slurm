@@ -11,4 +11,4 @@
 module load intel/2024.0
 module load hmpt/2.29
  
-mpirun bash schism_hmpt.sh
+mpirun bash schism_hmpt_hpc5.sh
