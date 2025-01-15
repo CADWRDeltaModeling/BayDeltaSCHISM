@@ -14,7 +14,7 @@ def test_elev2d_time(sim_dir, params):
     elev_df = xr.open_dataset(os.path.join(sim_dir, 'elev2D.th.nc'))
     elev_start = elev_df.time.values[0].astype(
         'M8[ms]').astype(datetime.datetime)
-    param_start = params.run_start
+    param_start = params.run_start.to_pydatetime()
 
     print(f'elev_start: {elev_start}')
     print(f'param_start: {param_start}')
