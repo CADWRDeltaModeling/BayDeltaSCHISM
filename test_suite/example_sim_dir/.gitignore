@@ -1,0 +1,36 @@
+# simulation folders
+outputs*/*
+sflux/*
+noaa_download/*
+nudging/*
+
+# slurm log
+**.log
+
+# pytest files
+_pytest.py
+
+# large files (nc files needed)
+*.gr3
+hotstart_20131024.nc
+vgrid.badlayers.in.3d
+vgrid.in.3d
+
+# symlinked files
+bctides.in
+ccfb_gate.th
+delta_cross_channel.th
+elev2D.th.nc
+hotstart.nc
+montezuma_boat_lock.th
+montezuma_flash.th
+montezuma_radial.th
+param.nml
+SAL_nudge.gr3
+SAL_nu.nc
+source_sink.in
+TEM_nudge.gr3
+TEM_nu.nc
+vgrid.in
+vsink.th
+vsource.th

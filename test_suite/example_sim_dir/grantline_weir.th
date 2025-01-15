@@ -1,0 +1,23 @@
+-10972800.0      1    1    1.0    1.0    1.01    38.10   # fully closed
+691200.0        0    1    1.0    1.0   -2.64    45.72
+13392000.0      1    1    1.0    1.0   -3.29    23.47   # partially closed 
+19180800.0      1    1    1.0    1.0    1.01    38.10   # fully closed
+32572800.0      0    1    1.0    1.0   -2.64    45.72
+46656000.0      1    1    1.0    1.0   -3.29    23.47   # partially closed 
+52059600.0      1    1    1.0    1.0    1.01    38.10   # fully closed
+64051200.0      0    1    1.0    1.0   -2.64    45.72
+78019200.0      1    1    1.0    1.0   -3.29    23.47   # partially closed 
+82771200.0      1    1    1.0    1.0    1.01    38.10   # fully closed
+95040000.0      0    1    1.0    1.0   -2.64    45.72   # Not installed in 2017
+141004800.0      1    1    1.0    1.0   -3.29    23.47   # partially closed 
+145539000.0      1    1    1.0    1.0    1.01    38.10   # fully closed
+158889600.0      0    1    1.0    1.0   -2.64    45.72   # date of breach.  Removal is completed on 11/24/18
+181526400.0      1    1    1.0    1.0    1.01    38.10   # No partial installation
+190857600.0      0    1    1.0    1.0   -2.64    45.72   # date of breach.  Removal is completed on 11/22/19
+208396800.0      1    1    1.0    1.0    1.01    38.10
+222510600.0      0    1    1.0    1.0   -2.64    45.72   # date of breach.  Removal is completed on 12/02/20
+239545800.0      1    1    1.0    1.0    1.01    38.10   # closure
+254237400.0      0    1    1.0    1.0   -2.64    45.72   # date of breach.  Removal is completed on 12/02/21
+271078200.0      1    1    1.0    1.00  -3.29    23.47   # predicted from this line after
+271506600.0      1    1    1.0    1.00   1.01    38.10
+285582660.0      0    1    1.0    1.0   -2.64    45.72   #  Not installed in 2023  

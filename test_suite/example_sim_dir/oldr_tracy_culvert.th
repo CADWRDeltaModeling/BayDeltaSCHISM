@@ -1,0 +1,26 @@
+-12528000.0     1   9   0.000   1.000   -1.11   0.61
+813600.0       0   9   1.000   1.000   -1.11   0.61
+13910400.0     1   9   1.000   1.000   -1.11   0.61
+14342400.0     1   9   0.000   1.000   -1.11   0.61
+32572800.0     0   9   1.000   1.000   -1.11   0.61
+45446400.0     1   9   0.000   1.000   -1.11   0.61
+64054800.0     0   9   1.000   1.000   -1.11   0.61
+76336200.0     1   9   1.000   1.000   -1.11   0.61
+76896000.0     1   9   0.000   1.000   -1.11   0.61
+94348800.0     0   9   1.000   1.000   -1.11   0.61   # Not installed in 2017
+140099400.0     1   9   1.000   1.000   -1.11   0.61
+146275200.0     1   9   0.000   1.000   -1.11   0.61
+159580800.0     0   9   1.000   1.000   -1.11   0.61  # Barrier breached (removal completed on 11/28/18)
+180974700.0     1   9   1.000   1.000   -1.11   0.61  # Installation closed
+180975600.0     1   9   0.000   1.000   -1.11   0.61  # flap gates set to tidal operations
+189695400.0     0   9   1.000   1.000   -1.11   0.61  # Barrier breached (removal completed on 11/11/19)
+208170000.0     1   9   0.111   1.000   -1.11   0.61  # Installation closed, one flapgate left open
+209379600.0     1   9   0.000   1.000   -1.11   0.61  # All flapgates released to tidal operation
+221753700.0     0   9   1.000   1.000   -1.11   0.61  # Barrier breached (removal completed on 11/17/20)     
+239536800.0     1   9   0.111   1.000   -1.11   0.61  # one culvert tied open, 8 tidal
+239988600.0     1   9   0.000   1.000   -1.11   0.61  # remaining flapgate release to tidal operation
+253843200.0     0   9   1.000   1.000   -1.11   0.61  # barrier breached (removal completed on 11/20/21)
+271508400.0     1   9   0.000   1.000   -1.11   0.61  # all flapgates tidal together
+284998500.0     0   9   1.000   1.000   -1.11   0.61  # barrier breached
+309685500.0     1   9   0.000   1.000   -1.11   0.61  # All flapgates released to tidal operation
+316171800.0     0   9   1.000   1.000   -1.11   0.61  # Barrier breach per spreadsheet(removal completed on ??/??/23)     

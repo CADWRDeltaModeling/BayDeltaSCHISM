@@ -1,0 +1,46 @@
+02/10/2009 00:00:00 PST
+0 40. ntip
+0 nbfr
+16 nope
+83 4 4 3 3 ! ocean
+0.01
+0.01
+3 0 1 1 2 ! coyote
+1.
+0.074318
+1.
+4 0 1 0 0 ! ccc_rock_slough
+2 0 1 0 0 ! ccc_old
+4 0 1 0 0 ! swp 
+6 0 1 0 0 ! cvp 
+8 0 1 1 1 ! sjr
+1.
+1.
+2 0 1 1 2 ! calaveras
+1.
+0.062920
+1.
+18 0 1 1 2 ! mokelumne+cosumnes
+1.
+0.062920
+1.
+5 0 1 1 2   ! american
+1.
+0.062920
+1.
+7 0 1 1 1 ! sacramento
+1.
+1.
+4 0 1 1 1 ! yolo_toadrain
+1.
+1.
+58 0 1 1 2 ! yolo
+1.
+0.0662920
+1.
+5 0 1 0 0 ! north_bay
+3 0 1 1 2 ! napa
+1.
+0.074318
+1.
+3 0 1 0 0 ! ccc_victoria
