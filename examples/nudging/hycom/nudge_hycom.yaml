@@ -1,7 +1,7 @@
 nudging:
     start_date: 2022-08-01
     rnday: 9  #24 total run time in days
-    step_nu_tr: 1H
+    step_nu_tr: 1h
     hgrid_input_file: ./schism_inputs/hgrid.gr3
     vgrid_input_file: ./schism_inputs/vgrid.in.new
     vgrid_version: '5.10'
@@ -21,7 +21,7 @@ nudging:
         interpolant: 
             method: nearest
             data: //cnrastore-bdo/Modeling_Data/hycom/processed/hycom_interpolated_hourly_pst  #this should only be a path for the hycom data.
-            dt: 1H  #time step in the input nc file.
+            dt: 1h  #time step in the input nc file.
             vcoords: Z    # Z coordinates or S coordinates. For Z coordinates, depths are directly given, for S coordinats, depths need to be calculated.  
             variables: 
                 - name: temperature

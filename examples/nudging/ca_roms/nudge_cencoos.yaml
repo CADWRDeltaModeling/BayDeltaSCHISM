@@ -1,7 +1,7 @@
 nudging:
     start_date: 2022-08-01
     rnday: 9  #24 total run time in days
-    step_nu_tr: 1H
+    step_nu_tr: 1h
     hgrid_input_file: ./schism_inputs/hgrid.gr3
     vgrid_input_file: ./schism_inputs/vgrid.in.new
     vgrid_version: '5.10'
@@ -22,7 +22,7 @@ nudging:
             method: nearest
             data: //cnrastore-bdo/Modeling_Data/roms/cencoos_ca_roms/processed/cencoos_hourly_pst  #cencoos ROMS data available from 2014-01-01 to 2022-09-14.
             # data: //cnrastore-bdo/Modeling_Data/roms/sfb_forecast/ca_subSFB_fcst_hourly_pst       #sfb ROMS data available from 2005-01-01 to 2014-04-29. 
-            dt: 1H  #time step in the input nc file.
+            dt: 1h  #time step in the input nc file.
             vcoords: Z    # Z coordinates or S coordinates. For Z coordinates, depths are directly given, for S coordinats, depths need to be calculated.  
             variables: 
                 - name: temperature
