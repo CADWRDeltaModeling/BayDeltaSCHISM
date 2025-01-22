@@ -1,13 +1,15 @@
+# To create nudging files based on this input file, run the following command in the terminal:
+#     "create_nudging --yaml_fn nudge_hycom.yaml"
 nudging:
     start_date: 2022-08-01
-    rnday: 9  #24 total run time in days
+    rnday: 9  # total run time in days
     step_nu_tr: 1h
     hgrid_input_file: ./schism_inputs/hgrid.gr3
-    vgrid_input_file: ./schism_inputs/vgrid.in.new
+    vgrid_input_file: ./schism_inputs/vgrid.in.3d
     vgrid_version: '5.10'
     default: 0.
-    crs: 'EPSG:26910' #projection does not need to be defined if the projected coordinates are used consistently. 
-    output_suffix: 'hycom' # the suffix for output files, e.g, TEM nudging file will be named 'TEM_nu.nc'
+    crs: 'EPSG:26910'
+    output_suffix: 'hycom' # the suffix for output files, e.g, TEM nudging file will be named 'TEM_nu_hycom.nc'
     polygons:
       - name: ocean
         type: 3dfield
@@ -20,7 +22,7 @@ nudging:
             - [496487, 4137742]
         interpolant: 
             method: nearest
-            data: //cnrastore-bdo/Modeling_Data/hycom/processed/hycom_interpolated_hourly_pst  #this should only be a path for the hycom data.
+            data: //cnrastore-bdo/Modeling_Data/coastal/hycom/processed/hycom_interpolated_hourly_pst  # path for the hycom data.
             dt: 1h  #time step in the input nc file.
             vcoords: Z    # Z coordinates or S coordinates. For Z coordinates, depths are directly given, for S coordinats, depths need to be calculated.  
             variables: 
