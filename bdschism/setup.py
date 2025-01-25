@@ -5,20 +5,23 @@ requirements = [
     'schimpy',
     'suxarray',
     'vtools',
-    'dms_datastore'
+    'dms_datastore',
+    'dynaconf'
+    
 ]
 
 setup(
-    name='repository-name',
+    name='bdschism',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     description="Tools for launching and evaluating Bay-Delta SCHISM runs",
     license="MIT",
     author="California Department of Water Resources",
     author_email='Eli.Ateljevich@water.ca.gov',
-    url='https://github.com/water-e/repository-name',
+    url='https://github.com/CADWRDeltaModeling/BayDeltaSCHISM',
     packages=['bdschism'],
-
+    include_package_data=True,  # Ensure non-code files are included
+    package_data={"bdschism": ["config/*.yaml"]},  # Include YAML config
     install_requires=requirements,
     keywords='repository-name',
     classifiers=[

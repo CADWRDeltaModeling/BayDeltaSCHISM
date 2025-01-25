@@ -450,6 +450,15 @@
   ihconsv = 1 !heat exchange option
   isconsv = 1 !evaporation/precipitation model
 
+! If at least one of ihconsv and isconsv is set to 1,
+! locally turning off air-sea exchange in shallow waters (<0.25 m) is recommended.
+! Options for locally turning off heat/salt exchange are specified by
+  i_hmin_airsea_ex = 2 ! no effect if ihconsv=0 
+  hmin_airsea_ex = 0.1 ![m], no effect if ihconsv=0 
+  i_hmin_salt_ex = 2 ! no effect if isconsv=0 
+  hmin_salt_ex = 0.1 ![m], no effect if isconsv=0 
+  iprecip_off_bnd = 0 !if /=0, precip will be turned off near land bnd
+
 !-----------------------------------------------------------------------
 ! Turbulence closure.
 !-----------------------------------------------------------------------
