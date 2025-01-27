@@ -18,7 +18,7 @@ nudgelen =days(11)
 
 
 stations = ['anh','benbr','hsl','bts','snc','ibs','cyg','hun','bdl',
-            'fmb','msl','cll','gzl','ryc','hon',
+            'fmb','msl','cse','gzl','ryc','hon',
             'c24','pct','flt','mrz','pct','mal','pts','carqb','benbr',
             'co5','ssi','emm','sdi','blp','jer','sjj',
             'dsj','frp','fal','bet','hol2','hll','orq2','frk','holm','bac','mdm',
@@ -29,7 +29,7 @@ stations = ['anh','benbr','hsl','bts','snc','ibs','cyg','hun','bdl',
             'srh','awb','afo','hst','ist','ssw','von','few','fre','wlk','gys','god','sal']
 
 # Stations where an "upper" and "lower" sublocation occur and we must distinguish the upper
-add_upper = ["anh","cll","mrz","emm","mal","pts"] 
+add_upper = ["anh","cse","mrz","emm","mal","pts"]
 
 ##  
 
