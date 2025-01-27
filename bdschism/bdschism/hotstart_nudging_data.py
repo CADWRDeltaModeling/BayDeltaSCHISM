@@ -114,7 +114,6 @@ for label_var in all_vars:
             print("Exception")
             print(str(err))
             print(ndx,var)
-            print(ts.iloc[0:5])
             print(err)
     var_df = pd.DataFrame(data = vals,columns=("station","x","y",f"{label_var}"))
     var_df.set_index("station")
