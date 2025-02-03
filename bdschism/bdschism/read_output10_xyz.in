@@ -1,0 +1,17 @@
+1
+1
+sedConcentration_1
+1
+1
+1 4
+1
+
+#1. Input extraction pts format (1: .bp; 2:.sta):
+#2. Input ics (1-linear interp; 2-nearest neighbor interp. 2 for node-based variables only! 2 is suggested for sub-meter resolution!):
+#3. Input variable name to read from nc (e.g. elevation):
+#4. Is the var scalar (1) or vector (2)?
+#5. Is the var node (1) or elem (2) based?
+#6. Input start and end file # to read:
+#7. Is the z-coord. in station.* relative to surface (1) or a fixed level (0)?
+#       The depths are in meters, measured from surface.
+#       Fixed level: datum is at zero elevation in the model. For Bay-DELTA, it is NAVD88.
