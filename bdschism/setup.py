@@ -25,5 +25,10 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
-    ]
+    ],
+    entry_points={
+        "console_scripts": [
+            "set_nudging=bdschism.set_nudging:main"
+        ]
+    }
 )
