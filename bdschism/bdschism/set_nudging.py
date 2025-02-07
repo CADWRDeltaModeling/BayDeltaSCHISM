@@ -19,6 +19,11 @@ from datetime import datetime
 import struct, argparse, re
 import time 
 
+import schimpy.param as parms
+import config
+
+import os
+
 ################# command line application #####################
 
 def create_arg_parser():
@@ -34,12 +39,36 @@ def create_arg_parser():
     )
     parser.add_argument('--suffix', default=None, required=True,
                         help="the suffix desired for the nudging/gr3 files. Ex: 'obshycom' in SAL_nu_obshycom.nc")
-    parser.add_argument('--workdir', default='.', required=False,
-                        required=False, help='Simulation directory path')
+    parser.add_argument('--workdir', default='.', required=True, 
+                        help='Simulation directory path')
     return parser
 
+def get_nudge_list(workdir):
+    fname = os.path.join(workdir,"param.nml")
+    
+    params = parms.read_params(fname)
+    nc_nudge_list = []
+    nc_dict = {1: 'TEM',
+               2: 'SAL',
+               3: 'GEN',
+               4: 'AGE',
+               5: 'SED',
+               6: 'ECO',
+               7: 'ICM',
+               8: 'COS',
+               9: 'FIB',
+               10: 'TIMOR-NOT-ACTIVE',
+               11: 'FBM'}
+
+    for i in range(1, 12):
+        if params._namelist['OPT'][f'inu_tr({i})']['value'] == 2:
+            nc_nudge_list.append(nc_dict[i])
+
+    return nc_nudge_list
+
 def set_nudging(suffix, workdir='.'):
-    """ This is a utility to set up nudging files based on a naming convention common for BayDeltaSCHISM
+    """ This is a utility to set up nudging files based on a naming convention common for BayDeltaSCHISM. 
+    Assumed this is on Linux or admin-priveleged Windows machine.
     
     Parameters
     ---------
@@ -73,7 +102,29 @@ def set_nudging(suffix, workdir='.'):
     expectation that usually the file names will be as-expected up to the suffix:
     "BLAH_nudge.gr3" -> "BLAH_nudge.gr3"
 
-    """    
+    """   
+    # Current configuration, deprecated, we need to transition to VAR_nudge.gr3 and VAR_nu.nc 
+    var_map = {"SAL":"salinity",
+               "TEM":"temperature"}
+
+    nc_nudge_list = get_nudge_list(workdir)
+
+    for MOD in nc_nudge_list:
+        if MOD in var_map.keys():
+            var_in_gr3 = var_map[MOD]
+        else:
+            var_in_gr3 = MOD
+
+        var_gr3_in = "{var_in_gr3}_nudge_{suffix}.gr3".format(**locals())
+        var_nc_in = "{MOD}_nu_{suffix}.nc".format(**locals())
+
+        var_gr3_out = "{MOD}_nudge.gr3".format(**locals())
+        var_nc_out = "{MOD}_nu.nc".format(**locals())
+
+        print(f"{MOD}: Linked {var_gr3_out} to {var_gr3_in}")
+        config.create_link(os.path.join(workdir,var_gr3_out), var_gr3_in)
+        print(f"{MOD}: Linked {var_nc_out} to {var_nc_in}")
+        config.create_link(os.path.join(workdir,var_nc_out), var_nc_in)
 
 def main():
     parser = create_arg_parser()
