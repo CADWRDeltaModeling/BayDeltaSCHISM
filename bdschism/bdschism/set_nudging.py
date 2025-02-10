@@ -108,6 +108,7 @@ def set_nudging(suffix, workdir='.'):
                "TEM":"temperature"}
 
     nc_nudge_list = get_nudge_list(workdir)
+    check_files = []
 
     for MOD in nc_nudge_list:
         if MOD in var_map.keys():
@@ -117,14 +118,30 @@ def set_nudging(suffix, workdir='.'):
 
         var_gr3_in = "{var_in_gr3}_nudge_{suffix}.gr3".format(**locals())
         var_nc_in = "{MOD}_nu_{suffix}.nc".format(**locals())
+        check_files.extend([var_gr3_in, var_nc_in])
 
         var_gr3_out = "{MOD}_nudge.gr3".format(**locals())
         var_nc_out = "{MOD}_nu.nc".format(**locals())
 
-        print(f"{MOD}: Linked {var_gr3_out} to {var_gr3_in}")
+        print(f"\t{MOD}: Linked {var_gr3_out} to {var_gr3_in}")
         config.create_link(os.path.join(workdir,var_gr3_out), var_gr3_in)
-        print(f"{MOD}: Linked {var_nc_out} to {var_nc_in}")
+        print(f"\t{MOD}: Linked {var_nc_out} to {var_nc_in}")
         config.create_link(os.path.join(workdir,var_nc_out), var_nc_in)
+
+    invalid_files = [cf for cf in check_files if not os.path.exists(os.path.join(workdir, cf))]
+
+    if invalid_files:
+        red_color = "\033[91m"   # Red for main message
+        pink_color = "\033[95m"  # Pink for filenames
+        reset_color = "\033[0m"  # Reset color
+
+        error_message = (
+            f"{red_color}The following files are not in the directory:\n"
+            + "\n".join(f"\t{pink_color}- {file}{reset_color}" for file in invalid_files)
+        )
+
+        raise ValueError(error_message)
+
 
 def main():
     parser = create_arg_parser()
@@ -137,3 +154,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # set_nudging('hycom', workdir='.')
