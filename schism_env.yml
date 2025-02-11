@@ -39,6 +39,7 @@ dependencies:
   - ipykernel
   - pytest
   - pytest-runner
+  - versioneer
 # Note, though these are listed below as if conda would use pip
 # we do not recommend that you uncomment and use conda to install them via pip. 
 # Instead, if you want a developer install, leave these libraries above

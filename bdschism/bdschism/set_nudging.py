@@ -6,21 +6,11 @@ Set the nudging links for a Bay-Delta SCHSIM model
 2025-02-04: Customized
 """
 
-import sys
-import pandas as pd
-
-from netCDF4 import Dataset
-from schimpy.separate_species import separate_species
-from schimpy.schism_mesh import read_mesh
-from vtools import hours, days, seconds
-from dms_datastore.read_ts import read_noaa, read_ts
-import numpy as np
 from datetime import datetime
-import struct, argparse, re
-import time 
+import argparse
 
 import schimpy.param as parms
-import config
+import bdschism.config as config
 
 import os
 
@@ -39,7 +29,7 @@ def create_arg_parser():
     )
     parser.add_argument('--suffix', default=None, required=True,
                         help="the suffix desired for the nudging/gr3 files. Ex: 'obshycom' in SAL_nu_obshycom.nc")
-    parser.add_argument('--workdir', default='.', required=True, 
+    parser.add_argument('--workdir', default='.', required=False, 
                         help='Simulation directory path')
     return parser
 
@@ -156,4 +146,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # set_nudging('roms', workdir='/scratch/tomkovic/schism_repos/bdschism_pytest')
+    # set_nudging('roms', workdir='path_to_schism_sim_dir')
