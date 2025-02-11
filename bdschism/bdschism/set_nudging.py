@@ -109,6 +109,9 @@ def set_nudging(suffix, workdir='.'):
 
     nc_nudge_list = get_nudge_list(workdir)
     check_files = []
+    gr3_color = "\033[36m"  # Light blue for gr3
+    nc_color = "\033[34m"  # Dark blue for nc
+    reset_color = "\033[0m"  # Reset color
 
     for MOD in nc_nudge_list:
         if MOD in var_map.keys():
@@ -123,9 +126,9 @@ def set_nudging(suffix, workdir='.'):
         var_gr3_out = "{MOD}_nudge.gr3".format(**locals())
         var_nc_out = "{MOD}_nu.nc".format(**locals())
 
-        print(f"\t{MOD}: Linked {var_gr3_out} to {var_gr3_in}")
+        print(f"\t{gr3_color}{MOD} .gr3{reset_color}: Linked {var_gr3_out} to {var_gr3_in}")
         config.create_link(os.path.join(workdir,var_gr3_out), var_gr3_in)
-        print(f"\t{MOD}: Linked {var_nc_out} to {var_nc_in}")
+        print(f"\t{nc_color}{MOD} .nc{reset_color}: Linked {var_nc_out} to {var_nc_in}")
         config.create_link(os.path.join(workdir,var_nc_out), var_nc_in)
 
     invalid_files = [cf for cf in check_files if not os.path.exists(os.path.join(workdir, cf))]
@@ -133,7 +136,6 @@ def set_nudging(suffix, workdir='.'):
     if invalid_files:
         red_color = "\033[91m"   # Red for main message
         pink_color = "\033[95m"  # Pink for filenames
-        reset_color = "\033[0m"  # Reset color
 
         error_message = (
             f"{red_color}The following files are not in the directory:\n"
@@ -154,4 +156,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # set_nudging('hycom', workdir='.')
+    # set_nudging('roms', workdir='/scratch/tomkovic/schism_repos/bdschism_pytest')
