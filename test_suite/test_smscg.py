@@ -66,7 +66,7 @@ def test_smscg_radial_tides(sim_dir, params, smscg_dfs):
     for match, sec in zip(matches.index[matches].values, matches_seconds.index[matches].values):
         print(f"Seconds: {sec}, Datetime: {match}")
 
-    assert (~matches).all(), f"montezuma_radial tidal operation not correct. op_down should be 0.0 when op_up is 1.0."
+    assert (~matches).all(), f"montezuma_radial tidal operation not correct. op_down should be 1.0 when op_up is 0.0."
 
 @pytest.mark.prerun
 def test_smscg_radial_open(sim_dir, params, smscg_dfs):
