@@ -15,9 +15,9 @@ import numpy as np
 def smscg_dfs(sim_dir, params):
     """ Reads the three montezuma .th files """
     start = params.run_start
-    boat = pd.read_csv(os.path.join(sim_dir,"montezuma_boat_lock.th"),index_col=0,sep=r'\s+',header=None)
-    flash =   pd.read_csv(os.path.join(sim_dir,"montezuma_flash.th"),index_col=0,sep=r'\s+',header=None)    
-    radial =   pd.read_csv(os.path.join(sim_dir,"montezuma_radial.th"),index_col=0,sep=r'\s+',header=None) 
+    boat = pd.read_csv(os.path.join(sim_dir,"montezuma_boat_lock.th"),index_col=0,sep=r'\s+',header=None,comment="#")
+    flash =   pd.read_csv(os.path.join(sim_dir,"montezuma_flash.th"),index_col=0,sep=r'\s+',header=None,comment="#")    
+    radial =   pd.read_csv(os.path.join(sim_dir,"montezuma_radial.th"),index_col=0,sep=r'\s+',header=None,comment="#") 
     return  [elapsed_datetime(x,reftime=start) for x  in (boat, flash, radial)]
 
 @pytest.mark.prerun
