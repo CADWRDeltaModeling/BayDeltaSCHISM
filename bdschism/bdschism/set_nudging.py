@@ -31,7 +31,29 @@ def create_arg_parser():
                         help="the suffix desired for the nudging/gr3 files. Ex: 'obshycom' in SAL_nu_obshycom.nc")
     parser.add_argument('--workdir', default='.', required=False, 
                         help='Simulation directory path')
+    parser.add_argument('--var_map', default="", type=parse_var_map, required=False, 
+                        help="Any unexpected mapping in key=value pairs separated by commas. Ex: --var_map 'TEM=temperature,SAL=salinity'")
     return parser
+
+def parse_var_map(s):
+    """
+    Parse a string of key=value pairs separated by commas into a dictionary.
+    Expected format: "key1=value1,key2=value2"
+    Used for var_map which feeds the gr3 formats for things like TEM=temperature
+    """
+    mapping = {}
+    if s!="":
+        # Remove any surrounding quotes or spaces and split by comma
+        pairs = s.split(',')
+        for pair in pairs:
+            print(pair)
+            if '=' not in pair:
+                raise argparse.ArgumentTypeError(
+                    f"Invalid format for var_map: '{pair}'. Expected format key=value."
+                )
+            key, value = pair.split('=', 1)
+            mapping[key.strip()] = value.strip()
+    return mapping
 
 def get_nudge_list(workdir):
     fname = os.path.join(workdir,"param.nml")
@@ -56,7 +78,7 @@ def get_nudge_list(workdir):
 
     return nc_nudge_list
 
-def set_nudging(suffix, workdir='.'):
+def set_nudging(suffix, workdir='.', var_map={}):
     """ This is a utility to set up nudging files based on a naming convention common for BayDeltaSCHISM. 
     Assumed this is on Linux or admin-priveleged Windows machine.
     
@@ -68,34 +90,8 @@ def set_nudging(suffix, workdir='.'):
         
     workdir : str
         Directory where the links and changes are made        
-        
-    The script will identify nudging gr3 files and point the schism names to the suffix names. This 
-    function depends on either a config or some conventions to define expectations. It also requires that
-    we be able to identify the possibilities, either programatically or with a dictionaries for lookup,
-    something like:
-    
-    target_link = {"SAL_nudge_{suffix}.gr3" : "SAL_nudge_{suffix}.gr3",
-                   "TEM_nudge_{suffix}.gr3": "TEM_nudge_{suffix}.gr3",
-                   "SAL_nu_{suffix}.nc" : "SAL_nu_{suffix}.nc",
-                   "TEM_nu_{suffix}.nc": "TEM_nu_{suffix}.nc",               
 
-    If it is easier to change the preprocessing scripts, let me know. Might want to ask Zhenlin and 
-    Kijin what sediment or other tracers will look like. 
-    It would be nice if that ended up here soon, but salt and temp are a win. Some connection with param
-    could also be used, with the script printing out, perhaps early in the process,
-    which variables are scheduled for nudging using
-    nc files, and which are "nudge to IC" option. This could also be the basis of the search for variables
-    beyond SAL_ and TEM_. Again, SAL and TEM are a win.
-    
-    One idea I have is that maybe the name "salinity_nudge_{suffix}.gr3" should be "SAL_nudge_{suffix}.gr3"
-    or that SAL and TEM should be the only allowed exceptions. It would be helpful to have the
-    expectation that usually the file names will be as-expected up to the suffix:
-    "BLAH_nudge.gr3" -> "BLAH_nudge.gr3"
-
-    """   
-    # Current configuration, deprecated, we need to transition to VAR_nudge.gr3 and VAR_nu.nc 
-    var_map = {"SAL":"salinity",
-               "TEM":"temperature"}
+    """ 
 
     nc_nudge_list = get_nudge_list(workdir)
     check_files = []
@@ -141,8 +137,9 @@ def main():
 
     suffix = args.suffix
     workdir = args.workdir
+    var_map = args.var_map
     
-    return set_nudging(suffix, workdir='.')
+    return set_nudging(suffix, workdir='.',var_map=var_map)
 
 if __name__ == "__main__":
     main()
