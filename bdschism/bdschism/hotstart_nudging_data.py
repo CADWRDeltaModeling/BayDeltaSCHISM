@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-import pandas as pd
+
+# Use example as command-line interface function:
+# python hotstart_nudging_data.py --start_date 2018-02-19  --nudge_len 300 --dest_dir . --repo_dir $repo_path
 import matplotlib.pyplot as plt
 from dms_datastore.read_ts import *
 from dms_datastore.dstore_config import *
