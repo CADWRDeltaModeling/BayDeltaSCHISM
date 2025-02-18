@@ -156,7 +156,11 @@ def hotstart_nudge_data(sdate,ndays,dest,repo_dir):
         var_df.set_index("station")
         var_df.to_csv(os.path.join(dest,f"hotstart_data_{label_var}.csv"),sep=",",float_format="%.2f")
         
-        nudging_df = pd.concat(accepted,axis=1)
+        # Check if accepted is empty. If so, throw an exception
+        if accepted == {}:
+            raise ValueError(f"No data found for {label_var} in {repo}")
+        else:
+            nudging_df = pd.concat(accepted,axis=1)
         nudging_df.index.name='datetime'
         nudging_dfs[label_var] = nudging_df
         print(nudging_df)
