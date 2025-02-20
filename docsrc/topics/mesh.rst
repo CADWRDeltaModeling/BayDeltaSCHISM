@@ -58,9 +58,19 @@ Recap/checklist
 
 Getting to know SMS
 ^^^^^^^^^^^^^^^^^^^
+Please see Aquaveo `SMS learning center`_ for videos, tutorials, wiki, courses, and blog.
+The CA-DWR Delta Modeling Section has posted a series of videos to be used for learning how to use SMS for SCHISM mesh generation. You can see the complete playlist here: `DMS SCHISM Gridding Playlist`_
 
-Video (Eli Ateljevich)
-""""""""""""""""""""""
+.. _SMS learning center: https://aquaveo.com/software/sms/learning
+.. _DMS SCHISM Gridding Playlist: https://youtube.com/playlist?list=PL33EJkVWqElUYwUVwoPJNbxncPytpAI_2&si=dBTzI4PUWRE_Avb3
+
+Here's the introductory SMS video by Eli Ateljevich:
+
+.. raw:: html
+
+  <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto; margin-bottom: 2em;">
+        <iframe src="https://www.youtube.com/embed/Ez7Fz6thXGM?si=NmJZgPD8cp8dxef6" title="SMS Mesh Generation Principle" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+  </div>
 
 Sample Data
 """"""""""""
@@ -74,7 +84,13 @@ Presentation: clip_dems and efficient use of DEMS
 
 Building the Bay-Delta mesh the standard way
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Here's the SMS 2dm generation overview video by Eli Ateljevich:
 
+.. raw:: html
+
+  <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto; margin-bottom: 2em;">
+        <iframe src="" title="DMS Bay Delta official mesh building" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+  </div>
 
 Presentation: Meshing consideration for marshes and restoration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

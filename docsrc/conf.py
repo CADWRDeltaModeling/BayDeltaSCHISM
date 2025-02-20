@@ -29,7 +29,8 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.intersphinx',
               'sphinx.ext.todo',
               'sphinx.ext.mathjax',
-              'sphinxcontrib.bibtex']
+              'sphinxcontrib.bibtex',
+              'sphinx.ext.viewcode']
 
 bibtex_bibfiles = ['dms_20221119b.bib']
 
