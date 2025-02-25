@@ -1,68 +1,48 @@
 
 
-def uv3d(bg_dir='.',
-         bg_output_dir=None,
-         clinic_dir=None,
-         hgrid_bg='hgrid.gr3',
-         hgrid_fg=None,
-         vgrid_bg='vgrid.in.2d',
-         vgrid_fg='vgrid.in.3d',
-         interp_template = None,
+def uv3d(bg_dir,
+         fg_dir,
+         bg_output_dir='outputs',
          nday = None,
-         
+		 alt_name = None,
          ):
     """ Runs interpolate_variables utility to generate uv3d.th.nc. 
     
-    This is based on facilitating a barotropic run, but with a a modified
+    The name of the executable is obtained from the bdschism config, which can be overridden locally. 
     interp_template file you could do far field to near field cases.     
-    
-    The default, run in the barotropic directory, will run without input
+ 
+    The number of days is inferred. Testing for validity? 
+	
+	Links are deleted after completion. 
     
     Parameters
     ----------
     
     bg_dir : str
         Name of background simulation (e.g. larger or barotropic) directory
-        
+
+    fg_dir : str
+        Name of foreground baroclinic run directory. Sine 
+
     bg_output_dir :str
         Name of output directory in background. If None, will try outputs.tropic then outputs
   
-    fg_dir : str
-        Name of foreground oclinic run directory. If None, will copy from tropic_dir
-        
-    hgrid_bg : str
-        Name of hgrid.gr3 file in tropic_, which will be linked to bg.gr3 This will almost never change,
-        but could if you use a larger barotropic mesh which is a recommended practice.
-        
-    hgrid_fg : str
-        Name of hgrid.gr3 file in clinic_, which will be linked to fg.gr3. This will almost never change,
-        but could if you use a smaller baroclinic mesh.
-        
-    vgrid_bg : str
-        Name of the (2D barotropic) vgrid file 
-        
-    vgrid_fg : str
-        Name of the (3D) baroclinic vgrid file
-        
-    interp_template : [None | str]
-        Name of interpolate_variables.in file. If None, will use an internal version with nday as template.
-  
     nday :  int 
-        Number of days to process.  If None, param.nml is parsed in tropic_dir and the
-        full length of the run is used
+        Number of days to process.  If None, this is inferred from param.nml in the receiving directory.
     
-    write_clinic: bool
-        If true, the file will be moved to run_dir. Otherwise will be done in place in outputs
-
-        
+    alt_name: str
+	    Alternative name besides uv3D.th.20250210.nc 
+	
     Notes
     -----
     
-    Side effect is uv3D.th.nc, which may be moved to the baroclinic directory. The file
-    uv3D.th.nc is produced by the interpolate_variables script, the current version
-    of which is interpolate_variables7 (can move to config later). It expects four links,
-    bg.gr3 -> tropic hgrid.gr3, fg.gr3 -> clinic/hgrid.gr3, vgrid.bg -> vgrid.in.2d and
-    vgrid.fg -> vgrid.in.3d. The defaults will take care of the normal case. There 
+    The file uv3D.th.nc is produced by the interpolate_variables script, the current version
+    of which should be named in the config, not hardwired here. Same for the method of  doing symbolic links. 
+	to config later). The utility expects four links,
+    # bg.gr3 -> tropic hgrid.gr3, 
+	# fg.gr3 -> clinic/hgrid.gr3, 
+	# vgrid.bg -> vgrid.in.2d and
+    # vgrid.fg -> vgrid.in.3d. The defaults will take care of the normal case. There 
     are reasonable extensions (supersetting the grid for tropic and near field modeling)
     that are in use and make it reasonable to prepare for modifications. The script also
     expects a file called interpolate_variables.in, which you can find in the templates
@@ -80,11 +60,7 @@ def uv3d(bg_dir='.',
     interpolate_template = f"3 {nday}  !ifile ndays. ifile=1: generate elev2D.th; =2: salt3D.th and temp3D.th; =3: uv3D.th); ndays is the # of days needed;\n1 1   !total # of boundary segments that need *3D.th, followed by list of boundary segment indices\n0     !0: normal; 1: more outputs for debug"
     
         
-        
-        
-        
-def set_nudging(suffix,workdir='.'):
-    """ This is a utility to set up nudging files based on a naming convention common for BayDeltaSCHISM
+
     
     Parameters
     ---------

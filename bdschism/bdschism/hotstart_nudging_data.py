@@ -1,3 +1,4 @@
+for label_var in all_vars:
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-import pandas as pd
 
