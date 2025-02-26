@@ -11,15 +11,7 @@ For installation instructions please see the `Installation and Getting Started P
 
 
 General Resources and Tools
-===========================
-
-
-.. toctree::
-   :hidden:
-
-   Hello SCHISM <https://cadwrdeltamodeling.github.io/HelloSCHISM/>
-   Bay Delta SCHISM User Guide <user_guide.rst>
-   Linux <linux.rst>
+-------
    
    
 Tutorials
