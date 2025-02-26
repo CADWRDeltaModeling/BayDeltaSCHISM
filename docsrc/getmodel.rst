@@ -88,9 +88,9 @@ Instructions for managing Python environments are on our general Delta Modeling 
 
 You will want the following tools:
 
-  * schimpy [`project docs <https://cadwrdeltamodeling.github.io/schimpy>`_] [`code repo <https://github.com/CADWRDeltaModeling/schimpy>`_] for managing spatial inputs and templates plus utilities
-  * vtools3  [`project docs <https://cadwrdeltamodeling.github.io/vtools3/>`_] [`code repo <https://github.com/CADWRDeltaModeling/vtools3>`_] for time series manipulation
-  * dms-datastore [`project docs <https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html>`_] [`code repo <https://github.com/CADWRDeltaModeling/dms_datastore>`_] | for managing data from common Bay-Delta sources.
+  * schimpy [`schimpy project docs <https://cadwrdeltamodeling.github.io/schimpy>`_] [`schimpy code repo <https://github.com/CADWRDeltaModeling/schimpy>`_] for managing spatial inputs and templates plus utilities
+  * vtools3  [`vtools3 project docs <https://cadwrdeltamodeling.github.io/vtools3/>`_] [`vtools3 code repo <https://github.com/CADWRDeltaModeling/vtools3>`_] for time series manipulation
+  * dms-datastore [`dms-datastore project docs <https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html>`_] [`dms-datastore code repo <https://github.com/CADWRDeltaModeling/dms_datastore>`_] | for managing data from common Bay-Delta sources.
 
 Work tends to expand in a predictable way and we recommend a broader environment available 
 at the Bay-Delta SCHISM `repo <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/schism_env.yml>`.

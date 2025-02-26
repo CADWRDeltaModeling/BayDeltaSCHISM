@@ -11,7 +11,7 @@ For installation instructions please see the `Installation and Getting Started P
 
 
 General Resources and Tools
--------
+-------------------------------
    
    
 Tutorials
@@ -25,7 +25,7 @@ The :doc:`Bay Delta SCHISM User Guide <user_guide>` explains many of the details
 :doc:`Linux hints <linux>` help get you started and avoid some gotchas for things like copying and archiving runs
 
 Manuals
--------
+--------
 
 `SCHISM Manuals <http://ccrm.vims.edu/schismweb/schism_manual.html>`_ are available for SCHISM at the VIMS site. 
 
