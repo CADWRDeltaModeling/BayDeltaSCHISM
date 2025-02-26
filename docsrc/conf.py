@@ -109,7 +109,10 @@ html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
     'logo_only': True,
     'display_version': False,
-    'prev_next_buttons_location': 'both'
+    'prev_next_buttons_location': 'both',
+    "collapse_navigation": False,  # Keeps sections expandable
+    "navigation_depth": 4,         # Adjust as needed for depth
+    "titles_only": False,          # Ensures captions are clickable
 }
 
 # Add any paths that contain custom themes here, relative to this directory.

@@ -5,8 +5,10 @@ Bay-Delta SCHISM User Guide
 
 The following topical guides take you through what it takes to set up a basic model run using the Bay-Delta SCHISM toolchain. You won't have action items on all the topics for every run, but the :ref:`Bay-Delta SCHISM Essentials <essentials>` section will get you started on a basic hindcast and the :ref:`Topical Guides <topical>` describe numerous common modeling tasks and where the gotchas are. 
 
+Bay-Delta SCHISM Setup
+-------
+
 .. toctree::
-  :caption: Bay-Delta SCHISM Setup
   :maxdepth: 3
   
   Getting the Tools and Setting Up <getmodel>
@@ -15,15 +17,27 @@ The following topical guides take you through what it takes to set up a basic mo
 ________________________
 
 .. _essentials:
+Bay-Delta SCHISM Essentials
+-------
 
+Overview
+^^^^^^^^^^^
 .. toctree::
-  :caption: Bay-Delta SCHISM Essentials
-  :maxdepth: 2
-
+  :maxdepth: 3
+  :titlesonly:
 
   topics/overview.rst
+  topics/vignette.rst
   topics/files_and_directories  
   topics/preprocess.rst
+
+
+Boundaries & Input Files
+^^^^^^^^^^^
+.. toctree::
+  :maxdepth: 3
+  :titlesonly:
+
   topics/ocean.rst
   topics/flow_boundary.rst
   topics/atmospheric.rst
@@ -31,27 +45,40 @@ ________________________
   topics/param.rst  
   topics/hotstart.rst
   topics/nudging.rst
-  topics/output.rst  
-  topics/vegetation.rst  
-  topics/vignette.rst
+  topics/vegetation.rst 
+
+Inspection of Model Setup
+^^^^^^^^^^^
+.. toctree::
+  :maxdepth: 3
+  :titlesonly:
+ 
   topics/checklists.rst
   topics/run_tests.rst
   
+Output Files
+^^^^^^^^^^^
+.. toctree::
+  :maxdepth: 3
+  :titlesonly:
+  topics/output.rst  
 ________________________
 
 
 .. _topical:
+Advanced Tasks and Concepts
+-------
 
 .. toctree::
-  :caption: Advanced Tasks and Concepts
   :maxdepth: 3
+  :titlesonly:
   
-  topics/mesh.rst
   topics/problems.rst
   topics/age.rst
   topics/sea_level_rise.rst
   topics/sources.rst
   topics/structures.rst
+  topics/mesh.rst
   topics/utilities.rst
   
   

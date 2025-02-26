@@ -2,7 +2,7 @@
 
 
 ===============
-Horizontal Mesh
+Gridding the Horizontal Mesh
 ===============
 
 The format of the SCHISM horizontal mesh is described in the `SCHISM manual <https://schism-dev.github.io/schism/master/index.html>`_. 
