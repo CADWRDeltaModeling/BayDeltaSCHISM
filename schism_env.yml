@@ -9,6 +9,7 @@ dependencies:
   - vtools3>=3.7.5
   - dms-datastore>=0.1.0
   - numpy<2
+  - dynaconf
   - libgdal
   - pyogrio
   - pydelmod
