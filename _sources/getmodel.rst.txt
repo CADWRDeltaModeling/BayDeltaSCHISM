@@ -131,7 +131,7 @@ To retrieve the configuration settings, use:
 
 .. code-block:: python
 
-   from mypackage.config import get_settings
+   from bdschism.setting import get_settings
 
    settings = get_settings()
 
