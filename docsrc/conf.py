@@ -30,7 +30,8 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.todo',
               'sphinx.ext.mathjax',
               'sphinxcontrib.bibtex',
-              'sphinx.ext.viewcode']
+              'sphinx.ext.viewcode',
+              'sphinxcontrib.mermaid']
 
 bibtex_bibfiles = ['dms_20221119b.bib']
 
@@ -108,7 +109,6 @@ html_theme = 'sphinx_rtd_theme'
 # documentation.
 html_theme_options = {
     'logo_only': True,
-    'display_version': False,
     'prev_next_buttons_location': 'both',
     "collapse_navigation": False,  # Keeps sections expandable
     "navigation_depth": 4,         # Adjust as needed for depth

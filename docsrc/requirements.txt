@@ -3,6 +3,7 @@ sphinx>=7.0
 sphinx-design
 sphinx-argparse  
 sphinxcontrib-bibtex
+sphinxcontrib-mermaid
 sphinx_rtd_theme
 ghp-import # for GitHub Pages import
 nbsphinx
