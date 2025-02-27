@@ -113,9 +113,9 @@ def set_nudging(suffix, workdir='.', var_map={}):
         var_nc_out = "{MOD}_nu.nc".format(**locals())
 
         print(f"\t{gr3_color}{MOD} .gr3{reset_color}: Linked {var_gr3_out} to {var_gr3_in}")
-        config.create_link(os.path.join(workdir,var_gr3_out), var_gr3_in)
+        config.create_link(var_gr3_in, os.path.join(workdir,var_gr3_out) )
         print(f"\t{nc_color}{MOD} .nc{reset_color}: Linked {var_nc_out} to {var_nc_in}")
-        config.create_link(os.path.join(workdir,var_nc_out), var_nc_in)
+        config.create_link(var_nc_in, os.path.join(workdir,var_nc_out))
 
     invalid_files = [cf for cf in check_files if not os.path.exists(os.path.join(workdir, cf))]
 

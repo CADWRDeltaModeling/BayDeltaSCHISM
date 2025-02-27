@@ -1,10 +1,14 @@
 
 
-def uv3d(bg_dir,
-         fg_dir,
+def uv3d(fg_dir = '.',
+         bg_dir = None,
          bg_output_dir='outputs',
          nday = None,
-		 alt_name = None,
+		 out_name = None,
+		 fg_gr3 = 'hgrid.gr3',
+	     bg_gr3 = 'hgrid.gr3',
+		 vgrid.fg = 'vgrid.in',
+		 vgrid.bg = 'vgrid.in'
          ):
     """ Runs interpolate_variables utility to generate uv3d.th.nc. 
     
@@ -17,21 +21,21 @@ def uv3d(bg_dir,
     
     Parameters
     ----------
+
+    fg_dir : str
+        Name of foreground baroclinic run directory. Sine 
     
     bg_dir : str
         Name of background simulation (e.g. larger or barotropic) directory
 
-    fg_dir : str
-        Name of foreground baroclinic run directory. Sine 
-
     bg_output_dir :str
-        Name of output directory in background. If None, will try outputs.tropic then outputs
+        Name of output directory within bg_dir. If None, will try outputs.tropic then outputs
   
     nday :  int 
         Number of days to process.  If None, this is inferred from param.nml in the receiving directory.
     
-    alt_name: str
-	    Alternative name besides uv3D.th.20250210.nc 
+    out_name: str
+	    Alternative name besides uv3D.th.nc 
 	
     Notes
     -----
