@@ -64,8 +64,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#configuration-sources">Configuration Sources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#example-configuration-file">Example Configuration File</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#overriding-configuration">Overriding Configuration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#bathymetry">Bathymetry</a></li>
@@ -286,13 +284,10 @@ We can provide modest support for modern versions of the packages on fairly up-t
 <h2>Configuration System<a class="headerlink" href="#configuration-system" title="Link to this heading"></a></h2>
 <section id="id5">
 <h3>Overview<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
-<p>Many of the bdschism command line scripts and python utilities are based on conventions. However, there are still some names, identifiers and preferences
-that need to be set as a default configuration. For instance the schism utilities have version numbers like <cite>interpolate_variables8</cite> and we
-want to have a set it and forget it method for pushing out updates to this number, and also to leave the user a way of overriding this suggestion
-(for instance if your machine is sticking with an older version’.
-The configuration system is designed to provide flexible and hierarchical settings management for the application.
-It leverages <cite>Dynaconf</cite> to load settings from yaml preference configuration files, allowing users to customize behavior at different levels. To some extent
-you can ignore this initially.</p>
+<p>Bay-Delta SCHISM uses <a class="reference external" href="https://www.dynaconf.com/">Dynaconf</a> for settings management.</p>
+<p>The bdschism scripts and command line utilities rely on a mix of convention and configuration.  For instance the schism utilities
+have version numbers like <cite>interpolate_variables8</cite> and we want to have a setting that captures that and then give it a simpler name
+without constantly updating scattered python files.</p>
 </section>
 <section id="configuration-sources">
 <h3>Configuration Sources<a class="headerlink" href="#configuration-sources" title="Link to this heading"></a></h3>
@@ -333,20 +328,6 @@ you can ignore this initially.</p>
 <span class="nt">combine_hotstart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">combine_hotstart7</span>
 </pre></div>
 </div>
-</section>
-<section id="overriding-configuration">
-<h3>Overriding Configuration<a class="headerlink" href="#overriding-configuration" title="Link to this heading"></a></h3>
-<p>Users can override default settings by:</p>
-<ul class="simple">
-<li><p>Setting the <code class="docutils literal notranslate"><span class="pre">BDS_CONFIG</span></code> environment variable to point to a custom configuration file.</p></li>
-<li><p>Placing a <code class="docutils literal notranslate"><span class="pre">bds_config.yaml</span></code> file in the project’s root directory.</p></li>
-</ul>
-</section>
-<section id="dependencies">
-<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p><a class="reference external" href="https://www.dynaconf.com/">Dynaconf</a> for dynamic settings management.</p></li>
-</ul>
 </section>
 </section>
 <section id="bathymetry">

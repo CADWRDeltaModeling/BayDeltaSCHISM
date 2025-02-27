@@ -102,14 +102,11 @@ Configuration System
 
 Overview
 ^^^^^^^^
+Bay-Delta SCHISM uses `Dynaconf <https://www.dynaconf.com/>`_ for settings management.
 
-Many of the bdschism command line scripts and python utilities are based on conventions. However, there are still some names, identifiers and preferences
-that need to be set as a default configuration. For instance the schism utilities have version numbers like `interpolate_variables8` and we
-want to have a set it and forget it method for pushing out updates to this number, and also to leave the user a way of overriding this suggestion
-(for instance if your machine is sticking with an older version'. 
-The configuration system is designed to provide flexible and hierarchical settings management for the application. 
-It leverages `Dynaconf` to load settings from yaml preference configuration files, allowing users to customize behavior at different levels. To some extent
-you can ignore this initially.
+The bdschism scripts and command line utilities rely on a mix of convention and configuration.  For instance the schism utilities 
+have version numbers like `interpolate_variables8` and we want to have a setting that captures that and then give it a simpler name
+without constantly updating scattered python files.  
 
 Configuration Sources
 ^^^^^^^^^^^^^^^^^^^^^
@@ -159,21 +156,6 @@ A partial ``bds_config.yaml`` file might look like:
    # These are maps to the versioned names of utilities
    interpolate_variables: interpolate_variables10
    combine_hotstart: combine_hotstart7
-
-Overriding Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-Users can override default settings by:
-
-- Setting the ``BDS_CONFIG`` environment variable to point to a custom configuration file.
-- Placing a ``bds_config.yaml`` file in the project's root directory.
-
-
-Dependencies
-^^^^^^^^^^^^
-
-- `Dynaconf <https://www.dynaconf.com/>`_ for dynamic settings management.
-
 
 
 
