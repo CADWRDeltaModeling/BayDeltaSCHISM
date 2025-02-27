@@ -92,9 +92,9 @@ Additionally if you change the number or location of boundaries (a spatial input
 
 The BayDeltaSCHISM repo is mostly self-contained for temporal data 
 except for some large spatiotemporal files:
- * Atmospheric data are disseminated on CNRA Open Data Portal
- * Prepared coastal boundary temperatur and salt data for nudging [REF] is disseminated on CNRA Open Data Portal. 
- * Vegetation data from the UC Davis Ustin lab is distributed on CNRA Open Data Portal.
+* Atmospheric data are disseminated on CNRA Open Data Portal
+* Prepared coastal boundary temperatur and salt data for nudging [REF] is disseminated on CNRA Open Data Portal. 
+* Vegetation data from the UC Davis Ustin lab is distributed on CNRA Open Data Portal.
 
 
 =================================================
@@ -105,10 +105,10 @@ These \*.nml files are the main control files for running SCHISM and provide alg
 We don't recommend changing the driver files initially, but you can expect to need the following for 
 basic workflows:
 
-  * specify the run start date and number of days (nday) 
-  * specify `ihot`, the type of initialization. We use cold starts (ihot=0), hot starts from t=0(ihot=1) and restarting (ihot=2) at various points in our workflow. See [REF]
-  * check the nudging switches
-  * specify binary outputs
+* specify the run start date and number of days (nday) 
+* specify `ihot`, the type of initialization. We use cold starts (ihot=0), hot starts from t=0(ihot=1) and restarting (ihot=2) at various points in our workflow. See [REF]
+* check the nudging switches
+* specify binary outputs
   
 You will also note that there are two files, one with baroclinicity ('clinic) and one with only barotropic pressure ('tropic). When we do studies we often do a preliminary pass with a 2D model to establish more well behaved boundaries. The need for this is a frequent topic of interest for new users. There is a writeup [REF]. The topic is worth a quick read, if only to make the workflow and alternatives more clear. 
 
@@ -122,7 +122,7 @@ Besides the high performance platform there are a few concepts or bits of nomenc
 .. _tropic:
 
 *barotropic warm up:*
-At the beginning of a new study, or for each alternative with large landscape or sea level differences, we do a preliminary simulation in barotropic mode (in 2D no density, very diffusive settings). The only purpose of this run is to extract a reasonally dampened ocean boundary condition for the rest of the study. The output of this step is a file called `uv3D.th.nc`. For more information see :ref:`barotropic``.
+At the beginning of a new study, or for each alternative with large landscape or sea level differences, we do a preliminary simulation in barotropic mode (in 2D no density, very diffusive settings). The only purpose of this run is to extract a reasonally dampened ocean boundary condition for the rest of the study. The output of this step is a file called `uv3D.th.nc`. For more information see :ref:`barotropic`.
 
 *hotstart:*
 This is the name of the file used for initializing the model or restarting it to change inputs or recover from an error. See :ref:`hotstart`.

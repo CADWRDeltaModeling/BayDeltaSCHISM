@@ -60,7 +60,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#bay-delta-package">Bay-Delta Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#required-python-packages">Required Python Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configuration-system">Configuration System</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id5">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration-file-locations-and-priorities">Configuration File Locations and Priorities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#example-configuration-file">Example Configuration File</a></li>
@@ -121,7 +121,10 @@
 <li class="toctree-l4"><a class="reference internal" href="topics/run_tests.html">Test Suite for Prechecking Runs</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="user_guide.html#output-files">Output Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#output-files">Output Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="topics/output.html">Output</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="user_guide.html#advanced-tasks-and-concepts">Advanced Tasks and Concepts</a><ul>
@@ -271,9 +274,9 @@ Instructions for managing Python environments are on our general Delta Modeling 
 <p>You will want the following tools:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>schimpy [<a class="reference external" href="https://cadwrdeltamodeling.github.io/schimpy">project docs</a>] [<a class="reference external" href="https://github.com/CADWRDeltaModeling/schimpy">code repo</a>] for managing spatial inputs and templates plus utilities</p></li>
-<li><p>vtools3  [<a class="reference external" href="https://cadwrdeltamodeling.github.io/vtools3/">project docs</a>] [<a class="reference external" href="https://github.com/CADWRDeltaModeling/vtools3">code repo</a>] for time series manipulation</p></li>
-<li><p>dms-datastore [<a class="reference external" href="https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html">project docs</a>] [<a class="reference external" href="https://github.com/CADWRDeltaModeling/dms_datastore">code repo</a>] | for managing data from common Bay-Delta sources.</p></li>
+<li><p>schimpy [<a class="reference external" href="https://cadwrdeltamodeling.github.io/schimpy">schimpy project docs</a>] [<a class="reference external" href="https://github.com/CADWRDeltaModeling/schimpy">schimpy code repo</a>] for managing spatial inputs and templates plus utilities</p></li>
+<li><p>vtools3  [<a class="reference external" href="https://cadwrdeltamodeling.github.io/vtools3/">vtools3 project docs</a>] [<a class="reference external" href="https://github.com/CADWRDeltaModeling/vtools3">vtools3 code repo</a>] for time series manipulation</p></li>
+<li><p>dms-datastore [<a class="reference external" href="https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html">dms-datastore project docs</a>] [<a class="reference external" href="https://github.com/CADWRDeltaModeling/dms_datastore">dms-datastore code repo</a>] | for managing data from common Bay-Delta sources.</p></li>
 </ul>
 </div></blockquote>
 <p>Work tends to expand in a predictable way and we recommend a broader environment available
@@ -282,8 +285,8 @@ We can provide modest support for modern versions of the packages on fairly up-t
 </section>
 <section id="configuration-system">
 <h2>Configuration System<a class="headerlink" href="#configuration-system" title="Link to this heading"></a></h2>
-<section id="id5">
-<h3>Overview<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<section id="id1">
+<h3>Overview<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
 <p>Bay-Delta SCHISM uses <a class="reference external" href="https://www.dynaconf.com/">Dynaconf</a> for settings management.</p>
 <p>The bdschism scripts and command line utilities rely on a mix of convention and configuration.  For instance the schism utilities
 have version numbers like <cite>interpolate_variables8</cite> and we want to have a setting that captures that and then give it a simpler name

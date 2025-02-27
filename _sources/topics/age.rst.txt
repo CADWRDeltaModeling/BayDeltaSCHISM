@@ -11,8 +11,8 @@ Parameters in param.nml
 -----------------------
 
 
-Additional *.ic files
----------------------
+Additional \*.ic files
+------------------------
 
 Hotstart considerations
 -----------------------

@@ -20,7 +20,7 @@ your developer environment to test code, but to launch it as a user in everyday 
 
 Then you use a command like the following:
 
-.. _code-block: console
+.. code-block:: console
 
   sim_dir$ pytest /path/to/BayDeltaSCHISM/test_suite --sim_dir=.
 
@@ -29,7 +29,7 @@ you are testing. The path `/path/to/BayDeltaSCHISM/test_suite` is a pointer to y
 
 To make it simpler, we recommend setting an alias on the command line or in your .bashrc file:
 
-.. _code-block: console
+.. code-block:: console
 
   alias schism_pretest='pytest /path/to/BayDeltaSCHISM/test_suite'
 
@@ -43,7 +43,7 @@ Basics of testing
 Leaving aside some quibbles over conventions, a test is just a function that has a name that starts 
 with `test_` and that contains a python assert statement that contains the items to be tested and a message for failure:
 
-.. _code-block: console
+.. code-block:: python
 
   def test_silly():
       assert 1 == 2, "One is not equal to two"
@@ -62,8 +62,10 @@ First, there is the `sim_dir` fixture. Please use this rather than writing tests
 the test is run in the simulation directory.  
 A trivial example that uses `sim_dir` looks like this:
 
-def test_param_exists(sim_dir):
-    assert os.path.exists(os.path.join(sim_dir,"param.nml")), "Simulation directory must contain 'param.nml'"
+.. code-block:: python
+
+  def test_param_exists(sim_dir):
+      assert os.path.exists(os.path.join(sim_dir,"param.nml")), "Simulation directory must contain 'param.nml'"
 
 Where `sim_dir` is applied as an input to he test_param_exists function.
 This calls the `sim_dir` fixture function found in conftest.py and then submits the output of that function to the test_param_exists function.
@@ -78,7 +80,7 @@ Markers
 You can learn about markers on the `pytest web site <https://docs.pytest.org/>`_. You can use them to categorize tests.
 Please use the `prerun` marker:
 
-.. _code-block: python
+.. code-block:: python
 
   @pytest.mark.prerun
   def test_something():

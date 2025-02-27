@@ -16,6 +16,14 @@
       <script src="../_static/documentation_options.js?v=ca842793"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -60,7 +68,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../getmodel.html#bay-delta-package">Bay-Delta Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getmodel.html#required-python-packages">Required Python Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getmodel.html#configuration-system">Configuration System</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../getmodel.html#id5">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getmodel.html#id1">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../getmodel.html#configuration-file-locations-and-priorities">Configuration File Locations and Priorities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../getmodel.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../getmodel.html#example-configuration-file">Example Configuration File</a></li>
@@ -121,7 +129,10 @@
 <li class="toctree-l4"><a class="reference internal" href="run_tests.html">Test Suite for Prechecking Runs</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../user_guide.html#output-files">Output Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide.html#output-files">Output Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="output.html">Output</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../user_guide.html#advanced-tasks-and-concepts">Advanced Tasks and Concepts</a><ul>
@@ -199,6 +210,43 @@
 <span id="nudging"></span><h1>Nudging Files<a class="headerlink" href="#nudging-files" title="Link to this heading"></a></h1>
 <section id="introduction-what-is-nudging">
 <h2>Introduction: What is nudging?<a class="headerlink" href="#introduction-what-is-nudging" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id1">
+<span id="nudge-obs-grid"></span><a class="with-border reference internal image-reference" href="../_images/nudging_obs_gr3.png"><img alt="../_images/nudging_obs_gr3.png" class="with-border" src="../_images/nudging_obs_gr3.png" style="width: 70%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Nudging relaxation shown around EC and temperature stations. Red shows where the nudging is applied the greatest, Blue is the least, and White induces no nudging. The relaxation constants are specified in the [MOD]_nudge.gr3 file. The locations and values are specified in the *.yaml files.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id2">
+<span id="nudge-ocean-grid"></span><a class="with-border reference internal image-reference" href="../_images/nudging_ocean_gr3.png"><img alt="../_images/nudging_ocean_gr3.png" class="with-border" src="../_images/nudging_ocean_gr3.png" style="width: 70%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Nudging relaxation shown along the ocean boundary. Similar color scale to Fig. <a class="reference internal" href="#nudge-obs-grid"><span class="std std-numref">Fig. 4</span></a>. Also the stations used to interpolate along the ocean boundary are specified in the *.yaml files.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>In SCHISM you can use a NetCDF file that coerces/nudges module values towards an observed or set timeseries in specific points throughout the model.
+You can see the param.nml settings in the nudging block:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>inu_tr(1) = 2 !T
+inu_tr(2) = 2 !S
+inu_tr(3) = 0 !GEN
+inu_tr(4) = 0 !Age
+inu_tr(5) = 0 !SED3D
+inu_tr(6) = 0 !EcoSim
+inu_tr(7) = 0 !ICM
+inu_tr(8) = 0 !CoSINE
+inu_tr(9) = 0 !FIB
+inu_tr(10) = 0 !TIMOR
+inu_tr(11) = 0 !FABM
+
+vnh1 = 400 !vertical nudging depth 1
+vnf1 = 0. !vertical relax \in [0,1]
+vnh2 = 500 !vertical nudging depth 2 (must &gt;vnh1)
+vnf2 = 0. !vertical relax
+
+step_nu_tr = 3600. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
+</pre></div>
+</div>
+<p>Where inu_tr(N) is set to 2 if a NetCDF file is used to nudge values for that module, and set to 0 if no nudging is used. For instance temperature (N=1) or salinity (N=2) are most often set to 2, and require <cite>[MOD]_nu.nc`</cite> as well as <cite>[MOD]_nudge.gr3`</cite> as inputs. The .nc file specifies the values to be nudged to, and the .gr3 file specifies the horizontal relaxation constants, which are applied with the vertical nudging relaxation specified by a linear function of <cite>vnh[1,2]</cite> and <cite>vnf[1,2]</cite>. We typically use one hour nudging (3600) which is needed if using data with relatively fast nudging rates.</p>
 </section>
 <section id="do-i-need-nudging">
 <h2>Do I need nudging?<a class="headerlink" href="#do-i-need-nudging" title="Link to this heading"></a></h2>
@@ -208,7 +256,15 @@
 </section>
 <section id="sequencing-your-run">
 <h2>Sequencing your run<a class="headerlink" href="#sequencing-your-run" title="Link to this heading"></a></h2>
-</section>
+<pre id="nudge-flow" class="mermaid">
+        graph LR
+  hgrid[hgrid.gr3] --&gt; nudge_py[Run: nudging.py];
+  vgrid3[&quot;vgrid.in.3d&quot;] --&gt; nudge_py;
+  nudge([&quot;Start: nudging input&quot;]) --&gt; nudge_ts[&quot;Nudging time series in .csv&quot;] --&gt; nudge_py;
+  nudge_py --&gt; nudge_nc[&quot;{MOD}_nu.nc &amp; {MOD_nudge.gr3}&quot;];
+  hycom_input[&quot;hycom_input&quot;] --&gt; nudge_py;
+  nudge_nc --&gt; baroclinic{&quot;Baroclinic Simulation&quot;};
+    </pre></section>
 </section>
 
 

@@ -27,7 +27,7 @@ in the control file `param.nml`. You also need plausible values for initializati
 If you our using our schism templates and requires some 
 initial conditions be provided in the form of text \*.ic files which are like \*.gr3 files with values at each node, 
 but don't have mesh topology in the file (and `param.nml.tropic` control file suggestions for a barotropic run) 
-then a cold start is assumed and the text initialization file elev.ic (and any other *.ic file) will be built.
+then a cold start is assumed and the text initialization file elev.ic (and any other \*.ic file) will be built.
 
 A hotstart means initializing a model with non-trivial values. There are two main cases:
 
@@ -59,6 +59,7 @@ The best translation of 'restart' in SCHISM is hotstart with ihot=2.
 
 
 .. _choose_runtime:
+
 Choosing a good start time
 --------------------------
 By convention, our group chooses start times that coincide with USGS cruises. . Those are the days when you will have the best access 

@@ -19,7 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Common Problems and Diagnosis" href="problems.html" />
+    <link rel="next" title="Output" href="output.html" />
     <link rel="prev" title="Checklists" href="checklists.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
@@ -60,7 +60,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../getmodel.html#bay-delta-package">Bay-Delta Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getmodel.html#required-python-packages">Required Python Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getmodel.html#configuration-system">Configuration System</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../getmodel.html#id5">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getmodel.html#id1">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../getmodel.html#configuration-file-locations-and-priorities">Configuration File Locations and Priorities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../getmodel.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../getmodel.html#example-configuration-file">Example Configuration File</a></li>
@@ -121,7 +121,10 @@
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Test Suite for Prechecking Runs</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../user_guide.html#output-files">Output Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide.html#output-files">Output Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="output.html">Output</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../user_guide.html#advanced-tasks-and-concepts">Advanced Tasks and Concepts</a><ul>
@@ -209,15 +212,15 @@ simulation information as <em>fixtures</em>. Some of this is lingo. See the <a c
 your developer environment to test code, but to launch it as a user in everyday modeling. The
 <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/schism_env.yml">recommended environment</a> has pytest in it.</p>
 <p>Then you use a command like the following:</p>
-<blockquote>
-<div><p>sim_dir$ pytest /path/to/BayDeltaSCHISM/test_suite –sim_dir=.</p>
-</div></blockquote>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sim_dir$ pytest /path/to/BayDeltaSCHISM/test_suite --sim_dir=.</span>
+</pre></div>
+</div>
 <p>Note that the <cite>–sim_dir=.</cite> part of the command is actually the default, so you can omit this if you launch the testing framework in the study directory
 you are testing. The path <cite>/path/to/BayDeltaSCHISM/test_suite</cite> is a pointer to your Bay-Delta SCHISM installation subdirectory.</p>
 <p>To make it simpler, we recommend setting an alias on the command line or in your .bashrc file:</p>
-<blockquote>
-<div><p>alias schism_pretest=’pytest /path/to/BayDeltaSCHISM/test_suite’</p>
-</div></blockquote>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">alias schism_pretest=&#39;pytest /path/to/BayDeltaSCHISM/test_suite&#39;</span>
+</pre></div>
+</div>
 </section>
 <section id="writing-run-tests">
 <h2>Writing Run Tests<a class="headerlink" href="#writing-run-tests" title="Link to this heading"></a></h2>
@@ -225,12 +228,10 @@ you are testing. The path <cite>/path/to/BayDeltaSCHISM/test_suite</cite> is a p
 <h3>Basics of testing<a class="headerlink" href="#basics-of-testing" title="Link to this heading"></a></h3>
 <p>Leaving aside some quibbles over conventions, a test is just a function that has a name that starts
 with <cite>test_</cite> and that contains a python assert statement that contains the items to be tested and a message for failure:</p>
-<blockquote>
-<div><dl class="simple">
-<dt>def test_silly():</dt><dd><p>assert 1 == 2, “One is not equal to two”</p>
-</dd>
-</dl>
-</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_silly</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;One is not equal to two&quot;</span>
+</pre></div>
+</div>
 <p>Bay-Delta SCHISM run tests are housed in the <cite>/test_suite</cite> directory of your Bay-Delta SCHISM installation.
 Any test scripts in this directory will be run when you launch pytest with the <cite>/test_suite</cite> directory.
 They are usually launched in the simulation directory or you can name the simulation directory in your pytest command as
@@ -243,10 +244,10 @@ fixtures that are already defined. You can read about test fixtures on the <a cl
 <p>First, there is the <cite>sim_dir</cite> fixture. Please use this rather than writing tests that assume
 the test is run in the simulation directory.
 A trivial example that uses <cite>sim_dir</cite> looks like this:</p>
-<dl class="simple">
-<dt>def test_param_exists(sim_dir):</dt><dd><p>assert os.path.exists(os.path.join(sim_dir,”param.nml”)), “Simulation directory must contain ‘param.nml’”</p>
-</dd>
-</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_param_exists</span><span class="p">(</span><span class="n">sim_dir</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sim_dir</span><span class="p">,</span><span class="s2">&quot;param.nml&quot;</span><span class="p">)),</span> <span class="s2">&quot;Simulation directory must contain &#39;param.nml&#39;&quot;</span>
+</pre></div>
+</div>
 <p>Where <cite>sim_dir</cite> is applied as an input to he test_param_exists function.
 This calls the <cite>sim_dir</cite> fixture function found in conftest.py and then submits the output of that function to the test_param_exists function.
 A second indispensible fixture is <cite>params</cite>. This fetches the run parameters in <cite>param.nml</cite> using the <cite>param.py</cite> module.
@@ -257,13 +258,11 @@ You should avoid parse <cite>param.nml</cite> with your own code.</p>
 <h3>Markers<a class="headerlink" href="#markers" title="Link to this heading"></a></h3>
 <p>You can learn about markers on the <a class="reference external" href="https://docs.pytest.org/">pytest web site</a>. You can use them to categorize tests.
 Please use the <cite>prerun</cite> marker:</p>
-<blockquote>
-<div><p>&#64;pytest.mark.prerun
-def test_something():</p>
-<blockquote>
-<div><p>assert 1==2, “Failure message”</p>
-</div></blockquote>
-</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">prerun</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_something</span><span class="p">():</span>
+  <span class="k">assert</span> <span class="mi">1</span><span class="o">==</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Failure message&quot;</span>
+</pre></div>
+</div>
 <p>The marker will be ran upon calling pytest and any assert statement that fails (ex: 1==2) will trigger the following ‘Failure message’.
 That’s where you can add helpful information about what the test failure is and how to fix it.</p>
 </section>
@@ -290,7 +289,7 @@ Regression tests are basically checking for things that have gone wrong before. 
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="checklists.html" class="btn btn-neutral float-left" title="Checklists" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="problems.html" class="btn btn-neutral float-right" title="Common Problems and Diagnosis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="output.html" class="btn btn-neutral float-right" title="Output" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
