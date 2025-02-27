@@ -59,6 +59,15 @@
 <li class="toctree-l2"><a class="reference internal" href="#git">Git</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#bay-delta-package">Bay-Delta Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#required-python-packages">Required Python Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-system">Configuration System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-sources">Configuration Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-configuration-file">Example Configuration File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overriding-configuration">Overriding Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#bathymetry">Bathymetry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#complete-sample-inputs">Complete Sample Inputs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#visit-schism-plug-in">VisIt SCHISM Plug-in</a></li>
@@ -80,6 +89,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#git">Git</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#bay-delta-package">Bay-Delta Package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#required-python-packages">Required Python Packages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-system">Configuration System</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#bathymetry">Bathymetry</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#complete-sample-inputs">Complete Sample Inputs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#visit-schism-plug-in">VisIt SCHISM Plug-in</a></li>
@@ -271,6 +281,73 @@ Instructions for managing Python environments are on our general Delta Modeling 
 <p>Work tends to expand in a predictable way and we recommend a broader environment available
 at the Bay-Delta SCHISM <cite>repo &lt;https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/schism_env.yml&gt;</cite>.
 We can provide modest support for modern versions of the packages on fairly up-to-date Python platforms.</p>
+</section>
+<section id="configuration-system">
+<h2>Configuration System<a class="headerlink" href="#configuration-system" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3>Overview<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>Many of the bdschism command line scripts and python utilities are based on conventions. However, there are still some names, identifiers and preferences
+that need to be set as a default configuration. For instance the schism utilities have version numbers like <cite>interpolate_variables8</cite> and we
+want to have a set it and forget it method for pushing out updates to this number, and also to leave the user a way of overriding this suggestion
+(for instance if your machine is sticking with an older version’.
+The configuration system is designed to provide flexible and hierarchical settings management for the application.
+It leverages <cite>Dynaconf</cite> to load settings from yaml preference configuration files, allowing users to customize behavior at different levels. To some extent
+you can ignore this initially.</p>
+</section>
+<section id="configuration-sources">
+<h3>Configuration Sources<a class="headerlink" href="#configuration-sources" title="Link to this heading"></a></h3>
+<p>The system follows a prioritized hierarchy when loading configuration files:</p>
+<ol class="arabic simple">
+<li><p><strong>Environment-Specific Configuration</strong>:
+- If the environment variable <code class="docutils literal notranslate"><span class="pre">BDS_CONFIG</span></code> is set and points to a valid configuration file, this file is loaded with the highest precedence.</p></li>
+<li><p><strong>Project-Level Configuration</strong>:
+- If a file named <code class="docutils literal notranslate"><span class="pre">bds_config.yaml</span></code> exists in the current working directory, it is loaded next, overriding the package defaults.</p></li>
+<li><p><strong>Package Default Configuration</strong>:
+- A default configuration file, located at <code class="docutils literal notranslate"><span class="pre">config/bds_config.yaml</span></code> within the package, serves as the fallback if no other configurations are provided.</p></li>
+</ol>
+<p>The active configuration source is displayed during usage.</p>
+</section>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h3>
+<p>To retrieve the configuration settings, use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mypackage.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_settings</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">get_settings</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can then access configuration values as attributes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">link_style</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">link_style</span><span class="p">[</span><span class="s2">&quot;Windows&quot;</span><span class="p">]</span>
+<span class="n">interpolate_function</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">interpolate_variables</span>
+</pre></div>
+</div>
+</section>
+<section id="example-configuration-file">
+<h3>Example Configuration File<a class="headerlink" href="#example-configuration-file" title="Link to this heading"></a></h3>
+<p>A partial <code class="docutils literal notranslate"><span class="pre">bds_config.yaml</span></code> file might look like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">link_style</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Windows</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">copy</span><span class="w">   </span><span class="c1"># options are &#39;copy&#39; or &#39;junction&#39;</span>
+<span class="w">  </span><span class="nt">Linux</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">symlink</span><span class="w">  </span><span class="c1"># Linux users should always use this</span>
+
+<span class="c1"># These are maps to the versioned names of utilities</span>
+<span class="nt">interpolate_variables</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interpolate_variables10</span>
+<span class="nt">combine_hotstart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">combine_hotstart7</span>
+</pre></div>
+</div>
+</section>
+<section id="overriding-configuration">
+<h3>Overriding Configuration<a class="headerlink" href="#overriding-configuration" title="Link to this heading"></a></h3>
+<p>Users can override default settings by:</p>
+<ul class="simple">
+<li><p>Setting the <code class="docutils literal notranslate"><span class="pre">BDS_CONFIG</span></code> environment variable to point to a custom configuration file.</p></li>
+<li><p>Placing a <code class="docutils literal notranslate"><span class="pre">bds_config.yaml</span></code> file in the project’s root directory.</p></li>
+</ul>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.dynaconf.com/">Dynaconf</a> for dynamic settings management.</p></li>
+</ul>
+</section>
 </section>
 <section id="bathymetry">
 <h2>Bathymetry<a class="headerlink" href="#bathymetry" title="Link to this heading"></a></h2>
