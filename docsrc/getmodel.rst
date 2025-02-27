@@ -102,6 +102,7 @@ Configuration System
 
 Overview
 ^^^^^^^^
+
 Bay-Delta SCHISM uses `Dynaconf <https://www.dynaconf.com/>`_ for settings management.
 
 The bdschism scripts and command line utilities rely on a mix of convention and configuration.  For instance the schism utilities 
@@ -109,7 +110,7 @@ have version numbers like `interpolate_variables8` and we want to have a setting
 without constantly updating scattered python files.  
 
 Configuration File Locations and Priorities
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The system follows a prioritized hierarchy when loading configuration files:
 
