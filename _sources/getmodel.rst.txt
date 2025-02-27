@@ -108,8 +108,8 @@ The bdschism scripts and command line utilities rely on a mix of convention and 
 have version numbers like `interpolate_variables8` and we want to have a setting that captures that and then give it a simpler name
 without constantly updating scattered python files.  
 
-Configuration Sources
-^^^^^^^^^^^^^^^^^^^^^
+Configuration File Locations and Priorities
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The system follows a prioritized hierarchy when loading configuration files:
 

@@ -61,7 +61,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#required-python-packages">Required Python Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configuration-system">Configuration System</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id5">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration-sources">Configuration Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-file-locations-and-priorities">Configuration File Locations and Priorities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#example-configuration-file">Example Configuration File</a></li>
 </ul>
@@ -289,8 +289,8 @@ We can provide modest support for modern versions of the packages on fairly up-t
 have version numbers like <cite>interpolate_variables8</cite> and we want to have a setting that captures that and then give it a simpler name
 without constantly updating scattered python files.</p>
 </section>
-<section id="configuration-sources">
-<h3>Configuration Sources<a class="headerlink" href="#configuration-sources" title="Link to this heading"></a></h3>
+<section id="configuration-file-locations-and-priorities">
+<h3>Configuration File Locations and Priorities<a class="headerlink" href="#configuration-file-locations-and-priorities" title="Link to this heading"></a></h3>
 <p>The system follows a prioritized hierarchy when loading configuration files:</p>
 <ol class="arabic simple">
 <li><p><strong>Environment-Specific Configuration</strong>:
