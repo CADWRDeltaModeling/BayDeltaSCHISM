@@ -96,6 +96,87 @@ Work tends to expand in a predictable way and we recommend a broader environment
 at the Bay-Delta SCHISM `repo <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/schism_env.yml>`.
 We can provide modest support for modern versions of the packages on fairly up-to-date Python platforms.
 
+
+Configuration System
+--------------------
+
+Overview
+^^^^^^^^
+
+Many of the bdschism command line scripts and python utilities are based on conventions. However, there are still some names, identifiers and preferences
+that need to be set as a default configuration. For instance the schism utilities have version numbers like `interpolate_variables8` and we
+want to have a set it and forget it method for pushing out updates to this number, and also to leave the user a way of overriding this suggestion
+(for instance if your machine is sticking with an older version'. 
+The configuration system is designed to provide flexible and hierarchical settings management for the application. 
+It leverages `Dynaconf` to load settings from yaml preference configuration files, allowing users to customize behavior at different levels. To some extent
+you can ignore this initially.
+
+Configuration Sources
+^^^^^^^^^^^^^^^^^^^^^
+
+The system follows a prioritized hierarchy when loading configuration files:
+
+1. **Environment-Specific Configuration**:
+   - If the environment variable ``BDS_CONFIG`` is set and points to a valid configuration file, this file is loaded with the highest precedence.
+
+2. **Project-Level Configuration**:
+   - If a file named ``bds_config.yaml`` exists in the current working directory, it is loaded next, overriding the package defaults.
+
+3. **Package Default Configuration**:
+   - A default configuration file, located at ``config/bds_config.yaml`` within the package, serves as the fallback if no other configurations are provided.
+
+The active configuration source is displayed during usage.
+
+Usage
+^^^^^
+
+To retrieve the configuration settings, use:
+
+.. code-block:: python
+
+   from mypackage.config import get_settings
+
+   settings = get_settings()
+
+You can then access configuration values as attributes:
+
+.. code-block:: python
+
+   link_style = settings.link_style["Windows"]
+   interpolate_function = settings.interpolate_variables
+
+Example Configuration File
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A partial ``bds_config.yaml`` file might look like:
+
+.. code-block:: yaml
+
+   link_style:
+     Windows: copy   # options are 'copy' or 'junction'
+     Linux: symlink  # Linux users should always use this
+
+   # These are maps to the versioned names of utilities
+   interpolate_variables: interpolate_variables10
+   combine_hotstart: combine_hotstart7
+
+Overriding Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Users can override default settings by:
+
+- Setting the ``BDS_CONFIG`` environment variable to point to a custom configuration file.
+- Placing a ``bds_config.yaml`` file in the project's root directory.
+
+
+Dependencies
+^^^^^^^^^^^^
+
+- `Dynaconf <https://www.dynaconf.com/>`_ for dynamic settings management.
+
+
+
+
 Bathymetry
 ----------
 The Bay-Delta Package already contains our latest bathymetry in geo-tiff form, processed as we use them to populate our mesh. Our bathymetry collection is available at the  
