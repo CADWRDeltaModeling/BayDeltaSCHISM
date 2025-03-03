@@ -31,7 +31,8 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "set_nudging=bdschism.set_nudging:main"
+            "set_nudging=bdschism.set_nudging:main",
+            "hfh=bdschism.hotstart_from_hotstart:main"
         ]
     }
 )
