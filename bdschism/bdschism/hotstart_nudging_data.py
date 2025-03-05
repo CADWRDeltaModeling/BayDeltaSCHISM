@@ -1,9 +1,11 @@
-for label_var in all_vars:
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-import pandas as pd
 
 # Use example as command-line interface function:
 # python hotstart_nudging_data.py --start_date 2018-02-19  --nudge_len 300 --dest_dir . --repo_dir $repo_path
+# or with bdschism in your environment::
+# hot_nudge_data --start_date 2018-02-19  --nudge_len 300 --dest_dir . --repo_dir $repo_path
+
 import matplotlib.pyplot as plt
 from dms_datastore.read_ts import *
 from dms_datastore.dstore_config import *

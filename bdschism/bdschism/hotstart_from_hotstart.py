@@ -3,6 +3,11 @@
 Adapted from ZZheng - generate hotstart - transfer from one grid to another
 """
 
+# Use example as command-line interface function:
+# python hotstart_from_hotstart.py --test_dir ./ --in_dir ./in_dir --out_dir ./out_dir --yaml_fn ./hotstart_from_hotstart.yaml --hotstart_in ./in_dir/hotstart_it=480000.nc --hotstart_out out_hotstart_it=480000.nc
+# or with bdschism in your environment::
+# hot_from_hot --test_dir ./ --in_dir ./in_dir --out_dir ./out_dir --yaml_fn ./hotstart_from_hotstart.yaml --hotstart_in ./in_dir/hotstart_it=480000.nc --hotstart_out out_hotstart_it=480000.nc
+
 # Standard Library Imports
 import os
 import string
