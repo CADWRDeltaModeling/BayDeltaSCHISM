@@ -1,8 +1,41 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Use example as command-line interface function:
+# python hotstart_date.py --fn ./hotstart.nc --hotstart 2024-6-24 --runstart 2024-6-24
+
+# or with bdschism in your environment::
+
+# hot_date --fn ./hotstart.nc --hotstart 2024-6-24 --runstart 2024-6-24
+
 import xarray as xr
 import pandas as pd
+import argparse
+from pathlib import Path
+
+def create_arg_parser():
+    import textwrap
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=textwrap.dedent(
+            """
+         ============== Example ==================
+      > hot_date --fn ./hotstart.nc --run_start 2024-6-24 --restart_time 2024-6-24
+      """),
+        description="""The script will change the necessary date attributes"""
+    )
+    
+    parser.add_argument('--fn', default='./hotstart.nc', required=False, type=Path,
+                        help="hotstart *.nc filename")
+    parser.add_argument('--run_start', default=None, required=True, type=str,
+                        help="run start date in format YEAR-MONTH-DAY, ex: 2024-6-1")
+    parser.add_argument('--restart_time', default=None, required=True, type=str, 
+                        help="hotstart restart date in format YEAR-MONTH-DAY, ex: 2024-6-24")
+    parser.add_argument('--outprefix', default="hotstart", required=False, type=str,
+                        help='output prefix for the output .nc file. If hotprefix is just "hot" you would get hot.20240624.109440')
+    parser.add_argument('--dt', default=90, required=False, type=int,
+                        help="timestep, default is 90 seconds")
+    return parser
 
 def set_hotstart_date(filenm,outprefix,run_start,restart_time,dt):
     """ Change timestamp and date implied by hotstart 
@@ -46,8 +79,18 @@ def set_hotstart_date(filenm,outprefix,run_start,restart_time,dt):
         ds.attrs['time_origin_of_simulation'] = run_start_str
         ds.to_netcdf(outfile)
     
+
+def main():
+    parser = create_arg_parser()
+    args = parser.parse_args()
+
+    fn = args.fn
+    run_start = args.run_start
+    restart_time = args.restart_time
+    dt = float(args.dt)
+    outprefix = args.outprefix
+
+    return set_hotstart_date(fn,outprefix,run_start,restart_time,dt)
+
 if __name__=="__main__":
-    run_start = "2021-01-01"
-    restart_time = "2021-04-25"
-    dt=90.
-    set_hotstart_date("hotstart.nc","hotstart",run_start,restart_time,dt)
+    main()

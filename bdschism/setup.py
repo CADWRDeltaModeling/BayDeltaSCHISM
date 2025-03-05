@@ -33,6 +33,7 @@ setup(
         "console_scripts": [
             "set_nudging=bdschism.set_nudging:main",
             "hot_from_hot=bdschism.hotstart_from_hotstart:main",
+            "hot_date=bdschism.hotstart_date:main",
             "hot_nudge_data=bdschism.hotstart_nudging_data:main",
             "create_nudging=schimpy.nudging:main"
         ]
