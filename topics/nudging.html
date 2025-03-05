@@ -242,9 +242,23 @@ step_nu_tr = 3600. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
 </section>
 <section id="do-i-need-nudging">
 <h2>Do I need nudging?<a class="headerlink" href="#do-i-need-nudging" title="Link to this heading"></a></h2>
+<p>Nudging is used for two things:
+1. Soft coastal boundary enforcement
+2. Initialization: fast spin-up over brief period using observations over the whole domain</p>
+<p>It is common for a single simulation to start and finish with different nudging products. Typically, the first nuding is dense, utilizing data from many observation stations, and is used to spin up the model quickly. The second is intended to only provide coastal data.</p>
 </section>
-<section id="prepping-the-data">
-<h2>Prepping the data<a class="headerlink" href="#prepping-the-data" title="Link to this heading"></a></h2>
+<section id="generating-nudging-files">
+<h2>Generating nudging files<a class="headerlink" href="#generating-nudging-files" title="Link to this heading"></a></h2>
+<p>The python function to generate nudging files is <cite>create_nudging</cite>, which is part of [schimpy](<a class="reference external" href="https://github.com/CADWRDeltaModeling/schimpy/blob/master/schimpy/nudging.py">https://github.com/CADWRDeltaModeling/schimpy/blob/master/schimpy/nudging.py</a>). The function is run as follows:</p>
+<p><cite>create_nudging –input config_file</cite></p>
+<blockquote>
+<div><p>Here, <cite>config_file</cite> is in yaml format, examples of which can be found on the [BayDeltaSCHISM](<a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/examples/nudging">https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/examples/nudging</a>)</p>
+</div></blockquote>
+<p>### Preparing for nudging with observation data</p>
+<p>For nudging using observtion data, one must prepare the time series inputs using <cite>hotstart_nudging_data</cite> from [BayDeltaSCHISM](<a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/bdschism/bdschism/hotstart_nudging_data.py">https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/bdschism/bdschism/hotstart_nudging_data.py</a>).</p>
+<p>The start date, length of nudging, and the location of the time series files need to be specified in the following manner:
+<cite>python hotstart_nudging_data.py –start_date 2021-01-01 –nudge_len 10 –repo_dir $repo</cite>, where <cite>$repo</cite> is the path to raw observation data.</p>
+<p>The recommended spin-up period using observation data is 10-15 days.</p>
 </section>
 <section id="sequencing-your-run">
 <h2>Sequencing your run<a class="headerlink" href="#sequencing-your-run" title="Link to this heading"></a></h2>
