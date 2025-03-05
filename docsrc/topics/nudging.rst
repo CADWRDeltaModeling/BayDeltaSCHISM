@@ -53,11 +53,28 @@ Where inu_tr(N) is set to 2 if a NetCDF file is used to nudge values for that mo
 
 Do I need nudging?
 ------------------
+Nudging is used for two things:
+1. Soft coastal boundary enforcement
+2. Initialization: fast spin-up over brief period using observations over the whole domain
 
+It is common for a single simulation to start and finish with different nudging products. Typically, the first nuding is dense, utilizing data from many observation stations, and is used to spin up the model quickly. The second is intended to only provide coastal data.
 
-Prepping the data
+Generating nudging files
 -----------------
+The python function to generate nudging files is `create_nudging`, which is part of [schimpy](https://github.com/CADWRDeltaModeling/schimpy/blob/master/schimpy/nudging.py). The function is run as follows:
 
+`create_nudging --input config_file`
+
+ Here, `config_file` is in yaml format, examples of which can be found on the [BayDeltaSCHISM](https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/examples/nudging)
+
+### Preparing for nudging with observation data
+
+For nudging using observtion data, one must prepare the time series inputs using `hotstart_nudging_data` from [BayDeltaSCHISM](https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/bdschism/bdschism/hotstart_nudging_data.py).
+
+The start date, length of nudging, and the location of the time series files need to be specified in the following manner:
+`python hotstart_nudging_data.py --start_date 2021-01-01 --nudge_len 10 --repo_dir $repo`, where `$repo` is the path to raw observation data.
+
+The recommended spin-up period using observation data is 10-15 days.
 
 Sequencing your run
 -------------------
