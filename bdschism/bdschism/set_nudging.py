@@ -10,7 +10,7 @@ from datetime import datetime
 import argparse
 
 import schimpy.param as parms
-import bdschism.config as config
+import bdschism.settings as config
 
 import os
 
