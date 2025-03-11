@@ -79,7 +79,7 @@ The recommended spin-up period using observation data is 10-15 days.
 Sequencing your run
 -------------------
 .. raw:: html 
-    :file: ../img/nuding_flowchart.svg
+    :file: ../img/nudging_flowchart.svg
 
 .. this is from the following code:
 .. ---
