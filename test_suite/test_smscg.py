@@ -1,6 +1,4 @@
-""" Tests to make sure that Suisun Marsh Salinity Control Gates are operated properly
-"""
-
+"""Tests to make sure that Suisun Marsh Salinity Control Gates are operated properly"""
 
 import pytest
 import os
@@ -59,11 +57,16 @@ def align_dfs(boat, flash, radial):
 
 def extend_idx(df, start, end):
     start_row = df.iloc[0].to_frame().T
-    start_row.index = [start]
+    if start_row.index[0] > start:
+        start_row.index = [start]
+        df = pd.concat([start_row, df])
     end_row = df.iloc[-1].to_frame().T
-    end_row.index = [end]
+    if end_row.index[0] < end:
+        end_row.index = [end]
+        df = pd.concat([df, end_row])
 
-    return pd.concat([start_row, df, end_row])
+    return df
+
 
 @pytest.mark.prerun
 def test_smscg_boatlock(sim_dir, params, smscg_dfs):
