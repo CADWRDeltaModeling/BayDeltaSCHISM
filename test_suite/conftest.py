@@ -6,7 +6,13 @@ import os
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--sim_dir", action="store", default=".", help="Home directory of run (where param.nml sits)"
+        "--sim_dir",
+        action="store",
+        default=".",
+        help="Home directory of run (where param.nml sits)" "--sea_level",
+        action="store",
+        default=0.97,
+        help="Expected sea level (0.97 m is default)",
     )
 
 
