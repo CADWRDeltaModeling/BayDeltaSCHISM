@@ -9,7 +9,10 @@ def pytest_addoption(parser):
         "--sim_dir",
         action="store",
         default=".",
-        help="Home directory of run (where param.nml sits)" "--sea_level",
+        help="Home directory of run (where param.nml sits)",
+    ),
+    parser.addoption(
+        "--sea_level",
         action="store",
         default=0.97,
         help="Expected sea level (0.97 m is default)",
@@ -19,11 +22,16 @@ def pytest_addoption(parser):
 @pytest.fixture(scope="module")
 def sim_dir(request):
     loc = request.config.getoption("--sim_dir")
+    loc = "/scratch/tomkovic/schism_repos/bdschism_pytest"
     return os.path.abspath(loc)
+
 
 @pytest.fixture(scope="module")
 def params(sim_dir):
-    fname = os.path.join(sim_dir,"param.nml")
+    fname = os.path.join(sim_dir, "param.nml")
     return parms.read_params(fname)
-    
-    
+
+
+@pytest.fixture(scope="module")
+def sea_level(request):
+    return request.config.getoption("--sea_level")
