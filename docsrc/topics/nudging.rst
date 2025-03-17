@@ -61,6 +61,7 @@ It is common for a single simulation to start and finish with different nudging 
 
 The soft coastal boundary enforcement is applied by providing temperature and salinity values close to the model boundary. This prevents conspicuous boundary layer from forming at the ocean boundary. The temperature and salinity values are obtained from coastal modeling products, such as HYCOM, CeNCOOS, or ROMS. In general, the choice between these is based on their period of availabiltiy: for runs after 2020. The other products are available for prior years.
 
+See Chapter 5 in [Methodology for Flow and Salinity Estimates](https://data.cnra.ca.gov/dataset/methodology-for-flow-and-salinity-estimates-in-the-sacramento-san-joaquin-delta-and-suisun-marsh/resource/8f6bb786-60e6-44cc-847e-37cea36f8c2b) for more detail.
 
 Generating nudging files
 -----------------
@@ -146,3 +147,7 @@ Sequencing your run
 ..     nudge_nc@{ shape: docs}
 ..     style baroclinic fill:#BBDEFB
 ..     click hgrid "https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/topics/mesh.html#"
+
+References
+-------------------
+[California Department of Water Resources (2022). Methodology for Flow and Salinity Estimates in the Sacramento-San Joaquin Delta and Suisun Marsh, 43rd Annual Progress Report to the State Water Resources Control Board.](https://data.cnra.ca.gov/dataset/methodology-for-flow-and-salinity-estimates-in-the-sacramento-san-joaquin-delta-and-suisun-marsh/resource/8f6bb786-60e6-44cc-847e-37cea36f8c2b)
