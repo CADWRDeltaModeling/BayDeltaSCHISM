@@ -5,7 +5,7 @@ from dynaconf import Dynaconf
 from pathlib import Path
 
 
-def get_settings():
+def get_settings(config_log: bool=False):
     """
     Load and return application settings from a configuration file.
 
@@ -59,14 +59,15 @@ def get_settings():
     settings = Dynaconf(settings_files=config_files)
 
     # Log configuration source
-    print(
-        f"Using configuration from: {config_files[0]} current env {settings.current_env}"
-    )
+    if config_log == True:
+        print(
+            f"Using configuration from: {config_files[0]} current env {settings.current_env}"
+        )
 
     return settings
 
 
-def create_link(source, symlink):
+def create_link(source, symlink, config_log=False):
     """
     Create a link between a source file and a target path based on system-specific link styles.
 
@@ -80,6 +81,8 @@ def create_link(source, symlink):
         The path to the source file that will be linked.
     symlink : str
         The target path where the link (or copy) will be created.
+    config_log : bool, optional
+        If True, log the configuration source being used.
 
     Raises
     ------
@@ -99,7 +102,7 @@ def create_link(source, symlink):
 
     >>> create_link("/path/to/source.txt", "/path/to/symlink.txt")
     """
-    settings = get_settings()
+    settings = get_settings(config_log=config_log)
     link_style = settings.link_style[platform.system()]
 
     # remove symlink before setting
