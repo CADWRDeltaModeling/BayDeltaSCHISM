@@ -1,5 +1,6 @@
 import argparse
 from schimpy import param
+import bdschism.settings as config
 import subprocess
 import os
 import shutil
@@ -24,7 +25,7 @@ def uv3d(
     This is based on facilitating a barotropic run, but with a a modified
     interp_template file you could do far field to near field cases.
 
-    The default, run in the barotropic directory, will run without input
+    The default, run in the barotropic directory (one level above /outputs), will run without input
 
     Parameters
     ----------
@@ -96,11 +97,6 @@ def create_arg_parser():
         description="Runs interpolate_variables utility to generate uv3d.th.nc. "
     )
     parser.add_argument(
-        "--param_nml",
-        default="param.nml",
-        help="Name of parameter file (str)",
-    )
-    parser.add_argument(
         "--bg_dir",
         default=".",
         help="Name of background simulation (e.g. larger or barotropic) directory (str)",
@@ -149,25 +145,17 @@ def create_arg_parser():
         "the full length of the run is used (int)",
     )
     parser.add_argument(
+        "--param_nml", type=str,
+        default=None,
+        help="Name of parameter file (str)",
+    )    
+    parser.add_argument(
         "--write_clinic",
         default=True,
         help="If true, the file will be moved to run_dir. Otherwise will be done in place in outputs",
     )
 
     return parser
-
-
-def symlink_force(target, link_name):
-    """Force-create symbolic links ('ln -sf' in Linux)"""
-    try:
-        os.symlink(target, link_name)
-    except OSError as e:
-        if e.errno == errno.EEXIST:
-            os.remove(link_name)
-            os.symlink(target, link_name)
-        else:
-            raise
-
 
 def main():
     """Main function"""
@@ -184,11 +172,6 @@ def main():
     interp_template = args.interp_template
     nday = args.nday
     write_clinic = args.write_clinic
-
-    #
-    # Parse param.nml
-    #
-    params = param.read_params(param_nml)
 
     #
     # Validate directory paths
@@ -208,7 +191,7 @@ def main():
         elif os.path.exists(os.path.join(bg_dir, "outputs")):
             bg_output_dir = "outputs"
         else:
-            print("Invalid path:" + bg_output_dir)
+            print("Invalid path:" + bg_output_dir + "(Default is outputs.tropic or outputs)")
             raise ValueError
 
     # Directory in which interpolate_variables executable will be run
@@ -221,12 +204,19 @@ def main():
     # fg_dir
     if fg_dir is None:
         fg_dir = bg_dir
-
     #
     # Make sure "interpolate_variables.in" is present
     #
     if interp_template is None:
+        print("interpolate_variables.in is not specified. Extracting nday from user input.")
         if nday is None:
+            print("nday not specified in user input. Extracting nday from parm.nml")
+            #
+            # Parse param.nml
+            #
+            if param_nml is None:
+                param_nml = os.path.join(bg_dir, "param.nml")
+            params = param.read_params(param_nml)            
             nday = params["rnday"]
 
         f = open(os.path.join(interp_dir, "interpolate_variables.in"), "w")
@@ -254,14 +244,21 @@ def main():
         if nday is not None:
             print("Argument 'nday' is not accepted when interp_template is specified.")
             raise ValueError
+        
+        # Make sure the first parameter in the interpolate_variables.in file is 3 for uv3d.th.nc
+        with open(os.path.join(interp_dir, "interpolate_variables.in"), "r") as f:
+            lines = f.readlines()
+            
+            if lines[0].split()[0] != "3":
+                Exception("The first parameter in the interpolate_variables.in file must be 3 for uv3d.th.nc")
 
     #
     # Create symbolic links
     #
-    symlink_force(os.path.join(bg_dir, hgrid_bg), os.path.join(interp_dir, "bg.gr3"))
-    symlink_force(os.path.join(bg_dir, hgrid_fg), os.path.join(interp_dir, "fg.gr3"))
-    symlink_force(os.path.join(bg_dir, vgrid_bg), os.path.join(interp_dir, "vgrid.bg"))
-    symlink_force(os.path.join(bg_dir, vgrid_fg), os.path.join(interp_dir, "vgrid.fg"))
+    config.create_link(os.path.join(bg_dir, hgrid_bg), os.path.join(interp_dir, "bg.gr3"))
+    config.create_link(os.path.join(bg_dir, hgrid_fg), os.path.join(interp_dir, "fg.gr3"))
+    config.create_link(os.path.join(bg_dir, vgrid_bg), os.path.join(interp_dir, "vgrid.bg"))
+    config.create_link(os.path.join(bg_dir, vgrid_fg), os.path.join(interp_dir, "vgrid.fg"))
 
     """
     #
@@ -276,7 +273,13 @@ def main():
     if write_clinic == True:
         shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(bg_dir, "uv3D.th.nc"))
     """
+    print(f"Running `interpolate_variables8` in {bg_output_dir}")
+    os.chdir(bg_output_dir)
+
+    os.system("module load intel/2024.0 hmpt/2.29 hdf5/1.14.3 netcdf-c/4.9.2 netcdf-fortran/4.6.1 schism/5.11.1")
+    os.system('interpolate_variables8')
 
 
 if __name__ == "__main__":
+
     main()
