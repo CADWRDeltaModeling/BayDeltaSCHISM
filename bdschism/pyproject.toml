@@ -42,18 +42,6 @@ test = [
     "tox"
 ]
 
-[project.urls]
-Homepage = "https://github.com/CADWRDeltaModeling/BayDeltaSCHISM"
-
-[project.scripts]
-bdschism = "bdschism.__main__:cli"
-set_nudging = "bdschism.set_nudging:main"
-hot_from_hot = "bdschism.hotstart_from_hotstart:main"
-hot_date = "bdschism.hotstart_date:main"
-hot_nudge_data = "bdschism.hotstart_nudging_data:main"
-create_nudging = "schimpy.nudging:main"
-uv3d = "bdschism.uv3d:main"
-
 [tool.setuptools]
 packages = ["bdschism"]
 include-package-data = true
@@ -82,3 +70,15 @@ addopts = [
 markers = [
     "serial: execute test serially (to avoid race conditions)"
 ]
+
+[project.urls]
+Homepage = "https://github.com/CADWRDeltaModeling/BayDeltaSCHISM"
+
+[project.scripts]
+bdschism = "bdschism.__main__:cli"
+set_nudging = "bdschism.set_nudging:main"
+hot_from_hot = "bdschism.hotstart_from_hotstart:main"
+hot_date = "bdschism.hotstart_date:main"
+hot_nudge_data = "bdschism.hotstart_nudging_data:main"
+create_nudging = "schimpy.nudging:main"
+uv3d = "bdschism.uv3d:main"
