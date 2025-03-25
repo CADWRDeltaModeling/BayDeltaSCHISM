@@ -1,5 +1,5 @@
 # to use with bdschism hotstart_from_hotstart.py:
-# > hfh --yaml_fn "hotstart_from_hotstart.yaml" --h_in "hotstart_it=99999.nc" --in_dir ./path/to/base_simulation_directory --out_dir ./path/to/special_case_directory --h_out "/path/to/hotstart_99999_special_case.nc"
+# > hot_from_hot hotstart_from_hotstart.yaml --h_in "hotstart_it=99999.nc" --in_dir ./path/to/base_simulation_directory --out_dir ./path/to/special_case_directory --h_out "/path/to/hotstart_99999_special_case.nc"
 
 hotstart: 
     date: {hot_date}    # datetime of hotstart file from which SCHISM will start

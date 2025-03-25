@@ -12,7 +12,6 @@ Adapted from ZZheng - generate hotstart - transfer from one grid to another
 import os
 import string
 import tempfile
-import argparse
 from pathlib import Path
 from collections import defaultdict
 from datetime import datetime
@@ -20,6 +19,7 @@ from datetime import datetime
 # Third-Party Library Imports
 import pandas as pd
 import xarray as xr
+import click
 
 # Project-Specific Imports
 import schimpy.schism_hotstart as sh
@@ -32,34 +32,6 @@ def str_or_path(value):
     """Helper function to handle string or Path inputs."""
     return Path(value) if Path(value).exists() else value
 
-
-def create_arg_parser():
-    import textwrap
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=textwrap.dedent(
-            """
-         ============== Example ==================
-      > hotstart_newgrid --f hotstart_it=80000_baseline.nc --h_in hgrid_baseline.gr3 --v_in vgrid_baseline.in.3d --h_out hgrid_franks.gr3 --v_out vgrid_franks.in.3d
-      """),
-        description="""The script will transfer all hotstart modules and variables from one grid to another"""
-    )
-    
-    parser.add_argument('--yaml', default=None, required=True,
-                        help="yaml file")
-    parser.add_argument('--f_in', default=None, required=True, type=str_or_path, 
-                        help="hotstart input file path - uses hgrid.gr3 and vgrid.in from in_dir")
-    parser.add_argument('--f_out', default=None, required=True, type=str_or_path,
-                        help="hotstart output file path - will be translated to hgrid.gr3 and vgrid.in from out_dir")
-    parser.add_argument('--in_dir', default=None, required=True, type=str_or_path,
-                        help="input directory: has hgrid.gr3, vgrid.in, and param.nml (links are ok)")
-    parser.add_argument('--out_dir', default=None, required=True, type=str_or_path, 
-                        help="output directory: has hgrid.gr3, vgrid.in, and param.nml (links are ok)")
-    parser.add_argument('--modules', default=None, required=False, type=list,
-                        help="modules to be transfered to/from hotstart files")
-    parser.add_argument('--crs', default='EPSG:26910', required=False, type=str,
-                        help='coordinate system (ex: EPSG:26910)')
-    return parser
 
 class SafeDict(dict):
     """Safe dictionary for string formatting."""
@@ -82,14 +54,66 @@ def fmt_string_file(fn_in, fn_out, str_dict, method="format_map"):
     with open(fn_out, "w") as fout:
         fout.write(fdata)
 
-def hotstart_newgrid(yaml_fn, hotstart_in, hotstart_out, in_dir, out_dir,
-                    modules=None, crs='EPSG:26910'):
-    
-    # set globals to be referenced within hotstart schism yaml
-    # global timestep, run_start, hot_date, hgrid_in, hgrid_out, vgrid_in, vgrid_out
 
-    # get params
-    param_nml_in = os.path.join(in_dir,'param.nml')
+@click.command(
+    help=(
+        "Transfer hotstart data from one grid to another'\n\n"
+        "Arguments:\n"
+        "  YAML  Path to the YAML file."
+        "For instance hotstart_from_hotstart.yaml (found in examples/hotstart/examples)"
+    )
+)
+@click.argument("yaml")
+@click.option(
+    "--f_in",
+    required=True,
+    type=click.Path(exists=True),
+    help="Hotstart input file path - uses hgrid.gr3 and vgrid.in from in_dir.",
+)
+@click.option(
+    "--f_out",
+    required=True,
+    type=click.Path(),
+    help="Hotstart output file path - will be translated to hgrid.gr3 and vgrid.in from out_dir.",
+)
+@click.option(
+    "--in_dir",
+    required=True,
+    type=click.Path(exists=True),
+    help="Input directory: has hgrid.gr3, vgrid.in, and param.nml (links are ok).",
+)
+@click.option(
+    "--out_dir",
+    required=True,
+    type=click.Path(exists=True),
+    help="Output directory: has hgrid.gr3, vgrid.in, and param.nml (links are ok).",
+)
+@click.option(
+    "--modules",
+    default=None,
+    type=str,
+    multiple=True,
+    help="Modules to be transferred to/from hotstart files.",
+)
+@click.option(
+    "--crs",
+    default="EPSG:26910",
+    type=str,
+    help="Coordinate system (e.g., EPSG:26910).",
+)
+@click.help_option("-h", "--help")  # Add this line to enable both -h and --help
+def hotstart_newgrid(
+    yaml: str,
+    hotstart_in,
+    hotstart_out,
+    in_dir,
+    out_dir,
+    modules=None,
+    crs="EPSG:26910",
+):
+    """Transfer hotstart data from one grid to another."""
+    # Get params
+    param_nml_in = os.path.join(in_dir, "param.nml")
     params_in = parms.read_params(param_nml_in)
     param_nml_out = os.path.join(out_dir, "param.nml")
     params_out = parms.read_params(param_nml_out)
@@ -133,28 +157,11 @@ def hotstart_newgrid(yaml_fn, hotstart_in, hotstart_out, in_dir, out_dir,
     hnc.to_netcdf(hotstart_out)
     os.remove(temp_yaml)
 
+
 def main():
-    parser = create_arg_parser()
-    args = parser.parse_args()
+    """Main function to handle hotstart transfer."""
+    hotstart_newgrid()
 
-    yaml_fn = args.yaml
-    hotstart_in = args.f_in
-    hotstart_out = args.f_out 
-    in_dir = args.in_dir 
-    out_dir = args.out_dir
-    modules = args.modules
-    crs = args.crs
-
-    return hotstart_newgrid(yaml_fn, hotstart_in, hotstart_out, in_dir, out_dir,
-                            modules=modules, crs=crs)
 
 if __name__ == "__main__":
     main()
-    # test_dir = r"D:/schism/hotstart_transfer_test"
-    # in_dir = r"D:/schism/hotstart_transfer_test/baseline_sim_dir"
-    # out_dir = r"D:/schism/hotstart_transfer_test/franks_sim_dir"
-    # yaml_fn = os.path.join(test_dir, "hotstart_from_hotstart.yaml")
-    # hotstart_in = os.path.join(in_dir, "hotstart_it=480000.nc")
-    # hotstart_out = os.path.join(out_dir, "franks_hotstart_it=480000.nc")
-
-    # hotstart_newgrid(yaml_fn, hotstart_in, hotstart_out, in_dir, out_dir)
