@@ -16,7 +16,7 @@ keywords = ["Bay-Delta", "SCHISM", "hydrodynamics"]
 [tool.versioneer]
 VCS = "git"
 style = "pep440"
-versionfile_source = "_version.py"
+versionfile_source = "bdschism/_version.py"
 parentdir_prefix = ""
 
 dependencies = [
@@ -75,7 +75,7 @@ markers = [
 Homepage = "https://github.com/CADWRDeltaModeling/BayDeltaSCHISM"
 
 [project.scripts]
-bdschism = "bdschism.__main__:cli"
+bds = "bdschism.__main__:cli"
 set_nudging = "bdschism.set_nudging:main"
 hot_from_hot = "bdschism.hotstart_from_hotstart:main"
 hot_date = "bdschism.hotstart_date:main"
