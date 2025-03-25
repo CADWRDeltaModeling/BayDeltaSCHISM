@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools", "wheel", "versioneer[toml]"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bdschism"
+version = "0.0.0"  # Temporary placeholder; Versioneer will override this.
+description = "Tools for launching and evaluating Bay-Delta SCHISM runs"
+license = { text = "MIT" }
+authors = [
+    { name = "California Department of Water Resources", email = "Eli.Ateljevich@water.ca.gov" }
+]
+readme = "README.md"
+keywords = ["Bay-Delta", "SCHISM", "hydrodynamics"]
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440"
+versionfile_source = "bdschism/_version.py"
+versionfile_build = "bdschism/_version.py"
+tag_prefix = "v"  # Adjust if your version tags use a different format.
+parentdir_prefix = "bdschism-"
+
+dependencies = [
+    "schimpy",
+    "suxarray",
+    "vtools",
+    "dms_datastore",
+    "dynaconf",
+    "click"
+]
+
+[project.optional-dependencies]
+doc = [
+    "sphinx",
+    "sphinx-rtd-theme",
+    "myst-parser",
+    "numpydoc"
+]
+test = [
+    "pytest",
+    "pytest-cov",
+    "tox"
+]
+
+[project.urls]
+Homepage = "https://github.com/CADWRDeltaModeling/BayDeltaSCHISM"
+
+[project.scripts]
+set_nudging = "bdschism.set_nudging:main"
+hot_from_hot = "bdschism.hotstart_from_hotstart:main"
+hot_date = "bdschism.hotstart_date:main"
+hot_nudge_data = "bdschism.hotstart_nudging_data:main"
+create_nudging = "schimpy.nudging:main"
+
+[tool.setuptools]
+packages = ["bdschism"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+bdschism = ["config/*.yaml"]
+
+[tool.click]
+# This section is not strictly necessary unless you are setting up Click-specific configurations.
