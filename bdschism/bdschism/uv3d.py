@@ -275,10 +275,8 @@ def main():
     """
     print(f"Running `interpolate_variables8` in {bg_output_dir}")
     os.chdir(bg_output_dir)
-
-    os.system("module load intel/2024.0 hmpt/2.29 hdf5/1.14.3 netcdf-c/4.9.2 netcdf-fortran/4.6.1 schism/5.11.1")
-    os.system('interpolate_variables8')
-
+    command = "module load intel/2024.0 hmpt/2.29 hdf5/1.14.3 netcdf-c/4.9.2 netcdf-fortran/4.6.1 schism/5.11.1 \n interpolate_variables8"
+    os.system(command)
 
 if __name__ == "__main__":
 
