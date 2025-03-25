@@ -15,9 +15,8 @@ from vtools.data.vtime import days
 import glob
 import pandas as pd
 import os
-import argparse
 import logging
-import pdb
+import click
 
 logger = logger = logging.getLogger(__name__)
 
@@ -136,57 +135,40 @@ add_upper = ["anh", "cse", "mrz", "emm", "mal", "pts"]
 repo = "//cnrastore-bdo/Modeling_Data/jenkins_repo_staging/continuous/formatted"
 
 
-def create_arg_parser():
-    """Create an argument parser
-    return: argparse.ArgumentParser
+@click.command(
+    help="""
+    Download station data from repo and save in csv format for hotstart 
+    nudging.
+    Usage:
+    hotstart_nudging_data --start_date 2018-02-19  --nudge_len 300
+                --dest_dir . --repo_dir $repo_path
     """
-
-    # Read in the input file
-    parser = argparse.ArgumentParser(
-        description="""
-        Download station data from repo and save in cvs format for hotstart 
-        nudging.
-        Usage:
-        hotstart_nudging_data --start_date 2018-02-19  --nudge_len 300
-                    --dest_dir . --repo_dir $repo_path
-                     """
-    )
-    parser.add_argument(
-        "--start_date",
-        default=None,
-        required=True,
-        help="starting date of SCHISM model, must be \
-                        format like 2018-02-19",
-    )
-    parser.add_argument(
-        "--nudge_len",
-        default=None,
-        required=True,
-        type=int,
-        help="number of days to be downloaded \
-                            from starting date",
-    )
-
-    parser.add_argument(
-        "--dest_dir",
-        default=".",
-        required=False,
-        help="folder to store downloaded obs nudging data. \
-                            Default is current folder",
-    )
-    parser.add_argument(
-        "--repo_dir",
-        default=repo,
-        required=False,
-        help=f"path to the repo of observed time series. \
-                            Default is {repo}",
-    )
-    return parser
-
-
-## Items you may want to change
-
-
+)
+@click.option(
+    "--start_date",
+    required=True,
+    help="starting date of SCHISM model, must be \
+                    format like 2018-02-19",
+)
+@click.option(
+    "--nudge_len",
+    required=True,
+    type=int,
+    help="number of days to be downloaded \
+                        from starting date",
+)
+@click.option(
+    "--dest_dir",
+    default=".",
+    help="folder to store downloaded obs nudging data. \
+                        Default is current folder",
+)
+@click.option(
+    "--repo_dir",
+    default=repo,
+    help=f"path to the repo of observed time series. \
+                        Default is {repo}",
+)
 def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
 
     t0 = sdate
@@ -212,7 +194,7 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
         var = {"temperature": "temp", "salinity": "ec"}[
             label_var
         ]  # working variable for data
-        print(f"Working on variable: {label_var},{var}")
+        click.echo(f"Working on variable: {label_var},{var}")
         logger.info(f"Working on variable: {label_var},{var}")
         vals = []
         accepted = {}
@@ -243,8 +225,8 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
                 if var == "temp":
                     topquant = ts.quantile(q=0.25)
                     if topquant > 35:
-                        print("Transforming F to C based on 25% qyantuke > 35deg")
-                        print("Transforming F to C based on 25% qyantuke > 35deg")
+                        click.echo("Transforming F to C based on 25% qyantuke > 35deg")
+                        click.echo("Transforming F to C based on 25% qyantuke > 35deg")
                         ts = fahrenheit_to_celsius(ts)
                     if ndx in ["clc"] and (ts < 0.0).all():
                         ts = celsius_to_farenheit(ts)
@@ -262,9 +244,9 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
                 # This is the fraction of missing data
                 ts = ts.reindex(tndx)
                 gap_frac = ts.isnull().sum() / len(ts)
-                print(f"Fraction of mssing data for {ndx} {var} is {gap_frac}")
+                click.echo(f"Fraction of mssing data for {ndx} {var} is {gap_frac}")
                 if gap_frac < 0.25:
-                    print(f"Accepted {ndx} {var}")
+                    click.echo(f"Accepted {ndx} {var}")
                     ts.columns = [ndx]
                     ts = ts.fillna(-9999.0)
                     accepted[ndx] = ts
@@ -273,10 +255,10 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
                         used_stations.add(ndx)
 
             except Exception as err:
-                print("Exception")
-                print(str(err))
-                print(ndx, var)
-                print(err)
+                click.echo("Exception")
+                click.echo(str(err))
+                click.echo(ndx, var)
+                click.echo(err)
         var_df = pd.DataFrame(data=vals, columns=("station", "x", "y", f"{label_var}"))
         var_df.set_index("station")
         var_df.to_csv(
@@ -292,11 +274,11 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
             nudging_df = pd.concat(accepted, axis=1)
         nudging_df.index.name = "datetime"
         nudging_dfs[label_var] = nudging_df
-        print(nudging_df)
+        click.echo(nudging_df)
         logger.info(nudging_df)
 
     obs_xy = pd.DataFrame(data=accepted_loc, columns=["site", "x", "y"])
-    print("reindexing and printing")
+    click.echo("reindexing and printing")
     logger.info("reindexing and printing")
 
     for label_var in all_vars:
@@ -309,23 +291,12 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
     obs_xy = obs_xy.set_index("site", drop=True)
     obs_xy.to_csv(f"obs_xy.csv", sep=",", float_format="%.2f")
 
-    print("No such file")
+    click.echo("No such file")
     logger.info("No such files")
     for item in no_such_file:
-        print(item)
+        click.echo(item)
         logger.info(item)
 
 
-def main():
-    parser = create_arg_parser()
-    args = parser.parse_args()
-    dest = args.dest_dir
-    ndays = args.nudge_len
-    repo_dir = args.repo_dir
-
-    start_date = pd.to_datetime(args.start_date, format="%Y-%m-%d")
-    hotstart_nudge_data(start_date, ndays, dest, repo_dir)
-
-
 if __name__ == "__main__":
-    main()
+    hotstart_nudge_data()
