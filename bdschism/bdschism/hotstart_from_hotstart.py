@@ -101,7 +101,6 @@ def fmt_string_file(fn_in, fn_out, str_dict, method="format_map"):
     type=str,
     help="Coordinate system (e.g., EPSG:26910).",
 )
-@click.help_option("-h", "--help")  # Add this line to enable both -h and --help
 def hotstart_newgrid(
     yaml: str,
     hotstart_in,

@@ -82,7 +82,6 @@ def get_nudge_list(workdir):
     callback=parse_var_map,
     help="Unexpected mapping in key=value pairs, separated by commas. Ex: --var_map 'TEM=temperature,SAL=salinity'",
 )
-@click.help_option("-h", "--help")  # Add this line to enable both -h and --help
 def set_nudging(suffix: str, workdir=".", var_map={}):
     """This is a utility to set up nudging files based on a naming convention common for BayDeltaSCHISM.
     Assumed this is on Linux or admin-priveleged Windows machine.

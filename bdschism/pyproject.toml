@@ -27,7 +27,8 @@ dependencies = [
     "vtools",
     "dms_datastore",
     "dynaconf",
-    "click"
+    "click",
+    "pyproj"
 ]
 
 [project.optional-dependencies]
@@ -47,6 +48,7 @@ test = [
 Homepage = "https://github.com/CADWRDeltaModeling/BayDeltaSCHISM"
 
 [project.scripts]
+bdschism = "bdschism.__main__:cli"
 set_nudging = "bdschism.set_nudging:main"
 hot_from_hot = "bdschism.hotstart_from_hotstart:main"
 hot_date = "bdschism.hotstart_date:main"
