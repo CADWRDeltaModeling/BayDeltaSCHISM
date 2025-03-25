@@ -120,11 +120,13 @@ def set_nudging(suffix: str, workdir=".", var_map={}):
         var_gr3_out = "{MOD}_nudge.gr3".format(**locals())
         var_nc_out = "{MOD}_nu.nc".format(**locals())
 
-        print(
+        click.echo(
             f"\t{gr3_color}{MOD} .gr3{reset_color}: Linked {var_gr3_out} to {var_gr3_in}"
         )
         config.create_link(var_gr3_in, os.path.join(workdir, var_gr3_out))
-        print(f"\t{nc_color}{MOD} .nc{reset_color}: Linked {var_nc_out} to {var_nc_in}")
+        click.echo(
+            f"\t{nc_color}{MOD} .nc{reset_color}: Linked {var_nc_out} to {var_nc_in}"
+        )
         config.create_link(var_nc_in, os.path.join(workdir, var_nc_out))
 
     invalid_files = [
