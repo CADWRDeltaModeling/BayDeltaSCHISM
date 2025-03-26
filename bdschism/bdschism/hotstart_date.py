@@ -14,6 +14,32 @@ import click
 from pathlib import Path
 
 
+def set_hotstart_date(fn, run_start, restart_time, outprefix, dt):
+    """Change timestamp and date implied by hotstart."""
+    run_start = pd.to_datetime(run_start)
+    run_start_str = run_start.strftime("%Y-%m-%dT%H:%M")
+    restart_time = pd.to_datetime(restart_time)
+
+    restart_sec = (restart_time - run_start).total_seconds()
+    restart_timestr = restart_time.strftime("%Y%m%d")
+    nsteps = int(restart_sec / dt)
+    outfile = f"{outprefix}.{restart_timestr}.{nsteps}.nc"
+
+    click.echo(
+        f"Restarting on {restart_time}. nsteps (iterations) = {nsteps}, elapsed secs at restart = {restart_sec}"
+    )
+    click.echo(f"Time origin of run is {run_start_str}")
+    click.echo(f"Output file is {outfile}")
+
+    with xr.open_dataset(fn) as ds:
+        ds.variables["time"][:] = restart_sec
+        ds.variables["nsteps_from_cold"][:] = nsteps
+        ds.variables["iths"][:] = nsteps
+        ds.variables["ifile"][:] = 1
+        ds.attrs["time_origin_of_simulation"] = run_start_str
+        ds.to_netcdf(outfile)
+
+
 @click.command(
     help=(
         "The script will change the necessary date attributes in a hotstart file.\n\n"
@@ -54,31 +80,10 @@ from pathlib import Path
     type=int,
     help="Timestep in seconds. [default: 90]",
 )
-def set_hotstart_date(fn, run_start, restart_time, outprefix, dt):
-    """Change timestamp and date implied by hotstart."""
-    run_start = pd.to_datetime(run_start)
-    run_start_str = run_start.strftime("%Y-%m-%dT%H:%M")
-    restart_time = pd.to_datetime(restart_time)
-
-    restart_sec = (restart_time - run_start).total_seconds()
-    restart_timestr = restart_time.strftime("%Y%m%d")
-    nsteps = int(restart_sec / dt)
-    outfile = f"{outprefix}.{restart_timestr}.{nsteps}.nc"
-
-    click.echo(
-        f"Restarting on {restart_time}. nsteps (iterations) = {nsteps}, elapsed secs at restart = {restart_sec}"
-    )
-    click.echo(f"Time origin of run is {run_start_str}")
-    click.echo(f"Output file is {outfile}")
-
-    with xr.open_dataset(fn) as ds:
-        ds.variables["time"][:] = restart_sec
-        ds.variables["nsteps_from_cold"][:] = nsteps
-        ds.variables["iths"][:] = nsteps
-        ds.variables["ifile"][:] = 1
-        ds.attrs["time_origin_of_simulation"] = run_start_str
-        ds.to_netcdf(outfile)
+def set_hotstart_date_cli(fn, run_start, restart_time, outprefix, dt):
+    """CLI for setting hotstart date."""
+    set_hotstart_date(fn, run_start, restart_time, outprefix, dt)
 
 
 if __name__ == "__main__":
-    set_hotstart_date()
+    set_hotstart_date_cli()
