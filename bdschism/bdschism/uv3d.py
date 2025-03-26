@@ -5,73 +5,6 @@ import os
 import shutil
 
 
-@click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
-@click.option(
-    "--param_nml",
-    default=None,
-    type=click.Path(exists=True),
-    help="Name of parameter file (default: param.nml).",
-)
-@click.option(
-    "--bg_dir",
-    default=".",
-    type=click.Path(exists=True),
-    help="Name of background simulation (e.g., larger or barotropic) directory (default: current directory).",
-)
-@click.option(
-    "--bg_output_dir",
-    default=None,
-    type=click.Path(),
-    help="Name of output directory in background. If None, will try outputs.tropic then outputs.",
-)
-@click.option(
-    "--fg_dir",
-    default=None,
-    type=click.Path(),
-    help="Name of foreground baroclinic run directory. If None, will copy from tropic_dir.",
-)
-@click.option(
-    "--hgrid_bg",
-    default="hgrid.gr3",
-    type=click.Path(),
-    help="Name of hgrid.gr3 file in tropic_, which will be linked to bg.gr3.",
-)
-@click.option(
-    "--hgrid_fg",
-    default="hgrid.gr3",
-    type=click.Path(),
-    help="Name of hgrid.gr3 file in clinic_, which will be linked to fg.gr3.",
-)
-@click.option(
-    "--vgrid_bg",
-    default="vgrid.in.2d",
-    type=click.Path(),
-    help="Name of the (2D barotropic) vgrid file.",
-)
-@click.option(
-    "--vgrid_fg",
-    default="vgrid.in.3d",
-    type=click.Path(),
-    help="Name of the (3D) baroclinic vgrid file.",
-)
-@click.option(
-    "--interp_template",
-    default=None,
-    type=click.Path(),
-    help="Name of interpolate_variables.in file. If None, will use an internal version with nday as template.",
-)
-@click.option(
-    "--nday",
-    default=None,
-    type=int,
-    help="Number of days to process. If None, param.nml is parsed in tropic_dir and the full length of the run is used.",
-)
-@click.option(
-    "--write_clinic",
-    default=True,
-    type=bool,
-    help="If true, the file will be moved to run_dir. Otherwise, it will be done in place in outputs.",
-)
 def interpolate_uv3d(
     param_nml,
     bg_dir,
@@ -219,5 +152,103 @@ def interpolate_uv3d(
     os.system(command)
 
 
+@click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
+@click.option(
+    "--param_nml",
+    default=None,
+    type=click.Path(exists=True),
+    help="Name of parameter file (default: param.nml).",
+)
+@click.option(
+    "--bg_dir",
+    default=".",
+    type=click.Path(exists=True),
+    help="Name of background simulation (e.g., larger or barotropic) directory (default: current directory).",
+)
+@click.option(
+    "--bg_output_dir",
+    default=None,
+    type=click.Path(),
+    help="Name of output directory in background. If None, will try outputs.tropic then outputs.",
+)
+@click.option(
+    "--fg_dir",
+    default=None,
+    type=click.Path(),
+    help="Name of foreground baroclinic run directory. If None, will copy from tropic_dir.",
+)
+@click.option(
+    "--hgrid_bg",
+    default="hgrid.gr3",
+    type=click.Path(),
+    help="Name of hgrid.gr3 file in tropic_, which will be linked to bg.gr3.",
+)
+@click.option(
+    "--hgrid_fg",
+    default="hgrid.gr3",
+    type=click.Path(),
+    help="Name of hgrid.gr3 file in clinic_, which will be linked to fg.gr3.",
+)
+@click.option(
+    "--vgrid_bg",
+    default="vgrid.in.2d",
+    type=click.Path(),
+    help="Name of the (2D barotropic) vgrid file.",
+)
+@click.option(
+    "--vgrid_fg",
+    default="vgrid.in.3d",
+    type=click.Path(),
+    help="Name of the (3D) baroclinic vgrid file.",
+)
+@click.option(
+    "--interp_template",
+    default=None,
+    type=click.Path(),
+    help="Name of interpolate_variables.in file. If None, will use an internal version with nday as template.",
+)
+@click.option(
+    "--nday",
+    default=None,
+    type=int,
+    help="Number of days to process. If None, param.nml is parsed in tropic_dir and the full length of the run is used.",
+)
+@click.option(
+    "--write_clinic",
+    default=True,
+    type=bool,
+    help="If true, the file will be moved to run_dir. Otherwise, it will be done in place in outputs.",
+)
+def interpolate_uv3d_cli(
+    param_nml,
+    bg_dir,
+    bg_output_dir,
+    fg_dir,
+    hgrid_bg,
+    hgrid_fg,
+    vgrid_bg,
+    vgrid_fg,
+    interp_template,
+    nday,
+    write_clinic,
+):
+    """
+    Command-line interface for the interpolate_uv3d function.
+    """
+    interpolate_uv3d(
+        param_nml,
+        bg_dir,
+        bg_output_dir,
+        fg_dir,
+        hgrid_bg,
+        hgrid_fg,
+        vgrid_bg,
+        vgrid_fg,
+        interp_template,
+        nday,
+        write_clinic,
+    )
+
+
 if __name__ == "__main__":
-    interpolate_uv3d()
+    interpolate_uv3d_cli()
