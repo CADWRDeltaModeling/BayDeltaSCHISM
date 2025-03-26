@@ -1,5 +1,5 @@
 import click
-from bdschism.set_nudging import set_nudging  # Import the set_nudging command
+from bdschism.set_nudging import set_nudging_cli  # Import the set_nudging command
 from bdschism.hotstart_from_hotstart import hotstart_newgrid
 from bdschism.hotstart_date import set_hotstart_date
 from bdschism.hotstart_nudging_data import hotstart_nudge_data
@@ -16,7 +16,7 @@ def cli():
 
 
 # Register the set_nudging command
-cli.add_command(set_nudging, "set_nudging")
+cli.add_command(set_nudging_cli, "set_nudge")
 cli.add_command(hotstart_newgrid, "hot_from_hot")
 cli.add_command(set_hotstart_date, "hot_date")
 cli.add_command(hotstart_nudge_data, "hot_nudge_data")

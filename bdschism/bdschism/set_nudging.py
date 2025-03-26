@@ -64,24 +64,6 @@ def get_nudge_list(workdir):
     return nc_nudge_list
 
 
-@click.command(
-    help=(
-        "Set the nudging module files for SCHISM. Usage: 'set_nudging roms'\n\n"
-        "Arguments:\n"
-        "  SUFFIX  This is the suffix used when preparing the nudging/gr files. "
-        "For instance 'obshycom' in SAL_nu_obshycom.nc"
-    )
-)
-@click.argument("suffix")
-@click.option(
-    "--workdir", default=".", show_default=True, help="Simulation directory path."
-)
-@click.option(
-    "--var_map",
-    default="",
-    callback=parse_var_map,
-    help="Unexpected mapping in key=value pairs, separated by commas. Ex: --var_map 'TEM=temperature,SAL=salinity'",
-)
 def set_nudging(suffix: str, workdir=".", var_map={}):
     """This is a utility to set up nudging files based on a naming convention common for BayDeltaSCHISM.
     Assumed this is on Linux or admin-priveleged Windows machine.
@@ -146,9 +128,30 @@ def set_nudging(suffix: str, workdir=".", var_map={}):
         raise ValueError(error_message)
 
 
-def main():
-    set_nudging()
+@click.command(
+    help=(
+        "Command for setting the nudging module files for SCHISM. "
+        "This command forwards arguments to the `set_nudging` function.\n\n"
+        "Arguments:\n"
+        "  SUFFIX  This is the suffix used when preparing the nudging/gr files. "
+        "For instance 'obshycom' in SAL_nu_obshycom.nc"
+    )
+)
+@click.argument("suffix")
+@click.option(
+    "--workdir", default=".", show_default=True, help="Simulation directory path."
+)
+@click.option(
+    "--var_map",
+    default="",
+    callback=parse_var_map,
+    help="Unexpected mapping in key=value pairs, separated by commas. Ex: --var_map 'TEM=temperature,SAL=salinity'",
+)
+@click.help_option("-h", "--help")
+def set_nudging_cli(suffix: str, workdir=".", var_map={}):
+    """Wrapper function for the `set_nudging` command."""
+    set_nudging(suffix, workdir, var_map)
 
 
 if __name__ == "__main__":
-    set_nudging()
+    set_nudging_cli()
