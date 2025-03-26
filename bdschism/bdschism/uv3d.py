@@ -5,9 +5,7 @@ import os
 import shutil
 
 
-@click.command(
-    help="Runs interpolate_variables utility to generate uv3d.th.nc."
-)
+@click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
 @click.option(
     "--param_nml",
     default="param.nml",
@@ -106,7 +104,9 @@ def main(
         elif os.path.exists(os.path.join(bg_dir, "outputs")):
             bg_output_dir = "outputs"
         else:
-            click.echo(f"Invalid path: {bg_output_dir} (Default is outputs.tropic or outputs)")
+            click.echo(
+                f"Invalid path: {bg_output_dir} (Default is outputs.tropic or outputs)"
+            )
             raise ValueError
 
     # Directory in which interpolate_variables executable will be run
@@ -127,9 +127,13 @@ def main(
     # Make sure "interpolate_variables.in" is present
     #
     if interp_template is None:
-        click.echo("interpolate_variables.in is not specified. Extracting nday from user input.")
+        click.echo(
+            "interpolate_variables.in is not specified. Extracting nday from user input."
+        )
         if nday is None:
-            click.echo("nday not specified in user input. Extracting nday from param.nml.")
+            click.echo(
+                "nday not specified in user input. Extracting nday from param.nml."
+            )
             #
             # Parse param.nml
             #
@@ -158,7 +162,9 @@ def main(
             )
 
         if nday is not None:
-            click.echo("Argument 'nday' is not accepted when interp_template is specified.")
+            click.echo(
+                "Argument 'nday' is not accepted when interp_template is specified."
+            )
             raise ValueError
 
         # Make sure the first parameter in the interpolate_variables.in file is 3 for uv3d.th.nc
@@ -179,10 +185,18 @@ def main(
     print(f"{os.path.join(bg_dir, vgrid_bg)} -> {os.path.join(interp_dir, 'vgrid.bg')}")
     print(f"{os.path.join(fg_dir, vgrid_fg)} -> {os.path.join(interp_dir, 'vgrid.fg')}")
 
-    config.create_link(os.path.join(bg_dir, hgrid_bg), os.path.join(interp_dir, 'bg.gr3'))
-    config.create_link(os.path.join(fg_dir, hgrid_fg), os.path.join(interp_dir, 'fg.gr3'))
-    config.create_link(os.path.join(bg_dir, vgrid_bg), os.path.join(interp_dir, 'vgrid.bg'))
-    config.create_link(os.path.join(fg_dir, vgrid_fg), os.path.join(interp_dir, 'vgrid.fg'))
+    config.create_link(
+        os.path.join(bg_dir, hgrid_bg), os.path.join(interp_dir, "bg.gr3")
+    )
+    config.create_link(
+        os.path.join(fg_dir, hgrid_fg), os.path.join(interp_dir, "fg.gr3")
+    )
+    config.create_link(
+        os.path.join(bg_dir, vgrid_bg), os.path.join(interp_dir, "vgrid.bg")
+    )
+    config.create_link(
+        os.path.join(fg_dir, vgrid_fg), os.path.join(interp_dir, "vgrid.fg")
+    )
 
     """
     #
@@ -197,8 +211,10 @@ def main(
     if write_clinic == True:
         shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(bg_dir, "uv3D.th.nc"))
     """
-    print(f"Running `interpolate_variables8` in {os.path.abspath(os.path.join(bg_dir,bg_output_dir))}")
-    os.chdir(os.path.abspath(os.path.join(bg_dir,bg_output_dir)))
+    print(
+        f"Running `interpolate_variables8` in {os.path.abspath(os.path.join(bg_dir,bg_output_dir))}"
+    )
+    os.chdir(os.path.abspath(os.path.join(bg_dir, bg_output_dir)))
     command = "module load intel/2024.0 hmpt/2.29 hdf5/1.14.3 netcdf-c/4.9.2 netcdf-fortran/4.6.1 schism/5.11.1 \n interpolate_variables8"
     os.system(command)
 
