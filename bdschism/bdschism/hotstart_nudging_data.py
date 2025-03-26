@@ -135,40 +135,6 @@ add_upper = ["anh", "cse", "mrz", "emm", "mal", "pts"]
 repo = "//cnrastore-bdo/Modeling_Data/jenkins_repo_staging/continuous/formatted"
 
 
-@click.command(
-    help="""
-    Download station data from repo and save in csv format for hotstart 
-    nudging.
-    Usage:
-    hotstart_nudging_data --start_date 2018-02-19  --nudge_len 300
-                --dest_dir . --repo_dir $repo_path
-    """
-)
-@click.option(
-    "--start_date",
-    required=True,
-    help="starting date of SCHISM model, must be \
-                    format like 2018-02-19",
-)
-@click.option(
-    "--nudge_len",
-    required=True,
-    type=int,
-    help="number of days to be downloaded \
-                        from starting date",
-)
-@click.option(
-    "--dest_dir",
-    default=".",
-    help="folder to store downloaded obs nudging data. \
-                        Default is current folder",
-)
-@click.option(
-    "--repo_dir",
-    default=repo,
-    help=f"path to the repo of observed time series. \
-                        Default is {repo}",
-)
 def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
 
     t0 = sdate
@@ -298,5 +264,51 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
         logger.info(item)
 
 
+@click.command(
+    help="""
+    Download station data from repo and save in csv format for hotstart 
+    nudging.
+    Usage:
+    hotstart_nudging_data --start_date 2018-02-19  --nudge_len 300
+                --dest_dir . --repo_dir $repo_path
+    """
+)
+@click.option(
+    "--start_date",
+    required=True,
+    help="starting date of SCHISM model, must be \
+                    format like 2018-02-19",
+)
+@click.option(
+    "--nudge_len",
+    required=True,
+    type=int,
+    help="number of days to be downloaded \
+                        from starting date",
+)
+@click.option(
+    "--dest_dir",
+    default=".",
+    help="folder to store downloaded obs nudging data. \
+                        Default is current folder",
+)
+@click.option(
+    "--repo_dir",
+    default=repo,
+    help=f"path to the repo of observed time series. \
+                        Default is {repo}",
+)
+def hotstart_nudge_data_cli(start_date, nudge_len, dest_dir, repo_dir):
+    """
+    Command-line interface for the hotstart_nudge_data function.
+    """
+    try:
+        sdate = pd.to_datetime(start_date)
+    except ValueError:
+        raise ValueError("Invalid date format. Use YYYY-MM-DD.")
+
+    hotstart_nudge_data(sdate, nudge_len, dest_dir, repo_dir)
+
+
 if __name__ == "__main__":
-    hotstart_nudge_data()
+    hotstart_nudge_data_cli()
