@@ -74,7 +74,7 @@ import shutil
     type=bool,
     help="If true, the file will be moved to run_dir. Otherwise, it will be done in place in outputs.",
 )
-def uv3d(
+def main(
     param_nml,
     bg_dir,
     bg_output_dir,
@@ -204,4 +204,4 @@ def uv3d(
 
 
 if __name__ == "__main__":
-    uv3d()
+    main()
