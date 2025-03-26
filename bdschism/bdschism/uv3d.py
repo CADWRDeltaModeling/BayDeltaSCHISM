@@ -8,7 +8,7 @@ import shutil
 @click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
 @click.option(
     "--param_nml",
-    default="param.nml",
+    default=None,
     type=click.Path(exists=True),
     help="Name of parameter file (default: param.nml).",
 )
