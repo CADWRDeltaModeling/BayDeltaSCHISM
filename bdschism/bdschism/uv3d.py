@@ -118,7 +118,10 @@ def uv3d(
 
     # fg_dir
     if fg_dir is None:
+        print("`fg_dir` is not specified. Setting it to `bg_dir`.")
         fg_dir = bg_dir
+
+    fg_dir = os.path.abspath(fg_dir)
 
     #
     # Make sure "interpolate_variables.in" is present
@@ -170,10 +173,16 @@ def uv3d(
     #
     # Create symbolic links
     #
-    config.create_link(os.path.join(bg_dir, hgrid_bg), os.path.join(interp_dir, "bg.gr3"))
-    config.create_link(os.path.join(bg_dir, hgrid_fg), os.path.join(interp_dir, "fg.gr3"))
-    config.create_link(os.path.join(bg_dir, vgrid_bg), os.path.join(interp_dir, "vgrid.bg"))
-    config.create_link(os.path.join(bg_dir, vgrid_fg), os.path.join(interp_dir, "vgrid.fg"))
+    print("\nFiles linked:")
+    print(f"{os.path.join(bg_dir, hgrid_bg)} -> {os.path.join(interp_dir, 'bg.gr3')}")
+    print(f"{os.path.join(fg_dir, hgrid_fg)} -> {os.path.join(interp_dir, 'fg.gr3')}")
+    print(f"{os.path.join(bg_dir, vgrid_bg)} -> {os.path.join(interp_dir, 'vgrid.bg')}")
+    print(f"{os.path.join(fg_dir, vgrid_fg)} -> {os.path.join(interp_dir, 'vgrid.fg')}")
+
+    config.create_link(os.path.join(bg_dir, hgrid_bg), os.path.join(interp_dir, 'bg.gr3'))
+    config.create_link(os.path.join(fg_dir, hgrid_fg), os.path.join(interp_dir, 'fg.gr3'))
+    config.create_link(os.path.join(bg_dir, vgrid_bg), os.path.join(interp_dir, 'vgrid.bg'))
+    config.create_link(os.path.join(fg_dir, vgrid_fg), os.path.join(interp_dir, 'vgrid.fg'))
 
     """
     #
@@ -188,8 +197,8 @@ def uv3d(
     if write_clinic == True:
         shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(bg_dir, "uv3D.th.nc"))
     """
-    print(f"Running `interpolate_variables8` in {bg_output_dir}")
-    os.chdir(bg_output_dir)
+    print(f"Running `interpolate_variables8` in {os.path.abspath(os.path.join(bg_dir,bg_output_dir))}")
+    os.chdir(os.path.abspath(os.path.join(bg_dir,bg_output_dir)))
     command = "module load intel/2024.0 hmpt/2.29 hdf5/1.14.3 netcdf-c/4.9.2 netcdf-fortran/4.6.1 schism/5.11.1 \n interpolate_variables8"
     os.system(command)
 
