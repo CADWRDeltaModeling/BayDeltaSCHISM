@@ -80,6 +80,7 @@ def set_hotstart_date(fn, run_start, restart_time, outprefix, dt):
     type=int,
     help="Timestep in seconds. [default: 90]",
 )
+@click.help_option("-h", "--help")
 def set_hotstart_date_cli(fn, run_start, restart_time, outprefix, dt):
     """CLI for setting hotstart date."""
     set_hotstart_date(fn, run_start, restart_time, outprefix, dt)

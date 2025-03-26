@@ -157,6 +157,7 @@ def hotstart_newgrid(
     type=str,
     help="Coordinate system (e.g., EPSG:26910).",
 )
+@click.help_option("-h", "--help")
 def hotstart_newgrid_cli(
     yaml: str,
     hotstart_in,

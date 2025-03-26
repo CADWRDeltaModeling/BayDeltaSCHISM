@@ -298,6 +298,7 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
     help=f"path to the repo of observed time series. \
                         Default is {repo}",
 )
+@click.help_option("-h", "--help")
 def hotstart_nudge_data_cli(start_date, nudge_len, dest_dir, repo_dir):
     """
     Command-line interface for the hotstart_nudge_data function.

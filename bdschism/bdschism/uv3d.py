@@ -219,6 +219,7 @@ def interpolate_uv3d(
     type=bool,
     help="If true, the file will be moved to run_dir. Otherwise, it will be done in place in outputs.",
 )
+@click.help_option("-h", "--help")
 def interpolate_uv3d_cli(
     param_nml,
     bg_dir,
