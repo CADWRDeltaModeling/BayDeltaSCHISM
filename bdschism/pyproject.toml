@@ -77,7 +77,7 @@ Homepage = "https://github.com/CADWRDeltaModeling/BayDeltaSCHISM"
 [project.scripts]
 bds = "bdschism.__main__:cli"
 set_nudge = "bdschism.set_nudging:set_nudging_cli"
-hot_from_hot = "bdschism.hotstart_from_hotstart:main"
+hot_from_hot = "bdschism.hotstart_from_hotstart:hotstart_newgrid_cli"
 hot_date = "bdschism.hotstart_date:main"
 hot_nudge_data = "bdschism.hotstart_nudging_data:main"
 create_nudging = "schimpy.nudging:main"

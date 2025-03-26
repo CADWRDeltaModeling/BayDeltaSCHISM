@@ -55,52 +55,6 @@ def fmt_string_file(fn_in, fn_out, str_dict, method="format_map"):
         fout.write(fdata)
 
 
-@click.command(
-    help=(
-        "Transfer hotstart data from one grid to another'\n\n"
-        "Arguments:\n"
-        "  YAML  Path to the YAML file."
-        "For instance hotstart_from_hotstart.yaml (found in examples/hotstart/examples)"
-    )
-)
-@click.argument("yaml")
-@click.option(
-    "--f_in",
-    required=True,
-    type=click.Path(exists=True),
-    help="Hotstart input file path - uses hgrid.gr3 and vgrid.in from in_dir.",
-)
-@click.option(
-    "--f_out",
-    required=True,
-    type=click.Path(),
-    help="Hotstart output file path - will be translated to hgrid.gr3 and vgrid.in from out_dir.",
-)
-@click.option(
-    "--in_dir",
-    required=True,
-    type=click.Path(exists=True),
-    help="Input directory: has hgrid.gr3, vgrid.in, and param.nml (links are ok).",
-)
-@click.option(
-    "--out_dir",
-    required=True,
-    type=click.Path(exists=True),
-    help="Output directory: has hgrid.gr3, vgrid.in, and param.nml (links are ok).",
-)
-@click.option(
-    "--modules",
-    default=None,
-    type=str,
-    multiple=True,
-    help="Modules to be transferred to/from hotstart files.",
-)
-@click.option(
-    "--crs",
-    default="EPSG:26910",
-    type=str,
-    help="Coordinate system (e.g., EPSG:26910).",
-)
 def hotstart_newgrid(
     yaml: str,
     hotstart_in,
@@ -157,10 +111,82 @@ def hotstart_newgrid(
     os.remove(temp_yaml)
 
 
-def main():
-    """Main function to handle hotstart transfer."""
-    hotstart_newgrid()
+@click.command(
+    help=(
+        "Transfer hotstart data from one grid to another'\n\n"
+        "Arguments:\n"
+        "  YAML  Path to the YAML file."
+        "For instance hotstart_from_hotstart.yaml (found in examples/hotstart/examples)"
+    )
+)
+@click.argument("yaml")
+@click.option(
+    "--f_in",
+    required=True,
+    type=click.Path(exists=True),
+    help="Hotstart input file path - uses hgrid.gr3 and vgrid.in from in_dir.",
+)
+@click.option(
+    "--f_out",
+    required=True,
+    type=click.Path(),
+    help="Hotstart output file path - will be translated to hgrid.gr3 and vgrid.in from out_dir.",
+)
+@click.option(
+    "--in_dir",
+    required=True,
+    type=click.Path(exists=True),
+    help="Input directory: has hgrid.gr3, vgrid.in, and param.nml (links are ok).",
+)
+@click.option(
+    "--out_dir",
+    required=True,
+    type=click.Path(exists=True),
+    help="Output directory: has hgrid.gr3, vgrid.in, and param.nml (links are ok).",
+)
+@click.option(
+    "--modules",
+    default=None,
+    type=str,
+    multiple=True,
+    help="Modules to be transferred to/from hotstart files.",
+)
+@click.option(
+    "--crs",
+    default="EPSG:26910",
+    type=str,
+    help="Coordinate system (e.g., EPSG:26910).",
+)
+def hotstart_newgrid_cli(
+    yaml: str,
+    hotstart_in,
+    hotstart_out,
+    in_dir,
+    out_dir,
+    modules=None,
+    crs="EPSG:26910",
+):
+    """
+    Command-line interface for transferring hotstart data from one grid to another.
+    """
+    # Ensure input and output directories exist
+    if not os.path.exists(in_dir):
+        raise ValueError(f"Input directory {in_dir} does not exist.")
+    if not os.path.exists(out_dir):
+        raise ValueError(f"Output directory {out_dir} does not exist.")
+
+    # Call the hotstart transfer function
+    hotstart_newgrid(
+        yaml,
+        hotstart_in,
+        hotstart_out,
+        in_dir,
+        out_dir,
+        modules=modules,
+        crs=crs,
+    )
 
 
 if __name__ == "__main__":
-    main()
+    """Main function to handle hotstart transfer."""
+    hotstart_newgrid_cli()
