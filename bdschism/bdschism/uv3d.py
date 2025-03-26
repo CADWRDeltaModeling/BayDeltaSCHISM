@@ -27,7 +27,7 @@ def interpolate_uv3d(
     try:
         assert os.path.exists(bg_dir)
     except AssertionError:
-        click.echo(f"Path does not exist: {bg_dir}")
+        print(f"Path does not exist: {bg_dir}")
     bg_dir = os.path.abspath(bg_dir)
 
     # bg_output_dir
@@ -37,7 +37,7 @@ def interpolate_uv3d(
         elif os.path.exists(os.path.join(bg_dir, "outputs")):
             bg_output_dir = "outputs"
         else:
-            click.echo(
+            print(
                 f"Invalid path: {bg_output_dir} (Default is outputs.tropic or outputs)"
             )
             raise ValueError
@@ -47,7 +47,7 @@ def interpolate_uv3d(
     try:
         assert os.path.exists(interp_dir)
     except AssertionError:
-        click.echo(f"Path does not exist: {interp_dir}")
+        print(f"Path does not exist: {interp_dir}")
 
     # fg_dir
     if fg_dir is None:
@@ -60,13 +60,11 @@ def interpolate_uv3d(
     # Make sure "interpolate_variables.in" is present
     #
     if interp_template is None:
-        click.echo(
+        print(
             "interpolate_variables.in is not specified. Extracting nday from user input."
         )
         if nday is None:
-            click.echo(
-                "nday not specified in user input. Extracting nday from param.nml."
-            )
+            print("nday not specified in user input. Extracting nday from param.nml.")
             #
             # Parse param.nml
             #
@@ -86,7 +84,7 @@ def interpolate_uv3d(
         ):
             pass
         else:
-            click.echo(
+            print(
                 f"{os.path.abspath(interp_template)}\ncopied to\n"
                 f"{os.path.join(interp_dir, 'interpolate_variables.in')}"
             )
@@ -95,9 +93,7 @@ def interpolate_uv3d(
             )
 
         if nday is not None:
-            click.echo(
-                "Argument 'nday' is not accepted when interp_template is specified."
-            )
+            print("Argument 'nday' is not accepted when interp_template is specified.")
             raise ValueError
 
         # Make sure the first parameter in the interpolate_variables.in file is 3 for uv3d.th.nc

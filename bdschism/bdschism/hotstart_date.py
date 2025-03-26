@@ -25,11 +25,11 @@ def set_hotstart_date(fn, run_start, restart_time, outprefix, dt):
     nsteps = int(restart_sec / dt)
     outfile = f"{outprefix}.{restart_timestr}.{nsteps}.nc"
 
-    click.echo(
+    print(
         f"Restarting on {restart_time}. nsteps (iterations) = {nsteps}, elapsed secs at restart = {restart_sec}"
     )
-    click.echo(f"Time origin of run is {run_start_str}")
-    click.echo(f"Output file is {outfile}")
+    print(f"Time origin of run is {run_start_str}")
+    print(f"Output file is {outfile}")
 
     with xr.open_dataset(fn) as ds:
         ds.variables["time"][:] = restart_sec

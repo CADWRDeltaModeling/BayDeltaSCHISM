@@ -95,7 +95,7 @@ def hotstart_newgrid(
         temp_yaml = temp_file.name
         # uses **locals(): timestep, run_start, hot_date, hgrid_in, hgrid_out, vgrid_in, vgrid_out to populate yaml_fn into temp_yaml
         fmt_string_file(yaml, temp_yaml, SafeDict(**locals()), method="format_map")
-        click.echo(f"\t Temporary yaml filename: {temp_yaml}")
+        print(f"\t Temporary yaml filename: {temp_yaml}")
 
     # Get modules used from hotstart infile
     if modules is None:
