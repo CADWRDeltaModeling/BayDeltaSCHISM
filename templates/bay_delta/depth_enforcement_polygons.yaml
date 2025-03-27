@@ -10757,7 +10757,7 @@ polygons:
   # - - 621817.5895531502
     # - 4238760.4134480655
 - attribute: '3.5'
-  namstaie: miner_near_5pt
+  name: miner_near_5pt
   type: min
   vertices:
   - - 618578.9728548067
