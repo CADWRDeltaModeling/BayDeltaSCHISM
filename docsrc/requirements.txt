@@ -1,5 +1,6 @@
 # furo==2021.11.16
 sphinx>=7.0
+pillow>=4.0.0
 sphinx-design
 sphinx-argparse  
 sphinxcontrib-bibtex
@@ -9,15 +10,6 @@ ghp-import # for GitHub Pages import
 nbsphinx
 numpydoc
 docutils
-matplotlib # needed for matplotlib.sphinxext.mathmply
-ipython    # neededd for IPython.sphinxext.ipython_directive
-pip
-# baydelta specific stuff
-# needed for many bdschism imports
-suxarray
-vtools
-dms_datastore
-schimpy
-dynaconf
-click
-pyproj
+# matplotlib # removed, already in schism_env.yml
+# ipython    # removed, already in schism_env.yml
+# pip        # removed, already in schism_env.yml
