@@ -38,12 +38,12 @@ Adding Data From Other Sources (e.g. Forecasts, other models)
 #############################################################
 
 
-The :file:`port_boundary.py` script in BayDeltaSCHISM/scripts/  contains utilities 
+The :file:`port_boundary.py` script in BayDeltaSCHISM/bdschism/bdschism/  contains utilities 
 to convert or graft outputs from various data formats (other models or forecasts) onto 
 files in SCHISM time history (.th) formats. 
 
 .. currentmodule:: port_boundary
-.. autofunction:: read_csv
+.. autofunction:: port_boundary.read_csv
 
 
   **File Descriptions**
@@ -106,29 +106,29 @@ files in SCHISM time history (.th) formats.
     10. **formula**: the formula for the derived timeseries Used if derived = TRUE.
 
       .. note::  Python's eval() function is used to parse the code entered in the cell.
-                 Examples::
+        Examples::
 
-                   (csv.RCSM075+csv.RMKL070)
+          (csv.RCSM075+csv.RMKL070)
 
         The above entry would sum up RCSM075 and RMKL070 from the CSV source ::
-                 
-                   (flux.american/(flux.sac+flux.american)).mul(csv.RSAC155)
+
+          (flux.american/(flux.sac+flux.american)).mul(csv.RSAC155)
         
-                 The above entry would multiply the RSAC155 from the CSV source by the ratio of the (Amer River/Amer+Sac River).
+        The above entry would multiply the RSAC155 from the CSV source by the ratio of the (Amer River/Amer+Sac River).
         This is used to disaggregate the total Sacramento R. flow above the confluence (i.e., from DSM2) into its American
-                 River component, based on an existing SCHISM flux.th input.
-                 
-                 **The dataframes are named:**
-                 
-                     *flux*: DataFrame containing the historical SCHISM flux.th file
-                     
-                     *salt*: DataFrame containing the historical SCHISM salt.th file
-                     
-                     *temp*: DataFrame containing the historical SCHISM temp.th file
-                     
-                     *csv*: DataFrame containing the values from the CSV source
-                     
-                     *dss*: DataFrame containing the values from the DSS source
+        River component, based on an existing SCHISM flux.th input.
+        
+        **The dataframes are named:**
+        
+            *flux*: DataFrame containing the historical SCHISM flux.th file
+            
+            *salt*: DataFrame containing the historical SCHISM salt.th file
+            
+            *temp*: DataFrame containing the historical SCHISM temp.th file
+            
+            *csv*: DataFrame containing the values from the CSV source
+            
+            *dss*: DataFrame containing the values from the DSS source
                  
       .. note::  the SCHISM time history files used are the ones in this repository.
                  ::
