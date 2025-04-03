@@ -5,13 +5,14 @@ Bay-Delta SCHISM User Guide
 
 The following topical guides take you through what it takes to set up a basic model run using the Bay-Delta SCHISM toolchain. You won't have action items on all the topics for every run, but the :ref:`Bay-Delta SCHISM Essentials <essentials>` section will get you started on a basic hindcast and the :ref:`Topical Guides <topical>` describe numerous common modeling tasks and where the gotchas are. 
 
+See :ref:`Installation And Getting Started <getstarted>` for programatic setup and basic introductory materials.
+
 Bay-Delta SCHISM Setup
 -------------------------
 
 .. toctree::
   :maxdepth: 3
   
-  Getting the Tools and Setting Up <getmodel>
   Running a Preprepared Setup <topics/processed_run>
 
 ________________________
