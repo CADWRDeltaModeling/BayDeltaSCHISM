@@ -3,6 +3,7 @@ param:
   boundary_kinds: [flow] #[flow,ec,temp]
   start_date: [2024,9,30] #YYYY,MM,DD
   end_date: [2024,11,30]
+dir: ./ # specify where port_boundary will be looking for the files under "file:""
 file:
   source_map_file: port_boundary_map.csv
   schism_flux_file: ./data/flux.th
