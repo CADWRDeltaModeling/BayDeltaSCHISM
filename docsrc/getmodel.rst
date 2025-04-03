@@ -81,7 +81,7 @@ Required Python Packages
 ------------------------
 
 Our preprocessor is Python based. 
-We recommend, and only support, `conda <https://docs.conda.io/en/latest/>` for package management. 
+We recommend, and only support, `conda <https://docs.conda.io/en/latest/>`_ for package management. 
 Please avoid Anaconda; it is too big 
 and we can't ensure compatibility between all the libraries if you include that much stuff. 
 Instructions for managing Python environments are on our general Delta Modeling documentation page for Python. 
@@ -93,7 +93,7 @@ You will want the following tools:
   * dms-datastore [`dms-datastore project docs <https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html>`_] [`dms-datastore code repo <https://github.com/CADWRDeltaModeling/dms_datastore>`_] | for managing data from common Bay-Delta sources.
 
 Work tends to expand in a predictable way and we recommend a broader environment available 
-at the Bay-Delta SCHISM `repo <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/schism_env.yml>`.
+at the Bay-Delta SCHISM `repo <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/schism_env.yml>`_.
 We can provide modest support for modern versions of the packages on fairly up-to-date Python platforms.
 
 
