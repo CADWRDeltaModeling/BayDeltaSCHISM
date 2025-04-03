@@ -64,7 +64,7 @@ The soft coastal boundary enforcement is applied by providing temperature and sa
 See Chapter 5 in [Methodology for Flow and Salinity Estimates](https://data.cnra.ca.gov/dataset/methodology-for-flow-and-salinity-estimates-in-the-sacramento-san-joaquin-delta-and-suisun-marsh/resource/8f6bb786-60e6-44cc-847e-37cea36f8c2b) for more detail.
 
 Generating nudging files
------------------
+-----------------------------
 The python function to generate nudging files is `create_nudging`, which is part of [schimpy](https://github.com/CADWRDeltaModeling/schimpy/blob/master/schimpy/nudging.py). The function is run as follows:
 
 `create_nudging --input config_file`
