@@ -1,6 +1,3 @@
-
-
-
 #########################
 Inflow/Outflow Boundaries
 #########################
@@ -99,9 +96,9 @@ files in SCHISM time history (.th) formats.
     8. **convert**: apply unit conversions (CFS_CMS, EC_PSU)::
 
          if convert == 'CFS_CMS':
-            dfi = dfi*CFS2CMS*sign
+             dfi = dfi * CFS2CMS * sign
          elif convert == 'EC_PSU':
-            dfi = ec_psu_25c(dfi)*sign
+             dfi = ec_psu_25c(dfi) * sign
 
     9. **rhistinterp_p**: this script uses `rhistinterp <https://github.com/CADWRDeltaModeling/vtools3/blob/b7cfa54f45e8efa803cb3ebfb4f580d1e9719957/vtools/functions/interpolate.py#L15>`_ to interpolate and smooth timeseries of coarser timesteps.
        This field sets the parameter p
@@ -110,13 +107,15 @@ files in SCHISM time history (.th) formats.
 
       .. note::  Python's eval() function is used to parse the code entered in the cell.
                  Examples::
+
                    (csv.RCSM075+csv.RMKL070)
-                 The above entry would sum up RCSM075 and RMKL070 from the CSV source
-                 ::
+
+        The above entry would sum up RCSM075 and RMKL070 from the CSV source ::
                  
                    (flux.american/(flux.sac+flux.american)).mul(csv.RSAC155)
+        
                  The above entry would multiply the RSAC155 from the CSV source by the ratio of the (Amer River/Amer+Sac River).
-                 This is used to disaggegate the total Sacramento R. flow above the confluence (i.e., from DSM2) into its American
+        This is used to disaggregate the total Sacramento R. flow above the confluence (i.e., from DSM2) into its American
                  River component, based on an existing SCHISM flux.th input.
                  
                  **The dataframes are named:**
