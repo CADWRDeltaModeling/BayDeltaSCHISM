@@ -12,3 +12,5 @@ docutils
 matplotlib # needed for matplotlib.sphinxext.mathmply
 ipython    # neededd for IPython.sphinxext.ipython_directive
 pip
+# baydelta specific stuff
+schimpy # needed for many bdschism imports
