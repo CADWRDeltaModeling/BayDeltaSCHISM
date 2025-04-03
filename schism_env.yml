@@ -36,7 +36,6 @@ dependencies:
   - openpyxl
   - seaborn
   - bleach
-  - pyhecdss
   - ipykernel
   - pytest
   - pytest-runner
