@@ -1,0 +1,446 @@
+<!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. -->
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bdschism.profile_plot &mdash; Bay-Delta SCHISM</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ca842793"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo6.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bay-Delta SCHISM Project</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getmodel.html">Installation And Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#schism-code-or-binaries">SCHISM Code or Binaries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#downloading">Downloading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#compile-settings">Compile Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#git">Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#bay-delta-package">Bay-Delta Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#required-python-packages">Required Python Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#configuration-system">Configuration System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#id1">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#configuration-file-locations-and-priorities">Configuration File Locations and Priorities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#example-configuration-file">Example Configuration File</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#bathymetry">Bathymetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#complete-sample-inputs">Complete Sample Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#visit-schism-plug-in">VisIt SCHISM Plug-in</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#links-to-tools">Links to tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../learning.html">Learning Resources for Bay-Delta SCHISM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#general-resources-and-tools">General Resources and Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#manuals">Manuals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#vims-and-other-external-resources">VIMS and Other External Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">Bay-Delta SCHISM User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#bay-delta-schism-setup">Bay-Delta SCHISM Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/processed_run.html">Running a Preprepared Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#bay-delta-schism-essentials">Bay-Delta SCHISM Essentials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide.html#overview">Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/overview.html">Overview of a Bay-Delta SCHISM Run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/files_and_directories.html">Required Files, Directory Structure and Recommended Study Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/preprocess.html">Grid, Spatial Data and Preprocessor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/flow_boundary.html">Inflow/Outflow Boundaries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/atmospheric.html">Atmospheric setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/barotropic.html">Ocean Boundary Stabilization: Barotropic Warmup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/param.html">Key Run Parameters and Gotchas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hotstart.html">Run Initialization and Restart (Hotstart)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/nudging.html">Nudging Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/vegetation.html">Vegetation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide.html#inspection-of-model-setup">Inspection of Model Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/checklists.html">Checklists</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/run_tests.html">Test Suite for Prechecking Runs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide.html#output-files">Output Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html">Output</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#advanced-tasks-and-concepts">Advanced Tasks and Concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/problems.html">Common Problems and Diagnosis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#where-does-schism-write-error-messages">Where does SCHISM write error messages?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#my-run-says-segfault">My run says “segfault”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#the-runs-seems-very-slow-compared-to-normal">The runs seems very slow compared to normal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#dry-boundary">Dry boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/age.html">Simulating water age</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#compile-with-age">Compile with age</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#parameters-in-param-nml">Parameters in param.nml</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#additional-ic-files">Additional *.ic files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#hotstart-considerations">Hotstart considerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#typical-output-processing">Typical output processing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/sea_level_rise.html">Sea Level Rise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/sources.html">Sources, Sinks, Delta Channel Depletions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#identifying-source-locations-and-names-in-preprocessor">Identifying source locations and names in preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#delta-and-suisun-channel-depletions">Delta and Suisun channel depletions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#making-sure-you-includ-the-th-files-for-sources-sinks">Making sure you includ the th files for sources/sinks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#tracer-concentrations">Tracer concentrations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/structures.html">Hydraulic Structures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#where-is-the-documentation">Where is the documentation?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#setting-up-the-mesh-to-make-structures-easy">Setting up the mesh to make structures easy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#preventing-dry-boundary-messages">Preventing dry boundary messages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#important-bay-delta-examples">Important Bay-Delta examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/mesh.html">Gridding the Horizontal Mesh</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/mesh.html#meshing">Meshing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/mesh.html#vertical-mesh-setup">Vertical mesh setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/mesh.html#checklist-for-after-you-change-the-mesh">Checklist for after you change the mesh</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/utilities.html">Utilities and Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/utilities.html#gis-conversion">GIS Conversion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/utilities.html#hotstart-inventory-convert-iteration-numbers-to-dates">Hotstart Inventory: Convert iteration numbers to dates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/utilities.html#model-time-and-multi-clip">model_time and multi_clip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../calibration.html">Calibration Report and References</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../calibration.html#calibration">Calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../help.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help.html#support">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Bay-Delta SCHISM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. -->
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for bdschism.profile_plot</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">three_point_linear_norm</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="n">location_labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">54</span><span class="p">:</span> <span class="s2">&quot;Martinez&quot;</span><span class="p">,</span>
+                   <span class="mi">82</span><span class="p">:</span><span class="s2">&quot;Collinsville&quot;</span><span class="p">,</span>
+                   <span class="mi">92</span><span class="p">:</span><span class="s2">&quot;Emmaton&quot;</span><span class="p">,</span>
+                   <span class="mi">75</span><span class="p">:</span><span class="s2">&quot;Mallard&quot;</span><span class="p">,</span>
+                   <span class="mi">101</span><span class="p">:</span><span class="s2">&quot;Rio Vista&quot;</span><span class="p">}</span>
+
+<span class="n">MAX_STATION</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">MIN_STATION</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">MAX_DEPTH</span> <span class="o">=</span> <span class="mi">0</span>
+                   
+<div class="viewcode-block" id="set_index_bounds">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.profile_plot.set_index_bounds">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_index_bounds</span><span class="p">(</span><span class="n">min_station</span><span class="p">,</span><span class="n">max_station</span><span class="p">,</span><span class="n">max_depth</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">MAX_STATION</span>
+    <span class="k">global</span> <span class="n">MIN_STATION</span>
+    <span class="k">global</span> <span class="n">MAX_DEPTH</span>
+    <span class="n">MIN_STATION</span> <span class="o">=</span> <span class="n">min_station</span>
+    <span class="n">MAX_STATION</span> <span class="o">=</span> <span class="n">max_station</span>
+    <span class="n">MAX_DEPTH</span> <span class="o">=</span> <span class="n">max_depth</span></div>
+
+
+<div class="viewcode-block" id="get_index_bounds">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.profile_plot.get_index_bounds">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_index_bounds</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">MIN_STATION</span><span class="p">,</span><span class="n">MAX_STATION</span><span class="p">,</span><span class="n">MAX_DEPTH</span><span class="p">)</span></div>
+
+                   
+<div class="viewcode-block" id="nearest_neighbor_fill">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.profile_plot.nearest_neighbor_fill">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">nearest_neighbor_fill</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">KDTree</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>    
+    <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">0</span><span class="p">:</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>  
+    <span class="n">xygood</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">a</span><span class="o">.</span><span class="n">mask</span><span class="p">],</span><span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">a</span><span class="o">.</span><span class="n">mask</span><span class="p">]))</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">xybad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">mask</span><span class="p">],</span><span class="n">y</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">mask</span><span class="p">]))</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="o">~</span><span class="n">a</span><span class="o">.</span><span class="n">mask</span><span class="p">][</span><span class="n">KDTree</span><span class="p">(</span><span class="n">xygood</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">xybad</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]</span> 
+    <span class="k">return</span> <span class="n">a</span></div>
+
+
+<div class="viewcode-block" id="vertical_fill">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.profile_plot.vertical_fill">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">vertical_fill</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">column_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">),(</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">a_shifted</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">out</span><span class="p">,</span><span class="n">shift</span><span class="o">=</span> <span class="mi">1</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">a_shifted2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">out</span><span class="p">,</span><span class="n">shift</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">a_shifted3</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">out</span><span class="p">,</span><span class="n">shift</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   
+    <span class="n">idx</span><span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1">#* ~a_shifted.mask</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">=</span><span class="n">column_max</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="profile_plot">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.profile_plot.profile_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">profile_plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">context_label</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="n">add_labels</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">xlabel</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="n">xmin</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    UnTRIM-like profile plot of salinity</span>
+<span class="sd">    xmin,xmax are the bounds (in km) of the profile</span>
+<span class="sd">    max_depth is the maximum depth, data assumed to be </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.cm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cm</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.mlab</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mlab</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.ticker</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ticker</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">colors</span>
+    <span class="k">global</span> <span class="n">x_part</span>
+    <span class="k">global</span> <span class="n">z_part</span>
+
+
+    
+    <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.direction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;out&#39;</span>
+    <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.direction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;out&#39;</span>
+
+         
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">max_depth</span><span class="p">):</span>
+        <span class="n">max_depth</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+    <span class="k">if</span> <span class="p">(</span><span class="n">xmin</span><span class="p">):</span>
+        <span class="n">min_station</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">xmin</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+         <span class="n">min_station</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">xmax</span><span class="p">):</span>
+        <span class="n">max_station</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">xmax</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">max_station</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        
+    <span class="n">set_index_bounds</span><span class="p">(</span><span class="n">min_station</span><span class="p">,</span><span class="n">max_station</span><span class="p">,</span><span class="n">max_depth</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;context label: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">context_label</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;add label: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">add_labels</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;min x dist </span><span class="si">%s</span><span class="s2"> max x dist </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span><span class="n">xmax</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;min x station </span><span class="si">%s</span><span class="s2"> max x station </span><span class="si">%s</span><span class="s2"> max_depth </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">min_station</span><span class="p">,</span><span class="n">max_station</span><span class="p">,</span><span class="n">max_depth</span><span class="p">))</span>
+    
+    <span class="n">x_part</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_depth</span><span class="p">,</span><span class="n">min_station</span><span class="p">:</span><span class="n">max_station</span><span class="p">]</span>
+    <span class="n">z_part</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_depth</span><span class="p">,</span><span class="n">min_station</span><span class="p">:</span><span class="n">max_station</span><span class="p">]</span>
+    
+    <span class="n">data_part</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_depth</span><span class="p">,</span><span class="n">min_station</span><span class="p">:</span><span class="n">max_station</span><span class="p">]</span>
+    <span class="n">data_part</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data_part</span><span class="p">),</span><span class="n">data_part</span><span class="p">)</span>
+
+
+    <span class="n">norml</span> <span class="o">=</span> <span class="n">ThreePointLinearNorm</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span> 
+
+    <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">&quot;RdBu_r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> 
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)</span>
+
+    
+    <span class="n">do_image</span><span class="o">=</span><span class="kc">False</span>
+    <span class="k">if</span> <span class="n">do_image</span><span class="p">:</span>
+        <span class="n">lev</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">8.0</span><span class="p">,</span><span class="mf">16.0</span><span class="p">,</span><span class="mf">24.0</span><span class="p">,</span><span class="mf">32.0</span><span class="p">]</span> 
+        <span class="c1">#lev = [0,0.25,0.5,1.0,2.0,4.0,8.0,16.0,32.0]            </span>
+        <span class="n">norml</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">lev</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">vertical_fill</span><span class="p">(</span><span class="n">data_part</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> 
+                    <span class="n">aspect</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">vmin</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mf">32.0</span><span class="p">,</span>
+                    <span class="n">norm</span><span class="o">=</span><span class="n">norml</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
+                    <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">min_station</span><span class="p">],</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">max_station</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">max_depth</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>    
+        <span class="n">bad_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="o">~</span><span class="n">data_part</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span> <span class="n">data_part</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span> 
+        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">bad_data</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span><span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">min_station</span><span class="p">],</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">max_station</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">max_depth</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span> 
+        <span class="c1"># Colorbar for the image.</span>
+        <span class="n">cbi</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span><span class="n">ticks</span> <span class="o">=</span> <span class="n">lev</span><span class="p">)</span>
+        <span class="n">cbi</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Salinity (psu)&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="kc">None</span>
+   
+    <span class="n">do_line_contour</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="n">do_line_contour</span><span class="p">:</span>
+        <span class="n">lev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">,</span> <span class="mf">16.0</span><span class="p">])</span>
+        <span class="n">greys</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">-</span><span class="n">lev</span><span class="o">/</span><span class="mf">32.</span>
+        <span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">x_part</span><span class="p">,</span><span class="n">z_part</span><span class="p">,</span><span class="n">data_part</span><span class="p">,</span><span class="n">levels</span> <span class="o">=</span> <span class="n">lev</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="s1">&#39;black&#39;</span><span class="p">],</span><span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">greylev</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">collections</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">set_linestyle</span><span class="p">(</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+        <span class="c1">#Thicken the zero contour.</span>
+        <span class="n">zc</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">collections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1">#ax.setp(zc, linewidth=3)</span>
+        <span class="c1">#ax.setp(zc, linestyle = &#39;dotted&#39;)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">lev</span><span class="p">,</span>  <span class="c1"># label every second level</span>
+               <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+               <span class="n">inline_spacing</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+               <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f</span><span class="s1">&#39;</span><span class="p">,</span>
+               <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cs</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">do_filled_contour</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="n">do_filled_contour</span><span class="p">:</span>
+        <span class="c1">#lev = [0.0,0.1,0.2,0.5,1.0,2.0,4.0,8.0,16.0,32.0]  </span>
+        <span class="n">lev</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">8.0</span><span class="p">,</span><span class="mf">16.0</span><span class="p">,</span><span class="mf">32.0</span><span class="p">]</span>           
+        <span class="n">norml</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">lev</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+        <span class="n">filled_data_part</span> <span class="o">=</span> <span class="n">vertical_fill</span><span class="p">(</span><span class="n">data_part</span><span class="p">)</span>
+        <span class="n">bad_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="o">~</span><span class="n">data_part</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span> <span class="n">data_part</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+        <span class="n">maxz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">bad_data</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="n">maxz</span><span class="p">[</span><span class="n">maxz</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_depth</span>
+        <span class="n">maxz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">max_depth</span><span class="p">],</span><span class="n">maxz</span><span class="p">,[</span><span class="n">max_depth</span><span class="p">]))</span>
+        <span class="n">xstat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">x_part</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">x_part</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],[</span><span class="n">x_part</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]]))</span>
+        
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="n">max_depth</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x_part</span><span class="p">,</span><span class="n">z_part</span><span class="p">,</span><span class="n">filled_data_part</span><span class="p">,</span><span class="n">levels</span> <span class="o">=</span> <span class="n">lev</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">RdBu_r</span><span class="p">,</span> 
+                          <span class="n">norm</span> <span class="o">=</span> <span class="n">norml</span><span class="p">,</span><span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">min_station</span><span class="p">],</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">max_station</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">max_depth</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>                          
+        <span class="n">ax</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">xstat</span><span class="p">,</span><span class="n">maxz</span><span class="p">,</span><span class="s2">&quot;darkgray&quot;</span><span class="p">)</span>
+        <span class="c1">#cb = ax.colorbar(cs, orientation=&#39;vertical&#39;, shrink=0.8,ticks = [32,16,8,4,2,1,0.5,0.2,0.1,0])</span>
+        <span class="c1">#cb.set_label(&quot;Salinity (psu)&quot;, size = 14)    </span>
+
+    <span class="n">add_cruise_loc</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">add_cruise_loc</span><span class="p">:</span>
+        <span class="n">xloc</span> <span class="o">=</span> <span class="n">x_part</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">zloc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">xloc</span><span class="p">)</span><span class="o">*</span><span class="mi">19</span>
+        <span class="n">stops</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xloc</span><span class="p">,</span><span class="n">zloc</span><span class="p">,</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;USGS cast&quot;</span><span class="p">)</span>
+        <span class="n">xloc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">84.86</span><span class="p">])</span>
+        <span class="n">yloc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">xloc</span><span class="p">)</span><span class="o">*</span><span class="mi">19</span>
+        <span class="n">dayflow</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xloc</span><span class="p">,</span><span class="n">yloc</span><span class="p">,</span><span class="s2">&quot;*&quot;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Dayflow X2&quot;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">add_labels</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">add_labels</span><span class="p">):</span>
+        <span class="n">inbound_label_dists</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">location_labels</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="n">xmin</span> <span class="ow">and</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">xmax</span><span class="p">)]</span>
+        <span class="n">bbox_props</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;rarrow,pad=0.3&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dist</span> <span class="ow">in</span> <span class="n">inbound_label_dists</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">location_labels</span><span class="p">[</span><span class="n">dist</span><span class="p">],</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span>
+                <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+                <span class="n">bbox</span><span class="o">=</span><span class="n">bbox_props</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="p">(</span><span class="n">add_cruise_loc</span> <span class="ow">and</span> <span class="n">add_labels</span><span class="p">):</span>
+        <span class="n">font</span><span class="o">=</span> <span class="n">FontProperties</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">);</span>
+        <span class="n">leg</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">((</span><span class="s2">&quot;USGS cast&quot;</span><span class="p">,</span><span class="s2">&quot;Dayflow X2&quot;</span><span class="p">),</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span><span class="n">numpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">leg_texts</span> <span class="o">=</span> <span class="n">leg</span><span class="o">.</span><span class="n">get_texts</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">leg_texts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">leg_texts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+            <span class="n">leg_texts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">context_label</span><span class="p">:</span>
+        <span class="n">ttxt</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x_part</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">context_label</span><span class="p">,</span><span class="n">size</span> <span class="o">=</span> <span class="mi">18</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">)</span>
+
+    <span class="c1">#ax.title(&#39;Vertical Salinity Profile&#39;, size = 14)</span>
+    <span class="k">if</span> <span class="n">xlabel</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Depth (m)&#39;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+
+
+    <span class="k">return</span> <span class="n">im</span><span class="p">,</span> <span class="n">cs</span><span class="p">,</span> <span class="n">ttxt</span></div>
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014,2020 California Department of Water Resources.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: white;
+    }
+    /* Sidebar */
+    .wy-nav-side {
+      background: #86989B; /* existing theme was AFC1C4 and 86989B and CA7900 and white */
+      
+    }
+  </style>
+
+
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. -->
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bdschism.x2_time_series &mdash; Bay-Delta SCHISM</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ca842793"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo6.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bay-Delta SCHISM Project</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getmodel.html">Installation And Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#schism-code-or-binaries">SCHISM Code or Binaries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#downloading">Downloading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#compile-settings">Compile Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#git">Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#bay-delta-package">Bay-Delta Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#required-python-packages">Required Python Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#configuration-system">Configuration System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#id1">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#configuration-file-locations-and-priorities">Configuration File Locations and Priorities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#example-configuration-file">Example Configuration File</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#bathymetry">Bathymetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#complete-sample-inputs">Complete Sample Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#visit-schism-plug-in">VisIt SCHISM Plug-in</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#links-to-tools">Links to tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../learning.html">Learning Resources for Bay-Delta SCHISM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#general-resources-and-tools">General Resources and Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#manuals">Manuals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#vims-and-other-external-resources">VIMS and Other External Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">Bay-Delta SCHISM User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#bay-delta-schism-setup">Bay-Delta SCHISM Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/processed_run.html">Running a Preprepared Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#bay-delta-schism-essentials">Bay-Delta SCHISM Essentials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide.html#overview">Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/overview.html">Overview of a Bay-Delta SCHISM Run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/files_and_directories.html">Required Files, Directory Structure and Recommended Study Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/preprocess.html">Grid, Spatial Data and Preprocessor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/flow_boundary.html">Inflow/Outflow Boundaries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/atmospheric.html">Atmospheric setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/barotropic.html">Ocean Boundary Stabilization: Barotropic Warmup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/param.html">Key Run Parameters and Gotchas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hotstart.html">Run Initialization and Restart (Hotstart)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/nudging.html">Nudging Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/vegetation.html">Vegetation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide.html#inspection-of-model-setup">Inspection of Model Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/checklists.html">Checklists</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/run_tests.html">Test Suite for Prechecking Runs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../user_guide.html#output-files">Output Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html">Output</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#advanced-tasks-and-concepts">Advanced Tasks and Concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/problems.html">Common Problems and Diagnosis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#where-does-schism-write-error-messages">Where does SCHISM write error messages?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#my-run-says-segfault">My run says “segfault”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#the-runs-seems-very-slow-compared-to-normal">The runs seems very slow compared to normal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#dry-boundary">Dry boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/age.html">Simulating water age</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#compile-with-age">Compile with age</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#parameters-in-param-nml">Parameters in param.nml</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#additional-ic-files">Additional *.ic files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#hotstart-considerations">Hotstart considerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#typical-output-processing">Typical output processing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/sea_level_rise.html">Sea Level Rise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/sources.html">Sources, Sinks, Delta Channel Depletions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#identifying-source-locations-and-names-in-preprocessor">Identifying source locations and names in preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#delta-and-suisun-channel-depletions">Delta and Suisun channel depletions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#making-sure-you-includ-the-th-files-for-sources-sinks">Making sure you includ the th files for sources/sinks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#tracer-concentrations">Tracer concentrations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/structures.html">Hydraulic Structures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#where-is-the-documentation">Where is the documentation?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#setting-up-the-mesh-to-make-structures-easy">Setting up the mesh to make structures easy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#preventing-dry-boundary-messages">Preventing dry boundary messages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#important-bay-delta-examples">Important Bay-Delta examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/mesh.html">Gridding the Horizontal Mesh</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/mesh.html#meshing">Meshing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/mesh.html#vertical-mesh-setup">Vertical mesh setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/mesh.html#checklist-for-after-you-change-the-mesh">Checklist for after you change the mesh</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/utilities.html">Utilities and Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/utilities.html#gis-conversion">GIS Conversion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/utilities.html#hotstart-inventory-convert-iteration-numbers-to-dates">Hotstart Inventory: Convert iteration numbers to dates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/utilities.html#model-time-and-multi-clip">model_time and multi_clip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../calibration.html">Calibration Report and References</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../calibration.html#calibration">Calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../help.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help.html#support">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Bay-Delta SCHISM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. -->
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for bdschism.x2_time_series</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">This script reads x2_route.bp as well as the fort.18</span>
+<span class="sd">resulting from SCHISM read_output9_xyz to extract salinity on X2 stations.</span>
+<span class="sd">It search along x2 stations to find two neiboring stations higher and lower </span>
+<span class="sd">than X2 criteria (bottom or surface).  If X2 retreat less than the minimum</span>
+<span class="sd">stations along the transect, the X2 result will</span>
+<span class="sd">be truncated at that point.</span>
+
+
+<span class="sd">usage: --start 2004-04-18 --x2route x2route.bp</span>
+<span class="sd">output: x2 on surface and bottom location time series in csv format,</span>
+<span class="sd">        bottom_x2.csv and surface_x2.csv</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dtm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="c1"># import matplotlib.dates as mdates</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dateutil.parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="c1"># plt.style.use([&#39;seaborn-talk&#39;,&#39;seaborn-colorblind&#39;])</span>
+<div class="viewcode-block" id="create_arg_parser">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.x2_time_series.create_arg_parser">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_arg_parser</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--salt_data_file&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path to salinity data harvested using read_xyz* utility, e.g. fort.18&#39;</span><span class="p">)</span>   
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--start&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;model extraction start date, e.g. 2010-05-20&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--model_start&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;model simulation start date, e.g. 2010-05-01&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--x2route&#39;</span><span class="p">,</span> 
+                    <span class="n">help</span><span class="o">=</span><span class="s1">&#39;X2 route file name in bp format with xyz plus extra column describing distance&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--output&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">help</span> <span class="o">=</span> <span class="s1">&#39;path of csv output&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--param&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">help</span> <span class="o">=</span> <span class="s1">&#39;path of param.nml file to extract start date&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span></div>
+
+
+<div class="viewcode-block" id="find_x2">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.x2_time_series.find_x2">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_x2</span><span class="p">(</span><span class="n">transect</span><span class="p">,</span><span class="n">thresh</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span><span class="n">convert_km</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span><span class="n">distance_bias</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Given a series transect, indexed by distance, locate a distance with value is close to thresh</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">midpoints</span> <span class="o">=</span> <span class="p">(</span><span class="n">transect</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">+</span><span class="n">transect</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">index_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">transect</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_series</span><span class="p">(),</span> <span class="n">midpoints</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">row_new</span><span class="o">=</span><span class="n">transect</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">index_new</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
+    <span class="n">index_x2</span><span class="o">=</span><span class="n">row_new</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="mf">2.</span><span class="p">)</span>
+    <span class="n">index_x2</span><span class="o">=</span><span class="n">index_x2</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">row_new</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">x2</span><span class="o">=</span><span class="n">row_new</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">index_x2</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">row_new</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="n">final_x2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x2</span><span class="o">*</span><span class="n">convert_km</span><span class="o">-</span><span class="n">distance_bias</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">final_x2</span></div>
+
+
+<div class="viewcode-block" id="get_start_date_from_param">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.x2_time_series.get_start_date_from_param">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_start_date_from_param</span><span class="p">(</span><span class="n">param_in</span><span class="p">):</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">param_in</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">param</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">param</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s1">&#39;start_year&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">sy</span> <span class="o">=</span>  <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\b\d+\b&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="s1">&#39;start_month&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">sm</span> <span class="o">=</span>  <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\b\d+\b&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="s1">&#39;start_day&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">sd</span> <span class="o">=</span>  <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\b\d+\b&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+                
+    <span class="n">start_date</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">sy</span><span class="p">,</span> <span class="n">sm</span><span class="p">,</span> <span class="n">sd</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">start_date</span></div>
+
+
+<div class="viewcode-block" id="process_x2">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.x2_time_series.process_x2">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">process_x2</span><span class="p">(</span><span class="n">salt_data_file</span><span class="p">,</span><span class="n">route_file</span><span class="p">,</span> <span class="n">model_extract_date</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">param_in</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process  x2 into a time series</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">param_in</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model_start_date</span> <span class="o">=</span> <span class="n">get_start_date_from_param</span><span class="p">(</span><span class="n">param_in</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">model_start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_start_date</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">model_start_date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="n">model_start_date</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;salt_data_file: </span><span class="si">{</span><span class="n">salt_data_file</span><span class="si">}</span><span class="s2"> model_start_date=</span><span class="si">{</span><span class="n">model_start_date</span><span class="si">}</span><span class="s2"> output_file=</span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2"> model_extract_date=</span><span class="si">{</span><span class="n">model_extract_date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ts_out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">salt_data_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">delta_t</span><span class="o">=</span><span class="nb">round</span><span class="p">((</span><span class="n">ts_out</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">ts_out</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+    <span class="n">freqstr</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">delta_t</span><span class="p">)</span><span class="si">}</span><span class="s2">min&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">delta_t</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">delta_t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">120</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected time step in file of </span><span class="si">{</span><span class="n">delta_t</span><span class="si">}</span><span class="s2"> minutes&quot;</span><span class="p">)</span>
+    <span class="c1">#print(f&quot;Detected frequency = {freqstr}&quot;)</span>
+    <span class="n">dr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">model_start_date</span><span class="o">+</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">ts_out</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                       <span class="n">periods</span><span class="o">=</span><span class="n">ts_out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">freq</span><span class="o">=</span><span class="n">freqstr</span><span class="p">)</span>
+    <span class="n">ts_out</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">dr</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s1">&#39;min&#39;</span><span class="p">)</span>
+    <span class="n">ts_out</span><span class="o">=</span><span class="n">ts_out</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">ts_out</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_pydatetime</span><span class="p">()</span> <span class="o">!=</span> <span class="n">model_extract_date</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The fort.18 file being evaluated is </span><span class="si">{</span><span class="n">ts_out</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_pydatetime</span><span class="p">()</span><span class="si">}</span><span class="s2"> and does not match expected extraction date </span><span class="si">{</span><span class="n">model_extract_date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">route_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;bp&quot;</span><span class="p">):</span>
+        <span class="n">route_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">route_file</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span><span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">comment</span><span class="o">=</span><span class="s2">&quot;!&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Build point file expected&quot;</span><span class="p">)</span>
+    
+    <span class="n">ncols</span> <span class="o">=</span> <span class="n">ts_out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">nroute</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">route_df</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ncols</span> <span class="o">!=</span> <span class="n">nroute</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of columns in salt output </span><span class="si">{</span><span class="n">ncols</span><span class="si">}</span><span class="s2"> must match number of locations in bp file </span><span class="si">{</span><span class="n">nroute</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">ts_out</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">route_df</span><span class="o">.</span><span class="n">distance</span>
+    <span class="n">ts_out</span> <span class="o">=</span> <span class="n">ts_out</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">x2_prelim</span> <span class="o">=</span> <span class="n">ts_out</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">find_x2</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+    <span class="n">x2_prelim</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
+    <span class="n">x2_prelim</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;x2&quot;</span>
+    <span class="n">x2_prelim</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span><span class="n">float_format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%.1f</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="default_outname">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.x2_time_series.default_outname">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">default_outname</span><span class="p">(</span><span class="n">bpname</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;x2route&quot;</span> <span class="ow">in</span> <span class="n">bpname</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">bpname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;x2route&quot;</span><span class="p">,</span><span class="s2">&quot;x2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;bp&quot;</span><span class="p">,</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;x2.csv&quot;</span></div>
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.x2_time_series.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">create_arg_parser</span><span class="p">()</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">salt_out</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">salt_data_file</span>
+    <span class="n">x2route</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">x2route</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">model_start</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="n">outfile</span><span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span>
+    <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">outfile</span> <span class="o">=</span> <span class="n">default_outname</span><span class="p">(</span><span class="n">x2route</span><span class="p">)</span>
+
+    <span class="n">param_in</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">param</span>
+    <span class="n">model_start_date</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">model_start</span>
+
+    <span class="n">process_x2</span><span class="p">(</span><span class="n">salt_out</span><span class="p">,</span><span class="n">x2route</span><span class="p">,</span><span class="n">model_start</span><span class="p">,</span><span class="n">outfile</span><span class="p">,</span><span class="n">param_in</span><span class="o">=</span><span class="n">param_in</span><span class="p">,</span> <span class="n">model_start_date</span><span class="o">=</span><span class="n">model_start_date</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="main_hardwire">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.x2_time_series.main_hardwire">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main_hardwire</span><span class="p">():</span>
+    <span class="n">model_out_dir</span> <span class="o">=</span> <span class="s2">&quot;/scratch/tomkovic/DSP_code/model/schism/azure_dsp_2024_lhc_v3/simulations/baseline_lhc_5/outputs&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">model_out_dir</span><span class="p">)</span>
+    
+    <span class="n">salt_out</span> <span class="o">=</span> <span class="s2">&quot;fort.18&quot;</span>
+    <span class="n">x2route</span> <span class="o">=</span> <span class="s2">&quot;x2_bay_sac.bp&quot;</span> <span class="c1">#args.x2route</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="s2">&quot;2006-11-15&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">model_start</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="n">outfile</span> <span class="o">=</span> <span class="s2">&quot;x2out_x2_bay_sac_2.csv&quot;</span>
+
+    <span class="n">param_in</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># &quot;../param.nml.clinic&quot;</span>
+    <span class="n">model_start_date</span> <span class="o">=</span> <span class="s2">&quot;2006-11-14&quot;</span> <span class="c1"># None</span>
+
+    <span class="n">process_x2</span><span class="p">(</span><span class="n">salt_out</span><span class="p">,</span><span class="n">x2route</span><span class="p">,</span><span class="n">model_start</span><span class="p">,</span><span class="n">outfile</span><span class="p">,</span><span class="n">param_in</span><span class="o">=</span><span class="n">param_in</span><span class="p">,</span> <span class="n">model_start_date</span><span class="o">=</span><span class="n">model_start_date</span><span class="p">)</span> </div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014,2020 California Department of Water Resources.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: white;
+    }
+    /* Sidebar */
+    .wy-nav-side {
+      background: #86989B; /* existing theme was AFC1C4 and 86989B and CA7900 and white */
+      
+    }
+  </style>
+
+
+</body>
+</html>
