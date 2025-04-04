@@ -1,9 +1,0 @@
-bdschism
-========
-
-.. toctree::
-   :maxdepth: 4
-
-   bdschism
-   setup
-   tests
