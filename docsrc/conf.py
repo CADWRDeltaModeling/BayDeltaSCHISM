@@ -15,6 +15,9 @@ import sys, os
 
 # Add the path to the scripts in the bdschism package
 sys.path.insert(0, os.path.abspath("../bdschism/bdschism"))
+sys.path.insert(0, os.path.abspath("~/envs"))
+sys.path.append(os.path.abspath("../../"))
+print("Sphinx runs with the following prefix:" + sys.prefix)
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -81,7 +84,14 @@ release = "1.2.1"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = []
+exclude_patterns = [
+    # "bay_delta_tutorials.rst",
+    # "linux.rst",
+    "reference_simulation.rst",
+    "topics/baroclinic.rst",
+    "topics/computing_environment.rst",
+    "topics/subsetting_time_series.rst",
+]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 # default_role = None

@@ -10,6 +10,7 @@ ghp-import # for GitHub Pages import
 nbsphinx
 numpydoc
 docutils
+schimpy
 # matplotlib # removed, already in schism_env.yml
 # ipython    # removed, already in schism_env.yml
 # pip        # removed, already in schism_env.yml
