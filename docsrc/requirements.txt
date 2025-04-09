@@ -6,6 +6,7 @@ sphinx-argparse
 sphinxcontrib-bibtex
 sphinxcontrib-mermaid
 sphinx_rtd_theme
+sphinx-click
 ghp-import # for GitHub Pages import
 nbsphinx
 numpydoc
