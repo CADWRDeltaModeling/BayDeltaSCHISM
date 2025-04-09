@@ -36,6 +36,8 @@ extensions = [
     "sphinxcontrib.bibtex",
     "sphinx.ext.viewcode",
     "sphinxcontrib.mermaid",
+    "sphinx.ext.napoleon",
+    "sphinx_click",
 ]
 
 bibtex_bibfiles = ["dms_20221119b.bib"]

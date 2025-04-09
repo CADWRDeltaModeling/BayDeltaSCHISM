@@ -33,6 +33,7 @@ dependencies = [
 doc = [
     "sphinx",
     "sphinx-rtd-theme",
+    "sphinx-click",
     "myst-parser",
     "numpydoc"
 ]
