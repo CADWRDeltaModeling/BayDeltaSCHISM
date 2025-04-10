@@ -37,12 +37,12 @@ def tlmin(arr):
 
 def get_tidal_hh_lh(sh):
     sth=sh.rolling(2).apply(tlmax,raw=True)
-    sth.iloc[0]=0 if sth.iloc[1][0] > 0 else 1 # fill in the first value based on next value
+    sth.iloc[0]=0 if sth.iloc[1,0] > 0 else 1 # fill in the first value based on next value
     return sth.iloc[:,0].map({np.nan:'', 0:'LH',1:'HH'}).astype(str)
 
 def get_tidal_ll_hl(sl):
     stl=sl.rolling(2).apply(tlmin,raw=True)
-    stl.iloc[0]=0 if stl.iloc[1][0] > 0 else 1 # fill in the first value based on next value
+    stl.iloc[0]=0 if stl.iloc[1,0] > 0 else 1 # fill in the first value based on next value
     return stl.iloc[:,0].map({np.nan:'', 0:'HL',1:'LL'}).astype(str)
 
 def flow_to_priority(flow, 
@@ -294,7 +294,7 @@ def sffpx_level(s1,s2):
     
     tss =[]
     for y  in range(s1.year,s2.year+1,1):
-        f = f"//cnrastore-bdo/Modeling_Data/repo/continuous/formatted/noaa_sffpx_9414290_elev_{y}.csv"
+        f = f"//cnrastore-bdo/Modeling_Data/repo/continuous/screened/noaa_sffpx_9414290_elev_{y}.csv"
         ts = read_ts(f)
         tss.append(ts)
        
@@ -313,7 +313,7 @@ def predict_oh4_level(s1,s2,astro_tide_file):
     ## linear regression of sffpx sub tide to oh4 sub tide
     oh4_sub_predicted = sffpx_subtide * 0.9620 + 1.1513
     best_shift = -10
-    oh4_sub_predicted = oh4_sub_predicted.shift(-best_shift)
+    oh4_sub_predicted = oh4_sub_predicted.shift(-best_shift).squeeze()
     oh4_predicted = oh4_sub_predicted + oh4_astro- oh4_sub_predicted.mean()
     return oh4_predicted[s1:s2]
 
@@ -548,19 +548,19 @@ def gen_gate_height(export_ts,priority,max_height,oh4_level,cvp_ts,
         tday1 = tday+dtm.timedelta(days=1)
         tleft = tday1-t
         nleft = int(tleft/dt)
-    
+        
         if (tday==t):
             accumulate_export = 0.0
         loc=export_ts.index.searchsorted(t)-1
-        export = export_ts[loc]
+        export = export_ts.iloc[loc]
         export_daily = export_ts_daily[tday]
         loc=priority.index.searchsorted(t)-1
-        prio = priority.priority[loc]
-        op = priority.op[loc]
+        prio = priority.priority.iloc[loc]
+        op = priority.op.iloc[loc]
         loc=oh4_level.index.searchsorted(t)-1
-        zup = oh4_level[loc]-draw_down
+        zup = oh4_level.iloc[loc]-draw_down
         loc=max_height.index.searchsorted(t)-1
-        max_h = max_height[loc]
+        max_h = max_height.iloc[loc]
     
         
         if (prio<1) or (op==0) or ((zup-zin)<0.0):
@@ -587,15 +587,15 @@ def gen_gate_height(export_ts,priority,max_height,oh4_level,cvp_ts,
                 
             for ttemp,htemp in zip(accumulate_time,relax_height):
                 loc=export_ts.index.searchsorted(ttemp)-1
-                export = export_ts[loc]
+                export = export_ts.iloc[loc]
                 loc=oh4_level.index.searchsorted(ttemp)-1
-                zup = oh4_level[loc] - draw_down
+                zup = oh4_level.iloc[loc] - draw_down
                 zin,vt,qint=simple_mass_balance(export,zup,zin,htemp,dt,vt)
                 accumulate_export +=export*dt.total_seconds()
                 zin_lst.append(zin)
                 ztime.append(ttemp)
                 loc=cvp_ts.index.searchsorted(ttemp)
-                cvp = cvp_ts[loc]
+                cvp = cvp_ts.iloc[loc]
                 draw_down = draw_down_regression(cvp,qint)
                # print(ttemp,vt,zin,export,qint)
             height = height_target
@@ -627,7 +627,7 @@ def gen_gate_height(export_ts,priority,max_height,oh4_level,cvp_ts,
             zin_lst.append(zin)
             ztime.append(t)
             loc=cvp_ts.index.searchsorted(t)
-            cvp = cvp_ts[loc]
+            cvp = cvp_ts.iloc[loc]
             draw_down = draw_down_regression(cvp,0)
             continue
         
@@ -645,9 +645,9 @@ def gen_gate_height(export_ts,priority,max_height,oh4_level,cvp_ts,
         for i in range(relax_n):
             height_temp = height + height_step*(i+1)
             loc=oh4_level.index.searchsorted(t)-1
-            zup = oh4_level[loc]-draw_down
+            zup = oh4_level.iloc[loc]-draw_down
             loc=export_ts.index.searchsorted(t)-1
-            export = export_ts[loc]
+            export = export_ts.iloc[loc]
             zin,vt,qint=simple_mass_balance(export,zup,zin,height_temp,dt,vt)
             accumulate_export = accumulate_export + export*dt.total_seconds()
             height_ts.append(height_temp)
@@ -655,7 +655,7 @@ def gen_gate_height(export_ts,priority,max_height,oh4_level,cvp_ts,
             zin_lst.append(zin)
             ztime.append(t)
             loc=cvp_ts.index.searchsorted(t)-1
-            cvp = cvp_ts[loc]
+            cvp = cvp_ts.iloc[loc]
             draw_down = draw_down_regression(cvp,qint)
             t+=dt
         height = height_target
@@ -709,9 +709,10 @@ def process_height(s1,s2,export,oh4_astro):
     shift_h = dtm.timedelta(hours=8.5)
     position_shift = int(shift_h/sffpx_elev.index.freq) 
     sffpx_elev = sffpx_elev.shift(position_shift)
-    sffpx_elev_df =sffpx_elev.to_frame(name="elev")
+    #sffpx_elev_df =sffpx_elev.to_frame(name="elev")
+    sffpx_elev.columns =["elev"]
     
-    priority,max_height = gen_prio_for_varying_exports(sffpx_elev_df, 
+    priority,max_height = gen_prio_for_varying_exports(sffpx_elev, 
                                                        export_ts_daily_average)
     
     oh4_predict=predict_oh4_level(s1-margin,s2+margin,oh4_astro)
@@ -740,7 +741,7 @@ def create_arg_parser():
         Example usage:
         
         python ccf_gate_height.py --sdate 2023-01-01 --edate 2024-01-10 
-        --astro_file ..\\examples\\ccfb_height\\astro\\
+        --astro_file ..\\examples\\ccfb_height\\
         oh4_15min_predicted_10y_14_25.out  --export_file ..\\examples
         \\ccfb_height\\flux_20241213.th --dest .""")
         
