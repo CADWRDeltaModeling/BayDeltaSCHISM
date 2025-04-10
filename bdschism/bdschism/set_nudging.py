@@ -42,6 +42,10 @@ def get_nudge_list(workdir):
     fname = os.path.join(workdir, "param.nml")
 
     params = parms.read_params(fname)
+    if params.get_baro() == "tropic":
+        raise ValueError(
+            "Barotropic model detected in param.nml- Nudging not applicable."
+        )
     nc_nudge_list = []
     nc_dict = {
         1: "TEM",
