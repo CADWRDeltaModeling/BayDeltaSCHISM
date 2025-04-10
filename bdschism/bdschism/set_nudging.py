@@ -152,6 +152,7 @@ def set_nudging(suffix: str, workdir=".", var_map={}):
 @click.help_option("-h", "--help")
 def set_nudging_cli(suffix: str, workdir=".", var_map={}):
     """Wrapper function for the `set_nudging` command."""
+    os.chdir(os.path.abspath(os.path.dirname(workdir)))
     set_nudging(suffix, workdir, var_map)
 
 
