@@ -61,7 +61,7 @@ An overview of the Bay-Delta application is given in the `workflow guide <_stati
 
 
 
-
+DSM2 runs in parallel with SCHISM to simulate the Sacramento–San Joaquin Delta (the Delta). DSM2 is a 1D model that runs quickly and is used as a complementary model to the 3D model SCHISM.
 
 
 
