@@ -43,7 +43,7 @@ extensions = [
     "sphinx_click",
 ]
 
-bibtex_bibfiles = ["dms_20221119b.bib"]
+bibtex_bibfiles = ["bib/dms_20221119b.bib"]
 
 numfig = True
 
