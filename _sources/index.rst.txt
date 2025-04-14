@@ -29,6 +29,7 @@ Contents
   getmodel
   learning
   user_guide
+  documentation
   calibration
   help
   refs
