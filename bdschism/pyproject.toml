@@ -34,8 +34,16 @@ doc = [
     "sphinx",
     "sphinx-rtd-theme",
     "sphinx-click",
+    "sphinx-design",
+    "sphinx-argparse",
+    "sphinxcontrib-bibtex",
+    "sphinxcontrib-mermaid",
     "myst-parser",
-    "numpydoc"
+    "numpydoc",
+    "pillow>=4.0.0",
+    "nbsphinx",
+    "numpydoc",
+    "docutils"
 ]
 test = [
     "pytest",
