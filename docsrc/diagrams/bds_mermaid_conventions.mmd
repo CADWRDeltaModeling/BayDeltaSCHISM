@@ -1,0 +1,53 @@
+---
+config:
+  look: classic
+  theme: redux
+  layout: default
+---
+%%{
+    init: {
+        'theme': 'base',
+        'themeVariables': {
+        'primaryColor': '#fff',
+        'primaryTextColor': '#000',
+        'primaryBorderColor': '#002570',
+        'lineColor': '#000',
+        'secondaryColor': '#d1d1d1',
+        'tertiaryColor': '#fff'
+        }
+    }
+}%%
+flowchart LR
+
+    %% files ---------------
+    subgraph Files
+        doc@{ shape: doc, label: "Single File"} --> docs@{ shape: docs, label: "Multiple File"}
+    end
+
+    %% Workflows -----------
+
+    subgraph Workflows
+        large{"Large Process
+        (like 'Run Simulations')"}
+        concept(["Conceptual Process
+        (like 'Gridding')"])
+        simple["Simple Process
+        (like 'Run prepare_schism')"]
+        large --> concept --> simple
+    end
+
+    %% Decision/Flow --------
+    subgraph Decision
+        start([Event: All Inputs Ready]) --> decpt{"Decision Point (?)"}
+        decpt -- Yes ----> actiony[Take yes-based action]
+        decpt -- No --> actionn[Take no-based action]
+        actionn --> reset[Reset] --> decpt
+    end
+
+    %% A e1@==> B
+    %% e1@{ animate: true }
+    Files ~~~ Workflows ~~~ Decision
+
+
+%% Command Line prompt to produce the svg diagram
+%% > mmdc -i .\bds_mermaid_conventions.mmd -o ../img/bds_mermaid_conventions.svg
