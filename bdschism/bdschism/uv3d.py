@@ -203,7 +203,7 @@ def interpolate_uv3d(
 )
 @click.option(
     "--write_clinic",
-    default=True,
+    default=False,
     type=bool,
     help="If true, the file will be moved to fg_dir. Otherwise, it will be kept in bg_output_dir.",
 )
