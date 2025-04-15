@@ -127,19 +127,9 @@ def interpolate_uv3d(
         os.path.join(fg_dir, vgrid_fg), os.path.join(interp_dir, "vgrid.fg")
     )
 
-    """
     #
     # Load SCHISM module and execute interpolate_variables
     #
-    os.chdir(interp_dir)
-    subprocess.run("module purge", shell=True)
-    subprocess.run("module load schism/5.10_intel2022.1", shell=True)
-    subprocess.run(["ulimit","-s","unlimited"], shell=True)
-    subprocess.run(["interpolate_variables8"], shell=True)
-
-    if write_clinic == True:
-        shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(bg_dir, "uv3D.th.nc"))
-    """
     print(
         f"Running `interpolate_variables8` in {os.path.abspath(os.path.join(bg_dir,bg_output_dir))}"
     )
@@ -147,6 +137,8 @@ def interpolate_uv3d(
     command = "module purge \n module load intel/2024.0 hmpt/2.29 hdf5/1.14.3 netcdf-c/4.9.2 netcdf-fortran/4.6.1 schism/5.11.1 \n ulimit -s unlimited \n interpolate_variables8"
     os.system(command)
 
+    if write_clinic == True:
+        shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(fg_dir, "uv3D.th.nc"))
 
 @click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
 @click.option(
@@ -213,7 +205,7 @@ def interpolate_uv3d(
     "--write_clinic",
     default=True,
     type=bool,
-    help="If true, the file will be moved to run_dir. Otherwise, it will be done in place in outputs.",
+    help="If true, the file will be moved to fg_dir. Otherwise, it will be kept in bg_output_dir.",
 )
 @click.help_option("-h", "--help")
 def interpolate_uv3d_cli(
