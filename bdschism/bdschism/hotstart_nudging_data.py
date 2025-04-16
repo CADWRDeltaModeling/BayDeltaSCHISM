@@ -249,13 +249,15 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
 
     for label_var in all_vars:
         nudging_dfs[label_var].to_csv(
-            f"nudging_data_{label_var}.csv", sep=",", float_format="%.2f"
+            os.path.join(dest, f"nudging_data_{label_var}.csv"),
+            sep=",",
+            float_format="%.2f",
         )
         # Deprecated
         # nudging_dfs[label_var].reindex(columns=obs_xy.site).to_csv(f"nudging_data_{label_var}_b.csv",sep=",",float_format="%.2f")
 
     obs_xy = obs_xy.set_index("site", drop=True)
-    obs_xy.to_csv(f"obs_xy.csv", sep=",", float_format="%.2f")
+    obs_xy.to_csv(os.path.join(dest, f"obs_xy.csv"), sep=",", float_format="%.2f")
 
     print("No such file")
     logger.info("No such files")
