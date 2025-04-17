@@ -1,8 +1,8 @@
 .. _documentation:
 
-================================
-Documentation of BayDeltaSCHISM
-================================
+==================================
+Contributing to the Documentation
+==================================
 
 Introduction
 -------------  
