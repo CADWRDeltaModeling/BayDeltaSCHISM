@@ -81,7 +81,7 @@ Preparing for nudging with observation data
 For nudging using observtion data, one must prepare the time series inputs using `hotstart_nudging_data from BayDeltaSCHISM <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/bdschism/bdschism/hotstart_nudging_data.py>`_.  
 
 The start date, length of nudging, and the location of the time series files need to be specified in the following manner:  
-`python hotstart_nudging_data.py --start_date 2021-01-01 --nudge_len 10 --repo_dir $repo`, where `$repo` is the path to raw observation data.  
+`bds hot_nudge_data --start_date 2021-01-01 --nudge_len 10 --repo_dir $repo`, where `$repo` is the path to raw observation data.  
 
 The recommended spin-up period using observation data is 10-15 days.  
 
@@ -97,7 +97,7 @@ Below is an example of nudging a Bay-Delta simulation spanning from 2021-01-01 t
  
     .. code-block:: console
 
-        python bds hot_nudge_data --start_date 2021-01-01 --nudge_len 10 --dest_dir . --repo_dir "/scratch/nasbdo/modeling_data/repo/continuous/screened/"
+        bds hot_nudge_data --start_date 2021-01-01 --nudge_len 10 --dest_dir . --repo_dir "/scratch/nasbdo/modeling_data/repo/continuous/screened/"
 
     Here, the command is specifying that the start date of the simulation is 2021-01-01, and that the observed data will be used for nudging length of 10 days. The destination directory is the current working directory ("."), and the location of observed data can be found in the path following "--repo_dir".  
 
