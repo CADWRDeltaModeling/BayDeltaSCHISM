@@ -193,6 +193,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../meta_doc/doc_mermaid.html">Mermaid Chart Principles</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../meta_doc/doc_mermaid.html#baydeltaschism-standards">BayDeltaSCHISM Standards</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../meta_doc/doc_mermaid.html#vs-code-plugin">VS Code plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../meta_doc/doc_mermaid.html#cool-stuff">Cool stuff</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../meta_doc/doc_click.html">Click Documentation Principles</a></li>
@@ -307,7 +308,7 @@ step_nu_tr = 3600. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
 <h2>Preparing for nudging with observation data<a class="headerlink" href="#preparing-for-nudging-with-observation-data" title="Link to this heading"></a></h2>
 <p>For nudging using observtion data, one must prepare the time series inputs using <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/bdschism/bdschism/hotstart_nudging_data.py">hotstart_nudging_data from BayDeltaSCHISM</a>.</p>
 <p>The start date, length of nudging, and the location of the time series files need to be specified in the following manner:
-<cite>python hotstart_nudging_data.py –start_date 2021-01-01 –nudge_len 10 –repo_dir $repo</cite>, where <cite>$repo</cite> is the path to raw observation data.</p>
+<cite>bds hot_nudge_data –start_date 2021-01-01 –nudge_len 10 –repo_dir $repo</cite>, where <cite>$repo</cite> is the path to raw observation data.</p>
 <p>The recommended spin-up period using observation data is 10-15 days.</p>
 </section>
 <section id="nudging-example">
@@ -318,20 +319,16 @@ step_nu_tr = 3600. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
 <ol class="arabic">
 <li><p>Prepare for observation-based nudging by running <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/bdschism/bdschism/hotstart_nudging_data.py">hotstart_nudging_data</a> like so:</p>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python bds hot_nudge_data --start_date 2021-01-01 --nudge_len 10 --dest_dir . --repo_dir &quot;/scratch/nasbdo/modeling_data/repo/continuous/screened/&quot;</span>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bds hot_nudge_data --start_date 2021-01-01 --nudge_len 10 --dest_dir . --repo_dir &quot;/scratch/nasbdo/modeling_data/repo/continuous/screened/&quot;</span>
 </pre></div>
 </div>
 <p>Here, the command is specifying that the start date of the simulation is 2021-01-01, and that the observed data will be used for nudging length of 10 days. The destination directory is the current working directory (“.”), and the location of observed data can be found in the path following “–repo_dir”.</p>
 <p>When the command is run, the following files are generated: <cite>nudging_data_salinity.csv</cite>, <cite>nudging_data_temperature.csv</cite>, and <cite>obs_xy.csv</cite>.</p>
 <section id="bds-hot-nudge-data">
 <h3>bds hot_nudge_data<a class="headerlink" href="#bds-hot-nudge-data" title="Link to this heading"></a></h3>
-<p>Download station data from repo and save in csv format for hotstart
-nudging.
-Usage:
-hotstart_nudging_data –start_date 2018-02-19  –nudge_len 300</p>
-<blockquote>
-<div><p>–dest_dir . –repo_dir $repo_path</p>
-</div></blockquote>
+<p>Download station data from repo and save in csv format for hotstart nudging.</p>
+<p>Usage:</p>
+<p>bds hot_nudge_data –start_date 2018-02-19 –nudge_len 300 –dest_dir . –repo_dir $repo_path</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>bds<span class="w"> </span>hot_nudge_data<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
 </div>

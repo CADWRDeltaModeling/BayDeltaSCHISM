@@ -60,3 +60,19 @@ The easiest plugin to use with Mermaid charts is `Mermaid Chart <https://marketp
    VS Code Mermaid Chart extension
    
 This plugin allows you to preview your .mmd documents in another VS Code window.
+
+Cool stuff
+----------
+
+You can make elements clickable 
+
+EXAMPLE
+
+
+You can add icons within your node
+
+https://icones.js.org/
+
+Copy Links/URL
+
+Add style things by ?color=white
