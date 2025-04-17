@@ -42,7 +42,6 @@ doc = [
     "numpydoc",
     "pillow>=4.0.0",
     "nbsphinx",
-    "numpydoc",
     "docutils"
 ]
 test = [
