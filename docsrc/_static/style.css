@@ -7,6 +7,7 @@ a {
     color: #CA7900;
     text-decoration: none;
 }
+
 a:hover {
     color: #2491CF;
 }
@@ -15,6 +16,15 @@ a:hover {
 .md-nav__item a {
     color: black;
 }
+
 .md-nav__item a:hover {
     color: #0d6396;
+}
+
+/* Equation number alignment */
+.eqno {
+    float: right;
+    clear: right;
+    margin-left: 1em;
+    text-align: left;
 }
