@@ -16,7 +16,7 @@ This is also the order that the headers are used, and this affects the way a tab
 
 Ex:
 
-  .. code-block:: rst
+  .. code-block:: RST
 
         Sphinx Documenation Principles
         ==============================

@@ -9,6 +9,7 @@
   <title>Mermaid Chart Principles &mdash; Bay-Delta SCHISM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/style.css?v=8686dbcc" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -16,6 +17,14 @@
       <script src="../_static/documentation_options.js?v=ca842793"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -197,7 +206,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="doc_click.html">Click Documentation Principles</a></li>
-<li class="toctree-l3"><a class="reference internal" href="doc_examples.html">Documenation examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="doc_examples.html">Sphinx examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="doc_examples.html#math">Math</a></li>
+<li class="toctree-l4"><a class="reference internal" href="doc_examples.html#figures">Figures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="doc_examples.html#diagrams">Diagrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="doc_examples.html#embedding-videos">Embedding Videos</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -239,11 +254,11 @@
 <section id="style">
 <h3>Style<a class="headerlink" href="#style" title="Link to this heading"></a></h3>
 <p>You can add the following pre-amble to your .mmd charts to use a consistent style across pages:</p>
-<div class="highlight-md notranslate"><div class="highlight"><pre><span></span>---
+<div class="highlight-RST notranslate"><div class="highlight"><pre><span></span>---
 config:
 look: classic
-<span class="gu">theme: base</span>
-<span class="gu">---</span>
+<span class="gh">theme: base</span>
+<span class="gh">---</span>
 %%{
     init: {
         &#39;theme&#39;: &#39;base&#39;,
@@ -275,13 +290,46 @@ look: classic
 <p>This plugin allows you to preview your .mmd documents in another VS Code window.</p>
 </section>
 <section id="cool-stuff">
-<h2>Cool stuff<a class="headerlink" href="#cool-stuff" title="Link to this heading"></a></h2>
-<p>You can make elements clickable</p>
-<p>EXAMPLE</p>
-<p>You can add icons within your node</p>
-<p><a class="reference external" href="https://icones.js.org/">https://icones.js.org/</a></p>
-<p>Copy Links/URL</p>
-<p>Add style things by ?color=white</p>
+<span id="cool-mermaid"></span><h2>Cool stuff<a class="headerlink" href="#cool-stuff" title="Link to this heading"></a></h2>
+<section id="clickables">
+<h3>Clickables<a class="headerlink" href="#clickables" title="Link to this heading"></a></h3>
+<p>You can make elements clickable with something simple like:</p>
+<pre  class="mermaid">
+        graph LR
+   clickable[&quot;Click Me&quot;]
+   click clickable &quot;https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/meta_doc/doc_mermaid.html#cool-stuff&quot; _blank
+   clickable --&gt; notclick([&quot;Don't Click Me&quot;])
+    </pre><p>The chart above was made with the in-line capabilites of the sphinxcontrib.mermaid extension, which looks like the following text inside an .rst file:</p>
+<div class="highlight-RST notranslate"><div class="highlight"><pre><span></span>graph LR
+  clickable[&quot;Click Me&quot;]
+  click clickable &quot;https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/meta_doc/doc_mermaid.html#cool-stuff&quot; _blank
+  clickable --&gt; notclick([&quot;Don&#39;t Click Me&quot;])
+</pre></div>
+</div>
+<p>But that has it’s limitations, and doesn’t always render well. So a simple .mmd version of the above chart would be:</p>
+<div class="highlight-RST notranslate"><div class="highlight"><pre><span></span>flowchart TD
+
+    clickable[&quot;Click Me&quot;]
+    click clickable &quot;https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/meta_doc/doc_mermaid.html#cool-stuff&quot; _blank
+    clickable --&gt; notclick([&quot;Don&#39;t Click Me&quot;])
+</pre></div>
+</div>
+</section>
+<section id="icons-in-an-element">
+<h3>Icons in an Element<a class="headerlink" href="#icons-in-an-element" title="Link to this heading"></a></h3>
+<p>You can add icons within your node, there’s a library here: <a class="reference external" href="https://icones.js.org/">https://icones.js.org/</a></p>
+<p>You can search for whatever you want, let’s say we want a cactus! You can select the icon that speaks to you and then scroll to the bottom and click the Links &gt; URL button to copy the link to the icon you want.</p>
+<pre  class="mermaid">
+        graph LR
+   color_cactus[&lt;span style='display: inline-flex; align-items: center;'&gt;&lt;img src='https://api.iconify.design/emojione:cactus.svg' width='20' height='20' style='margin-right: 4px;' /&gt; Colorful Cactus&lt;/span&gt;]
+
+   white_cactus[&lt;span style='display: inline-flex; align-items: center;'&gt;&lt;img src='https://api.iconify.design/tabler:cactus.svg?color=white' width='20' height='20' style='margin-right: 4px;' /&gt; White Cactus&lt;/span&gt;]
+
+   blue_cactus[&lt;span style='display: inline-flex; align-items: center;'&gt;&lt;img src='https://api.iconify.design/tabler:cactus.svg?color=blue' width='20' height='20' style='margin-right: 4px;' /&gt; Blue Cactus&lt;/span&gt;]
+
+   color_cactus --&gt; white_cactus --&gt; blue_cactus
+    </pre><p>From the code below you can see that you can change the color of an icon by adding <cite>?color=white</cite> to the end of the img src=”” url.</p>
+</section>
 </section>
 </section>
 

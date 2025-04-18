@@ -23,7 +23,7 @@ Style
 
 You can add the following pre-amble to your .mmd charts to use a consistent style across pages:
 
-.. code-block:: md
+.. code-block:: RST
 
     ---
     config:
@@ -61,18 +61,58 @@ The easiest plugin to use with Mermaid charts is `Mermaid Chart <https://marketp
    
 This plugin allows you to preview your .mmd documents in another VS Code window.
 
+.. _cool_mermaid:
+
 Cool stuff
 ----------
 
-You can make elements clickable 
+Clickables
+````````````
 
-EXAMPLE
+You can make elements clickable with something simple like: 
 
+.. mermaid::
 
-You can add icons within your node
+   graph LR
+      clickable["Click Me"]
+      click clickable "https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/meta_doc/doc_mermaid.html#cool-stuff" _blank
+      clickable --> notclick(["Don't Click Me"])
 
-https://icones.js.org/
+The chart above was made with the in-line capabilites of the sphinxcontrib.mermaid extension, which looks like the following text inside an .rst file:
 
-Copy Links/URL
+.. code-block:: RST
 
-Add style things by ?color=white
+    graph LR
+      clickable["Click Me"]
+      click clickable "https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/meta_doc/doc_mermaid.html#cool-stuff" _blank
+      clickable --> notclick(["Don't Click Me"])
+
+But that has it's limitations, and doesn't always render well. So a simple .mmd version of the above chart would be: 
+
+.. code-block:: RST
+
+    flowchart TD
+
+        clickable["Click Me"]
+        click clickable "https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/meta_doc/doc_mermaid.html#cool-stuff" _blank
+        clickable --> notclick(["Don't Click Me"])
+
+Icons in an Element 
+```````````````````````
+
+You can add icons within your node, there's a library here: https://icones.js.org/
+
+You can search for whatever you want, let's say we want a cactus! You can select the icon that speaks to you and then scroll to the bottom and click the Links \> URL button to copy the link to the icon you want.
+
+.. mermaid::
+
+   graph LR
+      color_cactus[<span style='display: inline-flex; align-items: center;'><img src='https://api.iconify.design/emojione:cactus.svg' width='20' height='20' style='margin-right: 4px;' /> Colorful Cactus</span>]
+
+      white_cactus[<span style='display: inline-flex; align-items: center;'><img src='https://api.iconify.design/tabler:cactus.svg?color=white' width='20' height='20' style='margin-right: 4px;' /> White Cactus</span>]
+      
+      blue_cactus[<span style='display: inline-flex; align-items: center;'><img src='https://api.iconify.design/tabler:cactus.svg?color=blue' width='20' height='20' style='margin-right: 4px;' /> Blue Cactus</span>]
+
+      color_cactus --> white_cactus --> blue_cactus
+
+From the code below you can see that you can change the color of an icon by adding `?color=white` to the end of the img src="" url.
