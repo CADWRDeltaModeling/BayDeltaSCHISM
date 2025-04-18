@@ -23,7 +23,7 @@ Style
 
 You can add the following pre-amble to your .mmd charts to use a consistent style across pages:
 
-.. code-block:: md
+.. code-block:: RST
 
     ---
     config:
