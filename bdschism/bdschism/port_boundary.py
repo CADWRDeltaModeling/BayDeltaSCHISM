@@ -10,7 +10,7 @@ SCHISM flux, salt and temp time history (.th) files
 """
 from schimpy import model_time
 from pyhecdss import get_ts
-from schimpy.unit_conversions import CFS2CMS, ec_psu_25c
+from vtools.functions.unit_conversions import CFS2CMS, ec_psu_25c
 from vtools.functions.interpolate import rhistinterp
 from vtools.functions.filter import ts_gaussian_filter
 from vtools.data.vtime import minutes
