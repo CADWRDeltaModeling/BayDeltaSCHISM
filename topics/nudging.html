@@ -311,9 +311,10 @@ step_nu_tr = 3600. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
 
 <p>Here, <cite>config_file</cite> is in yaml format, examples of which can be found in the <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/examples/nudging">BayDeltaSCHISM examples/nudging folder</a></p>
 </section>
-<section id="preparing-for-nudging-with-observation-data">
-<h2>Preparing for nudging with observation data<a class="headerlink" href="#preparing-for-nudging-with-observation-data" title="Link to this heading"></a></h2>
-<p>For nudging using observtion data, one must prepare the time series inputs using <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/bdschism/bdschism/hotstart_nudging_data.py">hotstart_nudging_data from BayDeltaSCHISM</a>.</p>
+<section id="preparing-for-nudging-with-observed-data">
+<h2>Preparing for nudging with observed data<a class="headerlink" href="#preparing-for-nudging-with-observed-data" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://data.cnra.ca.gov/dataset/bay-delta-schism-coastal-data">Coastal data for nudging</a> is obtained from CenCOOS and HYCOM ocean modeling programs.</p>
+<p>For nudging using observed data, one must prepare the time series inputs using <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/bdschism/bdschism/hotstart_nudging_data.py">hotstart_nudging_data from BayDeltaSCHISM</a>.</p>
 <p>The start date, length of nudging, and the location of the time series files need to be specified in the following manner:
 <cite>bds hot_nudge_data –start_date 2021-01-01 –nudge_len 10 –repo_dir $repo</cite>, where <cite>$repo</cite> is the path to raw observation data.</p>
 <p>The recommended spin-up period using observation data is 10-15 days.</p>

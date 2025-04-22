@@ -58,7 +58,7 @@ Nudging is used for two purposes:
 
 It is common for a single simulation to start and finish with different nudging products. Typically, the first nuding is dense, utilizing data from many observation stations, and is used to spin up the model quickly. The second is intended to only provide coastal data.  
 
-The soft coastal boundary enforcement is applied by providing temperature and salinity values close to the model boundary. This prevents conspicuous boundary layer from forming at the ocean boundary. The temperature and salinity values are obtained from coastal modeling products, such as HYCOM, CeNCOOS, or ROMS. In general, the choice between these is based on their period of availabiltiy: for runs after 2020. The other products are available for prior years.  
+The soft coastal boundary enforcement is applied by providing temperature and salinity values close to the model boundary. This prevents conspicuous boundary layer from forming at the ocean boundary. The temperature and salinity values are obtained from coastal modeling products, such as HYCOM, CeNCOOS, or ROMS. In general, the choice between these is based on their period of availabiltiy: for runs after 2020. The other products are available for prior years. 
 
 See Chapter 5 in `Methodology for Flow and Salinity Estimates <https://data.cnra.ca.gov/dataset/methodology-for-flow-and-salinity-estimates-in-the-sacramento-san-joaquin-delta-and-suisun-marsh/resource/8f6bb786-60e6-44cc-847e-37cea36f8c2b>`_ for more detail.  
 
@@ -75,10 +75,12 @@ The python function to generate nudging files is `create_nudging`, which is part
 Here, `config_file` is in yaml format, examples of which can be found in the `BayDeltaSCHISM examples/nudging folder <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/examples/nudging>`_
 
 
-Preparing for nudging with observation data  
--------------------------------------------- 
+Preparing for nudging with observed data  
+----------------------------------------
 
-For nudging using observtion data, one must prepare the time series inputs using `hotstart_nudging_data from BayDeltaSCHISM <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/bdschism/bdschism/hotstart_nudging_data.py>`_.  
+`Coastal data for nudging <https://data.cnra.ca.gov/dataset/bay-delta-schism-coastal-data>`_ is obtained from CenCOOS and HYCOM ocean modeling programs. 
+
+For nudging using observed data, one must prepare the time series inputs using `hotstart_nudging_data from BayDeltaSCHISM <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/bdschism/bdschism/hotstart_nudging_data.py>`_.  
 
 The start date, length of nudging, and the location of the time series files need to be specified in the following manner:  
 `bds hot_nudge_data --start_date 2021-01-01 --nudge_len 10 --repo_dir $repo`, where `$repo` is the path to raw observation data.  
