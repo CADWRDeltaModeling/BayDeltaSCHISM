@@ -32,6 +32,7 @@ Overview
   topics/vignette.rst
   topics/files_and_directories  
   topics/preprocess.rst
+  topics/hpc.rst
 
 
 Boundaries & Input Files
