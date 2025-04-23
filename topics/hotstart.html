@@ -102,6 +102,7 @@
 <li class="toctree-l4"><a class="reference internal" href="vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="files_and_directories.html">Required Files, Directory Structure and Recommended Study Practices</a></li>
 <li class="toctree-l4"><a class="reference internal" href="preprocess.html">Grid, Spatial Data and Preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hpc.html">Intro to Clusters and High Performance Computing</a></li>
 </ul>
 </li>
 <li class="toctree-l3 current"><a class="reference internal" href="../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul class="current">
@@ -161,6 +162,7 @@
 <li class="toctree-l4"><a class="reference internal" href="mesh.html#meshing">Meshing</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mesh.html#vertical-mesh-setup">Vertical mesh setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mesh.html#checklist-for-after-you-change-the-mesh">Checklist for after you change the mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mesh.html#performance-tuning">Performance Tuning</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="utilities.html">Utilities and Scripts</a><ul>
@@ -305,13 +307,13 @@ Also labeling must be exceedingly clear. NEVER REPORT AS GENERAL MODEL ACCURACY 
 <figure class="align-default" id="id1">
 <img alt="../_images/initialization1.png" class="with-border" src="../_images/initialization1.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Simple initialization without nudging using Delta observations data.  * = Prefer USGS cruise date.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Simple initialization without nudging using Delta observations data.  * = Prefer USGS cruise date.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id2">
 <img alt="../_images/initialization2.png" class="with-border" src="../_images/initialization2.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Simple initialization with nudging using Delta data to spin up the model fast and accurately,
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Simple initialization with nudging using Delta data to spin up the model fast and accurately,
 before halting and restarting without nudging for the main study.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>

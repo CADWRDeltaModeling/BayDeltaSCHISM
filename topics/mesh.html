@@ -102,6 +102,7 @@
 <li class="toctree-l4"><a class="reference internal" href="vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="files_and_directories.html">Required Files, Directory Structure and Recommended Study Practices</a></li>
 <li class="toctree-l4"><a class="reference internal" href="preprocess.html">Grid, Spatial Data and Preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hpc.html">Intro to Clusters and High Performance Computing</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul>
@@ -161,6 +162,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#meshing">Meshing</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#vertical-mesh-setup">Vertical mesh setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#checklist-for-after-you-change-the-mesh">Checklist for after you change the mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance-tuning">Performance Tuning</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="utilities.html">Utilities and Scripts</a><ul>
@@ -257,17 +259,22 @@
 <nav class="contents local" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#meshing" id="id3">Meshing</a></p>
+<li><p><a class="reference internal" href="#meshing" id="id4">Meshing</a></p>
 <ul>
-<li><p><a class="reference internal" href="#meshing-considerations-for-schism" id="id4">Meshing considerations for SCHISM</a></p></li>
-<li><p><a class="reference internal" href="#getting-to-know-sms" id="id5">Getting to know SMS</a></p></li>
-<li><p><a class="reference internal" href="#building-the-bay-delta-mesh-the-standard-way" id="id6">Building the Bay-Delta mesh the standard way</a></p></li>
-<li><p><a class="reference internal" href="#presentation-meshing-consideration-for-marshes-and-restoration" id="id7">Presentation: Meshing consideration for marshes and restoration</a></p></li>
-<li><p><a class="reference internal" href="#merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc" id="id8">Merging/Stitching SMS mesh/maps (new work, flooded islands, etc)</a></p></li>
+<li><p><a class="reference internal" href="#meshing-considerations-for-schism" id="id5">Meshing considerations for SCHISM</a></p></li>
+<li><p><a class="reference internal" href="#getting-to-know-sms" id="id6">Getting to know SMS</a></p></li>
+<li><p><a class="reference internal" href="#building-the-bay-delta-mesh-the-standard-way" id="id7">Building the Bay-Delta mesh the standard way</a></p></li>
+<li><p><a class="reference internal" href="#presentation-meshing-consideration-for-marshes-and-restoration" id="id8">Presentation: Meshing consideration for marshes and restoration</a></p></li>
+<li><p><a class="reference internal" href="#merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc" id="id9">Merging/Stitching SMS mesh/maps (new work, flooded islands, etc)</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#vertical-mesh-setup" id="id9">Vertical mesh setup</a></p></li>
-<li><p><a class="reference internal" href="#checklist-for-after-you-change-the-mesh" id="id10">Checklist for after you change the mesh</a></p></li>
+<li><p><a class="reference internal" href="#vertical-mesh-setup" id="id10">Vertical mesh setup</a></p></li>
+<li><p><a class="reference internal" href="#checklist-for-after-you-change-the-mesh" id="id11">Checklist for after you change the mesh</a></p></li>
+<li><p><a class="reference internal" href="#performance-tuning" id="id12">Performance Tuning</a></p>
+<ul>
+<li><p><a class="reference internal" href="#the-analyze-dt-utility" id="id13">The analyze_dt Utility</a></p></li>
+</ul>
+</li>
 </ul>
 </nav>
 <section id="meshing">
@@ -340,6 +347,103 @@ straightforward or obvious. This is a checklist of gotchas that arise outside th
 <blockquote>
 <div><p>☐ Skew and area warnings in preprocessor.</p>
 </div></blockquote>
+</section>
+<section id="performance-tuning">
+<h2>Performance Tuning<a class="headerlink" href="#performance-tuning" title="Link to this heading"></a></h2>
+<p>Changes in the horizontal mesh have the potential to create elements with small volume and fast velocities.
+Courant–Friedrichs–Lewy (CFL) condition for tracer transport will then trigger subcycling that will control
+the global performance of the model. Scaling and parallelism won’t help.</p>
+<p>The first step in fixing this is to find the problem. The analyze_dt utility is intended to
+help diagnose which elements limit the global time step of the model. In pathological cases on a
+well-tended grid, a handful of elements are usually to blame. However, because a single bad element can control
+the time stepping of the entire model you do have to get them all.</p>
+<p>Once you know identify bad actors, the following fixes may help:</p>
+<ul class="simple">
+<li><p>Increase element size.</p></li>
+<li><p>Add a small patch of emergent pseudo vegetation to create drag through the entire water column rather than shear from the bottom. Drag penalizes the square of velocity and will tap down flareups.</p></li>
+<li><p>Coarsen the vertical mesh locally.</p></li>
+<li><p>Convert triangles to quads.</p></li>
+<li><p>Use elevation enforcement along the thalwag, which provides some smoothing.</p></li>
+</ul>
+<section id="the-analyze-dt-utility">
+<span id="analyze-dt"></span><h3>The analyze_dt Utility<a class="headerlink" href="#the-analyze-dt-utility" title="Link to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To use this utility, you must run SCHISM with a build that includes the ANALYSIS module and ensure output for minTransportTimeStep is enabled in your model configuration (<cite>param.nml</cite>). The variable will appear in out2d_[#].nc</p>
+</div>
+<p>The analyze_dt utility is a subcommand within the bds command-line tool. It provides several tools to help identify and visualize elements in a SCHISM model domain that impose small transport time steps (minTransportTimeStep) during simulations. This is useful for debugging and mesh refinement, especially where subcycling might be triggered.</p>
+<p>This utility is available as a subcommand:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bds analyze_dt [COMMAND] [OPTIONS]</span>
+</pre></div>
+</div>
+<p>Available Commands</p>
+<dl>
+<dt>dist</dt><dd><p>Plot a cumulative distribution function (CDF) of time steps.</p>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bds analyze_dt dist out2d_21.nc --file_step 5</span>
+</pre></div>
+</div>
+</dd>
+<dt>hist</dt><dd><p>Plot a histogram focusing on the lower end of time steps.</p>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bds analyze_dt hist out2d_21.nc --file_step 5</span>
+</pre></div>
+</div>
+</dd>
+<dt>list</dt><dd><p>List the N elements with the smallest time steps at a given output step within the file.</p>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bds analyze_dt list out2d_21.nc --file_step 3 --n 20</span>
+</pre></div>
+</div>
+<p>Sample Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ndx</span><span class="p">,</span><span class="n">el</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">dt</span>
+<span class="mi">0</span><span class="p">,</span><span class="mi">315764</span><span class="p">,</span><span class="mf">595402.84</span><span class="p">,</span><span class="mf">4226879.11</span><span class="p">,</span><span class="mf">1.731465</span>
+<span class="mi">1</span><span class="p">,</span><span class="mi">310596</span><span class="p">,</span><span class="mf">595791.67</span><span class="p">,</span><span class="mf">4225754.48</span><span class="p">,</span><span class="mf">1.749715</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</dd>
+<dt>plot</dt><dd><p>Plot the spatial distribution of transport time steps, highlighting the lowest N.</p>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bds analyze_dt plot out2d_21.nc --file_step 2 --n 20</span>
+</pre></div>
+</div>
+</dd>
+<dt>summarize</dt><dd><p>Analyze and optionally plot elements that frequently appear among the lowest N time steps across all output times.</p>
+<p>Options:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>summarize: Top N elements to track each timestep</p></li>
+<li><p>–num: Minimum number of appearances required to be included</p></li>
+<li><p>–plot: Flag to show a spatial plot</p></li>
+<li><p>–csv_out FILE: Save results to CSV</p></li>
+<li><p>–label_top K: Label top K offenders (default: all)</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bds analyze_dt summarize out2d_21.nc --summarize 20 --num 10 --plot --csv_out dt_summary.csv</span>
+
+<span class="go">This example summarizes elements that appear among the 20 worst offenders per time step</span>
+<span class="go">for at least 10 time steps.</span>
+<span class="go">The output includes the (0-based) element number, count of times in this role and location.</span>
+<span class="go">Sample Text Output::</span>
+
+<span class="go">  el,count,x,y</span>
+<span class="go">  3363,31,652052.58,4172820.80</span>
+<span class="go">  310595,31,595791.67,4225754.48</span>
+<span class="go">  ...</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/bad_actors.png"><img alt="Map of minTransportTimeStep highlighting lowest 20 elements" src="../_images/bad_actors.png" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text"><strong>Figure</strong> Example plot of 20 elements with smallest subcycling time steps</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
 </section>
 </section>
 

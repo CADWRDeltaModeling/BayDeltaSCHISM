@@ -102,6 +102,7 @@
 <li class="toctree-l4"><a class="reference internal" href="vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="files_and_directories.html">Required Files, Directory Structure and Recommended Study Practices</a></li>
 <li class="toctree-l4"><a class="reference internal" href="preprocess.html">Grid, Spatial Data and Preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hpc.html">Intro to Clusters and High Performance Computing</a></li>
 </ul>
 </li>
 <li class="toctree-l3 current"><a class="reference internal" href="../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul class="current">
@@ -161,6 +162,7 @@
 <li class="toctree-l4"><a class="reference internal" href="mesh.html#meshing">Meshing</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mesh.html#vertical-mesh-setup">Vertical mesh setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mesh.html#checklist-for-after-you-change-the-mesh">Checklist for after you change the mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mesh.html#performance-tuning">Performance Tuning</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="utilities.html">Utilities and Scripts</a><ul>
@@ -241,14 +243,14 @@
 <span id="nudge-obs-grid"></span><a class="with-border reference internal image-reference" href="../_images/nudging_obs_gr3.png"><img alt="../_images/nudging_obs_gr3.png" class="with-border" src="../_images/nudging_obs_gr3.png" style="width: 70%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Nudging relaxation shown around EC and temperature stations. Red shows where the nudging is applied the greatest, Blue is the least, and White induces no nudging. The relaxation constants are specified in the [MOD]_nudge.gr3 file. The locations and values are specified in the *.yaml files.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Nudging relaxation shown around EC and temperature stations. Red shows where the nudging is applied the greatest, Blue is the least, and White induces no nudging. The relaxation constants are specified in the [MOD]_nudge.gr3 file. The locations and values are specified in the *.yaml files.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id4">
 <span id="nudge-ocean-grid"></span><a class="with-border reference internal image-reference" href="../_images/nudging_ocean_gr3.png"><img alt="../_images/nudging_ocean_gr3.png" class="with-border" src="../_images/nudging_ocean_gr3.png" style="width: 70%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Nudging relaxation shown along the ocean boundary. Similar color scale to Fig. <a class="reference internal" href="#nudge-obs-grid"><span class="std std-numref">Fig. 4</span></a>. Also the stations used to interpolate along the ocean boundary are specified in the *.yaml files.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Nudging relaxation shown along the ocean boundary. Similar color scale to Fig. <a class="reference internal" href="#nudge-obs-grid"><span class="std std-numref">Fig. 6</span></a>. Also the stations used to interpolate along the ocean boundary are specified in the *.yaml files.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>In SCHISM you can use a NetCDF file that coerces/nudges module values towards an observed or set timeseries in specific points throughout the model.
