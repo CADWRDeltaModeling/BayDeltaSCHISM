@@ -130,7 +130,7 @@ def hotstart_newgrid(
     os.remove(temp_yaml)
 
     # Write out the hotstart file to NetCDF
-    hnc.to_netcdf(hotstart_out)
+    hnc.to_netcdf(hnc.output_fn)
 
 
 @click.command(

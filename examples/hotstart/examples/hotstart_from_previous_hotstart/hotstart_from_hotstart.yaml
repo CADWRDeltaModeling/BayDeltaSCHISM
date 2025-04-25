@@ -2,6 +2,7 @@
 # hot_from_hot ./hotstart_from_hotstart.yaml --f_in hotstart_it=480000.nc --src_dir ./source_dir/ --trg_dir ./target_dir/
 
 hotstart: 
+    output_fn: {hotstart_out}
     date: {hot_date}    # datetime of hotstart file from which SCHISM will start
     run_start: {run_start} # datetime considered to be time=0, from param.nml start_{year/month/day/hour} parameter
     time_step: {timestep}
