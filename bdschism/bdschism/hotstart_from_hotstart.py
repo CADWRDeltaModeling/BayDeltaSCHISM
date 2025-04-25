@@ -4,9 +4,9 @@ Adapted from ZZheng - generate hotstart - transfer from one grid to another
 """
 
 # Use example as command-line interface function:
-# python hotstart_from_hotstart.py --test_dir ./ --in_dir ./in_dir --out_dir ./out_dir --yaml_fn ./hotstart_from_hotstart.yaml --hotstart_in ./in_dir/hotstart_it=480000.nc --hotstart_out out_hotstart_it=480000.nc
+# python hotstart_from_hotstart.py --test_dir ./ --src_dir ./src_dir --trg_dir ./trg_dir --yaml_fn ./hotstart_from_hotstart.yaml --hotstart_in ./src_dir/hotstart_it=480000.nc --hotstart_out out_hotstart_it=480000.nc
 # or with bdschism in your environment::
-# hot_from_hot --test_dir ./ --in_dir ./in_dir --out_dir ./out_dir --yaml_fn ./hotstart_from_hotstart.yaml --hotstart_in ./in_dir/hotstart_it=480000.nc --hotstart_out out_hotstart_it=480000.nc
+# hot_from_hot --test_dir ./ --src_dir ./src_dir --trg_dir ./trg_dir --yaml_fn ./hotstart_from_hotstart.yaml --hotstart_in ./src_dir/hotstart_it=480000.nc --hotstart_out out_hotstart_it=480000.nc
 
 # Standard Library Imports
 import os
@@ -59,16 +59,16 @@ def hotstart_newgrid(
     yaml: str,
     hotstart_in,
     hotstart_out,
-    in_dir,
-    out_dir,
+    src_dir,
+    trg_dir,
     modules=None,
     crs="EPSG:26910",
 ):
     """Transfer hotstart data from one grid to another."""
     # Get params
-    param_nml_in = os.path.join(in_dir, "param.nml")
+    param_nml_in = os.path.join(src_dir, "param.nml")
     params_in = parms.read_params(param_nml_in)
-    param_nml_out = os.path.join(out_dir, "param.nml")
+    param_nml_out = os.path.join(trg_dir, "param.nml")
     params_out = parms.read_params(param_nml_out)
 
     # Get start date from hotstart file
@@ -83,10 +83,10 @@ def hotstart_newgrid(
     run_start = params_out.run_start  # use runstart to pass to yaml
 
     # set hgrid/vgrid in/outs
-    hgrid_in = os.path.join(in_dir, "hgrid.gr3")  # used to fill strings in temp_yaml
-    hgrid_out = os.path.join(out_dir, "hgrid.gr3")  # used to fill strings in temp_yaml
-    vgrid_in = os.path.join(in_dir, "vgrid.in")  # used to fill strings in temp_yaml
-    vgrid_out = os.path.join(out_dir, "vgrid.in")  # used to fill strings in temp_yaml
+    hgrid_in = os.path.join(src_dir, "hgrid.gr3")  # used to fill strings in temp_yaml
+    hgrid_out = os.path.join(trg_dir, "hgrid.gr3")  # used to fill strings in temp_yaml
+    vgrid_in = os.path.join(src_dir, "vgrid.in")  # used to fill strings in temp_yaml
+    vgrid_out = os.path.join(trg_dir, "vgrid.in")  # used to fill strings in temp_yaml
 
     # Create a temporary yaml filename
     with tempfile.NamedTemporaryFile(
@@ -124,25 +124,25 @@ def hotstart_newgrid(
     "--f_in",
     required=True,
     type=click.Path(exists=True),
-    help="Hotstart input file path - uses hgrid.gr3 and vgrid.in from in_dir.",
+    help="Hotstart input file path - uses hgrid.gr3 and vgrid.in from src_dir.",
 )
 @click.option(
     "--f_out",
     required=True,
     type=click.Path(),
-    help="Hotstart output file path - will be translated to hgrid.gr3 and vgrid.in from out_dir.",
+    help="Hotstart output file path - will be translated to hgrid.gr3 and vgrid.in from trg_dir.",
 )
 @click.option(
-    "--in_dir",
+    "--src_dir",
     required=True,
     type=click.Path(exists=True),
-    help="Input directory: has hgrid.gr3, vgrid.in, and param.nml (links are ok).",
+    help="Source directory: has hgrid.gr3, vgrid.in, and param.nml (links are ok).",
 )
 @click.option(
-    "--out_dir",
+    "--trg_dir",
     required=True,
     type=click.Path(exists=True),
-    help="Output directory: has hgrid.gr3, vgrid.in, and param.nml (links are ok).",
+    help="Target directory: has hgrid.gr3, vgrid.in, and param.nml that the hotstart will be re-written to (links are ok).",
 )
 @click.option(
     "--modules",
@@ -162,8 +162,8 @@ def hotstart_newgrid_cli(
     yaml: str,
     f_in,
     f_out,
-    in_dir,
-    out_dir,
+    src_dir,
+    trg_dir,
     modules=None,
     crs="EPSG:26910",
 ):
@@ -171,18 +171,18 @@ def hotstart_newgrid_cli(
     Command-line interface for transferring hotstart data from one grid to another.
     """
     # Ensure input and output directories exist
-    if not os.path.exists(in_dir):
-        raise ValueError(f"Input directory {in_dir} does not exist.")
-    if not os.path.exists(out_dir):
-        raise ValueError(f"Output directory {out_dir} does not exist.")
+    if not os.path.exists(src_dir):
+        raise ValueError(f"Source directory {src_dir} does not exist.")
+    if not os.path.exists(trg_dir):
+        raise ValueError(f"Target directory {trg_dir} does not exist.")
 
     # Call the hotstart transfer function
     hotstart_newgrid(
         yaml,
         f_in,
         f_out,
-        in_dir,
-        out_dir,
+        src_dir,
+        trg_dir,
         modules=modules,
         crs=crs,
     )
