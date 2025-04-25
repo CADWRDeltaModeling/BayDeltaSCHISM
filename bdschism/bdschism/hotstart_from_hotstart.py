@@ -160,8 +160,8 @@ def hotstart_newgrid(
 @click.help_option("-h", "--help")
 def hotstart_newgrid_cli(
     yaml: str,
-    hotstart_in,
-    hotstart_out,
+    f_in,
+    f_out,
     in_dir,
     out_dir,
     modules=None,
@@ -179,8 +179,8 @@ def hotstart_newgrid_cli(
     # Call the hotstart transfer function
     hotstart_newgrid(
         yaml,
-        hotstart_in,
-        hotstart_out,
+        f_in,
+        f_out,
         in_dir,
         out_dir,
         modules=modules,
