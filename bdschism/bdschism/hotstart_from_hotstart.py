@@ -63,10 +63,34 @@ def hotstart_newgrid(
     crs="EPSG:26910",
 ):
     """Transfer hotstart data from one grid to another."""
-    # Get params
+
+    # Check that all files are available
     param_nml_in = os.path.join(src_dir, "param.nml")
-    params_in = parms.read_params(param_nml_in)
     param_nml_out = os.path.join(trg_dir, "param.nml")
+    hgrid_in = os.path.join(src_dir, "hgrid.gr3")  # used to fill strings in temp_yaml
+    hgrid_out = os.path.join(trg_dir, "hgrid.gr3")  # used to fill strings in temp_yaml
+    vgrid_in = os.path.join(src_dir, "vgrid.in")  # used to fill strings in temp_yaml
+    vgrid_out = os.path.join(trg_dir, "vgrid.in")  # used to fill strings in temp_yaml
+    
+    check_dirs = [src_dir, trg_dir]
+    check_files = [hotstart_in, yaml, param_nml_in, param_nml_out, hgrid_in, hgrid_out, vgrid_in, vgrid_out]
+    # Ensure directories exist
+    missing_directories = [directory for directory in check_dirs if not os.path.isdir(directory)]
+    missing_files = [file for file in check_files if not os.path.isfile(file)]
+
+    if missing_directories or missing_files:
+        if missing_directories:
+            print("Missing directories:")
+            for directory in missing_directories:
+                print(f"  - {directory}")
+        if missing_files:
+            print("Missing files:")
+            for file in missing_files:
+                print(f"  - {file}")
+        raise FileNotFoundError("Some required directories or files are missing. See the output above for details.")
+
+    # Get params
+    params_in = parms.read_params(param_nml_in)
     params_out = parms.read_params(param_nml_out)
 
     # Get start date from hotstart file
@@ -79,12 +103,6 @@ def hotstart_newgrid(
         "value"
     ]  # used to fill strings in temp_yaml
     run_start = params_out.run_start  # use runstart to pass to yaml
-
-    # set hgrid/vgrid in/outs
-    hgrid_in = os.path.join(src_dir, "hgrid.gr3")  # used to fill strings in temp_yaml
-    hgrid_out = os.path.join(trg_dir, "hgrid.gr3")  # used to fill strings in temp_yaml
-    vgrid_in = os.path.join(src_dir, "vgrid.in")  # used to fill strings in temp_yaml
-    vgrid_out = os.path.join(trg_dir, "vgrid.in")  # used to fill strings in temp_yaml
 
     # Create a temporary yaml filename
     with tempfile.NamedTemporaryFile(
