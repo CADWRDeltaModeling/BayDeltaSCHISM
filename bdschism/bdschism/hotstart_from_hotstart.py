@@ -123,8 +123,14 @@ def hotstart_newgrid(
     h = sh.hotstart(temp_yaml, modules=modules, crs=crs)
     h.create_hotstart()
     hnc = h.nc_dataset
-    hnc.to_netcdf(hotstart_out)
+    # Add the YAML file content as an entry to the netCDF file
+    with open(temp_yaml, "r") as yaml_file:
+        yaml_content = yaml_file.read()
+    hnc.attrs["yaml_input"] = yaml_content
     os.remove(temp_yaml)
+
+    # Write out the hotstart file to NetCDF
+    hnc.to_netcdf(hotstart_out)
 
 
 @click.command(
