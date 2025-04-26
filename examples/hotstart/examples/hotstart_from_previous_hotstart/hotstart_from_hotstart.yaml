@@ -9,6 +9,8 @@ hotstart:
     hgrid_input_file: {hgrid_out}                     # hgrid which the hotstart_in file was generated with, needs to be in utm coordinates. 
     vgrid_input_file: {vgrid_out}                     # vgrid which the hotstart_in file was generated with
     vgrid_version: '5.10'
+
+    
     elevation:
         centering: node  # node, edge, elem, prism, benthic 
         initializer: 
@@ -62,16 +64,6 @@ hotstart:
                 vgrid_version: '5.10'
                 distance_threshold: 10
                 method: nearest            #method: interpolate vertically or assign a simple function (for flooded island case) in case hgrid
-    salinity:
-        initializer: 
-            hotstart_nc:
-                data_source: {hotstart_in}                 
-                source_hgrid: {hgrid_in}                     # hgrid used to write the hotstart out to  #if the hgrid is different
-                source_vgrid: {vgrid_in}                     # vgrid used to write the hotstart out to  #if the vgrid is different
-                source_vgrid_version: '5.10'
-                vgrid_version: '5.10'
-                distance_threshold: 10
-                method: nearest            #method: interpolate vertically or assign a simple function (for flooded island case) in case hgrid
     temperature:
         initializer: 
             hotstart_nc:
@@ -83,3 +75,13 @@ hotstart:
                 vgrid_version: '5.10'
                 distance_threshold: 10
                 method: nearest            #method: interpolate vertically or assign a simple function (for flooded island case) in case hgrid
+    salinity:
+        initializer: 
+            hotstart_nc:
+                data_source: {hotstart_in}                 
+                source_hgrid: {hgrid_in}                     # hgrid used to write the hotstart out to  #if the hgrid is different
+                source_vgrid: {vgrid_in}                     # vgrid used to write the hotstart out to  #if the vgrid is different
+                source_vgrid_version: '5.10'
+                vgrid_version: '5.10'
+                distance_threshold: 10
+                method: nearest            #method: interpolate vertically or assign a simple function (for flooded island case) in case hgrid                
