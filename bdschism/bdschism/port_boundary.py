@@ -351,6 +351,10 @@ def create_schism_bc(config_yaml, kwargs={}):
 
         # Format the outputs.
         dd.index.name = "datetime"
+
+        # Remove excess/repetitive rows
+        dd = clean_df(dd.ffill())
+
         output_path = os.path.join(dir, out_file)
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         dd.to_csv(
