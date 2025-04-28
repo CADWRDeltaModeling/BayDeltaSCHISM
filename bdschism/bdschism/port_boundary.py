@@ -324,6 +324,10 @@ def create_schism_bc(config_yaml, kwargs={}):
                 dfi[name] = [float(var)] * len(df_rng)
                 print(f"Updating SCHISM {name} with constant value of {var}")
 
+            # Maintain the rounding preference of the formula
+            if isinstance(formula, str) and "round" in formula:
+                dfi = dfi.round(int(formula[-2]))
+
             if source_kind == "SCHISM":
                 # Simplest case: use existing reference SCHISM data; do nothing
                 print("Use existing SCHISM input")
