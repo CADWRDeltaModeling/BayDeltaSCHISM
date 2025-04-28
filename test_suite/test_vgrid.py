@@ -14,8 +14,10 @@ import numpy as np
 def vgrid3d(sim_dir, params):
     """ Reads vgrid.3d.in. Assumes vgrid_version='5.10' """
 
-    svg_ob = svg() 
-    vgrid = svg_ob.read(fpath=os.path.join(sim_dir,'vgrid.in'), vgrid_version='5.10')
+    svg_ob = svg()
+    vgrid = svg_ob.read(
+        fpath=os.path.join(sim_dir, "vgrid.in.3d"), vgrid_version="5.10"
+    )
 
     return vgrid
 
