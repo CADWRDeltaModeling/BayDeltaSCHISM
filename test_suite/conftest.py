@@ -22,7 +22,10 @@ def pytest_addoption(parser):
 @pytest.fixture(scope="module")
 def sim_dir(request):
     loc = request.config.getoption("--sim_dir")
-    loc = "/scratch/tomkovic/schism_repos/bdschism_pytest"
+    # loc = "<local_path>"
+    print(f"Simulation directory: {loc}")
+    if not os.path.exists(loc):
+        raise FileNotFoundError(f"Simulation directory does not exist: {loc}")
     return os.path.abspath(loc)
 
 
