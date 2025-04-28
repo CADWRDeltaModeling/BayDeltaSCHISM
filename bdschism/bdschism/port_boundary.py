@@ -16,20 +16,20 @@ from vtools.functions.filter import ts_gaussian_filter
 from vtools.data.vtime import minutes
 import matplotlib.pylab as plt
 import pandas as pd
+import numpy as np
 from argparse import ArgumentParser
 import yaml
 import os
 import click
+import json
 
 
-def read_csv(file, var, name, p=2.0):
+def read_csv(file, var, name, dt, p=2.0):
     """
     Reads in a csv file of monthly boundary conditions and interpolates
     Outputs an interpolated DataFrame of that variable
     """
-    forecast_df = pd.read_csv(
-        os.path.join(dir, file), index_col=0, header=0, parse_dates=True
-    )
+    forecast_df = pd.read_csv(file, index_col=0, header=0, parse_dates=True)
     forecast_df.index = forecast_df.index.to_period("M")
     interp_series = rhistinterp(forecast_df[var].astype("float"), dt, p=p)
     interp_df = pd.DataFrame()
@@ -62,12 +62,57 @@ def read_dss(file, pathname, sch_name=None, p=2.0):
     return ts15min
 
 
+def replace_placeholders(config, kwargs):
+    """
+    Replace placeholders in the config dictionary with values from kwargs.
+    """
+    print(f"config: {config}")
+    print(f"kwargs: {kwargs}")
+    if isinstance(config, dict):  # Ensure config is a dictionary
+        for key, value in config.items():
+            if isinstance(value, dict):
+                config[key] = replace_placeholders(value, kwargs)
+            elif isinstance(value, str):
+                config[key] = value.format_map(kwargs)
+    return config
+
+
+def replace_placeholders_in_dataframe(df, kwargs):
+    """
+    Replace placeholders in a DataFrame with values from kwargs.
+    """
+    for col in df.columns:
+        if df[col].dtype == "object":  # Only process string columns
+            df[col] = df[col].apply(
+                lambda x: x.format_map(kwargs) if isinstance(x, str) else x
+            )
+    return df
+
+
 @click.command()
 @click.argument("config_yaml", type=click.Path(exists=True))
-def main(config_yaml):
+@click.option(
+    "--kwargs",
+    type=str,
+    default="{}",
+    help="JSON string representing a dictionary of keyword arguments to populate format strings.",
+)
+@click.help_option("-h", "--help")
+def port_boundary_cli(config_yaml, kwargs):
+    """
+    Command line interface for creating SCHISM boundary conditions.
+    """
+    kwargs_dict = json.loads(kwargs)
+    create_schism_bc(config_yaml, kwargs_dict)
+
+
+def create_schism_bc(config_yaml, kwargs={}):
 
     with open(config_yaml, "r") as f:
         config = yaml.safe_load(f)
+
+    # Replace placeholders in the config dictionary with values from kwargs
+    config = replace_placeholders(config, kwargs)
 
     dir = config["dir"]
 
@@ -87,7 +132,9 @@ def main(config_yaml):
     start_date = pd.Timestamp(year=sd[0], month=sd[1], day=sd[2])
     end_date = pd.Timestamp(year=ed[0], month=ed[1], day=ed[2])
     df_rng = pd.date_range(start_date, end_date, freq=dt)
+    # Read and process the source_map file
     source_map = pd.read_csv(source_map_file, header=0)
+    source_map = replace_placeholders_in_dataframe(source_map, kwargs)
 
     # Read in the reference SCHISM flux, salt and temperature files
     # to be used as a starting point and to substitute timeseries not
@@ -132,11 +179,7 @@ def main(config_yaml):
             formula = row["formula"]
             print(f"processing {name}")
 
-            if source_kind == "SCHISM":
-                # Simplest case: use existing reference SCHISM data; do nothing
-                print("Use existing SCHISM input")
-
-            elif source_kind == "CSV":
+            if source_kind == "CSV":
                 # Substitute in an interpolated monthly forecast
                 if derived:
                     print(
@@ -146,7 +189,7 @@ def main(config_yaml):
                     csv = pd.DataFrame()
                     vars = var.split(";")
                     for v in vars:
-                        csv[[v]] = read_csv(source_file, v, name, p=p)
+                        csv[[v]] = read_csv(source_file, v, name, dt, p=p)
                     dts = eval(formula).to_frame(name).reindex(df_rng)
                     dfi = ts_gaussian_filter(dts, sigma=100)
                 else:
@@ -154,7 +197,7 @@ def main(config_yaml):
                         f"Updating SCHISM {name} with interpolated monthly\
                         forecast {var}"
                     )
-                    dfi = read_csv(source_file, var, name, p=p)
+                    dfi = read_csv(source_file, var, name, dt, p=p)
 
             elif source_kind == "DSS":
                 # Substitute in CalSim value.
@@ -195,27 +238,34 @@ def main(config_yaml):
                 dfi[name] = [float(var)] * len(df_rng)
                 print(f"Updating SCHISM {name} with constant value of {var}")
 
-            # Do conversions.
-            if convert == "CFS_CMS":
-                dfi = dfi * CFS2CMS * sign
-            elif convert == "EC_PSU":
-                dfi = ec_psu_25c(dfi) * sign
+            if source_kind == "SCHISM":
+                # Simplest case: use existing reference SCHISM data; do nothing
+                print("Use existing SCHISM input")
+
             else:
-                dfi = dfi
+                # Do conversions.
+                if convert == "CFS_CMS":
+                    dfi = dfi * CFS2CMS * sign
+                elif convert == "EC_PSU":
+                    dfi = ec_psu_25c(dfi) * sign
+                else:
+                    dfi = dfi
 
-            # Trim dfi so that it starts where flux ends, so that dfi doesn't
-            # overwrite any historical data
-            dfi = dfi[dfi.index >= flux.index[-1]]
+                # Trim dfi so that it starts where flux ends, so that dfi doesn't
+                # overwrite any historical data
+                dfi = dfi[dfi.index >= flux.index[-1]]
 
-            # Update the dataframe.
-            dd.update(dfi, overwrite=True)
+                # Update the dataframe.
+                dd.update(dfi, overwrite=True)
 
-            # print(dfi)
+                # print(dfi)
 
         # print(dd)
 
         # Format the outputs.
         dd.index.name = "datetime"
+        output_path = os.path.join(dir, out_file)
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
         dd.to_csv(
             os.path.join(dir, out_file),
             header=True,
@@ -231,4 +281,4 @@ def main(config_yaml):
 
 
 if __name__ == "__main__":
-    main()
+    port_boundary_cli()

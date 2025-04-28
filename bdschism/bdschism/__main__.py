@@ -4,7 +4,10 @@ from bdschism.hotstart_from_hotstart import hotstart_newgrid_cli
 from bdschism.hotstart_date import set_hotstart_date_cli
 from bdschism.hotstart_nudging_data import hotstart_nudge_data_cli
 from bdschism.uv3d import interpolate_uv3d_cli
-from bdschism.analyze_dt import analyze_dt_cli
+
+# from bdschism.calculate_depth_average import calc_da_cli_single
+from bdschism.port_boundary import port_boundary_cli
+
 
 @click.group(
     help="Bay-Delta SCHISM CLI tools for managing simulations and data processing."
@@ -21,7 +24,8 @@ cli.add_command(hotstart_newgrid_cli, "hot_from_hot")
 cli.add_command(set_hotstart_date_cli, "hot_date")
 cli.add_command(hotstart_nudge_data_cli, "hot_nudge_data")
 cli.add_command(interpolate_uv3d_cli, "uv3d")
-cli.add_command(analyze_dt_cli, "analyze_dt")
+# cli.add_command(calc_da_cli_single, "da_single")
+cli.add_command(port_boundary_cli, "port_bc")
 # create_nudging = "schimpy.nudging:main"
 
 if __name__ == "__main__":
