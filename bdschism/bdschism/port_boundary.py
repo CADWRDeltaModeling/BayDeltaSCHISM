@@ -159,9 +159,15 @@ def create_schism_bc(config_yaml, kwargs={}):
     schism_flux_file = os.path.join(dir, config["file"]["schism_flux_file"])
     schism_salt_file = os.path.join(dir, config["file"]["schism_salt_file"])
     schism_temp_file = os.path.join(dir, config["file"]["schism_temp_file"])
+    schism_dcc_gate_file = None
+    if "schism_dcc_gate_file" in config["file"]:
+        schism_dcc_gate_file = os.path.join(dir, config["file"]["schism_dcc_gate_file"])
     out_file_flux = os.path.join(config["file"]["out_file_flux"])
     out_file_salt = os.path.join(config["file"]["out_file_salt"])
     out_file_temp = os.path.join(config["file"]["out_file_temp"])
+    out_file_dcc_gate = None
+    if "out_file_dcc_gate" in config["file"]:
+        out_file_dcc_gate = os.path.join(config["file"]["out_file_dcc_gate"])
     boundary_kinds = config["param"]["boundary_kinds"]
     sd = config["param"]["start_date"]
     ed = config["param"]["end_date"]
@@ -178,14 +184,39 @@ def create_schism_bc(config_yaml, kwargs={}):
     # available from other data sources.
 
     flux = pd.read_csv(
-        schism_flux_file, index_col=0, parse_dates=[0], sep="\\s+", header=0
+        schism_flux_file,
+        index_col=0,
+        parse_dates=[0],
+        sep="\\s+",
+        header=0,
+        comment="#",
     )
     salt = pd.read_csv(
-        schism_salt_file, header=0, parse_dates=True, index_col=0, sep="\\s+"
+        schism_salt_file,
+        header=0,
+        parse_dates=True,
+        index_col=0,
+        sep="\\s+",
+        comment="#",
     )
     temp = pd.read_csv(
-        schism_temp_file, header=0, parse_dates=True, index_col=0, sep="\\s+"
+        schism_temp_file,
+        header=0,
+        parse_dates=True,
+        index_col=0,
+        sep="\\s+",
+        comment="#",
     )
+    dcc_gate = None
+    if "dcc_gate" in boundary_kinds:
+        dcc_gate = pd.read_csv(
+            schism_dcc_gate_file,
+            header=0,
+            parse_dates=True,
+            index_col=0,
+            sep="\\s+",
+            comment="#",
+        )
 
     dss_e2_freq = {"1HOUR": "H", "1DAY": "D"}
 
@@ -202,8 +233,17 @@ def create_schism_bc(config_yaml, kwargs={}):
         elif boundary_kind == "temp":
             dd = temp.copy().reindex(df_rng)
             out_file = out_file_temp
+        elif boundary_kind == "dcc_gate":
+            dd = dcc_gate.copy().reindex(df_rng)
+            # Take existing values from the reference file (might only work on DCC gate)
+            dd.iloc[:, dd.columns != "height"] = dcc_gate.iloc[
+                0, dcc_gate.columns != "height"
+            ]
+            out_file = out_file_dcc_gate
+        else:
+            raise ValueError(f"Unknown boundary kind: {boundary_kind}")
 
-        for index, row in source_map.iterrows():
+        for index, row in source_map_bc.iterrows():
             dfi = pd.DataFrame()
             name = row["schism_boundary"]
             source_kind = row["source_kind"]
