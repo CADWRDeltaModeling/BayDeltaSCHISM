@@ -17,6 +17,8 @@ from vtools.data.vtime import minutes
 import matplotlib.pylab as plt
 import pandas as pd
 import numpy as np
+import tempfile
+import string
 from argparse import ArgumentParser
 import yaml
 import os
@@ -62,31 +64,52 @@ def read_dss(file, pathname, sch_name=None, p=2.0):
     return ts15min
 
 
-def replace_placeholders(config, kwargs):
-    """
-    Replace placeholders in the config dictionary with values from kwargs.
-    """
-    print(f"config: {config}")
-    print(f"kwargs: {kwargs}")
-    if isinstance(config, dict):  # Ensure config is a dictionary
-        for key, value in config.items():
-            if isinstance(value, dict):
-                config[key] = replace_placeholders(value, kwargs)
-            elif isinstance(value, str):
-                config[key] = value.format_map(kwargs)
-    return config
+class SafeDict(dict):
+    """Safe dictionary for string formatting."""
+
+    def __missing__(self, key):
+        print(f"Missing key: {key}")  # Debugging line
+        return "{" + key + "}"
 
 
-def replace_placeholders_in_dataframe(df, kwargs):
-    """
-    Replace placeholders in a DataFrame with values from kwargs.
-    """
-    for col in df.columns:
-        if df[col].dtype == "object":  # Only process string columns
-            df[col] = df[col].apply(
-                lambda x: x.format_map(kwargs) if isinstance(x, str) else x
-            )
-    return df
+def fmt_string_file(fn_in, str_dict):
+
+    # Create a temporary yaml filename
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=os.path.splitext(fn_in)[-1], delete=False
+    ) as temp_file:
+        temp_fn = temp_file.name
+    print(f"\t Temporary yaml filename: {temp_fn}")
+
+    """Format a file using a dictionary of strings."""
+    with open(fn_in, "r") as f:
+        fdata = f.read()
+
+    # Remove commented lines
+    fdata = "\n".join(
+        line for line in fdata.splitlines() if not line.strip().startswith("#")
+    )
+
+    # Replace text with str_dict values
+    fdata = string.Formatter().vformat(fdata, (), SafeDict((str_dict)))
+
+    with open(temp_fn, "w") as fout:
+        fout.write(fdata)
+
+    return temp_fn
+
+
+def clean_df(in_df):
+    keep_rows = [0]
+    for r in range(1, len(in_df.index)):
+        if not (list(in_df.iloc[r, :]) == list(in_df.iloc[r - 1, :])):
+            # keep the row where something changes and the row before (for plotting)
+            if not r - 1 in keep_rows:
+                keep_rows.append(r - 1)
+            keep_rows.append(r)
+    out_df = in_df.iloc[keep_rows, :]
+
+    return out_df
 
 
 @click.command()
@@ -108,11 +131,8 @@ def port_boundary_cli(config_yaml, kwargs):
 
 def create_schism_bc(config_yaml, kwargs={}):
 
-    with open(config_yaml, "r") as f:
+    with open(fmt_string_file(config_yaml, kwargs), "r") as f:
         config = yaml.safe_load(f)
-
-    # Replace placeholders in the config dictionary with values from kwargs
-    config = replace_placeholders(config, kwargs)
 
     dir = config["dir"]
 
@@ -133,8 +153,7 @@ def create_schism_bc(config_yaml, kwargs={}):
     end_date = pd.Timestamp(year=ed[0], month=ed[1], day=ed[2])
     df_rng = pd.date_range(start_date, end_date, freq=dt)
     # Read and process the source_map file
-    source_map = pd.read_csv(source_map_file, header=0)
-    source_map = replace_placeholders_in_dataframe(source_map, kwargs)
+    source_map = pd.read_csv(fmt_string_file(source_map_file, kwargs), header=0)
 
     # Read in the reference SCHISM flux, salt and temperature files
     # to be used as a starting point and to substitute timeseries not
