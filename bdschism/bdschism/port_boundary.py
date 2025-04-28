@@ -173,8 +173,8 @@ def create_schism_bc(config_yaml, kwargs={}):
     ed = config["param"]["end_date"]
 
     dt = minutes(15)
-    start_date = pd.Timestamp(year=sd[0], month=sd[1], day=sd[2])
-    end_date = pd.Timestamp(year=ed[0], month=ed[1], day=ed[2])
+    start_date = pd.Timestamp(sd)
+    end_date = pd.Timestamp(ed)
     df_rng = pd.date_range(start_date, end_date, freq=dt)
     # Read and process the source_map file
     source_map = pd.read_csv(fmt_string_file(source_map_file, kwargs), header=0)
