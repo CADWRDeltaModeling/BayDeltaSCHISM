@@ -150,6 +150,10 @@ def create_schism_bc(config_yaml, kwargs={}):
 
     dir = config["dir"]
 
+    # Overwrite if historical data is manipulated.
+    # If forecast data is being applied, overwrite should be False
+    overwrite = config["param"]["overwrite"]
+
     # Read in parameters from the YAML file
     source_map_file = os.path.join(dir, config["file"]["source_map_file"])
     schism_flux_file = os.path.join(dir, config["file"]["schism_flux_file"])
@@ -293,9 +297,10 @@ def create_schism_bc(config_yaml, kwargs={}):
                 else:
                     dfi = dfi
 
-                # Trim dfi so that it starts where flux ends, so that dfi doesn't
+                # Trim dfi so that it starts where schism input file ends, so that dfi doesn't
                 # overwrite any historical data
-                dfi = dfi[dfi.index >= flux.index[-1]]
+                if not overwrite:
+                    dfi = dfi[dfi.index >= dd.index[-1]]
 
                 # Update the dataframe.
                 dd.update(dfi, overwrite=True)
