@@ -222,7 +222,7 @@ def create_schism_bc(config_yaml, kwargs={}):
 
     for boundary_kind in boundary_kinds:
 
-        source_map = source_map.loc[source_map["boundary_kind"] == boundary_kind]
+        source_map_bc = source_map.loc[source_map["boundary_kind"] == boundary_kind]
 
         if boundary_kind == "flow":
             dd = flux.copy().reindex(df_rng)
