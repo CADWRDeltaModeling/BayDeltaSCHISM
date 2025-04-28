@@ -259,22 +259,22 @@ window.addEventListener("load", () => mermaid.run());
 <span class="kn">from</span><span class="w"> </span><span class="nn">vtools.data.vtime</span><span class="w"> </span><span class="kn">import</span> <span class="n">minutes</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pylab</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">argparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArgumentParser</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 
 <div class="viewcode-block" id="read_csv">
 <a class="viewcode-back" href="../topics/flow_boundary.html#port_boundary.read_csv">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reads in a csv file of monthly boundary conditions and interpolates</span>
 <span class="sd">    Outputs an interpolated DataFrame of that variable</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">forecast_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span>
+    <span class="n">forecast_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">)</span>
     <span class="n">interp_series</span> <span class="o">=</span> <span class="n">rhistinterp</span><span class="p">(</span><span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">),</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
     <span class="n">interp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -308,12 +308,57 @@ window.addEventListener("load", () => mermaid.run());
     <span class="k">return</span> <span class="n">ts15min</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">replace_placeholders</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Replace placeholders in the config dictionary with values from kwargs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;config: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;kwargs: </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>  <span class="c1"># Ensure config is a dictionary</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">config</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">replace_placeholders</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">config</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">format_map</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">config</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">replace_placeholders_in_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Replace placeholders in a DataFrame with values from kwargs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;object&quot;</span><span class="p">:</span>  <span class="c1"># Only process string columns</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">format_map</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+
 <span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;config_yaml&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">):</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
+    <span class="s2">&quot;--kwargs&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;JSON string representing a dictionary of keyword arguments to populate format strings.&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">help_option</span><span class="p">(</span><span class="s2">&quot;-h&quot;</span><span class="p">,</span> <span class="s2">&quot;--help&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">port_boundary_cli</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Command line interface for creating SCHISM boundary conditions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kwargs_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">create_schism_bc</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">,</span> <span class="n">kwargs_dict</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_schism_bc</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{}):</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="c1"># Replace placeholders in the config dictionary with values from kwargs</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">replace_placeholders</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nb">dir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;dir&quot;</span><span class="p">]</span>
 
@@ -333,7 +378,9 @@ window.addEventListener("load", () => mermaid.run());
     <span class="n">start_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">sd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">month</span><span class="o">=</span><span class="n">sd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">day</span><span class="o">=</span><span class="n">sd</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
     <span class="n">end_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">ed</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">month</span><span class="o">=</span><span class="n">ed</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">day</span><span class="o">=</span><span class="n">ed</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
     <span class="n">df_rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+    <span class="c1"># Read and process the source_map file</span>
     <span class="n">source_map</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">source_map_file</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">source_map</span> <span class="o">=</span> <span class="n">replace_placeholders_in_dataframe</span><span class="p">(</span><span class="n">source_map</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
 
     <span class="c1"># Read in the reference SCHISM flux, salt and temperature files</span>
     <span class="c1"># to be used as a starting point and to substitute timeseries not</span>
@@ -378,11 +425,7 @@ window.addEventListener("load", () => mermaid.run());
             <span class="n">formula</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;formula&quot;</span><span class="p">]</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;processing </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">source_kind</span> <span class="o">==</span> <span class="s2">&quot;SCHISM&quot;</span><span class="p">:</span>
-                <span class="c1"># Simplest case: use existing reference SCHISM data; do nothing</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Use existing SCHISM input&quot;</span><span class="p">)</span>
-
-            <span class="k">elif</span> <span class="n">source_kind</span> <span class="o">==</span> <span class="s2">&quot;CSV&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">source_kind</span> <span class="o">==</span> <span class="s2">&quot;CSV&quot;</span><span class="p">:</span>
                 <span class="c1"># Substitute in an interpolated monthly forecast</span>
                 <span class="k">if</span> <span class="n">derived</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
@@ -392,7 +435,7 @@ window.addEventListener("load", () => mermaid.run());
                     <span class="n">csv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
                     <span class="nb">vars</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">:</span>
-                        <span class="n">csv</span><span class="p">[[</span><span class="n">v</span><span class="p">]]</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">source_file</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+                        <span class="n">csv</span><span class="p">[[</span><span class="n">v</span><span class="p">]]</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">source_file</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
                     <span class="n">dts</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">df_rng</span><span class="p">)</span>
                     <span class="n">dfi</span> <span class="o">=</span> <span class="n">ts_gaussian_filter</span><span class="p">(</span><span class="n">dts</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -400,7 +443,7 @@ window.addEventListener("load", () => mermaid.run());
                         <span class="sa">f</span><span class="s2">&quot;Updating SCHISM </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> with interpolated monthly</span><span class="se">\</span>
 <span class="s2">                        forecast </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
-                    <span class="n">dfi</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">source_file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+                    <span class="n">dfi</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">source_file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">source_kind</span> <span class="o">==</span> <span class="s2">&quot;DSS&quot;</span><span class="p">:</span>
                 <span class="c1"># Substitute in CalSim value.</span>
@@ -441,27 +484,34 @@ window.addEventListener("load", () => mermaid.run());
                 <span class="n">dfi</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">var</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_rng</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updating SCHISM </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> with constant value of </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-            <span class="c1"># Do conversions.</span>
-            <span class="k">if</span> <span class="n">convert</span> <span class="o">==</span> <span class="s2">&quot;CFS_CMS&quot;</span><span class="p">:</span>
-                <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span> <span class="o">*</span> <span class="n">CFS2CMS</span> <span class="o">*</span> <span class="n">sign</span>
-            <span class="k">elif</span> <span class="n">convert</span> <span class="o">==</span> <span class="s2">&quot;EC_PSU&quot;</span><span class="p">:</span>
-                <span class="n">dfi</span> <span class="o">=</span> <span class="n">ec_psu_25c</span><span class="p">(</span><span class="n">dfi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sign</span>
+            <span class="k">if</span> <span class="n">source_kind</span> <span class="o">==</span> <span class="s2">&quot;SCHISM&quot;</span><span class="p">:</span>
+                <span class="c1"># Simplest case: use existing reference SCHISM data; do nothing</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Use existing SCHISM input&quot;</span><span class="p">)</span>
+
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span>
+                <span class="c1"># Do conversions.</span>
+                <span class="k">if</span> <span class="n">convert</span> <span class="o">==</span> <span class="s2">&quot;CFS_CMS&quot;</span><span class="p">:</span>
+                    <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span> <span class="o">*</span> <span class="n">CFS2CMS</span> <span class="o">*</span> <span class="n">sign</span>
+                <span class="k">elif</span> <span class="n">convert</span> <span class="o">==</span> <span class="s2">&quot;EC_PSU&quot;</span><span class="p">:</span>
+                    <span class="n">dfi</span> <span class="o">=</span> <span class="n">ec_psu_25c</span><span class="p">(</span><span class="n">dfi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sign</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span>
 
-            <span class="c1"># Trim dfi so that it starts where flux ends, so that dfi doesn&#39;t</span>
-            <span class="c1"># overwrite any historical data</span>
-            <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span><span class="p">[</span><span class="n">dfi</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">flux</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+                <span class="c1"># Trim dfi so that it starts where flux ends, so that dfi doesn&#39;t</span>
+                <span class="c1"># overwrite any historical data</span>
+                <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span><span class="p">[</span><span class="n">dfi</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">flux</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
 
-            <span class="c1"># Update the dataframe.</span>
-            <span class="n">dd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dfi</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="c1"># Update the dataframe.</span>
+                <span class="n">dd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dfi</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-            <span class="c1"># print(dfi)</span>
+                <span class="c1"># print(dfi)</span>
 
         <span class="c1"># print(dd)</span>
 
         <span class="c1"># Format the outputs.</span>
         <span class="n">dd</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;datetime&quot;</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">out_file</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">dd</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">out_file</span><span class="p">),</span>
             <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -477,7 +527,7 @@ window.addEventListener("load", () => mermaid.run());
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
+    <span class="n">port_boundary_cli</span><span class="p">()</span>
 </pre></div>
 
            </div>
