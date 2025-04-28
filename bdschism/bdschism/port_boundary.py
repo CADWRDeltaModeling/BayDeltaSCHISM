@@ -26,14 +26,28 @@ import click
 import json
 
 
-def read_csv(file, var, name, dt, p=2.0):
+def read_csv(file, var, name, dt, p=2.0, interp=True):
     """
     Reads in a csv file of monthly boundary conditions and interpolates
     Outputs an interpolated DataFrame of that variable
     """
     forecast_df = pd.read_csv(file, index_col=0, header=0, parse_dates=True)
     forecast_df.index = forecast_df.index.to_period("M")
-    interp_series = rhistinterp(forecast_df[var].astype("float"), dt, p=p)
+
+    # Check for % sign and convert to fraction
+    if forecast_df[var].dtype == "object":  # Ensure it's a string column
+        forecast_df[var] = forecast_df[var].str.strip()  # Remove extra spaces
+        forecast_df[var] = forecast_df[var].apply(
+            lambda x: float(x.strip("%")) / 100.0 if "%" in x else float(x)
+        )
+    else:
+        forecast_df[var] = forecast_df[var].astype("float")
+
+    if interp:
+        interp_series = rhistinterp(forecast_df[var].astype("float"), dt, p=p)
+    else:
+        forecast_df.index = forecast_df.index.to_timestamp()
+        interp_series = forecast_df[var].resample(dt).ffill()
     interp_df = pd.DataFrame()
     interp_df[[name]] = pd.DataFrame({var: interp_series})
     return interp_df
@@ -191,6 +205,7 @@ def create_schism_bc(config_yaml, kwargs={}):
             source_kind = row["source_kind"]
             source_file = str(row["source_file"])
             derived = str(row["derived"]).capitalize() == "True"
+            interp = str(row["interp"]).capitalize() == "True"
             var = row["var"]
             sign = row["sign"]
             convert = row["convert"]
@@ -208,9 +223,14 @@ def create_schism_bc(config_yaml, kwargs={}):
                     csv = pd.DataFrame()
                     vars = var.split(";")
                     for v in vars:
-                        csv[[v]] = read_csv(source_file, v, name, dt, p=p)
+                        csv[[v]] = read_csv(
+                            source_file, v, name, dt, p=p, interp=interp
+                        )
                     dts = eval(formula).to_frame(name).reindex(df_rng)
-                    dfi = ts_gaussian_filter(dts, sigma=100)
+                    if interp:
+                        dfi = ts_gaussian_filter(dts, sigma=100)
+                    else:
+                        dfi = dts
                 else:
                     print(
                         f"Updating SCHISM {name} with interpolated monthly\
@@ -243,7 +263,10 @@ def create_schism_bc(config_yaml, kwargs={}):
                         lambda x: x.replace(year=start_date.year)
                     )
                     dts = eval(formula).to_frame(name).reindex(df_rng)
-                    dfi = ts_gaussian_filter(dts, sigma=100)
+                    if interp:
+                        dfi = ts_gaussian_filter(dts, sigma=100)
+                    else:
+                        dfi = dts
                 else:
                     print(f"Updating SCHISM {name} with DSS variable {var}")
                     dfi = read_dss(source_file, pathname=var, sch_name=name, p=p)
