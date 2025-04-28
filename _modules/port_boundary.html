@@ -260,6 +260,8 @@ window.addEventListener("load", () => mermaid.run());
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pylab</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">argparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArgumentParser</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -269,14 +271,28 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="read_csv">
 <a class="viewcode-back" href="../topics/flow_boundary.html#port_boundary.read_csv">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">interp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reads in a csv file of monthly boundary conditions and interpolates</span>
 <span class="sd">    Outputs an interpolated DataFrame of that variable</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">forecast_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">)</span>
-    <span class="n">interp_series</span> <span class="o">=</span> <span class="n">rhistinterp</span><span class="p">(</span><span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">),</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="c1"># Check for % sign and convert to fraction</span>
+    <span class="k">if</span> <span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;object&quot;</span><span class="p">:</span>  <span class="c1"># Ensure it&#39;s a string column</span>
+        <span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># Remove extra spaces</span>
+        <span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;%&quot;</span><span class="p">))</span> <span class="o">/</span> <span class="mf">100.0</span> <span class="k">if</span> <span class="s2">&quot;%&quot;</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">interp</span><span class="p">:</span>
+        <span class="n">interp_series</span> <span class="o">=</span> <span class="n">rhistinterp</span><span class="p">(</span><span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">),</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">()</span>
+        <span class="n">interp_series</span> <span class="o">=</span> <span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
     <span class="n">interp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="n">interp_df</span><span class="p">[[</span><span class="n">name</span><span class="p">]]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">var</span><span class="p">:</span> <span class="n">interp_series</span><span class="p">})</span>
     <span class="k">return</span> <span class="n">interp_df</span></div>
@@ -308,31 +324,52 @@ window.addEventListener("load", () => mermaid.run());
     <span class="k">return</span> <span class="n">ts15min</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">replace_placeholders</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Replace placeholders in the config dictionary with values from kwargs.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;config: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;kwargs: </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>  <span class="c1"># Ensure config is a dictionary</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="n">config</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">replace_placeholders</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">config</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">format_map</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">config</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SafeDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Safe dictionary for string formatting.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__missing__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing key: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Debugging line</span>
+        <span class="k">return</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">replace_placeholders_in_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Replace placeholders in a DataFrame with values from kwargs.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;object&quot;</span><span class="p">:</span>  <span class="c1"># Only process string columns</span>
-            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">format_map</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span>
-            <span class="p">)</span>
-    <span class="k">return</span> <span class="n">df</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fmt_string_file</span><span class="p">(</span><span class="n">fn_in</span><span class="p">,</span> <span class="n">str_dict</span><span class="p">):</span>
+
+    <span class="c1"># Create a temporary yaml filename</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span>
+        <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fn_in</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">temp_file</span><span class="p">:</span>
+        <span class="n">temp_fn</span> <span class="o">=</span> <span class="n">temp_file</span><span class="o">.</span><span class="n">name</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> Temporary yaml filename: </span><span class="si">{</span><span class="n">temp_fn</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format a file using a dictionary of strings.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn_in</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">fdata</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="c1"># Remove commented lines</span>
+    <span class="n">fdata</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fdata</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Replace text with str_dict values</span>
+    <span class="n">fdata</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">()</span><span class="o">.</span><span class="n">vformat</span><span class="p">(</span><span class="n">fdata</span><span class="p">,</span> <span class="p">(),</span> <span class="n">SafeDict</span><span class="p">((</span><span class="n">str_dict</span><span class="p">)))</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_fn</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fout</span><span class="p">:</span>
+        <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fdata</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">temp_fn</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">clean_df</span><span class="p">(</span><span class="n">in_df</span><span class="p">):</span>
+    <span class="n">keep_rows</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_df</span><span class="o">.</span><span class="n">index</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">in_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="p">:])</span> <span class="o">==</span> <span class="nb">list</span><span class="p">(</span><span class="n">in_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:])):</span>
+            <span class="c1"># keep the row where something changes and the row before (for plotting)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">r</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">in</span> <span class="n">keep_rows</span><span class="p">:</span>
+                <span class="n">keep_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">keep_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">out_df</span> <span class="o">=</span> <span class="n">in_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">keep_rows</span><span class="p">,</span> <span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">out_df</span>
 
 
 <span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
@@ -354,53 +391,84 @@ window.addEventListener("load", () => mermaid.run());
 
 <span class="k">def</span><span class="w"> </span><span class="nf">create_schism_bc</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{}):</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fmt_string_file</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
-    <span class="c1"># Replace placeholders in the config dictionary with values from kwargs</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="n">replace_placeholders</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
-
     <span class="nb">dir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;dir&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Overwrite if historical data is manipulated.</span>
+    <span class="c1"># If forecast data is being applied, overwrite should be False</span>
+    <span class="n">overwrite</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;param&quot;</span><span class="p">][</span><span class="s2">&quot;overwrite&quot;</span><span class="p">]</span>
 
     <span class="c1"># Read in parameters from the YAML file</span>
     <span class="n">source_map_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">][</span><span class="s2">&quot;source_map_file&quot;</span><span class="p">])</span>
     <span class="n">schism_flux_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">][</span><span class="s2">&quot;schism_flux_file&quot;</span><span class="p">])</span>
     <span class="n">schism_salt_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">][</span><span class="s2">&quot;schism_salt_file&quot;</span><span class="p">])</span>
     <span class="n">schism_temp_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">][</span><span class="s2">&quot;schism_temp_file&quot;</span><span class="p">])</span>
+    <span class="n">schism_dcc_gate_file</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;schism_dcc_gate_file&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]:</span>
+        <span class="n">schism_dcc_gate_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">][</span><span class="s2">&quot;schism_dcc_gate_file&quot;</span><span class="p">])</span>
     <span class="n">out_file_flux</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">][</span><span class="s2">&quot;out_file_flux&quot;</span><span class="p">])</span>
     <span class="n">out_file_salt</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">][</span><span class="s2">&quot;out_file_salt&quot;</span><span class="p">])</span>
     <span class="n">out_file_temp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">][</span><span class="s2">&quot;out_file_temp&quot;</span><span class="p">])</span>
+    <span class="n">out_file_dcc_gate</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;out_file_dcc_gate&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]:</span>
+        <span class="n">out_file_dcc_gate</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">][</span><span class="s2">&quot;out_file_dcc_gate&quot;</span><span class="p">])</span>
     <span class="n">boundary_kinds</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;param&quot;</span><span class="p">][</span><span class="s2">&quot;boundary_kinds&quot;</span><span class="p">]</span>
     <span class="n">sd</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;param&quot;</span><span class="p">][</span><span class="s2">&quot;start_date&quot;</span><span class="p">]</span>
     <span class="n">ed</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;param&quot;</span><span class="p">][</span><span class="s2">&quot;end_date&quot;</span><span class="p">]</span>
 
     <span class="n">dt</span> <span class="o">=</span> <span class="n">minutes</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
-    <span class="n">start_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">sd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">month</span><span class="o">=</span><span class="n">sd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">day</span><span class="o">=</span><span class="n">sd</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">end_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">ed</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">month</span><span class="o">=</span><span class="n">ed</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">day</span><span class="o">=</span><span class="n">ed</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">start_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span>
+    <span class="n">end_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">ed</span><span class="p">)</span>
     <span class="n">df_rng</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
     <span class="c1"># Read and process the source_map file</span>
-    <span class="n">source_map</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">source_map_file</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">source_map</span> <span class="o">=</span> <span class="n">replace_placeholders_in_dataframe</span><span class="p">(</span><span class="n">source_map</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">source_map</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fmt_string_file</span><span class="p">(</span><span class="n">source_map_file</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="c1"># Read in the reference SCHISM flux, salt and temperature files</span>
     <span class="c1"># to be used as a starting point and to substitute timeseries not</span>
     <span class="c1"># available from other data sources.</span>
 
     <span class="n">flux</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-        <span class="n">schism_flux_file</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">s+&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span>
+        <span class="n">schism_flux_file</span><span class="p">,</span>
+        <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">s+&quot;</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">salt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-        <span class="n">schism_salt_file</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">s+&quot;</span>
+        <span class="n">schism_salt_file</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">s+&quot;</span><span class="p">,</span>
+        <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-        <span class="n">schism_temp_file</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">s+&quot;</span>
+        <span class="n">schism_temp_file</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">s+&quot;</span><span class="p">,</span>
+        <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">dcc_gate</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;dcc_gate&quot;</span> <span class="ow">in</span> <span class="n">boundary_kinds</span><span class="p">:</span>
+        <span class="n">dcc_gate</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+            <span class="n">schism_dcc_gate_file</span><span class="p">,</span>
+            <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">s+&quot;</span><span class="p">,</span>
+            <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="n">dss_e2_freq</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;1HOUR&quot;</span><span class="p">:</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;1DAY&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">}</span>
 
     <span class="k">for</span> <span class="n">boundary_kind</span> <span class="ow">in</span> <span class="n">boundary_kinds</span><span class="p">:</span>
 
-        <span class="n">source_map</span> <span class="o">=</span> <span class="n">source_map</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">source_map</span><span class="p">[</span><span class="s2">&quot;boundary_kind&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">boundary_kind</span><span class="p">]</span>
+        <span class="n">source_map_bc</span> <span class="o">=</span> <span class="n">source_map</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">source_map</span><span class="p">[</span><span class="s2">&quot;boundary_kind&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">boundary_kind</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">boundary_kind</span> <span class="o">==</span> <span class="s2">&quot;flow&quot;</span><span class="p">:</span>
             <span class="n">dd</span> <span class="o">=</span> <span class="n">flux</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">df_rng</span><span class="p">)</span>
@@ -411,13 +479,23 @@ window.addEventListener("load", () => mermaid.run());
         <span class="k">elif</span> <span class="n">boundary_kind</span> <span class="o">==</span> <span class="s2">&quot;temp&quot;</span><span class="p">:</span>
             <span class="n">dd</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">df_rng</span><span class="p">)</span>
             <span class="n">out_file</span> <span class="o">=</span> <span class="n">out_file_temp</span>
+        <span class="k">elif</span> <span class="n">boundary_kind</span> <span class="o">==</span> <span class="s2">&quot;dcc_gate&quot;</span><span class="p">:</span>
+            <span class="n">dd</span> <span class="o">=</span> <span class="n">dcc_gate</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">df_rng</span><span class="p">)</span>
+            <span class="c1"># Take existing values from the reference file (might only work on DCC gate)</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">dd</span><span class="o">.</span><span class="n">columns</span> <span class="o">!=</span> <span class="s2">&quot;height&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dcc_gate</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="n">dcc_gate</span><span class="o">.</span><span class="n">columns</span> <span class="o">!=</span> <span class="s2">&quot;height&quot;</span>
+            <span class="p">]</span>
+            <span class="n">out_file</span> <span class="o">=</span> <span class="n">out_file_dcc_gate</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown boundary kind: </span><span class="si">{</span><span class="n">boundary_kind</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">source_map</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">source_map_bc</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">dfi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;schism_boundary&quot;</span><span class="p">]</span>
             <span class="n">source_kind</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;source_kind&quot;</span><span class="p">]</span>
             <span class="n">source_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;source_file&quot;</span><span class="p">])</span>
             <span class="n">derived</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;derived&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span>
+            <span class="n">interp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;interp&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span>
             <span class="n">var</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;var&quot;</span><span class="p">]</span>
             <span class="n">sign</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;sign&quot;</span><span class="p">]</span>
             <span class="n">convert</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;convert&quot;</span><span class="p">]</span>
@@ -435,9 +513,14 @@ window.addEventListener("load", () => mermaid.run());
                     <span class="n">csv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
                     <span class="nb">vars</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">:</span>
-                        <span class="n">csv</span><span class="p">[[</span><span class="n">v</span><span class="p">]]</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">source_file</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+                        <span class="n">csv</span><span class="p">[[</span><span class="n">v</span><span class="p">]]</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span>
+                            <span class="n">source_file</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">interp</span><span class="o">=</span><span class="n">interp</span>
+                        <span class="p">)</span>
                     <span class="n">dts</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">df_rng</span><span class="p">)</span>
-                    <span class="n">dfi</span> <span class="o">=</span> <span class="n">ts_gaussian_filter</span><span class="p">(</span><span class="n">dts</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">interp</span><span class="p">:</span>
+                        <span class="n">dfi</span> <span class="o">=</span> <span class="n">ts_gaussian_filter</span><span class="p">(</span><span class="n">dts</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">dfi</span> <span class="o">=</span> <span class="n">dts</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Updating SCHISM </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> with interpolated monthly</span><span class="se">\</span>
@@ -470,7 +553,10 @@ window.addEventListener("load", () => mermaid.run());
                         <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">start_date</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
                     <span class="p">)</span>
                     <span class="n">dts</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">df_rng</span><span class="p">)</span>
-                    <span class="n">dfi</span> <span class="o">=</span> <span class="n">ts_gaussian_filter</span><span class="p">(</span><span class="n">dts</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">interp</span><span class="p">:</span>
+                        <span class="n">dfi</span> <span class="o">=</span> <span class="n">ts_gaussian_filter</span><span class="p">(</span><span class="n">dts</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">dfi</span> <span class="o">=</span> <span class="n">dts</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updating SCHISM </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> with DSS variable </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="n">dfi</span> <span class="o">=</span> <span class="n">read_dss</span><span class="p">(</span><span class="n">source_file</span><span class="p">,</span> <span class="n">pathname</span><span class="o">=</span><span class="n">var</span><span class="p">,</span> <span class="n">sch_name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
@@ -483,6 +569,10 @@ window.addEventListener("load", () => mermaid.run());
 
                 <span class="n">dfi</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">var</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_rng</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updating SCHISM </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> with constant value of </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Maintain the rounding preference of the formula</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;round&quot;</span> <span class="ow">in</span> <span class="n">formula</span><span class="p">:</span>
+                <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">formula</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span>
 
             <span class="k">if</span> <span class="n">source_kind</span> <span class="o">==</span> <span class="s2">&quot;SCHISM&quot;</span><span class="p">:</span>
                 <span class="c1"># Simplest case: use existing reference SCHISM data; do nothing</span>
@@ -497,9 +587,10 @@ window.addEventListener("load", () => mermaid.run());
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span>
 
-                <span class="c1"># Trim dfi so that it starts where flux ends, so that dfi doesn&#39;t</span>
+                <span class="c1"># Trim dfi so that it starts where schism input file ends, so that dfi doesn&#39;t</span>
                 <span class="c1"># overwrite any historical data</span>
-                <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span><span class="p">[</span><span class="n">dfi</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">flux</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+                    <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span><span class="p">[</span><span class="n">dfi</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">dd</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
 
                 <span class="c1"># Update the dataframe.</span>
                 <span class="n">dd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dfi</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -510,6 +601,10 @@ window.addEventListener("load", () => mermaid.run());
 
         <span class="c1"># Format the outputs.</span>
         <span class="n">dd</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;datetime&quot;</span>
+
+        <span class="c1"># Remove excess/repetitive rows</span>
+        <span class="n">dd</span> <span class="o">=</span> <span class="n">clean_df</span><span class="p">(</span><span class="n">dd</span><span class="o">.</span><span class="n">ffill</span><span class="p">())</span>
+
         <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">out_file</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">dd</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
