@@ -263,6 +263,9 @@ def create_schism_bc(config_yaml, kwargs={}):
             dd.iloc[:, dd.columns != "height"] = dcc_gate.iloc[
                 0, dcc_gate.columns != "height"
             ]
+            # enforce integer type else get schism error
+            dd["install"] = dd["install"].astype(int)
+            dd["ndup"] = dd["ndup"].astype(int)
             out_file = out_file_dcc_gate
         else:
             raise ValueError(f"Unknown boundary kind: {boundary_kind}")
