@@ -372,6 +372,30 @@ window.addEventListener("load", () => mermaid.run());
     <span class="k">return</span> <span class="n">out_df</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">set_gate_fraction</span><span class="p">(</span><span class="n">dts</span><span class="p">,</span> <span class="n">op_var</span><span class="o">=</span><span class="s2">&quot;height&quot;</span><span class="p">,</span> <span class="n">ubound</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">lbound</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="c1"># Filter rows where height is not 10 or 0</span>
+    <span class="n">fraction_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">dts</span><span class="p">[</span><span class="n">op_var</span><span class="p">]</span> <span class="o">!=</span> <span class="n">ubound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">dts</span><span class="p">[</span><span class="n">op_var</span><span class="p">]</span> <span class="o">!=</span> <span class="n">lbound</span><span class="p">)</span>
+
+    <span class="c1"># Apply the mask to filter the DataFrame</span>
+    <span class="n">filtered_dts</span> <span class="o">=</span> <span class="n">dts</span><span class="p">[</span><span class="n">fraction_mask</span><span class="p">]</span>
+
+    <span class="c1"># Group the filtered DataFrame by month</span>
+    <span class="k">for</span> <span class="n">month</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">filtered_dts</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">filtered_dts</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">)):</span>
+        <span class="c1"># Calculate the fraction</span>
+        <span class="n">fraction</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">op_var</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">ubound</span>
+
+        <span class="c1"># Get the first fraction of the month</span>
+        <span class="n">fraction_point</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="o">*</span> <span class="n">fraction</span><span class="p">)</span>
+        <span class="n">first_indices</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">index</span><span class="p">[:</span><span class="n">fraction_point</span><span class="p">]</span>
+        <span class="n">second_indices</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">fraction_point</span><span class="p">:]</span>
+
+        <span class="c1"># Set the first half to lbound and the second half to ubound</span>
+        <span class="n">dts</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">first_indices</span><span class="p">,</span> <span class="n">op_var</span><span class="p">]</span> <span class="o">=</span> <span class="n">lbound</span>
+        <span class="n">dts</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">second_indices</span><span class="p">,</span> <span class="n">op_var</span><span class="p">]</span> <span class="o">=</span> <span class="n">ubound</span>
+
+    <span class="k">return</span> <span class="n">dts</span>
+
+
 <span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;config_yaml&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
@@ -517,6 +541,9 @@ window.addEventListener("load", () => mermaid.run());
                             <span class="n">source_file</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">interp</span><span class="o">=</span><span class="n">interp</span>
                         <span class="p">)</span>
                     <span class="n">dts</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">df_rng</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">boundary_kind</span> <span class="o">==</span> <span class="s2">&quot;dcc_gate&quot;</span><span class="p">:</span>
+                        <span class="c1"># Need to make any Percentage between 0 and 100 and convert them to days of month open</span>
+                        <span class="n">dts</span> <span class="o">=</span> <span class="n">set_gate_fraction</span><span class="p">(</span><span class="n">dts</span><span class="o">.</span><span class="n">ffill</span><span class="p">(),</span> <span class="s2">&quot;height&quot;</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">interp</span><span class="p">:</span>
                         <span class="n">dfi</span> <span class="o">=</span> <span class="n">ts_gaussian_filter</span><span class="p">(</span><span class="n">dts</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
