@@ -200,7 +200,7 @@ def save_prio_ts(tsdir, tide_lagged, p1, p2, p3, p4):
     if not os.path.exists(tsdir):
         os.makedirs(tsdir)
 
-    print("saving prio time serie to", tsdir)
+    print("saving prio time series to", tsdir)
     p1.to_csv(os.path.join(tsdir, "p1.csv"))
     p2.to_csv(os.path.join(tsdir, "p2.csv"))
     p3.to_csv(os.path.join(tsdir, "p3.csv"))
@@ -243,18 +243,18 @@ def gen_prio_for_varying_exports(input_tide, export_df):
 
     dt = export_df.index.inferred_freq
     export_df.where(export_df.values > 0, 0, inplace=True)
-    if dt == "D":  # seems like this this part is not working
+    if dt == "D":
         export_1day = export_df.squeeze()  # the original data is daily
-        export_15min = export_df.resample("15T").ffill()
+        export_15min = export_df.resample("15min").ffill()
         print("The input export dt is Daily")
-    elif dt == "15T":
+    elif dt == "15min":
         export_1day = (
             export_df.resample("D").mean().squeeze()
         )  # the original data is 15 minutes
         export_15min = export_df.squeeze()
         print("The input export ts dt is 15 Min")
     else:
-        print("Cannot infer dt for the Export time serie")
+        print("Cannot infer dt for the Export time series")
 
     stimee = export_df.index[0]
     etimee = export_df.index[-1]
