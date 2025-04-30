@@ -98,11 +98,11 @@ def create_priority_series(p1, p2, p3, p4, priority, stime, etime):
 
 def make_3_prio(input_tide, stime, etime):
     """
-    Function that makes the priorities schedule time serie based on the predicted tide at San Francisco.
-    Input: a time serie of the Predicted tide at SF in LST
-    The time serie should be taken from the datastore (water level in m, NAVD88). Headers: datetime,predicted_m,elev_m.
+    Function that makes the priorities schedule time series based on the predicted tide at San Francisco.
+    Input: a time series of the Predicted tide at SF in LST
+    The time series should be taken from the datastore (water level in m, NAVD88). Headers: datetime,predicted_m,elev_m.
 
-    Output: 3 irregular time serie that contain the schedule for the priority 1, 2 and 3.
+    Output: 3 irregular time series that contain the schedule for the priority 1, 2 and 3.
     """
 
     print("Making priorities from tide")
@@ -110,7 +110,7 @@ def make_3_prio(input_tide, stime, etime):
     s = input_tide[stime:etime]
 
     # Find minimum and maximums
-    sh, sl = tidalhl.get_tidal_hl(s)  # Get Tidal highs and lows
+    sh, sl = tidalhl.get_tidal_hl(s.to_frame())  # Get Tidal highs and lows
     sh = pd.concat([sh, get_tidal_hh_lh(sh)], axis=1)
     sh.columns = ["max", "max_name"]
     sl = pd.concat([sl, get_tidal_ll_hl(sl)], axis=1)
