@@ -854,8 +854,9 @@ def ccf_gate(sdate, edate, dest, astro_file, export_file, sf_data_pattern, plot=
     height_t.insert(4, "elev", dlen * [-4.0244])
     height_t.insert(5, "width", dlen * [6.096])
 
+    print(f"Saving predicted gate height file to {dest}")
     height_t[s1 : s2 + oneday].to_csv(
-        os.path.join(dest, "ccfb_gate_syn.th"),
+        dest,
         sep=" ",
         header=True,
         float_format="%.3f",
