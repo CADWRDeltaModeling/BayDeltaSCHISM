@@ -126,6 +126,30 @@ def clean_df(in_df):
     return out_df
 
 
+def set_gate_fraction(dts, op_var="height", ubound=10, lbound=0):
+    # Filter rows where height is not 10 or 0
+    fraction_mask = (dts[op_var] != ubound) & (dts[op_var] != lbound)
+
+    # Apply the mask to filter the DataFrame
+    filtered_dts = dts[fraction_mask]
+
+    # Group the filtered DataFrame by month
+    for month, group in filtered_dts.groupby(filtered_dts.index.to_period("M")):
+        # Calculate the fraction
+        fraction = group[op_var].iloc[0] / ubound
+
+        # Get the first fraction of the month
+        fraction_point = int(len(group) * fraction)
+        first_indices = group.index[:fraction_point]
+        second_indices = group.index[fraction_point:]
+
+        # Set the first half to lbound and the second half to ubound
+        dts.loc[first_indices, op_var] = lbound
+        dts.loc[second_indices, op_var] = ubound
+
+    return dts
+
+
 @click.command()
 @click.argument("config_yaml", type=click.Path(exists=True))
 @click.option(
@@ -271,6 +295,9 @@ def create_schism_bc(config_yaml, kwargs={}):
                             source_file, v, name, dt, p=p, interp=interp
                         )
                     dts = eval(formula).to_frame(name).reindex(df_rng)
+                    if boundary_kind == "dcc_gate":
+                        # Need to make any Percentage between 0 and 100 and convert them to days of month open
+                        dts = set_gate_fraction(dts.ffill(), "height")
                     if interp:
                         dfi = ts_gaussian_filter(dts, sigma=100)
                     else:
