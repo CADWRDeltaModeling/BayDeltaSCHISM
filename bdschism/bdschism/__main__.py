@@ -7,6 +7,7 @@ from bdschism.uv3d import interpolate_uv3d_cli
 
 # from bdschism.calculate_depth_average import calc_da_cli_single
 from bdschism.port_boundary import port_boundary_cli
+from bdschism.ccf_gate_height import ccf_gate_cli
 
 
 @click.group(
@@ -26,6 +27,7 @@ cli.add_command(hotstart_nudge_data_cli, "hot_nudge_data")
 cli.add_command(interpolate_uv3d_cli, "uv3d")
 # cli.add_command(calc_da_cli_single, "da_single")
 cli.add_command(port_boundary_cli, "port_bc")
+cli.add_command(ccf_gate_cli, "ccf_gate")
 # create_nudging = "schimpy.nudging:main"
 
 if __name__ == "__main__":
