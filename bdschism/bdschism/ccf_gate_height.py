@@ -12,12 +12,13 @@ from vtools.functions.unit_conversions import M2FT
 from dms_datastore.read_ts import read_ts
 from vtools.functions.filter import cosine_lanczos
 from vtools.functions.merge import ts_merge
+import schimpy.param as parms
 import numpy as np
 from pydsm.functions import tidalhl
 import os
 import math
 import matplotlib.pyplot as plt
-import argparse
+import click
 
 # %% Functions
 
@@ -741,74 +742,103 @@ def process_height(s1, s2, export, oh4_astro):
     return sim_gate_height, zin_df
 
 
-def create_arg_parser():
-    """Create an argument parser
-    return: argparse.ArgumentParser
+def validate_parent_directory(ctx, param, value):
     """
-    parser = argparse.ArgumentParser()
-    # Read in the input file
-    parser = argparse.ArgumentParser(
-        description="""Utility to predict Clifton Court Froebay Radial
-        Gate Opening Height 
-        
-        User must provide SCHISM export th file, OH4 astronomic tide file in 
-        vtide format. Predicted ccfb gate height is saved to  a 
-        ccfby_gate_syn.th in SCHISM gate th file format with datetime index
-        
-        
-        Example usage:
-        
-        python ccf_gate_height.py --sdate 2023-01-01 --edate 2024-01-10 
-        --astro_file ..\\examples\\ccfb_height\\
-        oh4_15min_predicted_10y_14_25.out  --export_file ..\\examples
-        \\ccfb_height\\flux_20241213.th --dest ."""
-    )
+    Custom validator to check if the parent directory of the given path exists.
+    """
+    if value:
+        # Replace placeholders like {y} with a dummy value to validate the path
+        dummy_path = value.format("dummy")
+        parent_dir = os.path.dirname(os.path.abspath(dummy_path))
 
-    parser.add_argument(
-        "--sdate",
-        default=None,
-        required=True,
-        help="starting date of prediction, must be \
-                        format like 2018-02-19",
-    )
-    parser.add_argument(
-        "--dest",
-        default=None,
-        required=True,
-        help="path to store predicted gate height \
-                        ccfb_gate_syn.th",
-    )
-    parser.add_argument(
-        "--edate",
-        default=None,
-        required=True,
-        help="end date of prediction, format same as sdate",
-    )
-    parser.add_argument(
-        "--astro_file",
-        default=None,
-        required=True,
-        help="path of the predicted OH4 astronomic tide \
-                            in vtide format",
-    )
-    parser.add_argument(
-        "--export_file",
-        default=None,
-        required=True,
-        help="path of SCHISM export th file",
-    )
-    return parser
+        if not os.path.isdir(parent_dir):
+            raise click.BadParameter(f"The directory {parent_dir} does not exist.")
+    return value
 
 
-def main():
+@click.command(
+    help="Command Line function for generating Clifton Court Forebay gate height from predicted tide and export flows."
+)
+@click.option(
+    "--sdate",
+    default=None,
+    help="Starting date of prediction, must be format like 2018-02-19. If not provided, find from param.nml",
+)
+@click.option(
+    "--edate",
+    default=None,
+    help="End date of prediction, format same as sdate. If not provided, find from param.nml",
+)
+@click.option(
+    "--dest",
+    type=click.Path(),
+    default="./ccfb_gate_syn.th",
+    help="Path to store predicted gate height. Ex: './ccfb_gate_syn.th'",
+)
+@click.option(
+    "--astro_file",
+    type=click.Path(exists=True),
+    required=True,
+    help="Path of the predicted OH4 astronomic tide in vtide format. Ex: './astro/oh4_15min_predicted_10y_14_25.out'",
+)
+@click.option(
+    "--export_file",
+    type=click.Path(exists=True),
+    required=True,
+    help="Path of SCHISM export th file (flux.th with headers and dates)",
+)
+@click.option(
+    "--sf_data_pattern",
+    type=click.Path(),
+    callback=validate_parent_directory,
+    help="Path of the SF data pattern file. Ex: '//cnrastore-bdo/Modeling_Data/repo/continuous/screened/noaa_sffpx_9414290_elev_{y}.csv'",
+)
+@click.option("--plot", default=False, help="Switch to plot the predicted gate height.")
+@click.help_option("--help", "-h")
+def ccf_gate_cli(
+    sdate, edate, dest, astro_file, export_file, sf_data_pattern, plot=False
+):
 
-    parser = create_arg_parser()
-    args = parser.parse_args()
-    s1 = dtm.datetime.strptime(args.sdate, "%Y-%m-%d")
-    s2 = dtm.datetime.strptime(args.edate, "%Y-%m-%d")
-    dest = args.dest
-    oh4_astro_file = args.astro_file
-    export = args.export_file
+    if sdate is None or edate is None:
+        # Get params from param.nml
+        params = parms.read_params("param.nml")
+        sdate = params.run_start
+        edate = sdate + dtm.timedelta(days=params["rndays"])
+    ccf_gate(sdate, edate, dest, astro_file, export_file, sf_data_pattern, plot)
+
+
+def ccf_gate(sdate, edate, dest, astro_file, export_file, sf_data_pattern, plot=False):
+    """
+    Generate the predicted gate height for the Clifton Court Forebay.
+
+    Parameters
+    ----------
+    sdate : str
+        Start date in the format "YYYY-MM-DD".
+    edate : str
+        End date in the format "YYYY-MM-DD".
+    dest : str
+        Destination file where the output file will be saved. ex: "ccfb_gate_syn.th"
+    astro_file : str
+        Path to the astronomical data file required for processing.
+    export_file : str
+        Path to the export file used in height processing.
+    plot : bool, optional
+        If True, a plot of the predicted gate height will be displayed (default is False).
+
+    Returns
+    -------
+    None
+        The function saves the predicted gate height data to a file and optionally displays a plot.
+
+    Notes
+    -----
+    The output file is saved to the destination file.
+    The function processes the height data, removes continuous duplicates, and adds additional
+    columns for installation, operation, elevation, and width parameters.
+    """
+    s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
+    s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
     oneday = dtm.timedelta(days=1)
     height, zin = process_height(s1, s2, export, oh4_astro_file)
     height_t = remove_continuous_duplicates(height, height.columns.tolist()[0])
@@ -842,4 +872,15 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    ccf_gate_cli()
+    # os.chdir("/scratch/projects/summer_x2_2025/simulations/2016_noaction")
+    # sdate = "2016-04-27"
+    # edate = "2017-01-01"
+    # dest = "./ccfb_gate_syn.th"
+    # astro_file = "/home/tomkovic/BayDeltaSCHISM/examples/ccfb_height/oh4_15min_predicted_10y_14_25.out"
+    # export_file = (
+    #     "/scratch/projects/summer_x2_2025/th_files/project/flux.2016_noaction.th"
+    # )
+    # sf_data_pattern = "../../th_files/noaa_sf/noaa_sffpx_9414290_elev_{}.csv"
+
+    # ccf_gate(sdate, edate, dest, astro_file, export_file, sf_data_pattern, False)
