@@ -863,15 +863,16 @@ def ccf_gate(sdate, edate, dest, astro_file, export_file, sf_data_pattern, plot=
         date_format="%Y-%m-%dT%H:%M",
     )
 
-    fig, (ax1) = plt.subplots(1, 1)
-    lsyn = ax1.step(
-        height_t.index,
-        height_t["height"],
-        where="post",
-        label="ccfb gate height predicted",
-    )
-    ax1.set_ylabel("Height (ft)")
-    plt.show()
+    if plot:
+        fig, (ax1) = plt.subplots(1, 1)
+        lsyn = ax1.step(
+            height_t.index,
+            height_t["height"],
+            where="post",
+            label="ccfb gate height predicted",
+        )
+        ax1.set_ylabel("Height (ft)")
+        plt.show()
 
 
 if __name__ == "__main__":
