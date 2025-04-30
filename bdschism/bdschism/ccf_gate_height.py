@@ -303,23 +303,23 @@ def get_export_ts(s1, s2, flux):
     return swp_ts, cvp_ts
 
 
-def sffpx_level(s1, s2):
+def sffpx_level(s1, s2, sf_data_pattern):
 
     tss = []
     for y in range(s1.year, s2.year + 1, 1):
-        f = f"//cnrastore-bdo/Modeling_Data/repo/continuous/screened/noaa_sffpx_9414290_elev_{y}.csv"
+        f = sf_data_pattern.format(y)
         ts = read_ts(f)
         tss.append(ts)
 
     return ts_merge(tss, names="values")
 
 
-def predict_oh4_level(s1, s2, astro_tide_file):
+def predict_oh4_level(s1, s2, astro_tide_file, sf_data_pattern):
 
-    sffpx = sffpx_level(s1, s2) * M2FT
+    sffpx = sffpx_level(s1, s2, sf_data_pattern) * M2FT
     sffpx_subtide = cosine_lanczos(sffpx, cutoff_period="40h")
     sffpx_subtide = sffpx_subtide.resample("15min").ffill()
-    # astro_tide_file = "./astro/oh4_15min_predicted_10y_14_25.out"
+
     oh4_astro = (
         pd.read_csv(
             astro_tide_file,
@@ -688,7 +688,7 @@ def gen_gate_height(
     return df, zin_df2
 
 
-def process_height(s1, s2, export, oh4_astro):
+def process_height(s1, s2, export, oh4_astro, sf_data_pattern):
     """create a ccfb radial gate height time series file
 
 
@@ -722,7 +722,7 @@ def process_height(s1, s2, export, oh4_astro):
     inside_level0 = 2.12
     dt = dtm.timedelta(minutes=2)
 
-    sffpx_elev = sffpx_level(s1 - margin, s2 + margin)
+    sffpx_elev = sffpx_level(s1 - margin, s2 + margin, sf_data_pattern)
     shift_h = dtm.timedelta(hours=8.5)
     position_shift = int(shift_h / sffpx_elev.index.freq)
     sffpx_elev = sffpx_elev.shift(position_shift)
@@ -733,7 +733,9 @@ def process_height(s1, s2, export, oh4_astro):
         sffpx_elev, export_ts_daily_average
     )
 
-    oh4_predict = predict_oh4_level(s1 - margin, s2 + margin, oh4_astro)
+    oh4_predict = predict_oh4_level(
+        s1 - margin, s2 + margin, oh4_astro, sf_data_pattern
+    )
 
     sim_gate_height, zin_df = gen_gate_height(
         export_ts, priority, max_height, oh4_predict, cvp_ts, inside_level0, s1, s2, dt
@@ -840,7 +842,7 @@ def ccf_gate(sdate, edate, dest, astro_file, export_file, sf_data_pattern, plot=
     s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
     s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
     oneday = dtm.timedelta(days=1)
-    height, zin = process_height(s1, s2, export, oh4_astro_file)
+    height, zin = process_height(s1, s2, export_file, astro_file, sf_data_pattern)
     height_t = remove_continuous_duplicates(height, height.columns.tolist()[0])
     height_t.index.name = "datetime"
     height_t.columns = ["height"]
