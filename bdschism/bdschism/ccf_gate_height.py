@@ -562,7 +562,7 @@ def gen_gate_height(
     ztime2 = []
     draw_down = 0.0
 
-    while t < s2 + dtm.timedelta(days=1):
+    while t < s2:
         # if t>=dtm.datetime(2023,4,1,8,0):
         #      pdb.set_trace()
         #      print("stop")
@@ -620,6 +620,8 @@ def gen_gate_height(
                 zin_lst.append(zin)
                 ztime.append(ttemp)
                 loc = cvp_ts.index.searchsorted(ttemp)
+                if loc >= len(cvp_ts):
+                    loc = len(cvp_ts) - 1  # Clamp to the last valid index
                 cvp = cvp_ts.iloc[loc]
                 draw_down = draw_down_regression(cvp, qint)
             # print(ttemp,vt,zin,export,qint)
