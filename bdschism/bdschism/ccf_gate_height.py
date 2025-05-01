@@ -108,6 +108,10 @@ def make_3_prio(input_tide, stime, etime):
     print("Making priorities from tide")
 
     s = input_tide[stime:etime]
+    if isinstance(s, pd.Series):
+        sframe = s.to_frame()
+    else:
+        sframe = s
 
     # Find minimum and maximums
     sh, sl = tidalhl.get_tidal_hl(s.to_frame())  # Get Tidal highs and lows
