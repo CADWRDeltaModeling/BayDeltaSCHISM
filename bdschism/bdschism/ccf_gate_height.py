@@ -753,20 +753,6 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev):
     return sim_gate_height, zin_df
 
 
-def validate_parent_directory(ctx, param, value):
-    """
-    Custom validator to check if the parent directory of the given path exists.
-    """
-    if value:
-        # Replace placeholders like {y} with a dummy value to validate the path
-        dummy_path = value.format("dummy")
-        parent_dir = os.path.dirname(os.path.abspath(dummy_path))
-
-        if not os.path.isdir(parent_dir):
-            raise click.BadParameter(f"The directory {parent_dir} does not exist.")
-    return value
-
-
 @click.command(
     help="Command Line function for generating Clifton Court Forebay gate height from predicted tide and export flows."
 )
@@ -800,8 +786,7 @@ def validate_parent_directory(ctx, param, value):
 )
 @click.option(
     "--sf_data_repo",
-    type=click.Path(),
-    callback=validate_parent_directory,
+    type=click.Path(exists=True),
     help="Path of the SF data. Ex: '//cnrastore-bdo/Modeling_Data/repo/continuous/screened/'",
 )
 @click.option("--plot", default=False, help="Switch to plot the predicted gate height.")
@@ -814,7 +799,7 @@ def ccf_gate_cli(sdate, edate, dest, astro_file, export_file, sf_data_repo, plot
         sdate = params.run_start
         edate = sdate + dtm.timedelta(days=params["rndays"])
 
-    sffpx_elev = sffpx_level(s1 - margin, s2 + margin, sf_data_repo)
+    sffpx_elev = sffpx_level(sdate, edate, sf_data_repo)
 
     ccf_gate(sdate, edate, dest, astro_file, export_file, sffpx_elev, plot)
 
@@ -887,7 +872,7 @@ def ccf_gate(sdate, edate, dest, astro_file, export_file, sffpx_elev, plot=False
 
 if __name__ == "__main__":
     ccf_gate_cli()
-    # os.chdir(r"\\cnrastore-bdo\SCHISM\studies\summer_x2_2025\th_files\project\scripts")
+    # os.chdir(r"/scratch/projects/summer_x2_2025/th_files/project/scripts")
     # sdate = "2024-04-16"
     # edate = "2025-01-01"
     # dest = "../ccfb_gate_syn.2024_noaciton.th"
