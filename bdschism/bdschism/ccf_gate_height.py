@@ -10,6 +10,7 @@ import datetime as dtm
 import pandas as pd
 from vtools.functions.unit_conversions import M2FT
 from dms_datastore.read_ts import read_ts
+from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
 from vtools.functions.merge import ts_merge
 import schimpy.param as parms
@@ -114,7 +115,7 @@ def make_3_prio(input_tide, stime, etime):
         sframe = s
 
     # Find minimum and maximums
-    sh, sl = tidalhl.get_tidal_hl(s.to_frame())  # Get Tidal highs and lows
+    sh, sl = tidalhl.get_tidal_hl(sframe)  # Get Tidal highs and lows
     sh = pd.concat([sh, get_tidal_hh_lh(sh)], axis=1)
     sh.columns = ["max", "max_name"]
     sl = pd.concat([sl, get_tidal_ll_hl(sl)], axis=1)
@@ -307,21 +308,32 @@ def get_export_ts(s1, s2, flux):
     return swp_ts, cvp_ts
 
 
-def sffpx_level(s1, s2, sf_data_pattern):
+def sffpx_level(sdate, edate, sf_data_repo, margin=dtm.timedelta(days=3)):
 
-    tss = []
-    for y in range(s1.year, s2.year + 1, 1):
-        f = sf_data_pattern.format(y)
-        ts = read_ts(f)
-        tss.append(ts)
+    s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
+    s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
+    ts_df = read_ts_repo("sffpx", "elev", repo=sf_data_repo, src_priority="infer")
+    ts_df_pred = read_ts_repo(
+        "sffpx", "predictions", repo=sf_data_repo, src_priority="infer"
+    )
+    # Check if missing values and replace with predicted values
+    if ts_df.isnull().any().any():
+        print("Missing values detected in SFFPX data. Replacing with predicted values.")
+        ts_df = ts_df.combine_first(ts_df_pred)
 
-    return ts_merge(tss, names="values")
+    # Shift for SCHISM time zone
+    shift_h = dtm.timedelta(hours=8.5)
+    position_shift = int(shift_h / ts_df.index.freq)
+    ts_df = ts_df.shift(position_shift)
+    ts_df.columns = ["elev"]
+
+    return ts_df
 
 
-def predict_oh4_level(s1, s2, astro_tide_file, sf_data_pattern):
+def predict_oh4_level(s1, s2, astro_tide_file, sffpx_elev):
 
-    sffpx = sffpx_level(s1, s2, sf_data_pattern) * M2FT
-    sffpx_subtide = cosine_lanczos(sffpx, cutoff_period="40h")
+    sffpx = sffpx_elev * M2FT
+    sffpx_subtide = cosine_lanczos(sffpx_elev, cutoff_period="40h")
     sffpx_subtide = sffpx_subtide.resample("15min").ffill()
 
     oh4_astro = (
@@ -694,7 +706,7 @@ def gen_gate_height(
     return df, zin_df2
 
 
-def process_height(s1, s2, export, oh4_astro, sf_data_pattern):
+def process_height(s1, s2, export, oh4_astro, sffpx_elev):
     """create a ccfb radial gate height time series file
 
 
@@ -728,20 +740,11 @@ def process_height(s1, s2, export, oh4_astro, sf_data_pattern):
     inside_level0 = 2.12
     dt = dtm.timedelta(minutes=2)
 
-    sffpx_elev = sffpx_level(s1 - margin, s2 + margin, sf_data_pattern)
-    shift_h = dtm.timedelta(hours=8.5)
-    position_shift = int(shift_h / sffpx_elev.index.freq)
-    sffpx_elev = sffpx_elev.shift(position_shift)
-    # sffpx_elev_df =sffpx_elev.to_frame(name="elev")
-    sffpx_elev.columns = ["elev"]
-
     priority, max_height = gen_prio_for_varying_exports(
         sffpx_elev, export_ts_daily_average
     )
 
-    oh4_predict = predict_oh4_level(
-        s1 - margin, s2 + margin, oh4_astro, sf_data_pattern
-    )
+    oh4_predict = predict_oh4_level(s1 - margin, s2 + margin, oh4_astro, sffpx_elev)
 
     sim_gate_height, zin_df = gen_gate_height(
         export_ts, priority, max_height, oh4_predict, cvp_ts, inside_level0, s1, s2, dt
@@ -796,26 +799,27 @@ def validate_parent_directory(ctx, param, value):
     help="Path of SCHISM export th file (flux.th with headers and dates)",
 )
 @click.option(
-    "--sf_data_pattern",
+    "--sf_data_repo",
     type=click.Path(),
     callback=validate_parent_directory,
-    help="Path of the SF data pattern file. Ex: '//cnrastore-bdo/Modeling_Data/repo/continuous/screened/noaa_sffpx_9414290_elev_{y}.csv'",
+    help="Path of the SF data. Ex: '//cnrastore-bdo/Modeling_Data/repo/continuous/screened/'",
 )
 @click.option("--plot", default=False, help="Switch to plot the predicted gate height.")
 @click.help_option("--help", "-h")
-def ccf_gate_cli(
-    sdate, edate, dest, astro_file, export_file, sf_data_pattern, plot=False
-):
+def ccf_gate_cli(sdate, edate, dest, astro_file, export_file, sf_data_repo, plot=False):
 
     if sdate is None or edate is None:
         # Get params from param.nml
         params = parms.read_params("param.nml")
         sdate = params.run_start
         edate = sdate + dtm.timedelta(days=params["rndays"])
-    ccf_gate(sdate, edate, dest, astro_file, export_file, sf_data_pattern, plot)
+
+    sffpx_elev = sffpx_level(s1 - margin, s2 + margin, sf_data_repo)
+
+    ccf_gate(sdate, edate, dest, astro_file, export_file, sffpx_elev, plot)
 
 
-def ccf_gate(sdate, edate, dest, astro_file, export_file, sf_data_pattern, plot=False):
+def ccf_gate(sdate, edate, dest, astro_file, export_file, sffpx_elev, plot=False):
     """
     Generate the predicted gate height for the Clifton Court Forebay.
 
@@ -848,7 +852,7 @@ def ccf_gate(sdate, edate, dest, astro_file, export_file, sf_data_pattern, plot=
     s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
     s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
     oneday = dtm.timedelta(days=1)
-    height, zin = process_height(s1, s2, export_file, astro_file, sf_data_pattern)
+    height, zin = process_height(s1, s2, export_file, astro_file, sffpx_elev)
     height_t = remove_continuous_duplicates(height, height.columns.tolist()[0])
     height_t.index.name = "datetime"
     height_t.columns = ["height"]
@@ -883,14 +887,22 @@ def ccf_gate(sdate, edate, dest, astro_file, export_file, sf_data_pattern, plot=
 
 if __name__ == "__main__":
     ccf_gate_cli()
-    # os.chdir("/scratch/projects/summer_x2_2025/simulations/2016_noaction")
-    # sdate = "2016-04-27"
-    # edate = "2017-01-01"
-    # dest = "./ccfb_gate_syn.th"
-    # astro_file = "/home/tomkovic/BayDeltaSCHISM/examples/ccfb_height/oh4_15min_predicted_10y_14_25.out"
-    # export_file = (
-    #     "/scratch/projects/summer_x2_2025/th_files/project/flux.2016_noaction.th"
-    # )
-    # sf_data_pattern = "../../th_files/noaa_sf/noaa_sffpx_9414290_elev_{}.csv"
+    # os.chdir(r"\\cnrastore-bdo\SCHISM\studies\summer_x2_2025\th_files\project\scripts")
+    # sdate = "2024-04-16"
+    # edate = "2025-01-01"
+    # dest = "../ccfb_gate_syn.2024_noaciton.th"
+    # astro_file = "../../oh4/oh4_15min_predicted_10y_14_25.out"
+    # export_file = "../flux.2024_noaction.th"
+    # sf_data_repo = "../../noaa_sf/"
 
-    # ccf_gate(sdate, edate, dest, astro_file, export_file, sf_data_pattern, False)
+    # sffpx_elev = sffpx_level(sdate, edate, sf_data_repo)
+
+    # ccf_gate(
+    #     sdate,
+    #     edate,
+    #     dest,
+    #     astro_file,
+    #     export_file,
+    #     sffpx_elev,
+    #     False,
+    # )
