@@ -1,4 +1,4 @@
-id,subloc,param,agency,agency_id,min_year,max_year,filename,agency_id_dbase,name,lat,lon,x,y,agency_dbase,unit,vdatum,datum_adj,source,variable
+station_id,subloc,param,agency,agency_id,min_year,max_year,filename,agency_id_dbase,name,lat,lon,x,y,agency_dbase,unit,vdatum,datum_adj,source,variable
 aamc1,default,elev,noaa,9414750,1995,2023,*_aamc1_9414750_elev_*.csv,9414750,Alameda,37.77161379,-122.2993982,561701.6,4180706.7,noaa,meters,NAVD88,0.0,noaa,elev
 aamc1,default,predictions,noaa,9414750,1980,2023,*_aamc1_9414750_predictions_*.csv,9414750,Alameda,37.77161379,-122.2993982,561701.6,4180706.7,noaa,meters,NAVD88,0.0,noaa,predictions
 afo,default,elev,usgs,11446500,2007,2023,*_afo_11446500_elev_*.csv,11446500,American River at Fair Oaks,38.63546,-121.22773,654346.1435,4277827.0,usgs,feet,NAVD88,0.0,usgs,elev
