@@ -35,7 +35,7 @@ def read_hgrid_gr3(file_path):
     return open_boundaries
 
 def read_bctides_in(file_path):
-    """Read bctides.in and extract open boundary nodes."""
+    """Read bctides.in and extract number of open boundary nodes."""
     with open(file_path, 'r') as f:
         lines = [line.strip() for line in f if line.strip() and not line.strip().startswith('!')]
     ntip = int(lines[1].split()[0])
@@ -76,8 +76,8 @@ def test_boundary_consistency(sim_dir):
 
     # Read boundary nodes from both files
     hgrid_boundaries = read_hgrid_gr3(hgrid_file)
-    bctides_boundaries = read_bctides_in(bctides_file)
-    
+    bctides_boundaries = read_bctides_in(bctides_file)    
+
     # Check if the number of boundaries matches
     assert len(hgrid_boundaries) == len(bctides_boundaries), \
         f"Mismatch in number of open boundaries: hgrid.gr3 has {len(hgrid_boundaries)}, bctides.in has {len(bctides_boundaries)}"
