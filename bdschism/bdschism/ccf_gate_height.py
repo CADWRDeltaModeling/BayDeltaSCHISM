@@ -15,7 +15,7 @@ from vtools.functions.filter import cosine_lanczos
 from vtools.functions.merge import ts_merge
 import schimpy.param as parms
 import numpy as np
-from pydsm.functions import tidalhl
+from vtools.functions import tidalhl
 import os
 import math
 import matplotlib.pyplot as plt
