@@ -91,4 +91,3 @@ Examples and Concepts
   meta_doc/doc_sphinx.rst
   meta_doc/doc_mermaid.rst
   meta_doc/doc_click.rst
-  meta_doc/doc_examples.rst
