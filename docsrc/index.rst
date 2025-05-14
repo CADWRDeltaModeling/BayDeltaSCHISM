@@ -27,8 +27,8 @@ Contents
   :maxdepth: 1
 
   getmodel
-  learning
   user_guide
+  learning
   documentation
   calibration
   help
