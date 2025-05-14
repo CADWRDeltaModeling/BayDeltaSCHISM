@@ -33,7 +33,6 @@ Overview
   topics/vignette.rst
   topics/files_and_directories  
   topics/preprocess.rst
-  topics/hpc.rst
 
 
 Boundaries & Input Files
@@ -71,7 +70,16 @@ Output Files
 ________________________
 
 
-.. _topical:
+Computing Resources
+-----------------------------
+
+.. toctree::
+  :maxdepth: 4
+
+  topics/hpc.rst
+  topics/azure.rst
+  topics/bds_guide_azure.rst
+
 
 Advanced Tasks and Concepts
 -----------------------------
