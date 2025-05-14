@@ -1,3 +1,4 @@
+.. _intro_clusters:
 
 Intro to Clusters and High Performance Computing
 ================================================

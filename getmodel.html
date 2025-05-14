@@ -20,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Learning Resources for Bay-Delta SCHISM" href="learning.html" />
+    <link rel="next" title="Bay-Delta SCHISM User Guide" href="user_guide.html" />
     <link rel="prev" title="Bay-Delta SCHISM Project" href="index.html" />
     <link href="_static/style.css" rel="stylesheet" type="text/css">
 
@@ -52,43 +52,28 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation And Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#schism-code-or-binaries">SCHISM Code or Binaries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#schism-software-code-binaries">SCHISM Software Code/Binaries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#downloading">Downloading</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#compile-settings">Compile Settings</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#git">Git</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bay-delta-package">Bay-Delta Package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#required-python-packages">Required Python Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bay-delta-schism-python-package">Bay-Delta SCHISM Python Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Downloading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contents">Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bathymetry">Bathymetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#complete-sample-inputs">Complete Sample Inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other-required-python-packages">Other Required Python Packages</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#configuration-system">Configuration System</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration-file-locations-and-priorities">Configuration File Locations and Priorities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#example-configuration-file">Example Configuration File</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#bathymetry">Bathymetry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#complete-sample-inputs">Complete Sample Inputs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#visit-schism-plug-in">VisIt SCHISM Plug-in</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#links-to-tools">Links to tools</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="learning.html">Learning Resources for Bay-Delta SCHISM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="learning.html#general-resources-and-tools">General Resources and Tools</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="bay_delta_tutorials.html">Bay-Delta SCHSIM Tutorials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="linux.html">Linux Hints for SCHISM</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="linux.html#using-linux-from-windows">Using Linux from Windows</a></li>
-<li class="toctree-l4"><a class="reference internal" href="linux.html#copying-a-run-safely">Copying a Run Safely</a></li>
-<li class="toctree-l4"><a class="reference internal" href="linux.html#symbolic-links">Symbolic links</a></li>
-<li class="toctree-l4"><a class="reference internal" href="linux.html#archives-and-tarballs">Archives and Tarballs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="linux.html#essential-commands-in-a-schism-context">Essential commands in a SCHISM context</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="learning.html#manuals">Manuals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="learning.html#getting-help">Getting Help</a></li>
-<li class="toctree-l2"><a class="reference internal" href="learning.html#vims-and-other-external-resources">VIMS and Other External Resources</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">Bay-Delta SCHISM User Guide</a><ul>
@@ -175,6 +160,24 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="learning.html">Learning Resources for Bay-Delta SCHISM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="learning.html#general-resources-and-tools">General Resources and Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bay_delta_tutorials.html">Bay-Delta SCHSIM Tutorials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linux.html">Linux Hints for SCHISM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="linux.html#using-linux-from-windows">Using Linux from Windows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="linux.html#copying-a-run-safely">Copying a Run Safely</a></li>
+<li class="toctree-l4"><a class="reference internal" href="linux.html#symbolic-links">Symbolic links</a></li>
+<li class="toctree-l4"><a class="reference internal" href="linux.html#archives-and-tarballs">Archives and Tarballs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="linux.html#essential-commands-in-a-schism-context">Essential commands in a SCHISM context</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="learning.html#manuals">Manuals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learning.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learning.html#vims-and-other-external-resources">VIMS and Other External Resources</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="documentation.html">Contributing to the Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="documentation.html#introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="documentation.html#getting-started">Getting Started</a><ul>
@@ -187,7 +190,7 @@
 <li class="toctree-l3"><a class="reference internal" href="documentation.html#github-pages">GitHub Pages</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="documentation.html#further-documentation-concepts">Further Documentation Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#examples-and-concepts">Examples and Concepts</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="meta_doc/doc_sphinx.html">Sphinx Documentation Principles</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="meta_doc/doc_sphinx.html#headings-order">Headings order</a></li>
 <li class="toctree-l4"><a class="reference internal" href="meta_doc/doc_sphinx.html#baydeltaschism-specifics">BayDeltaSCHISM Specifics</a></li>
@@ -245,17 +248,17 @@ folks who take all of that on together tend to struggle. Here are ways you can b
 <blockquote>
 <div><ul class="simple">
 <li><p>This page lists the main items you will need to install or acquire.</p></li>
-<li><p>Don’t mix learning the model and learning Linux if you are still familiarizing. Download the model and try the first couple tutorials on <a class="reference external" href="https://cadwrdeltamodeling.github.io/HelloSCHISM/">Hello SCHISM</a>
-a simplified grid using Windows if that is your platform of preference. See the <a class="reference internal" href="learning.html"><span class="doc">Learning Resources for Bay-Delta SCHISM</span></a>.</p></li>
-<li><p>Be aware of the <a class="reference external" href="https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/learning.html">learning resources</a> page which is the hub for documentation for the project.</p></li>
+<li><p>Don’t mix learning the model and learning Linux if you are still familiarizing. Download the model and try the first couple tutorials on <a class="reference external" href="https://cadwrdeltamodeling.github.io/HelloSCHISM/">Hello SCHISM</a> a simplified grid using Windows if that is your platform of preference.</p></li>
+<li><p>Be aware of the <a class="reference internal" href="learning.html"><span class="doc">Learning Resources for Bay-Delta SCHISM</span></a> page which is the hub for documentation for the project.</p></li>
 <li><p>In particular, there is a <a class="reference internal" href="user_guide.html"><span class="doc">Bay-Delta SCHISM User Guide</span></a>. It contains details on how we set up the Bay-Delta SCHISM application, and the table of contents is a good reminder even for experienced users.</p></li>
 <li><p>Explore the Python tools listed below. We will happily answer questions about what tools are available to avoid constant reinvention of the same functionality.</p></li>
-<li><p>If you have just set up the model in a new computing environment, benchmark it on a working example. Download the code and the ready-to-run <a class="reference internal" href="#complete-sample"><span class="std std-ref">Complete Sample Inputs</span></a> and use them to configure and test your target high performance computing (HPC) environment.</p></li>
+<li><p>If you have just set up Bay-Delta SCHISM in a new computing environment, benchmark it on a working example. Download the code and the ready-to-run <a class="reference internal" href="#complete-sample"><span class="std std-ref">Complete Sample Inputs</span></a> and use them to configure and test your target high performance computing (HPC) environment.</p></li>
+<li><p>For more info on high performance computing environments, see <a class="reference internal" href="topics/hpc.html#intro-clusters"><span class="std std-ref">Intro to Clusters and High Performance Computing</span></a>.</p></li>
 </ul>
 </div></blockquote>
 </section>
-<section id="schism-code-or-binaries">
-<h2>SCHISM Code or Binaries<a class="headerlink" href="#schism-code-or-binaries" title="Link to this heading"></a></h2>
+<section id="schism-software-code-binaries">
+<span id="schism-start"></span><h2>SCHISM Software Code/Binaries<a class="headerlink" href="#schism-software-code-binaries" title="Link to this heading"></a></h2>
 <section id="downloading">
 <h3>Downloading<a class="headerlink" href="#downloading" title="Link to this heading"></a></h3>
 <p>How you will obtain the model code depends on the operating system. If you are working on Windows (which is mostly useful for instruction or reduced size problems), compatible <a class="reference external" href="https://msb.water.ca.gov/documents/86683/266737/schism_4.1_bin_windows.zip">Windows binaries</a> are available. This will underperform compared to a Linux cluster. For that, clone the SCHISM source code from the schism-dev GitHub <a class="reference external" href="https://github.com/schism-dev">repository</a> and compile it for your high performance system. Manuals and build instructions are available on the <a class="reference external" href="http://ccrm.vims.edu/schismweb/">SCHISM Web Site</a></p>
@@ -272,41 +275,47 @@ a simplified grid using Windows if that is your platform of preference. See the 
 <p>Additional settings are needed to model age, sediment, biogeochemistry.</p>
 </section>
 </section>
-<section id="git">
-<h2>Git<a class="headerlink" href="#git" title="Link to this heading"></a></h2>
-<p>Our materials are mostly distributed on our <a class="reference external" href="https://github.com/CADWRDeltaModeling">GitHub organization page</a></p>
-<p>You will need Git. Instructions are widely available
-online. The basic operation on the command line for cloning a repository looks like this:</p>
+<section id="bay-delta-schism-python-package">
+<h2>Bay-Delta SCHISM Python Package<a class="headerlink" href="#bay-delta-schism-python-package" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Downloading<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Our materials are mostly distributed on our <a class="reference external" href="https://github.com/CADWRDeltaModeling">GitHub organization page</a> The <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM">BayDeltaSCHISM</a> package includes model input templates and timeseries data, as well as pre- and post- processing scripts in the included bdschism package.</p>
+<p>To use BayDeltaSCHISM’s utilities you will need Git. Instructions are widely available online. To get started, clone the repository using this basic operation on the command line:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">CADWRDeltaModeling</span><span class="o">/</span><span class="n">BayDeltaSCHISM</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
 </section>
-<section id="bay-delta-package">
-<h2>Bay-Delta Package<a class="headerlink" href="#bay-delta-package" title="Link to this heading"></a></h2>
-<p>Clone the <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM">Bay-Delta Package on GitHub</a></p>
-<p>The package includes a simulation template corresponding to the calibration, preprocessing tools and several of the tutorials that we will be using in the January hands-on Bay-Delta workshop. Help on the preprocessor and model setup can be found in the <a class="reference external" href="https://cadwrdeltamodeling.github.io/schimpy">schimpy</a> documentation. The package includes a /bin directory that needs to be populated by building the source or grabbing windows binaries if you want to learn on a high quality pc.</p>
+<section id="contents">
+<h3>Contents<a class="headerlink" href="#contents" title="Link to this heading"></a></h3>
+<p>The package includes a simulation template corresponding to the calibration, preprocessing tools and several of the tutorials that we have used in our hands-on Bay-Delta workshops. Please check out our <a class="reference internal" href="user_guide.html#userguide"><span class="std std-ref">User Guide</span></a> for more detailed information on getting the model going and manipulating inputs/outputs. We assume you’ve already downloaded SCHISM (<a class="reference internal" href="#schism-start"><span class="std std-ref">SCHISM Software Code/Binaries</span></a>) and familiarized yourself with the basics (<a class="reference external" href="https://cadwrdeltamodeling.github.io/HelloSCHISM/">Hello SCHISM</a>).</p>
 <dl class="simple">
 <dt>The current temporal coverage is calendar 2008-2025. There are several items in the distribution that are large and binary and distributed on the CNRA open data portal for external users and available on share drives for DWR users:</dt><dd><ul class="simple">
 <li><p><a class="reference external" href="https://data.cnra.ca.gov/dataset/bay-delta-schism-atmospheric-collection-v2-0">SCHISM-compatible atmospheric data</a> which includes interpolated field data for wind, air pressure, and specific humidity, as well as reformatted <a class="reference external" href="https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/north-american-regional-reanalysis-narr">North American Regional Reanalysis results</a> for radiation and precipitation. For runs after 2020, NOAA’s high resolution rapid reset weather product is provided.</p></li>
 <li><p><a class="reference external" href="https://data.cnra.ca.gov/dataset/bay-delta-schism-coastal-data">Coastal model output</a> for forcing salinity and temperature on the ocean boundary</p></li>
-<li><p><a class="reference external" href="https://data.cnra.ca.gov/dataset/bay-delta-schism-processed-bathymetry">Processed bathymetry data</a> for populating the model. This is based on our <a class="reference external" href="https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2">Version 4.2 Bay-Delta Bathymetry release</a> with added smoothing steps to eliminate subgrid curvature (it preserves slope).</p></li>
 </ul>
 </dd>
 </dl>
 <p>Updates and transitions occur over the years. For instance, after 2020 we have moved from our own interpolated product to NOAA’s HRRR reanalysis product for wind.
 Also in 2020, we moved to Hycom for coastal salinity and temperature and other air properties (humidity, etc) and to Hycom for coastal data. We
 are still in the process of making these materials public and as we do so superseded links will carry messages.</p>
-<p>One of the most common questions we get is “what is the official package”. If you are starting with SCHISM
-we recommend using the master branch of the repository for the latest (somewhat beta) product or,
-if replicability is paramount, a Git tagged version. It is always appropriate to ask this question. Our goal is that the sum of the VIMS code, our repo and the “big” data
-sources are enough not only to grid the model but also to do things</p>
+<p>One of the most common questions we get is “what is the official BayDeltaSCHISM package”. If you are starting with SCHISM we recommend using the master branch of the repository for the latest (somewhat beta) product or, if replicability is paramount, a Git tagged version. It is always appropriate to ask this question. Our goal is that the sum of the VIMS code, our repo and the “big” data sources are enough not only to grid the model but also to do things</p>
 </section>
-<section id="required-python-packages">
-<h2>Required Python Packages<a class="headerlink" href="#required-python-packages" title="Link to this heading"></a></h2>
+<section id="bathymetry">
+<h3>Bathymetry<a class="headerlink" href="#bathymetry" title="Link to this heading"></a></h3>
+<p>The Bay-Delta Package already contains our latest bathymetry in geo-tiff form, processed as we use them to populate our mesh. Our bathymetry collection is available at the <a class="reference external" href="https://data.cnra.ca.gov/dataset/bay-delta-schism-processed-bathymetry">Processed bathymetry data</a> for populating the model. This is based on our <a class="reference external" href="https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2">Version 4.2 Bay-Delta Bathymetry release</a> with added smoothing steps to eliminate subgrid curvature (it preserves slope).</p>
+</section>
+<section id="complete-sample-inputs">
+<span id="complete-sample"></span><h3>Complete Sample Inputs<a class="headerlink" href="#complete-sample-inputs" title="Link to this heading"></a></h3>
+<p>Interested users may want to explore their options as far as clusters
+and high performance environments without the confounding challenge of
+learning the preprocessor.</p>
+<p>A complete 21 day sample is under construction (March 2024).</p>
+</section>
+<section id="other-required-python-packages">
+<h3>Other Required Python Packages<a class="headerlink" href="#other-required-python-packages" title="Link to this heading"></a></h3>
 <p>Our preprocessor is Python based.
 We recommend, and only support, <a class="reference external" href="https://docs.conda.io/en/latest/">conda</a> for package management.
-Please avoid Anaconda; it is too big
-and we can’t ensure compatibility between all the libraries if you include that much stuff.
+Please avoid Anaconda; it is too big and we can’t ensure compatibility between all the libraries if you include that much stuff.
 Instructions for managing Python environments are on our general Delta Modeling documentation page for Python.</p>
 <p>You will want the following tools:</p>
 <blockquote>
@@ -320,10 +329,11 @@ Instructions for managing Python environments are on our general Delta Modeling 
 at the Bay-Delta SCHISM <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/schism_env.yml">repo</a>.
 We can provide modest support for modern versions of the packages on fairly up-to-date Python platforms.</p>
 </section>
+</section>
 <section id="configuration-system">
 <h2>Configuration System<a class="headerlink" href="#configuration-system" title="Link to this heading"></a></h2>
-<section id="id1">
-<h3>Overview<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<section id="id3">
+<h3>Overview<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
 <p>Bay-Delta SCHISM uses <a class="reference external" href="https://www.dynaconf.com/">Dynaconf</a> for settings management.</p>
 <p>The bdschism scripts and command line utilities rely on a mix of convention and configuration.  For instance the schism utilities
 have version numbers like <cite>interpolate_variables8</cite> and we want to have a setting that captures that and then give it a simpler name
@@ -370,18 +380,6 @@ without constantly updating scattered python files.</p>
 </div>
 </section>
 </section>
-<section id="bathymetry">
-<h2>Bathymetry<a class="headerlink" href="#bathymetry" title="Link to this heading"></a></h2>
-<p>The Bay-Delta Package already contains our latest bathymetry in geo-tiff form, processed as we use them to populate our mesh. Our bathymetry collection is available at the
-<a class="reference external" href="https://data.cnra.ca.gov/dataset/san-francisco-bay-and-sacramento-san-joaquin-delta-dem-for-modeling-version-4-2">CNRA open portal bathymetry page</a>. Note however, that what goes in the model is the <a class="reference external" href="https://data.cnra.ca.gov/dataset/bay-delta-schism-processed-bathymetry">processed bathymetry</a>.</p>
-</section>
-<section id="complete-sample-inputs">
-<span id="complete-sample"></span><h2>Complete Sample Inputs<a class="headerlink" href="#complete-sample-inputs" title="Link to this heading"></a></h2>
-<p>Interested users may want to explore their options as far as clusters
-and high performance environments without the confounding challenge of
-learning the preprocessor.</p>
-<p>A complete 21 day sample is under construction (March 2024).</p>
-</section>
 <section id="visit-schism-plug-in">
 <h2>VisIt SCHISM Plug-in<a class="headerlink" href="#visit-schism-plug-in" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="http://visit.llnl.gov/">VisIt</a> is a visualization toolkit for high performance
@@ -411,7 +409,7 @@ about analogous tools on other platforms we will gratefully share it.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Bay-Delta SCHISM Project" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="learning.html" class="btn btn-neutral float-right" title="Learning Resources for Bay-Delta SCHISM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="user_guide.html" class="btn btn-neutral float-right" title="Bay-Delta SCHISM User Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

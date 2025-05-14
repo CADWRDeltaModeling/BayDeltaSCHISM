@@ -1,3 +1,4 @@
+.. _userguide:
 
 ===========================
 Bay-Delta SCHISM User Guide
