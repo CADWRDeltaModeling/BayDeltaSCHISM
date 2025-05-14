@@ -4,11 +4,11 @@
 Bay-Delta SCHISM User Guide
 ===========================
 
-The following topical guides take you through what it takes to set up a basic model run using the Bay-Delta SCHISM toolchain. You won't have action items on all the topics for every run, but the :ref:`Bay-Delta SCHISM Essentials <essentials>` section will get you started on a basic hindcast and the :ref:`Topical Guides <topical>` describe numerous common modeling tasks and where the gotchas are. 
+The following topical guides take you through what it takes to set up a basic model run using the Bay-Delta SCHISM toolchain. You won't have action items on all the topics for every run, but the :ref:`Bay-Delta SCHISM Essentials <essentials>` section will get you started on a basic hindcast and the :ref:`Topical Guides <problems>` describe numerous common modeling tasks and where the gotchas are. 
 
 See :ref:`Installation And Getting Started <getstarted>` for programatic setup and basic introductory materials.
 
-Bay-Delta SCHISM Setup
+Setup
 -------------------------
 
 .. toctree::
@@ -20,11 +20,11 @@ ________________________
 
 .. _essentials:
 
-Bay-Delta SCHISM Essentials
+Model Essentials
 ----------------------------
 
 Overview
-^^^^^^^^^^^^^^^^^^^^^^^
+``````````````````````
 .. toctree::
   :maxdepth: 3
   :titlesonly:
@@ -37,7 +37,7 @@ Overview
 
 
 Boundaries & Input Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+````````````````````````````````````
 .. toctree::
   :maxdepth: 3
   :titlesonly:
@@ -52,7 +52,7 @@ Boundaries & Input Files
   topics/vegetation.rst 
 
 Inspection of Model Setup
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+``````````````````````````
 .. toctree::
   :maxdepth: 2
   :titlesonly:
@@ -61,7 +61,7 @@ Inspection of Model Setup
   topics/run_tests.rst
   
 Output Files
-^^^^^^^^^^^^^^^^^^^^^^^
+````````````````
 .. toctree::
   :maxdepth: 2
   :titlesonly:

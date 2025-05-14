@@ -1,4 +1,4 @@
-
+.. _problems:
 
 #############################
 Common Problems and Diagnosis

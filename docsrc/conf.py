@@ -129,7 +129,7 @@ html_theme_options = {
     "logo_only": True,
     "prev_next_buttons_location": "both",
     "collapse_navigation": False,  # Keeps sections expandable
-    "navigation_depth": 4,  # Adjust as needed for depth
+    "navigation_depth": 6,  # Adjust as needed for depth
     "titles_only": False,  # Ensures captions are clickable
 }
 
