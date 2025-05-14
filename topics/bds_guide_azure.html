@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulating water age &mdash; Bay-Delta SCHISM</title>
+  <title>Step-by-step: Bay-Delta SCHISM on Azure &mdash; Bay-Delta SCHISM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/style.css?v=8686dbcc" />
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Sea Level Rise" href="sea_level_rise.html" />
-    <link rel="prev" title="Common Problems and Diagnosis" href="problems.html" />
+    <link rel="next" title="Common Problems and Diagnosis" href="problems.html" />
+    <link rel="prev" title="Running on Azure Batch" href="azure.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -251,7 +251,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../user_guide.html#computing-resources">Computing Resources</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="../user_guide.html#computing-resources">Computing Resources</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="hpc.html">Intro to Clusters and High Performance Computing</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="hpc.html#anatomy-of-a-cluster">Anatomy of a Cluster</a></li>
 <li class="toctree-l4"><a class="reference internal" href="hpc.html#figure-cluster-components">Figure: Cluster Components</a></li>
@@ -276,28 +276,28 @@
 <li class="toctree-l4"><a class="reference internal" href="azure.html#references">References</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#initial-setup">Initial Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#upload-applications">Upload Applications</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#schism">SCHISM</a></li>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#python-packages">Python Packages</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#upload-applications">Upload Applications</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#schism">SCHISM</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#python-packages">Python Packages</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#azcopy-commands">azcopy commands</a></li>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#azcopy-options">azcopy options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uploading-model-input-files">Uploading Model Input Files</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#azcopy-commands">azcopy commands</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#azcopy-options">azcopy options</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#running-model-simulation">Running Model Simulation</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#simple-run-config">Simple Run Config</a></li>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#spot-pricing-config">Spot Pricing Config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-model-simulation">Running Model Simulation</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#simple-run-config">Simple Run Config</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#spot-pricing-config">Spot Pricing Config</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="reference internal" href="../user_guide.html#advanced-tasks-and-concepts">Advanced Tasks and Concepts</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../user_guide.html#advanced-tasks-and-concepts">Advanced Tasks and Concepts</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="problems.html#where-does-schism-write-error-messages">Where does SCHISM write error messages?</a></li>
 <li class="toctree-l4"><a class="reference internal" href="problems.html#my-run-says-segfault">My run says “segfault”</a></li>
@@ -305,12 +305,12 @@
 <li class="toctree-l4"><a class="reference internal" href="problems.html#dry-boundary">Dry boundary</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Simulating water age</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#compile-with-age">Compile with age</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#parameters-in-param-nml">Parameters in param.nml</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#additional-ic-files">Additional *.ic files</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hotstart-considerations">Hotstart considerations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typical-output-processing">Typical output processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="age.html">Simulating water age</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="age.html#compile-with-age">Compile with age</a></li>
+<li class="toctree-l4"><a class="reference internal" href="age.html#parameters-in-param-nml">Parameters in param.nml</a></li>
+<li class="toctree-l4"><a class="reference internal" href="age.html#additional-ic-files">Additional *.ic files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="age.html#hotstart-considerations">Hotstart considerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="age.html#typical-output-processing">Typical output processing</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
@@ -472,22 +472,224 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="simulating-water-age">
-<h1>Simulating water age<a class="headerlink" href="#simulating-water-age" title="Link to this heading"></a></h1>
-<section id="compile-with-age">
-<h2>Compile with age<a class="headerlink" href="#compile-with-age" title="Link to this heading"></a></h2>
+  <section id="step-by-step-bay-delta-schism-on-azure">
+<span id="bds-guide-azure"></span><h1>Step-by-step: Bay-Delta SCHISM on Azure<a class="headerlink" href="#step-by-step-bay-delta-schism-on-azure" title="Link to this heading"></a></h1>
+<p>This guide will walk you through the process of setting up and running the Bay-Delta SCHISM model on Azure Batch.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This assumes you have already <a class="reference external" href="https://learn.microsoft.com/en-us/azure/batch/batch-account-create-portal">set up your Azure account</a> and have access to the Azure Batch service. If you haven’t done this yet, please refer to the Azure documentation for instructions on how to create an account and set up Batch.</p>
+</div>
+<section id="initial-setup">
+<h2>Initial Setup<a class="headerlink" href="#initial-setup" title="Link to this heading"></a></h2>
+<p>First, complete the Azure setup steps in <a class="reference internal" href="azure.html#setup-azure"><span class="std std-ref">Setup Azure</span></a>. You should have:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>azure_cli and azcopy command line utilities installed and configured</dt><dd><ul>
+<li><p>meaning you can run <cite>azcopy</cite> and <cite>az</cite> commands from the command line</p></li>
+<li><p>you should be logged into your azure account</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>download and install azure_dms_batch and its conda environment</p></li>
+</ul>
 </section>
-<section id="parameters-in-param-nml">
-<h2>Parameters in param.nml<a class="headerlink" href="#parameters-in-param-nml" title="Link to this heading"></a></h2>
+<section id="upload-applications">
+<h2>Upload Applications<a class="headerlink" href="#upload-applications" title="Link to this heading"></a></h2>
+<p>Azure batch requires the setup and installation to happen via zip files that are called application packages. The user should specify these packages with the version names as specified in the template. Here we will refer to the <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/tree/main/dmsbatch/templates/alma87_mvapich2_20241018">alma87_mvapich2 template</a>.</p>
+<p>The <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/app-packages/batch_app_package_and_upload.sh">app-packages/batch_app_package_and_upload.sh</a> script can be used to upload the packages.</p>
+<section id="schism">
+<h3>SCHISM<a class="headerlink" href="#schism" title="Link to this heading"></a></h3>
+<p>For SCHISM, you’ll need to either compile and zip the executables yourself, or you can refer to <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/releases">the releases page</a> and download the relevant <strong>schism_with_deps_*.zip</strong> file.</p>
+<p>Save the .zip file to azure_dms_batch/app-packages.</p>
+<p>Now use <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/app-packages/batch_app_package_and_upload.sh">app-packages/batch_app_package_and_upload.sh</a> to upload in the command line:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export MY_BATCH_ACCOUNT=&quot;&lt;batchaccountname&gt;&quot;</span>
+<span class="go">export MY_RG=&quot;&lt;resourcegroupname&gt;&quot;</span>
+
+<span class="go">cd azure_dms_batch/app-packages</span>
+
+<span class="go">source batch_app_package_and_upload.sh</span>
+
+<span class="go">package_and_upload_telegraf &quot;telegraf&quot; $MY_BATCH_ACCOUNT $MY_RG</span>
+<span class="go">package_and_upload_app schism_with_deps 5.11.1_alma8.7hpc_v4_mvapich2 schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip  $MY_BATCH_ACCOUNT $MY_RG</span>
+<span class="go">package_and_upload_app nfs_alma8.7 nfs_alma8.7.zip  $MY_BATCH_ACCOUNT $MY_RG</span>
+<span class="go">package_and_upload_batch_setup &quot;../schism_scripts/&quot; $MY_BATCH_ACCOUNT $MY_RG</span>
+</pre></div>
+</div>
+</div></blockquote>
 </section>
-<section id="additional-ic-files">
-<h2>Additional *.ic files<a class="headerlink" href="#additional-ic-files" title="Link to this heading"></a></h2>
+<section id="python-packages">
+<h3>Python Packages<a class="headerlink" href="#python-packages" title="Link to this heading"></a></h3>
+<p>For python packages like schimpy and BayDeltaSCHISM’s bdschism you can also use the <strong>batch_app_package_and_upload.sh</strong> script to upload the packages to your batch account.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export MY_BATCH_ACCOUNT=&quot;&lt;batchaccountname&gt;&quot;</span>
+<span class="go">export MY_RG=&quot;&lt;resourcegroupname&gt;&quot;</span>
+
+<span class="go">cd azure_dms_batch/app-packages</span>
+
+<span class="go">source batch_app_package_and_upload.sh</span>
+
+<span class="go">package_and_upload_schimpy $MY_BATCH_ACCOUNT $MY_RG</span>
+<span class="go">package_and_upload_bdschism $MY_BATCH_ACCOUNT $MY_RG</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The above utility names the package with <em>today’s date</em> and then uploads it and sets it to the default version.</p>
+<p>You can check the versions of packages and which is considered the default by going to the online <a class="reference external" href="https://portal.azure.com/">Azure Portal</a> and navigating to your batch account. ONce in your batch account, navigate to Features &gt; Applications.</p>
 </section>
-<section id="hotstart-considerations">
-<h2>Hotstart considerations<a class="headerlink" href="#hotstart-considerations" title="Link to this heading"></a></h2>
 </section>
-<section id="typical-output-processing">
-<h2>Typical output processing<a class="headerlink" href="#typical-output-processing" title="Link to this heading"></a></h2>
+<section id="uploading-model-input-files">
+<h2>Uploading Model Input Files<a class="headerlink" href="#uploading-model-input-files" title="Link to this heading"></a></h2>
+<p>Your simulation input files (e.g., mesh, forcing files, etc.) should be uploaded to the Azure Batch storage account. This is typically done using the <cite>azcopy</cite> command line utility. For more detailed info see the <a class="reference external" href="https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&amp;bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json&amp;tabs=dnf">Microsoft documentation</a>.</p>
+<section id="azcopy-commands">
+<h3>azcopy commands<a class="headerlink" href="#azcopy-commands" title="Link to this heading"></a></h3>
+<p>The basic syntax of azcopy to copy local to Azure is:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">azcopy copy &quot;&lt;local_directory&gt;&quot; &quot;&lt;azure_storage_account/blob_container&gt;/?&lt;sas_link&gt;&quot;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl>
+<dt>and for Azure to local:</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">azcopy copy &quot;&lt;azure_storage_account/blob_container&gt;/?&lt;sas_link&gt;&quot; &quot;&lt;local_directory&gt;&quot;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>But at the Delta Modeling Section we most often use something like:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export AZLINK=&quot;https://&lt;storage_account&gt;.blob.core.windows.net/&lt;blob_storage_container/&quot;</span>
+<span class="go">export sas=&quot;&lt;sas_link&gt;&quot;</span>
+
+<span class="go">azcopy copy &quot;&lt;local_directory&gt;&quot; &quot;${AZLINK}&lt;blob_storage_container&gt;/?${sas}&quot; --exclude-regex=&quot;outputs/.\*nc&quot; --recursive --preserve-symlinks --dry-run</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>where:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>local_directory</strong></dt><dd><ul>
+<li><p>whatever local path to your simulation directory you’re uploading</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>storage_account</strong></dt><dd><ul>
+<li><p>name of your Storage Account through Azure (not the same as the Batch Account name)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>blob_storage_container</strong></dt><dd><ul>
+<li><p>folder path to your blob storage container</p></li>
+<li><p>this will look like a folder path (eg: project_name/simulations/)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>sas_link</strong></dt><dd><ul>
+<li><p>SAS permissions key (generated each day for security)</p></li>
+<li><p>you can generate and copy this key by navigating to your storage account in the <a class="reference external" href="https://portal.azure.com/">Azure Portal</a> &gt; going to “Containers” &gt; find storage container &gt; right clicking &gt; Generate SAS &gt; Change “Permissions”: click all boxes &gt; Click “Generate SAS token and URL”</p></li>
+<li><p>copy the “Blob SAS token option”</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="azcopy-options">
+<h3>azcopy options<a class="headerlink" href="#azcopy-options" title="Link to this heading"></a></h3>
+<p>These are some of the most frequently used azcopy flag options:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>–dry-run</strong></dt><dd><ul>
+<li><p>this is useful to test your command before running</p></li>
+<li><p>this flag prints a list of which files will be copied where without actually uploading/downloading anything</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>–recursive</strong></dt><dd><ul>
+<li><p>this will copy all files in all subdirectories</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>–preserve-symlinks</strong></dt><dd><ul>
+<li><p>any symbolic links will be preserved in the upload to the blob container</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>–include-regex</strong></dt><dd><ul>
+<li><p>use a Regular Expression to limit which files are included in the upload</p></li>
+<li><dl class="simple">
+<dt>ex: –include-regex=”suisun_(2|3|7)/.*;baseline_6/.*&quot;</dt><dd><ul>
+<li><dl class="simple">
+<dt>this would upload all folder contents of</dt><dd><ul>
+<li><p>suisun_2/</p></li>
+<li><p>suisun_3/</p></li>
+<li><p>suisun_7/</p></li>
+<li><p>baseline_6/</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>The <strong>.*</strong> string signifies “all contents”</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>–exclude-regex</strong></dt><dd><ul>
+<li><p>use a Regular Expression to determine which files are excluded in the upload</p></li>
+<li><p>this is particularly useful for things like outputs *.nc files and sflux *.nc files which are very large and costly to upload</p></li>
+<li><dl class="simple">
+<dt>ex: –exclude-regex=”outputs.*/.*nc;sflux/.*nc”</dt><dd><ul>
+<li><p>this would exclude any files that end in “nc” that are found in the sflux, outputs, or outputs* folders</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+<section id="running-model-simulation">
+<h2>Running Model Simulation<a class="headerlink" href="#running-model-simulation" title="Link to this heading"></a></h2>
+<p>You can use the <strong>azure_dms_batch</strong> package’s command line utilities to submit a job to Azure.</p>
+<p>Much of the setup for the virtual machines, compute nodes, etc. are determined by which template you specify in your run *.yml file.</p>
+<section id="simple-run-config">
+<h3>Simple Run Config<a class="headerlink" href="#simple-run-config" title="Link to this heading"></a></h3>
+<p>Essentially, to fire a run you just need to submit the following command in a console which you have azure_cli, azcopy, and azure_dms_batch activated and which you’re logged into:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dmsbatch schism submit-job --file &lt;path/to/sample_schism.yml&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>An example of a SCHISM yaml file is <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/sample_configs/sample_schism.yml">here</a>. The example yml file has many comments on each input with explanations.</p>
+<p>Some important things to note:</p>
+<p>The run_file.yml overrides anything in your default_config.yml (ex: <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/dmsbatch/templates/alma87_mvapich2_20241018/default_config.yml">alma87_mvapich2_20241018/default_config.yml</a>)</p>
+</section>
+<section id="spot-pricing-config">
+<h3>Spot Pricing Config<a class="headerlink" href="#spot-pricing-config" title="Link to this heading"></a></h3>
+<p>The above example uses “Dedicated Nodes”. To save money (but perhaps take a bit longer time), you can use “Low Priority Nodes” or “<a class="reference external" href="https://learn.microsoft.com/en-us/azure/batch/batch-spot-vms">spot pricing</a>”. This works by sending your job to Spot VMs which run until there is another process that preempts your job.</p>
+<p>This means your job needs the capacity to automatically restart from the last hotstart produced by SCHISM.</p>
+<p>This <cite>example schism.yml file uses spot pricing &lt;https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/sample_configs/sample_schism_spot_pricing.yml&gt;</cite>.</p>
+</section>
 </section>
 </section>
 
@@ -495,8 +697,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="problems.html" class="btn btn-neutral float-left" title="Common Problems and Diagnosis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sea_level_rise.html" class="btn btn-neutral float-right" title="Sea Level Rise" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="azure.html" class="btn btn-neutral float-left" title="Running on Azure Batch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="problems.html" class="btn btn-neutral float-right" title="Common Problems and Diagnosis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

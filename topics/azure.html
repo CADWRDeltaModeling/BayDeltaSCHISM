@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulating water age &mdash; Bay-Delta SCHISM</title>
+  <title>Running on Azure Batch &mdash; Bay-Delta SCHISM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/style.css?v=8686dbcc" />
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Sea Level Rise" href="sea_level_rise.html" />
-    <link rel="prev" title="Common Problems and Diagnosis" href="problems.html" />
+    <link rel="next" title="Step-by-step: Bay-Delta SCHISM on Azure" href="bds_guide_azure.html" />
+    <link rel="prev" title="Intro to Clusters and High Performance Computing" href="hpc.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -251,7 +251,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../user_guide.html#computing-resources">Computing Resources</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="../user_guide.html#computing-resources">Computing Resources</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="hpc.html">Intro to Clusters and High Performance Computing</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="hpc.html#anatomy-of-a-cluster">Anatomy of a Cluster</a></li>
 <li class="toctree-l4"><a class="reference internal" href="hpc.html#figure-cluster-components">Figure: Cluster Components</a></li>
@@ -265,15 +265,15 @@
 <li class="toctree-l4"><a class="reference internal" href="hpc.html#figure-azure-batch-cluster-components">Figure: Azure Batch Cluster Components</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="azure.html">Running on Azure Batch</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="azure.html#setup-azure">Setup Azure</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="azure.html#download-azure-utilities">Download Azure Utilities</a></li>
-<li class="toctree-l5"><a class="reference internal" href="azure.html#login">Login</a></li>
-<li class="toctree-l5"><a class="reference internal" href="azure.html#create-a-resource-group">Create a Resource Group</a></li>
-<li class="toctree-l5"><a class="reference internal" href="azure.html#download-azure-dms-batch">Download azure_dms_batch</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Running on Azure Batch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setup-azure">Setup Azure</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#download-azure-utilities">Download Azure Utilities</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#login">Login</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#create-a-resource-group">Create a Resource Group</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#download-azure-dms-batch">Download azure_dms_batch</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="azure.html#references">References</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
@@ -297,7 +297,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="reference internal" href="../user_guide.html#advanced-tasks-and-concepts">Advanced Tasks and Concepts</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../user_guide.html#advanced-tasks-and-concepts">Advanced Tasks and Concepts</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="problems.html">Common Problems and Diagnosis</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="problems.html#where-does-schism-write-error-messages">Where does SCHISM write error messages?</a></li>
 <li class="toctree-l4"><a class="reference internal" href="problems.html#my-run-says-segfault">My run says “segfault”</a></li>
@@ -305,12 +305,12 @@
 <li class="toctree-l4"><a class="reference internal" href="problems.html#dry-boundary">Dry boundary</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Simulating water age</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#compile-with-age">Compile with age</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#parameters-in-param-nml">Parameters in param.nml</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#additional-ic-files">Additional *.ic files</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hotstart-considerations">Hotstart considerations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typical-output-processing">Typical output processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="age.html">Simulating water age</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="age.html#compile-with-age">Compile with age</a></li>
+<li class="toctree-l4"><a class="reference internal" href="age.html#parameters-in-param-nml">Parameters in param.nml</a></li>
+<li class="toctree-l4"><a class="reference internal" href="age.html#additional-ic-files">Additional *.ic files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="age.html#hotstart-considerations">Hotstart considerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="age.html#typical-output-processing">Typical output processing</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="sea_level_rise.html">Sea Level Rise</a></li>
@@ -472,22 +472,112 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="simulating-water-age">
-<h1>Simulating water age<a class="headerlink" href="#simulating-water-age" title="Link to this heading"></a></h1>
-<section id="compile-with-age">
-<h2>Compile with age<a class="headerlink" href="#compile-with-age" title="Link to this heading"></a></h2>
+  <section id="running-on-azure-batch">
+<span id="azure"></span><h1>Running on Azure Batch<a class="headerlink" href="#running-on-azure-batch" title="Link to this heading"></a></h1>
+<p>Azure Batch is a cloud-based service that allows you to run large-scale parallel and high-performance computing applications. This section provides an overview of how to set up and run SCHISM on Azure Batch.</p>
+<section id="setup-azure">
+<span id="id1"></span><h2>Setup Azure<a class="headerlink" href="#setup-azure" title="Link to this heading"></a></h2>
+<section id="download-azure-utilities">
+<h3>Download Azure Utilities<a class="headerlink" href="#download-azure-utilities" title="Link to this heading"></a></h3>
+<p>Azure is a paid service separate from SCHISM, BayDeltaSCHISM, and CA-DWR. Once you have set up your Azure batch and storage accounts within your Azure resource group, you’ll need to download a few things:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest">Azure CLI</a></dt><dd><ul>
+<li><p>download and install on your machine to pass jobs (simulations) to Azure batch</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10?tabs=dnf">AzCopy</a></dt><dd><ul>
+<li><p>download and install on your machine to upload content to storage container</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://azure.github.io/BatchExplorer/">Azure Batch Explorer (desktop app)</a></dt><dd><ul>
+<li><p>this isn’t technically necessary, but is quite helpful in managing ongoing simulations</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://azure.microsoft.com/en-us/features/storage-explorer/#overview">Azure Storage Explorer (desktop app)</a></dt><dd><ul>
+<li><p>again, not technically necessary, but quite useful</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Setup can be done via az commands. Here we setup a batch account with associated storage.</p>
 </section>
-<section id="parameters-in-param-nml">
-<h2>Parameters in param.nml<a class="headerlink" href="#parameters-in-param-nml" title="Link to this heading"></a></h2>
+<section id="login">
+<h3>Login<a class="headerlink" href="#login" title="Link to this heading"></a></h3>
+<p>Login with your Azure credentials. First go to <a class="reference external" href="https://microsoft.com/devicelogin">https://microsoft.com/devicelogin</a> and copy your login code. Then after typing:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">az login --use-device-code</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Copy in the code to verify your credentials.</p>
 </section>
-<section id="additional-ic-files">
-<h2>Additional *.ic files<a class="headerlink" href="#additional-ic-files" title="Link to this heading"></a></h2>
+<section id="create-a-resource-group">
+<h3>Create a Resource Group<a class="headerlink" href="#create-a-resource-group" title="Link to this heading"></a></h3>
+<p>See the Azure docs for details. To use the commands below, enter your values (replacing the &lt;angle brackets and values&gt;)</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">az group create --name &lt;resource_group_name&gt; --location &lt;location_name&gt;</span>
+
+<span class="go">az storage account create --resource-group &lt;resource_group_name&gt; --name &lt;storage_account_name&gt; --location &lt;location_name&gt; --sku Standard_LRS</span>
+
+<span class="go">az batch account create --name &lt;batch_account_name&gt; --storage-account &lt;storage_account_name&gt; --resource-group &lt;resource_group_name&gt; --location &lt;location_name&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>You can also create the batch account and associated account as <a class="reference external" href="https://docs.microsoft.com/en-us/azure/batch/batch-account-create-portal">explained here</a>.</p>
 </section>
-<section id="hotstart-considerations">
-<h2>Hotstart considerations<a class="headerlink" href="#hotstart-considerations" title="Link to this heading"></a></h2>
+<section id="download-azure-dms-batch">
+<h3>Download azure_dms_batch<a class="headerlink" href="#download-azure-dms-batch" title="Link to this heading"></a></h3>
+<dl>
+<dt>Use the environment.yml with conda to create an environment called azure</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda env create -f environment.yml</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>or</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install -r requirements.txt</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><strong>Git clone *this* project</strong></p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/CADWRDeltaModeling/azure_dms_batch.git</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Change directory to the location of the azure_dms_batch project and then install using:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install --no-deps -e .</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>For more information on the azure_dms_batch package, see the <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/README.md">README.md</a> file.</p>
 </section>
-<section id="typical-output-processing">
-<h2>Typical output processing<a class="headerlink" href="#typical-output-processing" title="Link to this heading"></a></h2>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/developer/python/azure-sdk-overview">Python SDK Setup</a>
+<a class="reference external" href="https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/storage/azure-storage-blob">BlobStorage Python Example</a>
+<a class="reference external" href="https://docs.microsoft.com/en-us/python/api/overview/azure/batch?view=azure-python">Azure Batch Python API</a>
+<a class="reference external" href="https://github.com/Azure-Samples/azure-batch-samples/tree/master/Python">Azure Batch Python Samples</a>
+<a class="reference external" href="https://github.com/Azure/batch-shipyard">Azure Batch Shipyard</a></p>
+<p>MPI specific
+<a class="reference external" href="https://docs.microsoft.com/en-us/azure/batch/batch-mpi">Azure Batch MPI</a>
+<a class="reference external" href="https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-hpc#cluster-configuration-options">Cluster configuration options</a></p>
+<p>Intel MPI
+<a class="reference external" href="https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/hpc/setup-mpi#intel-mpi">Azure settings for Intel MPI</a>
+<a class="reference external" href="https://www.intel.com/content/www/us/en/develop/documentation/mpi-developer-guide-linux/top/installation-and-prerequisites/prerequisite-steps.html">Intel MPI Pre-requisites</a></p>
 </section>
 </section>
 
@@ -495,8 +585,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="problems.html" class="btn btn-neutral float-left" title="Common Problems and Diagnosis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sea_level_rise.html" class="btn btn-neutral float-right" title="Sea Level Rise" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="hpc.html" class="btn btn-neutral float-left" title="Intro to Clusters and High Performance Computing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bds_guide_azure.html" class="btn btn-neutral float-right" title="Step-by-step: Bay-Delta SCHISM on Azure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
