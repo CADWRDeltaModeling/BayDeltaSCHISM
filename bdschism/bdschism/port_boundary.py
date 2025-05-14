@@ -8,7 +8,6 @@
 Script to convert various data formats (from calsim, csv files) into
 SCHISM flux, salt and temp time history (.th) files
 """
-from schimpy import model_time
 from pyhecdss import get_ts
 from vtools.functions.unit_conversions import CFS2CMS, ec_psu_25c
 from vtools.functions.interpolate import rhistinterp
@@ -16,10 +15,8 @@ from vtools.functions.filter import ts_gaussian_filter
 from vtools.data.vtime import minutes
 import matplotlib.pylab as plt
 import pandas as pd
-import numpy as np
 import tempfile
 import string
-from argparse import ArgumentParser
 import yaml
 import os
 import click
