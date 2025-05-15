@@ -308,7 +308,7 @@ def get_export_ts(s1, s2, flux):
     return swp_ts, cvp_ts
 
 
-def sffpx_level(sdate, edate, sf_data_repo, margin=dtm.timedelta(days=3)):
+def sffpx_level(sdate, edate, sf_data_repo, margin=dtm.timedelta(days=30)):
 
     s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
     s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
@@ -325,6 +325,7 @@ def sffpx_level(sdate, edate, sf_data_repo, margin=dtm.timedelta(days=3)):
     shift_h = dtm.timedelta(hours=8.5)
     position_shift = int(shift_h / ts_df.index.freq)
     ts_df = ts_df.shift(position_shift)
+    ts_df = ts_df.loc[s1 - margin : s2 + margin]
     ts_df.columns = ["elev"]
 
     return ts_df
