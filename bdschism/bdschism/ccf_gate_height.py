@@ -8,7 +8,7 @@ period.
 """
 import datetime as dtm
 import pandas as pd
-from vtools.functions.unit_conversions import M2FT
+from vtools.functions.unit_conversions import M2FT,FT2M
 from dms_datastore.read_ts import read_ts
 from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
@@ -738,7 +738,7 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev):
     margin = dtm.timedelta(days=3)
     export_ts, cvp_ts = get_export_ts(s1 - margin, s2 + margin, export)
     export_ts_daily_average = export_ts.resample("D").mean()
-    inside_level0 = 2.12
+    inside_level0 = 2.12 # in feet
     dt = dtm.timedelta(minutes=2)
 
     priority, max_height = gen_prio_for_varying_exports(
@@ -840,6 +840,7 @@ def ccf_gate(sdate, edate, dest, astro_file, export_file, sffpx_elev, plot=False
     oneday = dtm.timedelta(days=1)
     height, zin = process_height(s1, s2, export_file, astro_file, sffpx_elev)
     height_t = remove_continuous_duplicates(height, height.columns.tolist()[0])
+    height_t = height_t * FT2M
     height_t.index.name = "datetime"
     height_t.columns = ["height"]
     dlen = len(height_t)
