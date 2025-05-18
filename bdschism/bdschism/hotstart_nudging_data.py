@@ -133,6 +133,7 @@ stations = [
 # Stations where an "upper" and "lower" sublocation occur and we must distinguish the upper
 add_upper = ["anh", "cse", "mrz", "emm", "mal", "pts"]
 repo = "//cnrastore-bdo/Modeling_Data/jenkins_repo_staging/continuous/formatted"
+repo = "//cnrastore-bdo/Modeling_Data/repo/continuous/screened"
 
 
 def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
