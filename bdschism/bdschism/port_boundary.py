@@ -14,6 +14,7 @@ from vtools.functions.interpolate import rhistinterp
 from vtools.functions.filter import ts_gaussian_filter
 from vtools.data.vtime import minutes
 import matplotlib.pylab as plt
+import numpy as np
 import pandas as pd
 import tempfile
 import string
