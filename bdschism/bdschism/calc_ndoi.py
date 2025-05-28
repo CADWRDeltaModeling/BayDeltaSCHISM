@@ -1,6 +1,8 @@
 from schimpy.th_calcs import calc_net_source_sink, combine_flux, read_flux
+from schimpy.model_time import is_elapsed
 import schimpy.param as parms
 import pandas as pd
+import click
 import os
 
 bds_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../")
@@ -18,7 +20,12 @@ def calc_indoi(
 ):
     """Calculate an estimate of Net Delta Outflow from boundary inputs applied to SCHISM"""
 
-    if time_basis is None:
+    elapsed_files = [
+        is_elapsed(f)
+        for f in [flux_file, vsource_file, vsink_file]
+        if isinstance(f, str)
+    ]
+    if time_basis is None and any(elapsed_files):
         params = parms.read_params("./param.nml")
         time_basis = params.run_start
         print(
@@ -68,11 +75,44 @@ def calc_indoi(
     dcu_df = dcu_df.resample("15min").ffill()
 
     ndoi_df = dcu_df + comb_df["Exports"] + comb_df["Northern Flow"] + flux_df["sjr"]
-    ndoi_df.columns = ["Boundary Input NDOI"]
+    ndoi_df.name = "Boundary Input NDOI"
+    ndoi_df.index.name = "datetime"
     ndoi_df = ndoi_df.dropna()
 
     return ndoi_df
 
 
+@click.command(
+    help="Command line function for calculating NDOI based on SCHISM boundary inputs"
+)
+@click.option("--flux-file", default="flux.th", help="Flux file path")
+@click.option("--vsource-file", default="vsource.th", help="Vsource file path")
+@click.option("--vsink-file", default="vsink.th", help="Vsink file path")
+@click.option(
+    "--time-basis",
+    default=None,
+    help="Time basis (start date, e.g. '2016-04-27') if none is provided, it will be inferred from param.nml",
+)
+@click.option("--elapsed-unit", default="s", help="Elapsed unit ('s' or 'd')")
+@click.option("--output", default=None, help="Optional output CSV file")
+@click.help_option("--help", "-h")
+def calc_indoi_cli(
+    flux_file, vsource_file, vsink_file, time_basis, elapsed_unit, output
+):
+    """CLI for calculating Net Delta Outflow Index (NDOI)"""
+    ndoi_df = calc_indoi(
+        flux_file=flux_file,
+        vsource_file=vsource_file,
+        vsink_file=vsink_file,
+        time_basis=time_basis,
+        elapsed_unit=elapsed_unit,
+    )
+    if output:
+        ndoi_df.to_csv(output)
+        print(f"Saved NDOI to {output}")
+    else:
+        print(ndoi_df)
+
+
 if __name__ == "__main__":
-    calc_indoi()
+    calc_indoi_cli()
