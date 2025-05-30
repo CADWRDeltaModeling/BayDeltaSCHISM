@@ -488,11 +488,11 @@ window.addEventListener("load", () => mermaid.run());
 <span class="sd">Script to convert various data formats (from calsim, csv files) into</span>
 <span class="sd">SCHISM flux, salt and temp time history (.th) files</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyhecdss</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_ts</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">vtools.functions.unit_conversions</span><span class="w"> </span><span class="kn">import</span> <span class="n">CFS2CMS</span><span class="p">,</span> <span class="n">ec_psu_25c</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">vtools.functions.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">rhistinterp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">vtools.functions.filter</span><span class="w"> </span><span class="kn">import</span> <span class="n">ts_gaussian_filter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">vtools.data.vtime</span><span class="w"> </span><span class="kn">import</span> <span class="n">minutes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dms_datastore.read_dss</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_dss</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pylab</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -532,31 +532,6 @@ window.addEventListener("load", () => mermaid.run());
     <span class="n">interp_df</span><span class="p">[[</span><span class="n">name</span><span class="p">]]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">var</span><span class="p">:</span> <span class="n">interp_series</span><span class="p">})</span>
     <span class="k">return</span> <span class="n">interp_df</span></div>
 
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">read_dss</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">pathname</span><span class="p">,</span> <span class="n">sch_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reads in a DSM2 dss file and interpolates</span>
-<span class="sd">    Outputs an interpolated DataFrame of that variable</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ts15min</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">pathname</span><span class="p">)</span>
-    <span class="n">ts</span> <span class="o">=</span> <span class="n">get_ts</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="n">pathname</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">tsi</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">:</span>
-        <span class="n">path_lst</span> <span class="o">=</span> <span class="p">(</span><span class="n">tsi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
-        <span class="n">path_e</span> <span class="o">=</span> <span class="n">path_lst</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
-        <span class="n">tt</span> <span class="o">=</span> <span class="n">tsi</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">start_date</span><span class="p">:</span><span class="n">end_date</span><span class="p">]</span>
-        <span class="n">pidx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">period_range</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">tt</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">freq</span><span class="o">=</span><span class="n">dss_e2_freq</span><span class="p">[</span><span class="n">path_e</span><span class="p">])</span>
-        <span class="n">ptt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pidx</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">ts15min</span><span class="p">[[</span><span class="n">sch_name</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rhistinterp</span><span class="p">(</span><span class="n">ptt</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">df_rng</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">ts15min</span><span class="p">[[</span><span class="n">sch_name</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rhistinterp</span><span class="p">(</span><span class="n">ptt</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">df_rng</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">ts15min</span><span class="p">[[</span><span class="n">sch_name</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tsi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">ts15min</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: DSS data not found for </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">ts15min</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">SafeDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
@@ -723,8 +698,6 @@ window.addEventListener("load", () => mermaid.run());
             <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="n">dss_e2_freq</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;1HOUR&quot;</span><span class="p">:</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;1DAY&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">}</span>
-
     <span class="k">for</span> <span class="n">boundary_kind</span> <span class="ow">in</span> <span class="n">boundary_kinds</span><span class="p">:</span>
 
         <span class="n">source_map_bc</span> <span class="o">=</span> <span class="n">source_map</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">source_map</span><span class="p">[</span><span class="s2">&quot;boundary_kind&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">boundary_kind</span><span class="p">]</span>
@@ -806,7 +779,9 @@ window.addEventListener("load", () => mermaid.run());
                     <span class="k">for</span> <span class="n">pn</span> <span class="ow">in</span> <span class="n">vars_lst</span><span class="p">:</span>
                         <span class="n">b</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
                         <span class="n">dss</span><span class="p">[[</span><span class="n">b</span><span class="p">]]</span> <span class="o">=</span> <span class="n">read_dss</span><span class="p">(</span>
-                            <span class="n">source_file</span><span class="p">,</span> <span class="n">pathname</span><span class="o">=</span><span class="n">pn</span><span class="p">,</span> <span class="n">sch_name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span>
+                            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">source_file</span><span class="p">),</span>
+                            <span class="n">pathname</span><span class="o">=</span><span class="n">pn</span><span class="p">,</span>
+                            <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span>
                         <span class="p">)</span>
                     <span class="c1">## quick fix for to use last year pattern as formula</span>
                     <span class="c1">## input</span>
@@ -824,7 +799,7 @@ window.addEventListener("load", () => mermaid.run());
                         <span class="n">dfi</span> <span class="o">=</span> <span class="n">dts</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updating SCHISM </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> with DSS variable </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                    <span class="n">dfi</span> <span class="o">=</span> <span class="n">read_dss</span><span class="p">(</span><span class="n">source_file</span><span class="p">,</span> <span class="n">pathname</span><span class="o">=</span><span class="n">var</span><span class="p">,</span> <span class="n">sch_name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+                    <span class="n">dfi</span> <span class="o">=</span> <span class="n">read_dss</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">source_file</span><span class="p">),</span> <span class="n">pathname</span><span class="o">=</span><span class="n">var</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">source_kind</span> <span class="o">==</span> <span class="s2">&quot;CONSTANT&quot;</span><span class="p">:</span>
                 <span class="c1"># Simply fill with a constant specified.</span>
