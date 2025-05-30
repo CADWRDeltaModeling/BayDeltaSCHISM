@@ -8,11 +8,11 @@
 Script to convert various data formats (from calsim, csv files) into
 SCHISM flux, salt and temp time history (.th) files
 """
-from pyhecdss import get_ts
 from vtools.functions.unit_conversions import CFS2CMS, ec_psu_25c
 from vtools.functions.interpolate import rhistinterp
 from vtools.functions.filter import ts_gaussian_filter
 from vtools.data.vtime import minutes
+from dms_datastore.read_dss import read_dss
 import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
@@ -49,31 +49,6 @@ def read_csv(file, var, name, dt, p=2.0, interp=True):
     interp_df = pd.DataFrame()
     interp_df[[name]] = pd.DataFrame({var: interp_series})
     return interp_df
-
-
-def read_dss(file, pathname, sch_name=None, p=2.0):
-    """
-    Reads in a DSM2 dss file and interpolates
-    Outputs an interpolated DataFrame of that variable
-    """
-    ts15min = pd.DataFrame()
-    print(pathname)
-    ts = get_ts(os.path.join(dir, file), pathname)
-    for tsi in ts:
-        path_lst = (tsi[0].columns.values[0]).split("/")
-        path_e = path_lst[5]
-        tt = tsi[0][start_date:end_date]
-        pidx = pd.period_range(start_date, tt.index[-1], freq=dss_e2_freq[path_e])
-        ptt = pd.DataFrame(tt.values[:, 0], pidx)
-        if p != 0:
-            ts15min[[sch_name]] = rhistinterp(ptt, dt, p=p).reindex(df_rng)
-        elif p == 0:
-            ts15min[[sch_name]] = rhistinterp(ptt, dt).reindex(df_rng)
-        else:
-            ts15min[[sch_name]] = tsi[0]
-    if ts15min.empty:
-        raise ValueError(f"Warning: DSS data not found for {b}")
-    return ts15min
 
 
 class SafeDict(dict):
@@ -240,8 +215,6 @@ def create_schism_bc(config_yaml, kwargs={}):
             comment="#",
         )
 
-    dss_e2_freq = {"1HOUR": "H", "1DAY": "D"}
-
     for boundary_kind in boundary_kinds:
 
         source_map_bc = source_map.loc[source_map["boundary_kind"] == boundary_kind]
@@ -323,7 +296,9 @@ def create_schism_bc(config_yaml, kwargs={}):
                     for pn in vars_lst:
                         b = pn.split("/")[2]
                         dss[[b]] = read_dss(
-                            source_file, pathname=pn, sch_name=name, p=p
+                            os.path.join(dir, source_file),
+                            pathname=pn,
+                            p=p,
                         )
                     ## quick fix for to use last year pattern as formula
                     ## input
@@ -341,7 +316,7 @@ def create_schism_bc(config_yaml, kwargs={}):
                         dfi = dts
                 else:
                     print(f"Updating SCHISM {name} with DSS variable {var}")
-                    dfi = read_dss(source_file, pathname=var, sch_name=name, p=p)
+                    dfi = read_dss(os.path.join(dir, source_file), pathname=var, p=p)
 
             elif source_kind == "CONSTANT":
                 # Simply fill with a constant specified.
