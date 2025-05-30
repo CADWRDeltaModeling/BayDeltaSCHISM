@@ -9,6 +9,7 @@ from bdschism.uv3d import interpolate_uv3d_cli
 from bdschism.port_boundary import port_boundary_cli
 from bdschism.ccf_gate_height import ccf_gate_cli
 from bdschism.calc_ndoi import calc_indoi_cli
+from bdschism.parse_cu import parse_cu_cli
 
 
 @click.group(
@@ -31,6 +32,7 @@ cli.add_command(port_boundary_cli, "port_bc")
 cli.add_command(ccf_gate_cli, "ccf_gate")
 # create_nudging = "schimpy.nudging:main"
 cli.add_command(calc_indoi_cli, "calc_ndoi")
+cli.add_command(parse_cu_cli, "parse_cu")
 
 if __name__ == "__main__":
     cli()
