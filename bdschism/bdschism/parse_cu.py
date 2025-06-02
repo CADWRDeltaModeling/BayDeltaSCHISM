@@ -3,7 +3,7 @@
 from vtools.functions.unit_conversions import CFS2CMS, ec_psu_25c
 from vtools.data.vtime import days
 from schimpy.model_time import read_th, is_elapsed
-from dms_datastore.read_dss import read_dss
+from bdschism.read_dss import read_dss
 from pathlib import Path
 import datetime as dt
 import pandas as pd

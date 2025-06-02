@@ -12,7 +12,7 @@ from vtools.functions.unit_conversions import CFS2CMS, ec_psu_25c
 from vtools.functions.interpolate import rhistinterp
 from vtools.functions.filter import ts_gaussian_filter
 from vtools.data.vtime import minutes
-from dms_datastore.read_dss import read_dss
+from bdschism.read_dss import read_dss
 import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
