@@ -4,7 +4,7 @@ Adapted from ZZheng - generate hotstart - transfer from one grid to another
 """
 
 # Use example with bdschism in your environment::
-# hot_from_hot ./hotstart_from_hotstart.yaml --f_in hotstart_it=480000.nc --src_dir ./source_dir/ --trg_dir ./target_dir/
+# bds hot_from_hot ./hotstart_from_hotstart.yaml --f_in ./baseline_sim_dir/hotstart_it=480000.nc --f_out ./franks_sim_dir/hotstart_480000_franks.nc --src_dir ./baseline_sim_dir/ --trg_dir ./franks_sim_dir/
 
 # Standard Library Imports
 import os
@@ -159,6 +159,7 @@ def hotstart_newgrid(
     help="Coordinate system (e.g., EPSG:26910).",
 )
 @click.help_option("-h", "--help")
+@click.argument("extra", nargs=-1)
 def hotstart_newgrid_cli(
     yaml: str,
     f_in,
@@ -167,15 +168,49 @@ def hotstart_newgrid_cli(
     trg_dir,
     modules=None,
     crs="EPSG:26910",
+    extra=(),
 ):
     """
     Command-line interface for transferring hotstart data from one grid to another.
+    Arguments
+    ---------
+        yaml      Path to the YAML file (e.g., hotstart_from_hotstart.yaml).
+    Options
+    -------
+        f_in      Hotstart input file path (e.g., hotstart_it=480000.nc).
+        f_out     Hotstart output file path (e.g., hotstart_480000_franks.nc).
+        src_dir   Source directory containing hgrid.gr3, vgrid.in, and param.nml.
+        trg_dir   Target directory where the hotstart will be re-written.
+        modules   Modules to be transferred to/from hotstart files.
+        crs       Coordinate system (default: EPSG:26910).
+        extra     Additional key-value pairs for environment variables (e.g., --key value).
+    Examples
+    --------
+        bds hot_from_hot ./hotstart_from_hotstart.yaml --f_in ./baseline_sim_dir/hotstart_it=480000.nc --f_out ./franks_sim_dir/hotstart_480000_franks.nc --src_dir ./baseline_sim_dir/ --trg_dir ./franks_sim_dir/
     """
     # Ensure input and output directories exist
     if not os.path.exists(src_dir):
         raise ValueError(f"Source directory {src_dir} does not exist.")
     if not os.path.exists(trg_dir):
         raise ValueError(f"Target directory {trg_dir} does not exist.")
+
+    # Parse extra arguments into a dictionary (expects --key value pairs)
+    envvar = {}
+    key = None
+    for item in extra:
+        if item.startswith("--"):
+            key = item.lstrip("-")
+        elif key is not None:
+            envvar[key] = item
+            key = None
+    if key is not None:
+        raise ValueError(f"No value provided for extra argument: {key}")
+
+    # Convert empty tuple to None for modules
+    if modules == () or modules is None:
+        modules = None
+    else:
+        modules = list(modules)
 
     # Call the hotstart transfer function
     hotstart_newgrid(
@@ -186,9 +221,24 @@ def hotstart_newgrid_cli(
         trg_dir,
         modules=modules,
         crs=crs,
+        envvar=envvar if envvar else None,
     )
 
 
 if __name__ == "__main__":
     """Main function to handle hotstart transfer."""
     hotstart_newgrid_cli()
+    # os.chdir("D:/schism/hotstart_transfer_test")
+    # yaml = "./hotstart_from_hotstart.yaml"
+    # f_in = "./baseline_sim_dir/hotstart_it=480000.nc"
+    # f_out = "./hotstart_480000_franks.nc"
+    # src_dir = "./baseline_sim_dir/"
+    # trg_dir = "./franks_sim_dir/"
+
+    # hotstart_newgrid(
+    #     yaml,
+    #     f_in,
+    #     f_out,
+    #     src_dir,
+    #     trg_dir,
+    # )
