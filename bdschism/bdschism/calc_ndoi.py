@@ -61,7 +61,7 @@ def calc_indoi(
         flux_head=flux_head,
     )
 
-    dcu_df = calc_net_source_sink(
+    dcu_df, src, sink = calc_net_source_sink(
         vsource_file=vsource_file,
         vsink_file=vsink_file,
         time_basis=time_basis,
