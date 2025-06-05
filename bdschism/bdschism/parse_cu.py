@@ -1,40 +1,42 @@
 """Script by Lily Tomkovic to take a net delta consumptive use and parse it into vsource and vsink"""
 
-from vtools.functions.unit_conversions import CFS2CMS, ec_psu_25c
+from vtools.functions.unit_conversions import CFS2CMS, CMS2CFS
+from vtools.functions.interpolate import rhistinterp
 from vtools.data.vtime import days
 from schimpy.model_time import read_th, is_elapsed
+from schimpy.th_calcs import calc_net_source_sink
 from bdschism.read_dss import read_dss
 from pathlib import Path
-import datetime as dt
 import pandas as pd
 import numpy as np
 import click
 import os
 
 
-def adjust_src_sink(src, sink, perturb, sinkfrac=0.001):
+def adjust_src_sink(src, sink, net_diff, sinkfrac=0.001, debug=False):
     """Distributes a perturbation to dataframe sc and sink
+
     Parameters
     ----------
-
     src : DataFrame
-        DataFrame of positive sources
-
+        DataFrame of positive sources.
     sink : DataFrame
-        DataFrame of sinks. Must be all of the same sign. If positive, they are assumed to represent the
-    the magnitude of the (latent) sinks. If they are negative, they are the sink values themselves. Return
-    value will match the convention of the input.
-
-    perturb : Series
-        Series representing a perturbation to be distributed proportionally over src and sink. Sign convention
-    agrees with that of src. When perturb is negative, it augments sink. When it is positive
-    it reduces the sink until sinkfrac fraction of the sink
-    is exhausted, after which the remainder augments the source.
-
+        DataFrame of sinks. Must be all of the same sign. If positive, they are assumed to represent the the magnitude of the (latent) sinks. If they are negative, they are the sink values themselves. Return value will match the convention of the input.
+    net_diff : Series
+        Series representing a perturbation to be distributed proportionally over src and sink. Sign convention agrees with that of src.
+        When net_diff is negative, it augments sink.
+        When it is positive it reduces the sink until sinkfrac fraction of the sink is exhausted, after which the remainder augments the source.
     sinkfrac : float
-        Fraction of sink that can be reduced in order to achieve the perturbation by reducing the sink. Remainder
-    is applied by augmenting src. Has no effect on time steps when perturb is negative.
+        Fraction of sink that can be reduced in order to achieve the perturbation by reducing the sink. Remainder is applied by augmenting src. Has no effect on time steps when net_diff is negative.
+    debug : bool
+        If True, prints out debug information about the input src and sink DataFrames.
 
+    Returns
+    -------
+    src : DataFrame
+        DataFrame of adjusted sources, with the same sign convention as the input src.
+    sink : DataFrame
+        DataFrame of adjusted sinks, with the same sign convention as the input sink.
     """
 
     # convert so that sink is a magnitude and switch the sign so that it contributes to sink
@@ -45,37 +47,41 @@ def adjust_src_sink(src, sink, perturb, sinkfrac=0.001):
         possink = True
         haspos = sink.loc[(sink > 0).any(axis=1), :]
         colswithpos = (haspos > 0).any(axis=0)
-        hasneg.loc[:, colswithneg].to_csv("test_sink.csv")
-        print("possink")
-        print(sink.loc[(sink > 0).any(axis=1), :])
-        print("Sink has all pos values")
+        if debug:
+            hasneg.loc[:, colswithneg].to_csv("test_sink.csv")
+            print("possink")
+            print(sink.loc[(sink > 0).any(axis=1), :])
+            print("Sink has all pos values")
         # SHOULD BE DataFrame of negative sinks
         sink = -sink
     else:
         possink = False
-        print("Sink has all neg values")
+        if debug:
+            print("Sink has all neg values")
 
     if (src < 0).any(axis=None):
         negsrc = True
         hasneg = src.loc[(src < 0).any(axis=1), :]
         colswithneg = (hasneg < 0).any(axis=0)
-        hasneg.loc[:, colswithneg].to_csv("test_src.csv")
-        print("negsrc")
-        print(src.loc[(src < 0).any(axis=1), :])
-        print("Source has all neg values")
+        if debug:
+            hasneg.loc[:, colswithneg].to_csv("test_src.csv")
+            print("negsrc")
+            print(src.loc[(src < 0).any(axis=1), :])
+            print("Source has all neg values")
         # SHOULD BE DataFrame of positive sources
         src = -src
     else:
         negsrc = False
-        print("Source has all pos values")
+        if debug:
+            print("Source has all pos values")
 
     src_total = src.sum(axis=1)
     sink_total = sink.sum(axis=1)
     dcd_total = src_total + sink_total
 
-    if "Timestamp" not in str(type(perturb.index[0])):
-        perturb.index = perturb.index.to_timestamp()
-    pert = perturb.reindex(
+    if isinstance(net_diff.index, pd.DatetimeIndex):
+        net_diff.index = net_diff.index.to_timestamp()
+    pert = net_diff.reindex(
         dcd_total.index
     )  # using only the indices in dcd_total (from the src/sink inputs)
     # pert
@@ -113,9 +119,41 @@ def adjust_src_sink(src, sink, perturb, sinkfrac=0.001):
     return src, sink
 
 
-def sch_dcd_from_dss_pert(
-    original_net,
-    adjusted_net,
+def calc_net_diff(original_net, adjusted_net, cfs_to_cms=True):
+    """Calculate the difference in net CU between original and adjusted data in cms.
+    Parameters
+    ----------
+    original_net: pd.DataFrame
+        DCD net source and sink data from original timeseries.
+        Used to calculate difference in net CU to apply to SCHISM inputs.
+        Entered as a DataFrame with a single column or Series with units of cfs by default.
+    adjusted_net: pd.DataFrame
+        DCD net source and sink data from adjusted timeseries.
+        Used to calculate difference in net CU from original to apply to SCHISM inputs
+        Entered as a DataFrame with a single column or Series with units of cfs by default.
+    cfs_to_cms: bool
+        Set to True if net data is in cfs and needs to be converted to cms for SCHISM.
+        Only set to False if net data is in cms.
+
+    Returns
+    -------
+    pd.Series
+        Series of the net difference in CU between original and adjusted data.
+    """
+    if isinstance(adjusted_net, pd.DataFrame) and adjusted_net.shape[1] == 1:
+        adjusted_net = adjusted_net.iloc[:, 0]
+
+    common_index = adjusted_net.index.intersection(original_net.index)
+    net_diff = adjusted_net.loc[common_index] - original_net.loc[common_index]
+
+    if cfs_to_cms:
+        net_diff = net_diff * CFS2CMS  # convert to cms
+
+    return net_diff
+
+
+def sch_dcd_net_diff(
+    net_diff,
     schism_vsource,
     schism_vsink,
     out_dir,
@@ -125,12 +163,8 @@ def sch_dcd_from_dss_pert(
     """Convert adjusted DCD data from DSS into SCHISM-ready *.th inputs.
     Parameters
     ----------
-    original_net: pd.DataFrame
-        DCD net source and sink data from original timeseries.
-        Used to calculate difference in net CU to apply to SCHISM inputs
-    adjusted_net: pd.DataFrame
-        DCD net source and sink data from adjusted timeseries.
-        Used to calculate difference in net CU from original to apply to SCHISM inputs
+    net_diff: pd.DataFrame
+        DCD net differences from historical or baseline. Used to apply to SCHISM inputs.
     schism_vsource: str|Path
         input SCHISM vsource data, needs to be "dated" and not "elapsed.
     schism_vsink: str|Path
@@ -138,10 +172,11 @@ def sch_dcd_from_dss_pert(
     out_dir: str|Path
         Output directory to store the altered *.th files.
     version: str
-        Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th)
-    cfs_to_cms: bool
-        Set to True if DSS data is in cfs and needs to be converted to cms for SCHISM.
-        Only set to False if DSS data is in cms."""
+        Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th)"""
+    # Normalize paths
+    schism_vsource = Path(schism_vsource)
+    schism_vsink = Path(schism_vsink)
+    out_dir = Path(out_dir)
 
     # Check inputs first
     if is_elapsed(schism_vsource):
@@ -155,60 +190,68 @@ def sch_dcd_from_dss_pert(
 
     if not os.path.exists(out_dir):
         print(f"Making directory: {out_dir}")
-        os.makedirs(os.path.dirname(out_dir), exist_ok=True)
+        os.makedirs(out_dir, exist_ok=True)
 
-    if isinstance(adjusted_net, pd.DataFrame) and adjusted_net.shape[1] == 1:
-        adjusted_net = adjusted_net.iloc[:, 0]
-
-    # Align indices before subtracting
-    common_index = adjusted_net.index.intersection(original_net.index)
-    perturb = adjusted_net.loc[common_index] - original_net.loc[common_index]
-    if cfs_to_cms:
-        perturb = perturb * CFS2CMS  # convert to cms
-
-    # Read in SCHISM data to perturb.
+    # Read in SCHISM data to net_diff.
     sch_src = read_th(schism_vsource)
     sch_sink = read_th(schism_vsink)
+    sch_delta_src = sch_src.loc[:, sch_src.columns.str.contains("delta", case=False)]
+    sch_delta_sink = sch_sink.loc[:, sch_sink.columns.str.contains("delta", case=False)]
 
     ssrc, ssink = adjust_src_sink(
-        sch_src, sch_sink, perturb
+        sch_delta_src, sch_delta_sink, net_diff
     )  # create the adjusted source/sink values to be used for this version in SCHISM
-    ssrc.index = ssrc.index.strftime("%Y-%m-%dT00:00")
-    ssink.index = ssink.index.strftime("%Y-%m-%dT00:00")
 
-    fn_src = os.path.join(out_dir, f"vsource.{version}.dated.th")
-    fn_sink = os.path.join(out_dir, f"vsink.{version}.dated.th")
+    # Add the adjusted columns to the original SCHISM data
+    src_out = sch_src.copy()
+    src_out.update(ssrc)
+    sink_out = sch_sink.copy()
+    sink_out.update(ssink)
+    src_out.index = src_out.index.strftime("%Y-%m-%dT00:00")
+    sink_out.index = sink_out.index.strftime("%Y-%m-%dT00:00")
 
-    src = ssrc
-    sink = ssink
+    fn_src = out_dir / f"vsource.{version}.dated.th"
+    fn_sink = out_dir / f"vsink.{version}.dated.th"
 
-    if (src.values < 0).any():
+    if (src_out.values < 0).any():
         raise ValueError(
             "There are negative values in the source dataframe! They should all be positive"
         )
     else:
         print(f"Writing source to {fn_src}")
-        src.to_csv(fn_src, sep=" ", float_format="%.2f")
-    if (sink.values > 0).any():
+        src_out.to_csv(fn_src, sep=" ", float_format="%.2f")
+    if (sink_out.values > 0).any():
         raise ValueError(
             "There are positive values in the sink dataframe! They should all be negative"
         )
     else:
         print(f"Writing sink to {fn_sink}")
-        sink.to_csv(fn_sink, sep=" ", float_format="%.2f")
+        sink_out.to_csv(fn_sink, sep=" ", float_format="%.2f")
 
 
-def get_net_srcsnk_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1)):
+def calc_srcsnk_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1)):
     """Get net source and net sink timeseries from DCD DSS file.
+
     Parameters
     ----------
     dcd_dss_file: str|Path
         Path to the DCD DSS file. Contains DRAIN-FLOW, SEEP-FLOW, and DIV-FLOW data.
-    start: pd.Timestamp
+    start_date: pd.Timestamp, optional
         Start date for the timeseries.
-    end: pd.Timestamp
+    end_date: pd.Timestamp, optional
         End date for the timeseries.
+    dt: float or pd.DateOffset, optional
+        Time step in days for interpolation.
+
+    Returns
+    -------
+    src: pd.Series
+        Series of net source flow in cfs.
+    sink: pd.Series
+        Series of net sink flow in cfs.
     """
+
+    dcd_dss_file = Path(dcd_dss_file)
 
     df_div_dcd = read_dss(
         dcd_dss_file, "///DIV-FLOW////", start_date=start_date, end_date=end_date, dt=dt
@@ -242,13 +285,70 @@ def get_net_srcsnk_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1)
     use_cols = [col for col in df_drain_dcd.columns if "total" not in col.lower()]
     df_drain_dcd = df_drain_dcd[use_cols]
 
-    src0 = df_drain_dcd.sum(axis=1)
-    sink0 = df_div_dcd.sum(axis=1) + df_seep_dcd.sum(axis=1)
+    src = df_drain_dcd.sum(axis=1)
+    sink = df_div_dcd.sum(axis=1) + df_seep_dcd.sum(axis=1)
 
-    return src0, sink0
+    return src, sink
 
 
-def get_calsim_net(dcd_dss_calsim, start_date=None, end_date=None, dt=days(1)):
+def calc_net_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1), **kwargs):
+    """Get net timeseries from DCD DSS file.
+
+    Parameters
+    ----------
+    dcd_dss_file: str|Path
+        Path to the DCD DSS file. Contains DRAIN-FLOW, SEEP-FLOW, and DIV-FLOW data.
+    start_date: pd.Timestamp, optional
+        Start date for the timeseries.
+    end_date: pd.Timestamp, optional
+        End date for the timeseries.
+    dt: float or pd.DateOffset, optional
+        Time step in days for interpolation.
+    kwargs: dict, optional
+        Additional keyword arguments to pass to the read_dss function. (unused in this function)
+
+    Returns
+    -------
+    pd.Series
+        Series of net consumptive use in cfs, calculated as source - sink.
+    """
+
+    dcd_dss_file = Path(dcd_dss_file)
+
+    src, sink = calc_srcsnk_dsm2(
+        dcd_dss_file, start_date=start_date, end_date=end_date, dt=dt
+    )
+
+    return src - sink
+
+
+def calc_net_calsim(
+    dcd_dss_calsim, start_date=None, end_date=None, dt=days(1), **kwargs
+):
+    """Get net consumptive use timeseries from Calsim DSS file.
+
+    Parameters
+    ----------
+    dcd_dss_calsim: str|Path
+        Path to the Calsim DSS file. Contains DICU_FLOW data.
+    start_date: pd.Timestamp, optional
+        Start date for the timeseries.
+    end_date: pd.Timestamp, optional
+        End date for the timeseries.
+    dt: float or pd.DateOffset, optional
+        Time step in days for interpolation.
+    kwargs: dict, optional
+        Additional keyword arguments to pass to the read_dss function. (unused in this function)
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with a single column named 'net' containing net consumptive use in cfs.
+        The data is read from the DICU_FLOW path in the Calsim DSS file.
+    """
+
+    dcd_dss_calsim = Path(dcd_dss_calsim)
+
     net = read_dss(
         dcd_dss_calsim,
         "///DICU_FLOW////",
@@ -256,160 +356,275 @@ def get_calsim_net(dcd_dss_calsim, start_date=None, end_date=None, dt=days(1)):
         end_date=end_date,
         dt=dt,
     )
+    net.columns = ["net"]
 
     return net
 
 
-def dsm2_calsim_schism_dcd(
-    dcd_dss_dsm2,
-    dcd_dss_calsim,
-    schism_vsource,
-    schism_vsink,
-    out_dir,
-    version,
-    start_date=None,
-    end_date=None,
-    dt=days(1),
-):
-    # Read in DSS data and compute net difference from original
-    print("Reading DCD data from DSM2 inputs...")
-    src, sink = get_net_srcsnk_dsm2(
-        dcd_dss_dsm2, start_date=start_date, end_date=end_date, dt=dt
-    )  # source and sink for historical data
+def calc_net_schism(schism_dir, start_date=None, end_date=None, dt=days(1), **kwargs):
+    """Get net timeseries from SCHISM th files in cfs.
 
-    print("Reading DCD data from CalSim outputs...")
-    calsim_net = get_calsim_net(
-        dcd_dss_calsim, start_date=start_date, end_date=end_date, dt=dt
+    Parameters
+    ----------
+    schism_dir: str|Path
+        SCHISM directory where vsource.th and vsink.th files are found.
+    start_date: pd.Timestamp, optional
+        Start date for the timeseries.
+    end_date: pd.Timestamp, optional
+        End date for the timeseries.
+    dt: float or pd.DateOffset, optional
+        Time step in days for interpolation.
+    kwargs: dict, optional
+        Additional keyword arguments to pass to the SCHISM net calculation functions.
+        For example, if the original data has a specific vsource file, you can pass
+        `vsource_original='vsource_dated.th'` and it will be used in the calculation.
+        You must use _original or _perturbed suffixes to distinguish between original and perturbed data.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with a single column named 'net' containing net consumptive use in cfs.
+        The data is calculated from the vsource and vsink files in the SCHISM directory.
+    """
+    schism_dir = Path(schism_dir)
+
+    vsource = schism_dir / kwargs.get("vsource")
+    vsink = schism_dir / kwargs.get("vsink")
+
+    net, src, sink = calc_net_source_sink(
+        vsource_file=vsource,
+        vsink_file=vsink,
+        search_term="delta",
+        start_date=start_date,
+        end_date=end_date,
     )
-    calsim_net.columns = ["net"]
 
-    dsm2_net = src - sink  # original net flow for source/sink
-    dsm2_net.columns = ["net"]
+    net = rhistinterp(net, dt)
+    net.columns = ["net"]
+    net = net * CMS2CFS  # convert to cfs
 
-    sch_dcd_from_dss_pert(
-        dsm2_net,
-        calsim_net,
-        schism_vsource,
-        schism_vsink,
-        out_dir,
-        version,
-    )
+    return net
 
 
-def dsm2_dsm2_schism_dcd(
-    dcd_dss_dsm2_original,
-    dcd_dss_dsm2_perturbed,
-    schism_vsource,
-    schism_vsink,
-    out_dir,
-    version,
-    start_date=None,
-    end_date=None,
-    dt=days(1),
-):
-    # Read in DSS data and compute net difference from original
-    print("Reading DCD data from DSM2 inputs...")
-    src, sink = get_net_srcsnk_dsm2(
-        dcd_dss_dsm2_original, start_date=start_date, end_date=end_date, dt=dt
-    )  # source and sink for historical data
+def read_net_csv(csv_file, start_date=None, end_date=None, dt=days(1), **kwargs):
+    """Read net timeseries from a CSV file.
+    Parameters
+    ----------
+    csv_file: str|Path
+        Path to the CSV file containing net consumptive use data.
+    start_date: pd.Timestamp, optional
+        Start date for the timeseries.
+    end_date: pd.Timestamp, optional
+        End date for the timeseries.
+    dt: float or pd.DateOffset, optional
+        Time step in days for interpolation.
+    """
+    csv_file = Path(csv_file)
 
-    print("Reading perturbed DCD data from DSM2 inputs...")
-    psrc, psink = get_net_srcsnk_dsm2(
-        dcd_dss_dsm2_perturbed, start_date=start_date, end_date=end_date, dt=dt
-    )  # source and sink for pertrubed data
+    net = pd.read_csv(csv_file, index_col=0, parse_dates=[0])
 
-    dsm2_net_original = src - sink  # original net flow for source/sink
-    dsm2_net_original.columns = ["net"]
+    # clip to time constraint
+    if start_date is None:
+        start_date = net.index[0]
+    if end_date is None:
+        end_date = net.index[-1]
+    net = net[start_date:end_date]
 
-    dsm2_net_perturbed = psrc - psink  # perturbed net flow for source/sink
-    dsm2_net_perturbed.columns = ["net"]
+    net = rhistinterp(net, dt)
+    net.columns = ["net"]
 
-    sch_dcd_from_dss_pert(
-        dsm2_net_original,
-        dsm2_net_perturbed,
-        schism_vsource,
-        schism_vsink,
-        out_dir,
-        version,
-    )
+    return net
+
+
+# Map type string to function
+SRC_SNK_FUNC_MAP = {
+    "dsm2": calc_net_dsm2,
+    "calsim": calc_net_calsim,
+    "schism": calc_net_schism,
+    "csv": read_net_csv,
+    # add more types as needed
+}
 
 
 def strip_dpart(colname):
+    """Remove the 5th part of a DSS path, which is the D part.
+    This is used to strip the D part from the column names in the DCD data.
+    Parameters
+    ----------
+    colname: str
+        The column name in the DSS path format.
+    Returns
+    -------
+    str
+        The column name with the D part removed.
+    """
     parts = colname.split("/")
     parts[4] = ""
     return "/".join(parts)
 
 
-@click.group(
+# Main function
+def orig_pert_to_schism_dcd(
+    original_type,
+    original_filename,
+    perturbed_type,
+    perturbed_filename,
+    schism_vsource,
+    schism_vsink,
+    out_dir,
+    version,
+    start_date=None,
+    end_date=None,
+    dt=days(1),
+    **kwargs,
+):
+    """Convert original and perturbed DCD data to SCHISM vsource and vsink inputs.
+    Parameters
+    ----------
+    original_type: str
+        Type of the original DCD data (e.g. 'dsm2', 'calsim', 'csv', 'schism').
+    original_filename: str|Path
+        Path to the original DCD data file. If DSS then enter the filename.
+        If SCHISM then enter the directory where vsource.th and vsink.th are found.
+    perturbed_type: str
+        Type of the perturbed DCD data (e.g. 'dsm2', 'calsim', 'csv', 'schism').
+    perturbed_filename: str|Path
+        Path to the perturbed DCD data file. If DSS then enter the filename.
+        If SCHISM then enter the directory where vsource.th and vsink.th are found.
+    schism_vsource: str|Path
+        Input SCHISM vsource data, needs to be "dated" and not "elapsed".
+    schism_vsink: str|Path
+        Input SCHISM vsink data, needs to be "dated" and not "elapsed".
+    out_dir: str|Path
+        Output directory to store the altered *.th files.
+    version: str
+        Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th).
+    start_date: pd.Timestamp, optional
+        Start date for the timeseries. If None, uses the start date from the original data.
+    end_date: pd.Timestamp, optional
+        End date for the timeseries. If None, uses the end date from the original data.
+    dt: float or pd.DateOffset, optional
+        Time step in days for interpolation. Default is 1 day.
+    **kwargs: dict
+        Additional keyword arguments to pass to the SCHISM net calculation functions.
+        For example, if the original data has a specific vsource file, you can pass
+        `vsource_original='vsource_dated.th'` and it will be used in the calculation.
+        You must use _original or _perturbed suffixes to distinguish between original and perturbed data.
+    """
+    original_filename = Path(original_filename)
+    perturbed_filename = Path(perturbed_filename)
+    schism_vsource = Path(schism_vsource)
+    schism_vsink = Path(schism_vsink)
+    out_dir = Path(out_dir)
+
+    # Read in DSS data and compute net difference in the original case
+    print(f"Reading Original DCD data from {original_type.upper()} inputs...")
+    original_fxn = SRC_SNK_FUNC_MAP[
+        original_type.lower()
+    ]  # original net flow for source/sink
+    # Look for 'original' in kwargs and pass to original_fxn
+    original_kwargs = {
+        k.replace("_original", ""): v for k, v in kwargs.items() if "original" in k
+    }
+    net_original = original_fxn(
+        original_filename,
+        start_date=start_date,
+        end_date=end_date,
+        dt=dt,
+        **original_kwargs,
+    )
+
+    # Read in DSS data and compute net difference in the perturbed case
+    print(f"Reading Perturbed DCD data from {perturbed_type.upper()} inputs...")
+    perturbed_fxn = SRC_SNK_FUNC_MAP[
+        perturbed_type.lower()
+    ]  # perturbed net flow for source/sink
+    perturbed_kwargs = {
+        k.replace("_perturbed", ""): v for k, v in kwargs.items() if "perturbed" in k
+    }
+    net_perturbed = perturbed_fxn(
+        perturbed_filename,
+        start_date=start_date,
+        end_date=end_date,
+        dt=dt,
+        **perturbed_kwargs,
+    )
+
+    # Calculate the net difference between original and perturbed
+    net_diff = calc_net_diff(
+        net_original,
+        net_perturbed,
+        cfs_to_cms=True,
+    )  # net difference in cms
+
+    # Apply differences to SCHISM inputs
+    sch_dcd_net_diff(
+        net_diff,
+        schism_vsource,
+        schism_vsink,
+        out_dir,
+        version,
+    )
+
+
+@click.command(
     help=(
         "Uses consumptive use adjustments to historical data "
         "in order to determine what the adjusted values for vsource.th and vsink.th are"
+        "\n\nExample Usages:"
+        "\n\n\tbds parse_cu dsm2 ./dsm2/DCD_hist_Lch5.dss calsim ./calsim/DCR2023_DV_9.3.1_v2a_Danube_Adj_v1.8.dss ./schism/vsource_dated.th ./schism/vsink_dated.th ./out_dir dsm2_calsim_v1"
+        "\n"
+        "\n\tbds parse_cu schism ./schism/ dsm2 ./dsm2/DCD_hist_Lch5.dss ./schism/simulation/vsource_dated.th ./schism/simulation/vsink_dated.th ./out_dir schism_dsm2_v1 --param vsource_original vsource_2023.th vsink_original vsink_2023.th"
     )
 )
 @click.help_option("-h", "--help")
-def parse_cu_cli():
-    """Main entry point for consumptive use - SCHISM commands."""
-    pass
-
-
-@parse_cu_cli.command("dsm2-dsm2")
-@click.option(
-    "--dcd-dss-dsm2-original",
-    required=True,
+@click.argument(
+    "original_type",
+    type=click.Choice(["dsm2", "calsim", "csv", "schism"], case_sensitive=False),
+)
+@click.argument(
+    "original_filename",
     type=click.Path(exists=True),
-    help="Path to original/historical DSM2 DCD DSS file.",
 )
-@click.option(
-    "--dcd-dss-dsm2-perturbed",
-    required=True,
+@click.argument(
+    "perturbed_type",
+    type=click.Choice(["dsm2", "calsim", "csv", "schism"], case_sensitive=False),
+)
+@click.argument(
+    "perturbed_filename",
     type=click.Path(exists=True),
-    help="Path to perturbed DSM2 DCD DSS file.",
 )
-@click.option(
-    "--schism-vsource",
-    required=True,
-    type=click.Path(exists=True),
-    help="Path to SCHISM vsource.th file (dated format).",
-)
-@click.option(
-    "--schism-vsink",
-    required=True,
-    type=click.Path(exists=True),
-    help="Path to SCHISM vsink.th file (dated format).",
-)
-@click.option(
-    "--out-dir",
-    required=True,
-    type=click.Path(),
-    help="Output directory for adjusted SCHISM files.",
-)
-@click.option(
-    "--version",
-    required=True,
-    type=str,
-    help="Version tag for output files.",
-)
+@click.argument("schism_vsource", type=click.Path(exists=True))
+@click.argument("schism_vsink", type=click.Path(exists=True))
+@click.argument("out_dir", type=click.Path())
+@click.argument("version", type=str)
 @click.option(
     "--start-date",
     type=click.DateTime(formats=["%Y-%m-%d"]),
     default=None,
-    help="Start date (YYYY-MM-DD).",
+    help="Start date (YYYY-MM-DD)",
 )
 @click.option(
     "--end-date",
     type=click.DateTime(formats=["%Y-%m-%d"]),
     default=None,
-    help="End date (YYYY-MM-DD).",
+    help="End date (YYYY-MM-DD)",
 )
+@click.option("--dt", type=int, default=1, help="Time step in days.")
 @click.option(
-    "--dt",
-    type=float,
-    default=1.0,
-    help="Time step in days.",
+    "--param",
+    type=(str, str),
+    multiple=True,
+    help=(
+        "Extra key-value parameters to pass to the net calculation functions, "
+        "e.g. --param vsource_original vsource_dated.th vsource_perturbed vsource_2023.th"
+    ),
 )
-def dsm2_dsm2_cmd(
-    dcd_dss_dsm2_original,
-    dcd_dss_dsm2_perturbed,
+def parse_cu_cli(
+    original_type,
+    original_filename,
+    perturbed_type,
+    perturbed_filename,
     schism_vsource,
     schism_vsink,
     out_dir,
@@ -417,102 +632,68 @@ def dsm2_dsm2_cmd(
     start_date,
     end_date,
     dt,
+    param,
 ):
-    """Adjust SCHISM vsource/vsink using two DSM2 DCD DSS files."""
-    from vtools.data.vtime import days
+    """Main entry point for consumptive use - SCHISM commands.
+    Arguments
+    ---------
+    original_type : str
+        Type of the original DCD data (e.g. 'dsm2', 'calsim', 'csv', 'schism').
+    original_filename : str
+        Path to the original DCD data file. If DSS then enter the filename.
+        If SCHISM then enter the directory where vsource.th and vsink.th are found.
+    perturbed_type : str
+        Type of the perturbed DCD data (e.g. 'dsm2', 'calsim', 'csv', 'schism').
+    perturbed_filename : str
+        Path to the perturbed DCD data file. If DSS then enter the filename.
+        If SCHISM then enter the directory where vsource.th and vsink.th are found.
+    schism_vsource : str
+        Input SCHISM vsource data, needs to be "dated" and not "elapsed".
+    schism_vsink : str
+        Input SCHISM vsink data, needs to be "dated" and not "elapsed".
+    out_dir : str
+        Output directory to store the altered *.th files.
+    version : str
+        Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th).
 
-    dsm2_dsm2_schism_dcd(
-        dcd_dss_dsm2_original,
-        dcd_dss_dsm2_perturbed,
+    Options
+    -------
+    --start-date : str
+        Start date (YYYY-MM-DD).
+    --end-date : str
+        End date (YYYY-MM-DD).
+    --dt : int
+        Time step in days.
+    --param : (str, str)
+        Extra key-value parameters to pass to the net calculation functions.
+        e.g. --param vsource_original vsource_dated.th vsource_perturbed vsource_2023.th
+    """
+    # Convert paths to Path objects
+    original_filename = Path(original_filename)
+    perturbed_filename = Path(perturbed_filename)
+    schism_vsource = Path(schism_vsource)
+    schism_vsink = Path(schism_vsink)
+    out_dir = Path(out_dir)
+    # Ensure out_dir exists
+    print(f"Creating output directory: {out_dir}")
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Convert param tuples to a dict
+    extra_kwargs = dict(param)
+    # Pass extra_kwargs to orig_pert_to_schism_dcd
+    orig_pert_to_schism_dcd(
+        original_type,
+        original_filename,
+        perturbed_type,
+        perturbed_filename,
         schism_vsource,
         schism_vsink,
         out_dir,
         version,
         start_date=start_date,
         end_date=end_date,
-        dt=days(dt),
-    )
-
-
-@parse_cu_cli.command("dsm2-calsim")
-@click.option(
-    "--dcd-dss-dsm2",
-    required=True,
-    type=click.Path(exists=True),
-    help="Path to DSM2 DCD DSS file.",
-)
-@click.option(
-    "--dcd-dss-calsim",
-    required=True,
-    type=click.Path(exists=True),
-    help="Path to CalSim DCD DSS file.",
-)
-@click.option(
-    "--schism-vsource",
-    required=True,
-    type=click.Path(exists=True),
-    help="Path to SCHISM vsource.th file (dated format).",
-)
-@click.option(
-    "--schism-vsink",
-    required=True,
-    type=click.Path(exists=True),
-    help="Path to SCHISM vsink.th file (dated format).",
-)
-@click.option(
-    "--out-dir",
-    required=True,
-    type=click.Path(),
-    help="Output directory for adjusted SCHISM files.",
-)
-@click.option(
-    "--version",
-    required=True,
-    type=str,
-    help="Version tag for output files.",
-)
-@click.option(
-    "--start-date",
-    type=click.DateTime(formats=["%Y-%m-%d"]),
-    default=None,
-    help="Start date (YYYY-MM-DD).",
-)
-@click.option(
-    "--end-date",
-    type=click.DateTime(formats=["%Y-%m-%d"]),
-    default=None,
-    help="End date (YYYY-MM-DD).",
-)
-@click.option(
-    "--dt",
-    type=float,
-    default=1.0,
-    help="Time step in days.",
-)
-def dsm2_calsim_cmd(
-    dcd_dss_dsm2,
-    dcd_dss_calsim,
-    schism_vsource,
-    schism_vsink,
-    out_dir,
-    version,
-    start_date,
-    end_date,
-    dt,
-):
-    """Adjust SCHISM vsource/vsink using DSM2 and CalSim DCD DSS files."""
-    from vtools.data.vtime import days
-
-    dsm2_calsim_schism_dcd(
-        dcd_dss_dsm2,
-        dcd_dss_calsim,
-        schism_vsource,
-        schism_vsink,
-        out_dir,
-        version,
-        start_date=start_date,
-        end_date=end_date,
-        dt=days(dt),
+        dt=dt,
+        **extra_kwargs,
     )
 
 
@@ -524,9 +705,11 @@ if __name__ == "__main__":
     # schism_vsink = os.path.join(schism_in, "vsink_dated.th")
     # version = "rt_v1"
     # out_dir = f"D:/projects/delta_salinity/DSP_code/model/schism/roundtrip/{version}"
-
-    # dsm2_calsim_schism_dcd(
+    # # Call the main function with example parameters
+    # orig_pert_to_schism_dcd(
+    #     "dsm2",
     #     dcd_dss_original,
+    #     "calsim",
     #     dcd_dss_adjusted,
     #     schism_vsource,
     #     schism_vsink,
