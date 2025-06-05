@@ -2,33 +2,31 @@
 # hot_from_hot ./hotstart_from_hotstart.yaml --f_in hotstart_it=480000.nc --src_dir ./source_dir/ --trg_dir ./target_dir/
 
 hotstart: 
-    output_fn: {hotstart_out}
-    date: {hot_date}    # datetime of hotstart file from which SCHISM will start
-    run_start: {run_start} # datetime considered to be time=0, from param.nml start_{year/month/day/hour} parameter
-    time_step: {timestep}
-    hgrid_input_file: {hgrid_out}                     # hgrid which the hotstart_in file was generated with, needs to be in utm coordinates. 
-    vgrid_input_file: {vgrid_out}                     # vgrid which the hotstart_in file was generated with
+    output_fn: "${hotstart_out}"
+    date: "${hot_date}"    # datetime of hotstart file from which SCHISM will start
+    run_start: "${run_start}" # datetime considered to be time=0, from param.nml start_{year/month/day/hour} parameter
+    time_step: "${timestep}"
+    hgrid_input_file: "${hgrid_out}"                     # hgrid which the hotstart_in file was generated with, needs to be in utm coordinates. 
+    vgrid_input_file: "${vgrid_out}"                     # vgrid which the hotstart_in file was generated with
     vgrid_version: '5.10'
-
-    
     elevation:
         centering: node  # node, edge, elem, prism, benthic 
         initializer: 
             hotstart_nc:
-                data_source: {hotstart_in}  
-                hgrid: {hgrid_in}                     # hgrid used to write the hotstart out to
-                vgrid: {vgrid_out} 
-                source_hgrid: {hgrid_in}                     # hgrid used to write the hotstart out to 
-                source_vgrid: {vgrid_in}                     # vgrid used to write the hotstart out to 
+                data_source: "${hotstart_in}"  
+                hgrid: "${hgrid_in}"                     # hgrid used to write the hotstart out to
+                vgrid: "${vgrid_out}" 
+                source_hgrid: "${hgrid_in}"                     # hgrid used to write the hotstart out to 
+                source_vgrid: "${vgrid_in}"                     # vgrid used to write the hotstart out to 
                 source_vgrid_version: '5.10'
                 vgrid_version: '5.10'
                 method: nearest   
     tke:
         initializer: 
             hotstart_nc:
-                data_source: {hotstart_in}   
-                source_hgrid: {hgrid_in}                     # hgrid used to write the hotstart out to
-                source_vgrid: {vgrid_in}                     # vgrid used to write the hotstart out to
+                data_source: "${hotstart_in}"   
+                source_hgrid: "${hgrid_in}"                     # hgrid used to write the hotstart out to
+                source_vgrid: "${vgrid_in}"                     # vgrid used to write the hotstart out to
                 source_vgrid_version: '5.10'
                 vgrid_version: '5.10'
                 distance_threshold: 10  # vertical interpolation search parameter
@@ -36,9 +34,9 @@ hotstart:
     velocity_w:
         initializer: 
             hotstart_nc:
-                data_source: {hotstart_in}   
-                source_hgrid: {hgrid_in}                     # hgrid used to write the hotstart out to 
-                source_vgrid: {vgrid_in}
+                data_source: "${hotstart_in}"
+                source_hgrid: "${hgrid_in}"                     # hgrid used to write the hotstart out to 
+                source_vgrid: "${vgrid_in}"
                 source_vgrid_version: '5.10'
                 vgrid_version: '5.10'
                 distance_threshold: 10  # vertical interpolation search parameter
@@ -46,9 +44,9 @@ hotstart:
     velocity_u:
         initializer: 
             hotstart_nc:
-                data_source: {hotstart_in}   
-                source_hgrid: {hgrid_in}                     # hgrid used to write the hotstart out to
-                source_vgrid: {vgrid_in}                     # vgrid used to write the hotstart out to   
+                data_source: "${hotstart_in}"   
+                source_hgrid: "${hgrid_in}"                     # hgrid used to write the hotstart out to
+                source_vgrid: "${vgrid_in}"                     # vgrid used to write the hotstart out to   
                 source_vgrid_version: '5.10'
                 vgrid_version: '5.10'
                 distance_threshold: 10 # vertical interpolation search parameter
@@ -57,20 +55,9 @@ hotstart:
         centering: edge # node, edge, elem, prism, benthic 
         initializer: 
             hotstart_nc:
-                data_source: {hotstart_in}   
-                source_hgrid: {hgrid_in}                     # hgrid used to write the hotstart out to
-                source_vgrid: {vgrid_in}                     # vgrid used to write the hotstart out to  
-                source_vgrid_version: '5.10'
-                vgrid_version: '5.10'
-                distance_threshold: 10
-                method: nearest            #method: interpolate vertically or assign a simple function (for flooded island case) in case hgrid
-    temperature:
-        initializer: 
-            hotstart_nc:
-                data_source: {hotstart_in} 
-                #tracer_id: 0                #if different from existing setting. I think T is always 1 and S is always 2; otherwise infer a tracer_id based on existing tracer_id. 
-                source_hgrid: {hgrid_in}                     # hgrid used to write the hotstart out to  #if the hgrid is different
-                source_vgrid: {vgrid_in}                     # vgrid used to write the hotstart out to  #if the vgrid is different
+                data_source: "${hotstart_in}"   
+                source_hgrid: "${hgrid_in}"                     # hgrid used to write the hotstart out to
+                source_vgrid: "${vgrid_in}"                     # vgrid used to write the hotstart out to  
                 source_vgrid_version: '5.10'
                 vgrid_version: '5.10'
                 distance_threshold: 10
@@ -78,10 +65,21 @@ hotstart:
     salinity:
         initializer: 
             hotstart_nc:
-                data_source: {hotstart_in}                 
-                source_hgrid: {hgrid_in}                     # hgrid used to write the hotstart out to  #if the hgrid is different
-                source_vgrid: {vgrid_in}                     # vgrid used to write the hotstart out to  #if the vgrid is different
+                data_source: "${hotstart_in}"                 
+                source_hgrid: "${hgrid_in}"                     # hgrid used to write the hotstart out to  #if the hgrid is different
+                source_vgrid: "${vgrid_in}"                     # vgrid used to write the hotstart out to  #if the vgrid is different
                 source_vgrid_version: '5.10'
                 vgrid_version: '5.10'
                 distance_threshold: 10
-                method: nearest            #method: interpolate vertically or assign a simple function (for flooded island case) in case hgrid                
+                method: nearest            #method: interpolate vertically or assign a simple function (for flooded island case) in case hgrid
+    temperature:
+        initializer: 
+            hotstart_nc:
+                data_source: "${hotstart_in}" 
+                #tracer_id: 0                #if different from existing setting. I think T is always 1 and S is always 2; otherwise infer a tracer_id based on existing tracer_id. 
+                source_hgrid: "${hgrid_in}"                     # hgrid used to write the hotstart out to  #if the hgrid is different
+                source_vgrid: "${vgrid_in}"                     # vgrid used to write the hotstart out to  #if the vgrid is different
+                source_vgrid_version: '5.10'
+                vgrid_version: '5.10'
+                distance_threshold: 10
+                method: nearest            #method: interpolate vertically or assign a simple function (for flooded island case) in case hgrid
