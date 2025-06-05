@@ -32,7 +32,7 @@ def read_dss(
     """
     ts_out_list = []
     col_names = []
-    print(f"\t{pathname}")
+    print(f"\tReading pathname: {pathname}")
     if len(pathname.split("/")[1:-1]) != 6:
         raise ValueError(f"Invalid DSS pathname: {pathname}, needs 6 parts (A-F)")
     ts = get_ts(filename, pathname)
@@ -47,7 +47,7 @@ def read_dss(
         if end_date is None:
             end_date = tt_full.index[-1]
         tt = tt_full[start_date:end_date]
-        pidx = pd.period_range(start_date, tt.index[-1], freq=dss_e2_freq[path_e])
+        pidx = pd.period_range(tt.index[0], tt.index[-1], freq=dss_e2_freq[path_e])
         ptt = pd.DataFrame(tt.values[:, 0], pidx)
 
         # Interpolate with rhistinterp
