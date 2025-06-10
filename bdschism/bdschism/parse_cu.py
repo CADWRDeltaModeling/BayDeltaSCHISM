@@ -229,7 +229,13 @@ def sch_dcd_net_diff(
         sink_out.to_csv(fn_sink, sep=" ", float_format="%.2f")
 
 
-def calc_srcsnk_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1)):
+def calc_srcsnk_dsm2(
+    dcd_dss_file,
+    start_date=None,
+    end_date=None,
+    dt=days(1),
+    exclude_pathname="//TOTAL*/////",
+):
     """Get net source and net sink timeseries from DCD DSS file.
 
     Parameters
@@ -242,6 +248,8 @@ def calc_srcsnk_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1)):
         End date for the timeseries.
     dt: float or pd.DateOffset, optional
         Time step in days for interpolation.
+    exclude_pathname: str, optional
+        Pathname parts to exclude, ex: '//TOTAL*/////'
 
     Returns
     -------
@@ -254,7 +262,12 @@ def calc_srcsnk_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1)):
     dcd_dss_file = Path(dcd_dss_file)
 
     df_div_dcd = read_dss(
-        dcd_dss_file, "///DIV-FLOW////", start_date=start_date, end_date=end_date, dt=dt
+        dcd_dss_file,
+        "///DIV-FLOW////",
+        start_date=start_date,
+        end_date=end_date,
+        dt=dt,
+        exclude_pathname=exclude_pathname,
     )
     df_seep_dcd = read_dss(
         dcd_dss_file,
@@ -262,6 +275,7 @@ def calc_srcsnk_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1)):
         start_date=start_date,
         end_date=end_date,
         dt=dt,
+        exclude_pathname=exclude_pathname,
     )
     df_drain_dcd = read_dss(
         dcd_dss_file,
@@ -269,6 +283,7 @@ def calc_srcsnk_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1)):
         start_date=start_date,
         end_date=end_date,
         dt=dt,
+        exclude_pathname=exclude_pathname,
     )
 
     df_div_dcd = df_div_dcd.clip(lower=0.0)
@@ -291,7 +306,14 @@ def calc_srcsnk_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1)):
     return src, sink
 
 
-def calc_net_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1), **kwargs):
+def calc_net_dsm2(
+    dcd_dss_file,
+    start_date=None,
+    end_date=None,
+    dt=days(1),
+    exclude_pathname="//TOTAL*/////",
+    **kwargs,
+):
     """Get net timeseries from DCD DSS file.
 
     Parameters
@@ -304,6 +326,8 @@ def calc_net_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1), **kw
         End date for the timeseries.
     dt: float or pd.DateOffset, optional
         Time step in days for interpolation.
+    exclude_pathname: str, optional
+        Pathname parts to exclude, ex: '//TOTAL*/////'
     kwargs: dict, optional
         Additional keyword arguments to pass to the read_dss function. (unused in this function)
 
@@ -316,7 +340,11 @@ def calc_net_dsm2(dcd_dss_file, start_date=None, end_date=None, dt=days(1), **kw
     dcd_dss_file = Path(dcd_dss_file)
 
     src, sink = calc_srcsnk_dsm2(
-        dcd_dss_file, start_date=start_date, end_date=end_date, dt=dt
+        dcd_dss_file,
+        start_date=start_date,
+        end_date=end_date,
+        dt=dt,
+        exclude_pathname=exclude_pathname,
     )
 
     return src - sink
