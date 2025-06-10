@@ -1,0 +1,26 @@
+config:
+  # variables used to populate the rest of the yaml file
+  bds_home: D:/python/repositories/BayDeltaSCHISM
+  version: rt_v1
+  dsp_code: D:/projects/delta_salinity/DSP_code
+  out_dir: ${dsp_code}/model/schism/roundtrip/${version}/
+
+# Consumputive use parameters listed under "cu"
+cu:
+  process: net_diff_to_schism # net_diff_to_schism or orig_pert_to_schism
+  net_diff_filename: ./net_cu_diff_cms.csv # filename containing the net difference in consumptive use (assumed to be two columns: datetime and values, with a header)
+  schism_vsource: ${bds_home}/data/channel_depletion/vsource_dated.th
+  schism_vsink: ${bds_home}/data/channel_depletion/vsink_dated.th
+  out_dir: ${out_dir}
+  version: ${version}
+  start_date: ${sd}
+  end_date: ${ed}
+  cfs_to_cms: False
+
+# Example command line usage
+# bds parse_cu_yaml .\net_diff_to_schism.yaml -- --sd "2018/3/1" --ed "2019/4/1"
+
+# Example python usage:
+# from bdschism.parse_cu import orig_pert_to_schism_dcd_yaml
+# yaml_fn = r"./net_diff_to_schism.yaml"
+# orig_pert_to_schism_dcd_yaml(yaml_fn, envvar={"sd": "2018/3/1", "ed": "2019/4/1"})

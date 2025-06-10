@@ -5,6 +5,7 @@ from vtools.functions.interpolate import rhistinterp
 from vtools.data.vtime import days
 from schimpy.model_time import read_th, is_elapsed
 from schimpy.th_calcs import calc_net_source_sink
+from schimpy.util.yaml_load import yaml_from_file
 from bdschism.read_dss import read_dss
 from pathlib import Path
 import pandas as pd
@@ -79,8 +80,13 @@ def adjust_src_sink(src, sink, net_diff, sinkfrac=0.001, debug=False):
     sink_total = sink.sum(axis=1)
     dcd_total = src_total + sink_total
 
-    if isinstance(net_diff.index, pd.DatetimeIndex):
+    # Ensure proper formatting of net_diff
+    if isinstance(net_diff, pd.DataFrame) and net_diff.shape[1] == 1:
+        net_diff = net_diff.iloc[:, 0]
+    if isinstance(net_diff.index, pd.PeriodIndex):
         net_diff.index = net_diff.index.to_timestamp()
+
+    # Create perturbed dataframe for scaling and indexing
     pert = net_diff.reindex(
         dcd_total.index
     )  # using only the indices in dcd_total (from the src/sink inputs)
@@ -116,6 +122,11 @@ def adjust_src_sink(src, sink, net_diff, sinkfrac=0.001, debug=False):
     if negsrc:
         src = -src
         # sink.loc[sink==0.] = -0.0
+
+    # drop NaN's from interpolations etc.
+    sink = sink.dropna(axis=0, how="any")
+    src = src.dropna(axis=0, how="any")
+
     return src, sink
 
 
@@ -158,9 +169,11 @@ def sch_dcd_net_diff(
     schism_vsink,
     out_dir,
     version,
+    start_date=None,
+    end_date=None,
     cfs_to_cms=True,
 ):
-    """Convert adjusted DCD data from DSS into SCHISM-ready *.th inputs.
+    """Convert adjusted DCD data from DataFrame into SCHISM-ready *.th inputs.
     Parameters
     ----------
     net_diff: pd.DataFrame
@@ -172,7 +185,15 @@ def sch_dcd_net_diff(
     out_dir: str|Path
         Output directory to store the altered *.th files.
     version: str
-        Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th)"""
+        Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th)
+    start_date: pd.Timestamp, optional
+        Start date for the timeseries.
+    end_date: pd.Timestamp, optional
+        End date for the timeseries.
+    cfs_to_cms: bool, optional
+        Set to True if net data is in cfs and needs to be converted to cms for SCHISM.
+        Only set to False if net data is in cms.
+    """
     # Normalize paths
     schism_vsource = Path(schism_vsource)
     schism_vsink = Path(schism_vsink)
@@ -212,6 +233,14 @@ def sch_dcd_net_diff(
 
     fn_src = out_dir / f"vsource.{version}.dated.th"
     fn_sink = out_dir / f"vsink.{version}.dated.th"
+
+    # Clip to desired daterange:
+    if start_date is None:
+        start_date = src_out.index[0]
+    if end_date is None:
+        end_date = src_out.index[-1]
+    src_out = src_out[start_date:end_date]
+    sink_out = sink_out[start_date:end_date]
 
     if (src_out.values < 0).any():
         raise ValueError(
@@ -385,6 +414,8 @@ def calc_net_calsim(
         dt=dt,
     )
     net.columns = ["net"]
+    if isinstance(net, pd.DataFrame) and net.shape[1] == 1:
+        net = net.iloc[:, 0]
 
     return net
 
@@ -457,6 +488,10 @@ def read_net_csv(csv_file, start_date=None, end_date=None, dt=days(1), **kwargs)
     if end_date is None:
         end_date = net.index[-1]
     net = net[start_date:end_date]
+
+    # Convert DatetimeIndex to PeriodIndex if needed
+    if isinstance(net.index, pd.DatetimeIndex):
+        net.index = net.index.to_period("D")
 
     net = rhistinterp(net, dt)
     net.columns = ["net"]
@@ -593,6 +628,146 @@ def orig_pert_to_schism_dcd(
         out_dir,
         version,
     )
+
+
+def orig_pert_to_schism_dcd_yaml(yaml_fn, envvar=None):
+    """Convert original and perturbed DCD data to SCHISM vsource and vsink inputs from yaml input file.
+
+    Parameters
+    ----------
+    yaml_fn: str|Path
+        Path to the YAML file containing configuration.
+    envvar: dict or None, optional
+        Optional dictionary of environment variables or overrides. If None, no overrides are applied.
+    """
+
+    yaml_content = yaml_from_file(yaml_fn, envvar=envvar)
+
+    cu_inputs = yaml_content["cu"]
+
+    # Optionals from envvar or default
+    start_date = (
+        cu_inputs.get("start_date") if cu_inputs and "start_date" in cu_inputs else None
+    )
+    end_date = (
+        cu_inputs.get("end_date") if cu_inputs and "end_date" in cu_inputs else None
+    )
+    dt = cu_inputs.get("dt") if cu_inputs and "dt" in cu_inputs else days(1)
+
+    cfs_to_cms = (
+        cu_inputs.get("cfs_to_cms") if cu_inputs and "cfs_to_cms" in cu_inputs else True
+    )
+    # Remove these from envvar for **kwargs if present
+    kwargs = dict(envvar) if envvar else {}
+    for k in ["start_date", "end_date", "dt"]:
+        kwargs.pop(k, None)
+
+    if cu_inputs["process"] == "orig_pert_to_schism":
+        # Required arguments
+        required_keys = [
+            "original_type",
+            "original_filename",
+            "perturbed_type",
+            "perturbed_filename",
+            "schism_vsource",
+            "schism_vsink",
+            "out_dir",
+            "version",
+        ]
+        missing = [k for k in required_keys if k not in cu_inputs]
+        if missing:
+            raise KeyError(
+                f"Missing required keys in cu_inputs: {missing}\n\tAll keys needed are: {required_keys}"
+            )
+
+        orig_pert_to_schism_dcd(
+            cu_inputs["original_type"],
+            cu_inputs["original_filename"],
+            cu_inputs["perturbed_type"],
+            cu_inputs["perturbed_filename"],
+            cu_inputs["schism_vsource"],
+            cu_inputs["schism_vsink"],
+            cu_inputs["out_dir"],
+            cu_inputs["version"],
+            start_date=start_date,
+            end_date=end_date,
+            dt=dt,
+            **kwargs,
+        )
+    elif cu_inputs["process"] == "net_diff_to_schism":
+        # Required arguments
+        required_keys = [
+            "net_diff_filename",
+            "schism_vsource",
+            "schism_vsink",
+            "out_dir",
+            "version",
+        ]
+        missing = [k for k in required_keys if k not in cu_inputs]
+        if missing:
+            raise KeyError(
+                f"Missing required keys in cu_inputs: {missing}\n\tAll keys needed are: {required_keys}"
+            )
+
+        # Read net difference from the specified file
+        net_diff = read_net_csv(
+            cu_inputs["net_diff_filename"],
+            start_date=start_date,
+            end_date=end_date,
+            dt=dt,
+            **kwargs,
+        )
+
+        sch_dcd_net_diff(
+            net_diff,
+            cu_inputs["schism_vsource"],
+            cu_inputs["schism_vsink"],
+            cu_inputs["out_dir"],
+            cu_inputs["version"],
+            cfs_to_cms=cfs_to_cms,
+        )
+    else:
+        raise ValueError(
+            f"Unknown process {cu_inputs['process']} in cu_inputs. "
+            "Expected 'orig_pert_to_schism' or 'net_diff_to_schism'."
+        )
+
+
+@click.command(
+    help=(
+        "Transfer hotstart data from one grid to another'\n\n"
+        "Arguments:\n"
+        "  YAML  Path to the YAML file."
+        "For instance hotstart_from_hotstart.yaml (found in examples/hotstart/examples)"
+    )
+)
+@click.argument("yaml_fn")
+@click.help_option("-h", "--help")
+@click.argument("extra", nargs=-1)
+def parse_cu_yaml_cli(
+    yaml_fn: str,
+    extra=(),
+):
+    """
+    Command-line interface for transferring hotstart data from one grid to another.
+    Arguments
+    ---------
+        yaml_fn      Path to the YAML file (e.g., parse_cu.yaml).
+    """
+
+    # Parse extra arguments into a dictionary (expects --key value pairs)
+    envvar = {}
+    key = None
+    for item in extra:
+        if item.startswith("--"):
+            key = item.lstrip("-")
+        elif key is not None:
+            envvar[key] = item
+            key = None
+    if key is not None:
+        raise ValueError(f"No value provided for extra argument: {key}")
+
+    orig_pert_to_schism_dcd_yaml(yaml_fn, envvar=envvar if envvar else None)
 
 
 @click.command(
@@ -746,4 +921,8 @@ if __name__ == "__main__":
     #     start_date=pd.to_datetime("2015-01-01"),
     #     end_date=pd.to_datetime("2022-10-01"),
     # )  # get the net source/sink for both original and perturbed data
+
+    # os.chdir("../../examples/parse_cu/")
+    # yaml_fn = "./net_diff_to_schism.yaml"
+    # orig_pert_to_schism_dcd_yaml(yaml_fn, envvar={"sd": "2018/3/1", "ed": "2019/4/1"})
     parse_cu_cli()
