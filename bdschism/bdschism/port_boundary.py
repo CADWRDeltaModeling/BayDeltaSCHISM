@@ -158,26 +158,18 @@ def create_schism_bc(config_yaml, kwargs={}):
         merged_kwargs = {**config["config"], **kwargs}
         kwargs = merged_kwargs
 
-    dir = config["dir"]
-
     # Overwrite if historical data is manipulated.
     # If forecast data is being applied, overwrite should be False
     overwrite = config["param"]["overwrite"]
 
     # Read in parameters from the YAML file
-    source_map_file = os.path.join(dir, config["file"]["source_map_file"])
-    schism_flux_file = os.path.join(dir, config["file"]["schism_flux_file"])
-    schism_salt_file = os.path.join(dir, config["file"]["schism_salt_file"])
-    schism_temp_file = os.path.join(dir, config["file"]["schism_temp_file"])
-    schism_dcc_gate_file = None
-    if "schism_dcc_gate_file" in config["file"]:
-        schism_dcc_gate_file = os.path.join(dir, config["file"]["schism_dcc_gate_file"])
-    out_file_flux = os.path.join(config["file"]["out_file_flux"])
-    out_file_salt = os.path.join(config["file"]["out_file_salt"])
-    out_file_temp = os.path.join(config["file"]["out_file_temp"])
-    out_file_dcc_gate = None
-    if "out_file_dcc_gate" in config["file"]:
-        out_file_dcc_gate = os.path.join(config["file"]["out_file_dcc_gate"])
+    source_map_file = config["file"]["source_map_file"]
+    schism_flux_file = config["file"]["schism_flux_file"]
+    schism_salt_file = config["file"]["schism_salt_file"]
+    schism_temp_file = config["file"]["schism_temp_file"]
+    out_file_flux = config["file"]["out_file_flux"]
+    out_file_salt = config["file"]["out_file_salt"]
+    out_file_temp = config["file"]["out_file_temp"]
     boundary_kinds = config["param"]["boundary_kinds"]
     sd = config["param"]["start_date"]
     ed = config["param"]["end_date"]
@@ -219,16 +211,23 @@ def create_schism_bc(config_yaml, kwargs={}):
         sep="\\s+",
         comment="#",
     )
-    dcc_gate = None
-    if "dcc_gate" in boundary_kinds:
-        dcc_gate = pd.read_csv(
-            schism_dcc_gate_file,
-            header=0,
-            parse_dates=True,
-            index_col=0,
-            sep="\\s+",
-            comment="#",
-        )
+
+    # handle gate files
+    if any("gate" in kind for kind in boundary_kinds):
+        schism_gate_files = {}
+        out_file_gates = {}
+        for gbk in [kind for kind in boundary_kinds if "gate" in kind]:
+            schism_gate_files[gbk] = pd.read_csv(
+                config["file"][f"schism_{gbk}_file"],
+                header=0,
+                parse_dates=True,
+                index_col=0,
+                sep="\\s+",
+                comment="#",
+            )  # used to manipulate specific columns
+            out_file_gates[gbk] = config["file"][
+                f"out_file_{gbk}"
+            ]  # used to write the boundary out
 
     for boundary_kind in boundary_kinds:
 
@@ -243,17 +242,22 @@ def create_schism_bc(config_yaml, kwargs={}):
         elif boundary_kind == "temp":
             dd = temp.copy().reindex(df_rng)
             out_file = out_file_temp
-        elif boundary_kind == "dcc_gate":
-            dd = dcc_gate.copy().reindex(df_rng)
+        elif "gate" in boundary_kind:
+            gate_df = schism_gate_files[boundary_kind]
+            # Get all schism_boundary values for this boundary_kind
+            cols_to_replace = source_map.loc[
+                source_map["boundary_kind"] == boundary_kind, "schism_boundary"
+            ].tolist()
+            dd = gate_df.copy().reindex(df_rng)
             # Take existing values from the reference file (might only work on DCC gate)
-            dd.iloc[:, dd.columns != "height"] = dcc_gate.iloc[
-                0, dcc_gate.columns != "height"
+            dd.iloc[:, ~dd.columns.isin(cols_to_replace)] = gate_df.iloc[
+                0, ~gate_df.columns.isin(cols_to_replace)
             ]
             # enforce integer type else get schism error
             dd["install"] = dd["install"].astype(int)
             dd["ndup"] = dd["ndup"].astype(int)
             dd = dd.resample("D").first()
-            out_file = out_file_dcc_gate
+            out_file = out_file_gates[boundary_kind]
         elif boundary_kind == "cu":
             # Check if any rows for 'cu' boundary_kind have invalid source_kind
             invalid_cu_rows = source_map_bc[
@@ -271,8 +275,8 @@ def create_schism_bc(config_yaml, kwargs={}):
         for index, row in source_map_bc.iterrows():
             dfi = pd.DataFrame()
             name = row["schism_boundary"]
-            source_kind = row["source_kind"]
-            source_file = str(row["source_file"])
+            source_kind = str(row["source_kind"])
+            source_file = str(row["source_file"]).upper()
             derived = str(row["derived"]).capitalize() == "True"
             interp = str(row["interp"]).capitalize() == "True"
             var = row["var"]
@@ -289,10 +293,13 @@ def create_schism_bc(config_yaml, kwargs={}):
                     var_df = pd.DataFrame()
                     b = var.split("/")[2]
                     var_df[[b]] = read_dss(
-                        os.path.join(dir, source_file),
+                        source_file,
                         pathname=var,
                         p=p,
                     )
+                elif source_kind == "CONSTANT":
+                    var_df = pd.DataFrame({name: [float(var)] * len(df_rng)})
+                    var_df.index = df_rng.index
                 else:
                     raise ValueError(f"source_kind={source_kind} is not yet supported")
 
@@ -342,7 +349,7 @@ def create_schism_bc(config_yaml, kwargs={}):
                     for pn in vars_lst:
                         b = pn.split("/")[2]
                         dss[[b]] = read_dss(
-                            os.path.join(dir, source_file),
+                            source_file,
                             pathname=pn,
                             p=p,
                         )
@@ -362,7 +369,7 @@ def create_schism_bc(config_yaml, kwargs={}):
                         dfi = dts
                 else:
                     print(f"Updating SCHISM {name} with DSS variable {var}")
-                    dfi = read_dss(os.path.join(dir, source_file), pathname=var, p=p)
+                    dfi = read_dss(source_file, pathname=var, p=p)
 
             elif source_kind == "CONSTANT":
                 print(f"Updating SCHISM {name} with constant value of {var}")
@@ -417,7 +424,7 @@ def create_schism_bc(config_yaml, kwargs={}):
             # Remove excess/repetitive rows
             dd = clean_df(dd.ffill())
 
-            output_path = os.path.join(dir, out_file)
+            output_path = out_file
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
             print(f"Writing {boundary_kind} boundary conditions to {output_path}")
             dd.to_csv(
