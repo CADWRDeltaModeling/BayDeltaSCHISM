@@ -78,7 +78,7 @@ def read_dss(
             ptt = pd.DataFrame(tt.values[:, 0], pidx)
 
             # Interpolate with rhistinterp
-            if p != 0:
+            if p > 0:
                 col_data = rhistinterp(ptt, dt, p=p)
             elif p == 0:
                 col_data = rhistinterp(ptt, dt)
