@@ -254,6 +254,17 @@ def create_schism_bc(config_yaml, kwargs={}):
             dd["ndup"] = dd["ndup"].astype(int)
             dd = dd.resample("D").first()
             out_file = out_file_dcc_gate
+        elif boundary_kind == "cu":
+            # Check if any rows for 'cu' boundary_kind have invalid source_kind
+            invalid_cu_rows = source_map_bc[
+                (source_map_bc["boundary_kind"] == "cu")
+                & (~source_map_bc["source_kind"].str.lower().isin(["yaml", "yml"]))
+            ]
+            if not invalid_cu_rows.empty:
+                raise ValueError(
+                    f"For consumptive use boundary, all rows must have 'source_kind' of 'yaml' or 'yml'. Invalid rows:\n{invalid_cu_rows}"
+                )
+            out_file = False
         else:
             raise ValueError(f"Unknown boundary kind: {boundary_kind}")
 
@@ -361,7 +372,17 @@ def create_schism_bc(config_yaml, kwargs={}):
                 dfi = dfi.set_index("datetime")
 
                 dfi[name] = [float(var)] * len(df_rng)
-                print(f"Updating SCHISM {name} with constant value of {var}")
+            elif source_kind.upper() in ["YAML", "YML"]:
+                # Run parse_cu to parse consumptive use into SCHISM inputs
+                # TODO: this is only currently capable of parsing from a net DSS value to SCHISM vsource.th and vsink.th
+                print(f"Updating SCHISM {name} with a parsed consumptive use")
+
+                if source_file.lower().endswith((".yaml", ".yml")):
+                    orig_pert_to_schism_dcd_yaml(source_file, envvar=kwargs)
+                else:
+                    raise ValueError(
+                        f"To parse consumptive use, need a .yaml or .yml file in source_file specification instead of: {source_file}"
+                    )
 
             # Maintain the rounding preference of the formula
             if isinstance(formula, str) and "round" in formula:
@@ -370,7 +391,10 @@ def create_schism_bc(config_yaml, kwargs={}):
             if source_kind == "SCHISM":
                 # Simplest case: use existing reference SCHISM data; do nothing
                 print("Use existing SCHISM input")
-
+            elif source_kind.upper() in ["YAML", "YML"]:
+                print(
+                    "Unit conversion unecessary for consumptive use (handled in yaml)"
+                )
             else:
                 # Do conversions.
                 if convert == "CFS_CMS":
