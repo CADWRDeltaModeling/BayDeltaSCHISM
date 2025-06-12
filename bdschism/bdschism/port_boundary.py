@@ -1,9 +1,4 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-# Raymond Hoang (raymond.hoang@water.ca.gov)
-# 20220728
-
 """
 Script to convert various data formats (from calsim, csv files) into
 SCHISM flux, salt and temp time history (.th) files
@@ -12,6 +7,8 @@ from vtools.functions.unit_conversions import CFS2CMS, ec_psu_25c
 from vtools.functions.interpolate import rhistinterp
 from vtools.functions.filter import ts_gaussian_filter
 from vtools.data.vtime import minutes
+from schimpy.util.yaml_load import yaml_from_file, csv_from_file
+from bdschism.parse_cu import orig_pert_to_schism_dcd_yaml
 from bdschism.read_dss import read_dss
 import matplotlib.pylab as plt
 import numpy as np
@@ -51,41 +48,6 @@ def read_csv(file, var, name, dt, p=2.0, interp=True):
     return interp_df
 
 
-class SafeDict(dict):
-    """Safe dictionary for string formatting."""
-
-    def __missing__(self, key):
-        print(f"Missing key: {key}")  # Debugging line
-        return "{" + key + "}"
-
-
-def fmt_string_file(fn_in, str_dict):
-
-    # Create a temporary yaml filename
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=os.path.splitext(fn_in)[-1], delete=False
-    ) as temp_file:
-        temp_fn = temp_file.name
-    print(f"\t Temporary yaml filename: {temp_fn}")
-
-    """Format a file using a dictionary of strings."""
-    with open(fn_in, "r") as f:
-        fdata = f.read()
-
-    # Remove commented lines
-    fdata = "\n".join(
-        line for line in fdata.splitlines() if not line.strip().startswith("#")
-    )
-
-    # Replace text with str_dict values
-    fdata = string.Formatter().vformat(fdata, (), SafeDict((str_dict)))
-
-    with open(temp_fn, "w") as fout:
-        fout.write(fdata)
-
-    return temp_fn
-
-
 def clean_df(in_df):
     keep_rows = [0]
     for r in range(1, len(in_df.index)):
@@ -123,27 +85,14 @@ def set_gate_fraction(dts, op_var="height", ubound=10, lbound=0):
     return dts
 
 
-@click.command()
-@click.argument("config_yaml", type=click.Path(exists=True))
-@click.option(
-    "--kwargs",
-    type=str,
-    default="{}",
-    help="JSON string representing a dictionary of keyword arguments to populate format strings.",
-)
-@click.help_option("-h", "--help")
-def port_boundary_cli(config_yaml, kwargs):
-    """
-    Command line interface for creating SCHISM boundary conditions.
-    """
-    kwargs_dict = json.loads(kwargs)
-    create_schism_bc(config_yaml, kwargs_dict)
-
-
 def create_schism_bc(config_yaml, kwargs={}):
 
-    with open(fmt_string_file(config_yaml, kwargs), "r") as f:
-        config = yaml.safe_load(f)
+    config = yaml_from_file(config_yaml, envvar=kwargs)
+
+    # Add config['config'] to kwargs if it exists, with kwargs taking precedence
+    if "config" in config:
+        merged_kwargs = {**config["config"], **kwargs}
+        kwargs = merged_kwargs
 
     dir = config["dir"]
 
@@ -174,7 +123,9 @@ def create_schism_bc(config_yaml, kwargs={}):
     end_date = pd.Timestamp(ed)
     df_rng = pd.date_range(start_date, end_date, freq=dt)
     # Read and process the source_map file
-    source_map = pd.read_csv(fmt_string_file(source_map_file, kwargs), header=0)
+    source_map = csv_from_file(
+        source_map_file, envvar=kwargs
+    )  # pd.read_csv(fmt_string_file(source_map_file, kwargs), header=0)
 
     # Read in the reference SCHISM flux, salt and temperature files
     # to be used as a starting point and to substitute timeseries not
@@ -319,6 +270,7 @@ def create_schism_bc(config_yaml, kwargs={}):
                     dfi = read_dss(os.path.join(dir, source_file), pathname=var, p=p)
 
             elif source_kind == "CONSTANT":
+                print(f"Updating SCHISM {name} with constant value of {var}")
                 # Simply fill with a constant specified.
                 dd[name] = float(var)
                 dfi["datetime"] = df_rng
@@ -375,7 +327,23 @@ def create_schism_bc(config_yaml, kwargs={}):
         dd.plot()
 
     print("Done")
-    plt.show()
+
+
+@click.command()
+@click.argument("config_yaml", type=click.Path(exists=True))
+@click.option(
+    "--kwargs",
+    type=str,
+    default="{}",
+    help="JSON string representing a dictionary of keyword arguments to populate format strings.",
+)
+@click.help_option("-h", "--help")
+def port_boundary_cli(config_yaml, kwargs):
+    """
+    Command line interface for creating SCHISM boundary conditions.
+    """
+    kwargs_dict = json.loads(kwargs)
+    create_schism_bc(config_yaml, kwargs_dict)
 
 
 if __name__ == "__main__":
