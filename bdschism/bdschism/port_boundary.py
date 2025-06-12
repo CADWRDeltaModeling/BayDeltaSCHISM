@@ -61,27 +61,91 @@ def clean_df(in_df):
     return out_df
 
 
-def set_gate_fraction(dts, op_var="height", ubound=10, lbound=0):
-    # Filter rows where height is not 10 or 0
-    fraction_mask = (dts[op_var] != ubound) & (dts[op_var] != lbound)
+def set_gate_fraction(
+    dts_in, op_var="height", ubound=10, lbound=0, increment="month_fraction"
+):
+    """Adjusts the values of a specified operation variable in a DataFrame to represent fractional gate operations per month.
 
-    # Apply the mask to filter the DataFrame
-    filtered_dts = dts[fraction_mask]
+    This function processes a DataFrame containing time-indexed gate operation data (e.g., gate heights), and for each month,
+    it sets a fraction of the time steps to the lower bound (`lbound`) and the remainder to the upper bound (`ubound`),
+    based on the initial value of the operation variable for that month. Only rows where the operation variable is not
+    already at the upper or lower bound are modified.
 
-    # Group the filtered DataFrame by month
-    for month, group in filtered_dts.groupby(filtered_dts.index.to_period("M")):
-        # Calculate the fraction
-        fraction = group[op_var].iloc[0] / ubound
+    Parameters
+    ----------
+    dts_in : pandas.DataFrame
+        The input DataFrame with a DateTimeIndex and an operation variable column.
+    op_var : str, optional
+        The name of the column representing the operation variable to adjust (default is "height").
+    ubound : numeric, optional
+        The upper bound value for the operation variable (default is 10).
+    lbound : numeric, optional
+        The lower bound value for the operation variable (default is 0).
+    increment : str, optional
+        The increment type for grouping. Default is "month_fraction". Other supported types:
+        month_fraction - Need to take any Percentage between 0 and 100 and convert them to days of month open
+        month_days - Need to take number of days in a month and operate per days of month
 
-        # Get the first fraction of the month
-        fraction_point = int(len(group) * fraction)
-        first_indices = group.index[:fraction_point]
-        second_indices = group.index[fraction_point:]
+    Returns
+    -------
+    pandas.DataFrame
+        The modified DataFrame with the operation variable adjusted according to the calculated monthly fractions.
 
-        # Set the first half to lbound and the second half to ubound
-        dts.loc[first_indices, op_var] = lbound
-        dts.loc[second_indices, op_var] = ubound
+    Notes
+    -----
+    - The function assumes the DataFrame index is a pandas DateTimeIndex.
+    - Only rows where the operation variable is not equal to `ubound` or `lbound` are considered for adjustment.
+    - The fraction is determined by the ratio of the first value of the operation variable in the group to `ubound`.
+    """
+    if increment == "month_fraction":
+        # Filter rows where height is not 10 or 0
+        fraction_mask = (dts[op_var] != ubound) & (dts[op_var] != lbound)
 
+        # Apply the mask to filter the DataFrame
+        filtered_dts = dts[fraction_mask]
+
+        dts_out = dts_in.copy()
+
+        # Group the filtered DataFrame by month
+        for month, group in filtered_dts.groupby(filtered_dts.index.to_period("M")):
+            # Calculate the fraction
+            fraction = group[op_var].iloc[0] / ubound
+
+            # Get the first fraction of the month
+            fraction_point = int(len(group) * fraction)
+            first_indices = group.index[:fraction_point]
+            second_indices = group.index[fraction_point:]
+
+            # Set the first half to lbound and the second half to ubound
+            dts_out.loc[first_indices, op_var] = lbound
+            dts_out.loc[second_indices, op_var] = ubound
+    elif increment == "month_days":
+        # dts_out: PeriodIndex with daily freq, dts_in: PeriodIndex with monthly freq
+        dts_out = dts_in.copy()
+        # Convert PeriodIndex to DatetimeIndex before resampling
+        if isinstance(dts_out.index, pd.PeriodIndex):
+            dts_out.index = dts_out.index.to_timestamp()
+        dts_out = dts_out.resample("D").ffill()
+        # Now dts_out.index is DatetimeIndex with daily freq
+        for month, group in dts_out.groupby(dts_out.index.to_period("M")):
+            if month.to_timestamp() in dts_in.index.to_timestamp():
+                days_ubound = int(round(dts_in.loc[month, op_var]))
+            else:
+                continue
+            month_indices = group.index
+            dts_out.loc[month_indices[:days_ubound], op_var] = float(ubound)
+            dts_out.loc[month_indices[days_ubound:], op_var] = float(lbound)
+
+    return dts_out
+
+
+def set_gate_ops(boundary_kind, var_df, name, formula):
+    form, ubound, lbound, increment = [part.strip() for part in formula.split(";")]
+    var_df = eval(form).to_frame(name)
+    if "dcc" in boundary_kind:
+        dts = set_gate_fraction(
+            var_df, op_var=name, ubound=ubound, lbound=lbound, increment=increment
+        )
     return dts
 
 
@@ -188,6 +252,7 @@ def create_schism_bc(config_yaml, kwargs={}):
             # enforce integer type else get schism error
             dd["install"] = dd["install"].astype(int)
             dd["ndup"] = dd["ndup"].astype(int)
+            dd = dd.resample("D").first()
             out_file = out_file_dcc_gate
         else:
             raise ValueError(f"Unknown boundary kind: {boundary_kind}")
@@ -206,7 +271,29 @@ def create_schism_bc(config_yaml, kwargs={}):
             formula = row["formula"]
             print(f"processing {name}")
 
-            if source_kind == "CSV":
+            if "gate" in boundary_kind:
+                if source_kind == "CSV":
+                    var_df = read_csv(source_file, var, name, dt, p=p, interp=interp)
+                elif source_kind == "DSS":
+                    var_df = pd.DataFrame()
+                    b = var.split("/")[2]
+                    var_df[[b]] = read_dss(
+                        os.path.join(dir, source_file),
+                        pathname=var,
+                        p=p,
+                    )
+                else:
+                    raise ValueError(f"source_kind={source_kind} is not yet supported")
+
+                var_df = var_df[
+                    (var_df.index.to_timestamp() >= start_date)
+                    & (var_df.index.to_timestamp() <= end_date)
+                ]
+                # use formula to set gate fraction (month_fraction, month_days)
+                dfi = set_gate_ops(boundary_kind, var_df.ffill(), name, formula)
+                dfi[name] = pd.to_numeric(dfi[name], errors="coerce")
+
+            elif source_kind == "CSV":
                 # Substitute in an interpolated monthly forecast
                 if derived:
                     print(
@@ -220,19 +307,16 @@ def create_schism_bc(config_yaml, kwargs={}):
                             source_file, v, name, dt, p=p, interp=interp
                         )
                     dts = eval(formula).to_frame(name).reindex(df_rng)
-                    if boundary_kind == "dcc_gate":
-                        # Need to make any Percentage between 0 and 100 and convert them to days of month open
-                        dts = set_gate_fraction(dts.ffill(), "height")
                     if interp:
                         dfi = ts_gaussian_filter(dts, sigma=100)
                     else:
                         dfi = dts
                 else:
+                    dfi = read_csv(source_file, var, name, dt, p=p)
                     print(
                         f"Updating SCHISM {name} with interpolated monthly\
                         forecast {var}"
                     )
-                    dfi = read_csv(source_file, var, name, dt, p=p)
 
             elif source_kind == "DSS":
                 # Substitute in CalSim value.
@@ -293,8 +377,6 @@ def create_schism_bc(config_yaml, kwargs={}):
                     dfi = dfi * CFS2CMS * sign
                 elif convert == "EC_PSU":
                     dfi = ec_psu_25c(dfi) * sign
-                else:
-                    dfi = dfi
 
                 # Trim dfi so that it starts where schism input file ends, so that dfi doesn't
                 # overwrite any historical data
@@ -304,27 +386,26 @@ def create_schism_bc(config_yaml, kwargs={}):
                 # Update the dataframe.
                 dd.update(dfi, overwrite=True)
 
-                # print(dfi)
+        if out_file:
+            # Format the outputs.
+            dd.index.name = "datetime"
 
-        # print(dd)
+            # Remove excess/repetitive rows
+            dd = clean_df(dd.ffill())
 
-        # Format the outputs.
-        dd.index.name = "datetime"
+            output_path = os.path.join(dir, out_file)
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            print(f"Writing {boundary_kind} boundary conditions to {output_path}")
+            dd.to_csv(
+                output_path,
+                header=True,
+                date_format="%Y-%m-%dT%H:%M",
+                float_format="%.4f",
+                sep=" ",
+            )
 
-        # Remove excess/repetitive rows
-        dd = clean_df(dd.ffill())
-
-        output_path = os.path.join(dir, out_file)
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        dd.to_csv(
-            os.path.join(dir, out_file),
-            header=True,
-            date_format="%Y-%m-%dT%H:%M",
-            float_format="%.4f",
-            sep=" ",
-        )
-
-        dd.plot()
+            dd.plot()
+            plt.show()
 
     print("Done")
 
