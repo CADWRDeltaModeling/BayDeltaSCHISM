@@ -135,6 +135,21 @@ def set_gate_fraction(
             month_indices = group.index
             dts_out.loc[month_indices[:days_ubound], op_var] = float(ubound)
             dts_out.loc[month_indices[days_ubound:], op_var] = float(lbound)
+    elif increment == "months":
+        # take monthly values and apply for full month
+        dts_out = dts_in.copy()
+        # check that index is PeriodIndex with monthly freq
+        if not (
+            isinstance(dts_out.index, pd.PeriodIndex) and dts_out.index.freq == "M"
+        ):
+            raise ValueError(
+                "For increment='months', index must be PeriodIndex with monthly freq"
+            )
+        dts_out = dts_out.resample("D").ffill()
+    else:
+        raise ValueError(
+            f"Unsupported increment type: {increment}\nSet in fourth part of formula column, separated by semicolon."
+        )
 
     return dts_out
 
@@ -142,14 +157,13 @@ def set_gate_fraction(
 def set_gate_ops(boundary_kind, var_df, name, formula):
     form, ubound, lbound, increment = [part.strip() for part in formula.split(";")]
     var_df = eval(form).to_frame(name)
-    if "dcc" in boundary_kind:
-        dts = set_gate_fraction(
-            var_df, op_var=name, ubound=ubound, lbound=lbound, increment=increment
-        )
+    dts = set_gate_fraction(
+        var_df, op_var=name, ubound=ubound, lbound=lbound, increment=increment
+    )
     return dts
 
 
-def create_schism_bc(config_yaml, kwargs={}):
+def create_schism_bc(config_yaml, kwargs={}, plot=False):
 
     config = yaml_from_file(config_yaml, envvar=kwargs)
 
@@ -217,7 +231,7 @@ def create_schism_bc(config_yaml, kwargs={}):
         schism_gate_files = {}
         out_file_gates = {}
         for gbk in [kind for kind in boundary_kinds if "gate" in kind]:
-            schism_gate_files[gbk] = pd.read_csv(
+            df_in = pd.read_csv(
                 config["file"][f"schism_{gbk}_file"],
                 header=0,
                 parse_dates=True,
@@ -225,6 +239,23 @@ def create_schism_bc(config_yaml, kwargs={}):
                 sep="\\s+",
                 comment="#",
             )  # used to manipulate specific columns
+            df = df_in.copy().reindex(df_rng)
+            # Take existing values from the reference file minus the columns to be replaced in csv
+            cols_to_replace = source_map.loc[
+                source_map["boundary_kind"] == gbk, "schism_boundary"
+            ].tolist()
+            df.iloc[:, ~df.columns.isin(cols_to_replace)] = df_in.iloc[
+                0, ~df_in.columns.isin(cols_to_replace)
+            ]
+            # enforce integer type else get schism error
+            df["install"] = df["install"].astype(int)
+            df["ndup"] = df["ndup"].astype(int)
+            df = df.resample("D").first()
+
+            # Set schism_gate_files entry for boundary_kind
+            schism_gate_files[gbk] = df
+
+            # Set out_file_gates entry for boundary_kind
             out_file_gates[gbk] = config["file"][
                 f"out_file_{gbk}"
             ]  # used to write the boundary out
@@ -243,20 +274,7 @@ def create_schism_bc(config_yaml, kwargs={}):
             dd = temp.copy().reindex(df_rng)
             out_file = out_file_temp
         elif "gate" in boundary_kind:
-            gate_df = schism_gate_files[boundary_kind]
-            # Get all schism_boundary values for this boundary_kind
-            cols_to_replace = source_map.loc[
-                source_map["boundary_kind"] == boundary_kind, "schism_boundary"
-            ].tolist()
-            dd = gate_df.copy().reindex(df_rng)
-            # Take existing values from the reference file (might only work on DCC gate)
-            dd.iloc[:, ~dd.columns.isin(cols_to_replace)] = gate_df.iloc[
-                0, ~gate_df.columns.isin(cols_to_replace)
-            ]
-            # enforce integer type else get schism error
-            dd["install"] = dd["install"].astype(int)
-            dd["ndup"] = dd["ndup"].astype(int)
-            dd = dd.resample("D").first()
+            dd = schism_gate_files[boundary_kind]
             out_file = out_file_gates[boundary_kind]
         elif boundary_kind == "cu":
             # Check if any rows for 'cu' boundary_kind have invalid source_kind
@@ -299,16 +317,22 @@ def create_schism_bc(config_yaml, kwargs={}):
                     )
                 elif source_kind == "CONSTANT":
                     var_df = pd.DataFrame({name: [float(var)] * len(df_rng)})
-                    var_df.index = df_rng.index
+                    var_df.index = df_rng
                 else:
                     raise ValueError(f"source_kind={source_kind} is not yet supported")
 
-                var_df = var_df[
-                    (var_df.index.to_timestamp() >= start_date)
-                    & (var_df.index.to_timestamp() <= end_date)
-                ]
+                # Set date range
+                if isinstance(var_df.index, pd.PeriodIndex):
+                    idx = var_df.index.to_timestamp()
+                else:
+                    idx = var_df.index
+                var_df = var_df[(idx >= start_date) & (idx <= end_date)]
+
                 # use formula to set gate fraction (month_fraction, month_days)
-                dfi = set_gate_ops(boundary_kind, var_df.ffill(), name, formula)
+                if source_kind == "CONSTANT":
+                    dfi = var_df
+                else:
+                    dfi = set_gate_ops(boundary_kind, var_df.ffill(), name, formula)
                 dfi[name] = pd.to_numeric(dfi[name], errors="coerce")
 
             elif source_kind == "CSV":
@@ -415,6 +439,8 @@ def create_schism_bc(config_yaml, kwargs={}):
                     dfi = dfi[dfi.index >= dd.index[-1]]
 
                 # Update the dataframe.
+                if isinstance(dfi.index, pd.PeriodIndex):
+                    dfi.index = dfi.index.to_timestamp()
                 dd.update(dfi, overwrite=True)
 
         if out_file:
@@ -435,8 +461,9 @@ def create_schism_bc(config_yaml, kwargs={}):
                 sep=" ",
             )
 
-            dd.plot()
-            plt.show()
+            if plot:
+                dd.plot()
+                plt.show()
 
     print("Done")
 
