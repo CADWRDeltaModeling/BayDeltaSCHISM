@@ -1,0 +1,22 @@
+schism_boundary,boundary_kind,source_kind,derived,interp,source_file,var,sign,convert,rhistinterp_p,formula,note,
+ccc_rock,flow,DSS,TRUE,TRUE,${calsim_dss},/CALSIM/D408/FLOW-DELIVERY//1MON/L2020A/,1,CFS_CMS,2,np.nanmean(flux.ccc_rock/(flux.ccc_rock+flux.ccc_old+flux.ccc_victoria)) * (dss.D408),uses historical mean ratio of ccc_rock to all CCC,ccc rs
+ccc_old,flow,DSS,TRUE,TRUE,${calsim_dss},/CALSIM/D408/FLOW-DELIVERY//1MON/L2020A/,1,CFS_CMS,2,np.nanmean(flux.ccc_old/(flux.ccc_rock+flux.ccc_old+flux.ccc_victoria)) * (dss.D408),uses historical mean ratio of ccc_old to all CCC,cccold
+swp,flow,DSS,,TRUE,${calsim_dss},/CALSIM/C_CAA003_TD/FLOW-DELIVERY//1MON/L2020A/,1,CFS_CMS,2,,,swp
+cvp,flow,DSS,,TRUE,${calsim_dss},/CALSIM/C_DMC000_TD/FLOW-DELIVERY//1MON/L2020A/,1,CFS_CMS,2,,,cvp
+sjr,flow,DSS,,TRUE,${calsim_dss}, /CALSIM/C_SJR070/CHANNEL//1MON/L2020A/,-1,CFS_CMS,1,,,sjr
+calaveras,flow,DSS,,TRUE,${calsim_dss},/CALSIM/C_CLV004/CHANNEL//1MON/L2020A/,-1,CFS_CMS,2,,,cal
+east,flow,DSS,,TRUE,${calsim_dss},/CALSIM/C_MOK019/CHANNEL//1MON/L2020A/,-1,CFS_CMS,2,,"SCHISM and CalSim ""east"" boundary is combo of Cosumnes and Mokelumne Rivers",east
+american,flow,DSS,TRUE,TRUE,${calsim_dss},/CALSIM/C_SAC041/CHANNEL//1MON/L2020A/,-1,CFS_CMS,2,np.nanmean(flux.american/(flux.sac+flux.american)) * (dss.C_SAC041),uses historical mean ratio of american to sacramento,amer
+sac,flow,DSS,TRUE,TRUE,${calsim_dss},/CALSIM/C_SAC041/CHANNEL//1MON/L2020A/,-1,CFS_CMS,2,np.nanmean(flux.sac/(flux.sac+flux.american)) * (dss.C_SAC041),uses historical mean ratio of sacramento to sacramento plus the WWTP along the Sac,sac
+yolo_toedrain,flow,DSS,TRUE,TRUE,${calsim_dss},/CALSIM/C_CSL004A/CHANNEL//1MON/L2020A/,-1,CFS_CMS,2,"np.minimum(3000, dss.C_CSL004A)",at most 3000 cfs goes down the toe drain,yolo td
+yolo,flow,DSS,TRUE,TRUE,${calsim_dss},/CALSIM/C_CSL004A/CHANNEL//1MON/L2020A/,-1,CFS_CMS,2,"np.maximum(0,dss.C_CSL004A-3000)","After 3000 cfs to toe drain, main bypass receives remaining flow",yolo
+northbay,flow,DSS,,TRUE,${calsim_dss},/CALSIM/C_CSL004B/CHANNEL//1MON/L2020A/,1,CFS_CMS,2,,,nb
+ccc_victoria,flow,DSS,TRUE,TRUE,${calsim_dss},/CALSIM/D408/FLOW-DELIVERY//1MON/L2020A/,1,CFS_CMS,2,np.nanmean(flux.ccc_victoria/(flux.ccc_rock+flux.ccc_old+flux.ccc_victoria)) * (dss.D408),uses historical mean ratio of ccc_victoria to all CCC,ccc vic
+height,dcc_gate,DSS,TRUE,FALSE,${calsim_dss},/CALSIM/DXC/GATE-DAYS-OPEN//1MON/L2020A/,,,,"var_df.DXC; 10; 0; month_days","dss is days closed out of the month",dcc
+sourcesink,cu,YAML,TRUE,FALSE,./port_calsim_schism.yaml,/CALSIM/NET_DICU/DICU_FLOW//1MON/L2020A/,,,,,,
+op_up,smscg_radial_gate,DSS,TRUE,FALSE,${calsim_dss},/CALSIM/SMSCG_OP/GATE-OP-RATIO//1MON/L2020A/,,,,var_df.SMSCG_OP; 1; 0; months,operate Tidally for 0 (op_up=0) and open for 1 (monthly increment),dcc
+op_down,smscg_radial_gate,CONSTANT,,FALSE,,1,,,,,operate Tidally for 0 (op_down=1) and open for 1 (monthly increment) (op_down=1),dcc
+op_up,smscg_boatlock_gate,CONSTANT,,FALSE,,1,,,,,Always open,dcc
+op_down,smscg_boatlock_gate,CONSTANT,,FALSE,,1,,,,,Always open,dcc
+op_up,smscg_flashboard_gate,CONSTANT,,FALSE,,0,,,,,Always closed,dcc
+op_down,smscg_flashboard_gate,CONSTANT,,FALSE,,0,,,,,Always closed,dcc

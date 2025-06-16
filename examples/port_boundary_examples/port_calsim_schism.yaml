@@ -1,0 +1,44 @@
+
+config:
+  version: rt_v1
+  out_dir: ${dsp_code}/model/schism/roundtrip/${version}/
+  bds_home: D:/python/repositories/BayDeltaSCHISM
+  dsp_code: D:/projects/delta_salinity/DSP_code
+  calsim_dss: ${dsp_code}/model/calsim/9.3.1_danube_adj/DSS/output/DCR2023_DV_9.3.1_v2a_Danube_Adj_v1.8.dss
+  dsm2_dir: ${dsp_code}/model/dsm2/2021DSM2FP_202301/timeseries
+param:
+  boundary_kinds: [flow,dcc_gate,smscg_radial_gate,smscg_boatlock_gate,smscg_flashboard_gate,cu] #[flow,dcc_gate,smscg_radial_gate,smscg_boatlock_gate,smscg_flashboard_gate,cu,salt,temp]
+  overwrite: true # if true, overwrite the existing boundary inputs (should be false for forecast)
+  start_date: ${sd} #YYYY,MM,DD
+  end_date: ${ed} #YYYY,MM,DD
+file:
+  source_map_file: ./port_boundary_map_calsim_schism.csv
+  schism_flux_file: ${bds_home}/data/time_history/flux.th
+  schism_salt_file: ${bds_home}/data/time_history/salt.th
+  schism_temp_file: ${bds_home}/data/time_history/temp.th
+  schism_dcc_gate_file: ${bds_home}/data/time_history/delta_cross_channel.th
+  schism_smscg_radial_gate_file: ${bds_home}/data/time_history/montezuma_radial.th
+  schism_smscg_boatlock_gate_file: ${bds_home}/data/time_history/montezuma_boat_lock.th
+  schism_smscg_flashboard_gate_file: ${bds_home}/data/time_history/montezuma_flash.th
+  out_file_flux: ${out_dir}/flux.${version}.dated.th 
+  out_file_salt: ${out_dir}/salt.${version}.dated.th 
+  out_file_temp: ${out_dir}/temp.${version}.dated.th 
+  out_file_dcc_gate: ${out_dir}/delta_cross_channel.${version}.dated.th 
+  out_file_smscg_radial_gate: ${out_dir}/montezuma_radial.${version}.dated.th 
+  out_file_smscg_boatlock_gate: ${out_dir}/montezuma_boat_lock.${version}.dated.th 
+  out_file_smscg_flashboard_gate: ${out_dir}/montezuma_flash.${version}.dated.th 
+cu:
+  process: orig_pert_to_schism # net_diff_to_schism or orig_pert_to_schism
+  original_type: dsm2
+  original_filename: ${dsm2_dir}/DCD_hist_Lch5.dss
+  perturbed_type: calsim
+  perturbed_filename: ${calsim_dss}
+  schism_vsource: ${bds_home}/data/channel_depletion/vsource_dated.th
+  schism_vsink: ${bds_home}/data/channel_depletion/vsink_dated.th
+  out_dir: ${out_dir}
+  version: ${version}
+  start_date: ${sd}
+  end_date: ${ed}
+  
+# Use:
+# bds port_bc port_calsim_schism.yaml

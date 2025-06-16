@@ -403,7 +403,7 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
                 dfi = dfi.set_index("datetime")
 
                 dfi[name] = [float(var)] * len(df_rng)
-            elif source_kind.upper() in ["YAML", "YML"]:
+            elif source_kind.upper() in ["YAML", "YML"] and boundary_kind == "cu":
                 # Run parse_cu to parse consumptive use into SCHISM inputs
                 # TODO: this is only currently capable of parsing from a net DSS value to SCHISM vsource.th and vsink.th
                 print(f"Updating SCHISM {name} with a parsed consumptive use")

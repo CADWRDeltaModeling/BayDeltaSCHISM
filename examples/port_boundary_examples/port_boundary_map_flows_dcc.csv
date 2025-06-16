@@ -12,4 +12,4 @@ yolo_toedrain,flow,CSV,TRUE,TRUE,{alt_name}.csv,YOLO,-1,CFS_CMS,2,"np.maximum(30
 yolo,flow,CSV,TRUE,TRUE,{alt_name}.csv,YOLO,-1,CFS_CMS,2,"np.maximum(0,csv.YOLO-3000)","After 3000 to toe drain, main bypass receives remaining flow",yolo
 northbay,flow,CSV,,TRUE,{alt_name}.csv,BKR,1,CFS_CMS,2,,,nb
 ccc_victoria,flow,CSV,TRUE,TRUE,{alt_name}.csv,CCC,1,CFS_CMS,2,np.nanmean(flux.ccc_victoria/(flux.ccc_rock+flux.ccc_old+flux.ccc_victoria)) * (csv.CCC),uses historical mean ratio of ccc_victoria to all CCC,ccc vic
-height,dcc_gate,CSV,TRUE,FALSE,{alt_name}.csv,DCC,,,,"round(1-np.minimum(1,csv.DCC),1)*10","csv is %closed, schism is meters open (10 is fully open, 0 is fully closed)",dcc
+height,dcc_gate,CSV,TRUE,FALSE,{alt_name}.csv,DCC,,,,10; 0; month_fraction,"csv is %closed, schism is meters open (10 is fully open, 0 is fully closed)",dcc

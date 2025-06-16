@@ -1,4 +1,7 @@
-
+config:
+  alt_name: 2016_noaction
+  sd: 2016/1/1
+  ed: 2016/12/31
 param:
   boundary_kinds: [flow,dcc_gate] #[flow,ec,temp,dcc_gate]
   overwrite: true # if true, overwrite the existing boundary inputs (should be false for forecast)
@@ -17,4 +20,4 @@ file:
   out_file_dcc_gate: ../delta_cross_channel.{alt_name}.th
 
 # Use:
-# bds port_bc port_monthly_to_schism_flows_dcc.yaml --kwargs '{"alt_name":"2016_noaction", "sd": "2016/1/1", "ed": "2016/12/31"}'
+# bds port_bc port_monthly_to_schism_flows_dcc.yaml 
