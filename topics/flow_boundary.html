@@ -135,10 +135,7 @@
 <li class="toctree-l5"><a class="reference internal" href="#where-are-the-data">Where are the data?</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#clipping-to-run-dates-and-conversion-to-elapsed-time">Clipping to run dates and conversion to elapsed time</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#what-if-i-have-to-add-or-move-a-boundary">What if I have to add or move a boundary?</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#adding-data-from-other-sources-e-g-forecasts-other-models">Adding Data From Other Sources (e.g. Forecasts, other models)</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="#port_boundary.read_csv"><code class="docutils literal notranslate"><span class="pre">read_csv()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l5"><a class="reference internal" href="#adding-data-from-other-sources-e-g-forecasts-other-models">Adding Data From Other Sources (e.g. Forecasts, other models)</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="atmospheric.html">Atmospheric setup</a><ul>
@@ -502,126 +499,6 @@ inject a column into the flux.th file.</p>
 <p>The <code class="file docutils literal notranslate"><span class="pre">port_boundary.py</span></code> script in BayDeltaSCHISM/bdschism/bdschism/  contains utilities
 to convert or graft outputs from various data formats (other models or forecasts) onto
 files in SCHISM time history (.th) formats.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="port_boundary.read_csv">
-<span class="sig-prename descclassname"><span class="pre">port_boundary.</span></span><span class="sig-name descname"><span class="pre">read_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/port_boundary.html#read_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#port_boundary.read_csv" title="Link to this definition"></a></dt>
-<dd><p>Reads in a csv file of monthly boundary conditions and interpolates
-Outputs an interpolated DataFrame of that variable</p>
-<p><strong>File Descriptions</strong></p>
-<blockquote>
-<div><p><code class="file docutils literal notranslate"><span class="pre">port_boundary.py</span></code>: main script</p>
-<p><code class="file docutils literal notranslate"><span class="pre">port_boundary_map.csv</span></code>: configuration file</p>
-</div></blockquote>
-<p><strong>Configuring the mapping file</strong></p>
-<p>The mapping file <code class="file docutils literal notranslate"><span class="pre">port_boundary_map.csv</span></code> is the main configuration
-file in which the SCHISM variables are mapped to their respective substitution variables and sources.</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><strong>schism_boundary</strong>: the SCHISM boundary variable</p></li>
-<li><p><strong>boundary_kind</strong>: type of boundary (flow, ec, temp)</p></li>
-<li><p><strong>source_kind</strong>: the type of file to convert from (SCHISM, CSV, DSS, CONSTANT)</p></li>
-</ol>
-<blockquote>
-<div><div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If SCHISM is used as the source, values from the designated SCHISM .th file are
-copied over and used directly.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>for CSV <em>source_kind</em>: pd.read_csv() is used to parse the csv and, as coded, parses
-monthly data. The format of a csv source_kind is shown in the table below.</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>date</p></th>
-<th class="head"><p>RSAC155</p></th>
-<th class="head"><p>RSAN112</p></th>
-<th class="head"><p>var_n</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>1/1/2014</p></td>
-<td><p>5609</p></td>
-<td><p>1233</p></td>
-<td><p>…</p></td>
-</tr>
-<tr class="row-odd"><td><p>1/2/2014</p></td>
-<td><p>4771</p></td>
-<td><p>1162</p></td>
-<td><p>…</p></td>
-</tr>
-<tr class="row-even"><td><p>…</p></td>
-<td><p>…</p></td>
-<td><p>…</p></td>
-<td><p>…</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>for DSS <em>source_kind</em>, CalSim or DSM2 standard DSS files may be used.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>for CONSTANT <em>source kind</em>, input a value in the ‘var’ column. This may be used when an input boundary is
-generlly constant (.e.g, Sacramento River boundary EC).</p>
-</div>
-</div></blockquote>
-<ol class="arabic" start="4">
-<li><p><strong>derived</strong>: whether to use the variable directly, or calculate based on other variables. For example SCHISM variable ‘east’ is sum of DSM2 variables RCSM075 and RMKL070.</p></li>
-<li><p><strong>source_file</strong>: path of the source_file (relative path)</p></li>
-<li><p><strong>var</strong>: variable name within the source file.</p></li>
-<li><p><strong>sign</strong>: multiplied by timeseries to change direction of flow.</p></li>
-<li><p><strong>convert</strong>: apply unit conversions (CFS_CMS, EC_PSU):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">convert</span> <span class="o">==</span> <span class="s1">&#39;CFS_CMS&#39;</span><span class="p">:</span>
-    <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span> <span class="o">*</span> <span class="n">CFS2CMS</span> <span class="o">*</span> <span class="n">sign</span>
-<span class="k">elif</span> <span class="n">convert</span> <span class="o">==</span> <span class="s1">&#39;EC_PSU&#39;</span><span class="p">:</span>
-    <span class="n">dfi</span> <span class="o">=</span> <span class="n">ec_psu_25c</span><span class="p">(</span><span class="n">dfi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sign</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>rhistinterp_p</strong>: this script uses <a class="reference external" href="https://github.com/CADWRDeltaModeling/vtools3/blob/b7cfa54f45e8efa803cb3ebfb4f580d1e9719957/vtools/functions/interpolate.py#L15">rhistinterp</a> to interpolate and smooth timeseries of coarser timesteps.
-This field sets the parameter p</p></li>
-<li><p><strong>formula</strong>: the formula for the derived timeseries Used if derived = TRUE.</p></li>
-</ol>
-<blockquote>
-<div><div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Python’s eval() function is used to parse the code entered in the cell.
-Examples:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">csv</span><span class="o">.</span><span class="n">RCSM075</span><span class="o">+</span><span class="n">csv</span><span class="o">.</span><span class="n">RMKL070</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The above entry would sum up RCSM075 and RMKL070 from the CSV source</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">flux</span><span class="o">.</span><span class="n">american</span><span class="o">/</span><span class="p">(</span><span class="n">flux</span><span class="o">.</span><span class="n">sac</span><span class="o">+</span><span class="n">flux</span><span class="o">.</span><span class="n">american</span><span class="p">))</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">csv</span><span class="o">.</span><span class="n">RSAC155</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The above entry would multiply the RSAC155 from the CSV source by the ratio of the (Amer River/Amer+Sac River).
-This is used to disaggregate the total Sacramento R. flow above the confluence (i.e., from DSM2) into its American
-River component, based on an existing SCHISM flux.th input.</p>
-<p><strong>The dataframes are named:</strong></p>
-<blockquote>
-<div><p><em>flux</em>: DataFrame containing the historical SCHISM flux.th file</p>
-<p><em>salt</em>: DataFrame containing the historical SCHISM salt.th file</p>
-<p><em>temp</em>: DataFrame containing the historical SCHISM temp.th file</p>
-<p><em>csv</em>: DataFrame containing the values from the CSV source</p>
-<p><em>dss</em>: DataFrame containing the values from the DSS source</p>
-</div></blockquote>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>the SCHISM time history files used are the ones in this repository.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schism_flux_file</span> <span class="o">=</span> <span class="s1">&#39;../data/time_history/flux.th&#39;</span>
-<span class="n">schism_salt_file</span> <span class="o">=</span> <span class="s1">&#39;../data/time_history/salt.th&#39;</span>
-<span class="n">schism_temp_file</span> <span class="o">=</span> <span class="s1">&#39;../data/time_history/temp.th&#39;</span>
-</pre></div>
-</div>
-</div>
-</div></blockquote>
-</div></blockquote>
-</dd></dl>
-
 </section>
 </section>
 
