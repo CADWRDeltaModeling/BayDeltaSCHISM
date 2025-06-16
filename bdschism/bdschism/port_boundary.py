@@ -293,8 +293,8 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
         for index, row in source_map_bc.iterrows():
             dfi = pd.DataFrame()
             name = row["schism_boundary"]
-            source_kind = str(row["source_kind"])
-            source_file = str(row["source_file"]).upper()
+            source_kind = str(row["source_kind"]).upper()
+            source_file = str(row["source_file"])
             derived = str(row["derived"]).capitalize() == "True"
             interp = str(row["interp"]).capitalize() == "True"
             var = row["var"]
