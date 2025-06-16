@@ -645,6 +645,11 @@ def orig_pert_to_schism_dcd_yaml(yaml_fn, envvar=None):
 
     cu_inputs = yaml_content["cu"]
 
+    # Build a dict of all arguments, with envvar overriding cu_inputs
+    all_args = {**cu_inputs, **(envvar or {})}
+    # Remove process key if present (not an argument for orig_pert_to_schism_dcd)
+    all_args.pop("process", None)
+
     # Optionals from envvar or default
     start_date = (
         cu_inputs.get("start_date") if cu_inputs and "start_date" in cu_inputs else None
@@ -657,10 +662,10 @@ def orig_pert_to_schism_dcd_yaml(yaml_fn, envvar=None):
     cfs_to_cms = (
         cu_inputs.get("cfs_to_cms") if cu_inputs and "cfs_to_cms" in cu_inputs else True
     )
-    # Remove these from envvar for **kwargs if present
-    kwargs = dict(envvar) if envvar else {}
+    # Remove any duplicate keys that are not needed
     for k in ["start_date", "end_date", "dt"]:
-        kwargs.pop(k, None)
+        if k in all_args and locals()[k] is not None:
+            all_args[k] = locals()[k]
 
     if cu_inputs["process"] == "orig_pert_to_schism":
         # Required arguments
@@ -680,20 +685,8 @@ def orig_pert_to_schism_dcd_yaml(yaml_fn, envvar=None):
                 f"Missing required keys in cu_inputs: {missing}\n\tAll keys needed are: {required_keys}"
             )
 
-        orig_pert_to_schism_dcd(
-            cu_inputs["original_type"],
-            cu_inputs["original_filename"],
-            cu_inputs["perturbed_type"],
-            cu_inputs["perturbed_filename"],
-            cu_inputs["schism_vsource"],
-            cu_inputs["schism_vsink"],
-            cu_inputs["out_dir"],
-            cu_inputs["version"],
-            start_date=start_date,
-            end_date=end_date,
-            dt=dt,
-            **kwargs,
-        )
+        orig_pert_to_schism_dcd(**all_args)
+
     elif cu_inputs["process"] == "net_diff_to_schism":
         # Required arguments
         required_keys = [
