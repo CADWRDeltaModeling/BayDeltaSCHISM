@@ -41,4 +41,4 @@ cu:
   end_date: ${ed}
   
 # Use:
-# bds port_bc port_calsim_schism.yaml
+# bds port_bc port_calsim_schism.yaml -- --sd 2018/3/1 --ed 2019/4/1

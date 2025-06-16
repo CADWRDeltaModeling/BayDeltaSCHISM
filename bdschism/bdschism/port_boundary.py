@@ -470,19 +470,38 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
 
 @click.command()
 @click.argument("config_yaml", type=click.Path(exists=True))
-@click.option(
-    "--kwargs",
-    type=str,
-    default="{}",
-    help="JSON string representing a dictionary of keyword arguments to populate format strings.",
-)
+@click.argument("extra", nargs=-1)
 @click.help_option("-h", "--help")
-def port_boundary_cli(config_yaml, kwargs):
+def port_boundary_cli(config_yaml, extra=()):
     """
     Command line interface for creating SCHISM boundary conditions.
+
+    Parameters
+    ----------
+    config_yaml : str
+        Path to the configuration YAML file.
+    extra : tuple
+        Extra keyword arguments to populate format strings in the YAML file.
+        For example, to set start date and end date, use:
+        -- --sd 2018/1/1 --ed 2022/2/1
+        This would add 'sd' and 'ed' to a kwargs_dict argument.
+
+    Examples
+    --------
+        bds port_bc port_calsim_schism.yaml -- --sd 2018/3/1 --ed 2019/4/1
     """
-    kwargs_dict = json.loads(kwargs)
-    create_schism_bc(config_yaml, kwargs_dict)
+    envvar = {}
+    key = None
+    for item in extra:
+        if item.startswith("--"):
+            key = item.lstrip("-")
+        elif key is not None:
+            envvar[key] = item
+            key = None
+    if key is not None:
+        raise ValueError(f"No value provided for extra argument: {key}")
+
+    create_schism_bc(config_yaml, kwargs=envvar if envvar else None)
 
 
 if __name__ == "__main__":
