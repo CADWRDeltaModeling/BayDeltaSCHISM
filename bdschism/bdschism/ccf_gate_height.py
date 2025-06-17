@@ -8,7 +8,7 @@ period.
 """
 import datetime as dtm
 import pandas as pd
-from vtools.functions.unit_conversions import M2FT,FT2M
+from vtools.functions.unit_conversions import M2FT, FT2M
 from dms_datastore.read_ts import read_ts
 from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
@@ -97,13 +97,26 @@ def create_priority_series(p1, p2, p3, p4, priority, stime, etime):
     return pgate4
 
 
-def make_3_prio(input_tide, stime, etime):
+def make_3_prio(input_tide, stime, etime, save_intermediate=False):
     """
     Function that makes the priorities schedule time series based on the predicted tide at San Francisco.
-    Input: a time series of the Predicted tide at SF in LST
-    The time series should be taken from the datastore (water level in m, NAVD88). Headers: datetime,predicted_m,elev_m.
 
-    Output: 3 irregular time series that contain the schedule for the priority 1, 2 and 3.
+    Parameters
+    ----------
+    input_tide : :py:class:'DataFrame <pandas.DataFrame>'
+        The input tide time series of the Predicted tide at SF in LST with datetime index and a column for the predicted tide in meters.
+        The time series should be taken from the datastore (water level in m, NAVD88). Headers: datetime,predicted_m,elev_m.
+    stime : :py:class:'datetime <datetime.datetime>'
+        Start time of the tide time series.
+    etime : :py:class:'datetime <datetime.datetime>'
+        End time of the tide time series.
+    save_intermediate : bool, optional
+        If True, intermediate results will be saved to files (default is False).
+
+    Returns
+    -------
+    s : :py:class:'DataFrame <pandas.DataFrame>'
+        3 irregular time series that contain the schedule for the priority 1, 2 and 3.
     """
 
     print("Making priorities from tide")
@@ -195,7 +208,8 @@ def make_3_prio(input_tide, stime, etime):
         prio1_ts.rename(columns={1: 4}).resample("1D").mean() * 0 + 1
     )  # Priority 4 is when exports are so large that gates are always open. 1 value per day.
 
-    save_prio_ts("prio_ts", s, prio1_ts, prio2_ts, prio3_ts, p4)
+    if save_intermediate:
+        save_prio_ts("prio_ts", s, prio1_ts, prio2_ts, prio3_ts, p4)
 
     return s, prio1_ts, prio2_ts, prio3_ts, p4
 
@@ -738,7 +752,7 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev):
     margin = dtm.timedelta(days=3)
     export_ts, cvp_ts = get_export_ts(s1 - margin, s2 + margin, export)
     export_ts_daily_average = export_ts.resample("D").mean()
-    inside_level0 = 2.12 # in feet
+    inside_level0 = 2.12  # in feet
     dt = dtm.timedelta(minutes=2)
 
     priority, max_height = gen_prio_for_varying_exports(
@@ -805,7 +819,16 @@ def ccf_gate_cli(sdate, edate, dest, astro_file, export_file, sf_data_repo, plot
     ccf_gate(sdate, edate, dest, astro_file, export_file, sffpx_elev, plot)
 
 
-def ccf_gate(sdate, edate, dest, astro_file, export_file, sffpx_elev, plot=False):
+def ccf_gate(
+    sdate,
+    edate,
+    dest,
+    astro_file,
+    export_file,
+    sffpx_elev,
+    plot=False,
+    save_intermediate=False,
+):
     """
     Generate the predicted gate height for the Clifton Court Forebay.
 
@@ -823,6 +846,8 @@ def ccf_gate(sdate, edate, dest, astro_file, export_file, sffpx_elev, plot=False
         Path to the export file used in height processing.
     plot : bool, optional
         If True, a plot of the predicted gate height will be displayed (default is False).
+    save_intermediate : bool, optional
+        If True, intermediate results will be saved to files (default is False).
 
     Returns
     -------
