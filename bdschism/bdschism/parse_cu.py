@@ -131,7 +131,9 @@ def adjust_src_sink(src, sink, net_diff, sinkfrac=0.001, debug=False):
 
 
 def calc_net_diff(original_net, adjusted_net, cfs_to_cms=True):
-    """Calculate the difference in net CU between original and adjusted data in cms.
+    """
+    Calculate the difference in net CU between original and adjusted data in cms.
+
     Parameters
     ----------
     original_net: pd.DataFrame
@@ -173,7 +175,9 @@ def sch_dcd_net_diff(
     end_date=None,
     cfs_to_cms=True,
 ):
-    """Convert adjusted DCD data from DataFrame into SCHISM-ready *.th inputs.
+    """
+    Convert adjusted DCD data from DataFrame into SCHISM-ready \*.th inputs.
+
     Parameters
     ----------
     net_diff: pd.DataFrame
@@ -183,7 +187,7 @@ def sch_dcd_net_diff(
     schism_vsink: str|Path
         input SCHISM vsink data, needs to be "dated" and not "elapsed.
     out_dir: str|Path
-        Output directory to store the altered *.th files.
+        Output directory to store the altered \*.th files.
     version: str
         Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th)
     start_date: pd.Timestamp, optional
@@ -541,7 +545,9 @@ def orig_pert_to_schism_dcd(
     dt=days(1),
     **kwargs,
 ):
-    """Convert original and perturbed DCD data to SCHISM vsource and vsink inputs.
+    """
+    Convert original and perturbed DCD data to SCHISM vsource and vsink inputs.
+
     Parameters
     ----------
     original_type: str
@@ -559,7 +565,7 @@ def orig_pert_to_schism_dcd(
     schism_vsink: str|Path
         Input SCHISM vsink data, needs to be "dated" and not "elapsed".
     out_dir: str|Path
-        Output directory to store the altered *.th files.
+        Output directory to store the altered \*.th files.
     version: str
         Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th).
     start_date: pd.Timestamp, optional
@@ -631,7 +637,8 @@ def orig_pert_to_schism_dcd(
 
 
 def orig_pert_to_schism_dcd_yaml(yaml_fn, envvar=None):
-    """Convert original and perturbed DCD data to SCHISM vsource and vsink inputs from yaml input file.
+    """
+    Convert original and perturbed DCD data to SCHISM vsource and vsink inputs from yaml input file.
 
     Parameters
     ----------
