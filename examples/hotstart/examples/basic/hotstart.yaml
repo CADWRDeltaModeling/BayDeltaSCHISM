@@ -1,3 +1,4 @@
+out_dir: ./
 hotstart: 
     date: 2021-04-20
     run_start: default
@@ -5,6 +6,7 @@ hotstart:
     hgrid_input_file: ../../data_in/hgrid.gr3               # hgrid needs to be in utm coordinates. 
     vgrid_input_file: ../../data_in/vgrid.in.3d 
     vgrid_version: "5.10"
+    elev.ic: !include elev.yaml # generate elev.ic from elev.yaml geographic coords.
     elevation:  
         initializer: 
             simple_trend: 
