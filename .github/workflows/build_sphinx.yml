@@ -54,6 +54,16 @@ jobs:
           conda activate schism
           conda install -c conda-forge libgfortran=3
           pip install -r docsrc/requirements.txt
+          
+          git clone -b suxarray https://github.com/kjnam/uxarray.git && 
+          pushd uxarray && 
+          pip install --no-deps -e . && 
+          popd
+
+          git clone -b v2024.09.0 https://github.com/cadwrdeltamodeling/suxarray && 
+          pushd suxarray && 
+          pip install --no-deps -e . && 
+          popd 
           pip install -e ./bdschism
 
       - name: Build HTML
@@ -61,7 +71,7 @@ jobs:
           source $CONDA/etc/profile.d/conda.sh
           conda activate schism
           cd docsrc/
-          # sphinx-apidoc --force -o . ../bdschism
+          sphinx-apidoc --force -o . ../bdschism/bdschism -T --templatedir ./_templates
           make clean
           make html
         

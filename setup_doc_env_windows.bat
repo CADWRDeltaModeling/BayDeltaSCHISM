@@ -3,7 +3,7 @@
 @REM this works in windows by simply calling ./setup_doc_env_windows.bat in a terminal with conda initialized
 
 REM Check if the "bds_doc" environment already exists
-conda env list | findstr "bds_doc" >nul
+conda env list | findstr "bds_doc" > nul
 if %errorlevel% equ 0 (
     echo The "bds_doc" conda environment already exists. Exiting setup. Delete this environment before running this script.
     exit /b 1
@@ -26,6 +26,11 @@ if %errorlevel% equ 0 (
 
     REM Pull the latest changes from the repository
     git pull --rebase
+
+    REM Install version-specific uxarray and suxarray tools
+    git clone -b suxarray https://github.com/kjnam/uxarray.git && pushd uxarray && pip install --no-deps . && popd && rmdir .\uxarray\ -Recurse -Force
+
+    git clone -b v2024.09.0 https://github.com/cadwrdeltamodeling/suxarray && pushd suxarray && pip install --no-deps . && popd && rmdir .\suxarray\ -Recurse -Force
 
     REM Install the bdschism package with documentation dependencies
     pip install -e ./bdschism[doc]
