@@ -5,7 +5,7 @@ channels:
   - cadwr-dms
 dependencies:
   - python>=3.9,<3.11
-  - schimpy>=1.6.4         # Recommended for compatibiltiy with current code
+  - schimpy>=1.10         # Recommended for compatibiltiy with current code
   - vtools3>=3.7.5
   - dms-datastore>=0.1.0
   - numpy<2
@@ -14,7 +14,7 @@ dependencies:
   - pyogrio
   - pydelmod
   - pyhecdss
-  - suxarray  
+  - libgfortran=3        # For compatibility with pyhecdss
   - pandas>=2            # Below here minimum versions are to reduce solve space
   - numpy>=1.20
   - xarray>=2022.11
@@ -41,6 +41,10 @@ dependencies:
   - pytest-runner
   - versioneer
   - nodejs
+# The following are not currently supported by conda but are available via pip with git:
+# git clone -b suxarray https://github.com/kjnam/uxarray.git && pushd uxarray && pip install --no-deps -e . && popd
+# git clone -b v2024.09.0 https://github.com/cadwrdeltamodeling/suxarray && pushd suxarray && pip install --no-deps -e . && popd
+
 # Note, though these are listed below as if conda would use pip
 # we do not recommend that you uncomment and use conda to install them via pip. 
 # Instead, if you want a developer install, leave these libraries above
