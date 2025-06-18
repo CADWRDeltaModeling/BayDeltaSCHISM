@@ -49,7 +49,7 @@ jobs:
 
       - name: Conda build env for docs
         run: |
-          conda env create -f schism_env.yml
+          conda env create -f schism_env.linux.yml
           source $CONDA/etc/profile.d/conda.sh
           conda activate schism
           conda install -c conda-forge libgfortran=3

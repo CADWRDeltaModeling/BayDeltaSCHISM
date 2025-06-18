@@ -1,0 +1,55 @@
+name: schism
+channels:
+  - conda-forge            # Note: the order listed in yaml is not enforced by conda
+  - nodefaults               # For predictable behavior, set your conda config
+  - cadwr-dms
+dependencies:
+  - python>=3.9,<3.11
+  - schimpy>=1.12.1         # Recommended for compatibiltiy with current code
+  - vtools3>=3.7.5
+  - dms-datastore>=0.1.0
+  - numpy<2
+  - dynaconf
+  - libgdal
+  - pyogrio
+  - pydelmod
+  - pyhecdss
+  - pandas>=2            # Below here minimum versions are to reduce solve space
+  - numpy>=1.20
+  - xarray>=2022.11
+  - netcdf4>=1.5.7
+  - dask>=2022.11
+  - numba>=0.56
+  - scipy>=1.8
+  - scikit-learn>=1.1.0
+  - bokeh>=2.4
+  - hvplot>=0.8
+  - statsmodels>=0.13.2
+  - pip>=22.2 
+  - geopandas>0.9
+  - rtree
+  - cfunits
+  - nodepy  
+  - sympy
+  - palettable
+  - openpyxl
+  - seaborn
+  - bleach
+  - ipykernel
+  - pytest
+  - pytest-runner
+  - versioneer
+  - nodejs
+# The following are not currently supported by conda but are available via pip with git:
+# git clone -b suxarray https://github.com/kjnam/uxarray.git && pushd uxarray && pip install --no-deps -e . && popd
+# git clone -b v2024.09.0 https://github.com/cadwrdeltamodeling/suxarray && pushd suxarray && pip install --no-deps -e . && popd
+
+# Note, though these are listed below as if conda would use pip
+# we do not recommend that you uncomment and use conda to install them via pip. 
+# Instead, if you want a developer install, leave these libraries above
+# which helps ensure that conda rather than pip handles the dependencies of each. 
+# Then do a github clone, go to the parent directory and run `pip install --no-deps -e .`  
+#  - pip:
+#    - "--editable=git+https://github.com/CADWRDeltaModeling/vtools3#egg=vtools3"
+#    - "--editable=git+https://github.com/CADWRDeltaModeling/schimpy#egg=schimpy"
+#    - "--editable=git+https://github.com/CADWRDeltaModeling/dms_datastore#egg=dms_datastore"
