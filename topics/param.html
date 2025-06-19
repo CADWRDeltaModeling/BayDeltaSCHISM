@@ -191,7 +191,15 @@
 </li>
 <li class="toctree-l4"><a class="reference internal" href="nudging.html#preparing-for-nudging-with-observed-data">Preparing for nudging with observed data</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nudging.html#nudging-example">Nudging Example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="nudging.html#nudging-suffix-standards-and-procedure">Nudging Suffix Standards and Procedure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nudging.html#nudging-suffix-standards-and-procedure">Nudging Suffix Standards and Procedure</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="nudging.html#schism-conventions">SCHISM Conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nudging.html#baydeltaschism-conventions">BayDeltaSCHISM Conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="nudging.html#using-the-set-nudge-utility">Using the set_nudge Utility</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="nudging.html#bds-set-nudge">bds set_nudge</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="nudging.html#sequencing-your-run">Sequencing your run</a></li>
 <li class="toctree-l4"><a class="reference internal" href="nudging.html#references">References</a></li>
 </ul>
@@ -635,7 +643,8 @@
            <div itemprop="articleBody">
              
   <section id="key-run-parameters-and-gotchas">
-<h1>Key Run Parameters and Gotchas<a class="headerlink" href="#key-run-parameters-and-gotchas" title="Link to this heading"></a></h1>
+<span id="param"></span><h1>Key Run Parameters and Gotchas<a class="headerlink" href="#key-run-parameters-and-gotchas" title="Link to this heading"></a></h1>
+<p>The param.nml from SCHISM is mostly well-commented and documented. But here are some often-modified parameters.</p>
 <section id="runtime-settings">
 <h2>Runtime settings<a class="headerlink" href="#runtime-settings" title="Link to this heading"></a></h2>
 </section>
@@ -644,6 +653,68 @@
 </section>
 <section id="nudging-settings">
 <h2>Nudging settings<a class="headerlink" href="#nudging-settings" title="Link to this heading"></a></h2>
+<p>To determine which modules receive nudging, the param.nml looks for <cite>inu_tr(n)</cite>, where <cite>n</cite> is the Module number. The default configuration is:</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">SCHISM Tracer Modules</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 16.7%" />
+<col style="width: 50.0%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Module Number</p></th>
+<th class="head"><p>Variable</p></th>
+<th class="head"><p>Module Name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Temperature</p></td>
+<td><p>TEM</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Salinity</p></td>
+<td><p>SAL</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Generic Tracer</p></td>
+<td><p>GEN</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Age</p></td>
+<td><p>AGE</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>Sediment 3D</p></td>
+<td><p>SED3D</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>EcoSim</p></td>
+<td><p>ECOSIM</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>ICM</p></td>
+<td><p>ICM</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>CoSINE</p></td>
+<td><p>COSINE</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>FIB</p></td>
+<td><p>FIB</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>TIMOR</p></td>
+<td><p>TIMOR</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>FABM</p></td>
+<td><p>FABM</p></td>
+</tr>
+</tbody>
+</table>
+<p>For more details on nudging in SCHISM, see <a class="reference internal" href="nudging.html#nudging"><span class="std std-ref">Nudging Files</span></a>.</p>
 </section>
 <section id="output-requests">
 <h2>Output requests<a class="headerlink" href="#output-requests" title="Link to this heading"></a></h2>

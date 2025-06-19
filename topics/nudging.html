@@ -191,7 +191,15 @@
 </li>
 <li class="toctree-l4"><a class="reference internal" href="#preparing-for-nudging-with-observed-data">Preparing for nudging with observed data</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#nudging-example">Nudging Example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#nudging-suffix-standards-and-procedure">Nudging Suffix Standards and Procedure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nudging-suffix-standards-and-procedure">Nudging Suffix Standards and Procedure</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#schism-conventions">SCHISM Conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#baydeltaschism-conventions">BayDeltaSCHISM Conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#using-the-set-nudge-utility">Using the set_nudge Utility</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#bds-set-nudge">bds set_nudge</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="#sequencing-your-run">Sequencing your run</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
@@ -795,6 +803,85 @@ step_nu_tr = 3600. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
 </section>
 <section id="nudging-suffix-standards-and-procedure">
 <h2>Nudging Suffix Standards and Procedure<a class="headerlink" href="#nudging-suffix-standards-and-procedure" title="Link to this heading"></a></h2>
+<section id="schism-conventions">
+<h3>SCHISM Conventions<a class="headerlink" href="#schism-conventions" title="Link to this heading"></a></h3>
+<p>SCHISM is ultimately looking for files that match the following convention:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">MOD_nu.nc</span>
+<span class="go">MOD_nudge.gr3</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">MOD</span></code> is whichever module is being run. So if temperature and salinity are turned on in the <a class="reference internal" href="param.html#param"><span class="std std-ref">param.nml file</span></a>, then SCHISM will look for the following four files:
+- TEM_nu.nc
+- TEM_nudge.gr3
+- SAL_nu.nc
+- SAL_nudge.gr3</p>
+</section>
+<section id="baydeltaschism-conventions">
+<h3>BayDeltaSCHISM Conventions<a class="headerlink" href="#baydeltaschism-conventions" title="Link to this heading"></a></h3>
+<p>In the Bay-Delta SCHISM model we typically use one of three sources: hycom, roms, or cencoos. So many of our nudging files (per the <a class="reference external" href="https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/examples/nudging">nudging examples</a>) use the naming convention of:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">MOD_nu_sourcename.nc</span>
+<span class="go">MOD_nudge_sourcename.gr3</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">sourcename</span></code> is the sourcename or identifier of the files. It could be simply “roms” or it could be “roms_2019” if your simulation organization requires multiple nudging periods.</p>
+</section>
+<section id="using-the-set-nudge-utility">
+<h3>Using the set_nudge Utility<a class="headerlink" href="#using-the-set-nudge-utility" title="Link to this heading"></a></h3>
+<p>If you are to follow the above nudging suffix conventions, then the <code class="docutils literal notranslate"><span class="pre">nudge_suffix</span></code> tool will be simple and easy to use. It is really usefull when running a historical run because this often nudges observed temperature and salinity data within the model domain for a short period of time (Fig. <a class="reference internal" href="#nudge-obs-grid"><span class="std std-numref">Fig. 4</span></a>) and then transitions to strictly nudging at the ocean boundary (Fig. <a class="reference internal" href="#nudge-ocean-grid"><span class="std std-numref">Fig. 5</span></a>).</p>
+<p>Let’s say your simulation is ready to go and you have the nudging files in your simulation directory with “obs_roms” as the <code class="docutils literal notranslate"><span class="pre">sourcename</span></code>, you could just run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bds set_nudge obs_roms</span>
+</pre></div>
+</div>
+<p>And it will automatically apply symlinks for every module active in the param.nml and print out the following to the console:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">TEM .gr3: Linked TEM_nudge.gr3 to TEM_nudge_obs_roms.gr3</span>
+<span class="go">TEM .nc: Linked TEM_nu.nc to TEM_nu_obs_roms.nc</span>
+<span class="go">SAL .gr3: Linked SAL_nudge.gr3 to SAL_nudge_obs_roms.gr3</span>
+<span class="go">SAL .nc: Linked SAL_nu.nc to SAL_nu_obs_roms.nc</span>
+</pre></div>
+</div>
+<section id="bds-set-nudge">
+<h4>bds set_nudge<a class="headerlink" href="#bds-set-nudge" title="Link to this heading"></a></h4>
+<p>Command for setting the nudging module files for SCHISM. This command forwards arguments to the <cite>set_nudging</cite> function.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><p>SUFFIX  This is the suffix used when preparing the nudging/gr files. For instance ‘obshycom’ in SAL_nu_obshycom.nc</p>
+</dd>
+</dl>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>bds<span class="w"> </span>set_nudge<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>SUFFIX
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-bds-set_nudge-workdir">
+<span class="sig-name descname"><span class="pre">--workdir</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;workdir&gt;</span></span><a class="headerlink" href="#cmdoption-bds-set_nudge-workdir" title="Link to this definition"></a></dt>
+<dd><p>Simulation directory path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">'.'</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-bds-set_nudge-var_map">
+<span class="sig-name descname"><span class="pre">--var_map</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;var_map&gt;</span></span><a class="headerlink" href="#cmdoption-bds-set_nudge-var_map" title="Link to this definition"></a></dt>
+<dd><p>Unexpected mapping in key=value pairs, separated by commas. Ex: –var_map ‘TEM=temperature,SAL=salinity’</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-bds-set_nudge-h">
+<span id="cmdoption-bds-set_nudge-help"></span><span class="sig-name descname"><span class="pre">-h</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--help</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-bds-set_nudge-h" title="Link to this definition"></a></dt>
+<dd><p>Show this message and exit.</p>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-bds-set_nudge-arg-SUFFIX">
+<span class="sig-name descname"><span class="pre">SUFFIX</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-bds-set_nudge-arg-SUFFIX" title="Link to this definition"></a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+</section>
 </section>
 <section id="sequencing-your-run">
 <h2>Sequencing your run<a class="headerlink" href="#sequencing-your-run" title="Link to this heading"></a></h2>
