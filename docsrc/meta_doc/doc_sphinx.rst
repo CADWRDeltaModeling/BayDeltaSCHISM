@@ -3,7 +3,20 @@
 Sphinx Documentation Principles
 ================================
 
-First, you can review Sphinx's reStructuredText Primer `here <https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_. But some basics that are super useful:
+First, you can review `Sphinx's reStructuredText Primer here <https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_. But some basics that are super useful:
+
+Code Auto-Documentation
+-----------------------
+
+Sphinx has a module `apidoc <https://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html>`_ which takes your Python package (**bdschism** in this repository) and generates a documentation .rst file for that package. It uses numpydocs or docstrings that are specified in triple quotes below the function definition, as well as click autodocumentation principles.
+In BayDeltaSCHISM, the **bdschism** Python package is documented in `this page`.
+
+The autodocumentation is automatically triggered in GitHub Actions using `.github/workflows/build_sphinx.yml <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/.github/workflows/build_sphinx.yml>`_, but can be tested locally using:
+
+  .. code-block:: console
+
+    sphinx-apidoc --force -o . ../bdschism/bdschism -T --templatedir ./_templates
+
 
 Headings order
 ---------------
@@ -41,7 +54,7 @@ Sphinx examples
 Math
 -----
 
-You can use the ``.. math::`` directive to display mathematical equations using the ``sphinx.ext.mathjax`` extension (this is already configured in docsrc/conf.py). You can find a list of Greek letters and math symbols and how to display them in LaTeX `here <https://www.overleaf.com/learn/latex/List_of_Greek_letters_and_math_symbols>`_. Equations :eq:`eq_continuity` and `(2.12) <_eq_turb_closure>`_ are shown below with the following code. 
+You can use the ``.. math::`` directive to display mathematical equations using the ``sphinx.ext.mathjax`` extension (this is already configured in docsrc/conf.py). You can find a list of Greek letters and math symbols and how to display them in `LaTeX here <https://www.overleaf.com/learn/latex/List_of_Greek_letters_and_math_symbols>`_. Equations :eq:`eq_continuity` and `(2.12) <_eq_turb_closure>`_ are shown below with the following code. 
 
 The reference to the first equation is done with ``:eq:`eq_continuity```. But since the second equation uses a custom tag number (to correspond to the `SCHISM 5.8 manual <https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwj_tMSBluKMAxXwDzQIHZAwKXMQFnoECBEQAQ&url=https%3A%2F%2Fccrm.vims.edu%2Fschismweb%2FSCHISM_v5.8-Manual.pdf&usg=AOvVaw270sBZoLrHtWj0RyZ_PdGa&opi=89978449>`_ equation numbers), you need to add a hyperlink target using ``.. _eq_turb_closure:`` and then reference it using ```(2.12) <_eq_turb_closure>`_``
 
