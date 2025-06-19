@@ -22,7 +22,8 @@ logging.basicConfig(
 @click.argument("polygon_yaml", type=click.Path(exists=True))
 @click.argument("subregion_nc", type=click.Path())
 def create_subregion_nc(out2d, polygon_yaml, subregion_nc):
-    """Create a netCDF file containing subregion flags.
+    """
+    Create a netCDF file containing subregion flags.
 
     Parameters
     ----------
