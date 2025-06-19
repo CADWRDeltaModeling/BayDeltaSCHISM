@@ -133,6 +133,57 @@ Below is an example of nudging a Bay-Delta simulation spanning from 2021-01-01 t
 Nudging Suffix Standards and Procedure  
 ----------------------------------------
 
+SCHISM Conventions
+```````````````````
+
+SCHISM is ultimately looking for files that match the following convention:
+
+.. code-block:: console
+
+    MOD_nu.nc
+    MOD_nudge.gr3
+
+Where ``MOD`` is whichever module is being run. So if temperature and salinity are turned on in the :ref:`param.nml file <param>`, then SCHISM will look for the following four files:
+- TEM_nu.nc
+- TEM_nudge.gr3
+- SAL_nu.nc
+- SAL_nudge.gr3
+
+BayDeltaSCHISM Conventions
+``````````````````````````
+
+In the Bay-Delta SCHISM model we typically use one of three sources: hycom, roms, or cencoos. So many of our nudging files (per the `nudging examples <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/examples/nudging>`_) use the naming convention of:
+
+.. code-block:: console
+
+    MOD_nu_sourcename.nc
+    MOD_nudge_sourcename.gr3
+	
+where ``sourcename`` is the sourcename or identifier of the files. It could be simply "roms" or it could be "roms_2019" if your simulation organization requires multiple nudging periods.
+
+Using the set_nudge Utility
+````````````````````````````
+
+If you are to follow the above nudging suffix conventions, then the ``nudge_suffix`` tool will be simple and easy to use. It is really usefull when running a historical run because this often nudges observed temperature and salinity data within the model domain for a short period of time (Fig. :numref:`nudge_obs_grid`) and then transitions to strictly nudging at the ocean boundary (Fig. :numref:`nudge_ocean_grid`).
+
+Let's say your simulation is ready to go and you have the nudging files in your simulation directory with "obs_roms" as the ``sourcename``, you could just run:
+
+.. code-block:: console
+
+	bds set_nudge obs_roms
+	
+And it will automatically apply symlinks for every module active in the param.nml and print out the following to the console:
+
+.. code-block:: console
+
+	TEM .gr3: Linked TEM_nudge.gr3 to TEM_nudge_obs_roms.gr3
+	TEM .nc: Linked TEM_nu.nc to TEM_nu_obs_roms.nc
+	SAL .gr3: Linked SAL_nudge.gr3 to SAL_nudge_obs_roms.gr3
+	SAL .nc: Linked SAL_nu.nc to SAL_nu_obs_roms.nc
+
+.. click:: set_nudging:set_nudging_cli
+        :prog: bds set_nudge
+        :show-nested:
 
 
 Sequencing your run  
