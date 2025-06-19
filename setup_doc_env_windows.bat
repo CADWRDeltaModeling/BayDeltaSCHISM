@@ -37,10 +37,10 @@ if %errorlevel% equ 0 (
     REM Install the bdschism package with documentation dependencies
     pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org -e ./bdschism[doc] || exit /b
 
-    REM Install version-specific uxarray and suxarray tools
-    git clone -b suxarray https://github.com/kjnam/uxarray.git && pushd uxarray && pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --no-deps . && popd && rmdir .\uxarray\ -Recurse -Force || exit /b
+    @REM REM Install version-specific uxarray and suxarray tools
+    @REM git clone -b suxarray https://github.com/kjnam/uxarray.git && pushd uxarray && pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --no-deps . && popd && rmdir .\uxarray\ -Recurse -Force || exit /b
 
-    git clone -b v2024.09.0 https://github.com/cadwrdeltamodeling/suxarray && pushd suxarray && pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --no-deps . && popd && rmdir .\suxarray\ -Recurse -Force || exit /b
+    @REM git clone -b v2024.09.0 https://github.com/cadwrdeltamodeling/suxarray && pushd suxarray && pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --no-deps . && popd && rmdir .\suxarray\ -Recurse -Force || exit /b
 
 )
 
