@@ -33,6 +33,7 @@ Contents
   calibration
   help
   refs
+  bdschism
 
 
 Independent manual web pages are available for `VTools <http://cadwrdeltamodeling.github.io/vtools3/>`_ and 

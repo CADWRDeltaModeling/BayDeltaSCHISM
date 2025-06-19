@@ -130,8 +130,13 @@ Below is an example of nudging a Bay-Delta simulation spanning from 2021-01-01 t
     These files will provide nudging values for the spin-up of the simulation. Use `set_nudging <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/bdschism/bdschism/set_nudging.py>`_ to link these files appropriately.  
 
 
+Nudging Suffix Standards and Procedure  
+----------------------------------------
+
+
+
 Sequencing your run  
--------------------  
+--------------------
 .. raw:: html   
     :file: ../img/nudging_flowchart.svg  
 

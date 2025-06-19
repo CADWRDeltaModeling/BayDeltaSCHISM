@@ -1,0 +1,872 @@
+<!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. -->
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bdschism.generate_realtime_elev2d &mdash; Bay-Delta SCHISM</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/style.css?v=8686dbcc" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ca842793"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo6.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Bay-Delta SCHISM Project</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getmodel.html">Installation And Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#schism-software-code-binaries">SCHISM Software Code/Binaries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#downloading">Downloading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#compile-settings">Compile Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#bay-delta-schism-python-package">Bay-Delta SCHISM Python Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#id1">Downloading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#contents">Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#bathymetry">Bathymetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#complete-sample-inputs">Complete Sample Inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#other-required-python-packages">Other Required Python Packages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#configuration-system">Configuration System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#id3">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#configuration-file-locations-and-priorities">Configuration File Locations and Priorities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../getmodel.html#example-configuration-file">Example Configuration File</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#visit-schism-plug-in">VisIt SCHISM Plug-in</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getmodel.html#links-to-tools">Links to tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">Bay-Delta SCHISM User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#essentials-for-running-the-model">Essentials for Running the Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/processed_run.html">Running a Preprepared Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/overview.html">Overview of a Bay-Delta SCHISM Run</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/overview.html#grid-and-spatial-data">Grid and Spatial Data</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/overview.html#templates">Templates</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/overview.html#preprocessor">Preprocessor</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/overview.html#time-dependent-data">Time-dependent data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/overview.html#files-that-change-with-both-mesh-and-dates">Files that Change with Both Mesh and Dates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/overview.html#driver-files-param-tropic-nml-param-clinic-nml">Driver Files (param.tropic.nml, param.clinic.nml)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/overview.html#other-nomenclature-and-concepts">Other Nomenclature and Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/overview.html#organizing-the-launch-directory">Organizing the Launch Directory</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/vignette.html">Vignette: Hindcast Bay Delta SCHISM at Delta Modeling Section with Preprocessor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/vignette.html#windows">Windows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/vignette.html#linux">Linux</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/vignette.html#barotropic">Barotropic</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/vignette.html#baroclinic">Baroclinic</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/files_and_directories.html">Required Files, Directory Structure and Recommended Study Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/files_and_directories.html#required-files-and-structure">Required files and structure</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/files_and_directories.html#schism-launch-directory-structure">SCHISM launch directory structure</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/files_and_directories.html#launch-directory">Launch directory</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/files_and_directories.html#output-directory">Output directory</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/files_and_directories.html#atmospheric-sflux-directory">Atmospheric (sflux) directory</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/files_and_directories.html#study-layout">Study layout</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/preprocess.html">Grid, Spatial Data and Preprocessor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/preprocess.html#do-i-need-it-copy-existing-run-vs-preprocess-from-template">Do I need it? Copy existing run vs preprocess from template?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/preprocess.html#running-the-preprocessor">Running the preprocessor</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/preprocess.html#applying-the-template">Applying the template</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/preprocess.html#partial-preprocessing-for-modification">Partial preprocessing for modification</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/preprocess.html#configuring-the-input-yaml">Configuring the input (yaml)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/preprocess.html#where-to-required-files-and-directory-structure">Where to? Required files and directory structure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/flow_boundary.html">Inflow/Outflow Boundaries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/flow_boundary.html#where-are-the-data">Where are the data?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/flow_boundary.html#clipping-to-run-dates-and-conversion-to-elapsed-time">Clipping to run dates and conversion to elapsed time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/flow_boundary.html#what-if-i-have-to-add-or-move-a-boundary">What if I have to add or move a boundary?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/flow_boundary.html#adding-data-from-other-sources-e-g-forecasts-other-models">Adding Data From Other Sources (e.g. Forecasts, other models)</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/flow_boundary.html#port_boundary.read_csv"><code class="docutils literal notranslate"><span class="pre">read_csv()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/atmospheric.html">Atmospheric setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/atmospheric.html#basic-introduction-and-requirements">Basic introduction and requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/atmospheric.html#where-are-the-data">Where are the data?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/atmospheric.html#pointing-to-the-data-with-make-links-full-py">Pointing to the data with make_links_full.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/barotropic.html">Ocean Boundary Stabilization: Barotropic Warmup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/barotropic.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/barotropic.html#workflow">Workflow</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/barotropic.html#bctides-in">bctides.in</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/barotropic.html#param-nml">param.nml</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/barotropic.html#vgrid-in">vgrid.in</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../topics/barotropic.html#run-interpolate-variables-to-get-uv3d-th-nc">Run interpolate_variables to get uv3D.th.nc</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../topics/barotropic.html#move-the-outputs-directory-aside">Move the outputs directory aside</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/param.html">Key Run Parameters and Gotchas</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/param.html#runtime-settings">Runtime settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/param.html#hotstart-settings">Hotstart settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/param.html#nudging-settings">Nudging settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/param.html#output-requests">Output requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/param.html#settings-that-have-historically-gone-awry">Settings that have historically gone awry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/param.html#what-happens-when-schism-versions-get-advanced">What happens when SCHISM versions get advanced?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/hotstart.html">Run Initialization and Restart (Hotstart)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hotstart.html#when-do-you-need-an-initial-condition-or-hotstart">When do you need an initial condition or hotstart?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hotstart.html#what-is-the-difference-between-a-cold-and-hot-start">What is the difference between a cold and hot start?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hotstart.html#combining-hotstarts">Combining hotstarts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hotstart.html#choosing-a-good-start-time">Choosing a good start time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hotstart.html#creating-a-hotstart-for-hydro-salt-temp-with-schism-hotstart">Creating a Hotstart for Hydro/Salt/Temp with schism_hotstart</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/hotstart.html#acquiring-the-data">Acquiring the data</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/hotstart.html#configuring-the-hotstart-request-yaml">Configuring the Hotstart request (yaml)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/hotstart.html#running-the-hotstart-generator">Running the hotstart generator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/nudging.html">Nudging Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/nudging.html#introduction-what-is-nudging">Introduction: What is nudging?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/nudging.html#do-i-need-nudging">Do I need nudging?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/nudging.html#generating-nudging-files">Generating nudging files</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/nudging.html#schimpy.nudging.Nudging"><code class="docutils literal notranslate"><span class="pre">Nudging</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../topics/nudging.html#schimpy.nudging.Nudging.create_nudging"><code class="docutils literal notranslate"><span class="pre">Nudging.create_nudging()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/nudging.html#preparing-for-nudging-with-observed-data">Preparing for nudging with observed data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/nudging.html#nudging-example">Nudging Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/nudging.html#nudging-suffix-standards-and-procedure">Nudging Suffix Standards and Procedure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/nudging.html#sequencing-your-run">Sequencing your run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/nudging.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/vegetation.html">Vegetation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/vegetation.html#aquatic-vegetation-in-schism">Aquatic Vegetation in SCHISM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/vegetation.html#approximations-and-preprocessor">Approximations and preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/vegetation.html#effective-stem-density">Effective Stem Density</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/vegetation.html#height">Height</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#inspection-of-model-setup">Inspection of Model Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/checklists.html">Checklists</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/checklists.html#running-a-processed-setup">Running a Processed Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/checklists.html#simple-hindcast-runs">Simple Hindcast Runs</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/checklists.html#cbox-choose-run-dates">☐ Choose run dates</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/checklists.html#cbox-apply-template-to-existing-mesh">☐ Apply template to existing mesh</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/checklists.html#cbox-collect-time-series-inputs">☐ Collect time series inputs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/checklists.html#cbox-hotstart-can-be-concurrent-with-barotropic">☐ Hotstart (can be concurrent with barotropic)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/checklists.html#cbox-nudging-can-be-concurrent-with-barotropic">☐ Nudging (can be concurrent with barotropic)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/checklists.html#cbox-barotropic-warmup">☐ Barotropic warmup</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/checklists.html#cbox-baroclinic-simulation">☐ Baroclinic simulation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/run_tests.html">Test Suite for Prechecking Runs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/run_tests.html#using-the-tests">Using the Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/run_tests.html#writing-run-tests">Writing Run Tests</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/run_tests.html#basics-of-testing">Basics of testing</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/run_tests.html#test-fixtures">Test Fixtures</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/run_tests.html#markers">Markers</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/run_tests.html#what-to-test">What to test</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#output-files">Output Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/output.html">Output</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html#flavors-of-output">Flavors of output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html#what-you-should-plan-in-advance">What you should plan in advance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html#request-station-output">Request station output</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/output.html#station-in">station.in</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/output.html#flow-xsects-yaml-and-fluxflags-out">flow_xsects.yaml and fluxflags.out</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html#request-dense-output">Request dense output:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html#working-with-staout-files">Working with staout_ files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html#working-with-flux-out-files">Working with flux.out files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html#visualizing-dense-nc-output-in-visit">Visualizing dense (.nc) output in VisIt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html#schism-s-extraction-utilities">SCHISM’s extraction utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html#quick-validation-plots">Quick validation plots</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/output.html#where-do-we-keep-specialized-postprocessing-materials">Where do we keep specialized postprocessing materials?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#computing-resources">Computing Resources</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/hpc.html">Intro to Clusters and High Performance Computing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hpc.html#anatomy-of-a-cluster">Anatomy of a Cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hpc.html#figure-cluster-components">Figure: Cluster Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hpc.html#compilation">Compilation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hpc.html#job-submission">Job Submission</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hpc.html#compute-nodes-and-message-passing">Compute Nodes and Message Passing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hpc.html#input-output-and-scribes">Input/Output and Scribes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hpc.html#example-slurm-launch-file">Example Slurm Launch File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hpc.html#example-shell-script-to-run-schism">Example Shell Script to Run SCHISM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hpc.html#intro-to-batch-cloud-cluster">Intro to Batch Cloud Cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/hpc.html#figure-azure-batch-cluster-components">Figure: Azure Batch Cluster Components</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/azure.html">Running on Azure Batch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/azure.html#setup-azure">Setup Azure</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/azure.html#download-azure-utilities">Download Azure Utilities</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/azure.html#login">Login</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/azure.html#create-a-resource-group">Create a Resource Group</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/azure.html#download-azure-dms-batch">Download azure_dms_batch</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/azure.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/bds_guide_azure.html#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/bds_guide_azure.html#upload-applications">Upload Applications</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/bds_guide_azure.html#schism">SCHISM</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/bds_guide_azure.html#python-packages">Python Packages</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/bds_guide_azure.html#azcopy-commands">azcopy commands</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/bds_guide_azure.html#azcopy-options">azcopy options</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/bds_guide_azure.html#running-model-simulation">Running Model Simulation</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/bds_guide_azure.html#simple-run-config">Simple Run Config</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/bds_guide_azure.html#spot-pricing-config">Spot Pricing Config</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../user_guide.html#advanced-tasks-and-concepts">Advanced Tasks and Concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/problems.html">Common Problems and Diagnosis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#where-does-schism-write-error-messages">Where does SCHISM write error messages?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#my-run-says-segfault">My run says “segfault”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#the-runs-seems-very-slow-compared-to-normal">The runs seems very slow compared to normal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/problems.html#dry-boundary">Dry boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/age.html">Simulating water age</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#compile-with-age">Compile with age</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#parameters-in-param-nml">Parameters in param.nml</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#additional-ic-files">Additional *.ic files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#hotstart-considerations">Hotstart considerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/age.html#typical-output-processing">Typical output processing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/sea_level_rise.html">Sea Level Rise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/sources.html">Sources, Sinks, Delta Channel Depletions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#identifying-source-locations-and-names-in-preprocessor">Identifying source locations and names in preprocessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#delta-and-suisun-channel-depletions">Delta and Suisun channel depletions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#making-sure-you-includ-the-th-files-for-sources-sinks">Making sure you includ the th files for sources/sinks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/sources.html#tracer-concentrations">Tracer concentrations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/structures.html">Hydraulic Structures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#where-is-the-documentation">Where is the documentation?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#setting-up-the-mesh-to-make-structures-easy">Setting up the mesh to make structures easy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#preventing-dry-boundary-messages">Preventing dry boundary messages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/structures.html#important-bay-delta-examples">Important Bay-Delta examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/mesh.html">Gridding the Horizontal Mesh</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/mesh.html#meshing">Meshing</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/mesh.html#meshing-considerations-for-schism">Meshing considerations for SCHISM</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../topics/mesh.html#video-joseph-zhang-schism-summit">Video (Joseph Zhang, SCHISM summit)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../topics/mesh.html#recap-checklist">Recap/checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/mesh.html#getting-to-know-sms">Getting to know SMS</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../topics/mesh.html#sample-data">Sample Data</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../topics/mesh.html#id1">Recap checklist</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../topics/mesh.html#presentation-clip-dems-and-efficient-use-of-dems">Presentation: clip_dems and efficient use of DEMS</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/mesh.html#building-the-bay-delta-mesh-the-standard-way">Building the Bay-Delta mesh the standard way</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/mesh.html#presentation-meshing-consideration-for-marshes-and-restoration">Presentation: Meshing consideration for marshes and restoration</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/mesh.html#merging-stitching-sms-mesh-maps-new-work-flooded-islands-etc">Merging/Stitching SMS mesh/maps (new work, flooded islands, etc)</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../topics/mesh.html#video">Video</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../topics/mesh.html#id2">Recap/checklist</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/mesh.html#vertical-mesh-setup">Vertical mesh setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/mesh.html#checklist-for-after-you-change-the-mesh">Checklist for after you change the mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/mesh.html#performance-tuning">Performance Tuning</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/mesh.html#the-analyze-dt-utility">The analyze_dt Utility</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/utilities.html">Utilities and Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/utilities.html#gis-conversion">GIS Conversion</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/utilities.html#mesh-to-shapefile">Mesh to shapefile</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/utilities.html#polygons-to-from-shapefile">Polygons to/from shapefile</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../topics/utilities.html#polylines-to-from-shapefile">Polylines to/from shapefile</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/utilities.html#hotstart-inventory-convert-iteration-numbers-to-dates">Hotstart Inventory: Convert iteration numbers to dates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/utilities.html#model-time-and-multi-clip">model_time and multi_clip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../learning.html">Learning Resources for Bay-Delta SCHISM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#general-resources-and-tools">General Resources and Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bay_delta_tutorials.html">Bay-Delta SCHSIM Tutorials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../linux.html">Linux Hints for SCHISM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../linux.html#using-linux-from-windows">Using Linux from Windows</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../linux.html#basic-connection">Basic connection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../linux.html#copying-files">Copying files</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../linux.html#xwindow-emulation">XWindow Emulation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../linux.html#all-in-one-mobaxterm">All-in-one: MobaXTerm</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../linux.html#copying-a-run-safely">Copying a Run Safely</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../linux.html#special-case-remote-computer-using-rsa-keys">Special Case: Remote Computer Using RSA Keys</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../linux.html#symbolic-links">Symbolic links</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../linux.html#archives-and-tarballs">Archives and Tarballs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../linux.html#essential-commands-in-a-schism-context">Essential commands in a SCHISM context</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#manuals">Manuals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../learning.html#vims-and-other-external-resources">VIMS and Other External Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation.html">Contributing to the Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation.html#getting-started">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../documentation.html#windows">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../documentation.html#linux">Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation.html#how-it-works">How it works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../documentation.html#local-html-pages">Local html pages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../documentation.html#github-pages">GitHub Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation.html#examples-and-concepts">Examples and Concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../meta_doc/doc_sphinx.html">Sphinx Documentation Principles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../meta_doc/doc_sphinx.html#code-auto-documentation">Code Auto-Documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../meta_doc/doc_sphinx.html#headings-order">Headings order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../meta_doc/doc_sphinx.html#baydeltaschism-specifics">BayDeltaSCHISM Specifics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../meta_doc/doc_sphinx.html#sphinx-examples">Sphinx examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../meta_doc/doc_sphinx.html#math">Math</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../meta_doc/doc_sphinx.html#figures">Figures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../meta_doc/doc_sphinx.html#diagrams">Diagrams</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../meta_doc/doc_sphinx.html#sphinx-mermaid-directive">Sphinx Mermaid Directive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../meta_doc/doc_sphinx.html#embedding-charts-with-svg">Embedding Charts with SVG</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../meta_doc/doc_sphinx.html#embedding-videos">Embedding Videos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../meta_doc/doc_mermaid.html">Mermaid Chart Principles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../meta_doc/doc_mermaid.html#baydeltaschism-standards">BayDeltaSCHISM Standards</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../meta_doc/doc_mermaid.html#symbols">Symbols</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../meta_doc/doc_mermaid.html#style">Style</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../meta_doc/doc_mermaid.html#vs-code-plugin">VS Code plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../meta_doc/doc_mermaid.html#cool-stuff">Cool stuff</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../meta_doc/doc_mermaid.html#clickables">Clickables</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../meta_doc/doc_mermaid.html#icons-in-an-element">Icons in an Element</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../meta_doc/doc_click.html">Click Documentation Principles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../calibration.html">Calibration Report and References</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../calibration.html#calibration">Calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../help.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help.html#support">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../refs.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bdschism.html">bdschism package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.config.html">bdschism.config package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../bdschism.config.html#module-bdschism.config">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.analyze_dt">bdschism.analyze_dt module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.analyze_dt.load_data"><code class="docutils literal notranslate"><span class="pre">load_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.analyze_dt.plot_summarized_bad_actors"><code class="docutils literal notranslate"><span class="pre">plot_summarized_bad_actors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.analyze_dt.summarize_elements"><code class="docutils literal notranslate"><span class="pre">summarize_elements()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.calc_ndoi">bdschism.calc_ndoi module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.calc_ndoi.calc_indoi"><code class="docutils literal notranslate"><span class="pre">calc_indoi()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.ccf_gate_height">bdschism.ccf_gate_height module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.ccf_gate"><code class="docutils literal notranslate"><span class="pre">ccf_gate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.create_priority_series"><code class="docutils literal notranslate"><span class="pre">create_priority_series()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.draw_down_regression"><code class="docutils literal notranslate"><span class="pre">draw_down_regression()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.export_lookup"><code class="docutils literal notranslate"><span class="pre">export_lookup()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.flow_to_max_gate"><code class="docutils literal notranslate"><span class="pre">flow_to_max_gate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.flow_to_priority"><code class="docutils literal notranslate"><span class="pre">flow_to_priority()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.gen_gate_height"><code class="docutils literal notranslate"><span class="pre">gen_gate_height()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.gen_prio_for_varying_exports"><code class="docutils literal notranslate"><span class="pre">gen_prio_for_varying_exports()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.get_export_ts"><code class="docutils literal notranslate"><span class="pre">get_export_ts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.get_tidal_hh_lh"><code class="docutils literal notranslate"><span class="pre">get_tidal_hh_lh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.get_tidal_ll_hl"><code class="docutils literal notranslate"><span class="pre">get_tidal_ll_hl()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.make_3_prio"><code class="docutils literal notranslate"><span class="pre">make_3_prio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.predict_oh4_level"><code class="docutils literal notranslate"><span class="pre">predict_oh4_level()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.process_height"><code class="docutils literal notranslate"><span class="pre">process_height()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.radial_gate_flow"><code class="docutils literal notranslate"><span class="pre">radial_gate_flow()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.raidal_gate_flow_ts"><code class="docutils literal notranslate"><span class="pre">raidal_gate_flow_ts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.remove_continuous_duplicates"><code class="docutils literal notranslate"><span class="pre">remove_continuous_duplicates()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.save_prio_ts"><code class="docutils literal notranslate"><span class="pre">save_prio_ts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.sffpx_level"><code class="docutils literal notranslate"><span class="pre">sffpx_level()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.simple_mass_balance"><code class="docutils literal notranslate"><span class="pre">simple_mass_balance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.tlmax"><code class="docutils literal notranslate"><span class="pre">tlmax()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.ccf_gate_height.tlmin"><code class="docutils literal notranslate"><span class="pre">tlmin()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.create_sflux_links">bdschism.create_sflux_links module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.diff_gr3">bdschism.diff_gr3 module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.diff_gr3.diff_congruent_gr3"><code class="docutils literal notranslate"><span class="pre">diff_congruent_gr3()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.generate_realtime_elev2d">bdschism.generate_realtime_elev2d module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.generate_realtime_elev2d.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.generate_realtime_elev2d.stitch_station"><code class="docutils literal notranslate"><span class="pre">stitch_station()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.hotstart_date">bdschism.hotstart_date module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.hotstart_date.set_hotstart_date"><code class="docutils literal notranslate"><span class="pre">set_hotstart_date()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.hotstart_from_hotstart">bdschism.hotstart_from_hotstart module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.hotstart_from_hotstart.hotstart_newgrid"><code class="docutils literal notranslate"><span class="pre">hotstart_newgrid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.hotstart_from_hotstart.str_or_path"><code class="docutils literal notranslate"><span class="pre">str_or_path()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.hotstart_nudging_data">bdschism.hotstart_nudging_data module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.hotstart_nudging_data.hotstart_nudge_data"><code class="docutils literal notranslate"><span class="pre">hotstart_nudge_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.parse_cu">bdschism.parse_cu module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.adjust_src_sink"><code class="docutils literal notranslate"><span class="pre">adjust_src_sink()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.calc_net_calsim"><code class="docutils literal notranslate"><span class="pre">calc_net_calsim()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.calc_net_diff"><code class="docutils literal notranslate"><span class="pre">calc_net_diff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.calc_net_dsm2"><code class="docutils literal notranslate"><span class="pre">calc_net_dsm2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.calc_net_schism"><code class="docutils literal notranslate"><span class="pre">calc_net_schism()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.calc_srcsnk_dsm2"><code class="docutils literal notranslate"><span class="pre">calc_srcsnk_dsm2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.orig_pert_to_schism_dcd"><code class="docutils literal notranslate"><span class="pre">orig_pert_to_schism_dcd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.orig_pert_to_schism_dcd_yaml"><code class="docutils literal notranslate"><span class="pre">orig_pert_to_schism_dcd_yaml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.read_net_csv"><code class="docutils literal notranslate"><span class="pre">read_net_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.sch_dcd_net_diff"><code class="docutils literal notranslate"><span class="pre">sch_dcd_net_diff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.strip_dpart"><code class="docutils literal notranslate"><span class="pre">strip_dpart()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.port_boundary">bdschism.port_boundary module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.clean_df"><code class="docutils literal notranslate"><span class="pre">clean_df()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.create_schism_bc"><code class="docutils literal notranslate"><span class="pre">create_schism_bc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.read_csv"><code class="docutils literal notranslate"><span class="pre">read_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.set_gate_fraction"><code class="docutils literal notranslate"><span class="pre">set_gate_fraction()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.set_gate_ops"><code class="docutils literal notranslate"><span class="pre">set_gate_ops()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.profile_plot">bdschism.profile_plot module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.profile_plot.get_index_bounds"><code class="docutils literal notranslate"><span class="pre">get_index_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.profile_plot.nearest_neighbor_fill"><code class="docutils literal notranslate"><span class="pre">nearest_neighbor_fill()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.profile_plot.profile_plot"><code class="docutils literal notranslate"><span class="pre">profile_plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.profile_plot.set_index_bounds"><code class="docutils literal notranslate"><span class="pre">set_index_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.profile_plot.vertical_fill"><code class="docutils literal notranslate"><span class="pre">vertical_fill()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.read_dss">bdschism.read_dss module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.read_dss.check_exclude"><code class="docutils literal notranslate"><span class="pre">check_exclude()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.read_dss.read_dss"><code class="docutils literal notranslate"><span class="pre">read_dss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.run_sequence">bdschism.run_sequence module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.set_nudging">bdschism.set_nudging module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.set_nudging.get_nudge_list"><code class="docutils literal notranslate"><span class="pre">get_nudge_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.set_nudging.parse_var_map"><code class="docutils literal notranslate"><span class="pre">parse_var_map()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.set_nudging.set_nudging"><code class="docutils literal notranslate"><span class="pre">set_nudging()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.settings">bdschism.settings module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.settings.create_link"><code class="docutils literal notranslate"><span class="pre">create_link()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.settings.get_settings"><code class="docutils literal notranslate"><span class="pre">get_settings()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.three_point_linear_norm">bdschism.three_point_linear_norm module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.three_point_linear_norm.ThreePointLinearNorm"><code class="docutils literal notranslate"><span class="pre">ThreePointLinearNorm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../bdschism.html#bdschism.three_point_linear_norm.ThreePointLinearNorm.autoscale"><code class="docutils literal notranslate"><span class="pre">ThreePointLinearNorm.autoscale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../bdschism.html#bdschism.three_point_linear_norm.ThreePointLinearNorm.autoscale_None"><code class="docutils literal notranslate"><span class="pre">ThreePointLinearNorm.autoscale_None()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../bdschism.html#bdschism.three_point_linear_norm.ThreePointLinearNorm.inverse"><code class="docutils literal notranslate"><span class="pre">ThreePointLinearNorm.inverse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../bdschism.html#bdschism.three_point_linear_norm.ThreePointLinearNorm.scaled"><code class="docutils literal notranslate"><span class="pre">ThreePointLinearNorm.scaled()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.uv3d">bdschism.uv3d module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.uv3d.interpolate_uv3d"><code class="docutils literal notranslate"><span class="pre">interpolate_uv3d()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.x2_buildpoints">bdschism.x2_buildpoints module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.x2_buildpoints.create_arg_parser"><code class="docutils literal notranslate"><span class="pre">create_arg_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.x2_buildpoints.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.x2_buildpoints.main_fixed"><code class="docutils literal notranslate"><span class="pre">main_fixed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.x2_buildpoints.x2_route2_bp"><code class="docutils literal notranslate"><span class="pre">x2_route2_bp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.x2_time_series">bdschism.x2_time_series module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.x2_time_series.create_arg_parser"><code class="docutils literal notranslate"><span class="pre">create_arg_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.x2_time_series.default_outname"><code class="docutils literal notranslate"><span class="pre">default_outname()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.x2_time_series.find_x2"><code class="docutils literal notranslate"><span class="pre">find_x2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.x2_time_series.get_start_date_from_param"><code class="docutils literal notranslate"><span class="pre">get_start_date_from_param()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.x2_time_series.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.x2_time_series.main_hardwire"><code class="docutils literal notranslate"><span class="pre">main_hardwire()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.x2_time_series.process_x2"><code class="docutils literal notranslate"><span class="pre">process_x2()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.zone_utils">bdschism.zone_utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.zone_utils.face_aver"><code class="docutils literal notranslate"><span class="pre">face_aver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.zone_utils.face_aver_inst"><code class="docutils literal notranslate"><span class="pre">face_aver_inst()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.zone_utils.fill_ele_area"><code class="docutils literal notranslate"><span class="pre">fill_ele_area()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.zone_utils.fill_ele_area510"><code class="docutils literal notranslate"><span class="pre">fill_ele_area510()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.zone_utils.gen_node_neibor_ele"><code class="docutils literal notranslate"><span class="pre">gen_node_neibor_ele()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.zone_utils.gen_node_wet_dry"><code class="docutils literal notranslate"><span class="pre">gen_node_wet_dry()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.zone_utils.quad_area"><code class="docutils literal notranslate"><span class="pre">quad_area()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.zone_utils.triangle_area"><code class="docutils literal notranslate"><span class="pre">triangle_area()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Bay-Delta SCHISM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <!-- Empty override file take the place of env/lib/python3.8/site-packages/sphinx_rtd_theme/breadcrumbs.html, which generates the top nav breadcrumbs. -->
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for bdschism.generate_realtime_elev2d</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># coding: utf-8</span>
+
+<span class="c1"># Script to create an elev2D.th.nc combining the NOAA water level data and</span>
+<span class="c1"># prediction.</span>
+
+<span class="c1"># Import Python packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># import click</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dms_datastore.process_station_variable</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dms_datastore.download_noaa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dms_datastore.read_ts</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">schimpy.gen_elev2d</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">schimpy.separate_species</span>
+
+
+<span class="c1"># Commented out the command line arguments for now.</span>
+<span class="c1"># @click.command()</span>
+<span class="c1"># @click.option(</span>
+<span class="c1">#     &quot;--start_date&quot;,</span>
+<span class="c1">#     type=str,</span>
+<span class="c1">#     help=&quot;Start date of the simulation&quot;,</span>
+<span class="c1">#     required=True,</span>
+<span class="c1">#     default=&quot;2024-10-17&quot;,</span>
+<span class="c1"># )</span>
+<span class="c1"># @click.option(&quot;--end_date&quot;, type=str, help=&quot;End date of the simulation&quot;, required=True)</span>
+<span class="c1"># @click.option(</span>
+<span class="c1">#     &quot;--subtidal_year&quot;, type=int, help=&quot;Subtidal year of the simulation&quot;, default=None</span>
+<span class="c1"># )</span>
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.generate_realtime_elev2d.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Set some parameters here.</span>
+    <span class="n">download_period_past</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;begin&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-01&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-02-01&quot;</span><span class="p">}</span>
+    <span class="n">download_period_now</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;begin&quot;</span><span class="p">:</span> <span class="s2">&quot;2024-09-01&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="s2">&quot;2025-02-01&quot;</span><span class="p">}</span>
+    <span class="n">fpath_elev2d</span> <span class="o">=</span> <span class="s2">&quot;elev2D.th.nc&quot;</span>
+    <span class="n">start_elev2d</span> <span class="o">=</span> <span class="s2">&quot;2024-10-17&quot;</span>
+    <span class="n">end_elev2d</span> <span class="o">=</span> <span class="s2">&quot;2025-01-01&quot;</span>
+    <span class="n">slr</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">download_periods</span> <span class="o">=</span> <span class="p">[</span><span class="n">download_period_past</span><span class="p">,</span> <span class="n">download_period_now</span><span class="p">]</span>
+
+    <span class="c1"># t_stitch = pd.to_datetime(&quot;2024-11-01&quot;)</span>
+
+    <span class="c1"># Two stations to generate the ocean water level boundary, Point Reyes and</span>
+    <span class="c1"># Monterey.</span>
+    <span class="n">stations</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Point Reyes&quot;</span><span class="p">,</span> <span class="s2">&quot;station_id&quot;</span><span class="p">:</span> <span class="s2">&quot;9415020&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Monterey&quot;</span><span class="p">,</span> <span class="s2">&quot;station_id&quot;</span><span class="p">:</span> <span class="s2">&quot;9413450&quot;</span><span class="p">},</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Download the data from NOAA</span>
+    <span class="n">product</span> <span class="o">=</span> <span class="s2">&quot;water_level&quot;</span>
+
+    <span class="n">noaa_stations</span> <span class="o">=</span> <span class="n">dms_datastore</span><span class="o">.</span><span class="n">process_station_variable</span><span class="o">.</span><span class="n">process_station_list</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;station_id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">stations</span><span class="p">],</span> <span class="n">param</span><span class="o">=</span><span class="s2">&quot;water_level&quot;</span>
+    <span class="p">)</span>
+    <span class="n">noaa_stations</span><span class="p">[</span><span class="s2">&quot;src_var_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;water_level&quot;</span>
+    <span class="n">noaa_stations</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">stations</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">download_periods</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">period</span><span class="p">[</span><span class="s2">&quot;begin&quot;</span><span class="p">])</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">period</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">])</span>
+        <span class="n">dms_datastore</span><span class="o">.</span><span class="n">download_noaa</span><span class="o">.</span><span class="n">noaa_download</span><span class="p">(</span>
+            <span class="n">noaa_stations</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Download the prediction data from NOAA</span>
+    <span class="c1"># NOTE Lots of quick coding here like reusing variables for now.</span>
+    <span class="n">noaa_stations</span><span class="p">[</span><span class="s2">&quot;param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;predictions&quot;</span>
+    <span class="n">noaa_stations</span><span class="p">[</span><span class="s2">&quot;src_var_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;predictions&quot;</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">download_period_now</span><span class="p">[</span><span class="s2">&quot;begin&quot;</span><span class="p">])</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">download_period_now</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">])</span>
+    <span class="n">dms_datastore</span><span class="o">.</span><span class="n">download_noaa</span><span class="o">.</span><span class="n">noaa_download</span><span class="p">(</span>
+        <span class="n">noaa_stations</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="n">start_year_now</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">download_period_now</span><span class="p">[</span><span class="s2">&quot;begin&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">year</span>
+    <span class="n">end_year_now</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">download_period_now</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">year</span>
+    <span class="n">start_year_past</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">download_period_past</span><span class="p">[</span><span class="s2">&quot;begin&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">year</span>
+    <span class="n">end_year_past</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">download_period_past</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">year</span>
+    <span class="k">for</span> <span class="n">station</span> <span class="ow">in</span> <span class="n">stations</span><span class="p">:</span>
+        <span class="n">station_id</span> <span class="o">=</span> <span class="n">station</span><span class="p">[</span><span class="s2">&quot;station_id&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Read the historic tide for this year</span>
+        <span class="n">path_obs_cur</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;noaa_</span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">start_year_now</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">end_year_now</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+        <span class="n">df_cur</span> <span class="o">=</span> <span class="n">dms_datastore</span><span class="o">.</span><span class="n">read_ts</span><span class="o">.</span><span class="n">read_ts</span><span class="p">(</span><span class="n">path_obs_cur</span><span class="p">)</span>
+
+        <span class="c1"># Read the historic tides from the past</span>
+        <span class="n">start_year_past</span> <span class="o">=</span> <span class="mi">2016</span>
+        <span class="n">path_obs_past</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;noaa_</span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">start_year_past</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">end_year_past</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+        <span class="n">df_past</span> <span class="o">=</span> <span class="n">dms_datastore</span><span class="o">.</span><span class="n">read_ts</span><span class="o">.</span><span class="n">read_ts</span><span class="p">(</span><span class="n">path_obs_past</span><span class="p">)</span>
+
+        <span class="c1"># Read the tide prediction</span>
+        <span class="n">path_pred</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;noaa_</span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">_predictions_</span><span class="si">{</span><span class="n">start_year_now</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">end_year_now</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+        <span class="n">df_pred</span> <span class="o">=</span> <span class="n">dms_datastore</span><span class="o">.</span><span class="n">read_ts</span><span class="o">.</span><span class="n">read_ts</span><span class="p">(</span><span class="n">path_pred</span><span class="p">)</span>
+        <span class="n">df_pred_renamed</span> <span class="o">=</span> <span class="n">df_pred</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Prediction&quot;</span><span class="p">:</span> <span class="s2">&quot;Water Level&quot;</span><span class="p">})</span>
+
+        <span class="n">df_stitched</span> <span class="o">=</span> <span class="n">stitch_station</span><span class="p">(</span><span class="n">df_cur</span><span class="p">,</span> <span class="n">df_past</span><span class="p">,</span> <span class="n">df_pred_renamed</span><span class="p">)</span>
+        <span class="n">path_out</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">_stitched.csv&quot;</span>
+        <span class="n">df_stitched</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path_out</span><span class="p">)</span>
+
+    <span class="c1"># Need to change the format slightly.</span>
+    <span class="c1"># NOTE This needs to be done in the previous step.</span>
+    <span class="k">for</span> <span class="n">station</span> <span class="ow">in</span> <span class="n">stations</span><span class="p">:</span>
+        <span class="n">station_id</span> <span class="o">=</span> <span class="n">station</span><span class="p">[</span><span class="s2">&quot;station_id&quot;</span><span class="p">]</span>
+        <span class="n">path_in</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">_stitched.csv&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_in</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s2">&quot;Date Time&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Date Time&quot;</span><span class="p">])</span>
+        <span class="n">path_out</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">_stitched_noaa.txt&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_out</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="s2">&quot;# agency: noaa</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">Date Time, Water Level, Sigma, O or I (for verified), F, R, L, Quality</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                <span class="n">buf</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1"> %H:%M&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Water Level&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+
+    <span class="c1"># Generate elev2D file.</span>
+    <span class="n">hgrid_fpath</span> <span class="o">=</span> <span class="s2">&quot;hgrid.gr3&quot;</span>
+    <span class="n">pt_reyes_fpath</span> <span class="o">=</span> <span class="s2">&quot;9415020_stitched_noaa.txt&quot;</span>
+    <span class="n">monterey_fpath</span> <span class="o">=</span> <span class="s2">&quot;9413450_stitched_noaa.txt&quot;</span>
+    <span class="n">schimpy</span><span class="o">.</span><span class="n">gen_elev2d</span><span class="o">.</span><span class="n">gen_elev2D</span><span class="p">(</span>
+        <span class="n">hgrid_fpath</span><span class="p">,</span>
+        <span class="n">fpath_elev2d</span><span class="p">,</span>
+        <span class="n">pt_reyes_fpath</span><span class="p">,</span>
+        <span class="n">monterey_fpath</span><span class="p">,</span>
+        <span class="n">start_elev2d</span><span class="p">,</span>
+        <span class="n">end_elev2d</span><span class="p">,</span>
+        <span class="n">slr</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="stitch_station">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.generate_realtime_elev2d.stitch_station">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">stitch_station</span><span class="p">(</span><span class="n">df_cur</span><span class="p">,</span> <span class="n">df_past</span><span class="p">,</span> <span class="n">df_pred</span><span class="p">,</span> <span class="n">t_stitch</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stitch the historical water lever with the prediction one</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_cur : pd.DataFrame</span>
+<span class="sd">        The current historical data</span>
+<span class="sd">    df_past : pd.DataFrame</span>
+<span class="sd">        The past historical data</span>
+<span class="sd">    df_pred : pd.DataFrame</span>
+<span class="sd">        The prediction data</span>
+<span class="sd">    t_transition : datetime, optional</span>
+<span class="sd">        The time of transition between the historical and prediction data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Hardcode some variables</span>
+    <span class="n">name_y</span> <span class="o">=</span> <span class="s2">&quot;Water Level&quot;</span>
+
+    <span class="k">if</span> <span class="n">t_stitch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">t_stitch</span> <span class="o">=</span> <span class="n">df_cur</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">year_to_stich_in_past</span> <span class="o">=</span> <span class="n">df_past</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">year</span>
+    <span class="n">t_stich_past</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year_to_stich_in_past</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">t_stitch</span><span class="o">.</span><span class="n">month</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">t_stitch</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">t_stitch</span><span class="o">.</span><span class="n">hour</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">t_stitch</span><span class="o">.</span><span class="n">minute</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">df_subtidal_past</span> <span class="o">=</span> <span class="n">schimpy</span><span class="o">.</span><span class="n">separate_species</span><span class="o">.</span><span class="n">separate_species</span><span class="p">(</span><span class="n">df_past</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Add the historial subtidal information to the prediction.</span>
+    <span class="c1"># - Extra mean tide will be remove below by subtracting the difference at a transition point.</span>
+    <span class="c1"># - Need to trim the data due to possible leap days</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_pred</span><span class="p">[</span><span class="n">t_stitch</span><span class="p">:]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_subtidal_past</span><span class="p">[</span><span class="n">t_stich_past</span><span class="p">:]))</span>
+    <span class="n">pred_plus_subtidal</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">df_pred</span><span class="p">[</span><span class="n">t_stitch</span><span class="p">:][</span><span class="n">name_y</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">df_subtidal_past</span><span class="p">[</span><span class="n">t_stich_past</span><span class="p">:][</span><span class="n">name_y</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="c1"># Calculate the difference at the transition point</span>
+    <span class="n">diff_at_t_transition</span> <span class="o">=</span> <span class="n">pred_plus_subtidal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_cur</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">t_stitch</span><span class="p">][</span><span class="n">name_y</span><span class="p">]</span>
+
+    <span class="c1"># Shift the whole prediction series by the amount of the difference.</span>
+    <span class="n">df_pred_plus_subtidal</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;Date Time&quot;</span><span class="p">:</span> <span class="n">df_pred</span><span class="p">[</span><span class="n">t_stitch</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">],</span>
+            <span class="s2">&quot;Water Level&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">pred_plus_subtidal</span> <span class="o">-</span> <span class="n">diff_at_t_transition</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;Date Time&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">df_cur</span><span class="p">[:</span><span class="n">t_stitch</span><span class="p">],</span> <span class="n">df_pred_plus_subtidal</span><span class="p">))</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014,2020 California Department of Water Resources.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: white;
+    }
+    /* Sidebar */
+    .wy-nav-side {
+      background: #86989B; /* existing theme was AFC1C4 and 86989B and CA7900 and white */
+      
+    }
+  </style>
+
+
+</body>
+</html>

@@ -8,35 +8,24 @@ The following topical guides take you through what it takes to set up a basic mo
 
 See :ref:`Installation And Getting Started <getstarted>` for programatic setup and basic introductory materials.
 
-Setup
--------------------------
+.. _essentials:
+
+Essentials for Running the Model
+---------------------------------
 
 .. toctree::
   :maxdepth: 3
   
   Running a Preprepared Setup <topics/processed_run>
-
-________________________
-
-.. _essentials:
-
-Model Essentials
-----------------------------
-
-Overview
-``````````````````````
-.. toctree::
-  :maxdepth: 3
-  :titlesonly:
-
   topics/overview.rst
   topics/vignette.rst
   topics/files_and_directories  
   topics/preprocess.rst
 
+________________________
 
 Boundaries & Input Files
-````````````````````````````````````
+--------------------------
 .. toctree::
   :maxdepth: 3
   :titlesonly:
@@ -51,7 +40,7 @@ Boundaries & Input Files
   topics/vegetation.rst 
 
 Inspection of Model Setup
-``````````````````````````
+--------------------------
 .. toctree::
   :maxdepth: 2
   :titlesonly:
@@ -60,7 +49,7 @@ Inspection of Model Setup
   topics/run_tests.rst
   
 Output Files
-````````````````
+-------------
 .. toctree::
   :maxdepth: 2
   :titlesonly:
