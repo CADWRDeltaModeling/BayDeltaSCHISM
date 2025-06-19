@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
- Estimate Clifton Court Forebay Gate opening height given SWP
-export, eligible interval for open and priority level, maximum
-gate hight allowed, OH4 stage level, CVP pump rate for given
-period.
+Estimate Clifton Court Forebay Gate opening height.
 
+This module provides functions to estimate the gate opening height for Clifton Court Forebay
+based on SWP export, eligible intervals for opening, priority level, maximum gate height allowed,
+OH4 stage level, and CVP pump rate for a given period.
 """
 import datetime as dtm
 import pandas as pd
@@ -103,20 +103,16 @@ def make_3_prio(input_tide, stime, etime, save_intermediate=False):
 
     Parameters
     ----------
-    input_tide : :py:class:'DataFrame <pandas.DataFrame>'
-        The input tide time series of the Predicted tide at SF in LST with datetime index and a column for the predicted tide in meters.
-        The time series should be taken from the datastore (water level in m, NAVD88). Headers: datetime,predicted_m,elev_m.
-    stime : :py:class:'datetime <datetime.datetime>'
-        Start time of the tide time series.
-    etime : :py:class:'datetime <datetime.datetime>'
-        End time of the tide time series.
-    save_intermediate : bool, optional
-        If True, intermediate results will be saved to files (default is False).
 
-    Returns
-    -------
-    s : :py:class:'DataFrame <pandas.DataFrame>'
-        3 irregular time series that contain the schedule for the priority 1, 2 and 3.
+    input_tide : :py:class:`Series <pandas:pandas.Series>`
+        Time series of the Predicted tide at SF in LST
+        The time series should be taken from the datastore (water level in m, NAVD88). Headers: datetime,predicted_m,elev_m.
+    stime: :py:class:`datetime.timedelta`
+        start time.
+    etime: :py:class:`datetime.timedelta`
+        end time.
+
+    Output: 3 irregular time series that contain the schedule for the priority 1, 2 and 3.
     """
 
     print("Making priorities from tide")
@@ -464,114 +460,68 @@ def simple_mass_balance(export, zup, zin0, height, dt, vt):
 def gen_gate_height(
     export_ts, priority, max_height, oh4_level, cvp_ts, inside_level0, s1, s2, dt
 ):
-    """Estimate Clifton Court Forebay Gate opening height given SWP
-     export, eligible interval for open and priority level, maximum
-     gate hight allowed, OH4 stage level, CVP pump rate for given
-     period.
+    """
+    Estimate Clifton Court Forebay Gate opening height.
 
-     Gate Opening Conditions
-    The gate opens under the following conditions:
+    This function estimates the opening height of the Clifton Court Forebay (CCFB) radial gates
+    based on SWP export, eligible intervals for opening and priority level, maximum gate height allowed,
+    OH4 stage level, CVP pump rate, and other operational rules for a given period.
 
-    -- Priority Eligibility: The gate opens only if priority eligibility
-       criteria are met.
-
-    -- Water Level Difference: The gate opens if the water level outside
-       the forebay is higher than the water level inside.
+    Gate Opening Conditions
+    -----------------------
+    - **Priority Eligibility**: The gate opens only if priority eligibility criteria are met.
+    - **Water Level Difference**: The gate opens if the water level outside the forebay is higher than the water level inside.
 
     Early Gate Closure
+    ------------------
 
-    The gate will close early if:
+    The gate will close early if the volume of water above the 2 ft contour is sufficient to cover
+    the remaining water allocation for the day. This simulates field operations where operators aim to
+    maintain water elevation as close to 2 ft as possible.
 
-    -- The volume of water above the 2 ft contour is sufficient to cover
-       the remaining water allocation for the day.
+    Gate Remains Open
+    -----------------
 
-       Purpose: This simulates field operations where operators aim to
-       maintain water elevation as close to 2 ft as possible. Without this
-       rule, the water level in Clifton Court (CC) would equilibrate to the
-       outside water level (approximately 5 ft).
+    The gate will remain open if the volume of water above the 2 ft contour is insufficient to cover
+    the daily allocation, preventing the water level inside the forebay from dropping too low.
 
-     Gate Remains Open
+    Gate Height Calculation
+    -----------------------
+    - The default gate height is 16 ft, but a maximum height based on export level is applied.
+    - The height is adjusted to prevent flow from exceeding 12,000 cfs, reflecting operational constraints.
+    - The gate height is calculated using a simplified version of the flow rating equation:
 
-     The gate will remain open if:
+        Gate Height = 11 × (Head)^-0.3 - 0.5
 
-     -- The volume of water above the 2 ft contour is insufficient to cover
-        the daily allocation.
+      where Head = Water level upstream - Water level in the reservoir.
 
-       Purpose: This acts as a safeguard to prevent the water level inside
-       the forebay from dropping too low.
+    Parameters
+    ----------
+    export_ts : pandas.Series
+        Series of SWP pumping rate.
+    priority : pandas.DataFrame
+        CCFB gate operation priority series, must have 'priority' and 'op' columns.
+    max_height : pandas.DataFrame
+        CCFB gate maximum allowed open height.
+    oh4_level : pandas.DataFrame
+        OH4 surface stage, predicted or historical.
+    cvp_ts : pandas.DataFrame
+        CVP pumping rate.
+    inside_level0 : float
+        Initial CCFB surface stage.
+    s1 : datetime.datetime
+        Start time.
+    s2 : datetime.datetime
+        End time.
+    dt : datetime.timedelta
+        Output time step.
 
-     Gate Height Calculation
-
-     Default Gate Height
-
-     -- The default gate height is 16ft and maximum height based on export level.
-
-        A time series of maximum gate heights is applied to emulate sipping
-        conditions during low export periods (i.e., when exports are < 4,000 cfs).
-
-       However, the height is adjusted to prevent flow from exceeding
-       12,000 cfs, reflecting real-life operational constraints.
-
-      Simplified Gate Height Formula
-
-      The gate height is calculated using a simplified version of the flow
-      rating equation (refer to AR2015-6). The simplification was necessary
-      because the original equation was too complex for the current operational
-      rule interface.
-
-      The simplified formula is:
-      Gate Height = 11 × (Head)^-0.3 - 0.5
-
-      Where:
-
-       Head = Water level upstream  - Water level in the reservoir.
-
-       This formula was derived from the original exponential equation
-       (12.054 × Head^-0.334) but includes an offset to better match field
-       observations, where gates are operated more conservatively.
-
-
-     Parameters
-     ----------
-
-     export_ts : :py:class:`Series <pandas:pandas.Series>`
-         Series of SWP pumping rate
-
-     Priority : :py:class:`DataFrame <pandas:pandas.DataFrame>`
-         CCFB gate operation priority series, must have 'priority'
-         and 'op' column
-
-     max_height : :py:class:`DataFrame <pandas:pandas.DataFrame>`
-         CCFB gate maximum allowed opern height
-
-     oh4_level : :py:class:`DataFrame <pandas:pandas.DataFrame>`
-         OH4 surface stage,predicted or historical
-
-     cvp_ts : :py:class:`DataFrame <pandas:pandas.DataFrame>`
-         cvp pumping rate
-
-     inside_level0 : float
-         initial CCFB surface stage
-
-     s1 : :py:class:'datetime <datetime.datetime>'
-         start time
-
-     s2 : :py:class: 'datetime <datetime.datetime>'
-
-         end time
-
-     dt : :py:class: 'timedelta <datetime.timedelta>'
-
-         output time step
-
-     Returns
-     -------
-     gate_height : :py:class:`DataFrame <pandas:pandas.DataFrame>`
-         raidal gate height time series
-
-     zin :  :py:class:`DataFrame <pandas:pandas.DataFrame>`
-         predicted forebay inside water level time series
-
+    Returns
+    -------
+    gate_height : pandas.DataFrame
+        Radial gate height time series.
+    zin : pandas.DataFrame
+        Predicted forebay inside water level time series.
     """
     t = s1
     relax_period = dtm.timedelta(minutes=6)
@@ -594,10 +544,6 @@ def gen_gate_height(
     draw_down = 0.0
 
     while t < s2:
-        # if t>=dtm.datetime(2023,4,1,8,0):
-        #      pdb.set_trace()
-        #      print("stop")
-
         zin2 = 2 + vt / ccf_A
         zin_lst2.append(zin2)
         ztime2.append(t)
@@ -722,31 +668,26 @@ def gen_gate_height(
 
 
 def process_height(s1, s2, export, oh4_astro, sffpx_elev):
-    """create a ccfb radial gate height time series file
-
+    """
+    Create a ccfb radial gate height time series file
 
     Parameters
     ----------
-    s1 : :py:class:'datetime <datetime.datetime>'
+    s1 : :py:class:`datetime.datetime`
         start time.
-    s2 : :py:class:'datetime <datetime.datetime>'
+    s2 : :py:class:`datetime.datetime`
         end time.
     export : str
         path to SCHISM export th file.
     oh4_astro : str
         path to OH4 astronomic tide file .
 
-
     Returns
     -------
-
-    sim_gate_height : :py:class:`DataFrame <pandas:pandas.DataFrame>'
+    sim_gate_height : :py:class:`pandas.DataFrame`
         predicted raidal gate height
-
-    zin_df : :py:class:`DataFrame <pandas:pandas.DataFrame>'
+    zin_df : :py:class:`pandas.DataFrame`
         predicted ccfb interior surface stage.
-
-
     """
 
     margin = dtm.timedelta(days=3)

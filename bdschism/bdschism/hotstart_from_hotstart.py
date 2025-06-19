@@ -172,9 +172,11 @@ def hotstart_newgrid_cli(
 ):
     """
     Command-line interface for transferring hotstart data from one grid to another.
+
     Arguments
     ---------
         yaml      Path to the YAML file (e.g., hotstart_from_hotstart.yaml).
+
     Options
     -------
         f_in      Hotstart input file path (e.g., hotstart_it=480000.nc).
@@ -184,6 +186,7 @@ def hotstart_newgrid_cli(
         modules   Modules to be transferred to/from hotstart files.
         crs       Coordinate system (default: EPSG:26910).
         extra     Additional key-value pairs for environment variables (e.g., --key value).
+
     Examples
     --------
         bds hot_from_hot ./hotstart_from_hotstart.yaml --f_in ./baseline_sim_dir/hotstart_it=480000.nc --f_out ./franks_sim_dir/hotstart_480000_franks.nc --src_dir ./baseline_sim_dir/ --trg_dir ./franks_sim_dir/

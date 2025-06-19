@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 """
+Create x2 time series from build-point files.
 
 This script reads x2_route.bp as well as the fort.18
 resulting from SCHISM read_output9_xyz to extract salinity on X2 stations.
-It search along x2 stations to find two neiboring stations higher and lower 
+It search along x2 stations to find two neiboring stations higher and lower
 than X2 criteria (bottom or surface).  If X2 retreat less than the minimum
 stations along the transect, the X2 result will
 be truncated at that point.
 
 
 usage: --start 2004-04-18 --x2route x2route.bp
-output: x2 on surface and bottom location time series in csv format,
-        bottom_x2.csv and surface_x2.csv
-
+output: x2 on surface and bottom location time series in csv format, bottom_x2.csv and surface_x2.csv
 """
 
 import numpy as np
