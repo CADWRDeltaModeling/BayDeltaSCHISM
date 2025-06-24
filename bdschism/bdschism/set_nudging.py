@@ -38,13 +38,12 @@ def parse_var_map(ctx, param, value):
     return mapping
 
 
-def get_nudge_list(workdir):
-    fname = os.path.join(workdir, "param.nml")
+def get_nudge_list(fname):
 
     params = parms.read_params(fname)
     if params.get_baro() == "tropic":
         raise ValueError(
-            "Barotropic model detected in param.nml- Nudging not applicable."
+            f"Barotropic model detected in {fname}- Nudging not applicable."
         )
     nc_nudge_list = []
     nc_dict = {
@@ -68,7 +67,7 @@ def get_nudge_list(workdir):
     return nc_nudge_list
 
 
-def set_nudging(suffix: str, workdir=".", var_map={}):
+def set_nudging(suffix: str, workdir=".", var_map={}, param_fn="param.nml"):
     """This is a utility to set up nudging files based on a naming convention common for BayDeltaSCHISM.
     Assumed this is on Linux or admin-priveleged Windows machine.
 
@@ -77,16 +76,17 @@ def set_nudging(suffix: str, workdir=".", var_map={}):
 
     suffix: str
         This is the suffix used when preparing the nudging/gr files. For instance "obshycom" in SAL_nu_obshycom.nc
-
     workdir : str
         Directory where the links and changes are made
-
     var_map: str
         Unexpected mapping in key=value pairs, separated by commas. Ex: --var_map 'TEM=temperature,SAL=salinity'
+    param_fn: str
+        Which param.nml file will be used to determine module list. Should be the baroclinic param file. Default is `param.nml`
 
     """
 
-    nc_nudge_list = get_nudge_list(workdir)
+    fname = os.path.join(workdir, param_fn)
+    nc_nudge_list = get_nudge_list(fname)
     check_files = []
     gr3_color = "\033[36m"  # Light blue for gr3
     nc_color = "\033[34m"  # Dark blue for nc
@@ -149,11 +149,16 @@ def set_nudging(suffix: str, workdir=".", var_map={}):
     callback=parse_var_map,
     help="Unexpected mapping in key=value pairs, separated by commas. Ex: --var_map 'TEM=temperature,SAL=salinity'",
 )
+@click.option(
+    "--param",
+    default="param.nml",
+    help="Which param.nml file will be used to determine module list. Should be the baroclinic param file. Default is `param.nml`",
+)
 @click.help_option("-h", "--help")
-def set_nudging_cli(suffix: str, workdir=".", var_map={}):
+def set_nudging_cli(suffix: str, workdir, param, var_map={}):
     """Wrapper function for the `set_nudging` command."""
     os.chdir(os.path.abspath(os.path.dirname(workdir)))
-    set_nudging(suffix, workdir, var_map)
+    set_nudging(suffix, workdir, var_map, param_fn=param)
 
 
 if __name__ == "__main__":
