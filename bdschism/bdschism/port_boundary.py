@@ -321,18 +321,18 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
                 else:
                     raise ValueError(f"source_kind={source_kind} is not yet supported")
 
-                # Set date range
-                if isinstance(var_df.index, pd.PeriodIndex):
-                    idx = var_df.index.to_timestamp()
-                else:
-                    idx = var_df.index
-                var_df = var_df[(idx >= start_date) & (idx <= end_date)]
-
                 # use formula to set gate fraction (month_fraction, month_days)
                 if source_kind == "CONSTANT":
                     dfi = var_df
                 else:
                     dfi = set_gate_ops(boundary_kind, var_df.ffill(), name, formula)
+
+                # Set date range
+                if isinstance(dfi.index, pd.PeriodIndex):
+                    idx = dfi.index.to_timestamp()
+                else:
+                    idx = dfi.index
+                dfi = dfi[(idx >= start_date) & (idx <= end_date)]
                 dfi[name] = pd.to_numeric(dfi[name], errors="coerce")
 
             elif source_kind == "CSV":
