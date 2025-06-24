@@ -5,6 +5,7 @@ Hotstart example for a basic schism run with TEMP and SALT as tracers.
 
 import schimpy.schism_hotstart as sh
 import matplotlib.pyplot as plt
+import os
 
 yaml_fn = "./hotstart.yaml"
 modules = ["TEM", "SAL"]
@@ -14,7 +15,7 @@ hotstart_fn = "hotstart.nc"  # output hotstart file
 h = sh.hotstart(yaml_fn)
 h.create_hotstart()
 hnc = h.nc_dataset
-hnc.to_netcdf(hotstart_fn)
+hnc.to_netcdf(os.path.join(h.out_dir, hotstart_fn))
 
 # %% making a 2D surface plot
 coll = h.mesh.plot_elems(hnc["tr_el"].values[:, 0, 0], clim=(14, 18))  # clim=[0,35])
