@@ -107,7 +107,7 @@ def process_x2(
     print(
         f"salt_data_file: {salt_data_file} model_start_date={model_start_date} output_file={output_file} model_extract_date={model_extract_date}"
     )
-    ts_out = pd.read_csv(salt_data_file, sep="\s+", header=None, index_col=0)
+    ts_out = pd.read_csv(salt_data_file, sep=r"\s+", header=None, index_col=0)
     delta_t = round((ts_out.index[1] - ts_out.index[0]) * 24 * 60)
     freqstr = f"{int(delta_t)}min"
     print(delta_t)
@@ -129,7 +129,7 @@ def process_x2(
 
     if route_file.endswith("bp"):
         route_df = pd.read_csv(
-            route_file, sep="\s+", index_col=0, skiprows=[1], header=0, comment="!"
+            route_file, sep=r"\s+", index_col=0, skiprows=[1], header=0, comment="!"
         )
     else:
         raise ValueError("Build point file expected")
@@ -181,7 +181,7 @@ def main():
 
 
 def main_hardwire():
-    model_out_dir = "/scratch/tomkovic/DSP_code/model/schism/azure_dsp_2024_lhc_v3/simulations/baseline_lhc_5/outputs"
+    model_out_dir = "./outputs"
     os.chdir(model_out_dir)
 
     salt_out = "fort.18"

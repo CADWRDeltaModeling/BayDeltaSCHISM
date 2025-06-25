@@ -1,11 +1,11 @@
 config:
   # variables used to populate the rest of the yaml file
-  bds_home: D:/python/repositories/BayDeltaSCHISM
+  bds_home: path/to/BayDeltaSCHISM
   version: rt_v1
-  dsp_code: D:/projects/delta_salinity/DSP_code
-  out_dir: ${dsp_code}/model/schism/roundtrip/${version}/
-  calsim_dss: ${dsp_code}/model/calsim/9.3.1_danube_adj/DSS/output/DCR2023_DV_9.3.1_v2a_Danube_Adj_v1.8.dss
-  dsm2_dir: ${dsp_code}/model/dsm2/2021DSM2FP_202301/timeseries
+  proj_repo: path/to/project/repo
+  out_dir: ${proj_repo}/model/schism/roundtrip/${version}/
+  calsim_dss: ${proj_repo}/model/calsim/9.3.1_danube_adj/DSS/output/DCR2023_DV_9.3.1_v2a_Danube_Adj_v1.8.dss
+  dsm2_dir: ${proj_repo}/model/dsm2/2021DSM2FP_202301/timeseries
 
 # Consumputive use parameters listed under "cu"
 cu:

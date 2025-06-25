@@ -1,11 +1,11 @@
 
 config:
   version: rt_v1
-  out_dir: ${dsp_code}/model/schism/roundtrip/${version}/
-  bds_home: D:/python/repositories/BayDeltaSCHISM
-  dsp_code: D:/projects/delta_salinity/DSP_code
-  calsim_dss: ${dsp_code}/model/calsim/9.3.1_danube_adj/DSS/output/DCR2023_DV_9.3.1_v2a_Danube_Adj_v1.8.dss
-  dsm2_dir: ${dsp_code}/model/dsm2/2021DSM2FP_202301/timeseries
+  out_dir: ${proj_repo}/model/schism/roundtrip/${version}/
+  bds_home: path/to/BayDeltaSCHISM
+  proj_repo: path/to/project/repo
+  calsim_dss: ${proj_repo}/model/calsim/9.3.1_danube_adj/DSS/output/DCR2023_DV_9.3.1_v2a_Danube_Adj_v1.8.dss
+  dsm2_dir: ${proj_repo}/model/dsm2/2021DSM2FP_202301/timeseries
 param:
   boundary_kinds: [flow,dcc_gate,smscg_radial_gate,smscg_boatlock_gate,smscg_flashboard_gate,cu] #[flow,dcc_gate,smscg_radial_gate,smscg_boatlock_gate,smscg_flashboard_gate,cu,salt,temp]
   overwrite: true # if true, overwrite the existing boundary inputs (should be false for forecast)

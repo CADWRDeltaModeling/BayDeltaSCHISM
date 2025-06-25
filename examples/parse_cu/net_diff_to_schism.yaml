@@ -1,9 +1,9 @@
 config:
   # variables used to populate the rest of the yaml file
-  bds_home: D:/python/repositories/BayDeltaSCHISM
+  bds_home: path/to/BayDeltaSCHISM
   version: rt_v1
-  dsp_code: D:/projects/delta_salinity/DSP_code
-  out_dir: ${dsp_code}/model/schism/roundtrip/${version}/
+  proj_repo: path/to/project/repo
+  out_dir: ${proj_repo}/model/schism/roundtrip/${version}/
 
 # Consumputive use parameters listed under "cu"
 cu:

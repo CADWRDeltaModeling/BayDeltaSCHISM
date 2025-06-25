@@ -901,13 +901,13 @@ def parse_cu_cli(
 
 
 if __name__ == "__main__":
-    # dcd_dss_original = "D:/projects/delta_salinity/DSP_code/model/dsm2/2021DSM2FP_202301/timeseries/DCD_hist_Lch5.dss"
-    # dcd_dss_adjusted = "D:/projects/delta_salinity/DSP_code/model/calsim/9.3.1_danube_adj/DSS/output/DCR2023_DV_9.3.1_v2a_Danube_Adj_v1.8.dss"
-    # schism_in = "D:/python/repositories/BayDeltaSCHISM/data/channel_depletion"
+    # dcd_dss_original = "./dsm2/2021DSM2FP_202301/timeseries/DCD_hist_Lch5.dss"
+    # dcd_dss_adjusted = "./calsim/9.3.1_danube_adj/DSS/output/DCR2023_DV_9.3.1_v2a_Danube_Adj_v1.8.dss"
+    # schism_in = "./BayDeltaSCHISM/data/channel_depletion"
     # schism_vsource = os.path.join(schism_in, "vsource_dated.th")
     # schism_vsink = os.path.join(schism_in, "vsink_dated.th")
     # version = "rt_v1"
-    # out_dir = f"D:/projects/delta_salinity/DSP_code/model/schism/roundtrip/{version}"
+    # out_dir = f"./schism/roundtrip/{version}"
     # # Call the main function with example parameters
     # orig_pert_to_schism_dcd(
     #     "dsm2",
