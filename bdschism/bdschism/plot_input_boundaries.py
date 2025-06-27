@@ -353,10 +353,26 @@ def plot_bds_boundaries(
     default="bds_input_boundaries.html",
     help="Output HTML plot filename.",
 )
-def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name):
+@click.argument("extra", nargs=-1)
+def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name, extra=()):
     """
     CLI to plot boundary data from observed and/or simulation directories.
     """
+    # Parse extra arguments into a dictionary (expects --key value pairs)
+    envvar = {}
+    key = None
+    for item in extra:
+        if item.startswith("--"):
+            key = item.lstrip("-")
+        elif key is not None:
+            envvar[key] = item
+            key = None
+    if key is not None:
+        raise ValueError(f"No value provided for extra argument: {key}")
+
+    sim_dirs = [os.path.abspath(sim_dir) for sim_dir in sim_dirs]
+    html_name = os.path.abspath(html_name)
+
     os.chdir(sim_dirs[0])  # Ensure cwd is correct
 
     bc_data_list = []
@@ -370,9 +386,9 @@ def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name):
 
     # Simulation data
     for i, sim_dir in enumerate(sim_dirs):
-        sim_dir = os.path.abspath(sim_dir)
         os.chdir(sim_dir)
-        bc_data = get_boundary_data()
+        # Pass envvar as keyword arguments to get_boundary_data
+        bc_data = get_boundary_data(**envvar)
         bc_data_list.append(bc_data)
         if scenario_names and len(scenario_names) > i:
             scenario_list.append(scenario_names[i])
