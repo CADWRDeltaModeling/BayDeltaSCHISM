@@ -441,6 +441,7 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
                 # Update the dataframe.
                 if isinstance(dfi.index, pd.PeriodIndex):
                     dfi.index = dfi.index.to_timestamp()
+                dfi.columns = [name]
                 dd.update(dfi, overwrite=True)
 
         if out_file:
@@ -505,4 +506,8 @@ def port_boundary_cli(config_yaml, extra=()):
 
 
 if __name__ == "__main__":
+    # os.chdir("path/to/yaml")
+    # config_yaml = "./port_calsim_schism.suisun-base.yaml"
+    # envvar = {"sd": "2015/2/18", "ed": "2016/5/15"}
+    # create_schism_bc(config_yaml, kwargs=envvar if envvar else None)
     port_boundary_cli()
