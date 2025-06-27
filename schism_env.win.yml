@@ -23,6 +23,7 @@ dependencies:
   - scipy>=1.8
   - scikit-learn>=1.1.0
   - bokeh>=2.4
+  - plotly
   - hvplot>=0.8
   - statsmodels>=0.13.2
   - pip>=22.2 

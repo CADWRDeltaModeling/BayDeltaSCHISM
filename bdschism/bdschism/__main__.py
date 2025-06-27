@@ -10,7 +10,7 @@ from bdschism.port_boundary import port_boundary_cli
 from bdschism.ccf_gate_height import ccf_gate_cli
 from bdschism.calc_ndoi import calc_indoi_cli
 from bdschism.parse_cu import parse_cu_cli, parse_cu_yaml_cli
-
+from bdschism.plot_input_boundaries import plot_bds_bc_cli
 
 @click.group(
     help="Bay-Delta SCHISM CLI tools for managing simulations and data processing."
@@ -34,6 +34,7 @@ cli.add_command(ccf_gate_cli, "ccf_gate")
 cli.add_command(calc_indoi_cli, "calc_ndoi")
 cli.add_command(parse_cu_cli, "parse_cu")
 cli.add_command(parse_cu_yaml_cli, "parse_cu_yaml")
+cli.add_command(plot_bds_bc_cli, "plot_bds_bc")
 
 if __name__ == "__main__":
     cli()
