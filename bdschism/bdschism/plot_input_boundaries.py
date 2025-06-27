@@ -121,7 +121,7 @@ def get_boundary_data(
     elapsed_files = []
     for f in files:
         if not os.path.exists(f):
-            raise FileNotFoundError(f"File {f} does not exist.")
+            raise FileNotFoundError(f"File {os.path.abspath(f)} does not exist.")
 
     # Check if the files are elapsed or datetime stamped
     elapsed_files = [
