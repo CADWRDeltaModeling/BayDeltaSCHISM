@@ -84,7 +84,7 @@ def get_observed_data(
         flux_file=os.path.join(bds_dir, "data/time_history/flux.th"),
         vsource_file=os.path.join(bds_dir, "data/channel_depletion/vsource_dated.th"),
         vsink_file=os.path.join(bds_dir, "data/channel_depletion/vsink_dated.th"),
-        elev2d_file=os.path.join(bds_dir, "data/elev2d.th.nc"),
+        elev2d_file=os.path.join(bds_dir, "data/elev2D.th.nc"),
         elapsed_unit="s",
         out_freq="15min",
         boundary_list=boundary_list,
@@ -97,7 +97,7 @@ def get_boundary_data(
     flux_file="flux.th",
     vsource_file="vsource.th",
     vsink_file="vsink.th",
-    elev2d_file="elev2d.th.nc",
+    elev2d_file="elev2D.th.nc",
     time_basis=None,
     rndays=None,
     elapsed_unit="s",
@@ -107,7 +107,7 @@ def get_boundary_data(
     source_head=os.path.join(bds_dir, "./data/channel_depletion/vsource_dated.th"),
     boundary_list=boundary_list,
 ):
-    """Get a DataFrame of boundary data from flux, vsource, vsink, and elev2d.th.nc files."""
+    """Get a DataFrame of boundary data from flux, vsource, vsink, and elev2D.th.nc files."""
 
     print(f"Getting boundary data from {os.getcwd()}...")
     # Check if the files exist
