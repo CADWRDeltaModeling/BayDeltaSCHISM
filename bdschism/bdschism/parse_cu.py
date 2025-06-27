@@ -421,7 +421,7 @@ def calc_net_calsim(
     if isinstance(net, pd.DataFrame) and net.shape[1] == 1:
         net = net.iloc[:, 0]
 
-    return net
+    return -net
 
 
 def calc_net_schism(schism_dir, start_date=None, end_date=None, dt=days(1), **kwargs):
@@ -901,28 +901,4 @@ def parse_cu_cli(
 
 
 if __name__ == "__main__":
-    # dcd_dss_original = "./dsm2/2021DSM2FP_202301/timeseries/DCD_hist_Lch5.dss"
-    # dcd_dss_adjusted = "./calsim/9.3.1_danube_adj/DSS/output/DCR2023_DV_9.3.1_v2a_Danube_Adj_v1.8.dss"
-    # schism_in = "./BayDeltaSCHISM/data/channel_depletion"
-    # schism_vsource = os.path.join(schism_in, "vsource_dated.th")
-    # schism_vsink = os.path.join(schism_in, "vsink_dated.th")
-    # version = "rt_v1"
-    # out_dir = f"./schism/roundtrip/{version}"
-    # # Call the main function with example parameters
-    # orig_pert_to_schism_dcd(
-    #     "dsm2",
-    #     dcd_dss_original,
-    #     "calsim",
-    #     dcd_dss_adjusted,
-    #     schism_vsource,
-    #     schism_vsink,
-    #     out_dir,
-    #     version,
-    #     start_date=pd.to_datetime("2015-01-01"),
-    #     end_date=pd.to_datetime("2022-10-01"),
-    # )  # get the net source/sink for both original and perturbed data
-
-    # os.chdir("../../examples/parse_cu/")
-    # yaml_fn = "./net_diff_to_schism.yaml"
-    # orig_pert_to_schism_dcd_yaml(yaml_fn, envvar={"sd": "2018/3/1", "ed": "2019/4/1"})
     parse_cu_cli()
