@@ -29,7 +29,7 @@ def calc_indoi(
         params = parms.read_params("./param.nml")
         time_basis = params.run_start
         print(
-            f"Since no time_basis provided, inferring from param.nml: {os.path.abspath('./param.nml')}"
+            f"\tSince no time_basis provided, inferring from param.nml: {os.path.abspath('./param.nml')}"
         )
 
     flux_df = read_flux(
