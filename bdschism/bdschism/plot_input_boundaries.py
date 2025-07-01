@@ -240,6 +240,9 @@ def get_boundary_data(
         )
         dcu_df.index = dcu_df.index.to_period()
         dcu_df = rhistinterp(dcu_df, out_freq)
+        # Convert to cfs
+        dcu_df = dcu_df * CMS2CFS
+
         out_df["dcu"] = dcu_df
     if "ndo" in boundary_list:
         ndoi_df = calc_indoi(
@@ -254,6 +257,9 @@ def get_boundary_data(
         )
         # Convert DatetimeIndex to PeriodIndex
         ndoi_df.index = ndoi_df.index.to_period()
+
+        # Convert to cfs
+        ndoi_df = ndoi_df * CMS2CFS
 
         out_df["ndo"] = rhistinterp(ndoi_df, out_freq)
     # Get the tidal boundary condition data
@@ -270,6 +276,9 @@ def get_boundary_data(
 
         # Convert DatetimeIndex to PeriodIndex
         tidal_bc_series.index = tidal_bc_series.index.to_period()
+
+        # Convert to ft
+        tidal_bc_series = tidal_bc_series * M2FT
 
         out_df["tide"] = rhistinterp(tidal_bc_series, out_freq)
 
@@ -296,6 +305,10 @@ def get_boundary_data(
             ]
         else:
             flux_df = flux_df[[col for col in flux_df.columns if col in boundary_list]]
+
+        # Convert to cfs
+        flux_df = flux_df * CMS2CFS
+
         out_df = pd.concat([out_df, flux_df], axis=1)
 
     # Get gate data
