@@ -1,6 +1,10 @@
 from schimpy.th_calcs import calc_net_source_sink, combine_flux, read_flux
 from schimpy.model_time import is_elapsed
 from vtools.functions.interpolate import rhistinterp
+from vtools.functions.unit_conversions import CMS2CFS, M2FT
+import dms_datastore.process_station_variable
+import dms_datastore.download_noaa
+import dms_datastore.read_ts
 from bdschism.calc_ndoi import calc_indoi
 import schimpy.param as parms
 from itertools import cycle
@@ -18,21 +22,21 @@ import plotly.express as px
 bds_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../")
 
 boundary_list = [
+    "tide",
     "sac",
-    "american",
-    "yolo_toedrain",
-    "yolo",
-    "east",
-    "calaveras",
-    "northbay",
     "ccc_rock",
     "ccc_old",
     "ccc_victoria",
     "swp",
     "cvp",
     "dcu",
-    "tide",
     "ndo",
+    "american",
+    "yolo_toedrain",
+    "yolo",
+    "east",
+    "calaveras",
+    "northbay",
 ]
 
 bc_types = {
@@ -75,9 +79,12 @@ def get_required_files(flux_file, vsource_file, vsink_file, elev2d_file, boundar
 
 
 def get_observed_data(
-    bds_dir=bds_dir, boundary_list=[b for b in boundary_list if b != "tide"]
+    bds_dir=bds_dir,
+    boundary_list=boundary_list,
+    period={"begin": "2016-09-01", "end": "2025-02-01"},
+    out_freq="15min",
 ):
-    """Get observed data from the BDS directory, excluding 'tide'."""
+    """Get observed data from the BDS directory, then get tidal data from noaa download."""
 
     print(f"Getting observed data from BDS directory {bds_dir} (excluding 'tide')...")
     obs_df = get_boundary_data(
@@ -87,10 +94,77 @@ def get_observed_data(
         elev2d_file=os.path.join(bds_dir, "data/elev2D.th.nc"),
         elapsed_unit="s",
         out_freq="15min",
-        boundary_list=boundary_list,
+        boundary_list=[b for b in boundary_list if b != "tide"],
     )
 
+    print(f"Getting observed tidal data from NOAA...")
+    if "tide" in boundary_list:
+        tide_df = get_observed_tide(period=period) * M2FT
+        tide_df.index = tide_df.index.to_period()
+
+        obs_df["tide"] = rhistinterp(tide_df.mean(axis=1), out_freq)
+
     return obs_df
+
+
+def get_observed_tide(
+    period={"begin": "2016-09-01", "end": "2025-02-01"},
+):
+    # Set some parameters here.
+
+    # Two stations to generate the ocean water level boundary, Point Reyes and
+    # Monterey.
+    stations = [
+        {"name": "Point Reyes", "station_id": "9415020"},
+        {"name": "Monterey", "station_id": "9413450"},
+    ]
+
+    # t_stitch = pd.to_datetime("2024-11-01")
+
+    # Two stations to generate the ocean water level boundary, Point Reyes and
+    # Monterey.
+    stations = [
+        {"name": "Point Reyes", "station_id": "9415020"},
+        {"name": "Monterey", "station_id": "9413450"},
+    ]
+
+    # Download the data from NOAA
+    product = "water_level"
+
+    noaa_stations = dms_datastore.process_station_variable.process_station_list(
+        [s["station_id"] for s in stations], param="water_level"
+    )
+    noaa_stations["src_var_id"] = "water_level"
+    noaa_stations["name"] = [s["name"] for s in stations]
+
+    start = pd.to_datetime(period["begin"])
+    start_year = pd.to_datetime(period["begin"]).year
+    end = pd.to_datetime(period["end"])
+    end_year = pd.to_datetime(period["end"]).year
+    dms_datastore.download_noaa.noaa_download(
+        noaa_stations, "./tempdeletenoaa", start, end, overwrite=True
+    )
+
+    df_list = []
+    for station in stations:
+        station_id = station["station_id"]
+
+        # Read the data and delete the file
+        fname = f"./tempdeletenoaa/noaa_{station_id}_{station_id}_{product}_{start_year}_{end_year}.csv"
+        df = dms_datastore.read_ts.read_ts(fname)
+        os.remove(fname)
+        # Rename the value column to the station_id
+        df = df.rename(columns={df.columns[0]: station_id})
+        df_list.append(df)
+
+    # Merge all DataFrames on the index (Date Time)
+    df_tide_bc = pd.concat(df_list, axis=1)
+
+    return df_tide_bc
+
+
+def get_date_data():
+    print("hi")
 
 
 def get_boundary_data(
@@ -184,6 +258,7 @@ def get_boundary_data(
         out_df["ndo"] = rhistinterp(ndoi_df, out_freq)
     # Get the tidal boundary condition data
     if "tide" in boundary_list:
+        print("Reading tidal boundary")
         elev_df = xr.open_dataset(
             elev2d_file
         )  # shape is elev_df.time_series[timesteps, nOpenBndNodes, nLevels, nComponents]
@@ -256,6 +331,7 @@ def plot_bds_boundaries(
     color_cycle = cycle(palette)  # infinite cycling
 
     color_map = {scenario: next(color_cycle) for scenario in sorted(scenario_names)}
+    color_map["Observed"] = "gray"
 
     # If no columns to keep are specified, use all columns except the index
     if cols_to_keep is None:
@@ -264,6 +340,8 @@ def plot_bds_boundaries(
             for col in bc_data_list[0].columns
             if col not in ["time", "date", "datetime"]
         ]
+        # Order cols_to_keep according to boundary_list
+        cols_to_keep = [b for b in boundary_list if b in cols_to_keep]
     else:
         print(f"Plotting using specified columns: {cols_to_keep}")
 
@@ -278,7 +356,7 @@ def plot_bds_boundaries(
         rows=len(cols_to_keep),
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.03,
+        vertical_spacing=0.01,
         subplot_titles=(cols_to_keep),
     )
 
@@ -305,20 +383,40 @@ def plot_bds_boundaries(
 
     # Update layout
     fig.update_layout(
-        height=1500,
+        height=3000,
         title_text="Model Boundary Time Series",
         showlegend=True,
         hoversubplots="axis",
         hovermode="x unified",
+        plot_bgcolor="#f5f5f5",  # <-- Pale/white background
     )
 
     # Update y-axes and x-axes titles
-    for i in range(1, len(cols_to_keep) + 1):
-        fig.update_yaxes(title_text="Flow (cfs)", row=i, col=1)
-        fig.update_xaxes(title_text="", row=i, col=1)
+    for i, col in enumerate(cols_to_keep):
+        if (col in bc_types["flux"]) or col == "dcu":
+            fig.update_yaxes(title_text="Flow (cfs)", row=i + 1, col=1)
+        elif col == "tide":
+            fig.update_yaxes(title_text="Stage (ft)", row=i + 1, col=1)
 
-    fig.update_xaxes(showspikes=True, spikecolor="black", spikethickness=1)
-    fig.update_yaxes(showspikes=True, spikecolor="black", spikethickness=1)
+    fig.update_xaxes(
+        showspikes=True,
+        spikecolor="black",
+        spikethickness=1,
+        showgrid=True,
+        gridcolor="lightgrey",  # Major gridlines
+        zeroline=False,
+        minor=dict(showgrid=True, gridcolor="gainsboro"),  # Minor gridlines
+        title_text="",
+    )
+    fig.update_yaxes(
+        showspikes=True,
+        spikecolor="black",
+        spikethickness=1,
+        showgrid=True,
+        gridcolor="lightgrey",  # Major gridlines
+        zeroline=True,
+        minor=dict(showgrid=True, gridcolor="gainsboro"),  # Minor gridlines
+    )
 
     # Export to HTML
     if write_html:
@@ -374,13 +472,21 @@ def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name, extra=()):
     html_name = os.path.abspath(html_name)
 
     os.chdir(sim_dirs[0])  # Ensure cwd is correct
+    # Determine time_basis and rndays from param.nml
+    params = parms.read_params("./param.nml")
+    time_basis = params.run_start
+    rndays = params["rnday"]
+    print(
+        f"\t\tInferring run period from param.nml:\n\t\t{os.path.abspath('./param.nml')}"
+    )
+    end_date = time_basis + dt.timedelta(days=rndays)
 
     bc_data_list = []
     scenario_list = []
 
     # Observed data
     if obs:
-        obs_data = get_observed_data()
+        obs_data = get_observed_data(period={"begin": time_basis, "end": end_date})
         bc_data_list.append(obs_data)
         scenario_list.append("Observed")
 
