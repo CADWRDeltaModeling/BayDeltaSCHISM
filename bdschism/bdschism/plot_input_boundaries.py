@@ -1,23 +1,37 @@
-from schimpy.th_calcs import calc_net_source_sink, combine_flux, read_flux
-from schimpy.model_time import is_elapsed
-from vtools.functions.interpolate import rhistinterp
-from vtools.functions.unit_conversions import CMS2CFS, M2FT
-import dms_datastore.process_station_variable
-import dms_datastore.download_noaa
-import dms_datastore.read_ts
-from bdschism.calc_ndoi import calc_indoi
-import schimpy.param as parms
-from itertools import cycle
-import pandas as pd
-import xarray as xr
-import numpy as np
-import datetime as dt
-import click
 import os
+import shutil
+import datetime as dt
+from itertools import cycle
+
+import pandas as pd
+import numpy as np
+import xarray as xr
+
+import click
 
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.express as px
+
+from schimpy.th_calcs import (
+    calc_net_source_sink,
+    combine_flux,
+    read_flux,
+    struct_open_props,
+)
+from schimpy.model_time import read_th, is_elapsed
+import schimpy.param as parms
+from schimpy.schism_structure import SchismStructureIO as Struct
+from schimpy.schism_input import *
+
+from vtools.functions.interpolate import rhistinterp
+from vtools.functions.unit_conversions import CMS2CFS, M2FT
+
+import dms_datastore.process_station_variable
+import dms_datastore.download_noaa
+import dms_datastore.read_ts
+
+from bdschism.calc_ndoi import calc_indoi
 
 bds_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../")
 
