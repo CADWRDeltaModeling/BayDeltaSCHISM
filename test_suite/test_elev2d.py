@@ -8,9 +8,9 @@ import datetime
 
 
 @pytest.mark.prerun
-def test_elev2d_time(sim_dir, params):
+def test_elev2d_time(sim_dir, params, elev2dfn="elev2D.th.nc"):
     """Reads elev2d.th.nc file and return start date, check against param.nml"""
-    elev_df = xr.open_dataset(os.path.join(sim_dir, "elev2D.th.nc"))
+    elev_df = xr.open_dataset(os.path.join(sim_dir, elev2dfn))
     elev_start = elev_df.time.values[0].astype("M8[ms]").astype(datetime.datetime)
     param_start = params.run_start.to_pydatetime()
 
@@ -23,9 +23,9 @@ def test_elev2d_time(sim_dir, params):
 
 
 @pytest.mark.prerun
-def test_sea_level(sim_dir, sea_level):
+def test_sea_level(sim_dir, sea_level, elev2dfn="elev2D.th.nc"):
     elev_df = xr.open_dataset(
-        os.path.join(sim_dir, "elev2D.th.nc")
+        os.path.join(sim_dir, elev2dfn)
     )  # shape is elev_df.time_series[timesteps, openboundarynodes, nlevels]
 
     mean_sea_level = elev_df.time_series[:, :, :].mean().item()
@@ -43,9 +43,9 @@ def test_sea_level(sim_dir, sea_level):
 
 
 @pytest.mark.prerun
-def test_sea_level_units(sim_dir):
+def test_sea_level_units(sim_dir, elev2dfn="elev2D.th.nc"):
     elev_df = xr.open_dataset(
-        os.path.join(sim_dir, "elev2D.th.nc")
+        os.path.join(sim_dir, elev2dfn)
     )  # shape is elev_df.time_series[timesteps, openboundarynodes, nlevels]
 
     std_dev = elev_df.time_series.std(dim=("nOpenBndNodes", "nLevels"))
