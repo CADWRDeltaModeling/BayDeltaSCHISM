@@ -37,20 +37,35 @@ bds_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../")
 
 boundary_list = [
     "tide",
-    "sac",
     "ccc_rock",
     "ccc_old",
     "ccc_victoria",
     "swp",
     "cvp",
+    "ccfb_gate",
     "dcu",
     "ndo",
+    "exports",
+    "sac",
     "american",
     "yolo_toedrain",
     "yolo",
     "east",
     "calaveras",
     "northbay",
+    "delta_cross_channel",
+    "montezuma_radial",
+    "montezuma_flash",
+    "montezuma_boat_lock",
+    "grantline_barrier",
+    "midr_culvert_l",
+    "midr_culvert_r",
+    "midr_weir",
+    "oldr_head_barrier",
+    "oldr_tracy_culvert",
+    "oldr_tracy_weir",
+    "tom_paine_sl_culvert",
+    "west_false_river_barrier_leakage",
 ]
 
 bc_types = {
@@ -69,23 +84,55 @@ bc_types = {
         "cvp",
     ],
     "dcu": ["dcu"],
+    "exports": ["exports"],
     "tide": ["tide"],
-    "gate": ["dcc", "smscg_radial", "smscg_flash", "smscg_boat"],
+    "gate": [
+        "delta_cross_channel",
+        "montezuma_radial",
+        "montezuma_flash",
+        "montezuma_boat_lock",
+        "ccfb_gate",
+        "grantline_barrier",
+        "grantline_culvert",
+        "grantline_weir",
+        "midr_culvert_l",
+        "midr_culvert_r",
+        "midr_weir",
+        "oldr_head_barrier",
+        "oldr_tracy_culvert",
+        "oldr_tracy_weir",
+        "tom_paine_sl_culvert",
+        "west_false_river_barrier_leakage",
+    ],
 }
 
 
-def get_required_files(flux_file, vsource_file, vsink_file, elev2d_file, boundary_list):
+def get_required_files(
+    flux_file,
+    vsource_file,
+    vsink_file,
+    elev2d_file,
+    boundary_list,
+    struct_fn="hydraulics.in",
+):
     """Get the required files for boundary data."""
     files = []
     if "tide" in boundary_list:
         files.append(elev2d_file)
-    if "dcu" in boundary_list:
+    if ("dcu" in boundary_list) or ("ndoi" in boundary_list):
         files.append(vsource_file)
         files.append(vsink_file)
-    if "flux" in boundary_list or any(b in bc_types["flux"] for b in boundary_list):
+    if (
+        "flux" in boundary_list
+        or any(b in bc_types["flux"] for b in boundary_list)
+        or ("exports" in boundary_list)
+    ):
         files.append(flux_file)
     if any(b in bc_types["gate"] for b in boundary_list):
-        print("Gate data not implemented yet, skipping...")
+        files.append(struct_fn)
+        for gfn in bc_types["gate"]:
+            if gfn in boundary_list:
+                files.append(f"{gfn}.th")
     if not files:
         raise ValueError("No valid boundary types provided in boundary_list.")
 
@@ -96,7 +143,7 @@ def get_observed_data(
     bds_dir=bds_dir,
     boundary_list=boundary_list,
     period={"begin": "2016-09-01", "end": "2025-02-01"},
-    out_freq="15min",
+    out_freq="1D",
 ):
     """Get observed data from the BDS directory, then get tidal data from noaa download."""
 
@@ -106,8 +153,9 @@ def get_observed_data(
         vsource_file=os.path.join(bds_dir, "data/channel_depletion/vsource_dated.th"),
         vsink_file=os.path.join(bds_dir, "data/channel_depletion/vsink_dated.th"),
         elev2d_file=os.path.join(bds_dir, "data/elev2D.th.nc"),
+        gate_dir=os.path.join(bds_dir, "data/time_history/"),
         elapsed_unit="s",
-        out_freq="15min",
+        out_freq=out_freq,
         boundary_list=[b for b in boundary_list if b != "tide"],
     )
 
@@ -170,6 +218,7 @@ def get_observed_tide(
         # Rename the value column to the station_id
         df = df.rename(columns={df.columns[0]: station_id})
         df_list.append(df)
+    shutil.rmtree("./tempdeletenoaa")
 
     # Merge all DataFrames on the index (Date Time)
     df_tide_bc = pd.concat(df_list, axis=1)
@@ -177,8 +226,36 @@ def get_observed_tide(
     return df_tide_bc
 
 
-def get_date_data():
-    print("hi")
+def get_date_data(
+    gate_name,
+    structures,
+    gate_fn="{gate_name}.th",
+    gate_head=os.path.join(bds_dir, "./data/time_history/{gate_name}.th"),
+    time_basis=None,
+    elapsed_unit="s",
+    out_freq="1D",
+    datetime_idx=None,
+):
+    struct = next(
+        (s for s in structures if s.name == gate_name), None
+    )  # structure object that corresponds to gate_name
+    if struct is None:
+        raise ValueError(f"{gate_name} is not found in hydraulics.in file...")
+
+    th_data = read_th(
+        gate_fn.format(),
+        time_basis=time_basis,
+        elapsed_unit=elapsed_unit,
+        head=gate_head,
+    )
+    up_df, down_df = struct_open_props(
+        struct,
+        th_data,
+        out_freq=out_freq,
+        datetime_idx=datetime_idx,
+    )
+
+    return up_df, down_df
 
 
 def get_boundary_data(
@@ -186,14 +263,16 @@ def get_boundary_data(
     vsource_file="vsource.th",
     vsink_file="vsink.th",
     elev2d_file="elev2D.th.nc",
+    gate_dir="./",
     time_basis=None,
     rndays=None,
     elapsed_unit="s",
-    out_freq="15min",
+    out_freq="1D",
     flux_head=os.path.join(bds_dir, "./data/time_history/flux.th"),
     sink_head=os.path.join(bds_dir, "./data/channel_depletion/vsink_dated.th"),
     source_head=os.path.join(bds_dir, "./data/channel_depletion/vsource_dated.th"),
     boundary_list=boundary_list,
+    struct_fn="hydraulics.in",
 ):
     """Get a DataFrame of boundary data from flux, vsource, vsink, and elev2D.th.nc files."""
 
@@ -205,6 +284,7 @@ def get_boundary_data(
         vsink_file=vsink_file,
         elev2d_file=elev2d_file,
         boundary_list=boundary_list,
+        struct_fn=struct_fn,
     )
     elapsed_files = []
     for f in files:
@@ -327,19 +407,29 @@ def get_boundary_data(
 
     # Get gate data
     if any(b in bc_types["gate"] for b in boundary_list):
-        print("\tGate data not implemented yet, skipping...")
+        schinp = SchismInput(None)
+        structure_reader = Struct(schinp)
+        structure_reader.read(struct_fn)
+
+        structures = schinp.structures
+        for gfn in [g for g in bc_types["gate"] if g in boundary_list]:
+            print(f"\t\tGetting gate {gfn}..")
+            up_df, down_df = get_date_data(
+                gfn,
+                structures,
+                gate_fn=os.path.join(gate_dir, f"{gfn}.th"),
+                gate_head=os.path.join(bds_dir, f"./data/time_history/{gfn}.th"),
+                time_basis=time_basis,
+                elapsed_unit=elapsed_unit,
+                out_freq=out_freq,
+                datetime_idx=out_idx,
+            )
+            out_df[f"{gfn}_up"] = up_df
+            out_df[f"{gfn}_down"] = down_df
 
     print("Done Collecting boundary data.\n\n")
 
     return out_df
-
-
-# # Extract scenario name by removing the suffix matching one of cols_to_keep
-# def get_scenario_name(col):
-#     for suffix in cols_to_keep:
-#         if col.endswith(suffix):
-#             return col[: -len(suffix) - 1]  # remove "_" + suffix
-#     return col
 
 
 def plot_bds_boundaries(
@@ -362,13 +452,16 @@ def plot_bds_boundaries(
 
     # If no columns to keep are specified, use all columns except the index
     if cols_to_keep is None:
-        cols_to_keep = [
-            col
-            for col in bc_data_list[0].columns
-            if col not in ["time", "date", "datetime"]
-        ]
-        # Order cols_to_keep according to boundary_list
-        cols_to_keep = [b for b in boundary_list if b in cols_to_keep]
+        # Get all columns in the first DataFrame
+        data_cols = set(bc_data_list[0].columns)
+        # Include items from boundary_list that are present as columns
+        cols_to_keep = [b for b in boundary_list if b in data_cols]
+        # Also include _up/_down variants if present
+        for b in boundary_list:
+            for suffix in ["_up", "_down"]:
+                colname = f"{b}{suffix}"
+                if colname in data_cols and colname not in cols_to_keep:
+                    cols_to_keep.append(colname)
     else:
         print(f"Plotting using specified columns: {cols_to_keep}")
 
@@ -378,13 +471,25 @@ def plot_bds_boundaries(
         if missing_cols:
             raise ValueError(f"DataFrame is missing columns: {missing_cols}")
 
+    # group structures by name (up and down on same subplot
+    # Unique base names, preserving order
+    seen = set()
+    subplot_names = []
+    for col in cols_to_keep:
+        base = col.replace("_up", "").replace("_down", "")
+        if base not in seen:
+            subplot_names.append(base)
+            seen.add(base)
+    # Sort according to boundary_list
+    subplot_names = [b for b in boundary_list if b in subplot_names]
+
     # Create subplots
     fig = make_subplots(
-        rows=len(cols_to_keep),
+        rows=len(subplot_names),
         cols=1,
         shared_xaxes=True,
         vertical_spacing=0.01,
-        subplot_titles=(cols_to_keep),
+        subplot_titles=(subplot_names),
     )
 
     print("Generating boundary data plots...")
@@ -393,24 +498,47 @@ def plot_bds_boundaries(
         # Take only the columns that are in cols_to_keep
         bc_data = bc_data[cols_to_keep]
         row = 0  # Initialize row index for subplot
-        for i, col in enumerate(bc_data.columns):
+        for i, col in enumerate(subplot_names):
             row = i + 1
             color = color_map.get(scenario, "gray")
             show_legend = i == 0
-            trace = go.Scatter(
-                x=bc_data.index,
-                y=bc_data[col],
-                name=scenario,
-                line=dict(color=color),
-                hovertemplate=f"{scenario}<br>%{{y:.2f}} cfs<extra></extra>",
-                showlegend=show_legend,  # Hide the legend
-                legendgroup=scenario,
-            )
-            fig.add_trace(trace, row=row, col=1)
+            if col in bc_types["gate"]:
+                # Plot both upstream and downstream operations
+                trace_up = go.Scatter(
+                    x=bc_data.index,
+                    y=bc_data[f"{col}_up"],
+                    name=scenario,
+                    line=dict(color=color),
+                    hovertemplate=f"{scenario}<br>%{{y:.2f}} cfs<extra></extra>",
+                    showlegend=show_legend,  # Hide the legend
+                    legendgroup=scenario,
+                )
+                fig.add_trace(trace_up, row=row, col=1)
+                trace_down = go.Scatter(
+                    x=bc_data.index,
+                    y=bc_data[f"{col}_down"],
+                    name=scenario,
+                    line=dict(color=color),
+                    hovertemplate=f"{scenario}<br>%{{y:.2f}} cfs<extra></extra>",
+                    showlegend=False,  # Hide the legend
+                    legendgroup=scenario,
+                )
+                fig.add_trace(trace_down, row=row, col=1)
+            else:
+                trace = go.Scatter(
+                    x=bc_data.index,
+                    y=bc_data[col],
+                    name=scenario,
+                    line=dict(color=color),
+                    hovertemplate=f"{scenario}<br>%{{y:.2f}} cfs<extra></extra>",
+                    showlegend=show_legend,  # Hide the legend
+                    legendgroup=scenario,
+                )
+                fig.add_trace(trace, row=row, col=1)
 
     # Update layout
     fig.update_layout(
-        height=3000,
+        height=4000,
         title_text="Model Boundary Time Series",
         showlegend=True,
         hoversubplots="axis",
@@ -419,9 +547,17 @@ def plot_bds_boundaries(
     )
 
     # Update y-axes and x-axes titles
-    for i, col in enumerate(cols_to_keep):
-        if (col in bc_types["flux"]) or col == "dcu":
+    for i, col in enumerate(subplot_names):
+        if (col in bc_types["flux"]) or (col in ["ndo", "dcu"]):
             fig.update_yaxes(title_text="Flow (cfs)", row=i + 1, col=1)
+        elif col in bc_types["gate"]:
+            fig.update_yaxes(
+                title_text="Gate Opening",
+                row=i + 1,
+                col=1,
+                tickvals=[-1, 0, 1],
+                ticktext=["Downstream Open", "Closed", "Upstream Open"],
+            )
         elif col == "tide":
             fig.update_yaxes(title_text="Stage (ft)", row=i + 1, col=1)
 
@@ -478,8 +614,13 @@ def plot_bds_boundaries(
     default="bds_input_boundaries.html",
     help="Output HTML plot filename.",
 )
+@click.option(
+    "--out-freq",
+    default="1D",
+    help="Output data frequency. Default is one day.",
+)
 @click.argument("extra", nargs=-1)
-def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name, extra=()):
+def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name, out_freq, extra=()):
     """
     CLI to plot boundary data from observed and/or simulation directories.
     """
@@ -494,6 +635,7 @@ def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name, extra=()):
             key = None
     if key is not None:
         raise ValueError(f"No value provided for extra argument: {key}")
+    envvar["out_freq"] = out_freq
 
     sim_dirs = [os.path.abspath(sim_dir) for sim_dir in sim_dirs]
     html_name = os.path.abspath(html_name)
@@ -513,7 +655,9 @@ def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name, extra=()):
 
     # Observed data
     if obs:
-        obs_data = get_observed_data(period={"begin": time_basis, "end": end_date})
+        obs_data = get_observed_data(
+            period={"begin": time_basis, "end": end_date}, **envvar
+        )
         bc_data_list.append(obs_data)
         scenario_list.append("Observed")
 
