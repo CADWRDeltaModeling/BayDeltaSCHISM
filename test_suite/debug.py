@@ -13,8 +13,8 @@ import conftest
 
 if __name__ == "__main__":
     # code here
-    sim_dir = "../examples/test_files"
-    fname = os.path.join(sim_dir, "param.nml")
+    sim_dir = "./example_sim_dir"
+    fname = os.path.join(sim_dir, "param.nml.clinic")
     params = parms.read_params(fname)
 
-    test_elev2d_time(sim_dir, params)
+    test_elev2d_time(sim_dir, params, elev2dfn="example.elev2D.th.nc")

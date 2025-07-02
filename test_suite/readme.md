@@ -33,4 +33,6 @@ This will show a list of warnings and errors which may impact your simulation su
 | test_vgrid.py       | - Check for any 0-layer cells in the vgrid.in.3d file                                 |
 |---------------------|---------------------------------------------------------------------------------------|
 
+## Debugging/Development
 
+Use debug.py to debug any test_suite scripts
