@@ -184,7 +184,7 @@ structures:
       use_time_series: 1
     reference: self
 
-  - name: tom_paine
+  - name: tom_paine_sl_culvert
     type: culvert
     end_points:
       [[639240.49, 4183710.97],
