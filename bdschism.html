@@ -547,6 +547,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.parse_cu.strip_dpart"><code class="docutils literal notranslate"><span class="pre">strip_dpart()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#bdschism-plot-input-boundaries-module">bdschism.plot_input_boundaries module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-bdschism.port_boundary">bdschism.port_boundary module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.port_boundary.clean_df"><code class="docutils literal notranslate"><span class="pre">clean_df()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.port_boundary.create_schism_bc"><code class="docutils literal notranslate"><span class="pre">create_schism_bc()</span></code></a></li>
@@ -1342,6 +1343,9 @@ This is used to strip the D part from the column names in the DCD data.
 </dd></dl>
 
 </section>
+<section id="bdschism-plot-input-boundaries-module">
+<h2>bdschism.plot_input_boundaries module<a class="headerlink" href="#bdschism-plot-input-boundaries-module" title="Link to this heading"></a></h2>
+</section>
 <section id="module-bdschism.port_boundary">
 <span id="bdschism-port-boundary-module"></span><h2>bdschism.port_boundary module<a class="headerlink" href="#module-bdschism.port_boundary" title="Link to this heading"></a></h2>
 <p>Script to convert various data formats (from calsim, csv files) into
@@ -1471,7 +1475,7 @@ Needs to be in the format ‘/A_PART/B_PART/C_PART/D_PART/E_PART/F_PART/’
 <p>2025-02-04: Customized</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="bdschism.set_nudging.get_nudge_list">
-<span class="sig-prename descclassname"><span class="pre">bdschism.set_nudging.</span></span><span class="sig-name descname"><span class="pre">get_nudge_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workdir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/set_nudging.html#get_nudge_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.set_nudging.get_nudge_list" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">bdschism.set_nudging.</span></span><span class="sig-name descname"><span class="pre">get_nudge_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/set_nudging.html#get_nudge_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.set_nudging.get_nudge_list" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -1484,7 +1488,7 @@ Used for var_map which feeds the gr3 formats for things like TEM=temperature</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bdschism.set_nudging.set_nudging">
-<span class="sig-prename descclassname"><span class="pre">bdschism.set_nudging.</span></span><span class="sig-name descname"><span class="pre">set_nudging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/set_nudging.html#set_nudging"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.set_nudging.set_nudging" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">bdschism.set_nudging.</span></span><span class="sig-name descname"><span class="pre">set_nudging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'param.nml'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/set_nudging.html#set_nudging"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.set_nudging.set_nudging" title="Link to this definition"></a></dt>
 <dd><p>This is a utility to set up nudging files based on a naming convention common for BayDeltaSCHISM.
 Assumed this is on Linux or admin-priveleged Windows machine.</p>
 <dl class="field-list simple">
@@ -1493,6 +1497,7 @@ Assumed this is on Linux or admin-priveleged Windows machine.</p>
 <li><p><strong>suffix</strong> (<em>str</em>) – This is the suffix used when preparing the nudging/gr files. For instance “obshycom” in SAL_nu_obshycom.nc</p></li>
 <li><p><strong>workdir</strong> (<em>str</em>) – Directory where the links and changes are made</p></li>
 <li><p><strong>var_map</strong> (<em>str</em>) – Unexpected mapping in key=value pairs, separated by commas. Ex: –var_map ‘TEM=temperature,SAL=salinity’</p></li>
+<li><p><strong>param_fn</strong> (<em>str</em>) – Which param.nml file will be used to determine module list. Should be the baroclinic param file. Default is <cite>param.nml</cite></p></li>
 </ul>
 </dd>
 </dl>

@@ -552,6 +552,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.strip_dpart"><code class="docutils literal notranslate"><span class="pre">strip_dpart()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#bdschism-plot-input-boundaries-module">bdschism.plot_input_boundaries module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.port_boundary">bdschism.port_boundary module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.clean_df"><code class="docutils literal notranslate"><span class="pre">clean_df()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.create_schism_bc"><code class="docutils literal notranslate"><span class="pre">create_schism_bc()</span></code></a></li>
@@ -681,7 +682,7 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">params</span> <span class="o">=</span> <span class="n">parms</span><span class="o">.</span><span class="n">read_params</span><span class="p">(</span><span class="s2">&quot;./param.nml&quot;</span><span class="p">)</span>
         <span class="n">time_basis</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">run_start</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Since no time_basis provided, inferring from param.nml: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;./param.nml&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Since no time_basis provided, inferring from param.nml: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;./param.nml&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="n">flux_df</span> <span class="o">=</span> <span class="n">read_flux</span><span class="p">(</span>

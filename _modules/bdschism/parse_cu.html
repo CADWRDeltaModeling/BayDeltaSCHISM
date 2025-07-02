@@ -552,6 +552,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.strip_dpart"><code class="docutils literal notranslate"><span class="pre">strip_dpart()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#bdschism-plot-input-boundaries-module">bdschism.plot_input_boundaries module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.port_boundary">bdschism.port_boundary module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.clean_df"><code class="docutils literal notranslate"><span class="pre">clean_df()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.create_schism_bc"><code class="docutils literal notranslate"><span class="pre">create_schism_bc()</span></code></a></li>
@@ -1088,7 +1089,7 @@ window.addEventListener("load", () => mermaid.run());
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="ow">and</span> <span class="n">net</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">net</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">net</span></div>
+    <span class="k">return</span> <span class="o">-</span><span class="n">net</span></div>
 
 
 
@@ -1584,30 +1585,6 @@ window.addEventListener("load", () => mermaid.run());
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="c1"># dcd_dss_original = &quot;D:/projects/delta_salinity/DSP_code/model/dsm2/2021DSM2FP_202301/timeseries/DCD_hist_Lch5.dss&quot;</span>
-    <span class="c1"># dcd_dss_adjusted = &quot;D:/projects/delta_salinity/DSP_code/model/calsim/9.3.1_danube_adj/DSS/output/DCR2023_DV_9.3.1_v2a_Danube_Adj_v1.8.dss&quot;</span>
-    <span class="c1"># schism_in = &quot;D:/python/repositories/BayDeltaSCHISM/data/channel_depletion&quot;</span>
-    <span class="c1"># schism_vsource = os.path.join(schism_in, &quot;vsource_dated.th&quot;)</span>
-    <span class="c1"># schism_vsink = os.path.join(schism_in, &quot;vsink_dated.th&quot;)</span>
-    <span class="c1"># version = &quot;rt_v1&quot;</span>
-    <span class="c1"># out_dir = f&quot;D:/projects/delta_salinity/DSP_code/model/schism/roundtrip/{version}&quot;</span>
-    <span class="c1"># # Call the main function with example parameters</span>
-    <span class="c1"># orig_pert_to_schism_dcd(</span>
-    <span class="c1">#     &quot;dsm2&quot;,</span>
-    <span class="c1">#     dcd_dss_original,</span>
-    <span class="c1">#     &quot;calsim&quot;,</span>
-    <span class="c1">#     dcd_dss_adjusted,</span>
-    <span class="c1">#     schism_vsource,</span>
-    <span class="c1">#     schism_vsink,</span>
-    <span class="c1">#     out_dir,</span>
-    <span class="c1">#     version,</span>
-    <span class="c1">#     start_date=pd.to_datetime(&quot;2015-01-01&quot;),</span>
-    <span class="c1">#     end_date=pd.to_datetime(&quot;2022-10-01&quot;),</span>
-    <span class="c1"># )  # get the net source/sink for both original and perturbed data</span>
-
-    <span class="c1"># os.chdir(&quot;../../examples/parse_cu/&quot;)</span>
-    <span class="c1"># yaml_fn = &quot;./net_diff_to_schism.yaml&quot;</span>
-    <span class="c1"># orig_pert_to_schism_dcd_yaml(yaml_fn, envvar={&quot;sd&quot;: &quot;2018/3/1&quot;, &quot;ed&quot;: &quot;2019/4/1&quot;})</span>
     <span class="n">parse_cu_cli</span><span class="p">()</span>
 </pre></div>
 

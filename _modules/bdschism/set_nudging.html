@@ -552,6 +552,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.strip_dpart"><code class="docutils literal notranslate"><span class="pre">strip_dpart()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#bdschism-plot-input-boundaries-module">bdschism.plot_input_boundaries module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.port_boundary">bdschism.port_boundary module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.clean_df"><code class="docutils literal notranslate"><span class="pre">clean_df()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.create_schism_bc"><code class="docutils literal notranslate"><span class="pre">create_schism_bc()</span></code></a></li>
@@ -693,13 +694,12 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="get_nudge_list">
 <a class="viewcode-back" href="../../bdschism.html#bdschism.set_nudging.get_nudge_list">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_nudge_list</span><span class="p">(</span><span class="n">workdir</span><span class="p">):</span>
-    <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">workdir</span><span class="p">,</span> <span class="s2">&quot;param.nml&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_nudge_list</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
 
     <span class="n">params</span> <span class="o">=</span> <span class="n">parms</span><span class="o">.</span><span class="n">read_params</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get_baro</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;tropic&quot;</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Barotropic model detected in param.nml- Nudging not applicable.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Barotropic model detected in </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">- Nudging not applicable.&quot;</span>
         <span class="p">)</span>
     <span class="n">nc_nudge_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">nc_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -726,7 +726,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="set_nudging">
 <a class="viewcode-back" href="../../bdschism.html#bdschism.set_nudging.set_nudging">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">set_nudging</span><span class="p">(</span><span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">workdir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">var_map</span><span class="o">=</span><span class="p">{}):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_nudging</span><span class="p">(</span><span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">workdir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">var_map</span><span class="o">=</span><span class="p">{},</span> <span class="n">param_fn</span><span class="o">=</span><span class="s2">&quot;param.nml&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a utility to set up nudging files based on a naming convention common for BayDeltaSCHISM.</span>
 <span class="sd">    Assumed this is on Linux or admin-priveleged Windows machine.</span>
 
@@ -735,16 +735,17 @@ window.addEventListener("load", () => mermaid.run());
 
 <span class="sd">    suffix: str</span>
 <span class="sd">        This is the suffix used when preparing the nudging/gr files. For instance &quot;obshycom&quot; in SAL_nu_obshycom.nc</span>
-
 <span class="sd">    workdir : str</span>
 <span class="sd">        Directory where the links and changes are made</span>
-
 <span class="sd">    var_map: str</span>
 <span class="sd">        Unexpected mapping in key=value pairs, separated by commas. Ex: --var_map &#39;TEM=temperature,SAL=salinity&#39;</span>
+<span class="sd">    param_fn: str</span>
+<span class="sd">        Which param.nml file will be used to determine module list. Should be the baroclinic param file. Default is `param.nml`</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">nc_nudge_list</span> <span class="o">=</span> <span class="n">get_nudge_list</span><span class="p">(</span><span class="n">workdir</span><span class="p">)</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">workdir</span><span class="p">,</span> <span class="n">param_fn</span><span class="p">)</span>
+    <span class="n">nc_nudge_list</span> <span class="o">=</span> <span class="n">get_nudge_list</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
     <span class="n">check_files</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">gr3_color</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[36m&quot;</span>  <span class="c1"># Light blue for gr3</span>
     <span class="n">nc_color</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[34m&quot;</span>  <span class="c1"># Dark blue for nc</span>
@@ -808,11 +809,16 @@ window.addEventListener("load", () => mermaid.run());
     <span class="n">callback</span><span class="o">=</span><span class="n">parse_var_map</span><span class="p">,</span>
     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Unexpected mapping in key=value pairs, separated by commas. Ex: --var_map &#39;TEM=temperature,SAL=salinity&#39;&quot;</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
+    <span class="s2">&quot;--param&quot;</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="s2">&quot;param.nml&quot;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Which param.nml file will be used to determine module list. Should be the baroclinic param file. Default is `param.nml`&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">help_option</span><span class="p">(</span><span class="s2">&quot;-h&quot;</span><span class="p">,</span> <span class="s2">&quot;--help&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">set_nudging_cli</span><span class="p">(</span><span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">workdir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">var_map</span><span class="o">=</span><span class="p">{}):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_nudging_cli</span><span class="p">(</span><span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">workdir</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">var_map</span><span class="o">=</span><span class="p">{}):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper function for the `set_nudging` command.&quot;&quot;&quot;</span>
     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">workdir</span><span class="p">)))</span>
-    <span class="n">set_nudging</span><span class="p">(</span><span class="n">suffix</span><span class="p">,</span> <span class="n">workdir</span><span class="p">,</span> <span class="n">var_map</span><span class="p">)</span>
+    <span class="n">set_nudging</span><span class="p">(</span><span class="n">suffix</span><span class="p">,</span> <span class="n">workdir</span><span class="p">,</span> <span class="n">var_map</span><span class="p">,</span> <span class="n">param_fn</span><span class="o">=</span><span class="n">param</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>

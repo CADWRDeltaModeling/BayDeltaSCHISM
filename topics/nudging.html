@@ -547,6 +547,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.parse_cu.strip_dpart"><code class="docutils literal notranslate"><span class="pre">strip_dpart()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../bdschism.html#bdschism-plot-input-boundaries-module">bdschism.plot_input_boundaries module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bdschism.html#module-bdschism.port_boundary">bdschism.port_boundary module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.port_boundary.clean_df"><code class="docutils literal notranslate"><span class="pre">clean_df()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.port_boundary.create_schism_bc"><code class="docutils literal notranslate"><span class="pre">create_schism_bc()</span></code></a></li>
@@ -865,6 +866,12 @@ step_nu_tr = 3600. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
 <dt class="sig sig-object std" id="cmdoption-bds-set_nudge-var_map">
 <span class="sig-name descname"><span class="pre">--var_map</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;var_map&gt;</span></span><a class="headerlink" href="#cmdoption-bds-set_nudge-var_map" title="Link to this definition"></a></dt>
 <dd><p>Unexpected mapping in key=value pairs, separated by commas. Ex: –var_map ‘TEM=temperature,SAL=salinity’</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-bds-set_nudge-param">
+<span class="sig-name descname"><span class="pre">--param</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;param&gt;</span></span><a class="headerlink" href="#cmdoption-bds-set_nudge-param" title="Link to this definition"></a></dt>
+<dd><p>Which param.nml file will be used to determine module list. Should be the baroclinic param file. Default is <cite>param.nml</cite></p>
 </dd></dl>
 
 <dl class="std option">

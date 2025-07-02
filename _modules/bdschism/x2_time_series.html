@@ -552,6 +552,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.strip_dpart"><code class="docutils literal notranslate"><span class="pre">strip_dpart()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#bdschism-plot-input-boundaries-module">bdschism.plot_input_boundaries module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.port_boundary">bdschism.port_boundary module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.clean_df"><code class="docutils literal notranslate"><span class="pre">clean_df()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.create_schism_bc"><code class="docutils literal notranslate"><span class="pre">create_schism_bc()</span></code></a></li>
@@ -768,7 +769,7 @@ window.addEventListener("load", () => mermaid.run());
     <span class="nb">print</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;salt_data_file: </span><span class="si">{</span><span class="n">salt_data_file</span><span class="si">}</span><span class="s2"> model_start_date=</span><span class="si">{</span><span class="n">model_start_date</span><span class="si">}</span><span class="s2"> output_file=</span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2"> model_extract_date=</span><span class="si">{</span><span class="n">model_extract_date</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
-    <span class="n">ts_out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">salt_data_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ts_out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">salt_data_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">delta_t</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">ts_out</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ts_out</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
     <span class="n">freqstr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">delta_t</span><span class="p">)</span><span class="si">}</span><span class="s2">min&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">delta_t</span><span class="p">)</span>
@@ -790,7 +791,7 @@ window.addEventListener("load", () => mermaid.run());
 
     <span class="k">if</span> <span class="n">route_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;bp&quot;</span><span class="p">):</span>
         <span class="n">route_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-            <span class="n">route_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;!&quot;</span>
+            <span class="n">route_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;!&quot;</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Build point file expected&quot;</span><span class="p">)</span>
@@ -851,7 +852,7 @@ window.addEventListener("load", () => mermaid.run());
 <div class="viewcode-block" id="main_hardwire">
 <a class="viewcode-back" href="../../bdschism.html#bdschism.x2_time_series.main_hardwire">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">main_hardwire</span><span class="p">():</span>
-    <span class="n">model_out_dir</span> <span class="o">=</span> <span class="s2">&quot;/scratch/tomkovic/DSP_code/model/schism/azure_dsp_2024_lhc_v3/simulations/baseline_lhc_5/outputs&quot;</span>
+    <span class="n">model_out_dir</span> <span class="o">=</span> <span class="s2">&quot;./outputs&quot;</span>
     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">model_out_dir</span><span class="p">)</span>
 
     <span class="n">salt_out</span> <span class="o">=</span> <span class="s2">&quot;fort.18&quot;</span>

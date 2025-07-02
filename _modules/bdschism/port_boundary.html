@@ -552,6 +552,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.strip_dpart"><code class="docutils literal notranslate"><span class="pre">strip_dpart()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#bdschism-plot-input-boundaries-module">bdschism.plot_input_boundaries module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.port_boundary">bdschism.port_boundary module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.clean_df"><code class="docutils literal notranslate"><span class="pre">clean_df()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.create_schism_bc"><code class="docutils literal notranslate"><span class="pre">create_schism_bc()</span></code></a></li>
@@ -985,18 +986,18 @@ window.addEventListener("load", () => mermaid.run());
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;source_kind=</span><span class="si">{</span><span class="n">source_kind</span><span class="si">}</span><span class="s2"> is not yet supported&quot;</span><span class="p">)</span>
 
-                <span class="c1"># Set date range</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">var_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">):</span>
-                    <span class="n">idx</span> <span class="o">=</span> <span class="n">var_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">()</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">idx</span> <span class="o">=</span> <span class="n">var_df</span><span class="o">.</span><span class="n">index</span>
-                <span class="n">var_df</span> <span class="o">=</span> <span class="n">var_df</span><span class="p">[(</span><span class="n">idx</span> <span class="o">&gt;=</span> <span class="n">start_date</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">idx</span> <span class="o">&lt;=</span> <span class="n">end_date</span><span class="p">)]</span>
-
                 <span class="c1"># use formula to set gate fraction (month_fraction, month_days)</span>
                 <span class="k">if</span> <span class="n">source_kind</span> <span class="o">==</span> <span class="s2">&quot;CONSTANT&quot;</span><span class="p">:</span>
                     <span class="n">dfi</span> <span class="o">=</span> <span class="n">var_df</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">dfi</span> <span class="o">=</span> <span class="n">set_gate_ops</span><span class="p">(</span><span class="n">boundary_kind</span><span class="p">,</span> <span class="n">var_df</span><span class="o">.</span><span class="n">ffill</span><span class="p">(),</span> <span class="n">name</span><span class="p">,</span> <span class="n">formula</span><span class="p">)</span>
+
+                <span class="c1"># Set date range</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dfi</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">):</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="n">dfi</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="n">dfi</span><span class="o">.</span><span class="n">index</span>
+                <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span><span class="p">[(</span><span class="n">idx</span> <span class="o">&gt;=</span> <span class="n">start_date</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">idx</span> <span class="o">&lt;=</span> <span class="n">end_date</span><span class="p">)]</span>
                 <span class="n">dfi</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">dfi</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">source_kind</span> <span class="o">==</span> <span class="s2">&quot;CSV&quot;</span><span class="p">:</span>
@@ -1105,6 +1106,7 @@ window.addEventListener("load", () => mermaid.run());
                 <span class="c1"># Update the dataframe.</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dfi</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">):</span>
                     <span class="n">dfi</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">dfi</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">()</span>
+                <span class="n">dfi</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="p">]</span>
                 <span class="n">dd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dfi</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">out_file</span><span class="p">:</span>
@@ -1170,6 +1172,10 @@ window.addEventListener("load", () => mermaid.run());
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># os.chdir(&quot;path/to/yaml&quot;)</span>
+    <span class="c1"># config_yaml = &quot;./port_calsim_schism.suisun-base.yaml&quot;</span>
+    <span class="c1"># envvar = {&quot;sd&quot;: &quot;2015/2/18&quot;, &quot;ed&quot;: &quot;2016/5/15&quot;}</span>
+    <span class="c1"># create_schism_bc(config_yaml, kwargs=envvar if envvar else None)</span>
     <span class="n">port_boundary_cli</span><span class="p">()</span>
 </pre></div>
 
