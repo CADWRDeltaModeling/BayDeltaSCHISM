@@ -1262,7 +1262,7 @@ If SCHISM then enter the directory where vsource.th and vsink.th are found.</p><
 If SCHISM then enter the directory where vsource.th and vsink.th are found.</p></li>
 <li><p><strong>schism_vsource</strong> (<em>str</em><em>|</em><em>Path</em>) – Input SCHISM vsource data, needs to be “dated” and not “elapsed”.</p></li>
 <li><p><strong>schism_vsink</strong> (<em>str</em><em>|</em><em>Path</em>) – Input SCHISM vsink data, needs to be “dated” and not “elapsed”.</p></li>
-<li><p><strong>out_dir</strong> (<em>str</em><em>|</em><em>Path</em>) – Output directory to store the altered *.th files.</p></li>
+<li><p><strong>out_dir</strong> (<em>str</em><em>|</em><em>Path</em>) – Output directory to store the altered <a href="#id1"><span class="problematic" id="id2">*</span></a>.th files.</p></li>
 <li><p><strong>version</strong> (<em>str</em>) – Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th).</p></li>
 <li><p><strong>start_date</strong> (<em>pd.Timestamp</em><em>, </em><em>optional</em>) – Start date for the timeseries. If None, uses the start date from the original data.</p></li>
 <li><p><strong>end_date</strong> (<em>pd.Timestamp</em><em>, </em><em>optional</em>) – End date for the timeseries. If None, uses the end date from the original data.</p></li>
@@ -1307,14 +1307,14 @@ You must use _original or _perturbed suffixes to distinguish between original an
 <dl class="py function">
 <dt class="sig sig-object py" id="bdschism.parse_cu.sch_dcd_net_diff">
 <span class="sig-prename descclassname"><span class="pre">bdschism.parse_cu.</span></span><span class="sig-name descname"><span class="pre">sch_dcd_net_diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net_diff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schism_vsource</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schism_vsink</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cfs_to_cms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/parse_cu.html#sch_dcd_net_diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.parse_cu.sch_dcd_net_diff" title="Link to this definition"></a></dt>
-<dd><p>Convert adjusted DCD data from DataFrame into SCHISM-ready *.th inputs.</p>
+<dd><p>Convert adjusted DCD data from DataFrame into SCHISM-ready <a href="#id3"><span class="problematic" id="id4">*</span></a>.th inputs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>net_diff</strong> (<em>pd.DataFrame</em>) – DCD net differences from historical or baseline. Used to apply to SCHISM inputs.</p></li>
 <li><p><strong>schism_vsource</strong> (<em>str</em><em>|</em><em>Path</em>) – input SCHISM vsource data, needs to be “dated” and not “elapsed.</p></li>
 <li><p><strong>schism_vsink</strong> (<em>str</em><em>|</em><em>Path</em>) – input SCHISM vsink data, needs to be “dated” and not “elapsed.</p></li>
-<li><p><strong>out_dir</strong> (<em>str</em><em>|</em><em>Path</em>) – Output directory to store the altered *.th files.</p></li>
+<li><p><strong>out_dir</strong> (<em>str</em><em>|</em><em>Path</em>) – Output directory to store the altered <a href="#id5"><span class="problematic" id="id6">*</span></a>.th files.</p></li>
 <li><p><strong>version</strong> (<em>str</em>) – Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th)</p></li>
 <li><p><strong>start_date</strong> (<em>pd.Timestamp</em><em>, </em><em>optional</em>) – Start date for the timeseries.</p></li>
 <li><p><strong>end_date</strong> (<em>pd.Timestamp</em><em>, </em><em>optional</em>) – End date for the timeseries.</p></li>
