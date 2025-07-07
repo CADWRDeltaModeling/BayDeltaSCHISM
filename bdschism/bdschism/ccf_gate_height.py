@@ -312,7 +312,7 @@ def get_export_ts(s1, s2, flux):
 
     """
     # flux = "//cnrastore-bdo/SCHISM/studies/itp202411/th_files/repo/flux_20241213.th"
-    flux_ts = pd.read_csv(flux, parse_dates=True, index_col=0, sep="\s+")
+    flux_ts = pd.read_csv(flux, parse_dates=True, index_col=0, sep=r"\s+")
     swp_ts = flux_ts["swp"][s1:s2] * M2FT * M2FT * M2FT
     cvp_ts = flux_ts["cvp"][s1:s2] * M2FT * M2FT * M2FT
     return swp_ts, cvp_ts

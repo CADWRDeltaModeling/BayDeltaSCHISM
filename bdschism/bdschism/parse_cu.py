@@ -176,7 +176,7 @@ def sch_dcd_net_diff(
     cfs_to_cms=True,
 ):
     """
-    Convert adjusted DCD data from DataFrame into SCHISM-ready \*.th inputs.
+    Convert adjusted DCD data from DataFrame into SCHISM-ready *.th inputs.
 
     Parameters
     ----------
@@ -187,7 +187,7 @@ def sch_dcd_net_diff(
     schism_vsink: str|Path
         input SCHISM vsink data, needs to be "dated" and not "elapsed.
     out_dir: str|Path
-        Output directory to store the altered \*.th files.
+        Output directory to store the altered *.th files.
     version: str
         Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th)
     start_date: pd.Timestamp, optional
@@ -565,7 +565,7 @@ def orig_pert_to_schism_dcd(
     schism_vsink: str|Path
         Input SCHISM vsink data, needs to be "dated" and not "elapsed".
     out_dir: str|Path
-        Output directory to store the altered \*.th files.
+        Output directory to store the altered *.th files.
     version: str
         Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th).
     start_date: pd.Timestamp, optional
