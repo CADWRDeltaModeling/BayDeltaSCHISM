@@ -19,57 +19,6 @@ First, complete the Azure setup steps in :ref:`setup_azure`. You should have:
     * you should be logged into your azure account
 * download and install azure_dms_batch and its conda environment
 
-Upload Applications
----------------------
-
-Azure batch requires the setup and installation to happen via zip files that are called application packages. The user should specify these packages with the version names as specified in the template. Here we will refer to the `alma87_mvapich2 template <https://github.com/CADWRDeltaModeling/azure_dms_batch/tree/main/dmsbatch/templates/alma87_mvapich2_20241018>`_.
-
-The `app-packages/batch_app_package_and_upload.sh <https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/app-packages/batch_app_package_and_upload.sh>`_ script can be used to upload the packages. 
-
-SCHISM
-`````````
-
-For SCHISM, you'll need to either compile and zip the executables yourself, or you can refer to `the releases page <https://github.com/CADWRDeltaModeling/azure_dms_batch/releases>`_ and download the relevant **\schism_with_deps_\*.zip** file.
-
-Save the .zip file to azure_dms_batch/app-packages.
-
-Now use `app-packages/batch_app_package_and_upload.sh <https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/app-packages/batch_app_package_and_upload.sh>`_ to upload in the command line:
-
-    .. code-block:: console
-
-        export MY_BATCH_ACCOUNT="<batchaccountname>"
-        export MY_RG="<resourcegroupname>"
-
-        cd azure_dms_batch/app-packages
-
-        source batch_app_package_and_upload.sh
-        
-        package_and_upload_telegraf "telegraf" $MY_BATCH_ACCOUNT $MY_RG
-        package_and_upload_app schism_with_deps 5.11.1_alma8.7hpc_v4_mvapich2 schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip  $MY_BATCH_ACCOUNT $MY_RG
-        package_and_upload_app nfs_alma8.7 nfs_alma8.7.zip  $MY_BATCH_ACCOUNT $MY_RG
-        package_and_upload_batch_setup "../schism_scripts/" $MY_BATCH_ACCOUNT $MY_RG
-
-Python Packages
-```````````````
-
-For python packages like schimpy and BayDeltaSCHISM's bdschism you can also use the **batch_app_package_and_upload.sh** script to upload the packages to your batch account.
-
-
-    .. code-block:: console
-
-        export MY_BATCH_ACCOUNT="<batchaccountname>"
-        export MY_RG="<resourcegroupname>"
-
-        cd azure_dms_batch/app-packages
-
-        source batch_app_package_and_upload.sh
-
-        package_and_upload_schimpy $MY_BATCH_ACCOUNT $MY_RG
-        package_and_upload_bdschism $MY_BATCH_ACCOUNT $MY_RG
-
-The above utility names the package with *today's date* and then uploads it and sets it to the default version.
-
-You can check the versions of packages and which is considered the default by going to the online `Azure Portal <https://portal.azure.com/>`_ and navigating to your batch account. ONce in your batch account, navigate to Features \> Applications.
 
 Uploading Model Input Files
 -------------------------------
