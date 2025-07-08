@@ -44,7 +44,10 @@ def read_csv(file, var, name, dt, p=2.0, interp=True, freq="M"):
         forecast_df.index = forecast_df.index.to_timestamp()
         interp_series = forecast_df[var].resample(dt).ffill()
     interp_df = pd.DataFrame()
-    interp_df[[name]] = pd.DataFrame({var: interp_series})
+    if name is not None:
+        interp_df[[name]] = pd.DataFrame({var: interp_series})
+    else:
+        interp_df[[var]] = pd.DataFrame({var: interp_series})
     return interp_df
 
 
@@ -99,17 +102,17 @@ def set_gate_fraction(
     """
     if increment == "month_fraction":
         # Filter rows where height is not 10 or 0
-        fraction_mask = (dts[op_var] != ubound) & (dts[op_var] != lbound)
+        # fraction_mask = (dts_in[op_var] != ubound) & (dts_in[op_var] != lbound)
 
         # Apply the mask to filter the DataFrame
-        filtered_dts = dts[fraction_mask]
+        filtered_dts = dts_in.copy()
 
         dts_out = dts_in.copy()
 
         # Group the filtered DataFrame by month
         for month, group in filtered_dts.groupby(filtered_dts.index.to_period("M")):
             # Calculate the fraction
-            fraction = group[op_var].iloc[0] / ubound
+            fraction = group[op_var].iloc[0]
 
             # Get the first fraction of the month
             fraction_point = int(len(group) * fraction)
@@ -158,7 +161,11 @@ def set_gate_ops(boundary_kind, var_df, name, formula):
     form, ubound, lbound, increment = [part.strip() for part in formula.split(";")]
     var_df = eval(form).to_frame(name)
     dts = set_gate_fraction(
-        var_df, op_var=name, ubound=ubound, lbound=lbound, increment=increment
+        var_df,
+        op_var=name,
+        ubound=float(ubound),
+        lbound=float(lbound),
+        increment=increment,
     )
     return dts
 
@@ -306,7 +313,7 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
 
             if "gate" in boundary_kind:
                 if source_kind == "CSV":
-                    var_df = read_csv(source_file, var, name, dt, p=p, interp=interp)
+                    var_df = read_csv(source_file, var, None, dt, p=p, interp=interp)
                 elif source_kind == "DSS":
                     var_df = pd.DataFrame()
                     b = var.split("/")[2]
@@ -506,8 +513,9 @@ def port_boundary_cli(config_yaml, extra=()):
 
 
 if __name__ == "__main__":
-    # os.chdir("path/to/yaml")
-    # config_yaml = "./port_calsim_schism.suisun-base.yaml"
-    # envvar = {"sd": "2015/2/18", "ed": "2016/5/15"}
+    # os.chdir(os.path.dirname(__file__))
+    # os.chdir("../../examples/port_boundary/from_csv")
+    # config_yaml = "./port_monthly_to_schism_flows_dcc.yaml"
+    # envvar = {"alt_name": "2024_noaction", "sd": "2024/1/1", "ed": "2024/12/31"}
     # create_schism_bc(config_yaml, kwargs=envvar if envvar else None)
     port_boundary_cli()
