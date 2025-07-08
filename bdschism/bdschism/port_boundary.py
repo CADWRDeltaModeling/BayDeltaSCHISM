@@ -171,8 +171,14 @@ def set_gate_ops(boundary_kind, var_df, name, formula):
 
 
 def create_schism_bc(config_yaml, kwargs={}, plot=False):
-
-    config = yaml_from_file(config_yaml, envvar=kwargs)
+    # Load the YAML config section only (without substitution)
+    with open(config_yaml, "r") as f:
+        raw_yaml = yaml.safe_load(f)
+    config_section = raw_yaml.get("config", {})
+    # Merge CLI kwargs over YAML config section
+    merged_env = {**config_section, **(kwargs or {})}
+    # Now load the YAML with merged_env for substitution
+    config = yaml_from_file(config_yaml, envvar=merged_env)
 
     # Add config['config'] to kwargs if it exists, with kwargs taking precedence
     if "config" in config:
