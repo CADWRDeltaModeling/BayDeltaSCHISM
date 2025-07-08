@@ -288,16 +288,17 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l5"><a class="reference internal" href="../topics/azure.html#download-azure-dms-batch">Download azure_dms_batch</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/azure.html#upload-applications">Upload Applications</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../topics/azure.html#schism">SCHISM</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../topics/azure.html#python-packages">Python Packages</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="../topics/azure.html#references">References</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/helloschism_azure.html">Step-by-step: HelloSCHISM on Azure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../topics/bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../topics/bds_guide_azure.html#initial-setup">Initial Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../topics/bds_guide_azure.html#upload-applications">Upload Applications</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="../topics/bds_guide_azure.html#schism">SCHISM</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../topics/bds_guide_azure.html#python-packages">Python Packages</a></li>
-</ul>
-</li>
 <li class="toctree-l4"><a class="reference internal" href="../topics/bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../topics/bds_guide_azure.html#azcopy-commands">azcopy commands</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../topics/bds_guide_azure.html#azcopy-options">azcopy options</a></li>
@@ -674,13 +675,13 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="read_csv">
 <a class="viewcode-back" href="../topics/flow_boundary.html#port_boundary.read_csv">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">interp</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">interp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;M&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reads in a csv file of monthly boundary conditions and interpolates</span>
 <span class="sd">    Outputs an interpolated DataFrame of that variable</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">forecast_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">)</span>
+    <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
 
     <span class="c1"># Check for % sign and convert to fraction</span>
     <span class="k">if</span> <span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;object&quot;</span><span class="p">:</span>  <span class="c1"># Ensure it&#39;s a string column</span>
@@ -697,7 +698,10 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">forecast_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">()</span>
         <span class="n">interp_series</span> <span class="o">=</span> <span class="n">forecast_df</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
     <span class="n">interp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-    <span class="n">interp_df</span><span class="p">[[</span><span class="n">name</span><span class="p">]]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">var</span><span class="p">:</span> <span class="n">interp_series</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">interp_df</span><span class="p">[[</span><span class="n">name</span><span class="p">]]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">var</span><span class="p">:</span> <span class="n">interp_series</span><span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">interp_df</span><span class="p">[[</span><span class="n">var</span><span class="p">]]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">var</span><span class="p">:</span> <span class="n">interp_series</span><span class="p">})</span>
     <span class="k">return</span> <span class="n">interp_df</span></div>
 
 
@@ -753,17 +757,17 @@ window.addEventListener("load", () => mermaid.run());
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">increment</span> <span class="o">==</span> <span class="s2">&quot;month_fraction&quot;</span><span class="p">:</span>
         <span class="c1"># Filter rows where height is not 10 or 0</span>
-        <span class="n">fraction_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">dts</span><span class="p">[</span><span class="n">op_var</span><span class="p">]</span> <span class="o">!=</span> <span class="n">ubound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">dts</span><span class="p">[</span><span class="n">op_var</span><span class="p">]</span> <span class="o">!=</span> <span class="n">lbound</span><span class="p">)</span>
+        <span class="c1"># fraction_mask = (dts_in[op_var] != ubound) &amp; (dts_in[op_var] != lbound)</span>
 
         <span class="c1"># Apply the mask to filter the DataFrame</span>
-        <span class="n">filtered_dts</span> <span class="o">=</span> <span class="n">dts</span><span class="p">[</span><span class="n">fraction_mask</span><span class="p">]</span>
+        <span class="n">filtered_dts</span> <span class="o">=</span> <span class="n">dts_in</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="n">dts_out</span> <span class="o">=</span> <span class="n">dts_in</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="c1"># Group the filtered DataFrame by month</span>
         <span class="k">for</span> <span class="n">month</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">filtered_dts</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">filtered_dts</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">)):</span>
             <span class="c1"># Calculate the fraction</span>
-            <span class="n">fraction</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">op_var</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">ubound</span>
+            <span class="n">fraction</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">op_var</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="c1"># Get the first fraction of the month</span>
             <span class="n">fraction_point</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="o">*</span> <span class="n">fraction</span><span class="p">)</span>
@@ -812,14 +816,24 @@ window.addEventListener("load", () => mermaid.run());
     <span class="n">form</span><span class="p">,</span> <span class="n">ubound</span><span class="p">,</span> <span class="n">lbound</span><span class="p">,</span> <span class="n">increment</span> <span class="o">=</span> <span class="p">[</span><span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">formula</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)]</span>
     <span class="n">var_df</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">form</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="n">dts</span> <span class="o">=</span> <span class="n">set_gate_fraction</span><span class="p">(</span>
-        <span class="n">var_df</span><span class="p">,</span> <span class="n">op_var</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">ubound</span><span class="o">=</span><span class="n">ubound</span><span class="p">,</span> <span class="n">lbound</span><span class="o">=</span><span class="n">lbound</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="n">increment</span>
+        <span class="n">var_df</span><span class="p">,</span>
+        <span class="n">op_var</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">ubound</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">ubound</span><span class="p">),</span>
+        <span class="n">lbound</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">lbound</span><span class="p">),</span>
+        <span class="n">increment</span><span class="o">=</span><span class="n">increment</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">dts</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">create_schism_bc</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{},</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-
-    <span class="n">config</span> <span class="o">=</span> <span class="n">yaml_from_file</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">,</span> <span class="n">envvar</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="c1"># Load the YAML config section only (without substitution)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">raw_yaml</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">config_section</span> <span class="o">=</span> <span class="n">raw_yaml</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="c1"># Merge CLI kwargs over YAML config section</span>
+    <span class="n">merged_env</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">config_section</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">kwargs</span> <span class="ow">or</span> <span class="p">{})}</span>
+    <span class="c1"># Now load the YAML with merged_env for substitution</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">yaml_from_file</span><span class="p">(</span><span class="n">config_yaml</span><span class="p">,</span> <span class="n">envvar</span><span class="o">=</span><span class="n">merged_env</span><span class="p">)</span>
 
     <span class="c1"># Add config[&#39;config&#39;] to kwargs if it exists, with kwargs taking precedence</span>
     <span class="k">if</span> <span class="s2">&quot;config&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
@@ -960,7 +974,7 @@ window.addEventListener("load", () => mermaid.run());
 
             <span class="k">if</span> <span class="s2">&quot;gate&quot;</span> <span class="ow">in</span> <span class="n">boundary_kind</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">source_kind</span> <span class="o">==</span> <span class="s2">&quot;CSV&quot;</span><span class="p">:</span>
-                    <span class="n">var_df</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">source_file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">interp</span><span class="o">=</span><span class="n">interp</span><span class="p">)</span>
+                    <span class="n">var_df</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">source_file</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">interp</span><span class="o">=</span><span class="n">interp</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">source_kind</span> <span class="o">==</span> <span class="s2">&quot;DSS&quot;</span><span class="p">:</span>
                     <span class="n">var_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
                     <span class="n">b</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
@@ -1160,9 +1174,10 @@ window.addEventListener("load", () => mermaid.run());
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="c1"># os.chdir(&quot;path/to/yaml&quot;)</span>
-    <span class="c1"># config_yaml = &quot;./port_calsim_schism.suisun-base.yaml&quot;</span>
-    <span class="c1"># envvar = {&quot;sd&quot;: &quot;2015/2/18&quot;, &quot;ed&quot;: &quot;2016/5/15&quot;}</span>
+    <span class="c1"># os.chdir(os.path.dirname(__file__))</span>
+    <span class="c1"># os.chdir(&quot;../../examples/port_boundary/from_csv&quot;)</span>
+    <span class="c1"># config_yaml = &quot;./port_monthly_to_schism_flows_dcc.yaml&quot;</span>
+    <span class="c1"># envvar = {&quot;alt_name&quot;: &quot;2024_noaction&quot;, &quot;sd&quot;: &quot;2024/1/1&quot;, &quot;ed&quot;: &quot;2024/12/31&quot;}</span>
     <span class="c1"># create_schism_bc(config_yaml, kwargs=envvar if envvar else None)</span>
     <span class="n">port_boundary_cli</span><span class="p">()</span>
 </pre></div>

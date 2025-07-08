@@ -67,6 +67,7 @@ Computing Resources
 
   topics/hpc.rst
   topics/azure.rst
+  topics/helloschism_azure.rst
   topics/bds_guide_azure.rst
 
 

@@ -20,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Step-by-step: Bay-Delta SCHISM on Azure" href="bds_guide_azure.html" />
+    <link rel="next" title="Step-by-step: HelloSCHISM on Azure" href="helloschism_azure.html" />
     <link rel="prev" title="Intro to Clusters and High Performance Computing" href="hpc.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
@@ -283,16 +283,17 @@
 <li class="toctree-l5"><a class="reference internal" href="#download-azure-dms-batch">Download azure_dms_batch</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="#upload-applications">Upload Applications</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#schism">SCHISM</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#python-packages">Python Packages</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="helloschism_azure.html">Step-by-step: HelloSCHISM on Azure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#initial-setup">Initial Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#upload-applications">Upload Applications</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#schism">SCHISM</a></li>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#python-packages">Python Packages</a></li>
-</ul>
-</li>
 <li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#azcopy-commands">azcopy commands</a></li>
 <li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#azcopy-options">azcopy options</a></li>
@@ -736,6 +737,51 @@
 <p>For more information on the azure_dms_batch package, see the <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/README.md">README.md</a> file.</p>
 </section>
 </section>
+<section id="upload-applications">
+<h2>Upload Applications<a class="headerlink" href="#upload-applications" title="Link to this heading"></a></h2>
+<p>Azure batch requires the setup and installation to happen via zip files that are called application packages. The user should specify these packages with the version names as specified in the template. Here we will refer to the <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/tree/main/dmsbatch/templates/alma87_mvapich2_20241018">alma87_mvapich2 template</a>.</p>
+<p>The <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/app-packages/batch_app_package_and_upload.sh">app-packages/batch_app_package_and_upload.sh</a> script can be used to upload the packages which you will do in the following steps.</p>
+<section id="schism">
+<h3>SCHISM<a class="headerlink" href="#schism" title="Link to this heading"></a></h3>
+<p>For SCHISM, you’ll need to either compile and zip the executables yourself, or you can refer to <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/releases">the releases page</a> and download the relevant <strong>schism_with_deps_*.zip</strong> file. For HelloSCHISM and BayDeltaSCHISM tutorials, we’ll refer to <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/releases/download/schism_5.11_alma8.7/schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip">the latest schism release, schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip</a>.</p>
+<p>Save the .zip file to your local azure_dms_batch repository under azure_dms_batch/app-packages.</p>
+<p>Now use <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/app-packages/batch_app_package_and_upload.sh">app-packages/batch_app_package_and_upload.sh</a> to upload in the command line:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export MY_BATCH_ACCOUNT=&quot;&lt;batchaccountname&gt;&quot;</span>
+<span class="go">export MY_RG=&quot;&lt;resourcegroupname&gt;&quot;</span>
+
+<span class="go">cd azure_dms_batch/app-packages</span>
+
+<span class="go">source batch_app_package_and_upload.sh</span>
+
+<span class="go">package_and_upload_telegraf &quot;telegraf&quot; $MY_BATCH_ACCOUNT $MY_RG</span>
+<span class="go">package_and_upload_app schism_with_deps 5.11.1_alma8.7hpc_v4_mvapich2 schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip  $MY_BATCH_ACCOUNT $MY_RG</span>
+<span class="go">package_and_upload_app nfs_alma8.7 nfs_alma8.7.zip  $MY_BATCH_ACCOUNT $MY_RG</span>
+<span class="go">package_and_upload_batch_setup &quot;../schism_scripts/&quot; $MY_BATCH_ACCOUNT $MY_RG</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="python-packages">
+<h3>Python Packages<a class="headerlink" href="#python-packages" title="Link to this heading"></a></h3>
+<p>For python packages like schimpy and BayDeltaSCHISM’s bdschism you can also use the <strong>batch_app_package_and_upload.sh</strong> script to upload the packages to your batch account.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export MY_BATCH_ACCOUNT=&quot;&lt;batchaccountname&gt;&quot;</span>
+<span class="go">export MY_RG=&quot;&lt;resourcegroupname&gt;&quot;</span>
+
+<span class="go">cd azure_dms_batch/app-packages</span>
+
+<span class="go">source batch_app_package_and_upload.sh</span>
+
+<span class="go">package_and_upload_schimpy $MY_BATCH_ACCOUNT $MY_RG</span>
+<span class="go">package_and_upload_bdschism $MY_BATCH_ACCOUNT $MY_RG</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The above utility names the package with <em>today’s date</em> and then uploads it and sets it to the default version.</p>
+<p>You can check the versions of packages and which is considered the default by going to the online <a class="reference external" href="https://portal.azure.com/">Azure Portal</a> and navigating to your batch account. ONce in your batch account, navigate to Features &gt; Applications.</p>
+</section>
+</section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/developer/python/azure-sdk-overview">Python SDK Setup</a>
@@ -757,7 +803,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="hpc.html" class="btn btn-neutral float-left" title="Intro to Clusters and High Performance Computing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="bds_guide_azure.html" class="btn btn-neutral float-right" title="Step-by-step: Bay-Delta SCHISM on Azure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="helloschism_azure.html" class="btn btn-neutral float-right" title="Step-by-step: HelloSCHISM on Azure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

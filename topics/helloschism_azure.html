@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ocean Boundary Stabilization: Barotropic Warmup &mdash; Bay-Delta SCHISM</title>
+  <title>Step-by-step: HelloSCHISM on Azure &mdash; Bay-Delta SCHISM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/style.css?v=8686dbcc" />
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Key Run Parameters and Gotchas" href="param.html" />
-    <link rel="prev" title="Atmospheric setup" href="atmospheric.html" />
+    <link rel="next" title="Step-by-step: Bay-Delta SCHISM on Azure" href="bds_guide_azure.html" />
+    <link rel="prev" title="Running on Azure Batch" href="azure.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -125,7 +125,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="reference internal" href="../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="flow_boundary.html#where-are-the-data">Where are the data?</a></li>
@@ -143,14 +143,14 @@
 <li class="toctree-l4"><a class="reference internal" href="atmospheric.html#pointing-to-the-data-with-make-links-full-py">Pointing to the data with make_links_full.py</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Ocean Boundary Stabilization: Barotropic Warmup</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#workflow">Workflow</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="#bctides-in">bctides.in</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#param-nml">param.nml</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#vgrid-in">vgrid.in</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="#run-interpolate-variables-to-get-uv3d-th-nc">Run interpolate_variables to get uv3D.th.nc</a></li>
-<li class="toctree-l6"><a class="reference internal" href="#move-the-outputs-directory-aside">Move the outputs directory aside</a></li>
+<li class="toctree-l3"><a class="reference internal" href="barotropic.html">Ocean Boundary Stabilization: Barotropic Warmup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="barotropic.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="barotropic.html#workflow">Workflow</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="barotropic.html#bctides-in">bctides.in</a></li>
+<li class="toctree-l5"><a class="reference internal" href="barotropic.html#param-nml">param.nml</a></li>
+<li class="toctree-l5"><a class="reference internal" href="barotropic.html#vgrid-in">vgrid.in</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="barotropic.html#run-interpolate-variables-to-get-uv3d-th-nc">Run interpolate_variables to get uv3D.th.nc</a></li>
+<li class="toctree-l6"><a class="reference internal" href="barotropic.html#move-the-outputs-directory-aside">Move the outputs directory aside</a></li>
 </ul>
 </li>
 </ul>
@@ -261,7 +261,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../user_guide.html#computing-resources">Computing Resources</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="../user_guide.html#computing-resources">Computing Resources</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="hpc.html">Intro to Clusters and High Performance Computing</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="hpc.html#anatomy-of-a-cluster">Anatomy of a Cluster</a></li>
 <li class="toctree-l4"><a class="reference internal" href="hpc.html#figure-cluster-components">Figure: Cluster Components</a></li>
@@ -291,7 +291,7 @@
 <li class="toctree-l4"><a class="reference internal" href="azure.html#references">References</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="helloschism_azure.html">Step-by-step: HelloSCHISM on Azure</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Step-by-step: HelloSCHISM on Azure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#initial-setup">Initial Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a><ul>
@@ -644,82 +644,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="ocean-boundary-stabilization-barotropic-warmup">
-<span id="barotropic"></span><h1>Ocean Boundary Stabilization: Barotropic Warmup<a class="headerlink" href="#ocean-boundary-stabilization-barotropic-warmup" title="Link to this heading"></a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
-<p>This section describes some issues with the a common practice with Bay-Delta SCHISM: a barotropic warmup run.</p>
-<p>The idea and potential need for a barotropic warm up harks to the well-posedness of the hydrostatic, layered 3D-equations,
-the mainstay of estuarine circulation models. The pertinent reference is <span id="id1">[<a class="reference internal" href="../refs.html#id3" title="Joseph Oliger and Arne Sundström. Theoretical and practical aspects of some initial boundary value problems in fluid dynamics. SIAM Journal on Applied Mathematics, 35(3):419–446, 1978. URL: http://epubs.siam.org/doi/10.1137/0135035 (visited on 2022-11-03), doi:10.1137/0135035.">OS78</a>]</span>.
-The idea is that we are allowed one boundary condition per “incoming characteristic”. For transport of tracers (salinity, temperature, etc) this is the same as one boundary condition per incoming flow.
-This has a very intuitive feel – we can only specify concentrations for flows
-directed into the computational domain. For baroclinic hydrodynamics using layered equations, the number of
-boundary conditions is potentially infinite, time varying, and discretization dependent.</p>
-<p>The upshot is that we have two choices for the ocean boundary. We can choose to clamp only water levels,
-which is underspecified and potentially allows baroclinic modes to “flare up” (<a class="reference internal" href="#flareup"><span class="std std-numref">Fig. 1</span></a>) if the model is not diffusive enough. Or we can specifiy velocity, which is in general overdetermined, and this potentially stabilizes the boundary.</p>
-<p>There are two methods of specifying velocity that have been used with the Bay-Delta SCHISM model:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>force the model using estimates from a coastal open model such as the West Coast Forecasting System.</p></li>
-<li><p>do a preliminary 2D barotropic run and harvest boundary values from that.</p></li>
-</ul>
-</div></blockquote>
-<p>The coastal model solution makes sense in some operational scenarios, which focus on recent and observable scenarios. The alternative barotropic-baroclinic solution is widely used in Bay-Delta SCHISM, as it applies to hypothetical hydrologies landscape change
-and sea level rise.</p>
-<figure class="align-default" id="id2">
-<span id="flareup"></span><img alt="../_images/ocean_flareup.png" class="with-border" src="../_images/ocean_flareup.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Velocity flareup right near boundary due to stimulation of baroclinic modes.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-</section>
-<section id="workflow">
-<h2>Workflow<a class="headerlink" href="#workflow" title="Link to this heading"></a></h2>
-<p>The barotropic warmup run is done with these steps:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>Linking <cite>param.nml</cite> to <cite>param.nml.tropic</cite>, <cite>bctides.in</cite> to <cite>bctides.in.2d</cite> and <cite>vgrid.in</cite> to <cite>vgrid.in.2d</cite>. So for instance in the case of param.nml: <cite>ln -d param.nml.tropic param.nml</cite></p></li>
-<li><p>Make sure the start time and length (<cite>rnday</cite>) is the same as your period.</p></li>
-<li><p>Adjust the number of processors. You rarely want more than 96 processors for a barotropic run. It not only won’t scale, it may degrade performance.</p></li>
-<li><p>Run the run.</p></li>
-<li><p>Run the <cite>interpolate_variables</cite> script (see below) to interpolate the velocity output to the 3d grid. This creates the file <cite>uv3D.th.nc</cite> which contains velocities for the ocean boundary. This is the only product we really want from the barotropic run, although running it is also a cheap way of discovering issues.</p></li>
-<li><p>Move the <cite>outputs</cite> to <cite>outputs.tropic</cite> and create an empty <cite>outputs</cite> directory for the 3D run. You don’t need to keep this forever if you have your uv3D.th.nc, but we typically keep it around for a while.</p></li>
-</ol>
-</div></blockquote>
-<dl class="simple">
-<dt>The baroclinic follow on is done with these steps:</dt><dd><ol class="arabic simple">
-<li><p>Linking <cite>param.nml</cite> to <cite>param.nml.clinic</cite>, <cite>bctides.in</cite> to <cite>bctides.in.3d</cite> and <cite>vgrid.in</cite> to <cite>vgrid.in.3d</cite>. So for instance in the case of param.nml: <cite>ln -d param.nml.clinic param.nml</cite>.</p></li>
-<li><p>Make sure you have the required nudging and hotstart files.</p></li>
-<li><p>Check the run dates and make sure <cite>ihot=1</cite> (start using a hotstart file rather than coldstart).</p></li>
-<li><p>Run the simulation.</p></li>
-</ol>
-</dd>
-</dl>
-<p>Note that technically you do not have to have <cite>hotstart.in.nc</cite> or the nudging files ready for the barotropic run. They only come into play for the baroclinic step.</p>
-<section id="bctides-in">
-<h3>bctides.in<a class="headerlink" href="#bctides-in" title="Link to this heading"></a></h3>
-</section>
-<section id="param-nml">
-<h3>param.nml<a class="headerlink" href="#param-nml" title="Link to this heading"></a></h3>
-</section>
-<section id="vgrid-in">
-<h3>vgrid.in<a class="headerlink" href="#vgrid-in" title="Link to this heading"></a></h3>
-<section id="run-interpolate-variables-to-get-uv3d-th-nc">
-<h4>Run interpolate_variables to get uv3D.th.nc<a class="headerlink" href="#run-interpolate-variables-to-get-uv3d-th-nc" title="Link to this heading"></a></h4>
-</section>
-<section id="move-the-outputs-directory-aside">
-<h4>Move the outputs directory aside<a class="headerlink" href="#move-the-outputs-directory-aside" title="Link to this heading"></a></h4>
-</section>
-</section>
-</section>
+  <section id="step-by-step-helloschism-on-azure">
+<span id="helloschism-azure"></span><h1>Step-by-step: HelloSCHISM on Azure<a class="headerlink" href="#step-by-step-helloschism-on-azure" title="Link to this heading"></a></h1>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="atmospheric.html" class="btn btn-neutral float-left" title="Atmospheric setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="param.html" class="btn btn-neutral float-right" title="Key Run Parameters and Gotchas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="azure.html" class="btn btn-neutral float-left" title="Running on Azure Batch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bds_guide_azure.html" class="btn btn-neutral float-right" title="Step-by-step: Bay-Delta SCHISM on Azure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
