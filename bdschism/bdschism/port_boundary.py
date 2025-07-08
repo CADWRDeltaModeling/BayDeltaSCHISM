@@ -21,13 +21,13 @@ import click
 import json
 
 
-def read_csv(file, var, name, dt, p=2.0, interp=True):
+def read_csv(file, var, name, dt, p=2.0, interp=True, freq="M"):
     """
     Reads in a csv file of monthly boundary conditions and interpolates
     Outputs an interpolated DataFrame of that variable
     """
     forecast_df = pd.read_csv(file, index_col=0, header=0, parse_dates=True)
-    forecast_df.index = forecast_df.index.to_period("M")
+    forecast_df.index = forecast_df.index.to_period(freq)
 
     # Check for % sign and convert to fraction
     if forecast_df[var].dtype == "object":  # Ensure it's a string column
