@@ -145,8 +145,8 @@ def set_gate_fraction(
         if not (
             isinstance(dts_out.index, pd.PeriodIndex) and dts_out.index.freq == "M"
         ):
-            raise ValueError(
-                "For increment='months', index must be PeriodIndex with monthly freq"
+            print(
+                f"\tWarning: For increment='months', index must be PeriodIndex with monthly freq"
             )
         dts_out = dts_out.resample("D").ffill()
     else:
@@ -315,7 +315,7 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
             convert = row["convert"]
             p = row["rhistinterp_p"]
             formula = row["formula"]
-            print(f"processing {name}")
+            print(f"\tprocessing {name}")
 
             if "gate" in boundary_kind:
                 if source_kind == "CSV":
