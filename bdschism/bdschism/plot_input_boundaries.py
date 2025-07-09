@@ -2,6 +2,7 @@ import os
 import shutil
 import datetime as dt
 from itertools import cycle
+import logging
 
 import pandas as pd
 import numpy as np
@@ -22,7 +23,9 @@ from schimpy.th_calcs import (
 from schimpy.model_time import read_th, is_elapsed
 import schimpy.param as parms
 from schimpy.schism_structure import SchismStructureIO as Struct
+from schimpy.prepare_schism import get_structures_from_yaml
 from schimpy.schism_input import *
+from schimpy.util.yaml_load import yaml_from_file
 
 from vtools.functions.interpolate import rhistinterp
 from vtools.functions.unit_conversions import CMS2CFS, M2FT
@@ -33,7 +36,9 @@ import dms_datastore.read_ts
 
 from bdschism.calc_ndoi import calc_indoi
 
-bds_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../")
+bds_dir = os.path.abspath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../")
+)
 
 boundary_list = [
     "tide",
@@ -114,6 +119,8 @@ def get_required_files(
     elev2d_file,
     boundary_list,
     struct_fn="hydraulics.in",
+    gate_dir="./",
+    gate_suffix="",
 ):
     """Get the required files for boundary data."""
     files = []
@@ -132,7 +139,7 @@ def get_required_files(
         files.append(struct_fn)
         for gfn in bc_types["gate"]:
             if gfn in boundary_list:
-                files.append(f"{gfn}.th")
+                files.append(f"{gate_dir}/{gfn}{gate_suffix}.th")
     if not files:
         raise ValueError("No valid boundary types provided in boundary_list.")
 
@@ -157,9 +164,17 @@ def get_observed_data(
         elapsed_unit="s",
         out_freq=out_freq,
         boundary_list=[b for b in boundary_list if b != "tide"],
+        time_basis=pd.to_datetime(period["begin"]),
+        rndays=int(
+            (pd.to_datetime(period["end"]) - pd.to_datetime(period["begin"])).days
+        ),
+        struct_fn=os.path.join(
+            bds_dir, "templates/bay_delta/hydraulic_structures.yaml"
+        ),
+        obs=True,
     )
 
-    print(f"Getting observed tidal data from NOAA...")
+    print(f"\tGetting observed tidal data from NOAA...")
     if "tide" in boundary_list:
         tide_df = get_observed_tide(period=period) * M2FT
         tide_df.index = tide_df.index.to_period()
@@ -236,8 +251,9 @@ def get_date_data(
     out_freq="1D",
     datetime_idx=None,
 ):
+
     struct = next(
-        (s for s in structures if s.name == gate_name), None
+        (s for s in structures if s["name"] == gate_name), None
     )  # structure object that corresponds to gate_name
     if struct is None:
         raise ValueError(f"{gate_name} is not found in hydraulics.in file...")
@@ -264,6 +280,7 @@ def get_boundary_data(
     vsink_file="vsink.th",
     elev2d_file="elev2D.th.nc",
     gate_dir="./",
+    gate_suffix="",
     time_basis=None,
     rndays=None,
     elapsed_unit="s",
@@ -273,10 +290,12 @@ def get_boundary_data(
     source_head=os.path.join(bds_dir, "./data/channel_depletion/vsource_dated.th"),
     boundary_list=boundary_list,
     struct_fn="hydraulics.in",
+    obs=False,
 ):
     """Get a DataFrame of boundary data from flux, vsource, vsink, and elev2D.th.nc files."""
 
-    print(f"Getting boundary data from {os.getcwd()}...")
+    if not obs:
+        print(f"Getting boundary data from {os.getcwd()}...")
     # Check if the files exist
     files = get_required_files(
         flux_file=flux_file,
@@ -285,6 +304,8 @@ def get_boundary_data(
         elev2d_file=elev2d_file,
         boundary_list=boundary_list,
         struct_fn=struct_fn,
+        gate_dir=gate_dir,
+        gate_suffix=gate_suffix,
     )
     elapsed_files = []
     for f in files:
@@ -407,17 +428,23 @@ def get_boundary_data(
 
     # Get gate data
     if any(b in bc_types["gate"] for b in boundary_list):
-        schinp = SchismInput(None)
-        structure_reader = Struct(schinp)
-        structure_reader.read(struct_fn)
+        if struct_fn.endswith(".inp"):
+            schinp = SchismInput(None)
+            structure_reader = Struct(schinp)
+            structure_reader.read(struct_fn)
 
-        structures = schinp.structures
+            structures = schinp.structures
+        elif struct_fn.endswith(".yaml"):
+            struct_inp = yaml_from_file(struct_fn)
+            struct_inp = struct_inp.get("structures")
+            structures = get_structures_from_yaml(struct_inp)
+
         for gfn in [g for g in bc_types["gate"] if g in boundary_list]:
             print(f"\t\tGetting gate {gfn}..")
             up_df, down_df = get_date_data(
                 gfn,
                 structures,
-                gate_fn=os.path.join(gate_dir, f"{gfn}.th"),
+                gate_fn=os.path.join(gate_dir, f"{gfn}{gate_suffix}.th"),
                 gate_head=os.path.join(bds_dir, f"./data/time_history/{gfn}.th"),
                 time_basis=time_basis,
                 elapsed_unit=elapsed_unit,
