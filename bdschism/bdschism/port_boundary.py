@@ -9,6 +9,11 @@ from vtools.functions.filter import ts_gaussian_filter
 from vtools.data.vtime import minutes
 from schimpy.util.yaml_load import yaml_from_file, csv_from_file
 from bdschism.parse_cu import orig_pert_to_schism_dcd_yaml
+from bdschism.plot_input_boundaries import (
+    get_observed_data,
+    get_boundary_data,
+    plot_bds_boundaries,
+)
 from bdschism.read_dss import read_dss
 import matplotlib.pylab as plt
 import numpy as np
@@ -297,16 +302,16 @@ def create_schism_bc(config_yaml, plot=False, kwargs={}):
 
         if boundary_kind == "flow":
             dd = flux.copy().reindex(df_rng)
-            out_file = out_file_flux
+            plot_dict["flux_file"] = os.path.abspath(out_file)
         elif boundary_kind == "ec":
             dd = salt.copy().reindex(df_rng)
-            out_file = out_file_salt
+            plot_dict["salt_file"] = os.path.abspath(out_file)
         elif boundary_kind == "temp":
             dd = temp.copy().reindex(df_rng)
-            out_file = out_file_temp
-        elif "gate" in boundary_kind:
+            plot_dict["temp_file"] = os.path.abspath(out_file)
+        elif boundary_kind in gate_names:
             dd = schism_gate_files[boundary_kind]
-            out_file = out_file_gates[boundary_kind]
+            plot_dict["gate_dir"] = os.path.abspath(out_dir)
         elif boundary_kind == "cu":
             # Check if any rows for 'cu' boundary_kind have invalid source_kind
             invalid_cu_rows = source_map_bc[
@@ -318,6 +323,12 @@ def create_schism_bc(config_yaml, plot=False, kwargs={}):
                     f"For consumptive use boundary, all rows must have 'source_kind' of 'yaml' or 'yml'. Invalid rows:\n{invalid_cu_rows}"
                 )
             out_file = False
+            plot_dict["vsource_file"] = os.path.abspath(
+                os.path.join(out_dir, f"vsource{out_file_suffix}.th")
+            )
+            plot_dict["vsink_file"] = os.path.abspath(
+                os.path.join(out_dir, f"vsink{out_file_suffix}.th")
+            )
         else:
             raise ValueError(f"Unknown boundary kind: {boundary_kind}")
 
@@ -365,6 +376,7 @@ def create_schism_bc(config_yaml, plot=False, kwargs={}):
                     idx = dfi.index
                 dfi = dfi[(idx >= start_date) & (idx <= end_date)]
                 dfi[name] = pd.to_numeric(dfi[name], errors="coerce")
+                plot_dict["boundary_list"].append(boundary_kind)
 
             elif source_kind.upper() in ["YAML", "YML"] and boundary_kind == "cu":
                 # Run parse_cu to parse consumptive use into SCHISM inputs
@@ -498,18 +510,71 @@ def create_schism_bc(config_yaml, plot=False, kwargs={}):
                 sep=" ",
             )
 
-            if plot:
-                dd.plot()
-                plt.show()
+    if plot:
+        if "html_name" in kwargs.keys():
+            html_name = kwargs["html_name"]
+        else:
+            html_name = "port_bds.html"
+        plot_ported_bc(
+            plot_dict, html_name, sd, ed, out_dir, out_file_suffix=out_file_suffix
+        )
 
     print("Done")
+
+
+def plot_ported_bc(plot_dict, html_name, sd, ed, sim_dir, out_file_suffix=""):
+    """ """
+    print("\n\nPlotting ported boundaries...\n")
+    sim_dir = os.path.abspath(sim_dir)
+    html_name = os.path.abspath(html_name)
+
+    bc_data_list = []
+    scenario_list = []
+
+    # Observed data
+    obs_data = get_observed_data(
+        period={"begin": sd, "end": ed}, boundary_list=plot_dict["boundary_list"]
+    )
+    bc_data_list.append(obs_data)
+    scenario_list.append("Observed")
+
+    # Simulation data
+    os.chdir(sim_dir)
+    # Pass envvar as keyword arguments to get_boundary_data
+    bc_data = get_boundary_data(
+        flux_file=plot_dict["flux_file"],
+        vsource_file=plot_dict["vsource_file"],
+        vsink_file=plot_dict["vsink_file"],
+        gate_dir=plot_dict["gate_dir"],
+        gate_suffix=out_file_suffix,
+        boundary_list=plot_dict["boundary_list"],
+        time_basis=pd.to_datetime(sd),
+        rndays=int((pd.to_datetime(ed) - pd.to_datetime(sd)).days),
+        struct_fn=os.path.join(
+            bds_dir, "templates/bay_delta/hydraulic_structures.yaml"
+        ),
+    )
+    bc_data_list.append(bc_data)
+    scenario_list.append(os.path.basename(os.path.normpath(sim_dir)))
+
+    # Plot
+    plot_bds_boundaries(
+        bc_data_list, scenario_list, write_html=True, html_name=html_name
+    )
 
 
 @click.command()
 @click.argument("config_yaml", type=click.Path(exists=True))
 @click.argument("extra", nargs=-1)
+@click.option(
+    "-p",
+    "--plot",
+    is_flag=True,
+    default=False,
+    help="Specify whether to plot html, default is False, which provides no plot of outputs. Uses html_name in config section of yaml else specifies 'port_bds.html' as plot name.",
+)
 @click.help_option("-h", "--help")
-def port_boundary_cli(config_yaml, extra=()):
+def port_boundary_cli(config_yaml, plot, extra=()):
     """
     Command line interface for creating SCHISM boundary conditions.
 
@@ -538,7 +603,7 @@ def port_boundary_cli(config_yaml, extra=()):
     if key is not None:
         raise ValueError(f"No value provided for extra argument: {key}")
 
-    create_schism_bc(config_yaml, kwargs=envvar if envvar else None)
+    create_schism_bc(config_yaml, plot, kwargs=envvar if envvar else None)
 
 
 if __name__ == "__main__":
@@ -546,5 +611,5 @@ if __name__ == "__main__":
     # os.chdir("../../examples/port_boundary/from_csv")
     # config_yaml = "./port_monthly_to_schism_flows_dcc.yaml"
     # envvar = {"alt_name": "2016_noaction", "sd": "2016/1/1", "ed": "2016/12/31"}
-    # create_schism_bc(config_yaml, kwargs=envvar if envvar else None)
+    # create_schism_bc(config_yaml, plot=True, kwargs=envvar if envvar else None)
     port_boundary_cli()
