@@ -131,10 +131,7 @@
 <li class="toctree-l4"><a class="reference internal" href="topics/flow_boundary.html#where-are-the-data">Where are the data?</a></li>
 <li class="toctree-l4"><a class="reference internal" href="topics/flow_boundary.html#clipping-to-run-dates-and-conversion-to-elapsed-time">Clipping to run dates and conversion to elapsed time</a></li>
 <li class="toctree-l4"><a class="reference internal" href="topics/flow_boundary.html#what-if-i-have-to-add-or-move-a-boundary">What if I have to add or move a boundary?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="topics/flow_boundary.html#adding-data-from-other-sources-e-g-forecasts-other-models">Adding Data From Other Sources (e.g. Forecasts, other models)</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="topics/flow_boundary.html#port_boundary.read_csv"><code class="docutils literal notranslate"><span class="pre">read_csv()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l4"><a class="reference internal" href="topics/flow_boundary.html#adding-data-from-other-sources-e-g-forecasts-other-models">Adding Data From Other Sources (e.g. Forecasts, other models)</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="topics/atmospheric.html">Atmospheric setup</a><ul>
@@ -539,6 +536,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.parse_cu.calc_net_calsim"><code class="docutils literal notranslate"><span class="pre">calc_net_calsim()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.parse_cu.calc_net_diff"><code class="docutils literal notranslate"><span class="pre">calc_net_diff()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.parse_cu.calc_net_dsm2"><code class="docutils literal notranslate"><span class="pre">calc_net_dsm2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bdschism.parse_cu.calc_net_obs_schism"><code class="docutils literal notranslate"><span class="pre">calc_net_obs_schism()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.parse_cu.calc_net_schism"><code class="docutils literal notranslate"><span class="pre">calc_net_schism()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.parse_cu.calc_srcsnk_dsm2"><code class="docutils literal notranslate"><span class="pre">calc_srcsnk_dsm2()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.parse_cu.orig_pert_to_schism_dcd"><code class="docutils literal notranslate"><span class="pre">orig_pert_to_schism_dcd()</span></code></a></li>
@@ -549,14 +547,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#bdschism-plot-input-boundaries-module">bdschism.plot_input_boundaries module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-bdschism.port_boundary">bdschism.port_boundary module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#bdschism.port_boundary.clean_df"><code class="docutils literal notranslate"><span class="pre">clean_df()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bdschism.port_boundary.create_schism_bc"><code class="docutils literal notranslate"><span class="pre">create_schism_bc()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bdschism.port_boundary.read_csv"><code class="docutils literal notranslate"><span class="pre">read_csv()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bdschism.port_boundary.set_gate_fraction"><code class="docutils literal notranslate"><span class="pre">set_gate_fraction()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bdschism.port_boundary.set_gate_ops"><code class="docutils literal notranslate"><span class="pre">set_gate_ops()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#bdschism-port-boundary-module">bdschism.port_boundary module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-bdschism.profile_plot">bdschism.profile_plot module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.profile_plot.get_index_bounds"><code class="docutils literal notranslate"><span class="pre">get_index_bounds()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.profile_plot.nearest_neighbor_fill"><code class="docutils literal notranslate"><span class="pre">nearest_neighbor_fill()</span></code></a></li>
@@ -1198,6 +1189,12 @@ Only set to False if net data is in cms.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="bdschism.parse_cu.calc_net_obs_schism">
+<span class="sig-prename descclassname"><span class="pre">bdschism.parse_cu.</span></span><span class="sig-name descname"><span class="pre">calc_net_obs_schism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schism_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt=&lt;Day&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/parse_cu.html#calc_net_obs_schism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.parse_cu.calc_net_obs_schism" title="Link to this definition"></a></dt>
+<dd><p>Use the repository to calculate net SCHISM DCU</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="bdschism.parse_cu.calc_net_schism">
 <span class="sig-prename descclassname"><span class="pre">bdschism.parse_cu.</span></span><span class="sig-name descname"><span class="pre">calc_net_schism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schism_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt=&lt;Day&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/parse_cu.html#calc_net_schism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.parse_cu.calc_net_schism" title="Link to this definition"></a></dt>
 <dd><p>Get net timeseries from SCHISM th files in cfs.</p>
@@ -1347,67 +1344,8 @@ This is used to strip the D part from the column names in the DCD data.
 <section id="bdschism-plot-input-boundaries-module">
 <h2>bdschism.plot_input_boundaries module<a class="headerlink" href="#bdschism-plot-input-boundaries-module" title="Link to this heading"></a></h2>
 </section>
-<section id="module-bdschism.port_boundary">
-<span id="bdschism-port-boundary-module"></span><h2>bdschism.port_boundary module<a class="headerlink" href="#module-bdschism.port_boundary" title="Link to this heading"></a></h2>
-<p>Script to convert various data formats (from calsim, csv files) into
-SCHISM flux, salt and temp time history (.th) files</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="bdschism.port_boundary.clean_df">
-<span class="sig-prename descclassname"><span class="pre">bdschism.port_boundary.</span></span><span class="sig-name descname"><span class="pre">clean_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/port_boundary.html#clean_df"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.port_boundary.clean_df" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="bdschism.port_boundary.create_schism_bc">
-<span class="sig-prename descclassname"><span class="pre">bdschism.port_boundary.</span></span><span class="sig-name descname"><span class="pre">create_schism_bc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_yaml</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/port_boundary.html#create_schism_bc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.port_boundary.create_schism_bc" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="bdschism.port_boundary.read_csv">
-<span class="sig-prename descclassname"><span class="pre">bdschism.port_boundary.</span></span><span class="sig-name descname"><span class="pre">read_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'M'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/port_boundary.html#read_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.port_boundary.read_csv" title="Link to this definition"></a></dt>
-<dd><p>Reads in a csv file of monthly boundary conditions and interpolates
-Outputs an interpolated DataFrame of that variable</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="bdschism.port_boundary.set_gate_fraction">
-<span class="sig-prename descclassname"><span class="pre">bdschism.port_boundary.</span></span><span class="sig-name descname"><span class="pre">set_gate_fraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dts_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'height'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ubound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lbound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">increment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'month_fraction'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/port_boundary.html#set_gate_fraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.port_boundary.set_gate_fraction" title="Link to this definition"></a></dt>
-<dd><p>Adjusts the values of a specified operation variable in a DataFrame to represent fractional gate operations per month.</p>
-<p>This function processes a DataFrame containing time-indexed gate operation data (e.g., gate heights), and for each month,
-it sets a fraction of the time steps to the lower bound (<cite>lbound</cite>) and the remainder to the upper bound (<cite>ubound</cite>),
-based on the initial value of the operation variable for that month. Only rows where the operation variable is not
-already at the upper or lower bound are modified.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dts_in</strong> (<em>pandas.DataFrame</em>) – The input DataFrame with a DateTimeIndex and an operation variable column.</p></li>
-<li><p><strong>op_var</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the column representing the operation variable to adjust (default is “height”).</p></li>
-<li><p><strong>ubound</strong> (<em>numeric</em><em>, </em><em>optional</em>) – The upper bound value for the operation variable (default is 10).</p></li>
-<li><p><strong>lbound</strong> (<em>numeric</em><em>, </em><em>optional</em>) – The lower bound value for the operation variable (default is 0).</p></li>
-<li><p><strong>increment</strong> (<em>str</em><em>, </em><em>optional</em>) – The increment type for grouping. Default is “month_fraction”. Other supported types:
-month_fraction - Need to take any Percentage between 0 and 100 and convert them to days of month open
-month_days - Need to take number of days in a month and operate per days of month</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The modified DataFrame with the operation variable adjusted according to the calculated monthly fractions.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>The function assumes the DataFrame index is a pandas DateTimeIndex.</p></li>
-<li><p>Only rows where the operation variable is not equal to <cite>ubound</cite> or <cite>lbound</cite> are considered for adjustment.</p></li>
-<li><p>The fraction is determined by the ratio of the first value of the operation variable in the group to <cite>ubound</cite>.</p></li>
-</ul>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="bdschism.port_boundary.set_gate_ops">
-<span class="sig-prename descclassname"><span class="pre">bdschism.port_boundary.</span></span><span class="sig-name descname"><span class="pre">set_gate_ops</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boundary_kind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/port_boundary.html#set_gate_ops"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.port_boundary.set_gate_ops" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
+<section id="bdschism-port-boundary-module">
+<h2>bdschism.port_boundary module<a class="headerlink" href="#bdschism-port-boundary-module" title="Link to this heading"></a></h2>
 </section>
 <section id="module-bdschism.profile_plot">
 <span id="bdschism-profile-plot-module"></span><h2>bdschism.profile_plot module<a class="headerlink" href="#module-bdschism.profile_plot" title="Link to this heading"></a></h2>

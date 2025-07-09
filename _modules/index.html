@@ -136,10 +136,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l4"><a class="reference internal" href="../topics/flow_boundary.html#where-are-the-data">Where are the data?</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../topics/flow_boundary.html#clipping-to-run-dates-and-conversion-to-elapsed-time">Clipping to run dates and conversion to elapsed time</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../topics/flow_boundary.html#what-if-i-have-to-add-or-move-a-boundary">What if I have to add or move a boundary?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../topics/flow_boundary.html#adding-data-from-other-sources-e-g-forecasts-other-models">Adding Data From Other Sources (e.g. Forecasts, other models)</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="../topics/flow_boundary.html#port_boundary.read_csv"><code class="docutils literal notranslate"><span class="pre">read_csv()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/flow_boundary.html#adding-data-from-other-sources-e-g-forecasts-other-models">Adding Data From Other Sources (e.g. Forecasts, other models)</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../topics/atmospheric.html">Atmospheric setup</a><ul>
@@ -544,6 +541,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.parse_cu.calc_net_calsim"><code class="docutils literal notranslate"><span class="pre">calc_net_calsim()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.parse_cu.calc_net_diff"><code class="docutils literal notranslate"><span class="pre">calc_net_diff()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.parse_cu.calc_net_dsm2"><code class="docutils literal notranslate"><span class="pre">calc_net_dsm2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.parse_cu.calc_net_obs_schism"><code class="docutils literal notranslate"><span class="pre">calc_net_obs_schism()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.parse_cu.calc_net_schism"><code class="docutils literal notranslate"><span class="pre">calc_net_schism()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.parse_cu.calc_srcsnk_dsm2"><code class="docutils literal notranslate"><span class="pre">calc_srcsnk_dsm2()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.parse_cu.orig_pert_to_schism_dcd"><code class="docutils literal notranslate"><span class="pre">orig_pert_to_schism_dcd()</span></code></a></li>
@@ -554,14 +552,7 @@ window.addEventListener("load", () => mermaid.run());
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../bdschism.html#bdschism-plot-input-boundaries-module">bdschism.plot_input_boundaries module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../bdschism.html#module-bdschism.port_boundary">bdschism.port_boundary module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.port_boundary.clean_df"><code class="docutils literal notranslate"><span class="pre">clean_df()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.port_boundary.create_schism_bc"><code class="docutils literal notranslate"><span class="pre">create_schism_bc()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.port_boundary.read_csv"><code class="docutils literal notranslate"><span class="pre">read_csv()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.port_boundary.set_gate_fraction"><code class="docutils literal notranslate"><span class="pre">set_gate_fraction()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.port_boundary.set_gate_ops"><code class="docutils literal notranslate"><span class="pre">set_gate_ops()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../bdschism.html#bdschism-port-boundary-module">bdschism.port_boundary module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bdschism.html#module-bdschism.profile_plot">bdschism.profile_plot module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.profile_plot.get_index_bounds"><code class="docutils literal notranslate"><span class="pre">get_index_bounds()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bdschism.html#bdschism.profile_plot.nearest_neighbor_fill"><code class="docutils literal notranslate"><span class="pre">nearest_neighbor_fill()</span></code></a></li>
@@ -659,7 +650,6 @@ window.addEventListener("load", () => mermaid.run());
 <li><a href="bdschism/hotstart_from_hotstart.html">bdschism.hotstart_from_hotstart</a></li>
 <li><a href="bdschism/hotstart_nudging_data.html">bdschism.hotstart_nudging_data</a></li>
 <li><a href="bdschism/parse_cu.html">bdschism.parse_cu</a></li>
-<li><a href="bdschism/port_boundary.html">bdschism.port_boundary</a></li>
 <li><a href="bdschism/profile_plot.html">bdschism.profile_plot</a></li>
 <li><a href="bdschism/read_dss.html">bdschism.read_dss</a></li>
 <li><a href="bdschism/set_nudging.html">bdschism.set_nudging</a></li>
@@ -669,7 +659,6 @@ window.addEventListener("load", () => mermaid.run());
 <li><a href="bdschism/x2_buildpoints.html">bdschism.x2_buildpoints</a></li>
 <li><a href="bdschism/x2_time_series.html">bdschism.x2_time_series</a></li>
 <li><a href="bdschism/zone_utils.html">bdschism.zone_utils</a></li>
-<li><a href="port_boundary.html">port_boundary</a></li>
 <li><a href="schimpy/nudging.html">schimpy.nudging</a></li>
 </ul>
 

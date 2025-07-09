@@ -136,10 +136,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l4"><a class="reference internal" href="../../topics/flow_boundary.html#where-are-the-data">Where are the data?</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../topics/flow_boundary.html#clipping-to-run-dates-and-conversion-to-elapsed-time">Clipping to run dates and conversion to elapsed time</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../topics/flow_boundary.html#what-if-i-have-to-add-or-move-a-boundary">What if I have to add or move a boundary?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../topics/flow_boundary.html#adding-data-from-other-sources-e-g-forecasts-other-models">Adding Data From Other Sources (e.g. Forecasts, other models)</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="../../topics/flow_boundary.html#port_boundary.read_csv"><code class="docutils literal notranslate"><span class="pre">read_csv()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/flow_boundary.html#adding-data-from-other-sources-e-g-forecasts-other-models">Adding Data From Other Sources (e.g. Forecasts, other models)</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../topics/atmospheric.html">Atmospheric setup</a><ul>
@@ -544,6 +541,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.calc_net_calsim"><code class="docutils literal notranslate"><span class="pre">calc_net_calsim()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.calc_net_diff"><code class="docutils literal notranslate"><span class="pre">calc_net_diff()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.calc_net_dsm2"><code class="docutils literal notranslate"><span class="pre">calc_net_dsm2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.calc_net_obs_schism"><code class="docutils literal notranslate"><span class="pre">calc_net_obs_schism()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.calc_net_schism"><code class="docutils literal notranslate"><span class="pre">calc_net_schism()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.calc_srcsnk_dsm2"><code class="docutils literal notranslate"><span class="pre">calc_srcsnk_dsm2()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.parse_cu.orig_pert_to_schism_dcd"><code class="docutils literal notranslate"><span class="pre">orig_pert_to_schism_dcd()</span></code></a></li>
@@ -554,14 +552,7 @@ window.addEventListener("load", () => mermaid.run());
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#bdschism-plot-input-boundaries-module">bdschism.plot_input_boundaries module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.port_boundary">bdschism.port_boundary module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.clean_df"><code class="docutils literal notranslate"><span class="pre">clean_df()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.create_schism_bc"><code class="docutils literal notranslate"><span class="pre">create_schism_bc()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.read_csv"><code class="docutils literal notranslate"><span class="pre">read_csv()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.set_gate_fraction"><code class="docutils literal notranslate"><span class="pre">set_gate_fraction()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.port_boundary.set_gate_ops"><code class="docutils literal notranslate"><span class="pre">set_gate_ops()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#bdschism-port-boundary-module">bdschism.port_boundary module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.profile_plot">bdschism.profile_plot module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.profile_plot.get_index_bounds"><code class="docutils literal notranslate"><span class="pre">get_index_bounds()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.profile_plot.nearest_neighbor_fill"><code class="docutils literal notranslate"><span class="pre">nearest_neighbor_fill()</span></code></a></li>
@@ -664,6 +655,8 @@ window.addEventListener("load", () => mermaid.run());
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">bds_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;../../&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="adjust_src_sink">
@@ -1094,6 +1087,25 @@ window.addEventListener("load", () => mermaid.run());
 
 
 
+<div class="viewcode-block" id="calc_net_obs_schism">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.parse_cu.calc_net_obs_schism">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_net_obs_schism</span><span class="p">(</span>
+    <span class="n">schism_dir</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">days</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use the repository to calculate net SCHISM DCU&quot;&quot;&quot;</span>
+
+    <span class="n">schism_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bds_dir</span><span class="p">,</span> <span class="s2">&quot;data/channel_depletion/&quot;</span><span class="p">))</span>
+    <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;vsource&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;vsource_dated.th&quot;</span>
+    <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;vsink&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;vsink_dated.th&quot;</span>
+
+    <span class="n">net</span> <span class="o">=</span> <span class="n">calc_net_schism</span><span class="p">(</span>
+        <span class="n">schism_dir</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">net</span></div>
+
+
+
 <div class="viewcode-block" id="calc_net_schism">
 <a class="viewcode-back" href="../../bdschism.html#bdschism.parse_cu.calc_net_schism">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">calc_net_schism</span><span class="p">(</span><span class="n">schism_dir</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">days</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1134,6 +1146,9 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span>
     <span class="p">)</span>
 
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">):</span>
+        <span class="n">net</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_period</span><span class="p">()</span>
+
     <span class="n">net</span> <span class="o">=</span> <span class="n">rhistinterp</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
     <span class="n">net</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;net&quot;</span><span class="p">]</span>
     <span class="n">net</span> <span class="o">=</span> <span class="n">net</span> <span class="o">*</span> <span class="n">CMS2CFS</span>  <span class="c1"># convert to cfs</span>
@@ -1161,16 +1176,33 @@ window.addEventListener("load", () => mermaid.run());
 
     <span class="n">net</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
+    <span class="n">col</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;col&quot;</span><span class="p">]</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">net</span><span class="p">[[</span><span class="n">col</span><span class="p">]]</span>
+
     <span class="c1"># clip to time constraint</span>
     <span class="k">if</span> <span class="n">start_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">start_date</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">end_date</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">end_date</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="n">net</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;File: </span><span class="si">{</span><span class="n">csv_file</span><span class="si">}</span><span class="s2"> does not cover the dates requested. </span><span class="se">\n\t</span><span class="s2">Requested dates are: </span><span class="si">{</span><span class="n">start_date</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">end_date</span><span class="si">}</span><span class="s2">, </span><span class="se">\n\t</span><span class="s2">and the file covers </span><span class="si">{</span><span class="n">net</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">net</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
     <span class="n">net</span> <span class="o">=</span> <span class="n">net</span><span class="p">[</span><span class="n">start_date</span><span class="p">:</span><span class="n">end_date</span><span class="p">]</span>
+
+    <span class="c1"># Resample to daily frequency</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
 
     <span class="c1"># Convert DatetimeIndex to PeriodIndex if needed</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">):</span>
         <span class="n">net</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Convert to cfs if needed</span>
+    <span class="k">if</span> <span class="s2">&quot;cms_to_cfs&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;cms_to_cfs&quot;</span><span class="p">]:</span>
+            <span class="n">net</span> <span class="o">=</span> <span class="n">net</span> <span class="o">*</span> <span class="n">CMS2CFS</span>  <span class="c1"># convert to cfs</span>
 
     <span class="n">net</span> <span class="o">=</span> <span class="n">rhistinterp</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
     <span class="n">net</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;net&quot;</span><span class="p">]</span>
@@ -1184,6 +1216,7 @@ window.addEventListener("load", () => mermaid.run());
     <span class="s2">&quot;dsm2&quot;</span><span class="p">:</span> <span class="n">calc_net_dsm2</span><span class="p">,</span>
     <span class="s2">&quot;calsim&quot;</span><span class="p">:</span> <span class="n">calc_net_calsim</span><span class="p">,</span>
     <span class="s2">&quot;schism&quot;</span><span class="p">:</span> <span class="n">calc_net_schism</span><span class="p">,</span>
+    <span class="s2">&quot;obs_schism&quot;</span><span class="p">:</span> <span class="n">calc_net_obs_schism</span><span class="p">,</span>
     <span class="s2">&quot;csv&quot;</span><span class="p">:</span> <span class="n">read_net_csv</span><span class="p">,</span>
     <span class="c1"># add more types as needed</span>
 <span class="p">}</span>
@@ -1283,6 +1316,9 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span>
         <span class="o">**</span><span class="n">original_kwargs</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;sign_flip&quot;</span> <span class="ow">in</span> <span class="n">original_kwargs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">original_kwargs</span><span class="p">[</span><span class="s2">&quot;sign_flip&quot;</span><span class="p">]:</span>
+            <span class="n">net_original</span> <span class="o">=</span> <span class="o">-</span><span class="n">net_original</span>
 
     <span class="c1"># Read in DSS data and compute net difference in the perturbed case</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading Perturbed DCD data from </span><span class="si">{</span><span class="n">perturbed_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> inputs...&quot;</span><span class="p">)</span>
@@ -1299,6 +1335,9 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span>
         <span class="o">**</span><span class="n">perturbed_kwargs</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;sign_flip&quot;</span> <span class="ow">in</span> <span class="n">perturbed_kwargs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">perturbed_kwargs</span><span class="p">[</span><span class="s2">&quot;sign_flip&quot;</span><span class="p">]:</span>
+            <span class="n">net_perturbed</span> <span class="o">=</span> <span class="o">-</span><span class="n">net_perturbed</span>
 
     <span class="c1"># Calculate the net difference between original and perturbed</span>
     <span class="n">net_diff</span> <span class="o">=</span> <span class="n">calc_net_diff</span><span class="p">(</span>
