@@ -73,6 +73,12 @@ def read_dss(
                 start_date = tt_full.index[0]
             if end_date is None:
                 end_date = tt_full.index[-1]
+            if (tt_full.index[0].to_timestamp() > pd.to_datetime(end_date)) or (
+                tt_full.index[-1].to_timestamp() < pd.to_datetime(start_date)
+            ):
+                raise ValueError(
+                    f"File: {filename} does not cover the dates requested. \n\tRequested dates are: {start_date} to {end_date}, \n\tand the file covers {tt_full.index[0]} to {tt_full.index[-1]}"
+                )
             tt = tt_full[start_date:end_date]
             pidx = pd.period_range(tt.index[0], tt.index[-1], freq=dss_e2_freq[path_e])
             ptt = pd.DataFrame(tt.values[:, 0], pidx)
