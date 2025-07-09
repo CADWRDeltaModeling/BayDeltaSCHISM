@@ -13,6 +13,8 @@ import numpy as np
 import click
 import os
 
+bds_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../")
+
 
 def adjust_src_sink(src, sink, net_diff, sinkfrac=0.001, debug=False):
     """Distributes a perturbation to dataframe sc and sink
@@ -424,6 +426,22 @@ def calc_net_calsim(
     return -net
 
 
+def calc_net_obs_schism(
+    schism_dir, start_date=None, end_date=None, dt=days(1), **kwargs
+):
+    """Use the repository to calculate net SCHISM DCU"""
+
+    schism_dir = os.path.abspath(os.path.join(bds_dir, "data/channel_depletion/"))
+    kwargs["vsource"] = "vsource_dated.th"
+    kwargs["vsink"] = "vsink_dated.th"
+
+    net = calc_net_schism(
+        schism_dir, start_date=start_date, end_date=end_date, dt=dt, **kwargs
+    )
+
+    return net
+
+
 def calc_net_schism(schism_dir, start_date=None, end_date=None, dt=days(1), **kwargs):
     """Get net timeseries from SCHISM th files in cfs.
 
@@ -508,6 +526,7 @@ SRC_SNK_FUNC_MAP = {
     "dsm2": calc_net_dsm2,
     "calsim": calc_net_calsim,
     "schism": calc_net_schism,
+    "obs_schism": calc_net_obs_schism,
     "csv": read_net_csv,
     # add more types as needed
 }
