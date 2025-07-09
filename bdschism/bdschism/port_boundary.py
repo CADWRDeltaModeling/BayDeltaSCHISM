@@ -20,6 +20,10 @@ import os
 import click
 import json
 
+bds_dir = os.path.abspath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../")
+)
+
 
 def read_csv(file, var, name, dt, p=2.0, interp=True, freq="M"):
     """
@@ -170,20 +174,35 @@ def set_gate_ops(boundary_kind, var_df, name, formula):
     return dts
 
 
-def create_schism_bc(config_yaml, kwargs={}, plot=False):
-    # Load the YAML config section only (without substitution)
-    with open(config_yaml, "r") as f:
-        raw_yaml = yaml.safe_load(f)
-    config_section = raw_yaml.get("config", {})
-    # Merge CLI kwargs over YAML config section
-    merged_env = {**config_section, **(kwargs or {})}
-    # Now load the YAML with merged_env for substitution
-    config = yaml_from_file(config_yaml, envvar=merged_env)
+gate_names = [
+    "delta_cross_channel",
+    "montezuma_radial",
+    "montezuma_flash",
+    "montezuma_boat_lock",
+    "ccfb_gate",
+    "grantline_barrier",
+    "grantline_culvert",
+    "grantline_weir",
+    "midr_culvert_l",
+    "midr_culvert_r",
+    "midr_weir",
+    "oldr_head_barrier",
+    "oldr_tracy_culvert",
+    "oldr_tracy_weir",
+    "tom_paine_sl_culvert",
+    "west_false_river_barrier_leakage",
+]
+
+
+def create_schism_bc(config_yaml, plot=False, kwargs={}):
+    config = yaml_from_file(config_yaml, envvar=kwargs)
+    plot_dict = {"boundary_list": []}  # For plotting if plot=True
 
     # Add config['config'] to kwargs if it exists, with kwargs taking precedence
     if "config" in config:
-        merged_kwargs = {**config["config"], **kwargs}
-        kwargs = merged_kwargs
+        kwargs = {**config["config"], **kwargs}
+
+    out_dir = kwargs["out_dir"]
 
     # Overwrite if historical data is manipulated.
     # If forecast data is being applied, overwrite should be False
@@ -194,9 +213,7 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
     schism_flux_file = config["file"]["schism_flux_file"]
     schism_salt_file = config["file"]["schism_salt_file"]
     schism_temp_file = config["file"]["schism_temp_file"]
-    out_file_flux = config["file"]["out_file_flux"]
-    out_file_salt = config["file"]["out_file_salt"]
-    out_file_temp = config["file"]["out_file_temp"]
+    out_file_suffix = config["file"]["out_file_suffix"]
     boundary_kinds = config["param"]["boundary_kinds"]
     sd = config["param"]["start_date"]
     ed = config["param"]["end_date"]
@@ -240,12 +257,12 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
     )
 
     # handle gate files
-    if any("gate" in kind for kind in boundary_kinds):
+    if any(kind in gate_names for kind in boundary_kinds):
         schism_gate_files = {}
         out_file_gates = {}
-        for gbk in [kind for kind in boundary_kinds if "gate" in kind]:
+        for gbk in [kind for kind in boundary_kinds if kind in gate_names]:
             df_in = pd.read_csv(
-                config["file"][f"schism_{gbk}_file"],
+                os.path.join(config["file"]["schism_gate_dir"], f"{gbk}.th"),
                 header=0,
                 parse_dates=True,
                 index_col=0,
@@ -269,13 +286,14 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
             schism_gate_files[gbk] = df
 
             # Set out_file_gates entry for boundary_kind
-            out_file_gates[gbk] = config["file"][
-                f"out_file_{gbk}"
-            ]  # used to write the boundary out
+            out_file_gates[gbk] = os.path.join(
+                out_dir, f"{gbk}{out_file_suffix}.th"
+            )  # used to write the boundary out
 
     for boundary_kind in boundary_kinds:
 
         source_map_bc = source_map.loc[source_map["boundary_kind"] == boundary_kind]
+        out_file = os.path.join(out_dir, f"{boundary_kind}{out_file_suffix}.th")
 
         if boundary_kind == "flow":
             dd = flux.copy().reindex(df_rng)
@@ -317,7 +335,7 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
             formula = row["formula"]
             print(f"\tprocessing {name}")
 
-            if "gate" in boundary_kind:
+            if boundary_kind in gate_names:
                 if source_kind == "CSV":
                     var_df = read_csv(source_file, var, None, dt, p=p, interp=interp)
                 elif source_kind == "DSS":
@@ -348,74 +366,6 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
                 dfi = dfi[(idx >= start_date) & (idx <= end_date)]
                 dfi[name] = pd.to_numeric(dfi[name], errors="coerce")
 
-            elif source_kind == "CSV":
-                # Substitute in an interpolated monthly forecast
-                if derived:
-                    print(
-                        f"Updating SCHISM {name} with derived timeseries\
-                        expression: {formula}"
-                    )
-                    csv = pd.DataFrame()
-                    vars = var.split(";")
-                    for v in vars:
-                        csv[[v]] = read_csv(
-                            source_file, v, name, dt, p=p, interp=interp
-                        )
-                    dts = eval(formula).to_frame(name).reindex(df_rng)
-                    if interp:
-                        dfi = ts_gaussian_filter(dts, sigma=100)
-                    else:
-                        dfi = dts
-                else:
-                    dfi = read_csv(source_file, var, name, dt, p=p)
-                    print(
-                        f"Updating SCHISM {name} with interpolated monthly\
-                        forecast {var}"
-                    )
-
-            elif source_kind == "DSS":
-                # Substitute in CalSim value.
-                if derived:
-                    vars_lst = var.split(";")
-                    print(
-                        f"Updating SCHISM {name} with derived timeseries\
-                        expression: {formula}"
-                    )
-                    dss = pd.DataFrame()
-
-                    for pn in vars_lst:
-                        b = pn.split("/")[2]
-                        dss[[b]] = read_dss(
-                            source_file,
-                            pathname=pn,
-                            p=p,
-                        )
-                    ## quick fix for to use last year pattern as formula
-                    ## input
-                    clip_1ybackward_start = start_date - pd.DateOffset(years=1)
-                    clip_1ybackward_end = end_date - pd.DateOffset(years=1)
-                    flux_clipped = flux[clip_1ybackward_start:clip_1ybackward_end]
-                    ## reset clipped flux index to dss year
-                    flux_clipped.index = flux_clipped.index.map(
-                        lambda x: x.replace(year=start_date.year)
-                    )
-                    dts = eval(formula).to_frame(name).reindex(df_rng)
-                    if interp:
-                        dfi = ts_gaussian_filter(dts, sigma=100)
-                    else:
-                        dfi = dts
-                else:
-                    print(f"Updating SCHISM {name} with DSS variable {var}")
-                    dfi = read_dss(source_file, pathname=var, p=p)
-
-            elif source_kind == "CONSTANT":
-                print(f"Updating SCHISM {name} with constant value of {var}")
-                # Simply fill with a constant specified.
-                dd[name] = float(var)
-                dfi["datetime"] = df_rng
-                dfi = dfi.set_index("datetime")
-
-                dfi[name] = [float(var)] * len(df_rng)
             elif source_kind.upper() in ["YAML", "YML"] and boundary_kind == "cu":
                 # Run parse_cu to parse consumptive use into SCHISM inputs
                 # TODO: this is only currently capable of parsing from a net DSS value to SCHISM vsource.th and vsink.th
@@ -427,6 +377,79 @@ def create_schism_bc(config_yaml, kwargs={}, plot=False):
                     raise ValueError(
                         f"To parse consumptive use, need a .yaml or .yml file in source_file specification instead of: {source_file}"
                     )
+                plot_dict["boundary_list"].append("dcu")
+                plot_dict["boundary_list"].append("ndo")
+            else:
+                # flux, salt, etc here on:
+                plot_dict["boundary_list"].append(name)
+                if source_kind == "CSV":
+                    # Substitute in an interpolated monthly forecast
+                    if derived:
+                        print(
+                            f"Updating SCHISM {name} with derived timeseries\
+                            expression: {formula}"
+                        )
+                        csv = pd.DataFrame()
+                        vars = var.split(";")
+                        for v in vars:
+                            csv[[v]] = read_csv(
+                                source_file, v, name, dt, p=p, interp=interp
+                            )
+                        dts = eval(formula).to_frame(name).reindex(df_rng)
+                        if interp:
+                            dfi = ts_gaussian_filter(dts, sigma=100)
+                        else:
+                            dfi = dts
+                    else:
+                        dfi = read_csv(source_file, var, name, dt, p=p)
+                        print(
+                            f"Updating SCHISM {name} with interpolated monthly\
+                            forecast {var}"
+                        )
+
+                elif source_kind == "DSS":
+                    # Substitute in CalSim value.
+                    if derived:
+                        vars_lst = var.split(";")
+                        print(
+                            f"Updating SCHISM {name} with derived timeseries\
+                            expression: {formula}"
+                        )
+                        dss = pd.DataFrame()
+
+                        for pn in vars_lst:
+                            b = pn.split("/")[2]
+                            dss[[b]] = read_dss(
+                                source_file,
+                                pathname=pn,
+                                p=p,
+                            )
+                        ## quick fix for to use last year pattern as formula
+                        ## input
+                        clip_1ybackward_start = start_date - pd.DateOffset(years=1)
+                        clip_1ybackward_end = end_date - pd.DateOffset(years=1)
+                        flux_clipped = flux[clip_1ybackward_start:clip_1ybackward_end]
+                        ## reset clipped flux index to dss year
+                        flux_clipped.index = flux_clipped.index.map(
+                            lambda x: x.replace(year=start_date.year)
+                        )
+                        dts = eval(formula).to_frame(name).reindex(df_rng)
+                        if interp:
+                            dfi = ts_gaussian_filter(dts, sigma=100)
+                        else:
+                            dfi = dts
+                    else:
+                        print(f"Updating SCHISM {name} with DSS variable {var}")
+                        dfi = read_dss(source_file, pathname=var, p=p)
+
+                elif source_kind == "CONSTANT":
+                    print(f"Updating SCHISM {name} with constant value of {var}")
+                    # Simply fill with a constant specified.
+                    dd[name] = float(var)
+                    dfi["datetime"] = df_rng
+                    dfi = dfi.set_index("datetime")
+
+                    dfi[name] = [float(var)] * len(df_rng)
 
             # Maintain the rounding preference of the formula
             if isinstance(formula, str) and "round" in formula:

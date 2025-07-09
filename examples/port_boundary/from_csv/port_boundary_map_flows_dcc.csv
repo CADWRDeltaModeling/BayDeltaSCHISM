@@ -12,11 +12,11 @@ yolo_toedrain,flow,CSV,TRUE,TRUE,${alt_name}.csv,YOLO,-1,CFS_CMS,2,"np.maximum(3
 yolo,flow,CSV,TRUE,TRUE,${alt_name}.csv,YOLO,-1,CFS_CMS,2,"np.maximum(0,csv.YOLO-3000)","After 3000 to toe drain, main bypass receives remaining flow",yolo
 northbay,flow,CSV,,TRUE,${alt_name}.csv,BKR,1,CFS_CMS,2,,,nb
 ccc_victoria,flow,CSV,TRUE,TRUE,${alt_name}.csv,CCC,1,CFS_CMS,2,np.nanmean(flux.ccc_victoria/(flux.ccc_rock+flux.ccc_old+flux.ccc_victoria)) * (csv.CCC),uses historical mean ratio of ccc_victoria to all CCC,ccc vic
-height,dcc_gate,CSV,TRUE,FALSE,${alt_name}.csv,DCC,,,,var_df.DCC; 10; 0; month_fraction,dss is days closed out of the month,dcc
+height,delta_cross_channel,CSV,TRUE,FALSE,${alt_name}.csv,DCC,,,,var_df.DCC; 10; 0; month_fraction,dss is days closed out of the month,dcc
 sourcesink,cu,YAML,TRUE,FALSE,port_monthly_to_schism_flows_dcc.yaml,DCU,,,,,uses a DSM2 consumptive use basis,dcu
-op_up,smscg_radial_gate,CSV,TRUE,FALSE,${alt_name}.csv,SMSCG_OP,,,,var_df.SMSCG_OP; 1; 0; months,operate Tidally for 0 (op_up=0) and open for 1 (monthly increment),smscg
-op_down,smscg_radial_gate,CONSTANT,,FALSE,,1,,,,,operate Tidally for 0 (op_down=1) and open for 1 (monthly increment) (op_down=1),smscg
-op_up,smscg_boatlock_gate,CONSTANT,,FALSE,,1,,,,,Always open,smscg
-op_down,smscg_boatlock_gate,CONSTANT,,FALSE,,1,,,,,Always open,smscg
-op_up,smscg_flashboard_gate,CONSTANT,,FALSE,,0,,,,,Always closed,smscg
-op_down,smscg_flashboard_gate,CONSTANT,,FALSE,,0,,,,,Always closed,smscg
+op_up,montezuma_radial,CSV,TRUE,FALSE,${alt_name}.csv,SMSCG_OP,,,,var_df.SMSCG_OP; 1; 0; months,operate Tidally for 0 (op_up=0) and open for 1 (monthly increment),smscg
+op_down,montezuma_radial,CONSTANT,,FALSE,,1,,,,,operate Tidally for 0 (op_down=1) and open for 1 (monthly increment) (op_down=1),smscg
+op_up,montezuma_boat_lock,CONSTANT,,FALSE,,1,,,,,Always open,smscg
+op_down,montezuma_boat_lock,CONSTANT,,FALSE,,1,,,,,Always open,smscg
+op_up,montezuma_flash,CONSTANT,,FALSE,,0,,,,,Always closed,smscg
+op_down,montezuma_flash,CONSTANT,,FALSE,,0,,,,,Always closed,smscg
