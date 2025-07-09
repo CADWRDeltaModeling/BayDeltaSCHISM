@@ -522,6 +522,6 @@ if __name__ == "__main__":
     # os.chdir(os.path.dirname(__file__))
     # os.chdir("../../examples/port_boundary/from_csv")
     # config_yaml = "./port_monthly_to_schism_flows_dcc.yaml"
-    # envvar = {"alt_name": "2024_noaction", "sd": "2024/1/1", "ed": "2024/12/31"}
+    # envvar = {"alt_name": "2016_noaction", "sd": "2016/1/1", "ed": "2016/12/31"}
     # create_schism_bc(config_yaml, kwargs=envvar if envvar else None)
     port_boundary_cli()

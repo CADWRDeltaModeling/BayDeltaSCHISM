@@ -1,5 +1,10 @@
+config:
+  bds_home: D:/python/repositories/BayDeltaSCHISM
+  dsm2_dir: D:/dsm2/DSM2v822/timeseries
+  out_dir: ./output
 param:
-  boundary_kinds: [flow,dcc_gate] #[flow,ec,temp,dcc_gate]
+  boundary_kinds: [flow,dcc_gate,smscg_radial_gate,smscg_boatlock_gate,smscg_flashboard_gate,cu] #[flow,ec,temp,dcc_gate]
+  #boundary_kinds: [cu] #[flow,ec,temp,dcc_gate]
   overwrite: true # if true, overwrite the existing boundary inputs (should be false for forecast)
   start_date: ${sd} #YYYY,MM,DD
   end_date: ${ed} #YYYY,MM,DD
@@ -10,10 +15,30 @@ file:
   schism_salt_file: ../../../data/time_history/salt.th
   schism_temp_file: ../../../data/time_history/temp.th
   schism_dcc_gate_file: ../../../data/time_history/delta_cross_channel.th
+  schism_smscg_radial_gate_file: ${bds_home}/data/time_history/montezuma_radial.th
+  schism_smscg_boatlock_gate_file: ${bds_home}/data/time_history/montezuma_boat_lock.th
+  schism_smscg_flashboard_gate_file: ${bds_home}/data/time_history/montezuma_flash.th
   out_file_flux: ./output/flux.${alt_name}.th 
   out_file_salt: ./output/salt.${alt_name}.th
   out_file_temp: ./output/temp.${alt_name}.th
   out_file_dcc_gate: ./output/delta_cross_channel.${alt_name}.th
-
+  out_file_smscg_radial_gate: ${out_dir}/montezuma_radial.${alt_name}.dated.th 
+  out_file_smscg_boatlock_gate: ${out_dir}/montezuma_boat_lock.${alt_name}.dated.th 
+  out_file_smscg_flashboard_gate: ${out_dir}/montezuma_flash.${alt_name}.dated.th 
+cu:
+  process: orig_pert_to_schism # net_diff_to_schism or orig_pert_to_schism
+  original_type: obs_schism
+  original_filename: None
+  perturbed_type: csv
+  perturbed_filename: ${alt_name}.csv
+  col_perturbed: DCU
+  cms_to_cfs_perturbed: True
+  schism_vsource: ${bds_home}/data/channel_depletion/vsource_dated.th
+  schism_vsink: ${bds_home}/data/channel_depletion/vsink_dated.th
+  out_dir: ${out_dir}
+  version: ${alt_name}
+  start_date: ${sd}
+  end_date: ${ed}
+  
 # Use:
-# bds port_bc port_monthly_to_schism_flows_dcc.yaml -- --alt_name 2024_noaction --sd 2024/1/1 --ed 2024/12/31
+# bds port_bc port_monthly_to_schism_flows_dcc.yaml -- --alt_name 2016_noaction --sd 2016/1/1 --ed 2016/12/31
