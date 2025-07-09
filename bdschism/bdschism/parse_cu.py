@@ -641,6 +641,9 @@ def orig_pert_to_schism_dcd(
         dt=dt,
         **original_kwargs,
     )
+    if "sign_flip" in original_kwargs:
+        if original_kwargs["sign_flip"]:
+            net_original = -net_original
 
     # Read in DSS data and compute net difference in the perturbed case
     print(f"Reading Perturbed DCD data from {perturbed_type.upper()} inputs...")
@@ -657,6 +660,9 @@ def orig_pert_to_schism_dcd(
         dt=dt,
         **perturbed_kwargs,
     )
+    if "sign_flip" in perturbed_kwargs:
+        if perturbed_kwargs["sign_flip"]:
+            net_perturbed = -net_perturbed
 
     # Calculate the net difference between original and perturbed
     net_diff = calc_net_diff(
