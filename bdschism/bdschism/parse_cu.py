@@ -480,6 +480,9 @@ def calc_net_schism(schism_dir, start_date=None, end_date=None, dt=days(1), **kw
         end_date=end_date,
     )
 
+    if isinstance(net.index, pd.DatetimeIndex):
+        net.index = net.index.to_period()
+
     net = rhistinterp(net, dt)
     net.columns = ["net"]
     net = net * CMS2CFS  # convert to cfs
@@ -504,16 +507,33 @@ def read_net_csv(csv_file, start_date=None, end_date=None, dt=days(1), **kwargs)
 
     net = pd.read_csv(csv_file, index_col=0, parse_dates=[0])
 
+    col = kwargs["col"]
+    net = net[[col]]
+
     # clip to time constraint
     if start_date is None:
         start_date = net.index[0]
     if end_date is None:
         end_date = net.index[-1]
+    if (net.index[0] > pd.to_datetime(end_date)) or (
+        net.index[-1] < pd.to_datetime(start_date)
+    ):
+        raise ValueError(
+            f"File: {csv_file} does not cover the dates requested. \n\tRequested dates are: {start_date} to {end_date}, \n\tand the file covers {net.index[0]} to {net.index[-1]}"
+        )
     net = net[start_date:end_date]
+
+    # Resample to daily frequency
+    net = net.resample("D").ffill()
 
     # Convert DatetimeIndex to PeriodIndex if needed
     if isinstance(net.index, pd.DatetimeIndex):
         net.index = net.index.to_period("D")
+
+    # Convert to cfs if needed
+    if "cms_to_cfs" in kwargs.keys():
+        if kwargs["cms_to_cfs"]:
+            net = net * CMS2CFS  # convert to cfs
 
     net = rhistinterp(net, dt)
     net.columns = ["net"]
