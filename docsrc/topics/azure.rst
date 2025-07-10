@@ -18,6 +18,7 @@ Azure is a paid service separate from SCHISM, BayDeltaSCHISM, and CA-DWR. Once y
 
 * `Azure CLI <https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest>`_
     * download and install on your machine to pass jobs (simulations) to Azure batch
+    * this is likely a command line string that you'll run and re-launch a terminal
 * `AzCopy <https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10?tabs=dnf>`_
     * download and install on your machine to upload content to storage container
 * `Azure Batch Explorer (desktop app) <https://azure.github.io/BatchExplorer/>`_
@@ -30,13 +31,23 @@ Setup can be done via az commands. Here we setup a batch account with associated
 Login
 ````````````````
 
-Login with your Azure credentials. First go to https://microsoft.com/devicelogin and copy your login code. Then after typing:
+Login with your Azure credentials in a console with admin access. 
     
     .. code-block:: console
 
         az login --use-device-code
 
-Copy in the code to verify your credentials.
+Copy in the code from the console then go to https://microsoft.com/devicelogin and paste into the browser window to verify your credentials.
+
+You may get a "certificate verify failed" message. If you are on a government network you may have firewall settings that restrict all SSL. You'll either need to talk to your IT personell or use a personal network.
+
+To test that your login worked, use:
+
+    .. code-block:: console
+
+        az account show
+
+This will show your account info.
 
 Create a Resource Group
 ``````````````````````````
@@ -51,22 +62,15 @@ See the Azure docs for details. To use the commands below, enter your values (re
 
         az batch account create --name <batch_account_name> --storage-account <storage_account_name> --resource-group <resource_group_name> --location <location_name>
 
+For the --location, you can use any location, but eastus and eastus2 is what DWR uses. The storage account name typically ends in "sa", and the batch account typically ends in "batch" for ease of navigating resources on Azure.
+
 You can also create the batch account and associated account as `explained here <https://docs.microsoft.com/en-us/azure/batch/batch-account-create-portal>`_.
+
+You may encounter some errors about regional quotas. You'll want your resource group, storage account, and batch account in the same region/location.
 
 
 Download azure_dms_batch
 ````````````````````````````
-
-Use the environment.yml with conda to create an environment called azure
-    .. code-block:: console
-
-        conda env create -f environment.yml
-
-or
-
-    .. code-block:: console
-
-        pip install -r requirements.txt
 
 **Git clone *this* project**
 
@@ -74,10 +78,24 @@ or
 
         git clone https://github.com/CADWRDeltaModeling/azure_dms_batch.git
 
-Change directory to the location of the azure_dms_batch project and then install using:
+Navigate to the azure_dms_batch folder created above, and use the environment.yml with conda to create an environment called azure
 
     .. code-block:: console
 
+        conda env create -f environment.yml
+
+or *if you're not using conda*:
+
+    .. code-block:: console
+
+        pip install -r requirements.txt
+
+
+Stay in the azure_dms_batch repo folder and then install using:
+
+    .. code-block:: console
+
+        conda activate azure
         pip install --no-deps -e .
 
 For more information on the azure_dms_batch package, see the `README.md <https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/README.md>`_ file.
@@ -93,7 +111,7 @@ The `app-packages/batch_app_package_and_upload.sh <https://github.com/CADWRDelta
 SCHISM
 `````````
 
-For SCHISM, you'll need to either compile and zip the executables yourself, or you can refer to `the releases page <https://github.com/CADWRDeltaModeling/azure_dms_batch/releases>`_ and download the relevant **\schism_with_deps_\*.zip** file. For HelloSCHISM and BayDeltaSCHISM tutorials, we'll refer to `the latest schism release, schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip <https://github.com/CADWRDeltaModeling/azure_dms_batch/releases/download/schism_5.11_alma8.7/schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip>`_.
+For SCHISM, you'll need to either compile and zip the executables yourself, or you can refer to `the releases page <https://github.com/CADWRDeltaModeling/azure_dms_batch/releases>`_ and download the relevant **\schism_with_deps_\*.zip** file. For HelloSCHISM and BayDeltaSCHISM tutorials, we'll refer to `the latest schism release, schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip <https://github.com/CADWRDeltaModeling/azure_dms_batch/releases/download/schism_5.11_alma8.7/schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip>`_. You'll also need `the latest alma release, nfs_alma8.7 <https://github.com/CADWRDeltaModeling/azure_dms_batch/releases/download/schism_5.11_alma8.7/nfs_alma8.7.zip>`_.
 
 Save the .zip file to your local azure_dms_batch repository under azure_dms_batch/app-packages.
 
@@ -110,7 +128,7 @@ Now use `app-packages/batch_app_package_and_upload.sh <https://github.com/CADWRD
         
         package_and_upload_telegraf "telegraf" $MY_BATCH_ACCOUNT $MY_RG
         package_and_upload_app schism_with_deps 5.11.1_alma8.7hpc_v4_mvapich2 schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip  $MY_BATCH_ACCOUNT $MY_RG
-        package_and_upload_app nfs_alma8.7 nfs_alma8.7.zip  $MY_BATCH_ACCOUNT $MY_RG
+        package_and_upload_app nfs_alma 8.7 nfs_alma8.7.zip  $MY_BATCH_ACCOUNT $MY_RG
         package_and_upload_batch_setup "../schism_scripts/" $MY_BATCH_ACCOUNT $MY_RG
 
 Python Packages
@@ -133,7 +151,9 @@ For python packages like schimpy and BayDeltaSCHISM's bdschism you can also use 
 
 The above utility names the package with *today's date* and then uploads it and sets it to the default version.
 
-You can check the versions of packages and which is considered the default by going to the online `Azure Portal <https://portal.azure.com/>`_ and navigating to your batch account. ONce in your batch account, navigate to Features \> Applications.
+You can check the versions of packages and which is considered the default by going to the online `Azure Portal <https://portal.azure.com/>`_ and navigating to your batch account. Once in your batch account, navigate to Features \> Applications. There you'll see th application IDs as well as the default version that's being used.
+
+If you were to want to upload a development or updated version of any of these packages you could use a similar approach to the package_and_upload techniques, and then use the online portal to specify the default version.
 
 
 References
