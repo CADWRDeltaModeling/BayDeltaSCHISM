@@ -177,8 +177,8 @@ def sch_dcd_net_diff(
     end_date=None,
     cfs_to_cms=True,
 ):
-    """
-    Convert adjusted DCD data from DataFrame into SCHISM-ready *.th inputs.
+    r"""
+    Convert adjusted DCD data from DataFrame into SCHISM-ready \*.th inputs.
 
     Parameters
     ----------
@@ -189,7 +189,7 @@ def sch_dcd_net_diff(
     schism_vsink: str|Path
         input SCHISM vsink data, needs to be "dated" and not "elapsed.
     out_dir: str|Path
-        Output directory to store the altered *.th files.
+        Output directory to store the altered \*.th files.
     version: str
         Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th)
     start_date: pd.Timestamp, optional
@@ -458,7 +458,7 @@ def calc_net_schism(schism_dir, start_date=None, end_date=None, dt=days(1), **kw
     kwargs: dict, optional
         Additional keyword arguments to pass to the SCHISM net calculation functions.
         For example, if the original data has a specific vsource file, you can pass
-        `vsource_original='vsource_dated.th'` and it will be used in the calculation.
+        ``vsource_original='vsource_dated.th'`` and it will be used in the calculation.
         You must use _original or _perturbed suffixes to distinguish between original and perturbed data.
 
     Returns
@@ -584,7 +584,7 @@ def orig_pert_to_schism_dcd(
     dt=days(1),
     **kwargs,
 ):
-    """
+    r"""
     Convert original and perturbed DCD data to SCHISM vsource and vsink inputs.
 
     Parameters
@@ -600,11 +600,11 @@ def orig_pert_to_schism_dcd(
         Path to the perturbed DCD data file. If DSS then enter the filename.
         If SCHISM then enter the directory where vsource.th and vsink.th are found.
     schism_vsource: str|Path
-        Input SCHISM vsource data, needs to be "dated" and not "elapsed".
+        Input SCHISM vsource data, needs to be 'dated' and not 'elapsed'.
     schism_vsink: str|Path
-        Input SCHISM vsink data, needs to be "dated" and not "elapsed".
+        Input SCHISM vsink data, needs to be 'dated' and not 'elapsed'.
     out_dir: str|Path
-        Output directory to store the altered *.th files.
+        Output directory to store the altered \*.th files.
     version: str
         Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th).
     start_date: pd.Timestamp, optional
@@ -616,7 +616,7 @@ def orig_pert_to_schism_dcd(
     **kwargs: dict
         Additional keyword arguments to pass to the SCHISM net calculation functions.
         For example, if the original data has a specific vsource file, you can pass
-        `vsource_original='vsource_dated.th'` and it will be used in the calculation.
+        vsource_original='vsource_dated.th' and it will be used in the calculation.
         You must use _original or _perturbed suffixes to distinguish between original and perturbed data.
     """
     original_filename = Path(original_filename)
