@@ -285,17 +285,31 @@
 <li class="toctree-l5"><a class="reference internal" href="topics/azure.html#python-packages">Python Packages</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="topics/azure.html#file-transfer-commands">File Transfer Commands</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="topics/azure.html#azcopy-commands">azcopy commands</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="topics/azure.html#generating-sas-links">Generating SAS Links</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="topics/azure.html#azcopy-options">azcopy options</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="topics/azure.html#references">References</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="topics/helloschism_azure.html">Step-by-step: HelloSCHISM on Azure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="topics/bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="topics/bds_guide_azure.html#initial-setup">Initial Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="topics/bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="topics/bds_guide_azure.html#azcopy-commands">azcopy commands</a></li>
-<li class="toctree-l5"><a class="reference internal" href="topics/bds_guide_azure.html#azcopy-options">azcopy options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/helloschism_azure.html">Step-by-step: HelloSCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="topics/helloschism_azure.html#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="topics/helloschism_azure.html#uploading-model-input-files">Uploading Model Input Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="topics/helloschism_azure.html#set-up-model-run-config">Set up Model Run Config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="topics/helloschism_azure.html#spot-pricing-config">Spot Pricing Config</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="topics/helloschism_azure.html#ensure-batch-quota">Ensure Batch Quota</a></li>
+<li class="toctree-l4"><a class="reference internal" href="topics/helloschism_azure.html#run-simulation">Run Simulation!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="topics/bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="topics/bds_guide_azure.html#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="topics/bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a></li>
 <li class="toctree-l4"><a class="reference internal" href="topics/bds_guide_azure.html#running-model-simulation">Running Model Simulation</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="topics/bds_guide_azure.html#simple-run-config">Simple Run Config</a></li>
 <li class="toctree-l5"><a class="reference internal" href="topics/bds_guide_azure.html#spot-pricing-config">Spot Pricing Config</a></li>
@@ -1207,7 +1221,7 @@ Only set to False if net data is in cms.</p></li>
 <li><p><strong>dt</strong> (<em>float</em><em> or </em><em>pd.DateOffset</em><em>, </em><em>optional</em>) – Time step in days for interpolation.</p></li>
 <li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments to pass to the SCHISM net calculation functions.
 For example, if the original data has a specific vsource file, you can pass
-<cite>vsource_original=’vsource_dated.th’</cite> and it will be used in the calculation.
+<code class="docutils literal notranslate"><span class="pre">vsource_original='vsource_dated.th'</span></code> and it will be used in the calculation.
 You must use _original or _perturbed suffixes to distinguish between original and perturbed data.</p></li>
 </ul>
 </dd>
@@ -1258,16 +1272,16 @@ If SCHISM then enter the directory where vsource.th and vsink.th are found.</p><
 <li><p><strong>perturbed_type</strong> (<em>str</em>) – Type of the perturbed DCD data (e.g. ‘dsm2’, ‘calsim’, ‘csv’, ‘schism’).</p></li>
 <li><p><strong>perturbed_filename</strong> (<em>str</em><em>|</em><em>Path</em>) – Path to the perturbed DCD data file. If DSS then enter the filename.
 If SCHISM then enter the directory where vsource.th and vsink.th are found.</p></li>
-<li><p><strong>schism_vsource</strong> (<em>str</em><em>|</em><em>Path</em>) – Input SCHISM vsource data, needs to be “dated” and not “elapsed”.</p></li>
-<li><p><strong>schism_vsink</strong> (<em>str</em><em>|</em><em>Path</em>) – Input SCHISM vsink data, needs to be “dated” and not “elapsed”.</p></li>
-<li><p><strong>out_dir</strong> (<em>str</em><em>|</em><em>Path</em>) – Output directory to store the altered <a href="#id1"><span class="problematic" id="id2">*</span></a>.th files.</p></li>
+<li><p><strong>schism_vsource</strong> (<em>str</em><em>|</em><em>Path</em>) – Input SCHISM vsource data, needs to be ‘dated’ and not ‘elapsed’.</p></li>
+<li><p><strong>schism_vsink</strong> (<em>str</em><em>|</em><em>Path</em>) – Input SCHISM vsink data, needs to be ‘dated’ and not ‘elapsed’.</p></li>
+<li><p><strong>out_dir</strong> (<em>str</em><em>|</em><em>Path</em>) – Output directory to store the altered *.th files.</p></li>
 <li><p><strong>version</strong> (<em>str</em>) – Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th).</p></li>
 <li><p><strong>start_date</strong> (<em>pd.Timestamp</em><em>, </em><em>optional</em>) – Start date for the timeseries. If None, uses the start date from the original data.</p></li>
 <li><p><strong>end_date</strong> (<em>pd.Timestamp</em><em>, </em><em>optional</em>) – End date for the timeseries. If None, uses the end date from the original data.</p></li>
 <li><p><strong>dt</strong> (<em>float</em><em> or </em><em>pd.DateOffset</em><em>, </em><em>optional</em>) – Time step in days for interpolation. Default is 1 day.</p></li>
 <li><p><strong>**kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the SCHISM net calculation functions.
 For example, if the original data has a specific vsource file, you can pass
-<cite>vsource_original=’vsource_dated.th’</cite> and it will be used in the calculation.
+vsource_original=’vsource_dated.th’ and it will be used in the calculation.
 You must use _original or _perturbed suffixes to distinguish between original and perturbed data.</p></li>
 </ul>
 </dd>
@@ -1305,14 +1319,14 @@ You must use _original or _perturbed suffixes to distinguish between original an
 <dl class="py function">
 <dt class="sig sig-object py" id="bdschism.parse_cu.sch_dcd_net_diff">
 <span class="sig-prename descclassname"><span class="pre">bdschism.parse_cu.</span></span><span class="sig-name descname"><span class="pre">sch_dcd_net_diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net_diff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schism_vsource</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schism_vsink</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cfs_to_cms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/parse_cu.html#sch_dcd_net_diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.parse_cu.sch_dcd_net_diff" title="Link to this definition"></a></dt>
-<dd><p>Convert adjusted DCD data from DataFrame into SCHISM-ready <a href="#id3"><span class="problematic" id="id4">*</span></a>.th inputs.</p>
+<dd><p>Convert adjusted DCD data from DataFrame into SCHISM-ready *.th inputs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>net_diff</strong> (<em>pd.DataFrame</em>) – DCD net differences from historical or baseline. Used to apply to SCHISM inputs.</p></li>
 <li><p><strong>schism_vsource</strong> (<em>str</em><em>|</em><em>Path</em>) – input SCHISM vsource data, needs to be “dated” and not “elapsed.</p></li>
 <li><p><strong>schism_vsink</strong> (<em>str</em><em>|</em><em>Path</em>) – input SCHISM vsink data, needs to be “dated” and not “elapsed.</p></li>
-<li><p><strong>out_dir</strong> (<em>str</em><em>|</em><em>Path</em>) – Output directory to store the altered <a href="#id5"><span class="problematic" id="id6">*</span></a>.th files.</p></li>
+<li><p><strong>out_dir</strong> (<em>str</em><em>|</em><em>Path</em>) – Output directory to store the altered *.th files.</p></li>
 <li><p><strong>version</strong> (<em>str</em>) – Specifies the tag to put on the output files (e.g. vsource.VERSION.dated.th)</p></li>
 <li><p><strong>start_date</strong> (<em>pd.Timestamp</em><em>, </em><em>optional</em>) – Start date for the timeseries.</p></li>
 <li><p><strong>end_date</strong> (<em>pd.Timestamp</em><em>, </em><em>optional</em>) – End date for the timeseries.</p></li>

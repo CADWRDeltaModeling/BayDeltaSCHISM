@@ -285,17 +285,31 @@
 <li class="toctree-l5"><a class="reference internal" href="#python-packages">Python Packages</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="#file-transfer-commands">File Transfer Commands</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#azcopy-commands">azcopy commands</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#generating-sas-links">Generating SAS Links</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#azcopy-options">azcopy options</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="helloschism_azure.html">Step-by-step: HelloSCHISM on Azure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#initial-setup">Initial Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#azcopy-commands">azcopy commands</a></li>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#azcopy-options">azcopy options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="helloschism_azure.html">Step-by-step: HelloSCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="helloschism_azure.html#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="helloschism_azure.html#uploading-model-input-files">Uploading Model Input Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="helloschism_azure.html#set-up-model-run-config">Set up Model Run Config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="helloschism_azure.html#spot-pricing-config">Spot Pricing Config</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="helloschism_azure.html#ensure-batch-quota">Ensure Batch Quota</a></li>
+<li class="toctree-l4"><a class="reference internal" href="helloschism_azure.html#run-simulation">Run Simulation!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#running-model-simulation">Running Model Simulation</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#simple-run-config">Simple Run Config</a></li>
 <li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#spot-pricing-config">Spot Pricing Config</a></li>
@@ -647,6 +661,7 @@
 <li><dl class="simple">
 <dt><a class="reference external" href="https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest">Azure CLI</a></dt><dd><ul>
 <li><p>download and install on your machine to pass jobs (simulations) to Azure batch</p></li>
+<li><p>this is likely a command line string that you’ll run and re-launch a terminal</p></li>
 </ul>
 </dd>
 </dl>
@@ -677,13 +692,21 @@
 </section>
 <section id="login">
 <h3>Login<a class="headerlink" href="#login" title="Link to this heading"></a></h3>
-<p>Login with your Azure credentials. First go to <a class="reference external" href="https://microsoft.com/devicelogin">https://microsoft.com/devicelogin</a> and copy your login code. Then after typing:</p>
+<p>Login with your Azure credentials in a console with admin access.</p>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">az login --use-device-code</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p>Copy in the code to verify your credentials.</p>
+<p>Copy in the code from the console then go to <a class="reference external" href="https://microsoft.com/devicelogin">https://microsoft.com/devicelogin</a> and paste into the browser window to verify your credentials.</p>
+<p>You may get a “certificate verify failed” message. If you are on a government network you may have firewall settings that restrict all SSL. You’ll either need to talk to your IT personell or use a personal network.</p>
+<p>To test that your login worked, use:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">az account show</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This will show your account info.</p>
 </section>
 <section id="create-a-resource-group">
 <h3>Create a Resource Group<a class="headerlink" href="#create-a-resource-group" title="Link to this heading"></a></h3>
@@ -697,31 +720,34 @@
 </pre></div>
 </div>
 </div></blockquote>
+<p>For the –location, you can use any location, but eastus and eastus2 is what DWR uses. The storage account name typically ends in “sa”, and the batch account typically ends in “batch” for ease of navigating resources on Azure.</p>
 <p>You can also create the batch account and associated account as <a class="reference external" href="https://docs.microsoft.com/en-us/azure/batch/batch-account-create-portal">explained here</a>.</p>
+<p>You may encounter some errors about regional quotas. You’ll want your resource group, storage account, and batch account in the same region/location.</p>
 </section>
 <section id="download-azure-dms-batch">
 <h3>Download azure_dms_batch<a class="headerlink" href="#download-azure-dms-batch" title="Link to this heading"></a></h3>
-<dl>
-<dt>Use the environment.yml with conda to create an environment called azure</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda env create -f environment.yml</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<p>or</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install -r requirements.txt</span>
-</pre></div>
-</div>
-</div></blockquote>
 <p><strong>Git clone *this* project</strong></p>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/CADWRDeltaModeling/azure_dms_batch.git</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p>Change directory to the location of the azure_dms_batch project and then install using:</p>
+<p>Navigate to the azure_dms_batch folder created above, and use the environment.yml with conda to create an environment called azure</p>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install --no-deps -e .</span>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda env create -f environment.yml</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>or <em>if you’re not using conda</em>:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install -r requirements.txt</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Stay in the azure_dms_batch repo folder and then install using:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda activate azure</span>
+<span class="go">pip install --no-deps -e .</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -729,12 +755,12 @@
 </section>
 </section>
 <section id="upload-applications">
-<h2>Upload Applications<a class="headerlink" href="#upload-applications" title="Link to this heading"></a></h2>
+<span id="azure-upload-apps"></span><h2>Upload Applications<a class="headerlink" href="#upload-applications" title="Link to this heading"></a></h2>
 <p>Azure batch requires the setup and installation to happen via zip files that are called application packages. The user should specify these packages with the version names as specified in the template. Here we will refer to the <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/tree/main/dmsbatch/templates/alma87_mvapich2_20241018">alma87_mvapich2 template</a>.</p>
 <p>The <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/app-packages/batch_app_package_and_upload.sh">app-packages/batch_app_package_and_upload.sh</a> script can be used to upload the packages which you will do in the following steps.</p>
 <section id="schism">
 <h3>SCHISM<a class="headerlink" href="#schism" title="Link to this heading"></a></h3>
-<p>For SCHISM, you’ll need to either compile and zip the executables yourself, or you can refer to <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/releases">the releases page</a> and download the relevant <strong>schism_with_deps_*.zip</strong> file. For HelloSCHISM and BayDeltaSCHISM tutorials, we’ll refer to <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/releases/download/schism_5.11_alma8.7/schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip">the latest schism release, schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip</a>.</p>
+<p>For SCHISM, you’ll need to either compile and zip the executables yourself, or you can refer to <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/releases">the releases page</a> and download the relevant <strong>schism_with_deps_*.zip</strong> file. For HelloSCHISM and BayDeltaSCHISM tutorials, we’ll refer to <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/releases/download/schism_5.11_alma8.7/schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip">the latest schism release, schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip</a>. You’ll also need <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/releases/download/schism_5.11_alma8.7/nfs_alma8.7.zip">the latest alma release, nfs_alma8.7</a>.</p>
 <p>Save the .zip file to your local azure_dms_batch repository under azure_dms_batch/app-packages.</p>
 <p>Now use <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/app-packages/batch_app_package_and_upload.sh">app-packages/batch_app_package_and_upload.sh</a> to upload in the command line:</p>
 <blockquote>
@@ -747,7 +773,7 @@
 
 <span class="go">package_and_upload_telegraf &quot;telegraf&quot; $MY_BATCH_ACCOUNT $MY_RG</span>
 <span class="go">package_and_upload_app schism_with_deps 5.11.1_alma8.7hpc_v4_mvapich2 schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip  $MY_BATCH_ACCOUNT $MY_RG</span>
-<span class="go">package_and_upload_app nfs_alma8.7 nfs_alma8.7.zip  $MY_BATCH_ACCOUNT $MY_RG</span>
+<span class="go">package_and_upload_app nfs alma8.7 nfs_alma8.7.zip  $MY_BATCH_ACCOUNT $MY_RG</span>
 <span class="go">package_and_upload_batch_setup &quot;../schism_scripts/&quot; $MY_BATCH_ACCOUNT $MY_RG</span>
 </pre></div>
 </div>
@@ -770,7 +796,146 @@
 </div>
 </div></blockquote>
 <p>The above utility names the package with <em>today’s date</em> and then uploads it and sets it to the default version.</p>
-<p>You can check the versions of packages and which is considered the default by going to the online <a class="reference external" href="https://portal.azure.com/">Azure Portal</a> and navigating to your batch account. ONce in your batch account, navigate to Features &gt; Applications.</p>
+<p>You can check the versions of packages and which is considered the default by going to the online <a class="reference external" href="https://portal.azure.com/">Azure Portal</a> and navigating to your batch account. Once in your batch account, navigate to Features &gt; Applications. There you’ll see th application IDs as well as the default version that’s being used.</p>
+<p>If you were to want to upload a development or updated version of any of these packages you could use a similar approach to the package_and_upload techniques, and then use the online portal to specify the default version.</p>
+</section>
+</section>
+<section id="file-transfer-commands">
+<span id="azcopy-info"></span><h2>File Transfer Commands<a class="headerlink" href="#file-transfer-commands" title="Link to this heading"></a></h2>
+<section id="azcopy-commands">
+<h3>azcopy commands<a class="headerlink" href="#azcopy-commands" title="Link to this heading"></a></h3>
+<p>The basic syntax of azcopy to copy local to Azure is:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">azcopy copy &quot;&lt;local_directory&gt;&quot; &quot;&lt;azure_storage_account/blob_container&gt;/?&lt;sas_link&gt;&quot;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl>
+<dt>and for Azure to local:</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">azcopy copy &quot;&lt;azure_storage_account/blob_container&gt;/?&lt;sas_link&gt;&quot; &quot;&lt;local_directory&gt;&quot;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>But at the Delta Modeling Section we most often use something like:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export AZLINK=&quot;https://&lt;storage_account&gt;.blob.core.windows.net/&lt;blob_storage_container/&quot;</span>
+<span class="go">export sas=&quot;&lt;sas_link&gt;&quot;</span>
+
+<span class="go">azcopy copy &quot;&lt;local_directory&gt;&quot; &quot;${AZLINK}&lt;blob_storage_container&gt;/?${sas}&quot; --exclude-regex=&quot;outputs/.\*nc&quot; --recursive --preserve-symlinks --dry-run</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>where:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>local_directory</strong></dt><dd><ul>
+<li><p>whatever local path to your simulation directory you’re uploading</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>storage_account</strong></dt><dd><ul>
+<li><p>name of your Storage Account through Azure (not the same as the Batch Account name)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>blob_storage_container</strong></dt><dd><ul>
+<li><p>folder path to your blob storage container</p></li>
+<li><p>this will look like a folder path (eg: project_name/simulations/)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>sas_link</strong></dt><dd><ul>
+<li><p>SAS permissions key (generated each day for security)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<section id="generating-sas-links">
+<span id="azuresas"></span><h4>Generating SAS Links<a class="headerlink" href="#generating-sas-links" title="Link to this heading"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p>you can generate and copy the SAS key by navigating to your storage account in the <a class="reference external" href="https://portal.azure.com/">Azure Portal</a> &gt; going to “Containers”</p></li>
+<li><p>Click on the three dots to the right of your blob container &gt; Generate SAS</p></li>
+<li><p>On the “Permissions” drop-down: click all boxes</p></li>
+<li><p>Click “Generate SAS token and URL”</p></li>
+<li><p>copy the “Blob SAS token option”</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="azcopy-options">
+<h3>azcopy options<a class="headerlink" href="#azcopy-options" title="Link to this heading"></a></h3>
+<p>These are some of the most frequently used azcopy flag options:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>–dry-run</strong></dt><dd><ul>
+<li><p>this is useful to test your command before running</p></li>
+<li><p>this flag prints a list of which files will be copied where without actually uploading/downloading anything</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>–recursive</strong></dt><dd><ul>
+<li><p>this will copy all files in all subdirectories</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>–preserve-symlinks</strong></dt><dd><ul>
+<li><p>any symbolic links will be preserved in the upload to the blob container</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>–include-regex</strong></dt><dd><ul>
+<li><p>use a Regular Expression to limit which files are included in the upload</p></li>
+<li><dl class="simple">
+<dt>ex: –include-regex=”suisun_(2|3|7)/.*;baseline_6/.*&quot;</dt><dd><ul>
+<li><dl class="simple">
+<dt>this would upload all folder contents of</dt><dd><ul>
+<li><p>suisun_2/</p></li>
+<li><p>suisun_3/</p></li>
+<li><p>suisun_7/</p></li>
+<li><p>baseline_6/</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>The <strong>.*</strong> string signifies “all contents”</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>–exclude-regex</strong></dt><dd><ul>
+<li><p>use a Regular Expression to determine which files are excluded in the upload</p></li>
+<li><p>this is particularly useful for things like outputs *.nc files and sflux *.nc files which are very large and costly to upload</p></li>
+<li><dl class="simple">
+<dt>ex: –exclude-regex=”outputs.*/.*nc;sflux/.*nc”</dt><dd><ul>
+<li><p>this would exclude any files that end in “nc” that are found in the sflux, outputs, or outputs* folders</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </section>
 </section>
 <section id="references">

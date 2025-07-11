@@ -294,17 +294,31 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l5"><a class="reference internal" href="../topics/azure.html#python-packages">Python Packages</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/azure.html#file-transfer-commands">File Transfer Commands</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../topics/azure.html#azcopy-commands">azcopy commands</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../topics/azure.html#generating-sas-links">Generating SAS Links</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../topics/azure.html#azcopy-options">azcopy options</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="../topics/azure.html#references">References</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../topics/helloschism_azure.html">Step-by-step: HelloSCHISM on Azure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../topics/bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../topics/bds_guide_azure.html#initial-setup">Initial Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../topics/bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="../topics/bds_guide_azure.html#azcopy-commands">azcopy commands</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../topics/bds_guide_azure.html#azcopy-options">azcopy options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/helloschism_azure.html">Step-by-step: HelloSCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../topics/helloschism_azure.html#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/helloschism_azure.html#uploading-model-input-files">Uploading Model Input Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/helloschism_azure.html#set-up-model-run-config">Set up Model Run Config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../topics/helloschism_azure.html#spot-pricing-config">Spot Pricing Config</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/helloschism_azure.html#ensure-batch-quota">Ensure Batch Quota</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/helloschism_azure.html#run-simulation">Run Simulation!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../topics/bds_guide_azure.html#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../topics/bds_guide_azure.html#running-model-simulation">Running Model Simulation</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../topics/bds_guide_azure.html#simple-run-config">Simple Run Config</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../topics/bds_guide_azure.html#spot-pricing-config">Spot Pricing Config</a></li>
@@ -708,7 +722,7 @@ In BayDeltaSCHISM, the <strong>bdschism</strong> Python package is documented in
 <section id="figures">
 <h2>Figures<a class="headerlink" href="#figures" title="Link to this heading"></a></h2>
 <p>You can embed figures using the <code class="docutils literal notranslate"><span class="pre">..figure::</span></code> directive. All figures (.png, .jpeg, .svg, etc) are stored in the <strong>docsrc/img/</strong> folder. When specifying the image file location it needs to be relative to the .rst file that is being used. So for this page, it is using the <strong>docsrc/meta_doc/doc_examples.rst</strong> file, so the references to a figure would be <strong>../img/&lt;FILENAME&gt;</strong>.</p>
-<p>To reference the figure, you can add a hyperlink above the figure and then reference it using <code class="docutils literal notranslate"><span class="pre">:numref:`example_dwr_logo`</span></code>. That would render as <a class="reference internal" href="#example-dwr-logo"><span class="std std-numref">Fig. 9</span></a>. You can embed a figure using the following code:</p>
+<p>To reference the figure, you can add a hyperlink above the figure and then reference it using <code class="docutils literal notranslate"><span class="pre">:numref:`example_dwr_logo`</span></code>. That would render as <a class="reference internal" href="#example-dwr-logo"><span class="std std-numref">Fig. 10</span></a>. You can embed a figure using the following code:</p>
 <div class="highlight-RST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">_example_dwr_logo:</span>
 
 <span class="p">..</span> <span class="ow">figure</span><span class="p">::</span> ../img/dwr_logo_small.png
@@ -722,7 +736,7 @@ In BayDeltaSCHISM, the <strong>bdschism</strong> Python package is documented in
 <span id="example-dwr-logo"></span><a class="reference internal image-reference" href="../_images/dwr_logo_small.png"><img alt="../_images/dwr_logo_small.png" src="../_images/dwr_logo_small.png" style="width: 200px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">A small California Department of Water Resources logo.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">A small California Department of Water Resources logo.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>

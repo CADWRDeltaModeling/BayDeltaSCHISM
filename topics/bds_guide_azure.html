@@ -285,17 +285,31 @@
 <li class="toctree-l5"><a class="reference internal" href="azure.html#python-packages">Python Packages</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="azure.html#file-transfer-commands">File Transfer Commands</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="azure.html#azcopy-commands">azcopy commands</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="azure.html#generating-sas-links">Generating SAS Links</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="azure.html#azcopy-options">azcopy options</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="azure.html#references">References</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="helloschism_azure.html">Step-by-step: HelloSCHISM on Azure</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#initial-setup">Initial Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#uploading-model-input-files">Uploading Model Input Files</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="#azcopy-commands">azcopy commands</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#azcopy-options">azcopy options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="helloschism_azure.html">Step-by-step: HelloSCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="helloschism_azure.html#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="helloschism_azure.html#uploading-model-input-files">Uploading Model Input Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="helloschism_azure.html#set-up-model-run-config">Set up Model Run Config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="helloschism_azure.html#spot-pricing-config">Spot Pricing Config</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="helloschism_azure.html#ensure-batch-quota">Ensure Batch Quota</a></li>
+<li class="toctree-l4"><a class="reference internal" href="helloschism_azure.html#run-simulation">Run Simulation!</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uploading-model-input-files">Uploading Model Input Files</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#running-model-simulation">Running Model Simulation</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="#simple-run-config">Simple Run Config</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#spot-pricing-config">Spot Pricing Config</a></li>
@@ -637,7 +651,7 @@
              
   <section id="step-by-step-bay-delta-schism-on-azure">
 <span id="bds-guide-azure"></span><h1>Step-by-step: Bay-Delta SCHISM on Azure<a class="headerlink" href="#step-by-step-bay-delta-schism-on-azure" title="Link to this heading"></a></h1>
-<p>This guide will walk you through the process of setting up and running the Bay-Delta SCHISM model on Azure Batch.</p>
+<p>This guide will walk you through the process of setting up and running the Bay-Delta SCHISM model on Azure Batch. It could be helpful to first complete the Hello SCHISM tutorial on Azure <a class="reference internal" href="helloschism_azure.html#helloschism-azure"><span class="std std-ref">Step-by-step: HelloSCHISM on Azure</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This assumes you have already <a class="reference external" href="https://learn.microsoft.com/en-us/azure/batch/batch-account-create-portal">set up your Azure account</a> and have access to the Azure Batch service. If you haven’t done this yet, please refer to the Azure documentation for instructions on how to create an account and set up Batch.</p>
@@ -655,136 +669,13 @@
 </dl>
 </li>
 <li><p>download and install azure_dms_batch and its conda environment</p></li>
+<li><p>upload the necessary packages and libraries to your Azure batch account (see <a class="reference internal" href="azure.html#azure-upload-apps"><span class="std std-ref">Upload Applications</span></a>)</p></li>
 </ul>
 </section>
 <section id="uploading-model-input-files">
 <h2>Uploading Model Input Files<a class="headerlink" href="#uploading-model-input-files" title="Link to this heading"></a></h2>
-<p>Your simulation input files (e.g., mesh, forcing files, etc.) should be uploaded to the Azure Batch storage account. This is typically done using the <cite>azcopy</cite> command line utility. For more detailed info see the <a class="reference external" href="https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&amp;bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json&amp;tabs=dnf">Microsoft documentation</a>.</p>
-<section id="azcopy-commands">
-<h3>azcopy commands<a class="headerlink" href="#azcopy-commands" title="Link to this heading"></a></h3>
-<p>The basic syntax of azcopy to copy local to Azure is:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">azcopy copy &quot;&lt;local_directory&gt;&quot; &quot;&lt;azure_storage_account/blob_container&gt;/?&lt;sas_link&gt;&quot;</span>
-</pre></div>
-</div>
-</div></blockquote>
-<dl>
-<dt>and for Azure to local:</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">azcopy copy &quot;&lt;azure_storage_account/blob_container&gt;/?&lt;sas_link&gt;&quot; &quot;&lt;local_directory&gt;&quot;</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<p>But at the Delta Modeling Section we most often use something like:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export AZLINK=&quot;https://&lt;storage_account&gt;.blob.core.windows.net/&lt;blob_storage_container/&quot;</span>
-<span class="go">export sas=&quot;&lt;sas_link&gt;&quot;</span>
-
-<span class="go">azcopy copy &quot;&lt;local_directory&gt;&quot; &quot;${AZLINK}&lt;blob_storage_container&gt;/?${sas}&quot; --exclude-regex=&quot;outputs/.\*nc&quot; --recursive --preserve-symlinks --dry-run</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>where:</p>
-<ul class="simple">
-<li><dl class="simple">
-<dt><strong>local_directory</strong></dt><dd><ul>
-<li><p>whatever local path to your simulation directory you’re uploading</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>storage_account</strong></dt><dd><ul>
-<li><p>name of your Storage Account through Azure (not the same as the Batch Account name)</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>blob_storage_container</strong></dt><dd><ul>
-<li><p>folder path to your blob storage container</p></li>
-<li><p>this will look like a folder path (eg: project_name/simulations/)</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>sas_link</strong></dt><dd><ul>
-<li><p>SAS permissions key (generated each day for security)</p></li>
-<li><p>you can generate and copy this key by navigating to your storage account in the <a class="reference external" href="https://portal.azure.com/">Azure Portal</a> &gt; going to “Containers” &gt; find storage container &gt; right clicking &gt; Generate SAS &gt; Change “Permissions”: click all boxes &gt; Click “Generate SAS token and URL”</p></li>
-<li><p>copy the “Blob SAS token option”</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-</section>
-<section id="azcopy-options">
-<h3>azcopy options<a class="headerlink" href="#azcopy-options" title="Link to this heading"></a></h3>
-<p>These are some of the most frequently used azcopy flag options:</p>
-<ul class="simple">
-<li><dl class="simple">
-<dt><strong>–dry-run</strong></dt><dd><ul>
-<li><p>this is useful to test your command before running</p></li>
-<li><p>this flag prints a list of which files will be copied where without actually uploading/downloading anything</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>–recursive</strong></dt><dd><ul>
-<li><p>this will copy all files in all subdirectories</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>–preserve-symlinks</strong></dt><dd><ul>
-<li><p>any symbolic links will be preserved in the upload to the blob container</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>–include-regex</strong></dt><dd><ul>
-<li><p>use a Regular Expression to limit which files are included in the upload</p></li>
-<li><dl class="simple">
-<dt>ex: –include-regex=”suisun_(2|3|7)/.*;baseline_6/.*&quot;</dt><dd><ul>
-<li><dl class="simple">
-<dt>this would upload all folder contents of</dt><dd><ul>
-<li><p>suisun_2/</p></li>
-<li><p>suisun_3/</p></li>
-<li><p>suisun_7/</p></li>
-<li><p>baseline_6/</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>The <strong>.*</strong> string signifies “all contents”</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><strong>–exclude-regex</strong></dt><dd><ul>
-<li><p>use a Regular Expression to determine which files are excluded in the upload</p></li>
-<li><p>this is particularly useful for things like outputs *.nc files and sflux *.nc files which are very large and costly to upload</p></li>
-<li><dl class="simple">
-<dt>ex: –exclude-regex=”outputs.*/.*nc;sflux/.*nc”</dt><dd><ul>
-<li><p>this would exclude any files that end in “nc” that are found in the sflux, outputs, or outputs* folders</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-</section>
+<p>Your simulation input files (e.g., mesh, forcing files, etc.) should be uploaded to the Azure Batch storage account. This is typically done using the <cite>azcopy</cite> command line utility. The <a class="reference internal" href="azure.html#azcopy-info"><span class="std std-ref">File Transfer Commands</span></a> section has basic info on azcopy commands.</p>
+<p>For more detailed info see the <a class="reference external" href="https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&amp;bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json&amp;tabs=dnf">Microsoft documentation</a>.</p>
 </section>
 <section id="running-model-simulation">
 <h2>Running Model Simulation<a class="headerlink" href="#running-model-simulation" title="Link to this heading"></a></h2>

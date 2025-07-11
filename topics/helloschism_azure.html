@@ -285,17 +285,31 @@
 <li class="toctree-l5"><a class="reference internal" href="azure.html#python-packages">Python Packages</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="azure.html#file-transfer-commands">File Transfer Commands</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="azure.html#azcopy-commands">azcopy commands</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="azure.html#generating-sas-links">Generating SAS Links</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="azure.html#azcopy-options">azcopy options</a></li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="azure.html#references">References</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Step-by-step: HelloSCHISM on Azure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#initial-setup">Initial Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#azcopy-commands">azcopy commands</a></li>
-<li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#azcopy-options">azcopy options</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Step-by-step: HelloSCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uploading-model-input-files">Uploading Model Input Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-up-model-run-config">Set up Model Run Config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#spot-pricing-config">Spot Pricing Config</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="#ensure-batch-quota">Ensure Batch Quota</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-simulation">Run Simulation!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bds_guide_azure.html">Step-by-step: Bay-Delta SCHISM on Azure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#initial-setup">Initial Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#uploading-model-input-files">Uploading Model Input Files</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bds_guide_azure.html#running-model-simulation">Running Model Simulation</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#simple-run-config">Simple Run Config</a></li>
 <li class="toctree-l5"><a class="reference internal" href="bds_guide_azure.html#spot-pricing-config">Spot Pricing Config</a></li>
@@ -637,6 +651,123 @@
              
   <section id="step-by-step-helloschism-on-azure">
 <span id="helloschism-azure"></span><h1>Step-by-step: HelloSCHISM on Azure<a class="headerlink" href="#step-by-step-helloschism-on-azure" title="Link to this heading"></a></h1>
+<p>This guide will walk you through the process of running the tutorial HelloSCHISM model on Azure Batch.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This assumes you have already <a class="reference external" href="https://learn.microsoft.com/en-us/azure/batch/batch-account-create-portal">set up your Azure account</a> and have access to the Azure Batch service. If you haven’t done this yet, please refer to the Azure documentation for instructions on how to create an account and set up Batch.</p>
+</div>
+<section id="initial-setup">
+<h2>Initial Setup<a class="headerlink" href="#initial-setup" title="Link to this heading"></a></h2>
+<p>First, complete the Azure setup steps in <a class="reference internal" href="azure.html#setup-azure"><span class="std std-ref">Setup Azure</span></a>. You should have:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>azure_cli and azcopy command line utilities installed and configured</dt><dd><ul>
+<li><p>meaning you can run <cite>azcopy</cite> and <cite>az</cite> commands from the command line</p></li>
+<li><p>you should be logged into your azure account</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>download and install azure_dms_batch and its conda environment</p></li>
+<li><p>upload the necessary packages and libraries to your Azure batch account (see <a class="reference internal" href="azure.html#azure-upload-apps"><span class="std std-ref">Upload Applications</span></a>)</p></li>
+</ul>
+</section>
+<section id="uploading-model-input-files">
+<h2>Uploading Model Input Files<a class="headerlink" href="#uploading-model-input-files" title="Link to this heading"></a></h2>
+<p>Your simulation input files (e.g., mesh, forcing files, etc.) should be uploaded to the Azure Batch storage account. This is typically done using the <cite>azcopy</cite> command line utility. The <a class="reference internal" href="azure.html#azcopy-info"><span class="std std-ref">File Transfer Commands</span></a> section has basic info on azcopy commands.</p>
+<p>For more detailed info see the <a class="reference external" href="https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&amp;bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json&amp;tabs=dnf">Microsoft documentation</a>.</p>
+<ol class="arabic">
+<li><dl>
+<dt>Navigate to “./modules/<strong>m1_hello_schism</strong>” in a terminal (PowerShell, Bash, etc.)</dt><dd><p>ex:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd ./modules/m1_hello_schism</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><p>Make sure that there is an <strong>/outputs</strong> directory inside the module directory. We include this with the module folder, so it should be there.</p></li>
+<li><p>Create a blob container within your storage account</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">az storage container create --name modules --account-name &lt;storage_account_name&gt; --auth-mode login</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Now you’ll need to generate an SAS token in order to read/write/copy/etc. to and from your storage account’s blob container “modules”. See <a class="reference internal" href="azure.html#azuresas"><span class="std std-ref">Generating SAS Links</span></a> for more info on this process, but copy the Blob url link for the next step.</p></li>
+<li><dl>
+<dt>Specify the sas variable using the url you generate in <a class="reference internal" href="azure.html#azuresas"><span class="std std-ref">Generating SAS Links</span></a></dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export sas=&quot;url.link.here&quot;</span>
+</pre></div>
+</div>
+<p>Be sure to include the quotation marks.</p>
+</dd>
+</dl>
+</li>
+<li><p>Set the AZLINK variable using this formula:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">https://&lt;storage</span> <span class="pre">account</span> <span class="pre">name&gt;.blob.core.windows.net/&lt;blob</span> <span class="pre">container</span> <span class="pre">name&gt;/</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export AZLINK=&quot;https://&lt;storage account name&gt;.blob.core.windows.net/modules/&quot;</span>
+</pre></div>
+</div>
+<p>Replace &lt;storage account name&gt; with the name of your storage account.</p>
+</div></blockquote>
+</li>
+<li><p>Now you can copy the contents of the module 1 folder into your blob container using <cite>azcopy</cite>. First, keep the <strong>–dry-run</strong> flag on so you can be <em>sure</em> that your files are going where you want them to go.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">azcopy copy &quot;./&quot; &quot;${AZLINK}?${sas}&quot; --exclude-regex=&quot;outputs/.*&quot; --recursive --preserve-symlinks --dry-run</span>
+</pre></div>
+</div>
+<p>Once you’ve checked the console output and are sure it’s going to and from the right place, you can re-run it without the –dry-run flag.</p>
+<p>This will copy all the files in m1_hello_schism into the modules blob container. It will also <em>not</em> upload any of the files in the <cite>outputs</cite> folder (because of the <code class="docutils literal notranslate"><span class="pre">--exclude-regex='outputs/.*'</span></code>). This is a good practice so you don’t incur extra costs for uploading and downloading large output *.nc files.</p>
+</div></blockquote>
+</li>
+</ol>
+<p>Check that your files were uploaded correctly by navigating to your storage account with either the online <a class="reference external" href="https://portal.azure.com/">Azure Portal</a> or <a class="reference external" href="https://azure.microsoft.com/en-us/features/storage-explorer/#overview">the Azure Storage Explorer (desktop app)</a>.</p>
+<p>You should be able to see your <cite>m1_hello_schism folder</cite> and it’s contents inside of the <cite>modules</cite> blob container.</p>
+</section>
+<section id="set-up-model-run-config">
+<h2>Set up Model Run Config<a class="headerlink" href="#set-up-model-run-config" title="Link to this heading"></a></h2>
+<p>You can use the <strong>azure_dms_batch</strong> package’s command line utilities to submit a job to Azure.</p>
+<p>Much of the setup for the virtual machines, compute nodes, etc. are determined by which template you specify in your run *.yml file.</p>
+<p>But First,you’ll need to modify HelloSCHISM/azure_yml_files/m1_hello_schism_run.yml:</p>
+<ul class="simple">
+<li><p>resource_group: fill in the name of your Azure Resource Group</p></li>
+<li><p>batch_account_name: fill in your Batch Account name</p></li>
+<li><p>storage_account_name: fill in your Storage Account name</p></li>
+<li><p>location: (at the bottom), if your Azure resources were created in a location other than “eastus” then you’ll need to specify the location here.</p></li>
+</ul>
+<p>Some important things to note:</p>
+<p>The run_file.yml overrides anything in your default_config.yml (ex: <a class="reference external" href="https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/dmsbatch/templates/alma87_mvapich2_20241018/default_config.yml">alma87_mvapich2_20241018/default_config.yml</a>)</p>
+<section id="spot-pricing-config">
+<h3>Spot Pricing Config<a class="headerlink" href="#spot-pricing-config" title="Link to this heading"></a></h3>
+<p>The above example uses “Low Priority Nodes” or “<a class="reference external" href="https://learn.microsoft.com/en-us/azure/batch/batch-spot-vms">spot pricing</a>”. You can see this by <code class="docutils literal notranslate"><span class="pre">TargetDedicatedNodes</span></code> in the m1_hello_schism_run.yml file.</p>
+<p>Spot pricing works by sending your job to Spot VMs which run until there is another process that preempts your job. So this will take longer but can be much more affordable if you’re running many simulations. For HelloSCHISM you can change this to “TargetDedicatedNodes”</p>
+<p>This means your job needs the capacity to automatically restart from the last hotstart produced by SCHISM.</p>
+<p>This <cite>example schism.yml file uses spot pricing &lt;https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/sample_configs/sample_schism_spot_pricing.yml&gt;</cite>.</p>
+<p>This <cite>example schism.yml file uses dedicated nodes &lt;https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/sample_configs/sample_schism.yml&gt;</cite>. The example yml file has many comments on each input with explanations.</p>
+</section>
+</section>
+<section id="ensure-batch-quota">
+<h2>Ensure Batch Quota<a class="headerlink" href="#ensure-batch-quota" title="Link to this heading"></a></h2>
+<p>You’ll need to go to the Azure portal, to your batch account, and then to Settings /&gt; Quotas.</p>
+<p>From here you’ll want to click “Request Quota Increase”. Then you’ll do the following to get this message to “Manage Quota”.</p>
+<figure class="align-default" id="id1">
+<img alt="img/batch-quota.png" class="with-border" src="img/batch-quota.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Batch quota request fields to get to “Manage Quota”</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>From here, you’ll want to increase the quota for HBv2 Series to approximately 300. That should be enough for a HelloSCHISM tutorial run.</p>
+<p>If your region doesn’t support HBv2 or you have any deeper issues with Azure, you may need to consult with your IT support. Anything that isn’t covered on this page is not within the scope of the HelloSCHISM or BayDeltaSCHISM tutorial realm.</p>
+</section>
+<section id="run-simulation">
+<h2>Run Simulation!<a class="headerlink" href="#run-simulation" title="Link to this heading"></a></h2>
+<p>Navigate to HelloSCHISM/azure_yml_files in the console, to fire a run you just need to submit the following command in a console which you have <strong>azure_cli</strong>, <strong>azcopy</strong>, and <strong>azure_dms_batch</strong> activated and which you’re logged into.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dmsbatch schism submit-job --file m1_hello_schism_run.yml</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
 </section>
 
 
