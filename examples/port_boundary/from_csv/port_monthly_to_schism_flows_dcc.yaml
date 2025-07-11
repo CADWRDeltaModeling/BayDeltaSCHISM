@@ -12,9 +12,9 @@ param:
 dir: ./ # specify where port_boundary will be looking for the files under "file:""
 file:
   source_map_file: port_boundary_map_flows_dcc.csv
-  schism_flux_file: ../../../data/time_history/flux.th
-  schism_salt_file: ../../../data/time_history/salt.th
-  schism_temp_file: ../../../data/time_history/temp.th
+  schism_flux_file: ${bds_home}/data/time_history/flux.th
+  schism_salt_file: ${bds_home}/data/time_history/salt.th
+  schism_temp_file: ${bds_home}/data/time_history/temp.th
   schism_gate_dir: ${bds_home}/data/time_history
   out_file_suffix: .${alt_name}.dated
 cu:
