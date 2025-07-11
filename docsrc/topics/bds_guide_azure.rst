@@ -4,7 +4,7 @@
 Step-by-step: Bay-Delta SCHISM on Azure
 =========================================
 
-This guide will walk you through the process of setting up and running the Bay-Delta SCHISM model on Azure Batch.
+This guide will walk you through the process of setting up and running the Bay-Delta SCHISM model on Azure Batch. It could be helpful to first complete the Hello SCHISM tutorial on Azure :ref:`helloschism_azure`.
 
 .. note::
     This assumes you have already `set up your Azure account <https://learn.microsoft.com/en-us/azure/batch/batch-account-create-portal>`_ and have access to the Azure Batch service. If you haven't done this yet, please refer to the Azure documentation for instructions on how to create an account and set up Batch.
@@ -18,75 +18,15 @@ First, complete the Azure setup steps in :ref:`setup_azure`. You should have:
     * meaning you can run `azcopy` and `az` commands from the command line
     * you should be logged into your azure account
 * download and install azure_dms_batch and its conda environment
+* upload the necessary packages and libraries to your Azure batch account (see :ref:`azure_upload_apps`)
 
 
 Uploading Model Input Files
 -------------------------------
 
-Your simulation input files (e.g., mesh, forcing files, etc.) should be uploaded to the Azure Batch storage account. This is typically done using the `azcopy` command line utility. For more detailed info see the `Microsoft documentation <https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json&tabs=dnf>`_.
+Your simulation input files (e.g., mesh, forcing files, etc.) should be uploaded to the Azure Batch storage account. This is typically done using the `azcopy` command line utility. The :ref:`azcopy_info` section has basic info on azcopy commands. 
 
-azcopy commands
-````````````````
-
-The basic syntax of azcopy to copy local to Azure is:
-
-    .. code-block:: console
-
-        azcopy copy "<local_directory>" "<azure_storage_account/blob_container>/?<sas_link>"
-
-and for Azure to local:
-    .. code-block:: console
-
-        azcopy copy "<azure_storage_account/blob_container>/?<sas_link>" "<local_directory>"
-
-But at the Delta Modeling Section we most often use something like:
-
-    .. code-block:: console
-
-        export AZLINK="https://<storage_account>.blob.core.windows.net/<blob_storage_container/"
-        export sas="<sas_link>"
-
-        azcopy copy "<local_directory>" "${AZLINK}<blob_storage_container>/?${sas}" --exclude-regex="outputs/.\*nc" --recursive --preserve-symlinks --dry-run
-
-where:
-
-* **local_directory** 
-    * whatever local path to your simulation directory you're uploading
-* **storage_account** 
-    * name of your Storage Account through Azure (not the same as the Batch Account name)
-* **blob_storage_container**
-    * folder path to your blob storage container
-    * this will look like a folder path (eg: project_name/simulations/)
-* **sas_link** 
-    * SAS permissions key (generated each day for security)
-    * you can generate and copy this key by navigating to your storage account in the `Azure Portal <https://portal.azure.com/>`_ \> going to "Containers" \> find storage container \> right clicking \> Generate SAS \> Change "Permissions": click all boxes \> Click "Generate SAS token and URL"
-    * copy the "Blob SAS token option"
-
-azcopy options
-```````````````
-These are some of the most frequently used azcopy flag options:
-
-* **--dry-run** 
-    * this is useful to test your command before running
-    * this flag prints a list of which files will be copied where without actually uploading/downloading anything
-* **--recursive**
-    * this will copy all files in all subdirectories
-* **--preserve-symlinks**
-    * any symbolic links will be preserved in the upload to the blob container
-* **--include-regex**
-    * use a Regular Expression to limit which files are included in the upload
-    * ex: --include-regex="\suisun_\(2\|3\|7\)/.\*\;baseline_6/.\*\"
-        * this would upload all folder contents of
-            * suisun_2/
-            * suisun_3/
-            * suisun_7/
-            * baseline_6/
-        * The **.\*** string signifies "all contents"
-* **--exclude-regex**
-    * use a Regular Expression to determine which files are excluded in the upload
-    * this is particularly useful for things like outputs \*.nc files and sflux \*.nc files which are very large and costly to upload
-    * ex: --exclude-regex="outputs.\*/.\*nc;sflux/.\*nc"
-        * this would exclude any files that end in "nc" that are found in the sflux, outputs, or outputs\* folders
+For more detailed info see the `Microsoft documentation <https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json&tabs=dnf>`_.
 
 Running Model Simulation
 -------------------------

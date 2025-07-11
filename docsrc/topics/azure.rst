@@ -100,6 +100,7 @@ Stay in the azure_dms_batch repo folder and then install using:
 
 For more information on the azure_dms_batch package, see the `README.md <https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/README.md>`_ file.
 
+.. _azure_upload_apps:
 
 Upload Applications
 ---------------------
@@ -128,7 +129,7 @@ Now use `app-packages/batch_app_package_and_upload.sh <https://github.com/CADWRD
         
         package_and_upload_telegraf "telegraf" $MY_BATCH_ACCOUNT $MY_RG
         package_and_upload_app schism_with_deps 5.11.1_alma8.7hpc_v4_mvapich2 schism_with_deps_5.11.1_alma8.7hpc_v4_mvapich2.zip  $MY_BATCH_ACCOUNT $MY_RG
-        package_and_upload_app nfs_alma 8.7 nfs_alma8.7.zip  $MY_BATCH_ACCOUNT $MY_RG
+        package_and_upload_app nfs alma8.7 nfs_alma8.7.zip  $MY_BATCH_ACCOUNT $MY_RG
         package_and_upload_batch_setup "../schism_scripts/" $MY_BATCH_ACCOUNT $MY_RG
 
 Python Packages
@@ -155,6 +156,82 @@ You can check the versions of packages and which is considered the default by go
 
 If you were to want to upload a development or updated version of any of these packages you could use a similar approach to the package_and_upload techniques, and then use the online portal to specify the default version.
 
+.. _azcopy_info:
+
+File Transfer Commands
+----------------------
+
+azcopy commands
+````````````````
+
+The basic syntax of azcopy to copy local to Azure is:
+
+    .. code-block:: console
+
+        azcopy copy "<local_directory>" "<azure_storage_account/blob_container>/?<sas_link>"
+
+and for Azure to local:
+    .. code-block:: console
+
+        azcopy copy "<azure_storage_account/blob_container>/?<sas_link>" "<local_directory>"
+
+But at the Delta Modeling Section we most often use something like:
+
+    .. code-block:: console
+
+        export AZLINK="https://<storage_account>.blob.core.windows.net/<blob_storage_container/"
+        export sas="<sas_link>"
+
+        azcopy copy "<local_directory>" "${AZLINK}<blob_storage_container>/?${sas}" --exclude-regex="outputs/.\*nc" --recursive --preserve-symlinks --dry-run
+
+where:
+
+* **local_directory** 
+    * whatever local path to your simulation directory you're uploading
+* **storage_account** 
+    * name of your Storage Account through Azure (not the same as the Batch Account name)
+* **blob_storage_container**
+    * folder path to your blob storage container
+    * this will look like a folder path (eg: project_name/simulations/)
+* **sas_link** 
+    * SAS permissions key (generated each day for security)
+
+.. _azuresas:
+
+Generating SAS Links
+:::::::::::::::::::::
+
+    * you can generate and copy the SAS key by navigating to your storage account in the `Azure Portal <https://portal.azure.com/>`_ \> going to "Containers" 
+    * Click on the three dots to the right of your blob container \> Generate SAS 
+    * On the "Permissions" drop-down: click all boxes 
+    * Click "Generate SAS token and URL"
+    * copy the "Blob SAS token option"
+
+azcopy options
+```````````````
+These are some of the most frequently used azcopy flag options:
+
+* **--dry-run** 
+    * this is useful to test your command before running
+    * this flag prints a list of which files will be copied where without actually uploading/downloading anything
+* **--recursive**
+    * this will copy all files in all subdirectories
+* **--preserve-symlinks**
+    * any symbolic links will be preserved in the upload to the blob container
+* **--include-regex**
+    * use a Regular Expression to limit which files are included in the upload
+    * ex: --include-regex="\suisun_\(2\|3\|7\)/.\*\;baseline_6/.\*\"
+        * this would upload all folder contents of
+            * suisun_2/
+            * suisun_3/
+            * suisun_7/
+            * baseline_6/
+        * The **.\*** string signifies "all contents"
+* **--exclude-regex**
+    * use a Regular Expression to determine which files are excluded in the upload
+    * this is particularly useful for things like outputs \*.nc files and sflux \*.nc files which are very large and costly to upload
+    * ex: --exclude-regex="outputs.\*/.\*nc;sflux/.\*nc"
+        * this would exclude any files that end in "nc" that are found in the sflux, outputs, or outputs\* folders
 
 References
 -----------
