@@ -67,10 +67,10 @@ boundary_list = [
     "midr_culvert_r",
     "midr_weir",
     "oldr_head_barrier",
-    "oldr_tracy_culvert",
-    "oldr_tracy_weir",
-    "tom_paine_sl_culvert",
-    "west_false_river_barrier_leakage",
+    # "oldr_tracy_culvert",
+    # "oldr_tracy_weir",
+    # "tom_paine_sl_culvert",
+    # "west_false_river_barrier_leakage",
 ]
 
 bc_types = {
@@ -379,7 +379,7 @@ def get_boundary_data(
         out_df["ndo"] = rhistinterp(ndoi_df, out_freq)
     # Get the tidal boundary condition data
     if "tide" in boundary_list:
-        print("Reading tidal boundary")
+        print("\tReading tidal boundary")
         elev_df = xr.open_dataset(
             elev2d_file
         )  # shape is elev_df.time_series[timesteps, nOpenBndNodes, nLevels, nComponents]
@@ -454,7 +454,7 @@ def get_boundary_data(
             out_df[f"{gfn}_up"] = up_df
             out_df[f"{gfn}_down"] = down_df
 
-    print("Done Collecting boundary data.\n\n")
+    print("Done collecting boundary data.\n\n")
 
     return out_df
 
@@ -647,6 +647,7 @@ def plot_bds_boundaries(
     help="Output data frequency. Default is one day.",
 )
 @click.argument("extra", nargs=-1)
+@click.help_option("-h", "--help")
 def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name, out_freq, extra=()):
     """
     CLI to plot boundary data from observed and/or simulation directories.
@@ -706,4 +707,41 @@ def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name, out_freq, extra=()
 
 
 if __name__ == "__main__":
+    # os.chdir("/scratch/projects/summer_x2_2025/simulations/")
+    # sim_dirs = ["2016_noaction"]
+    # html_name = "_test.html"
+
+    # scenario_names = sim_dirs
+    # sim_dirs = [os.path.abspath(sim_dir) for sim_dir in sim_dirs]
+    # html_name = os.path.abspath(html_name)
+    # os.chdir(sim_dirs[0])  # Ensure cwd is correct
+    # params = parms.read_params("./param.nml")
+    # time_basis = params.run_start
+    # rndays = params["rnday"]
+    # end_date = time_basis + dt.timedelta(days=rndays)
+    # bc_data_list = []
+    # scenario_list = []
+    # envvar = {}
+    # # Observed data
+    # if True:
+    #     obs_data = get_observed_data(
+    #         period={"begin": time_basis, "end": end_date}, **envvar
+    #     )
+    #     bc_data_list.append(obs_data)
+    #     scenario_list.append("Observed")
+    # # Simulation data
+    # for i, sim_dir in enumerate(sim_dirs):
+    #     os.chdir(sim_dir)
+    #     # Pass envvar as keyword arguments to get_boundary_data
+    #     bc_data = get_boundary_data(**envvar)
+    #     bc_data_list.append(bc_data)
+    #     if scenario_names and len(scenario_names) > i:
+    #         scenario_list.append(scenario_names[i])
+    #     else:
+    #         scenario_list.append(os.path.basename(os.path.normpath(sim_dir)))
+    # # Plot
+    # plot_bds_boundaries(
+    #     bc_data_list, scenario_list, write_html=True, html_name=html_name
+    # )
+
     plot_bds_bc_cli()
