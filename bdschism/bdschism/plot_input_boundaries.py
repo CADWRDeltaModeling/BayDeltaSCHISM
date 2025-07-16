@@ -251,10 +251,15 @@ def get_date_data(
     out_freq="1D",
     datetime_idx=None,
 ):
+    if isinstance(structures[0], dict):
+        struct = next(
+            (s for s in structures if s["name"] == gate_name), None
+        )  # structure object that corresponds to gate_name
+    else:
+        struct = next(
+            (s for s in structures if s.name == gate_name), None
+        )  # structure object that corresponds to gate_name
 
-    struct = next(
-        (s for s in structures if s["name"] == gate_name), None
-    )  # structure object that corresponds to gate_name
     if struct is None:
         raise ValueError(f"{gate_name} is not found in hydraulics.in file...")
 
@@ -428,7 +433,7 @@ def get_boundary_data(
 
     # Get gate data
     if any(b in bc_types["gate"] for b in boundary_list):
-        if struct_fn.endswith(".inp"):
+        if struct_fn.endswith(".in"):
             schinp = SchismInput(None)
             structure_reader = Struct(schinp)
             structure_reader.read(struct_fn)
@@ -536,7 +541,7 @@ def plot_bds_boundaries(
                     y=bc_data[f"{col}_up"],
                     name=scenario,
                     line=dict(color=color),
-                    hovertemplate=f"{scenario}<br>%{{y:.2f}} cfs<extra></extra>",
+                    hovertemplate=f"{scenario}<br>%{{y:.2f}} upstream<extra></extra>",
                     showlegend=show_legend,  # Hide the legend
                     legendgroup=scenario,
                 )
@@ -546,7 +551,7 @@ def plot_bds_boundaries(
                     y=bc_data[f"{col}_down"],
                     name=scenario,
                     line=dict(color=color),
-                    hovertemplate=f"{scenario}<br>%{{y:.2f}} cfs<extra></extra>",
+                    hovertemplate=f"{scenario}<br>%{{y:.2f}} downstream<extra></extra>",
                     showlegend=False,  # Hide the legend
                     legendgroup=scenario,
                 )
@@ -722,10 +727,13 @@ if __name__ == "__main__":
     # bc_data_list = []
     # scenario_list = []
     # envvar = {}
+    # boundary_list = ["ccfb_gate"]  # boundary_list
     # # Observed data
-    # if True:
+    # if False:
     #     obs_data = get_observed_data(
-    #         period={"begin": time_basis, "end": end_date}, **envvar
+    #         period={"begin": time_basis, "end": end_date},
+    #         boundary_list=boundary_list,
+    #         **envvar,
     #     )
     #     bc_data_list.append(obs_data)
     #     scenario_list.append("Observed")
@@ -733,7 +741,7 @@ if __name__ == "__main__":
     # for i, sim_dir in enumerate(sim_dirs):
     #     os.chdir(sim_dir)
     #     # Pass envvar as keyword arguments to get_boundary_data
-    #     bc_data = get_boundary_data(**envvar)
+    #     bc_data = get_boundary_data(boundary_list=boundary_list, **envvar)
     #     bc_data_list.append(bc_data)
     #     if scenario_names and len(scenario_names) > i:
     #         scenario_list.append(scenario_names[i])
