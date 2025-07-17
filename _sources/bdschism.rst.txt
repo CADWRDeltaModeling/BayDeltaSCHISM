@@ -116,14 +116,6 @@ bdschism.profile\_plot module
    :undoc-members:
    :show-inheritance:
 
-bdschism.read\_dss module
--------------------------
-
-.. automodule:: bdschism.read_dss
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 bdschism.run\_sequence module
 -----------------------------
 
