@@ -12,7 +12,6 @@ dependencies:
   - libgdal
   - pyogrio
   - pydelmod
-  - pyhecdss
   - pandas>=2            # Below here minimum versions are to reduce solve space
   - numpy>=2.0
   - xarray>=2022.11
