@@ -92,6 +92,14 @@ bdschism.parse\_cu module
    :undoc-members:
    :show-inheritance:
 
+bdschism.plot\_input\_boundaries module
+---------------------------------------
+
+.. automodule:: bdschism.plot_input_boundaries
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 bdschism.port\_boundary module
 ------------------------------
 
@@ -104,14 +112,6 @@ bdschism.profile\_plot module
 -----------------------------
 
 .. automodule:: bdschism.profile_plot
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-bdschism.read\_dss module
--------------------------
-
-.. automodule:: bdschism.read_dss
    :members:
    :undoc-members:
    :show-inheritance:
