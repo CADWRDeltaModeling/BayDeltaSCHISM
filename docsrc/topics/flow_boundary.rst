@@ -11,21 +11,21 @@ on the topic.
 
 
 Where are the data?
-###################
+===================
 
 In BayDeltaSCHISM/data we provide flux.th, salinity.th (maps to SAL_1.th) and temperature.th (maps to TEM_1.th) that go back to roughly
 2008. Before that, operations were different and some of our better data sources were unavailable.
 
 
 Clipping to run dates and conversion to elapsed time
-####################################################
+====================================================
 
 The .th format uses elapsed seconds from run start for time and has no headers. Our data are provided in what we call dated format. We mix it down before
 the run.
 
 
 What if I have to add or move a boundary?
-#########################################
+==========================================
 
 Moving the grid relative to the boundary or a boundary relative to the grid has consequences in some far flung places. 
 You'll want to cover our :ref:`checklist <change_mesh>` of consequences and consider which apply to your case.
@@ -35,7 +35,7 @@ inject a column into the flux.th file.
 
 
 Adding Data From Other Sources (e.g. Forecasts, other models)
-#############################################################
+==============================================================
 
 
 The :file:`port_boundary.py` script in BayDeltaSCHISM/bdschism/bdschism/  contains utilities 
