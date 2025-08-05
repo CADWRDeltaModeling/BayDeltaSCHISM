@@ -418,6 +418,7 @@ def calc_net_calsim(
         start_date=start_date,
         end_date=end_date,
         dt=dt,
+        **kwargs,
     )
     net.columns = ["net"]
     if isinstance(net, pd.DataFrame) and net.shape[1] == 1:
