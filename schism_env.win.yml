@@ -6,7 +6,7 @@ channels:
 dependencies:
   - python>=3.9, <=3.12     # 3.13 is the highest that pyhecdss supports
   - schimpy>=1.12.1         # Recommended for compatibiltiy with current code
-  - vtools3>=3.7.5
+  - vtools3>=3.9
   - dms-datastore>=0.1.0
   - dynaconf
   - libgdal
