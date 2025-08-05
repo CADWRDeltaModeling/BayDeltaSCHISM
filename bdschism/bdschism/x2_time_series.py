@@ -108,19 +108,19 @@ def process_x2(
         f"salt_data_file: {salt_data_file} model_start_date={model_start_date} output_file={output_file} model_extract_date={model_extract_date}"
     )
     ts_out = pd.read_csv(salt_data_file, sep=r"\s+", header=None, index_col=0)
-    delta_t = round((ts_out.index[1] - ts_out.index[0]) * 24 * 60)
-    freqstr = f"{int(delta_t)}min"
-    print(delta_t)
-    if delta_t not in [1, 2, 3, 5, 6, 10, 15, 20, 30, 60, 120]:
-        raise ValueError(f"Unexpected time step in file of {delta_t} minutes")
-    # print(f"Detected frequency = {freqstr}")
-    dr = pd.date_range(
-        start=model_start_date + pd.Timedelta(days=ts_out.index[0]),
-        periods=ts_out.shape[0],
-        freq=freqstr,
-    )
-    ts_out.index = dr.round("min")
-    ts_out = ts_out.resample("1D").mean()
+    if len(ts_out) > 1:
+        delta_t = round((ts_out.index[1] - ts_out.index[0]) * 24 * 60)
+        freqstr = f"{int(delta_t)}min"
+        print(delta_t)
+        if delta_t not in [1, 2, 3, 5, 6, 10, 15, 20, 30, 60, 120]:
+            raise ValueError(f"Unexpected time step in file of {delta_t} minutes")
+        dr = pd.date_range(
+            start=model_start_date + pd.Timedelta(days=ts_out.index[0]),
+            periods=ts_out.shape[0],
+            freq=freqstr,
+        )
+        ts_out.index = dr.round("min")
+        ts_out = ts_out.resample("1D").mean()
 
     if ts_out.index[0].to_pydatetime() != model_extract_date:
         raise ValueError(
