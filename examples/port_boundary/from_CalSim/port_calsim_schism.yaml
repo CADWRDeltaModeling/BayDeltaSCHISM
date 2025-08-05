@@ -1,11 +1,11 @@
 
 config:
-  version: rt_v1
-  out_dir: ${proj_repo}/model/schism/roundtrip/${version}/
-  bds_home: path/to/BayDeltaSCHISM
-  proj_repo: path/to/project/repo
-  calsim_dss: ${proj_repo}/model/calsim/9.3.1_danube_adj/DSS/output/DCR2023_DV_9.3.1_v2a_Danube_Adj_v1.8.dss
-  dsm2_dir: ${proj_repo}/model/dsm2/2021DSM2FP_202301/timeseries
+  version: slr-base
+  out_dir: ${dsp_code}/model/schism/roundtrip/${version}/
+  bds_home: /home/tomkovic/BayDeltaSCHISM # local: D:/python/repositories/BayDeltaSCHISM
+  dsp_code: /scratch/tomkovic/DSP_code # Local: D:/projects/delta_salinity/DSP_code
+  calsim_dss: ${dsp_code}/model/calsim/rma_roundtrip/schism-${version}/DSS/output/DCR2023_DV_9.3.1_Danube_Adj_v1.8.dss
+  dsm2_dir: ${dsp_code}/model/dsm2/2021DSM2FP_202301/timeseries
 param:
   boundary_kinds: [flow,dcc_gate,smscg_radial_gate,smscg_boatlock_gate,smscg_flashboard_gate,cu] #[flow,dcc_gate,smscg_radial_gate,smscg_boatlock_gate,smscg_flashboard_gate,cu,salt,temp]
   overwrite: true # if true, overwrite the existing boundary inputs (should be false for forecast)
@@ -16,17 +16,8 @@ file:
   schism_flux_file: ${bds_home}/data/time_history/flux.th
   schism_salt_file: ${bds_home}/data/time_history/salt.th
   schism_temp_file: ${bds_home}/data/time_history/temp.th
-  schism_dcc_gate_file: ${bds_home}/data/time_history/delta_cross_channel.th
-  schism_smscg_radial_gate_file: ${bds_home}/data/time_history/montezuma_radial.th
-  schism_smscg_boatlock_gate_file: ${bds_home}/data/time_history/montezuma_boat_lock.th
-  schism_smscg_flashboard_gate_file: ${bds_home}/data/time_history/montezuma_flash.th
-  out_file_flux: ${out_dir}/flux.${version}.dated.th 
-  out_file_salt: ${out_dir}/salt.${version}.dated.th 
-  out_file_temp: ${out_dir}/temp.${version}.dated.th 
-  out_file_dcc_gate: ${out_dir}/delta_cross_channel.${version}.dated.th 
-  out_file_smscg_radial_gate: ${out_dir}/montezuma_radial.${version}.dated.th 
-  out_file_smscg_boatlock_gate: ${out_dir}/montezuma_boat_lock.${version}.dated.th 
-  out_file_smscg_flashboard_gate: ${out_dir}/montezuma_flash.${version}.dated.th 
+  schism_gate_dir: ${bds_home}/data/time_history
+  out_file_suffix: .${alt_name}.dated
 cu:
   process: orig_pert_to_schism # net_diff_to_schism or orig_pert_to_schism
   original_type: dsm2
@@ -41,4 +32,7 @@ cu:
   end_date: ${ed}
   
 # Use:
-# bds port_bc port_calsim_schism.yaml -- --sd 2018/3/1 --ed 2019/4/1
+# bds port_bc port_calsim_schism.slr-base.yaml -- --sd 2015/2/18 --ed 2016/5/15
+# To plot the boundaries, go to out_dir and run:
+# cd /scratch/tomkovic/DSP_code/model/schism/roundtrip/slr-base
+# bds plot_bds_bc -o --sim-dirs ./ --html-name bds_input_boundaries.slr-base.html -- --flux_file flux.slr-base.dated.th --vsource_file vsource.slr-base.dated.th --vsink_file vsink.slr-base.dated.th
