@@ -179,7 +179,7 @@ def get_observed_data(
         tide_df = get_observed_tide(period=period) * M2FT
         tide_df.index = tide_df.index.to_period()
 
-        obs_df["tide"] = rhistinterp(tide_df.mean(axis=1), out_freq)
+        obs_df["tide"] = rhistinterp(tide_df.mean(axis=1), out_freq, p=100)
 
     return obs_df
 
@@ -359,7 +359,7 @@ def get_boundary_data(
             search_term="delta",
         )
         dcu_df.index = dcu_df.index.to_period()
-        dcu_df = rhistinterp(dcu_df, out_freq)
+        dcu_df = rhistinterp(dcu_df, out_freq, p=100)
         # Convert to cfs
         dcu_df = dcu_df * CMS2CFS
 
@@ -381,7 +381,7 @@ def get_boundary_data(
         # Convert to cfs
         ndoi_df = ndoi_df * CMS2CFS
 
-        out_df["ndo"] = rhistinterp(ndoi_df, out_freq)
+        out_df["ndo"] = rhistinterp(ndoi_df, out_freq, p=100)
     # Get the tidal boundary condition data
     if "tide" in boundary_list:
         print("\tReading tidal boundary")
@@ -400,7 +400,7 @@ def get_boundary_data(
         # Convert to ft
         tidal_bc_series = tidal_bc_series * M2FT
 
-        out_df["tide"] = rhistinterp(tidal_bc_series, out_freq)
+        out_df["tide"] = rhistinterp(tidal_bc_series, out_freq, p=100)
 
     # Get the flux data
     if any(b in bc_types["flux"] for b in boundary_list) | ("flux" in boundary_list):
@@ -413,7 +413,7 @@ def get_boundary_data(
             end_date=end_date,
         )
         flux_df.index = flux_df.index.to_period()
-        flux_df = rhistinterp(flux_df, out_freq)
+        flux_df = rhistinterp(flux_df, out_freq, p=100)
         # Subset the flux DataFrame to only the boundaries in boundary_list
         if "flux" in boundary_list:
             flux_df = flux_df[
