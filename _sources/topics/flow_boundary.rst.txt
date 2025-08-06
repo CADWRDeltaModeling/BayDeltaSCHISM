@@ -51,6 +51,7 @@ You can find an example to take outputs `from CalSim DSS <https://github.com/CAD
 
 
   **File Descriptions**
+  ----------------------
 
     :file:`port_boundary.py`: main script
   
@@ -59,6 +60,7 @@ You can find an example to take outputs `from CalSim DSS <https://github.com/CAD
     :file:`port_boundary.yaml`: configuration file 
   
   **Configuring the mapping file**
+  -----------------------------------
 
   The mapping file :file:`port_boundary_map.csv` is the main configuration file in which the SCHISM variables are mapped to their respective substitution variables and sources.
   The mapping file can use ${} classifiers to set values with either a command line-type variable dictionary or by using values set in the yaml file's config section.
@@ -148,3 +150,6 @@ You can find an example to take outputs `from CalSim DSS <https://github.com/CAD
 
     
   **Configuring the yaml file**
+  -----------------------------
+
+  

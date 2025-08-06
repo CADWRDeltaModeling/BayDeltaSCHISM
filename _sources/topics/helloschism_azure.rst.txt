@@ -114,7 +114,7 @@ You'll need to go to the Azure portal, to your batch account, and then to Settin
 
 From here you'll want to click "Request Quota Increase". Then you'll do the following to get this message to "Manage Quota".
 
-.. figure:: ../img/batch-quota.png
+.. figure:: ../img/batch_quota.png
    :class: with-border
    
    Batch quota request fields to get to "Manage Quota"
