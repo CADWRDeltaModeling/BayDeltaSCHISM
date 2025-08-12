@@ -138,6 +138,7 @@ def interpolate_uv3d(
     os.system(command)
 
     if write_clinic == True:
+        print(f"'write_clinic'=True. Moving {os.path.join(interp_dir, 'uv3D.th.nc')} to {os.path.join(fg_dir, 'uv3D.th.nc')}")
         shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(fg_dir, "uv3D.th.nc"))
 
 @click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
