@@ -24,9 +24,9 @@ cu:
   # consumptive use specifications are shown here
   # this section is only useful if you are porting consumptive use to SCHISM
   process: orig_pert_to_schism # net_diff_to_schism or orig_pert_to_schism
-  original_type: dsm2 # dsm2, calsim, schism, csv
+  original_type: dsm2 # dsm2, calsim, obs_schism, csv
   original_filename: ${project_dir}/dsm2_dcd_example.dss # parse_cu will look to this consumptive use as the basis
-  perturbed_type: calsim # dsm2, calsim, schism, csv
+  perturbed_type: calsim # dsm2, calsim, obs_schism, csv
   perturbed_filename: ${calsim_dss} # parse_cu will look to this consumptive use to difference against the original 
   schism_vsource: ${bds_home}/data/channel_depletion/vsource_dated.th # used for the locations and headers to use for vsource
   schism_vsink: ${bds_home}/data/channel_depletion/vsink_dated.th # used for the locations and headers to use for vsource

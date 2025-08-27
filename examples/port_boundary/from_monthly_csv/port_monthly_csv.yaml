@@ -1,0 +1,56 @@
+# This config yaml is usable as-is in this example directory
+config:
+  # all items in config can be used as variables throughout this yaml as well as the source_map_file
+  version: monthly_flood # useful but not necessary. If it's relevant to your project, could be handy
+  out_dir: ${project_dir}/${version}/ # where the schism input files will be stored to from port_boundary
+  bds_home: ../../../ # where to find the BayDeltaSCHISM folder
+  project_dir: ./ # useful but not necessary
+param:
+  # determine which kinds of boundaries will be ported, all must be represented in the source_map_file
+  boundary_kinds: [flow] #[flow,delta_cross_channel,montezuma_boat_lock,montezuma_flash,montezuma_radial,cu,salt,temp]
+  overwrite: true # if true, overwrite the existing boundary inputs (should be false for forecast)
+  start_date: '2024/9/30' #YYYY,MM,DD - but can be filled using --sd flags 
+  end_date: '2024/11/30' #YYYY,MM,DD - but can be filled using --sd flags 
+file:
+  # show which files will be used for headers etc as well as what the suffix of the output files will be
+  source_map_file: port_boundary_map.csv # ESSENTIAL. This is what determines where the boundaries' sources are as well as any interpolation or math will be performed on them
+  schism_flux_file: ./data/flux.th # the basis for the flux timeseries, any un-listed columns in source_map_file will be kept as the original column in the flux.th file.
+  schism_flux_file: ${bds_home}/data/time_history/flux.th # the basis for the flux timeseries, any un-listed columns in source_map_file will be kept as the original column in the flux.th file.
+  schism_salt_file: ${bds_home}/data/time_history/salt.th # the basis for the salt timeseries
+  schism_temp_file: ${bds_home}/data/time_history/temp.th # the basis for the temperature timeseries
+  schism_gate_dir: ${bds_home}/data/time_history # where to find any gate files
+  out_file_suffix: ${version}.dated # the suffix of the final SCHISM input .th files
+
+# Use:
+# bds port_bc port_monthly_csv.yaml
+
+
+# list of all relevant CalSim and DSM2 variables (for reference - not needed)
+calsimvars:
+#  - D_RSL004_CCC004 # CCWD Rock
+#  - D_OMR021_ORP000 # CCWD OLD
+#  - D_VCT002_ORP000 # CCWD Victoria
+#  - C_CAA003 # SWP Banks PP 
+#  - C_DMC003 # CVP Jones PP
+#  - C_AMR004 # American
+#  - C_SAC063 # Sacramento d/s of American
+#  - C_SJR070 # SJR at Vernalis
+#  - C_MOK019 # Mokelumne
+#  - C_CLV004 # Calaveras
+#  - D_BKR004_NBA009 # Barker Sl PP
+#  - C_YBP002 # Yolo Bypass
+
+dsm2vars:
+#  - RSAC155
+#  - RSAN112
+#  - BYOLO040
+#  - RCSM075
+#  - RMKL070
+#  - RCAL009
+#  - CHWST000
+#  - CHDMC004
+#  - SLBAR002
+#  - CHCCC006
+#  - CHSWP003
+#  - CHVCT001
+#  - ROLD034

@@ -1,23 +1,28 @@
+# This config yaml is usable as-is in this example directory
 config:
-  bds_home: D:/python/repositories/BayDeltaSCHISM
-  dsm2_dir: D:/dsm2/DSM2v822/timeseries
-  out_dir: ./output
-  html_name: _test_port_from_csv.html
+  # all items in config can be used as variables throughout this yaml as well as the source_map_file
+  bds_home: ../../../ # where to find the BayDeltaSCHISM folder
+  project_dir: ./ # useful but not necessary
+  out_dir: ./${alt_name} # where the schism input files will be stored to from port_boundary
+  html_name: _test_port_from_csv.html # used if the -p (plotting) flag is used
 param:
+  # determine which kinds of boundaries will be ported, all must be represented in the source_map_file
   boundary_kinds: [flow,delta_cross_channel,montezuma_radial,montezuma_boat_lock,montezuma_flash,cu] #[flow,ec,temp,dcc_gate]
   #boundary_kinds: [cu] #[flow,ec,temp,dcc_gate]
   overwrite: true # if true, overwrite the existing boundary inputs (should be false for forecast)
-  start_date: ${sd} #YYYY,MM,DD
-  end_date: ${ed} #YYYY,MM,DD
-dir: ./ # specify where port_boundary will be looking for the files under "file:""
+  start_date: ${sd} #YYYY,MM,DD - but can be filled using --sd flags (see example at bottom)
+  end_date: ${ed} #YYYY,MM,DD - but can be filled using --sd flags (see example at bottom)
 file:
-  source_map_file: port_boundary_map_flows_dcc.csv
-  schism_flux_file: ${bds_home}/data/time_history/flux.th
-  schism_salt_file: ${bds_home}/data/time_history/salt.th
-  schism_temp_file: ${bds_home}/data/time_history/temp.th
-  schism_gate_dir: ${bds_home}/data/time_history
-  out_file_suffix: .${alt_name}.dated
+  # show which files will be used for headers etc as well as what the suffix of the output files will be
+  source_map_file: ./port_boundary_map_flows_dcc.csv # ESSENTIAL. This is what determines where the boundaries' sources are as well as any interpolation or math will be performed on them
+  schism_flux_file: ${bds_home}/data/time_history/flux.th # the basis for the flux timeseries, any un-listed columns in source_map_file will be kept as the original column in the flux.th file.
+  schism_salt_file: ${bds_home}/data/time_history/salt.th # the basis for the salt timeseries
+  schism_temp_file: ${bds_home}/data/time_history/temp.th # the basis for the temperature timeseries
+  schism_gate_dir: ${bds_home}/data/time_history # where to find any gate files
+  out_file_suffix: ${alt_name}.dated # the suffix of the final SCHISM input .th files
 cu:
+  # consumptive use specifications are shown here
+  # this section is only useful if you are porting consumptive use to SCHISM
   process: orig_pert_to_schism # net_diff_to_schism or orig_pert_to_schism
   original_type: obs_schism
   original_filename: None
