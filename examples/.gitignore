@@ -1,2 +1,7 @@
 **/output*/*
 *.html
+
+# port boundary stuff
+port_boundary/**/*.dsc
+port_boundary/**/*.log
+port_boundary/*/*/*

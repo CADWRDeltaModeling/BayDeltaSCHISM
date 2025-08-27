@@ -1,38 +1,42 @@
-
+# This config yaml is usable as-is in this example directory
 config:
-  version: slr-base
-  out_dir: ${dsp_code}/model/schism/roundtrip/${version}/
-  bds_home: /home/tomkovic/BayDeltaSCHISM # local: D:/python/repositories/BayDeltaSCHISM
-  dsp_code: /scratch/tomkovic/DSP_code # Local: D:/projects/delta_salinity/DSP_code
-  calsim_dss: ${dsp_code}/model/calsim/rma_roundtrip/schism-${version}/DSS/output/DCR2023_DV_9.3.1_Danube_Adj_v1.8.dss
-  dsm2_dir: ${dsp_code}/model/dsm2/2021DSM2FP_202301/timeseries
+  # all items in config can be used as variables throughout this yaml as well as the source_map_file
+  version: bdschism_demo # useful but not necessary. If it's relevant to your project, could be handy
+  out_dir: ${project_dir}/${version}/ # where the schism input files will be stored to from port_boundary
+  bds_home: ../../../ # where to find the BayDeltaSCHISM folder
+  project_dir: ./ # useful but not necessary
+  calsim_dss: ${project_dir}/calsim_output_example.dss # used in the cu section below as well as in the source_map_file
 param:
-  boundary_kinds: [flow,dcc_gate,smscg_radial_gate,smscg_boatlock_gate,smscg_flashboard_gate,cu] #[flow,dcc_gate,smscg_radial_gate,smscg_boatlock_gate,smscg_flashboard_gate,cu,salt,temp]
+  # determine which kinds of boundaries will be ported, all must be represented in the source_map_file
+  boundary_kinds: [flow,delta_cross_channel,montezuma_boat_lock,montezuma_flash,montezuma_radial,cu] #[flow,delta_cross_channel,montezuma_boat_lock,montezuma_flash,montezuma_radial,cu,salt,temp]
   overwrite: true # if true, overwrite the existing boundary inputs (should be false for forecast)
-  start_date: ${sd} #YYYY,MM,DD
-  end_date: ${ed} #YYYY,MM,DD
+  start_date: ${sd} #YYYY,MM,DD - but can be filled using --sd flags (see example at bottom)
+  end_date: ${ed} #YYYY,MM,DD - but can be filled using --sd flags (see example at bottom)
 file:
-  source_map_file: ./port_boundary_map_calsim_schism.csv
-  schism_flux_file: ${bds_home}/data/time_history/flux.th
-  schism_salt_file: ${bds_home}/data/time_history/salt.th
-  schism_temp_file: ${bds_home}/data/time_history/temp.th
-  schism_gate_dir: ${bds_home}/data/time_history
-  out_file_suffix: .${alt_name}.dated
+  # show which files will be used for headers etc as well as what the suffix of the output files will be
+  source_map_file: ./port_boundary_map_calsim_schism.csv # ESSENTIAL. This is what determines where the boundaries' sources are as well as any interpolation or math will be performed on them
+  schism_flux_file: ${bds_home}/data/time_history/flux.th # the basis for the flux timeseries, any un-listed columns in source_map_file will be kept as the original column in the flux.th file.
+  schism_salt_file: ${bds_home}/data/time_history/salt.th # the basis for the salt timeseries
+  schism_temp_file: ${bds_home}/data/time_history/temp.th # the basis for the temperature timeseries
+  schism_gate_dir: ${bds_home}/data/time_history # where to find any gate files
+  out_file_suffix: ${version}.dated # the suffix of the final SCHISM input .th files
 cu:
+  # consumptive use specifications are shown here
+  # this section is only useful if you are porting consumptive use to SCHISM
   process: orig_pert_to_schism # net_diff_to_schism or orig_pert_to_schism
-  original_type: dsm2
-  original_filename: ${dsm2_dir}/DCD_hist_Lch5.dss
-  perturbed_type: calsim
-  perturbed_filename: ${calsim_dss}
-  schism_vsource: ${bds_home}/data/channel_depletion/vsource_dated.th
-  schism_vsink: ${bds_home}/data/channel_depletion/vsink_dated.th
-  out_dir: ${out_dir}
-  version: ${version}
-  start_date: ${sd}
-  end_date: ${ed}
+  original_type: dsm2 # dsm2, calsim, schism, csv
+  original_filename: ${project_dir}/dsm2_dcd_example.dss # parse_cu will look to this consumptive use as the basis
+  perturbed_type: calsim # dsm2, calsim, schism, csv
+  perturbed_filename: ${calsim_dss} # parse_cu will look to this consumptive use to difference against the original 
+  schism_vsource: ${bds_home}/data/channel_depletion/vsource_dated.th # used for the locations and headers to use for vsource
+  schism_vsink: ${bds_home}/data/channel_depletion/vsink_dated.th # used for the locations and headers to use for vsource
+  out_dir: ${out_dir} # where the consumptive use files will be written (useful if not running full port_boundary)
+  version: ${version} # used in naming the output th files (e.g. vsource.bdschism_demo.dated.th)
+  start_date: ${sd} #YYYY,MM,DD - but can be filled using --sd flags (see example at bottom)
+  end_date: ${ed} #YYYY,MM,DD - but can be filled using --sd flags (see example at bottom)
   
 # Use:
-# bds port_bc port_calsim_schism.slr-base.yaml -- --sd 2015/2/18 --ed 2016/5/15
+# bds port_bc port_calsim_schism.yaml -- --sd 2015/2/18 --ed 2016/5/15
 # To plot the boundaries, go to out_dir and run:
-# cd /scratch/tomkovic/DSP_code/model/schism/roundtrip/slr-base
-# bds plot_bds_bc -o --sim-dirs ./ --html-name bds_input_boundaries.slr-base.html -- --flux_file flux.slr-base.dated.th --vsource_file vsource.slr-base.dated.th --vsink_file vsink.slr-base.dated.th
+# bdschism_demo
+# bds plot_bds_bc -o --sim-dirs ./ --html-name bds_input_boundaries.html -- --flux_file flux.dated.th --vsource_file vsource.dated.th --vsink_file vsink.dated.th
