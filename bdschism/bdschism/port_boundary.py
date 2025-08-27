@@ -199,7 +199,9 @@ gate_names = [
 ]
 
 
-def create_schism_bc(config_yaml, plot=False, kwargs={}):
+def create_schism_bc(config_yaml, plot=False, kwargs=None):
+    if kwargs is None:
+        kwargs = {}
     config = yaml_from_file(config_yaml, envvar=kwargs)
     plot_dict = {"boundary_list": []}  # For plotting if plot=True
 
