@@ -139,7 +139,10 @@ def get_required_files(
         files.append(struct_fn)
         for gfn in bc_types["gate"]:
             if gfn in boundary_list:
-                files.append(f"{gate_dir}/{gfn}{gate_suffix}.th")
+                if gate_suffix == "":
+                    files.append(f"{gate_dir}/{gfn}{gate_suffix}.th")
+                else:
+                    files.append(f"{gate_dir}/{gfn}.{gate_suffix}.th")
     if not files:
         raise ValueError("No valid boundary types provided in boundary_list.")
 
@@ -446,10 +449,14 @@ def get_boundary_data(
 
         for gfn in [g for g in bc_types["gate"] if g in boundary_list]:
             print(f"\t\tGetting gate {gfn}..")
+            if gate_suffix == "":
+                gate_fn = f"{gfn}{gate_suffix}.th"
+            else:
+                gate_fn = f"{gfn}.{gate_suffix}.th"
             up_df, down_df = get_date_data(
                 gfn,
                 structures,
-                gate_fn=os.path.join(gate_dir, f"{gfn}{gate_suffix}.th"),
+                gate_fn=os.path.join(gate_dir, gate_fn),
                 gate_head=os.path.join(bds_dir, f"./data/time_history/{gfn}.th"),
                 time_basis=time_basis,
                 elapsed_unit=elapsed_unit,
