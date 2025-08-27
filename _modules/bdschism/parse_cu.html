@@ -1392,10 +1392,14 @@ window.addEventListener("load", () => mermaid.run());
 
     <span class="c1"># Optionals from envvar or default</span>
     <span class="n">start_date</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">cu_inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start_date&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">cu_inputs</span> <span class="ow">and</span> <span class="s2">&quot;start_date&quot;</span> <span class="ow">in</span> <span class="n">cu_inputs</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">cu_inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start_date&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">cu_inputs</span> <span class="ow">and</span> <span class="s2">&quot;start_date&quot;</span> <span class="ow">in</span> <span class="n">cu_inputs</span>
+        <span class="k">else</span> <span class="kc">None</span>
     <span class="p">)</span>
     <span class="n">end_date</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">cu_inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;end_date&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">cu_inputs</span> <span class="ow">and</span> <span class="s2">&quot;end_date&quot;</span> <span class="ow">in</span> <span class="n">cu_inputs</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">cu_inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;end_date&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">cu_inputs</span> <span class="ow">and</span> <span class="s2">&quot;end_date&quot;</span> <span class="ow">in</span> <span class="n">cu_inputs</span>
+        <span class="k">else</span> <span class="kc">None</span>
     <span class="p">)</span>
     <span class="n">dt</span> <span class="o">=</span> <span class="n">cu_inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dt&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">cu_inputs</span> <span class="ow">and</span> <span class="s2">&quot;dt&quot;</span> <span class="ow">in</span> <span class="n">cu_inputs</span> <span class="k">else</span> <span class="n">days</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
