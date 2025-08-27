@@ -705,10 +705,14 @@ def orig_pert_to_schism_dcd_yaml(yaml_fn, envvar=None):
 
     # Optionals from envvar or default
     start_date = (
-        cu_inputs.get("start_date") if cu_inputs and "start_date" in cu_inputs else None
+        pd.Timestamp(cu_inputs.get("start_date"))
+        if cu_inputs and "start_date" in cu_inputs
+        else None
     )
     end_date = (
-        cu_inputs.get("end_date") if cu_inputs and "end_date" in cu_inputs else None
+        pd.Timestamp(cu_inputs.get("end_date"))
+        if cu_inputs and "end_date" in cu_inputs
+        else None
     )
     dt = cu_inputs.get("dt") if cu_inputs and "dt" in cu_inputs else days(1)
 
