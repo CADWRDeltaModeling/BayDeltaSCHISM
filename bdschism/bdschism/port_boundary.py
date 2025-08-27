@@ -292,13 +292,13 @@ def create_schism_bc(config_yaml, plot=False, kwargs={}):
 
             # Set out_file_gates entry for boundary_kind
             out_file_gates[gbk] = os.path.join(
-                out_dir, f"{gbk}{out_file_suffix}.th"
+                out_dir, f"{gbk}.{out_file_suffix}.th"
             )  # used to write the boundary out
 
     for boundary_kind in boundary_kinds:
 
         source_map_bc = source_map.loc[source_map["boundary_kind"] == boundary_kind]
-        out_file = os.path.join(out_dir, f"{boundary_kind}{out_file_suffix}.th")
+        out_file = os.path.join(out_dir, f"{boundary_kind}.{out_file_suffix}.th")
 
         if boundary_kind == "flow":
             dd = flux.copy().reindex(df_rng)
@@ -324,10 +324,10 @@ def create_schism_bc(config_yaml, plot=False, kwargs={}):
                 )
             out_file = False
             plot_dict["vsource_file"] = os.path.abspath(
-                os.path.join(out_dir, f"vsource{out_file_suffix}.th")
+                os.path.join(out_dir, f"vsource.{out_file_suffix}.th")
             )
             plot_dict["vsink_file"] = os.path.abspath(
-                os.path.join(out_dir, f"vsink{out_file_suffix}.th")
+                os.path.join(out_dir, f"vsink.{out_file_suffix}.th")
             )
         else:
             raise ValueError(f"Unknown boundary kind: {boundary_kind}")
