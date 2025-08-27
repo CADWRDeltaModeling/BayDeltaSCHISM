@@ -477,6 +477,7 @@ def plot_bds_boundaries(
     cols_to_keep=None,
     write_html=True,
     html_name="bds_input_boundaries.html",
+    boundary_list=boundary_list,
 ):
     """Plot the boundary data from the DataFrame."""
 
@@ -658,9 +659,17 @@ def plot_bds_boundaries(
     default="1D",
     help="Output data frequency. Default is one day.",
 )
+@click.option(
+    "--boundary-list",
+    multiple=True,
+    default=boundary_list,
+    help="List of boundary types to include in the plot. Can specify multiple times.",
+)
 @click.argument("extra", nargs=-1)
 @click.help_option("-h", "--help")
-def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name, out_freq, extra=()):
+def plot_bds_bc_cli(
+    obs, sim_dirs, scenario_names, html_name, out_freq, boundary_list, extra=()
+):
     """
     CLI to plot boundary data from observed and/or simulation directories.
     """
@@ -676,6 +685,8 @@ def plot_bds_bc_cli(obs, sim_dirs, scenario_names, html_name, out_freq, extra=()
     if key is not None:
         raise ValueError(f"No value provided for extra argument: {key}")
     envvar["out_freq"] = out_freq
+    envvar["boundary_list"] = boundary_list
+    print(f'Plotting boundaries: {", ".join(envvar["boundary_list"])}')
 
     sim_dirs = [os.path.abspath(sim_dir) for sim_dir in sim_dirs]
     html_name = os.path.abspath(html_name)
