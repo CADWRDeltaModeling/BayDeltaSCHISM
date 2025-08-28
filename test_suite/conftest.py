@@ -16,6 +16,12 @@ def pytest_addoption(parser):
         action="store",
         default=0.97,
         help="Expected sea level (0.97 m is default)",
+    ),
+    parser.addoption(
+        "--hist_gate",
+        action="store_true",
+        default=True,
+        help="Ignore SMSCG gate operation failures that are consistent with historical record",
     )
 
 
@@ -38,3 +44,8 @@ def params(sim_dir):
 @pytest.fixture(scope="module")
 def sea_level(request):
     return request.config.getoption("--sea_level")
+
+
+@pytest.fixture(scope="module")
+def historical_gates(request):
+    return request.config.getoption("--hist_gate")
