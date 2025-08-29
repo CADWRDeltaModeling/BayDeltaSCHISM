@@ -537,7 +537,10 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-bdschism.hotstart_from_hotstart">bdschism.hotstart_from_hotstart module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bdschism.hotstart_from_hotstart.SafeDict"><code class="docutils literal notranslate"><span class="pre">SafeDict</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bdschism.hotstart_from_hotstart.fmt_string_file"><code class="docutils literal notranslate"><span class="pre">fmt_string_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.hotstart_from_hotstart.hotstart_newgrid"><code class="docutils literal notranslate"><span class="pre">hotstart_newgrid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bdschism.hotstart_from_hotstart.load_template"><code class="docutils literal notranslate"><span class="pre">load_template()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bdschism.hotstart_from_hotstart.str_or_path"><code class="docutils literal notranslate"><span class="pre">str_or_path()</span></code></a></li>
 </ul>
 </li>
@@ -1073,11 +1076,53 @@ The time series should be taken from the datastore (water level in m, NAVD88). H
 <section id="module-bdschism.hotstart_from_hotstart">
 <span id="bdschism-hotstart-from-hotstart-module"></span><h2>bdschism.hotstart_from_hotstart module<a class="headerlink" href="#module-bdschism.hotstart_from_hotstart" title="Link to this heading"></a></h2>
 <p>Adapted from ZZheng - generate hotstart - transfer from one grid to another</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="bdschism.hotstart_from_hotstart.SafeDict">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bdschism.hotstart_from_hotstart.</span></span><span class="sig-name descname"><span class="pre">SafeDict</span></span><a class="reference internal" href="_modules/bdschism/hotstart_from_hotstart.html#SafeDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.hotstart_from_hotstart.SafeDict" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>Safe dictionary for string formatting.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bdschism.hotstart_from_hotstart.fmt_string_file">
+<span class="sig-prename descclassname"><span class="pre">bdschism.hotstart_from_hotstart.</span></span><span class="sig-name descname"><span class="pre">fmt_string_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'format_map'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/hotstart_from_hotstart.html#fmt_string_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.hotstart_from_hotstart.fmt_string_file" title="Link to this definition"></a></dt>
+<dd><p>Format a string template and write it to a file, optionally returning the formatted string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>template_str</strong> (<em>str</em>) – The input string template. May contain placeholders for substitution.</p></li>
+<li><p><strong>output_path</strong> (<em>str</em>) – Path where the formatted string will be written.</p></li>
+<li><p><strong>subs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Substitution values. Keys should match placeholders (for ‘format_map’)
+or be (old, new) pairs (for ‘replace’ mode).</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="simple">
+<dt>Substitution mode:</dt><dd><ul>
+<li><p>’format_map’ (default): uses Python format_map() with {placeholder} replacement.</p></li>
+<li><p>’replace’: simple text replacement; ‘subs’ should be a list of (old, new) tuples.</p></li>
+</ul>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The fully substituted and formatted string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="bdschism.hotstart_from_hotstart.hotstart_newgrid">
-<span class="sig-prename descclassname"><span class="pre">bdschism.hotstart_from_hotstart.</span></span><span class="sig-name descname"><span class="pre">hotstart_newgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaml_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hotstart_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hotstart_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trg_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:26910'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envvar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/hotstart_from_hotstart.html#hotstart_newgrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.hotstart_from_hotstart.hotstart_newgrid" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">bdschism.hotstart_from_hotstart.</span></span><span class="sig-name descname"><span class="pre">hotstart_newgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaml_template_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hotstart_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hotstart_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trg_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:26910'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/hotstart_from_hotstart.html#hotstart_newgrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.hotstart_from_hotstart.hotstart_newgrid" title="Link to this definition"></a></dt>
 <dd><p>Transfer hotstart data from one grid to another.</p>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bdschism.hotstart_from_hotstart.load_template">
+<span class="sig-prename descclassname"><span class="pre">bdschism.hotstart_from_hotstart.</span></span><span class="sig-name descname"><span class="pre">load_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bdschism/hotstart_from_hotstart.html#load_template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bdschism.hotstart_from_hotstart.load_template" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bdschism.hotstart_from_hotstart.str_or_path">

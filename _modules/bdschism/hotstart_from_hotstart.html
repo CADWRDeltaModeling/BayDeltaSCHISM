@@ -542,7 +542,10 @@ window.addEventListener("load", () => mermaid.run());
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../bdschism.html#module-bdschism.hotstart_from_hotstart">bdschism.hotstart_from_hotstart module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.hotstart_from_hotstart.SafeDict"><code class="docutils literal notranslate"><span class="pre">SafeDict</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.hotstart_from_hotstart.fmt_string_file"><code class="docutils literal notranslate"><span class="pre">fmt_string_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.hotstart_from_hotstart.hotstart_newgrid"><code class="docutils literal notranslate"><span class="pre">hotstart_newgrid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.hotstart_from_hotstart.load_template"><code class="docutils literal notranslate"><span class="pre">load_template()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../bdschism.html#bdschism.hotstart_from_hotstart.str_or_path"><code class="docutils literal notranslate"><span class="pre">str_or_path()</span></code></a></li>
 </ul>
 </li>
@@ -656,11 +659,12 @@ window.addEventListener("load", () => mermaid.run());
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Use example with bdschism in your environment::</span>
-<span class="c1"># bds hot_from_hot ./hotstart_from_hotstart.yaml --f_in ./baseline_sim_dir/hotstart_it=480000.nc --f_out ./franks_sim_dir/hotstart_480000_franks.nc --src_dir ./baseline_sim_dir/ --trg_dir ./franks_sim_dir/</span>
+<span class="c1"># hot_from_hot ./hotstart_from_hotstart.yaml --f_in hotstart_it=480000.nc --src_dir ./source_dir/ --trg_dir ./target_dir/</span>
 
 <span class="c1"># Standard Library Imports</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
@@ -669,11 +673,9 @@ window.addEventListener("load", () => mermaid.run());
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 
 <span class="c1"># Project-Specific Imports</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">schimpy.schism_hotstart</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sh</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">schimpy.util.yaml_load</span><span class="w"> </span><span class="kn">import</span> <span class="n">yaml_from_file</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">schimpy.param</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">parms</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">bdschism.config</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">config</span>
 
@@ -687,86 +689,148 @@ window.addEventListener("load", () => mermaid.run());
 
 
 
+<div class="viewcode-block" id="SafeDict">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.hotstart_from_hotstart.SafeDict">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SafeDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Safe dictionary for string formatting.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__missing__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="fmt_string_file">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.hotstart_from_hotstart.fmt_string_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fmt_string_file</span><span class="p">(</span><span class="n">template_str</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">subs</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;format_map&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Format a string template and write it to a file, optionally returning the formatted string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    template_str : str</span>
+<span class="sd">        The input string template. May contain placeholders for substitution.</span>
+<span class="sd">    output_path : str</span>
+<span class="sd">        Path where the formatted string will be written.</span>
+<span class="sd">    subs : dict, optional</span>
+<span class="sd">        Substitution values. Keys should match placeholders (for &#39;format_map&#39;)</span>
+<span class="sd">        or be (old, new) pairs (for &#39;replace&#39; mode).</span>
+<span class="sd">    mode : str, optional</span>
+<span class="sd">        Substitution mode: </span>
+<span class="sd">            - &#39;format_map&#39; (default): uses Python format_map() with {placeholder} replacement.</span>
+<span class="sd">            - &#39;replace&#39;: simple text replacement; &#39;subs&#39; should be a list of (old, new) tuples.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The fully substituted and formatted string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">subs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;format_map&#39;</span><span class="p">:</span>
+            <span class="n">formatted</span> <span class="o">=</span> <span class="n">template_str</span><span class="o">.</span><span class="n">format_map</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;replace&#39;</span><span class="p">:</span>
+            <span class="n">formatted</span> <span class="o">=</span> <span class="n">template_str</span>
+            <span class="k">for</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span> <span class="ow">in</span> <span class="n">subs</span><span class="p">:</span>
+                <span class="n">formatted</span> <span class="o">=</span> <span class="n">formatted</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown mode &#39;</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&#39;; must be &#39;format_map&#39; or &#39;replace&#39;&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">formatted</span> <span class="o">=</span> <span class="n">template_str</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">formatted</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">formatted</span></div>
+
+
+<div class="viewcode-block" id="load_template">
+<a class="viewcode-back" href="../../bdschism.html#bdschism.hotstart_from_hotstart.load_template">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_template</span><span class="p">(</span><span class="n">template_path</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
+
+
 <div class="viewcode-block" id="hotstart_newgrid">
 <a class="viewcode-back" href="../../bdschism.html#bdschism.hotstart_from_hotstart.hotstart_newgrid">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">hotstart_newgrid</span><span class="p">(</span>
-    <span class="n">yaml_fn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">yaml_template_fn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">hotstart_in</span><span class="p">,</span>
     <span class="n">hotstart_out</span><span class="p">,</span>
     <span class="n">src_dir</span><span class="p">,</span>
     <span class="n">trg_dir</span><span class="p">,</span>
     <span class="n">modules</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:26910&quot;</span><span class="p">,</span>
-    <span class="n">envvar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Transfer hotstart data from one grid to another.&quot;&quot;&quot;</span>
 
-    <span class="c1"># Build standard hotstart transfer dictionary</span>
-    <span class="n">repl_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;hotstart_in&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">hotstart_in</span><span class="p">),</span>
-        <span class="s2">&quot;param_nml_in&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="s2">&quot;param.nml&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;param_nml_out&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">trg_dir</span><span class="p">,</span> <span class="s2">&quot;param.nml&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;hgrid_in&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="s2">&quot;hgrid.gr3&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;hgrid_out&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">trg_dir</span><span class="p">,</span> <span class="s2">&quot;hgrid.gr3&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;vgrid_in&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="s2">&quot;vgrid.in&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;vgrid_out&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">trg_dir</span><span class="p">,</span> <span class="s2">&quot;vgrid.in&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;src_dir&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">src_dir</span><span class="p">),</span>
-        <span class="s2">&quot;trg_dir&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">trg_dir</span><span class="p">),</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="n">envvar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">envvar</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;envvar must be a dictionary if provided.&quot;</span><span class="p">)</span>
-        <span class="n">repl_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">envvar</span><span class="p">)</span>
 
-    <span class="c1"># Ensure files and directories exist</span>
-    <span class="n">missing_filesdirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">repl_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">f</span><span class="p">)]</span>
+    <span class="c1"># Check that all files are available</span>
+    <span class="n">param_nml_in</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="s2">&quot;param.nml&quot;</span><span class="p">)</span>
+    <span class="n">param_nml_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">trg_dir</span><span class="p">,</span> <span class="s2">&quot;param.nml&quot;</span><span class="p">)</span>
+    <span class="n">hgrid_in</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="s2">&quot;hgrid.gr3&quot;</span><span class="p">)</span>  <span class="c1"># used to fill strings in temp_yaml</span>
+    <span class="n">hgrid_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">trg_dir</span><span class="p">,</span> <span class="s2">&quot;hgrid.gr3&quot;</span><span class="p">)</span>  <span class="c1"># used to fill strings in temp_yaml</span>
+    <span class="n">vgrid_in</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="s2">&quot;vgrid.in&quot;</span><span class="p">)</span>  <span class="c1"># used to fill strings in temp_yaml</span>
+    <span class="n">vgrid_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">trg_dir</span><span class="p">,</span> <span class="s2">&quot;vgrid.in&quot;</span><span class="p">)</span>  <span class="c1"># used to fill strings in temp_yaml</span>
+    
+    <span class="n">check_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">src_dir</span><span class="p">,</span> <span class="n">trg_dir</span><span class="p">]</span>
+    <span class="n">check_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">hotstart_in</span><span class="p">,</span> <span class="n">yaml_template_fn</span><span class="p">,</span> <span class="n">param_nml_in</span><span class="p">,</span> <span class="n">param_nml_out</span><span class="p">,</span> <span class="n">hgrid_in</span><span class="p">,</span> <span class="n">hgrid_out</span><span class="p">,</span> <span class="n">vgrid_in</span><span class="p">,</span> <span class="n">vgrid_out</span><span class="p">]</span>
+    <span class="c1"># Ensure directories exist</span>
+    <span class="n">missing_directories</span> <span class="o">=</span> <span class="p">[</span><span class="n">directory</span> <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">check_dirs</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)]</span>
+    <span class="n">missing_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">check_files</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file</span><span class="p">)]</span>
 
-    <span class="k">if</span> <span class="n">missing_filesdirs</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Missing directories or files:&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">filedir</span> <span class="ow">in</span> <span class="n">missing_filesdirs</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">filedir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
-            <span class="s2">&quot;Some required directories or files are missing. See the output above for details.&quot;</span>
-        <span class="p">)</span>
-    <span class="n">repl_dict</span><span class="p">[</span><span class="s2">&quot;hotstart_out&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">hotstart_out</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">missing_directories</span> <span class="ow">or</span> <span class="n">missing_files</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">missing_directories</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Missing directories:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">missing_directories</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">missing_files</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Missing files:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">missing_files</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Some required directories or files are missing. See the output above for details.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Get params</span>
-    <span class="n">params_in</span> <span class="o">=</span> <span class="n">parms</span><span class="o">.</span><span class="n">read_params</span><span class="p">(</span><span class="n">repl_dict</span><span class="p">[</span><span class="s2">&quot;param_nml_in&quot;</span><span class="p">])</span>
-    <span class="n">params_out</span> <span class="o">=</span> <span class="n">parms</span><span class="o">.</span><span class="n">read_params</span><span class="p">(</span><span class="n">repl_dict</span><span class="p">[</span><span class="s2">&quot;param_nml_out&quot;</span><span class="p">])</span>
+    <span class="n">params_in</span> <span class="o">=</span> <span class="n">parms</span><span class="o">.</span><span class="n">read_params</span><span class="p">(</span><span class="n">param_nml_in</span><span class="p">)</span>
+    <span class="n">params_out</span> <span class="o">=</span> <span class="n">parms</span><span class="o">.</span><span class="n">read_params</span><span class="p">(</span><span class="n">param_nml_out</span><span class="p">)</span>
 
     <span class="c1"># Get start date from hotstart file</span>
     <span class="n">refds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">hotstart_in</span><span class="p">)</span>
     <span class="n">run_start_in</span> <span class="o">=</span> <span class="n">params_in</span><span class="o">.</span><span class="n">run_start</span>
-    <span class="n">repl_dict</span><span class="p">[</span><span class="s2">&quot;hot_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">hot_date</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">refds</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">run_start_in</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
-        <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&quot;</span>
-    <span class="p">)</span>  <span class="c1"># used to fill strings in yaml</span>
-    <span class="n">repl_dict</span><span class="p">[</span><span class="s2">&quot;timestep&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">params_out</span><span class="o">.</span><span class="n">_namelist</span><span class="p">[</span><span class="s2">&quot;CORE&quot;</span><span class="p">][</span><span class="s2">&quot;dt&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
-    <span class="p">)</span>  <span class="c1"># used to fill strings in yaml</span>
-    <span class="n">repl_dict</span><span class="p">[</span><span class="s2">&quot;run_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params_out</span><span class="o">.</span><span class="n">run_start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
-        <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&quot;</span>
-    <span class="p">)</span>  <span class="c1"># use runstart to pass to yaml</span>
+    <span class="p">)</span>  <span class="c1"># used to fill strings in temp_yaml</span>
+    <span class="n">timestep</span> <span class="o">=</span> <span class="n">params_out</span><span class="o">.</span><span class="n">_namelist</span><span class="p">[</span><span class="s2">&quot;CORE&quot;</span><span class="p">][</span><span class="s2">&quot;dt&quot;</span><span class="p">][</span>
+        <span class="s2">&quot;value&quot;</span>
+    <span class="p">]</span>  <span class="c1"># used to fill strings in temp_yaml</span>
+    <span class="n">run_start</span> <span class="o">=</span> <span class="n">params_out</span><span class="o">.</span><span class="n">run_start</span>  <span class="c1"># use runstart to pass to yaml</span>
 
-    <span class="c1"># Get modules used from hotstart infile</span>
-    <span class="k">if</span> <span class="n">modules</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ntracers</span><span class="p">,</span> <span class="n">ntrs</span><span class="p">,</span> <span class="n">irange_tr</span><span class="p">,</span> <span class="n">modules</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">describe_tracers</span><span class="p">(</span>
-            <span class="n">repl_dict</span><span class="p">[</span><span class="s2">&quot;param_nml_out&quot;</span><span class="p">]</span>
+    
+    <span class="c1"># Create a temporary yaml filename</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tempdir</span><span class="p">:</span>
+        <span class="n">temp_yaml_fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="s2">&quot;input.yaml&quot;</span><span class="p">)</span>    
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> Temporary yaml filename: </span><span class="si">{</span><span class="n">temp_yaml_fn</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># uses **locals(): timestep, run_start, </span>
+        <span class="c1"># hot_date, hgrid_in, hgrid_out, vgrid_in, vgrid_out to populate yaml_fn into temp_yaml</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="n">SafeDict</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">())</span>
+        <span class="n">yaml_template</span> <span class="o">=</span> <span class="n">load_template</span><span class="p">(</span><span class="n">yaml_template_fn</span><span class="p">)</span>
+        <span class="n">ycontent</span> <span class="o">=</span> <span class="n">fmt_string_file</span><span class="p">(</span><span class="n">yaml_template</span><span class="p">,</span> <span class="n">temp_yaml_fn</span><span class="p">,</span> <span class="n">subs</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;format_map&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Get modules used from hotstart infile</span>
+        <span class="k">if</span> <span class="n">modules</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ntracers</span><span class="p">,</span> <span class="n">ntrs</span><span class="p">,</span> <span class="n">irange_tr</span><span class="p">,</span> <span class="n">modules</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">describe_tracers</span><span class="p">(</span>
+            <span class="n">param_nml_out</span>
         <span class="p">)</span>  <span class="c1"># pull module list from param_nml</span>
 
-    <span class="c1"># Create a hotstart file for SCHISM</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">hotstart</span><span class="p">(</span><span class="n">yaml_fn</span><span class="p">,</span> <span class="n">modules</span><span class="o">=</span><span class="n">modules</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span> <span class="n">envvar</span><span class="o">=</span><span class="n">repl_dict</span><span class="p">)</span>
-    <span class="n">h</span><span class="o">.</span><span class="n">create_hotstart</span><span class="p">()</span>
-    <span class="n">hnc</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">nc_dataset</span>
-    <span class="c1"># Add the YAML file content as an entry to the netCDF file</span>
-    <span class="n">yaml_content</span> <span class="o">=</span> <span class="n">yaml_from_file</span><span class="p">(</span><span class="n">yaml_fn</span><span class="p">,</span> <span class="n">envvar</span><span class="o">=</span><span class="n">repl_dict</span><span class="p">)</span>
-    <span class="n">yaml_str</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_dump</span><span class="p">(</span><span class="n">yaml_content</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">hnc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;yaml_input&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">yaml_str</span>
+        <span class="c1"># Create a hotstart file for SCHISM</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;writing &quot;</span><span class="p">,</span> <span class="n">temp_yaml_fn</span><span class="p">)</span>
+        <span class="n">hot</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">hotstart</span><span class="p">(</span><span class="n">temp_yaml_fn</span><span class="p">,</span> <span class="n">modules</span><span class="o">=</span><span class="n">modules</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+        <span class="n">hnc</span> <span class="o">=</span> <span class="n">hot</span><span class="o">.</span><span class="n">create_hotstart</span><span class="p">()</span>
+        <span class="n">hnc</span> <span class="o">=</span> <span class="n">hot</span><span class="o">.</span><span class="n">nc_dataset</span>
+        <span class="c1"># Add the YAML file content as an entry to the netCDF file</span>
+        
+        <span class="n">hnc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;yaml_input&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ycontent</span><span class="p">)</span>
 
-    <span class="c1"># Write out the hotstart file to NetCDF</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing hotstart file to </span><span class="si">{</span><span class="n">hotstart_out</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">hnc</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">hotstart_out</span><span class="p">)</span></div>
+        <span class="c1"># Write out the hotstart file to NetCDF</span>
+        <span class="n">hnc</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">hotstart_out</span><span class="p">)</span></div>
 
 
 
@@ -775,10 +839,10 @@ window.addEventListener("load", () => mermaid.run());
         <span class="s2">&quot;Transfer hotstart data from one grid to another&#39;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
         <span class="s2">&quot;Arguments:</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="s2">&quot;  YAML  Path to the YAML file.&quot;</span>
-        <span class="s2">&quot;For instance hotstart_from_hotstart.yaml (found in examples/hotstart/examples)&quot;</span>
+        <span class="s2">&quot;For instance hotstart_from_hotstart.yaml_template_fn (found in examples/hotstart/examples)&quot;</span>
     <span class="p">)</span>
 <span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;yaml&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;yaml_template_fn&quot;</span><span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
     <span class="s2">&quot;--f_in&quot;</span><span class="p">,</span>
     <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -817,37 +881,17 @@ window.addEventListener("load", () => mermaid.run());
     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Coordinate system (e.g., EPSG:26910).&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">help_option</span><span class="p">(</span><span class="s2">&quot;-h&quot;</span><span class="p">,</span> <span class="s2">&quot;--help&quot;</span><span class="p">)</span>
-<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;extra&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">hotstart_newgrid_cli</span><span class="p">(</span>
-    <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">yaml_template_fn</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">f_in</span><span class="p">,</span>
     <span class="n">f_out</span><span class="p">,</span>
     <span class="n">src_dir</span><span class="p">,</span>
     <span class="n">trg_dir</span><span class="p">,</span>
     <span class="n">modules</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:26910&quot;</span><span class="p">,</span>
-    <span class="n">extra</span><span class="o">=</span><span class="p">(),</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Command-line interface for transferring hotstart data from one grid to another.</span>
-
-<span class="sd">    Arguments</span>
-<span class="sd">    ---------</span>
-<span class="sd">        yaml      Path to the YAML file (e.g., hotstart_from_hotstart.yaml).</span>
-
-<span class="sd">    Options</span>
-<span class="sd">    -------</span>
-<span class="sd">        f_in      Hotstart input file path (e.g., hotstart_it=480000.nc).</span>
-<span class="sd">        f_out     Hotstart output file path (e.g., hotstart_480000_franks.nc).</span>
-<span class="sd">        src_dir   Source directory containing hgrid.gr3, vgrid.in, and param.nml.</span>
-<span class="sd">        trg_dir   Target directory where the hotstart will be re-written.</span>
-<span class="sd">        modules   Modules to be transferred to/from hotstart files.</span>
-<span class="sd">        crs       Coordinate system (default: EPSG:26910).</span>
-<span class="sd">        extra     Additional key-value pairs for environment variables (e.g., --key value).</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">        bds hot_from_hot ./hotstart_from_hotstart.yaml --f_in ./baseline_sim_dir/hotstart_it=480000.nc --f_out ./franks_sim_dir/hotstart_480000_franks.nc --src_dir ./baseline_sim_dir/ --trg_dir ./franks_sim_dir/</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Ensure input and output directories exist</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">src_dir</span><span class="p">):</span>
@@ -855,54 +899,21 @@ window.addEventListener("load", () => mermaid.run());
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">trg_dir</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target directory </span><span class="si">{</span><span class="n">trg_dir</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
 
-    <span class="c1"># Parse extra arguments into a dictionary (expects --key value pairs)</span>
-    <span class="n">envvar</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">extra</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;--&quot;</span><span class="p">):</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">envvar</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No value provided for extra argument: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Convert empty tuple to None for modules</span>
-    <span class="k">if</span> <span class="n">modules</span> <span class="o">==</span> <span class="p">()</span> <span class="ow">or</span> <span class="n">modules</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">modules</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">modules</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">modules</span><span class="p">)</span>
-
     <span class="c1"># Call the hotstart transfer function</span>
     <span class="n">hotstart_newgrid</span><span class="p">(</span>
-        <span class="n">yaml</span><span class="p">,</span>
+        <span class="n">yaml_template_fn</span><span class="p">,</span>
         <span class="n">f_in</span><span class="p">,</span>
         <span class="n">f_out</span><span class="p">,</span>
         <span class="n">src_dir</span><span class="p">,</span>
         <span class="n">trg_dir</span><span class="p">,</span>
         <span class="n">modules</span><span class="o">=</span><span class="n">modules</span><span class="p">,</span>
         <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
-        <span class="n">envvar</span><span class="o">=</span><span class="n">envvar</span> <span class="k">if</span> <span class="n">envvar</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Main function to handle hotstart transfer.&quot;&quot;&quot;</span>
     <span class="n">hotstart_newgrid_cli</span><span class="p">()</span>
-    <span class="c1"># os.chdir(&quot;D:/schism/hotstart_transfer_test&quot;)</span>
-    <span class="c1"># yaml = &quot;./hotstart_from_hotstart.yaml&quot;</span>
-    <span class="c1"># f_in = &quot;./baseline_sim_dir/hotstart_it=480000.nc&quot;</span>
-    <span class="c1"># f_out = &quot;./hotstart_480000_franks.nc&quot;</span>
-    <span class="c1"># src_dir = &quot;./baseline_sim_dir/&quot;</span>
-    <span class="c1"># trg_dir = &quot;./franks_sim_dir/&quot;</span>
-
-    <span class="c1"># hotstart_newgrid(</span>
-    <span class="c1">#     yaml,</span>
-    <span class="c1">#     f_in,</span>
-    <span class="c1">#     f_out,</span>
-    <span class="c1">#     src_dir,</span>
-    <span class="c1">#     trg_dir,</span>
-    <span class="c1"># )</span>
 </pre></div>
 
            </div>
