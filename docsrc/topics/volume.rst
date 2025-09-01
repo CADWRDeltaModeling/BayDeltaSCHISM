@@ -159,40 +159,19 @@ Figures below illustrate typical applications.
 Sacramento River and Threemile Slough
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. figure:: _images/example_sac_threemile.png
+.. figure:: ../img/example_sac_threemile.png
    :alt: Sacramento River and Threemile Slough
    :width: 80%
 
-   Optimization removes isolated pits and improves smoothness.
+   Optimization removes isolated pits and improves smoothness. Pre-optimization contours are light, post-optimization heavy.
 
 Middle River and northern Mildred Island
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. figure:: _images/example_middle_mildred.png
+.. figure:: ../img/example_middle_mildred.png
    :alt: Middle River and Mildred Island
    :width: 80%
 
-   Improved volume fidelity and channel continuity.
+   Improved volume fidelity and channel continuity. Pre-optimization contours are light, post-optimization heavy.
 
-First Mallard Branch
-~~~~~~~~~~~~~~~~~~~~
 
-.. figure:: _images/example_first_mallard.png
-   :alt: First Mallard Branch
-   :width: 80%
-
-   Enforcement reinforces the main channel depth.
-
-Conclusions (Stub)
-------------------
-
-* Refinement improves DEM fidelity and smoothness without significant bias.
-* Shoreline regularization maintains hydraulic connectivity.
-* Depth enforcement imprints channels and levees where DEMs under-represent
-  features.
-
-.. note::
-
-   Final conclusions will be supplemented with quantitative plots and
-   imagery. See ``vegetation.rst`` for the style of figure integration used
-   throughout the documentation.

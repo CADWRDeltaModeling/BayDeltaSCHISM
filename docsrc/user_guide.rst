@@ -21,6 +21,8 @@ Essentials for Running the Model
   topics/vignette.rst
   topics/files_and_directories  
   topics/preprocess.rst
+  topics/volume.rst
+  
 
 ________________________
 
@@ -38,7 +40,6 @@ Boundaries & Input Files
   topics/hotstart.rst
   topics/nudging.rst
   topics/vegetation.rst 
-  topics/volume.rst
 
 Inspection of Model Setup
 --------------------------
