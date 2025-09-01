@@ -123,6 +123,20 @@
 <li class="toctree-l4"><a class="reference internal" href="preprocess.html#where-to-required-files-and-directory-structure">Where to? Required files and directory structure</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="volume.html">Volumetric Refinement and Smoothing, Depth Enforcement</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#mathematical-formulation">Mathematical Formulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#depth-enforcement">Depth Enforcement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#shoreline-discovery-seeds">Shoreline Discovery Seeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#preprocessor-integration">Preprocessor Integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#inline-parameters-annotated">Inline Parameters (Annotated)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#examples">Examples</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="volume.html#sacramento-river-and-threemile-slough">Sacramento River and Threemile Slough</a></li>
+<li class="toctree-l5"><a class="reference internal" href="volume.html#middle-river-and-northern-mildred-island">Middle River and northern Mildred Island</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="reference internal" href="../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul class="current">
@@ -655,14 +669,14 @@
 <span id="nudge-obs-grid"></span><a class="with-border reference internal image-reference" href="../_images/nudging_obs_gr3.png"><img alt="../_images/nudging_obs_gr3.png" class="with-border" src="../_images/nudging_obs_gr3.png" style="width: 70%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Nudging relaxation shown around EC and temperature stations. Red shows where the nudging is applied the greatest, Blue is the least, and White induces no nudging. The relaxation constants are specified in the [MOD]_nudge.gr3 file. The locations and values are specified in the *.yaml files.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Nudging relaxation shown around EC and temperature stations. Red shows where the nudging is applied the greatest, Blue is the least, and White induces no nudging. The relaxation constants are specified in the [MOD]_nudge.gr3 file. The locations and values are specified in the *.yaml files.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id4">
 <span id="nudge-ocean-grid"></span><a class="with-border reference internal image-reference" href="../_images/nudging_ocean_gr3.png"><img alt="../_images/nudging_ocean_gr3.png" class="with-border" src="../_images/nudging_ocean_gr3.png" style="width: 70%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Nudging relaxation shown along the ocean boundary. Similar color scale to Fig. <a class="reference internal" href="#nudge-obs-grid"><span class="std std-numref">Fig. 4</span></a>. Also the stations used to interpolate along the ocean boundary are specified in the *.yaml files.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Nudging relaxation shown along the ocean boundary. Similar color scale to Fig. <a class="reference internal" href="#nudge-obs-grid"><span class="std std-numref">Fig. 6</span></a>. Also the stations used to interpolate along the ocean boundary are specified in the *.yaml files.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>In SCHISM you can use a NetCDF file that coerces/nudges module values towards an observed or set timeseries in specific points throughout the model.
@@ -832,7 +846,7 @@ step_nu_tr = 3600. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
 </section>
 <section id="using-the-set-nudge-utility">
 <h3>Using the set_nudge Utility<a class="headerlink" href="#using-the-set-nudge-utility" title="Link to this heading"></a></h3>
-<p>If you are to follow the above nudging suffix conventions, then the <code class="docutils literal notranslate"><span class="pre">nudge_suffix</span></code> tool will be simple and easy to use. It is really usefull when running a historical run because this often nudges observed temperature and salinity data within the model domain for a short period of time (Fig. <a class="reference internal" href="#nudge-obs-grid"><span class="std std-numref">Fig. 4</span></a>) and then transitions to strictly nudging at the ocean boundary (Fig. <a class="reference internal" href="#nudge-ocean-grid"><span class="std std-numref">Fig. 5</span></a>).</p>
+<p>If you are to follow the above nudging suffix conventions, then the <code class="docutils literal notranslate"><span class="pre">nudge_suffix</span></code> tool will be simple and easy to use. It is really usefull when running a historical run because this often nudges observed temperature and salinity data within the model domain for a short period of time (Fig. <a class="reference internal" href="#nudge-obs-grid"><span class="std std-numref">Fig. 6</span></a>) and then transitions to strictly nudging at the ocean boundary (Fig. <a class="reference internal" href="#nudge-ocean-grid"><span class="std std-numref">Fig. 7</span></a>).</p>
 <p>Let’s say your simulation is ready to go and you have the nudging files in your simulation directory with “obs_roms” as the <code class="docutils literal notranslate"><span class="pre">sourcename</span></code>, you could just run:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">bds set_nudge obs_roms</span>
 </pre></div>

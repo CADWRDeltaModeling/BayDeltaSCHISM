@@ -132,6 +132,20 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l4"><a class="reference internal" href="../topics/preprocess.html#where-to-required-files-and-directory-structure">Where to? Required files and directory structure</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/volume.html">Volumetric Refinement and Smoothing, Depth Enforcement</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../topics/volume.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/volume.html#mathematical-formulation">Mathematical Formulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/volume.html#depth-enforcement">Depth Enforcement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/volume.html#shoreline-discovery-seeds">Shoreline Discovery Seeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/volume.html#preprocessor-integration">Preprocessor Integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/volume.html#inline-parameters-annotated">Inline Parameters (Annotated)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/volume.html#examples">Examples</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../topics/volume.html#sacramento-river-and-threemile-slough">Sacramento River and Threemile Slough</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../topics/volume.html#middle-river-and-northern-mildred-island">Middle River and northern Mildred Island</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul>
@@ -720,7 +734,7 @@ In BayDeltaSCHISM, the <strong>bdschism</strong> Python package is documented in
 <section id="figures">
 <h2>Figures<a class="headerlink" href="#figures" title="Link to this heading"></a></h2>
 <p>You can embed figures using the <code class="docutils literal notranslate"><span class="pre">..figure::</span></code> directive. All figures (.png, .jpeg, .svg, etc) are stored in the <strong>docsrc/img/</strong> folder. When specifying the image file location it needs to be relative to the .rst file that is being used. So for this page, it is using the <strong>docsrc/meta_doc/doc_examples.rst</strong> file, so the references to a figure would be <strong>../img/&lt;FILENAME&gt;</strong>.</p>
-<p>To reference the figure, you can add a hyperlink above the figure and then reference it using <code class="docutils literal notranslate"><span class="pre">:numref:`example_dwr_logo`</span></code>. That would render as <a class="reference internal" href="#example-dwr-logo"><span class="std std-numref">Fig. 10</span></a>. You can embed a figure using the following code:</p>
+<p>To reference the figure, you can add a hyperlink above the figure and then reference it using <code class="docutils literal notranslate"><span class="pre">:numref:`example_dwr_logo`</span></code>. That would render as <a class="reference internal" href="#example-dwr-logo"><span class="std std-numref">Fig. 12</span></a>. You can embed a figure using the following code:</p>
 <div class="highlight-RST notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="nt">_example_dwr_logo:</span>
 
 <span class="p">..</span> <span class="ow">figure</span><span class="p">::</span> ../img/dwr_logo_small.png
@@ -734,7 +748,7 @@ In BayDeltaSCHISM, the <strong>bdschism</strong> Python package is documented in
 <span id="example-dwr-logo"></span><a class="reference internal image-reference" href="../_images/dwr_logo_small.png"><img alt="../_images/dwr_logo_small.png" src="../_images/dwr_logo_small.png" style="width: 200px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">A small California Department of Water Resources logo.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">A small California Department of Water Resources logo.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>

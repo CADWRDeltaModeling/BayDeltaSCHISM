@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Run Initialization and Restart (Hotstart) &mdash; Bay-Delta SCHISM</title>
+  <title>Volumetric Refinement and Smoothing, Depth Enforcement &mdash; Bay-Delta SCHISM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/style.css?v=8686dbcc" />
@@ -17,11 +17,12 @@
       <script src="../_static/documentation_options.js?v=ca842793"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Nudging Files" href="nudging.html" />
-    <link rel="prev" title="Key Run Parameters and Gotchas" href="param.html" />
+    <link rel="next" title="Prepare Ocean Boundary (elev2D.th.nc)" href="ocean.html" />
+    <link rel="prev" title="Grid, Spatial Data and Preprocessor" href="preprocess.html" />
     <link href="../_static/style.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -77,7 +78,7 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../user_guide.html">Bay-Delta SCHISM User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../user_guide.html#essentials-for-running-the-model">Essentials for Running the Model</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="../user_guide.html#essentials-for-running-the-model">Essentials for Running the Model</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="processed_run.html">Running a Preprepared Setup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html">Overview of a Bay-Delta SCHISM Run</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="overview.html#grid-and-spatial-data">Grid and Spatial Data</a><ul>
@@ -123,23 +124,23 @@
 <li class="toctree-l4"><a class="reference internal" href="preprocess.html#where-to-required-files-and-directory-structure">Where to? Required files and directory structure</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="volume.html">Volumetric Refinement and Smoothing, Depth Enforcement</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="volume.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="volume.html#mathematical-formulation">Mathematical Formulation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="volume.html#depth-enforcement">Depth Enforcement</a></li>
-<li class="toctree-l4"><a class="reference internal" href="volume.html#shoreline-discovery-seeds">Shoreline Discovery Seeds</a></li>
-<li class="toctree-l4"><a class="reference internal" href="volume.html#preprocessor-integration">Preprocessor Integration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="volume.html#inline-parameters-annotated">Inline Parameters (Annotated)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="volume.html#examples">Examples</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="volume.html#sacramento-river-and-threemile-slough">Sacramento River and Threemile Slough</a></li>
-<li class="toctree-l5"><a class="reference internal" href="volume.html#middle-river-and-northern-mildred-island">Middle River and northern Mildred Island</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Volumetric Refinement and Smoothing, Depth Enforcement</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mathematical-formulation">Mathematical Formulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#depth-enforcement">Depth Enforcement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#shoreline-discovery-seeds">Shoreline Discovery Seeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#preprocessor-integration">Preprocessor Integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inline-parameters-annotated">Inline Parameters (Annotated)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#sacramento-river-and-threemile-slough">Sacramento River and Threemile Slough</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#middle-river-and-northern-mildred-island">Middle River and northern Mildred Island</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="reference internal" href="../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ocean.html">Prepare Ocean Boundary (elev2D.th.nc)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="flow_boundary.html">Inflow/Outflow Boundaries</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="flow_boundary.html#where-are-the-data">Where are the data?</a></li>
@@ -177,15 +178,15 @@
 <li class="toctree-l4"><a class="reference internal" href="param.html#what-happens-when-schism-versions-get-advanced">What happens when SCHISM versions get advanced?</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Run Initialization and Restart (Hotstart)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#when-do-you-need-an-initial-condition-or-hotstart">When do you need an initial condition or hotstart?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#what-is-the-difference-between-a-cold-and-hot-start">What is the difference between a cold and hot start?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#combining-hotstarts">Combining hotstarts</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#choosing-a-good-start-time">Choosing a good start time</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#creating-a-hotstart-for-hydro-salt-temp-with-schism-hotstart">Creating a Hotstart for Hydro/Salt/Temp with schism_hotstart</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="#acquiring-the-data">Acquiring the data</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#configuring-the-hotstart-request-yaml">Configuring the Hotstart request (yaml)</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#running-the-hotstart-generator">Running the hotstart generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hotstart.html">Run Initialization and Restart (Hotstart)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hotstart.html#when-do-you-need-an-initial-condition-or-hotstart">When do you need an initial condition or hotstart?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hotstart.html#what-is-the-difference-between-a-cold-and-hot-start">What is the difference between a cold and hot start?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hotstart.html#combining-hotstarts">Combining hotstarts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hotstart.html#choosing-a-good-start-time">Choosing a good start time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hotstart.html#creating-a-hotstart-for-hydro-salt-temp-with-schism-hotstart">Creating a Hotstart for Hydro/Salt/Temp with schism_hotstart</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="hotstart.html#acquiring-the-data">Acquiring the data</a></li>
+<li class="toctree-l5"><a class="reference internal" href="hotstart.html#configuring-the-hotstart-request-yaml">Configuring the Hotstart request (yaml)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="hotstart.html#running-the-hotstart-generator">Running the hotstart generator</a></li>
 </ul>
 </li>
 </ul>
@@ -661,105 +662,157 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="run-initialization-and-restart-hotstart">
-<span id="hotstart"></span><h1>Run Initialization and Restart (Hotstart)<a class="headerlink" href="#run-initialization-and-restart-hotstart" title="Link to this heading"></a></h1>
-<section id="when-do-you-need-an-initial-condition-or-hotstart">
-<h2>When do you need an initial condition or hotstart?<a class="headerlink" href="#when-do-you-need-an-initial-condition-or-hotstart" title="Link to this heading"></a></h2>
-<p>You should use a hotstart or initialization for every study if you include salinity transport or other tracers.
-The need for this may be unfamiliar if you are coming from a lower dimensional model or less
-resolved 3D model. There are two reasons:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>the domain is really big, so moving the salt in correctly via a cold start would take many months and</p></li>
-<li><p>if salinity is only coming in from the ocean a sharp baroclinic barrier shock will develop with possibly odd behavior.</p></li>
+  <section id="volumetric-refinement-and-smoothing-depth-enforcement">
+<h1>Volumetric Refinement and Smoothing, Depth Enforcement<a class="headerlink" href="#volumetric-refinement-and-smoothing-depth-enforcement" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The volumetric refinement and smoothing procedure lightly adjusts mesh
+bathymetry to improve:</p>
+<ul class="simple">
+<li><p><strong>Volume fidelity</strong> — better alignment between mesh element volumes and DEM
+reference.</p></li>
+<li><p><strong>Smoothness</strong> — elimination of single-node pits and sharp valleys that
+degrade numerical stability.</p></li>
 </ul>
-</div></blockquote>
-<p>We mostly do barotropic runs (no salinity or transport) as a warmup to generate our ocean boundary. For
-that a cold start from very basic (zero velocity, flat water elevation) is fine.</p>
+<p>Typical changes are small (0.1–0.2 m), but isolated pits may be smoothed more.
+A shoreline regularization step prevents accidental drying of tidally wetted
+areas. After refinement, depth enforcement ensures hydraulic features such as
+channels and levees are properly represented where DEMs are incomplete.</p>
+<p>The method is available both as a <strong>standalone script</strong> and as an integrated
+step in the <strong>BayDeltaSCHISM preprocessor</strong>.</p>
 </section>
-<section id="what-is-the-difference-between-a-cold-and-hot-start">
-<h2>What is the difference between a cold and hot start?<a class="headerlink" href="#what-is-the-difference-between-a-cold-and-hot-start" title="Link to this heading"></a></h2>
-<p>A cold start means values are initialized from very simple and well behaved values. Typically velocity is zero
-and the water surface is flat. This avoids “mini-tsunamis”.  Cold starts are invoked using <cite>ihot=0</cite>
-in the control file <cite>param.nml</cite>. You also need plausible values for initialization.
-If you our using our schism templates and requires some
-initial conditions be provided in the form of text *.ic files which are like *.gr3 files with values at each node,
-but don’t have mesh topology in the file (and <cite>param.nml.tropic</cite> control file suggestions for a barotropic run)
-then a cold start is assumed and the text initialization file elev.ic (and any other *.ic file) will be built.</p>
-<p>A hotstart means initializing a model with non-trivial values. There are two main cases:</p>
-<dl class="simple">
-<dt>ihot=1 (initial condition)</dt><dd><dl class="simple">
-<dt>Start of run. In this case the hotstart file is compiled by the user using interpolated data. Often for this case</dt><dd><p>the assumptions for elev and velocity are simplified and the details are supplied for tracers like temperature/salinity</p>
-</dd>
-</dl>
-</dd>
-<dt>ihot=2: (restart)</dt><dd><p>Restart of run. This is used in case you are transitioning to new conditions like study alternatives,
-invoking a new set of modules or backing up and restart a failed run. In this case the hotstart file is
-generated using per-processor hotstart file in the outputs directory.</p>
-</dd>
-</dl>
+<section id="mathematical-formulation">
+<h2>Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Link to this heading"></a></h2>
+<p><strong>Volume fidelity:</strong></p>
+<div class="math notranslate nohighlight">
+\[J_\text{vol} = \sum_e \left( V_e(h) - V^\text{DEM}_e \right)^2\]</div>
+<p><strong>Smoothness (total variation):</strong></p>
+<div class="math notranslate nohighlight">
+\[J_\text{TV} = \sum_{(i,j)} \lvert h_i - h_j \rvert\]</div>
+<p><strong>Combined objective:</strong></p>
+<div class="math notranslate nohighlight">
+\[J = \lambda_{L2} J_\text{vol} + \mu J_\text{TV}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\lambda_{L2}\)</span> controls the weight on <strong>volume fidelity</strong>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu\)</span> (often referred to as <code class="docutils literal notranslate"><span class="pre">tv_weight</span></code>) controls the weight on
+<strong>total variation (smoothness)</strong>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The weights are chosen so that the two terms are <strong>balanced on comparable
+scales</strong>. In practice, this means adjustments to <span class="math notranslate nohighlight">\(\lambda_{L2}\)</span>,
+<code class="docutils literal notranslate"><span class="pre">tv_weight</span></code>, and <code class="docutils literal notranslate"><span class="pre">l2_weight</span></code> are the most meaningful levers, but these
+are rarely changed once defaults are tuned.</p>
+</div>
+<p>The TV term is non-differentiable at zero. In practice a <strong>subgradient</strong> is
+used: rather than a true slope, it provides a proxy direction (raise or lower
+a node) that reduces roughness. This simple but powerful idea allows TV
+regularization to work in large-scale mesh optimization.</p>
 </section>
-<section id="combining-hotstarts">
-<h2>Combining hotstarts<a class="headerlink" href="#combining-hotstarts" title="Link to this heading"></a></h2>
-<p>In order to combine hotstarts for a restart you need to have the combine_hotstart utility on path. The actual name of the utility will be
-something like <cite>combine_hotstart7</cite>, where the ‘7’ part is a version that may evolve if the hotstart format changes.
-The hotstart combining command is invoked in the outputs directory and requires specification of an iteration number:
-<cite>combine_hotstart7 -i 24000</cite>. It will take the many per-processor files associated with the iteration
-(hotstart_000000_24000.nc, hotstart_000001_24000.nc, etc) and generate a single hotstart with a name like
-<cite>hotstart_it=24000.nc</cite>. We prefer that you move this out of the outputs directory and rename it according to the following convention:
-<cite>hotstart.20210515.24000.nc</cite>.</p>
-<p>To do this you will need to know how to associate real dates with the iteration. Actually iteration is a possibly confusing term.
-The real interpretation is time step. So if the iteration is 24000, dt=90 seconds, then the time stamp of the hotstart is the start time
-of the run plus 24000*90 seconds. This is tedious, so if you have a <cite>schimpy</cite> installation on your machine, you can use the hotstart_inventory command line
-utility to get a list without doing all this calculation: <cite>hotstart_inventory –dt=90 –start=2021-04-20</cite>.</p>
-<p>The best translation of ‘restart’ in SCHISM is hotstart with ihot=2.</p>
+<section id="depth-enforcement">
+<h2>Depth Enforcement<a class="headerlink" href="#depth-enforcement" title="Link to this heading"></a></h2>
+<p>Following smoothing, targeted enforcement rules may be applied:</p>
+<ul>
+<li><p><strong>Maximum depth (carve channel):</strong></p>
+<div class="math notranslate nohighlight">
+\[h_i = \min(h_i, h_\text{max,poly})\]</div>
+</li>
+<li><p><strong>Minimum depth (protect levee crest):</strong></p>
+<div class="math notranslate nohighlight">
+\[h_i = \max(h_i, h_\text{min,poly})\]</div>
+</li>
+</ul>
+<p>These adjustments are applied within polygons or along polylines defined in
+the YAML configuration.</p>
 </section>
-<section id="choosing-a-good-start-time">
-<span id="choose-runtime"></span><h2>Choosing a good start time<a class="headerlink" href="#choosing-a-good-start-time" title="Link to this heading"></a></h2>
-<p>By convention, our group chooses start times that coincide with USGS cruises. . Those are the days when you will have the best access
-to details on salinity and temperature in the Bay.  Note that many cruises are partial, involving only say 20 stops and covering perhaps only the
-South Bay. You will want a date with a complete cruise. At the Delta Modeling Section we keep an inventory of these.</p>
-<p>Hotstart files are not trivially exchangeable when the grid changes or if you change modules (for instance, adding AGE midway through).
-However, if you have a hotstart from another grid or simulation, the schism_hotstart
-utility does have an option for initializing by interpolating from the prior hotstart onto the current mesh.</p>
-<p>For model initialization, you will also need to consider your strategy for nudging. Nudging means the pushing of the model towards data, which
-can tremendously speed up the initialization process and make it more accurate.  We use nudging
-at all times at the ocean boundary for salt and temperature, essentially using it as a softer and wider boundary layer.
-We also sometimes use nudging based on observations in the Delta if we are doing an operational
-run with observed data and looking at the near term consequences of an action. Under these conditions, one usually wants the model to be spun
-up fast and accurately. If we are doing longer term planning simulations or if there is branching into alternatives, nudging may not have a role.
-Also labeling must be exceedingly clear. NEVER REPORT AS GENERAL MODEL ACCURACY STATISTICS ANY RESULTS USING MODELS THAT ARE ACTIVELY NUDGED INSIDE THE GOLDEN GATE.</p>
-<p>The two pictures below show the common initialization sequences, as well as the extension into the main study period.</p>
+<section id="shoreline-discovery-seeds">
+<h2>Shoreline Discovery Seeds<a class="headerlink" href="#shoreline-discovery-seeds" title="Link to this heading"></a></h2>
+<p>As part of the shoreline regularization process, <strong>seed points</strong> are used to
+identify wetted areas that should remain connected to open water.</p>
+<ul class="simple">
+<li><p>For the Bay-Delta domain, <strong>default seeds</strong> are already embedded in the code
+(specified in <strong>UTM coordinates</strong>).</p></li>
+<li><p>For other domains, users must explicitly supply seeds in <strong>deep, reliably
+wetted areas</strong> and update the <code class="docutils literal notranslate"><span class="pre">epsg</span></code> field to match their coordinate
+system.</p></li>
+</ul>
+<p>This ensures that shoreline constraints are applied consistently during the
+refinement process.</p>
+</section>
+<section id="preprocessor-integration">
+<h2>Preprocessor Integration<a class="headerlink" href="#preprocessor-integration" title="Link to this heading"></a></h2>
+<p>In the BayDeltaSCHISM preprocessor, this step is configured under the
+<code class="docutils literal notranslate"><span class="pre">grid:</span></code> section. Parameters are usually factored into a separate file and
+included using the extended YAML <code class="docutils literal notranslate"><span class="pre">!include</span></code> syntax.</p>
+<p>Example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">grid</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">href</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">href.gr3</span>
+<span class="w">    </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">    </span><span class="nt">smooth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="nt">depth_optimization</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">volume_tvd</span>
+<span class="w">    </span><span class="kt">!include</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">depth_opt_params_volume_tvd.yaml</span>
+</pre></div>
+</div>
+</section>
+<section id="inline-parameters-annotated">
+<h2>Inline Parameters (Annotated)<a class="headerlink" href="#inline-parameters-annotated" title="Link to this heading"></a></h2>
+<p>The included file <code class="docutils literal notranslate"><span class="pre">depth_opt_params_volume_tvd.yaml</span></code> contains tuned defaults.
+For clarity, the main options are shown below with short annotations.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Target CFL-like condition for stability (0.5–1.0 typical)</span>
+<span class="nt">cfl_target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.9</span>
+
+<span class="c1"># Initial timestep size for iterations</span>
+<span class="nt">dt_init</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+
+<span class="c1"># Number of optimization iterations</span>
+<span class="nt">niter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
+
+<span class="c1"># Weight for prioritizing progress on volume fidelity</span>
+<span class="nt">lambda_l2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+
+<span class="c1"># Weight of total variation (smoothness) term</span>
+<span class="nt">tv_weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+
+<span class="c1"># Optional additional L2 regularization weight</span>
+<span class="nt">l2_weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+
+<span class="c1"># Clipping tolerance (null disables clipping)</span>
+<span class="nt">clip_eps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+
+<span class="c1"># Logging level (INFO or DEBUG)</span>
+<span class="nt">log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INFO</span>
+</pre></div>
+</div>
+<p>Both this file and the top-level templates (such as
+<code class="docutils literal notranslate"><span class="pre">main_bay_delta.yaml</span></code>) are included in the standard BayDeltaSCHISM
+distribution.</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>Figures below illustrate typical applications.</p>
+<section id="sacramento-river-and-threemile-slough">
+<h3>Sacramento River and Threemile Slough<a class="headerlink" href="#sacramento-river-and-threemile-slough" title="Link to this heading"></a></h3>
 <figure class="align-default" id="id1">
-<img alt="../_images/initialization1.png" class="with-border" src="../_images/initialization1.png" />
+<a class="reference internal image-reference" href="../_images/example_sac_threemile.png"><img alt="Sacramento River and Threemile Slough" src="../_images/example_sac_threemile.png" style="width: 80%;" />
+</a>
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Simple initialization without nudging using Delta observations data.  * = Prefer USGS cruise date.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Optimization removes isolated pits and improves smoothness. Pre-optimization contours are light, post-optimization heavy.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
+</section>
+<section id="middle-river-and-northern-mildred-island">
+<h3>Middle River and northern Mildred Island<a class="headerlink" href="#middle-river-and-northern-mildred-island" title="Link to this heading"></a></h3>
 <figure class="align-default" id="id2">
-<img alt="../_images/initialization2.png" class="with-border" src="../_images/initialization2.png" />
+<a class="reference internal image-reference" href="../_images/example_middle_mildred.png"><img alt="Middle River and Mildred Island" src="../_images/example_middle_mildred.png" style="width: 80%;" />
+</a>
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Simple initialization with nudging using Delta data to spin up the model fast and accurately,
-before halting and restarting without nudging for the main study.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Improved volume fidelity and channel continuity. Pre-optimization contours are light, post-optimization heavy.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-</section>
-<section id="creating-a-hotstart-for-hydro-salt-temp-with-schism-hotstart">
-<h2>Creating a Hotstart for Hydro/Salt/Temp with schism_hotstart<a class="headerlink" href="#creating-a-hotstart-for-hydro-salt-temp-with-schism-hotstart" title="Link to this heading"></a></h2>
-<section id="acquiring-the-data">
-<h3>Acquiring the data<a class="headerlink" href="#acquiring-the-data" title="Link to this heading"></a></h3>
-<p>It is hard to generalize all the different systems used by modeling groups to gather up observed data.
-The short answer is that for a hotstart you will need a USGS cruise file (downloading the whole year is fine,
-that is the way their interface looks at the time of writing).</p>
-<p>If you are using in-Delta observations you will also need QA/QC’d data at least for the instant of the hotstart.
-Within the Delta Modeling Section, the script that does gathers these is <cite>BayDeltaSCHISM/bdschism/bdschism/hotstart_nudging_data.py</cite>.
-That script assumes a data repository full of observed data from multiple agencies that is not yet disseminated. If you need help, please contact us.</p>
-</section>
-<section id="configuring-the-hotstart-request-yaml">
-<h3>Configuring the Hotstart request (yaml)<a class="headerlink" href="#configuring-the-hotstart-request-yaml" title="Link to this heading"></a></h3>
-</section>
-<section id="running-the-hotstart-generator">
-<h3>Running the hotstart generator<a class="headerlink" href="#running-the-hotstart-generator" title="Link to this heading"></a></h3>
 </section>
 </section>
 </section>
@@ -768,8 +821,8 @@ That script assumes a data repository full of observed data from multiple agenci
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="param.html" class="btn btn-neutral float-left" title="Key Run Parameters and Gotchas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="nudging.html" class="btn btn-neutral float-right" title="Nudging Files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="preprocess.html" class="btn btn-neutral float-left" title="Grid, Spatial Data and Preprocessor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ocean.html" class="btn btn-neutral float-right" title="Prepare Ocean Boundary (elev2D.th.nc)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

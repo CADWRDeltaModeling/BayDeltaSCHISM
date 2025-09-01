@@ -123,6 +123,20 @@
 <li class="toctree-l4"><a class="reference internal" href="preprocess.html#where-to-required-files-and-directory-structure">Where to? Required files and directory structure</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="volume.html">Volumetric Refinement and Smoothing, Depth Enforcement</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#mathematical-formulation">Mathematical Formulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#depth-enforcement">Depth Enforcement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#shoreline-discovery-seeds">Shoreline Discovery Seeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#preprocessor-integration">Preprocessor Integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#inline-parameters-annotated">Inline Parameters (Annotated)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="volume.html#examples">Examples</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="volume.html#sacramento-river-and-threemile-slough">Sacramento River and Threemile Slough</a></li>
+<li class="toctree-l5"><a class="reference internal" href="volume.html#middle-river-and-northern-mildred-island">Middle River and northern Mildred Island</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="reference internal" href="../user_guide.html#boundaries-input-files">Boundaries &amp; Input Files</a><ul class="current">
@@ -659,7 +673,7 @@ This has a very intuitive feel – we can only specify concentrations for flows
 directed into the computational domain. For baroclinic hydrodynamics using layered equations, the number of
 boundary conditions is potentially infinite, time varying, and discretization dependent.</p>
 <p>The upshot is that we have two choices for the ocean boundary. We can choose to clamp only water levels,
-which is underspecified and potentially allows baroclinic modes to “flare up” (<a class="reference internal" href="#flareup"><span class="std std-numref">Fig. 1</span></a>) if the model is not diffusive enough. Or we can specifiy velocity, which is in general overdetermined, and this potentially stabilizes the boundary.</p>
+which is underspecified and potentially allows baroclinic modes to “flare up” (<a class="reference internal" href="#flareup"><span class="std std-numref">Fig. 3</span></a>) if the model is not diffusive enough. Or we can specifiy velocity, which is in general overdetermined, and this potentially stabilizes the boundary.</p>
 <p>There are two methods of specifying velocity that have been used with the Bay-Delta SCHISM model:</p>
 <blockquote>
 <div><ul class="simple">
@@ -672,7 +686,7 @@ and sea level rise.</p>
 <figure class="align-default" id="id2">
 <span id="flareup"></span><img alt="../_images/ocean_flareup.png" class="with-border" src="../_images/ocean_flareup.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Velocity flareup right near boundary due to stimulation of baroclinic modes.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Velocity flareup right near boundary due to stimulation of baroclinic modes.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
