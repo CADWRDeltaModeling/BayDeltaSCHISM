@@ -38,6 +38,7 @@ Boundaries & Input Files
   topics/hotstart.rst
   topics/nudging.rst
   topics/vegetation.rst 
+  topics/volume.rst
 
 Inspection of Model Setup
 --------------------------
