@@ -34,10 +34,20 @@ def cli():
     show_default=True,
     help="Simulation directory to check (default: current directory).",
 )
-def precheck(simdir):
-    """Run the Bay-Delta SCHISM precheck test suite using pytest."""
+@click.argument("pytest_args", nargs=-1, type=click.UNPROCESSED)
+def precheck(simdir, pytest_args):
+    """Run the Bay-Delta SCHISM precheck test suite using pytest.
+
+    Example usage:
+        bds precheck --simdir /path/to/simdir -- --hist_gate"""
     test_suite_dir = os.path.abspath(os.path.join(bds_dir, "test_suite"))
-    cmd = [sys.executable, "-m", "pytest", test_suite_dir, f"--sim_dir={simdir}"]
+    cmd = [
+        sys.executable,
+        "-m",
+        "pytest",
+        test_suite_dir,
+        f"--sim_dir={simdir}",
+    ] + list(pytest_args)
     click.echo(f"Running: {' '.join(cmd)}")
     result = subprocess.run(cmd)
     sys.exit(result.returncode)
