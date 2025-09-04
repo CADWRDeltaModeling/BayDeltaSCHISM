@@ -800,9 +800,20 @@ def parse_cu_yaml_cli(
 ):
     """
     Command-line interface for transferring hotstart data from one grid to another.
+
     Arguments
-    ---------
-        yaml_fn      Path to the YAML file (e.g., parse_cu.yaml).
+    ----------
+    yaml_fn : str
+        Path to the configuration YAML file, can be the same as what's used for port_boundary.
+    extra : tuple
+        Extra keyword arguments to populate format strings in the YAML file.
+        For example, to set start date and end date, use:
+        -- --sd 2018/1/1 --ed 2022/2/1
+        This would add 'sd' and 'ed' to a kwargs_dict argument.
+
+    Examples
+    --------
+        bds parse_cu examples/parse_cu/dsm2-calsim_to_schism.yaml -- --sd 2018/3/1 --ed 2019/4/1
     """
 
     # Parse extra arguments into a dictionary (expects --key value pairs)

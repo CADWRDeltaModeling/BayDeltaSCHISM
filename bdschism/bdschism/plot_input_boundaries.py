@@ -672,6 +672,27 @@ def plot_bds_bc_cli(
 ):
     """
     CLI to plot boundary data from observed and/or simulation directories.
+
+    Options
+    -------
+    -o, --obs
+        Include observed data in the plot.
+    --sim-dirs
+        Simulation directories to get boundary data from. Can specify multiple.
+    --scenario-names
+        Optional scenario names for each simulation directory. If not provided, uses the last folder name. Do not need to include 'Observed' for the observed data.
+    --html-name
+        Output HTML plot filename.
+    --out-freq
+        Output data frequency. Default is one day.
+    --boundary-list
+        List of boundary types to include in the plot. Can specify multiple times.
+    extra
+        Extra keyword arguments as --key value pairs.
+
+    Example
+    -------
+        bds plot_bds_bc --sim-dirs ./ --sim-dirs ../sim2/ --scenario-names base alt --boundary-list tide ndo --html-name output.html
     """
     # Parse extra arguments into a dictionary (expects --key value pairs)
     envvar = {}
