@@ -50,7 +50,7 @@ Windows
       * If you've modified the bathymetric data, then update the dem yaml file to that .yaml file
       * Add these lines above the sav\_*.gr3 specifications:
       
-         .. code-block:: text
+         .. code-block:: yaml
          
             sav_cd.gr3: 
                default: 1.13
@@ -60,7 +60,7 @@ Windows
    * multi_clip.py 
       * Set the following variables according to your simulation start date (this example uses May 1, 2009)
          
-         .. code-block:: text
+         .. code-block:: console
          
             start=dtm.datetime(2009,5,1) 
             bds_home = "<BAYDELTASCHISM REPOSITORY LOCATION>"

@@ -253,15 +253,18 @@ Example:
 
   bds analyze_dt summarize out2d_21.nc --summarize 20 --num 10 --plot --csv_out dt_summary.csv
 
-  This example summarizes elements that appear among the 20 worst offenders per time step
-  for at least 10 time steps. 
-  The output includes the (0-based) element number, count of times in this role and location.
-  Sample Text Output::
+This example summarizes elements that appear among the 20 worst offenders per time step
+for at least 10 time steps. 
+The output includes the (0-based) element number, count of times in this role and location.
 
-    el,count,x,y
-    3363,31,652052.58,4172820.80
-    310595,31,595791.67,4225754.48
-    ...
+Sample Text Output:
+
+.. code-block:: text
+
+  el,count,x,y
+  3363,31,652052.58,4172820.80
+  310595,31,595791.67,4225754.48
+  ...
 
 .. figure:: ../_static/bad_actors.png
     :width: 80%

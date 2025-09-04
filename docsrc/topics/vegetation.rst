@@ -90,7 +90,7 @@ The "no vegetation" or zero density is typically assigned for mNDVI < -0.05, but
 images histogram is clustered at lower values. 
 
 
-.. code-block:: console
+.. code-block:: yaml
 
     - attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//path/to/delta_NDVI.tif',
         bins=[-998.,-0.2,0,0.4,1.0], 
@@ -117,7 +117,7 @@ a maximum (say 1.0m below) and assume that the vegetation grow to a effective he
 below a typical low water mark, slightly lower than the highest whorl you'd see in a boat). 
 Here is a sample from `sav_height.yaml`:
 
-.. code-block:: console
+.. code-block:: yaml
 
    - name: Franks Tract
      type: none
