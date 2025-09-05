@@ -3,7 +3,7 @@ from schimpy import param
 import bdschism.settings as config
 import os
 import shutil
-
+import datetime
 
 def interpolate_uv3d(
     param_nml,
@@ -138,8 +138,22 @@ def interpolate_uv3d(
     os.system(command)
 
     if write_clinic == True:
-        print(f"'write_clinic'=True. Moving {os.path.join(interp_dir, 'uv3D.th.nc')} to {os.path.join(fg_dir, 'uv3D.th.nc')}")
-        shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(fg_dir, "uv3D.th.nc"))
+        # First check if there is a file of same name already exists at the destination
+        if not os.path.exists(os.path.join(fg_dir, "uv3D.th.nc")):
+            print(
+                f"'write_clinic'=True. Moving {os.path.join(interp_dir, 'uv3D.th.nc')} to {os.path.join(fg_dir, 'uv3D.th.nc')}"
+            )
+            shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(fg_dir, "uv3D.th.nc"))
+        else:
+            print(
+                f"File already exists: {os.path.join(fg_dir, 'uv3D.th.nc')}. New file will be named with timestamp"
+            )
+            timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+            new_filename = f"uv3D.th_{timestamp}.nc"
+            print(
+                f"'write_clinic'=True. Moving {os.path.join(interp_dir, 'uv3D.th.nc')} to {os.path.join(fg_dir, new_filename)}"
+            )
+            shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(fg_dir, new_filename))
 
 @click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
 @click.option(
