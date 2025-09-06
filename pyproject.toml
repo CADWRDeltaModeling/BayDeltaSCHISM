@@ -24,6 +24,12 @@ dependencies = [
     "dynaconf",
     "click",
     "pyproj",
+	"shapely>=2.0",
+	"geopandas",
+	"netCDF4",
+	"osgeo",
+	"rasterio",
+	"fiona"
     "pyhecdss"
 ]
 
@@ -31,16 +37,20 @@ dependencies = [
 doc = [
     "sphinx",
     "sphinx-rtd-theme",
+	"sphinx-autodoc-typehints",
     "sphinx-click",
     "sphinx-design",
     "sphinx-argparse",
     "sphinxcontrib-bibtex",
     "sphinxcontrib-mermaid",
     "myst-parser",
+	"ghp-import",
+	"ipython",
     "numpydoc",
     "pillow>=4.0.0",
     "nbsphinx",
-    "docutils"
+    "docutils",
+    "babel"	
 ]
 test = [
     "pytest",
