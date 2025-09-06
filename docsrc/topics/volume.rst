@@ -15,7 +15,11 @@ bathymetry to improve:
 Typical changes are small (0.1–0.2 m), but isolated pits may be smoothed more.
 A shoreline regularization step prevents accidental drying of tidally wetted
 areas. After refinement, depth enforcement ensures hydraulic features such as
-channels and levees are properly represented where DEMs are incomplete.
+channels and levees are properly represented where DEMs are incomplete. Removing
+unresolved dips and pits also helps prevent switching in the numbers of levels
+in a local sigma coordinate mesh, which reduces undulation in the vertical grid. 
+For the most part these settings are "set-it-and-forget-it". For a Bay-Delta
+mesh we provide reasonable defaults in the preprocessor.
 
 The method is available both as a **standalone script** and as an integrated
 step in the **BayDeltaSCHISM preprocessor**.
