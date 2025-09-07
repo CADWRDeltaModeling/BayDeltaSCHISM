@@ -1,6 +1,6 @@
-polygons: 
+polygons:
 - attribute: '2'
-  name: property_605_adjoinchan   # all the property_605 are consecutive
+  name: property_605_adjoinchan
   type: min
   vertices:
   - - 594635.6
@@ -1270,7 +1270,7 @@ polygons:
   - - 591641.6
     - 4226702.7
   - - 591654.7000000001
-    - 4226675.5 
+    - 4226675.5
 - attribute: '-0.25'
   name: west_montezuma
   type: min
@@ -1310,7 +1310,7 @@ polygons:
   - - 581780.0
     - 4227170.0
   - - 581467.8000613918
-    - 4228002.7251447765    
+    - 4228002.7251447765
 - attribute: '0.25'
   name: hill_7
   type: min
@@ -1745,42 +1745,6 @@ polygons:
     - 4231364.3
   - - 586936.5
     - 4231371.9
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
 - attribute: max((0.75 + z)*1.75 - 0.75,z)
   name: suisun_crossover_east
   type: none
@@ -2482,7 +2446,7 @@ polygons:
   - - 595029.5101072147
     - 4220409.118984923
   - - 595014.771588921
-    - 4220376.437922619    
+    - 4220376.437922619
 - attribute: '0.5'
   name: nurse_2
   type: min
@@ -3355,5 +3319,3 @@ polygons:
     - 4218403.761272287
   - - 582055.9948225033
     - 4217907.420291167
-
-    

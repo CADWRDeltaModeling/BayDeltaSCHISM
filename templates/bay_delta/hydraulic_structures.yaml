@@ -184,7 +184,7 @@ structures:
       use_time_series: 1
     reference: self
 
-  - name: tom_paine_sl_culvert
+  - name: tom_paine
     type: culvert
     end_points:
       [[639240.49, 4183710.97],
@@ -254,3 +254,64 @@ structures:
       culvert_op_upstream: 1.
       use_time_series: 1
     reference: self
+    
+  - name: morrow_distribution_intake
+    type: culvert
+    end_points:
+      [[579027.,  4218648.],
+       [579026., 4218626.]]
+    configuration:
+      n_duplicates: 3
+      elevation: -0.79
+      radius: 0.61
+      coefficient: 0.3
+      op_downstream: 1.0
+      op_upstream: 0.0
+      use_time_series: 0
+    reference: self
+    
+  - name: goodyear_outfall
+    type: culvert
+    end_points:
+      [[578414., 4215357.],
+       [578406.,  4215348.]]
+    configuration:
+      n_duplicates: 4
+      elevation: -0.124
+      radius: 0.61
+      coefficient: 0.3
+      op_downstream: 1.0
+      op_upstream: 0.0
+      use_time_series: 0
+    reference: self
+
+  - name: morrow_distribution_cline_outfall
+    type: culvert
+    end_points:
+      [[581772., 4218844.],
+       [581770., 4218814.]]
+    configuration:
+      n_duplicates: 2
+      elevation: 0.018
+      radius: 0.457
+      coefficient: 0.3
+      op_downstream: 1.0
+      op_upstream: 0.0
+      use_time_series: 0
+    reference: self
+    
+  - name: morrow_distribution_mline_outfall
+    type: culvert
+    end_points:
+      [[581000., 4219526.],
+       [581037., 4219506.]]
+    configuration:
+      n_duplicates: 3
+      elevation: -0.707
+      radius: 0.61
+      coefficient: 0.3
+      op_downstream: 1.0
+      op_upstream: 0.0
+      use_time_series: 0
+    reference: self
+    

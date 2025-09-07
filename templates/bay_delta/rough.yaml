@@ -132,7 +132,7 @@ polygons:
     - 4212875.384210256
   - - 596904.5980514601
     - 4215384.811959073
-- attribute: bound_linear.bound_linear(z,4,10,8.e-6,3e-5)
+- attribute: bound_linear.bound_linear(z,4,10,8.e-6,1.0e-5)
   imports: schimpy.bound_linear
   name: suisun_marsh
   type: none
