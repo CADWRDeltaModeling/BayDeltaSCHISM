@@ -533,3 +533,26 @@ polygons:
     - 4195180.0
   - - 635040.0
     - 4196640.0
+- attribute: numpy.where(raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//cnrastore-bdo/Modeling_Data/sav/processed_2024_suisun/P2024_Suisun_veg_category.tif',
+    bins=[-998.,1.01,2.01,3.], mapped_values=[-999.,1.,2.,3.,-999.],mask_value=-9999.,fill_value=1.)<1.98,max(0.25,min(1.25,z-0.1)),99.)
+  name: south_delta
+  imports: schimpy.raster_to_nodes  
+  vertices:
+  - - 574105.0793168924
+    - 4214828.402627271
+  - - 579960.0
+    - 4207110.0
+  - - 602020.0
+    - 4208330.0
+  - - 599330.0
+    - 4216130.0
+  - - 599650.0
+    - 4224960.0
+  - - 598210.0
+    - 4233780.0
+  - - 577910.0
+    - 4234860.0
+  - - 572180.0
+    - 4225760.0
+  - - 574105.0793168924
+    - 4214828.402627271  

@@ -42,7 +42,7 @@ polygons:
     - 4211000.90195997
   - - 575118.9159233818
     - 4211438.337481816
-- attribute: '0.0008'
+- attribute: '0.0006'
   name: bridges
   type: none
   vertices:
@@ -90,8 +90,8 @@ polygons:
     - 4212326.736910023
   - - 575881.1852179505
     - 4211432.355011238
-- attribute: '0.0055'
-  name: suisun_delta3
+- attribute: '0.0008'   # was 0.0055
+  name: suisun_delta3 # Majority of Confluence and remainder of Delta
   type: none
   vertices:
   - - 589146.4649416617
@@ -142,7 +142,7 @@ polygons:
     - 4210264.32698772
   - - 576496.8607880379
     - 4210453.375388531
-- attribute: '0.002'     #changed
+- attribute: '0.0004'     #Small transition from Chipps to Delta (delta3)
   name: suisun_delta2
   type: none
   vertices:
@@ -162,7 +162,7 @@ polygons:
     - 4208417.223595772
   - - 599128.4669808393
     - 4207227.371717522
-- attribute: '0.0008'   # changed
+- attribute: '0.0001'   # changed
   name: suisun_delta1
   type: none
   vertices:

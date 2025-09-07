@@ -1,3 +1,35 @@
+# This input relies heavily on raster_to_nodes, which maps raster data 
+# onto SCHISM mesh nodes by averaging over surrounding elements.
+#
+# For each selected node (node to be populated within a polygon):
+# - Identify the surrounding elements (the 'element ball').
+# - For each element, compute the mean raster value within its polygon.
+# - Aggregate values for each node by taking a weighted average over its surrounding elements.
+#
+# Raster data can be used directly or classified into discrete mapped values using bins.
+#
+# Binning (optional):
+# - Use the `bins` array to define cutoff thresholds.
+# - Use `mapped_values` to assign a value to each bin interval.
+# - Example: bins = [0.1, 0.3], mapped_values = [10, 20, 30]
+#   → values < 0.1 → 10, 0.1–0.3 → 20, >0.3 → 30
+#
+# Missing data handling is controlled via:
+# - `mask_value`: a value in the raster (e.g. -999) that should be considered missing. Must be consistent
+#                 with any nodata value in the raster
+# - `na_action`: specifies how to handle missing data:
+#     - 'fill': replace `mask_value` with a user-defined `fill_value` 
+#     - 'mask': exclude `mask_value` pixels entirely from classification and averaging.
+#
+# When classifying:
+# - Fill values are mapped just like real raster values.
+# - This allows users to represent 'no data' with domain-specific substitutes (e.g. -0.5 for NDVI).
+#
+# When not classifying:
+# - Raw raster values are used directly (after optional masking or filling).
+#
+# Output is a 1D array: one value per node.
+# Values represent the local average (raw or mapped) of the raster over elements surrounding each node.
 default: 0.
 polygons:
 - name: clifton_court
@@ -52,7 +84,7 @@ polygons:
   - - 625154.4953713971
     - 4186427.0513153113
 - attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//nasbdo/modeling_data/sav/processed_tif_2022_2021/P2021_mNDVI_3class.tif',
-    bins=[-0.07,0.2,0.4,1.], mapped_values=[0.,10.,30.,40.,40.],mask_value=-9999.,fill_value=-0.5)
+    bins=[-998.,-0.07,0.2,0.4,1.], mapped_values=[-999.,0.,10.,30.,60.,-999.],mask_value=0.,fill_value=-0.41)
   name: south_delta
   imports: schimpy.raster_to_nodes  
   vertices:
@@ -127,7 +159,7 @@ polygons:
 #- attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, 'W:/sav/remote_sensing_2020_request/delta_2015_43_47_NDVI_mosaic_msksav_FT_SI.tif',
 #    bins=[-998.,0,0.4,0.7,1.0], mapped_values=[-999., 0., 10., 30., 60., -999.],mask_value=0.,fill_value=-0.1)    
 - attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//nasbdo/modeling_data/sav/remote_sensing_2022_request/FT_202107_mNDVI.tif',
-    bins=[-0.10,0.05,0.15,0.7,1.0], mapped_values=[0.,8.,10.,20.,30.,30.],mask_value=0.,fill_value=-0.1)
+    bins=[-998.,-0.10,0.05,0.15,0.7,1.0], mapped_values=[-999., 0.,8.,10.,30.,60.,-999.],mask_value=0.,fill_value=-0.1)
   name: Franks Tract
   imports: schimpy.raster_to_nodes   
   vertices:
@@ -173,7 +205,7 @@ polygons:
     - 4208938.637086442
   - - 610511.2937532894
     - 4208734.239174097    
-- attribute: '12.'
+- attribute: '10.'
   name: Liberty Upland
   type: none
   vertices:
@@ -358,7 +390,7 @@ polygons:
 - name: Cache West
   type: none
   imports: schimpy.raster_to_nodes   
-  attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//nasbdo/modeling_data/sav/remote_sensing_2020_request/delta_2015_19_27_NDVIonly_mosaic_msksav_LI.tif', bins=[-0.4,-0.1,0.4,1.0], mapped_values=[0., 5., 10., 40., 40.],mask_value=0.,fill_value=-0.41)
+  attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//nasbdo/modeling_data/sav/remote_sensing_2020_request/delta_2015_19_27_NDVIonly_mosaic_msksav_LI.tif', bins=[-998.,-0.4,-0.1,0.4,1.0], mapped_values=[-999., 0., 10., 30., 60., -999.],mask_value=0.,fill_value=-0.41)
   imports: schimpy.raster_to_nodes  
   vertices:
   - - 616450.7710045724
@@ -546,7 +578,7 @@ polygons:
 - name: Cache East
   type: none
   imports: schimpy.raster_to_nodes   
-  attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//nasbdo/modeling_data/sav/remote_sensing_2020_request/delta_2015_19_27_NDVIonly_mosaic_msksav_LI.tif', bins=[-0.4,-0.1,0.4,1.0], mapped_values=[ 0., 10., 20., 30., 30.],mask_value=0.,fill_value=-0.41)
+  attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//nasbdo/modeling_data/sav/remote_sensing_2020_request/delta_2015_19_27_NDVIonly_mosaic_msksav_LI.tif', bins=[-998.,-0.4,-0.1,0.4,1.0], mapped_values=[-999., 0., 10., 30., 60., -999.],mask_value=0.,fill_value=-0.41)
   imports: schimpy.raster_to_nodes 
   vertices:
   - - 615795.5133659088
@@ -568,7 +600,7 @@ polygons:
   - - 615795.5133659088
     - 4245994.574062904
 - attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//nasbdo/modeling_data/sav/remote_sensing_2020_request/delta_2015_43_47_NDVI_mosaic_msksav_FT_SI.tif',
-    bins=[-0.4,0,0.4,0.7,1.], mapped_values=[0., 10., 20., 30., 60., 60.],mask_value=0.,fill_value=-0.5)
+    bins=[-998.,-0.4,0,0.4,0.7,1.0], mapped_values=[-999., 0., 10., 20., 30., 60., -999.],mask_value=0.,fill_value=-0.5)
   name: Sherman Lake
   type: none
   imports: schimpy.raster_to_nodes   
@@ -600,4 +632,28 @@ polygons:
   - - 607120.3292317331
     - 4211749.529568533
   - - 607017.9792275304
-    - 4213579.848962882    
+    - 4213579.848962882
+# [-999.,0.,10.,30.,60.,-888.]
+- attribute: raster_to_nodes.raster_to_nodes(mesh, nodes_sel, '//cnrastore-bdo/Modeling_Data/sav/processed_2024_suisun/P2024_Suisun_veg_density.tif',
+    bins=[-998.,-0.05,0.25,0.5,1.25], mapped_values=[-999., 0., 10., 20., 30., -888.],mask_value=-9999.,fill_value=-0.5)
+  name: suisun
+  imports: schimpy.raster_to_nodes  
+  vertices:
+  - - 574105.0793168924
+    - 4214828.402627271
+  - - 579960.0
+    - 4207110.0
+  - - 602020.0
+    - 4208330.0
+  - - 599330.0
+    - 4216130.0
+  - - 599650.0
+    - 4224960.0
+  - - 598210.0
+    - 4233780.0
+  - - 577910.0
+    - 4234860.0
+  - - 572180.0
+    - 4225760.0
+  - - 574105.079
+    - 4214828.40
