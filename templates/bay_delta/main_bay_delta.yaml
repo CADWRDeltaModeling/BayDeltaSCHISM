@@ -1,7 +1,7 @@
 # Main input file for default bay_delta template based on version 113 of the mesh
 
 mesh:
-  mesh_inputfile: ./bay_delta_115.2dm   # cc vs hist requires coordination with dem_list.yaml which has variants of same names
+  mesh_inputfile: ./bay_delta_115p3_beta_20250905.2dm   # cc vs hist requires coordination with dem_list.yaml which has variants of same names
   split_quad:
     minangle: 30.
     maxangle: 140.
@@ -12,28 +12,35 @@ mesh:
   # includes restoration sites at top of list
   dem_list:
     include:
+<<<<<<< HEAD
       - dem_4.3_cc.yaml
   depth_optimization: 
     method: volume_tvd
     include: depth_opt_params_volume_tvd.yaml
+=======
+      - dem_restorations_future_20250822.yaml
+      - dem_restorations_2024_20250822.yaml
+      - dem_4.3_suisun_20250430.yaml
+  depth_optimization: !include depth_opt_params_volume_tvd.yaml
+>>>>>>> 14be04d (Updated SAV density upper/lower bracket, added required DEM and minmaxlayers.)
   open_boundaries: !include open_boundary.yaml
   depth_enforcement:
     polygons:
       include:
-        - ./depth_enforcement/depth_enforcement_polygons_115p3.yaml
-        - ./depth_enforcement/depth_enforcement_ss_polygons.yaml
-        - ./depth_enforcement/depth_enforcement_suisun_polygons.yaml
-        - ./depth_enforcement/depth_enforcement_grizzly.yaml
-        - ./depth_enforcement/depth_enforcement_v115p3_restoration_polygons.yaml
+        - depth_enforcement_polygons_115p3.yaml
+        - depth_enforcement_ss_polygons.yaml
+        - depth_enforcement_suisun_polygons.yaml
+        - depth_enforcement_grizzly.yaml
+        - depth_enforcement_v115p3_restoration_polygons.yaml
     linestrings:
       include:
-        - ./depth_enforcement/depth_enforcement_morrow_linestrings.yaml
-        - ./depth_enforcement/depth_enforcement_sjr_linestrings.yaml
-        - ./depth_enforcement/depth_enforcement_suisun_linestrings.yaml
-        - ./depth_enforcement/depth_enforcement_suisun_restoration.yaml
-        - ./depth_enforcement/depth_enforcement_v115_linestrings.yaml
-        - ./depth_enforcement/depth_enforcement_linestrings.yaml
-        - ./depth_enforcement/depth_enforcement_v115p3_restoration_linestrings.yaml
+        - depth_enforcement_morrow_linestrings.yaml
+        - depth_enforcement_sjr_linestrings.yaml
+        - depth_enforcement_suisun_linestrings.yaml
+        - depth_enforcement_suisun_restoration.yaml
+        - depth_enforcement_v115_linestrings.yaml
+        - depth_enforcement_linestrings.yaml
+        - depth_enforcement_v115p3_restoration_linestrings.yaml
   ll_outputfile: hgrid.ll
   gr3_outputfile: hgrid.gr3
 
