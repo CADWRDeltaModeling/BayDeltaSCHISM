@@ -1,0 +1,45 @@
+method: volume_tvd        # REQUIRED: "volume" (legacy) or "volume_tvd" (new)
+
+#python d:\delta\models\schimpy\schimpy\mesh_volume_tvd.py --mesh hgrid_base.gr3 --dem dem_4.3_suisun_20250430.yaml --lambda_l2 500 --l2_weight 1e-5 --href -0.35 --deep_delta 0.35 --shore_delta 0.35 --use_default_seeds --smooth_relax_factor 1.25 --smooth_strip_max 12 --smooth_eps_deg 5 --filter_deep --epsg 26910 --shore_floor_filter median --shore_floor_window 5 --reg_weight 1.e-2 --profiles_dir profiles --profiles 1 2 3 4 --out output --log_level DEBUG
+
+
+shoreline:
+  href: !include href.yaml      # float water level or path to gr3 with node z good scalar would be -0.35
+  #href: -0.35
+  deep_delta: 0.35
+  shore_delta: 0.35
+  seeds:                        # Some deep places scattered through mesh and connected by fairly deep pathways (>2m say) to bay
+    - [548345.0, 4186490.]  # Bay
+    - [597400.0, 4211675.]
+    - [615454.0, 4224337.]
+    - [628962.0, 4202793.]
+    - [645600.0, 4202146.]
+    - [606258.0, 4213690.]
+    - [634475.0, 4186958.]  # Grant Line
+    - [616750.0, 4235785.]  # Mildred
+    - [630000.0, 4255225.]  # Upper Sac
+  smooth_relax_factor: 1.25
+  smooth_strip_max: 12
+  smooth_eps_deg: 5.0
+  filter_deep: true
+  epsg: 26910
+  shore_csv: shores.csv     # defaults: <prepro_output_dir>/shores.csv
+  shore_shp: shores.shp
+
+floor:
+  filter: median              # max | median
+  window: 5
+  reg_weight: 0.02         # hinge penalty weight (0 disables)
+  enforce_floor: false     # project to floor after TV prox
+
+tvd:
+  steps: 20
+  dt: 1.0
+  mu: 1.0
+  lambda_l2: 800.0
+  tv_weight: 1.0
+  l2_weight: 2.e-5
+  cfl_target: 1.0
+  clip_eps: 0.01
+  rel_eta: 2.0e-3
+  max_backtracks: 4

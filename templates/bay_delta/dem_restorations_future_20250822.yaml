@@ -1,0 +1,5 @@
+dem_list:
+
+  # Prospective restoration sites
+  - //nasbdo/Modeling_Data/restoration/prospect_island/DEM_ProspectIsland_1m_UTM_mNAVD-2022-12-30_clip.tif # TBD
+  - //nasbdo/Modeling_Data/restoration/little_egbert/little_egbert_feas_alt26_202403.tif # TBD

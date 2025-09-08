@@ -1,0 +1,9 @@
+dem_list:
+
+  # Restoration sites as of 2024
+  - //nasbdo/modeling_data/restoration/wings_landing/wings_clip_rma_20230801.tif # 2019
+  - //nasbdo/modeling_data/restoration/winter_island/winter_clip_rma_20230801.tif # 2019
+  - //nasbdo/modeling_data/restoration/hill_slough/DEM_HillSlough_1m_UTM_mNAVD-2022-06-15.tif # 2021
+  - //nasbdo/modeling_data/restoration/dutch_slough/DEM/DEM_DutchSlough_1m_UTM_mNAVD-2022-06-15.tif # 2022
+  - //nasbdo/Modeling_Data/restoration/chipps_island/suisun2018lidarclip_utm10zm_resample2m_edgeclip_smooth.tif # 2023
+  - //nasbdo/Modeling_Data/restoration/lookout/Lookout_mNAD_mNAVD_20220824.tif # 2024
