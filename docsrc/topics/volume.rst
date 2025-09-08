@@ -117,7 +117,7 @@ Example:
 
      depth_optimization:
        method: volume_tvd
-       !include depth_opt_params_volume_tvd.yaml
+       include: depth_opt_params_volume_tvd.yaml
 
 Inline Parameters (Annotated)
 -----------------------------

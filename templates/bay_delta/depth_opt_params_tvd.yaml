@@ -1,0 +1,23 @@
+# Target CFL-like condition for stability (0.5–1.0 typical)
+cfl_target: 0.9
+
+# Initial timestep size for iterations
+dt_init: 1.0
+
+# Number of optimization iterations
+niter: 25
+
+# Weight for prioritizing progress on volume fidelity
+lambda_l2: 1.0
+
+# Weight of total variation (smoothness) term
+tv_weight: 0.5
+
+# Optional additional L2 regularization weight
+l2_weight: 0.1
+
+# Clipping tolerance (null disables clipping)
+clip_eps: null
+
+# Logging level (INFO or DEBUG)
+log_level: INFO

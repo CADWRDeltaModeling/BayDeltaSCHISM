@@ -13,7 +13,9 @@ mesh:
   dem_list:
     include:
       - dem_4.3_cc.yaml
-  depth_optimization: !include depth_opt_params.yaml
+  depth_optimization: 
+    method: volume_tvd
+    include: depth_opt_params_volume_tvd.yaml
   open_boundaries: !include open_boundary.yaml
   depth_enforcement:
     polygons:
