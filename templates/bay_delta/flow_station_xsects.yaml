@@ -645,8 +645,8 @@ linestrings:
   station_name: Cache Slough below Shag Slough
 - agency_id: '380833122033401'
   coordinates:
-  - - 582620.0
-    - 4222035.0
+  - - 582498.0
+    - 4222081.0
   - - 582134.0
     - 4222163.0
   name: MTZ
@@ -690,10 +690,10 @@ linestrings:
   station_name: Railroad Cut North
 - comment: Diagnistic, not in station database
   coordinates:
-  - - 580655.0
-    - 4220546.0
-  - - 580344.
-    - 4220576.0
+  - - 581350.0
+    - 4219850.0
+  - - 581340.
+    - 4219561.0
   name: suisun_sl_entrance
   station_id: suisun_sl_entrance
   station_name: suisun_sl_entrance
