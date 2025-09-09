@@ -64,6 +64,7 @@ jobs:
           PIP_NO_BUILD_ISOLATION: "1"
         run: |
           micromamba run -n docs python -m pip install --upgrade pip
+          cd $GITHUB_WORKSPACE
           micromamba run -n docs python -m pip install -e ./bdschism --no-deps --no-build-isolation -v
 
       - name: Build Sphinx
