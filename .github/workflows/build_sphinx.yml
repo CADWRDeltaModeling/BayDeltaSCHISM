@@ -77,6 +77,13 @@ jobs:
           make -C docsrc clean
           make -C docsrc html
 
+      - name: Debug info
+        run: |
+          pwd
+          ls -al
+          ls -al bdschism
+          ls -al .git
+
       # Upload the built site as a Pages artifact
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
