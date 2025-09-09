@@ -60,11 +60,11 @@ jobs:
 
       - name: Overlay current checkout (no pip deps)
         env:
-          PIP_NO_INDEX: "1"          # optional hard guard against PyPI
+          PIP_NO_INDEX: "1"
           PIP_NO_BUILD_ISOLATION: "1"
         run: |
-          micromamba run -n docs python -m pip install --upgrade pip
-          cd $GITHUB_WORKSPACE
+          micromamba run -n docs python -m pip install --upgrade pip && \
+          cd $GITHUB_WORKSPACE && \
           micromamba run -n docs python -m pip install -e ./bdschism --no-deps --no-build-isolation -v
 
       - name: Build Sphinx
