@@ -58,7 +58,7 @@ jobs:
               - conda-forge
               - cadwr-dms   # keep if you publish your internal deps here
 
-      - name: Overlay current checkout (no pip deps)
+      - name: Overlay current checkout (no pip deps and install bdschism)
         env:
           PIP_NO_INDEX: "1"
           PIP_NO_BUILD_ISOLATION: "1"
@@ -67,6 +67,10 @@ jobs:
         run: |
           micromamba run -n docs python -m pip install --upgrade pip
           micromamba run -n docs python -m pip install ./bdschism --no-deps --no-build-isolation -v
+
+      - name: Install docs extras from pyproject via conda
+        run: |
+          micromamba run -n docs python scripts/install_docs_extras.py
 
       - name: Build Sphinx
         shell: bash -l {0}
