@@ -66,7 +66,7 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           micromamba run -n docs python -m pip install --upgrade pip
-          micromamba run -n docs python -m pip install -e ./bdschism --no-deps --no-build-isolation -v
+          micromamba run -n docs python -m pip install ./bdschism --no-deps --no-build-isolation -v
 
       - name: Build Sphinx
         shell: bash -l {0}

@@ -1,10 +1,10 @@
 from setuptools_scm import get_version
-from setuptools import setup
+from setuptools import setup, find_packages
 
 # setup.py only needed for conda to resolve versioning
 # DO NOT ADD ANYTHING ELSE HERE
 
 setup(
-    name="bdschism",
-    version=get_version(),
+    packages=find_packages(include=["bdschism", "bdschism.*"]),
+    # version is managed by setuptools_scm via pyproject.toml
 )
