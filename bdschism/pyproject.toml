@@ -56,6 +56,7 @@ bdschism = ["config/*.yaml"]
 
 [tool.setuptools_scm]
 search_parent_directories = true
+root = ".."
 
 [tool.click]
 # This section is not strictly necessary unless you are setting up Click-specific configurations.
