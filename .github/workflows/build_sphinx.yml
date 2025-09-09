@@ -4,8 +4,9 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main", "master"]
-
-  # Allows you to run this workflow manually from the Actions tab
+    tags:
+      - 'v[0-9]*.*'      # v1, v1.2, v1.2.3, v2025.09.04, etc.
+      - '[0-9]*\.[0-9]*\.*'  # 1, 1.2, 1.2.3, 2025.09.04, etc.  
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
@@ -31,60 +32,63 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgfortran5
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v2
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          python-version: 3.11
+          fetch-depth: 0
 
-      - name: Add conda to system path
-        run: |
-          echo $CONDA/bin >> $GITHUB_PATH
+      - name: Set up micromamba (conda-forge + optional org channel)
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          init-shell: bash
+          cache-downloads: true
+          environment-name: docs
+          # The python here should be coordinated with pyproj.toml. 
+          # The others are a minimal set of things needed to bootstrap the build 
+          # versions should be coordinated with pyproj.toml
+          create-args: >-
+            python=3.12
+            setuptools>=68
+            setuptools_scm
+            numpy>2
+            numpydoc
+          condarc: |
+            channel_priority: strict
+            channels:
+              - conda-forge
+              - cadwr-dms   # keep if you publish your internal deps here
 
-      - name: Conda build env for docs
-        run: |
-          conda env create -f schism_env.linux.yml
-          source $CONDA/etc/profile.d/conda.sh
-          conda activate schism
-          conda install -c conda-forge libgfortran=3
-          pip install -r docsrc/requirements.txt
-          
-          # git clone -b suxarray https://github.com/kjnam/uxarray.git && 
-          # pushd uxarray && 
-          # pip install --no-deps -e . && 
-          # popd
-
-          # git clone -b v2024.09.0 https://github.com/cadwrdeltamodeling/suxarray && 
-          # pushd suxarray && 
-          # pip install --no-deps -e . && 
-          # popd 
-          pip install -e ./bdschism
-
-      - name: Build HTML
-        run: |
-          source $CONDA/etc/profile.d/conda.sh
-          conda activate schism
-          cd docsrc/
-          sphinx-apidoc --force -o . ../bdschism/bdschism -T --templatedir ./_templates
-          make clean
-          make html
-        
-      - name: Run ghp-import
-        shell: bash
+      - name: Overlay current checkout (no pip deps)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PIP_NO_INDEX: "1"          # optional hard guard against PyPI
+          PIP_NO_BUILD_ISOLATION: "1"
         run: |
-          source $CONDA/etc/profile.d/conda.sh
-          conda activate schism
-          git config http.postBuffer 157286400
-          git pull
+          micromamba run -n docs python -m pip install --upgrade pip
+          micromamba run -n docs python -m pip install -e ./bdschism --no-deps --no-build-isolation -v
 
-          tree -L 2 -a
+      - name: Build Sphinx
+        shell: bash -l {0}
+        env:
+          # flip to "0" if/when you want a full unmocked build
+          DOCS_USE_MOCKS: "0"
+        run: |
+          sphinx-apidoc --force -o . ../bdschism -T --templatedir ./_templates
+          make -C docsrc clean
+          make -C docsrc html
 
-          ghp-import -n -p -f ./docs/html
+      # Upload the built site as a Pages artifact
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/html
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages      # 👈 this resolves your 400 error
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
