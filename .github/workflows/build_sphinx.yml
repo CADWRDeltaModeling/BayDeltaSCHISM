@@ -64,6 +64,10 @@ jobs:
           PIP_NO_BUILD_ISOLATION: "1"
         working-directory: ${{ github.workspace }}
         run: |
+          pwd
+          ls -al
+          ls -al bdschism
+          ls -al .git
           micromamba run -n docs python -m pip install --upgrade pip
           micromamba run -n docs python -m pip install -e ./bdschism --no-deps --no-build-isolation -v
 
@@ -76,13 +80,6 @@ jobs:
           sphinx-apidoc --force -o . ../bdschism -T --templatedir ./_templates
           make -C docsrc clean
           make -C docsrc html
-
-      - name: Debug info
-        run: |
-          pwd
-          ls -al
-          ls -al bdschism
-          ls -al .git
 
       # Upload the built site as a Pages artifact
       - name: Upload Pages artifact
