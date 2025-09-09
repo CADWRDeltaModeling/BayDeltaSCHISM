@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from collections import Counter
 import csv
 import matplotlib.cm as cm
+from shapely.geometry import Point, mapping
+import fiona
 
 
 @click.group()
@@ -153,6 +155,35 @@ def plot_summarized_bad_actors(bad_actors, all_x, all_y, label_top=None):
     plt.show()
 
 
+def write_bad_shp(shp_out, points, all_x, all_y):
+
+    schema = {
+        "geometry": "Point",
+        "properties": {
+            "el": "int",
+            "count": "int",
+            "x": "float",
+            "y": "float",
+        },
+    }
+    with fiona.open(
+        shp_out, "w", driver="ESRI Shapefile", schema=schema, crs="EPSG:26910"
+    ) as shp:
+        for el, count, xi, yi in points:
+            pt = Point(xi, yi)
+            shp.write(
+                {
+                    "geometry": mapping(pt),
+                    "properties": {
+                        "el": int(el),
+                        "count": int(count),
+                        "x": float(xi),
+                        "y": float(yi),
+                    },
+                }
+            )
+
+
 @click.command()
 @click.argument("filename")
 @click.option(
@@ -175,7 +206,8 @@ def plot_summarized_bad_actors(bad_actors, all_x, all_y, label_top=None):
     help="Number of top elements to label. Default labels all.",
 )
 @click.option("--csv_out", type=str, default=None, help="Optional CSV output file.")
-def summarize(filename, num_elements, num_active, plot, label_top, csv_out):
+@click.option("--shp_out", type=str, default=None, help="Optional CSV output file.")
+def summarize(filename, num_elements, num_active, plot, label_top, csv_out, shp_out):
     """Summarize elements frequently appearing in the worst time steps."""
     points, all_x, all_y = summarize_elements(filename, num_elements, num_active)
     if csv_out:
@@ -184,6 +216,8 @@ def summarize(filename, num_elements, num_active, plot, label_top, csv_out):
             writer.writerow(["el", "count", "x", "y"])
             for row in points:
                 writer.writerow(row)
+    if shp_out:
+        write_bad_shp(shp_out, points, all_x, all_y)
     else:
         print("el,count,x,y")
         for el, count, xi, yi in points:
