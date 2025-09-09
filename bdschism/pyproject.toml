@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel", "versioneer[toml]"]
+requires = ["setuptools>=68", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -13,16 +13,13 @@ authors = [
 readme = "README.md"
 keywords = ["Bay-Delta", "SCHISM", "hydrodynamics"]
 
-[tool.versioneer]
-VCS = "git"
-style = "pep440"
-versionfile_source = "bdschism/_version.py"
-parentdir_prefix = ""
+# This has to be coordinated with entries in .github/python-package-conda.yml and build_sphinx.yml
+requires-python = ">=3.10,<3.13"
 
 dependencies = [
-    "schimpy",
+    "schimpy>=1.12.1",
     "suxarray",
-    "vtools",
+    "vtools>=3.9",
     "dms_datastore",
     "dynaconf",
     "click",
@@ -63,7 +60,7 @@ bdschism = ["config/*.yaml"]
 [tool.flake8]
 max-line-length = 100
 ignore = ["E122", "E123", "E126", "E127", "E128", "E731", "E722"]
-exclude = ["build", "bdschism/_version.py", "tests", "conda.recipe", ".git", "versioneer.py", "benchmarks", ".asv"]
+exclude = ["build", "bdschism/_version.py", "tests", "conda.recipe", ".git", "benchmarks", ".asv"]
 
 [tool.pytest.ini_options]
 norecursedirs = [".*", "*.egg*", "build", "dist", "conda.recipe"]

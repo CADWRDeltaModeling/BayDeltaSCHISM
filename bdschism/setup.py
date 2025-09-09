@@ -1,10 +1,10 @@
+from setuptools_scm import get_version
 from setuptools import setup
-import versioneer
 
-VERSION = versioneer.get_version()
+# setup.py only needed for conda to resolve versioning
+# DO NOT ADD ANYTHING ELSE HERE
 
 setup(
     name="bdschism",
-    version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass()
+    version=get_version(),
 )

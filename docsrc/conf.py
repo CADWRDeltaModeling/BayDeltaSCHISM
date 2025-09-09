@@ -347,3 +347,18 @@ intersphinx_mapping = {
     )
 }
 tls_verify = False
+# using mock to avoid nodepy documentation which is hard to import
+# and to reduce time with the spatial stack
+autodoc_mock_imports = [
+    "nodepy",
+    "gdal",
+    "osgeo",
+    "rasterio",
+    "fiona",
+    "pyproj",
+    "geopandas",
+    "shapely",
+    "netCDF4",
+    "rtree",
+    "param",
+]

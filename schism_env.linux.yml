@@ -38,7 +38,6 @@ dependencies:
   - ipykernel
   - pytest
   - pytest-runner
-  - versioneer
   - nodejs
 # The following are not currently supported by conda but are available via pip with git:
 # git clone -b suxarray https://github.com/kjnam/uxarray.git && pushd uxarray && pip install --no-deps -e . && popd
