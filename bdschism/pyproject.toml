@@ -54,6 +54,9 @@ include-package-data = true
 [tool.setuptools.package-data]
 bdschism = ["config/*.yaml"]
 
+[tool.setuptools_scm]
+search_parent_directories = true
+
 [tool.click]
 # This section is not strictly necessary unless you are setting up Click-specific configurations.
 
