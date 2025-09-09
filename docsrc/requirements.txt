@@ -1,6 +1,7 @@
 # furo==2021.11.16
 sphinx>=7.0
 pillow>=4.0.0
+schimpy>=1.12.1
 sphinx-design
 sphinx-argparse  
 sphinxcontrib-bibtex
@@ -11,7 +12,6 @@ ghp-import # for GitHub Pages import
 nbsphinx
 numpydoc
 docutils
-schimpy
 # matplotlib # removed, already in schism_env.yml
 # ipython    # removed, already in schism_env.yml
 # pip        # removed, already in schism_env.yml
