@@ -6,7 +6,7 @@ from vtools.data.vtime import days
 from schimpy.model_time import read_th, is_elapsed
 from schimpy.th_calcs import calc_net_source_sink
 from schimpy.util.yaml_load import yaml_from_file
-from vtools.functions.read_dss import read_dss
+from bdschism.read_dss import get_ts_dfs
 from pathlib import Path
 import pandas as pd
 import numpy as np

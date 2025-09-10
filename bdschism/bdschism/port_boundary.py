@@ -14,7 +14,7 @@ from bdschism.plot_input_boundaries import (
     get_boundary_data,
     plot_bds_boundaries,
 )
-from vtools.functions.read_dss import read_dss
+from bdschism.read_dss import read_dss
 import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd

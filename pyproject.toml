@@ -23,7 +23,8 @@ dependencies = [
     "dms_datastore",
     "dynaconf",
     "click",
-    "pyproj"
+    "pyproj",
+    "pyhecdss"
 ]
 
 [project.optional-dependencies]
