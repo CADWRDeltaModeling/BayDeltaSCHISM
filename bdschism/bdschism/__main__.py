@@ -10,6 +10,7 @@ from bdschism.calc_ndoi import calc_indoi_cli
 from bdschism.parse_cu import parse_cu_cli, parse_cu_yaml_cli
 from bdschism.plot_input_boundaries import plot_bds_bc_cli
 from bdschism.analyze_dt import analyze_dt_cli
+from bdschism.runtime_hotstart import restart_from_hotstart_cli
 
 import subprocess
 import sys
@@ -68,6 +69,7 @@ cli.add_command(parse_cu_yaml_cli, "parse_cu_yaml")
 cli.add_command(plot_bds_bc_cli, "plot_bds_bc")
 cli.add_command(precheck, "precheck")
 cli.add_command(analyze_dt_cli, "analyze_dt")
+cli.add_command(restart_from_hotstart_cli, "start_from_hot")
 
 if __name__ == "__main__":
     cli()
