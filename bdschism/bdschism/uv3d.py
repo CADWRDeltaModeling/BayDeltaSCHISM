@@ -17,6 +17,8 @@ def interpolate_uv3d(
     interp_template,
     nday,
     write_clinic,
+    output_name,
+    overwrite_existing,
 ):
     """Main function to run interpolate_variables utility."""
     #
@@ -55,6 +57,21 @@ def interpolate_uv3d(
         fg_dir = bg_dir
 
     fg_dir = os.path.abspath(fg_dir)
+
+    #
+    # Check if output file already exists in fg_dir
+    #
+    if write_clinic == True:
+        destination_file = os.path.join(fg_dir, output_name)
+        if os.path.exists(destination_file):
+            if overwrite_existing == True:
+                print(
+                    f"Warning: {destination_file} already exists and will be overwritten."
+                )
+            else:
+                raise Exception(
+                    f"Error: {destination_file} already exists. Rename it or set 'overwrite_existing=True' to overwrite."
+                )
 
     #
     # Make sure "interpolate_variables.in" is present
@@ -137,23 +154,14 @@ def interpolate_uv3d(
     command = "module purge \n module load intel/2024.0 hmpt/2.29 hdf5/1.14.3 netcdf-c/4.9.2 netcdf-fortran/4.6.1 schism/5.11.1 \n ulimit -s unlimited \n interpolate_variables8"
     os.system(command)
 
+    #
+    # Move the resulting file to fg_dir
+    #
     if write_clinic == True:
-        # First check if there is a file of same name already exists at the destination
-        if not os.path.exists(os.path.join(fg_dir, "uv3D.th.nc")):
-            print(
-                f"'write_clinic'=True. Moving {os.path.join(interp_dir, 'uv3D.th.nc')} to {os.path.join(fg_dir, 'uv3D.th.nc')}"
-            )
-            shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(fg_dir, "uv3D.th.nc"))
-        else:
-            print(
-                f"File already exists: {os.path.join(fg_dir, 'uv3D.th.nc')}. New file will be named with timestamp"
-            )
-            timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-            new_filename = f"uv3D.th_{timestamp}.nc"
-            print(
-                f"'write_clinic'=True. Moving {os.path.join(interp_dir, 'uv3D.th.nc')} to {os.path.join(fg_dir, new_filename)}"
-            )
-            shutil.move(os.path.join(interp_dir, "uv3D.th.nc"), os.path.join(fg_dir, new_filename))
+        print(
+            f"'write_clinic'=True. Moving {os.path.join(interp_dir, 'uv3D.th.nc')} to {os.path.join(fg_dir, output_name)}"
+        )
+        shutil.move(os.path.join(interp_dir, 'uv3D.th.nc'), os.path.join(fg_dir, output_name))
 
 @click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
 @click.option(
@@ -222,6 +230,18 @@ def interpolate_uv3d(
     type=bool,
     help="If true, the file will be moved to fg_dir. Otherwise, it will be kept in bg_output_dir.",
 )
+@click.option(
+    "--output_name",
+    default="uv3D.th.nc",
+    type=str,
+    help="Name of the output file if write_clinic=True (default: uv3D.th.nc).",
+)
+@click.option(
+    "--overwrite_existing",
+    default=False,
+    type=bool,
+    help="If true, existing output files will be overwritten. If false, warning given without generating file.",
+)
 @click.help_option("-h", "--help")
 def interpolate_uv3d_cli(
     param_nml,
@@ -235,6 +255,8 @@ def interpolate_uv3d_cli(
     interp_template,
     nday,
     write_clinic,
+    output_name,
+    overwrite_existing,
 ):
     """
     Command-line interface for the interpolate_uv3d function.
@@ -251,6 +273,8 @@ def interpolate_uv3d_cli(
         interp_template,
         nday,
         write_clinic,
+        output_name,
+        overwrite_existing,
     )
 
 
