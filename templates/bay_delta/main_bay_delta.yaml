@@ -1,22 +1,44 @@
 # Main input file for default bay_delta template based on version 113 of the mesh
 
 mesh:
-  mesh_inputfile: ./bay_delta_115p3_beta_20250905.2dm   # cc vs hist requires coordination with dem_list.yaml which has variants of same names
+  # SMS formatted 2dm file (which will be formatted) or a preexisting SCHISM hgrid.gr3
+  mesh_inputfile: ./115p3_beta_20250911_prune2018.2dm   
+  
+  # Mesh generation produces some skew elements. These are handled more robustly
+  # if they are triangles rather than quads. These criteria are used for identifying skew and splitting
+  # quads (in such a way that skew is reduced). They are seldom changed.
   split_quad:
     minangle: 30.
     maxangle: 140.
     propfile: split_quad.prop
+  # Small elements often cause speed bottlenecks. There is a standard for any "official" BayDeltaSCHISM
+  # mesh that elements not have an area less than 4m^2. This will cause a hard stop (see "fail" below).
+  # You can change this, but buyer beware -- users should 
+  # have reasonable expectations about using circulation scale models at finer scales. 
+  # Nonetheless, it isn't uncommon to have to do in some small focus areas for individual projects
   small_areas:
     warn: 10.
     fail: 4.
-  # includes restoration sites at top of list
+  # This section specifies the "stack" of DEMs that will be used to prioritize the mesh from highest to lowest.
+  # The list includes some restoration designs commonly incorporated into "current conditions" for studies 
+  # because of their high probability of completion.  
   dem_list:
     include:
-      - dem_restorations_future_20250822.yaml
-      - dem_restorations_2024_20250822.yaml
-      - dem_4.3_suisun_20250430.yaml
+      #- dem_restorations_future_20250822.yaml  # Selected proposed locations. Vet carefully to make sure it covers your area of interest
+      #- dem_restorations_2024_20250822.yaml    # Restoration sites up to 2024. See comments in this file for year of introduction if you are targetting surgically
+      - dem_4.3_suisun_20250430.yaml            # Contemporary soundings through 2024, restoration in Delta to approximately 2019
+s
+  # The depth optimization step:
+  # 1. adjusts the node depths so that the elements (based on shape functions) better match the volume of the DEM (as given by a large number of quadrature samples). 
+  # 2. reduces total variation (a TV metric). 
+  # The parameters seldom change and both characteristics generally improve 5-10% 
   depth_optimization: !include depth_opt_params_volume_tvd.yaml
+  
+  # Defines and names the open boundaries, which will be appended to hgrid.gr3. 
   open_boundaries: !include open_boundary.yaml
+  
+  # The final depth adjustment is to manually enforce features, make up for known DEM defects or 
+  # do experiments with landscape change such as dredging.
   depth_enforcement:
     polygons:
       include:
@@ -43,30 +65,36 @@ flow_outputs:
   include: flow_station_xsects.yaml
   outputfile: fluxflag.prop
 
+# The gr3 file is a node-centered file used to populate many of the most important spatial inputs to SCHISM
 gr3:
-  xlsc.gr3:
-    default: 0.1
   diffmin.gr3: !include diffmin.yaml # Updated for MSS grid 2024-06-04
   rough.gr3: !include rough.yaml  # Updated for MSS grid 2024-06-04
 
-  #  default: 1.5e-5
-  diffmax.gr3:
-    default: 1.0
-  windrot_geo2proj.gr3:
-    default: 0.0
-  windfactor.gr3: !include windfactor.yaml   # Updated 115 to more generic (1.1 and 1.0) 
-  manning.gr3:
-    default: 0.024  # Changed from 0.025 in prior templates. Higher friction for tropic-clinic. For barotropic 2D accuracy, more like 0.021
-  elev.ic: !include elev.yaml
-  estuary.gr3: !include estuary.yaml      # Introduced as estuary3 during SLR study, biggger area
-  SAL_nudge.gr3: !include SAL_nudge.yaml
-  TEM_nudge.gr3: !include TEM_nudge.yaml
+  #rough.gr3:     # Approximately what Works with GOTM k-eps last time we tried it.
+  #  default: 4.e-5
+  #diffmin.gr3:   # Approximately what works with GOTM k-eps last time we tried it.
+  #  default: 1.e-5
 
+  windfactor.gr3: !include windfactor.yaml   # Updated 115 to more generic (1.1 and 1.0) 
+  # manning value here is intentionally diffusive for the barotropic-baroclinic sequence in order to control spurious modes on the boundary
+  # the value was changed from 0.025 in prior templates, and this is a fairly consequential change. 
+  # For maximum barotropic 2D accuracy through the domain, a lower value like 0.021 is useful
+  manning.gr3:
+    default: 0.0245  
+  estuary.gr3: !include estuary.yaml  # This is an indicator of the "estuary" zone, not used by schism but used by some other
+                                      # tools in the tool chain. 
+  # Be cautious of the coupling between sav_cd.gr3 value and the intepretation of density.
+  # The way we do interpretation of NDVI index data leaves some ambiguity between density and drag coeficient
+  # and it is only their product that matters, not the individual values. See User Guide for more info.  
   sav_N.gr3: !include sav_density.yaml
   sav_D.gr3: !include sav_diameter.yaml
   sav_h.gr3: !include sav_height.yaml
   sav_cd.gr3:
     default: 0.20
+  # Initial condition for water level elevation. This is used directly in barotropic runs and
+  # is based on a formula that puts initially dry areas just below the bed. 
+  elev.ic: !include elev.yaml
+
   krvel.gr3: !include krvel.yaml
   #rough.gr3:     # Approximately what Works with GOTM k-eps. Documentation pending
   #  default: 4.e-5
@@ -76,10 +104,26 @@ gr3:
     default: 0.1
   watertype.gr3:
     default: 7.
+  xlsc.gr3:
+    default: 0.1
+  diffmax.gr3:
+    default: 1.0
+  windrot_geo2proj.gr3:
+    default: 0.0    
+  # The nudging files are needed for enforcing boundaries or initializing the models
+  # but in modern Bay-Delta SCHISM usage these are produced using other scripts and
+  # in some cases have a time as well as a spatial component. Do not restore these unless
+  # you are confident you understand alternate usage
+  #SAL_nudge.gr3: !include SAL_nudge.yaml
+  #TEM_nudge.gr3: !include TEM_nudge.yaml
+
 prop:
   tvd.prop: !include tvd.yaml
+
+# Definitions and physical characteristics of Delta hydraulic structures, most recently expanded to 
+# correspond to our understanding of the Morrow distribution system as it exists today. 
 hydraulics:
-  include: hydraulic_structures.yaml    # Includes West False River 2015 installation
+  include: hydraulic_structures.yaml   
   outputfile: hydraulics.in
 
 sources_sinks:
@@ -98,7 +142,6 @@ sources_sinks:
     - source_suisun.yaml
     - source_potw.yaml    # comment out if not using MSS
   outputfile: source_sink.in
-
 
 vgrid:
     vgrid_out: vgrid.in.3d
