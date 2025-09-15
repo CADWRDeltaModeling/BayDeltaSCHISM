@@ -96,32 +96,58 @@ def plot(filename, file_step, n):
     plt.show()
 
 
-def summarize_elements(ncfile, top_n, min_count):
+def summarize_elements(ncfile, top_n, min_count, ref_nth=25):
     ds = xr.open_dataset(ncfile)
     dt_all = ds["minTransportTimeStep"]
     face_x = ds["SCHISM_hgrid_face_x"].values
     face_y = ds["SCHISM_hgrid_face_y"].values
-    appearances = Counter()
-    for t in range(dt_all.sizes["time"]):
-        dt = dt_all.isel(time=t).values
-        valid = [(i, dt[i]) for i in range(len(dt)) if not np.isnan(dt[i])]
-        valid.sort(key=lambda x: x[1])
-        top_indices = [i for i, _ in valid[:top_n]]
-        appearances.update(top_indices)
-    filtered = [
-        (el, appearances[el], face_x[el], face_y[el])
-        for el in appearances
-        if appearances[el] >= min_count
-    ]
-    filtered.sort(key=lambda x: (-x[1], x[0]))
-    return filtered, face_x, face_y
+
+    cell_stats = {}
+    max_count = dt_all.sizes["time"]
+    for t_idx in range(max_count):
+        dts = dt_all.isel(time=t_idx).values
+        # Exclude dt==90 and NaN (not limiting)
+        valid = np.where((dts != 90) & (~np.isnan(dts)))[0]
+        if valid.size == 0:
+            continue
+        # Get top_n indices with smallest dt
+        top_indices = valid[np.argsort(dts[valid])[:top_n]]
+        nth_index = valid[np.argsort(dts[valid])[ref_nth]]
+        for idx in top_indices:
+            if idx not in cell_stats:
+                cell_stats[idx] = {"count": 0, "timesteps": [], "nth_ratios": []}
+            cell_stats[idx]["count"] += 1
+            cell_stats[idx]["nth_ratios"].append(dts[idx]/dts[nth_index])
+            cell_stats[idx]["timesteps"].append(float(dts[idx]))
+
+    summary = []
+    for idx, info in cell_stats.items():
+        if info["count"] >= min_count:
+            # Sort both sort_dts and sort_nths according to sort_nths
+            paired = sorted(zip(info["timesteps"], info["nth_ratios"]), key=lambda x: x[1])
+            sort_dts = [p[0] for p in paired]
+            sort_nths = [p[1] for p in paired]
+            summary.append(
+                {
+                    "index": idx,
+                    "count": info["count"],
+                    "max_count": max_count,
+                    "x": float(face_x[idx]),
+                    "y": float(face_y[idx]),
+                    "nth_ratios": sort_nths, 
+                    "timesteps": sort_dts,
+                }
+            )
+    # Sort by count descending, then index
+    summary.sort(key=lambda x: (-x["count"], x["index"]))
+    return summary, face_x, face_y
 
 
 def plot_summarized_bad_actors(bad_actors, all_x, all_y, label_top=None):
-    counts = np.array([x[1] for x in bad_actors])
-    xs = np.array([x[2] for x in bad_actors])
-    ys = np.array([x[3] for x in bad_actors])
-    els = np.array([x[0] for x in bad_actors])
+    counts = np.array([pt['count'] for pt in bad_actors])
+    xs = np.array([pt['x'] for pt in bad_actors])
+    ys = np.array([pt['y'] for pt in bad_actors])
+    els = np.array([pt['index'] for pt in bad_actors])
     fig, ax = plt.subplots(figsize=(9, 7))
     ax.scatter(all_x, all_y, s=2, c="0.5", alpha=0.4)
     norm = plt.Normalize(vmin=np.min(counts), vmax=np.max(counts))
@@ -160,27 +186,58 @@ def write_bad_shp(shp_out, points, all_x, all_y):
     schema = {
         "geometry": "Point",
         "properties": {
-            "el": "int",
+            "elem_idx": "int",
             "count": "int",
+            "max_count": "int",
             "x": "float",
             "y": "float",
+            "nth_ratios": "str",
+            "timesteps": "str",
         },
     }
     with fiona.open(
         shp_out, "w", driver="ESRI Shapefile", schema=schema, crs="EPSG:26910"
     ) as shp:
-        for el, count, xi, yi in points:
-            pt = Point(xi, yi)
+        for pt in points:
+            xi = pt["x"]
+            yi = pt["y"]
+            gpt = Point(xi, yi)
             shp.write(
                 {
-                    "geometry": mapping(pt),
+                    "geometry": mapping(gpt),
                     "properties": {
-                        "el": int(el),
-                        "count": int(count),
+                        "elem_idx": int(pt["index"]),
+                        "count": int(pt["count"]),
+                        "max_count": int(pt['max_count']),
                         "x": float(xi),
                         "y": float(yi),
+                        "nth_ratios": ','.join(str(round(dtr,1)) for dtr in pt["nth_ratios"]),
+                        "timesteps": ','.join(str(round(dt,1)) for dt in pt["timesteps"]),
                     },
                 }
+            )
+
+
+def write_bad_csv(csv_out, points):
+    # Find the maximum number of timesteps in any row
+    max_dts = max(len(pt["timesteps"]) for pt in points)
+    # Build header
+    header = ["elem_idx", "count", "max_count", "x", "y"] + [item for i in range(max_dts) for item in (f"dt_{i+1}", f"nth_ratio_{i+1}")]
+    with open(csv_out, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        for pt in points:
+            dts = [round(dt,1) for dt in pt["timesteps"]]
+            nths = [round(dtr,2) for dtr in pt["nth_ratios"]]
+            # Pad with empty strings if fewer than max_dts
+            # Interleave dts and nths: dt_1, nth_1, dt_2, nth_2, ...
+            dt_nth_pairs = []
+            for dt, nth in zip(dts, nths):
+                dt_nth_pairs.extend([dt, nth])
+            # Pad with empty strings to reach 2*max_dts columns
+            dt_nth_pairs += ["", ""] * (max_dts - len(dts))
+            writer.writerow(
+                [pt["index"], pt["count"], pt["max_count"], pt["x"], pt["y"], *dt_nth_pairs]
             )
 
 
@@ -211,17 +268,13 @@ def summarize(filename, num_elements, num_active, plot, label_top, csv_out, shp_
     """Summarize elements frequently appearing in the worst time steps."""
     points, all_x, all_y = summarize_elements(filename, num_elements, num_active)
     if csv_out:
-        with open(csv_out, "w", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow(["el", "count", "x", "y"])
-            for row in points:
-                writer.writerow(row)
+        write_bad_csv(csv_out, points)
     if shp_out:
         write_bad_shp(shp_out, points, all_x, all_y)
     else:
-        print("el,count,x,y")
-        for el, count, xi, yi in points:
-            print(f"{el},{count},{xi:.2f},{yi:.2f}")
+        print("elem_idx, count, max_count, x, y, timesteps")
+        for pt in points:
+            print(f"{pt['index']}, {pt['count']}, {pt['max_count']}, {pt['x']:.2f}, {pt['y']:.2f}, {','.join(str(round(dt,1)) for dt in pt["timesteps"])}")
     if plot:
         plot_summarized_bad_actors(points, all_x, all_y, label_top=label_top)
 
