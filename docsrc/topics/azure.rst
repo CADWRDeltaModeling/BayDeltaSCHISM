@@ -6,6 +6,10 @@ Running on Azure Batch
 
 Azure Batch is a cloud-based service that allows you to run large-scale parallel and high-performance computing applications. This section provides an overview of how to set up and run SCHISM on Azure Batch.
 
+.. warning::
+
+    This documentation is provided solely as guidance for using Azure Batch with SCHISM and related tools. The authors and organizations involved are not affiliated with, endorsed by, or in partnership with Microsoft Azure. No promotion or recommendation of Azure services is intended; Azure is referenced here only because it is the platform currently used for these workflows by DWR's Modeling Support Office.
+
 .. _setup_azure:
 
 Setup Azure 
@@ -19,6 +23,7 @@ Azure is a paid service separate from SCHISM, BayDeltaSCHISM, and CA-DWR. Once y
 * `Azure CLI <https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest>`_
     * download and install on your machine to pass jobs (simulations) to Azure batch
     * this is likely a command line string that you'll run and re-launch a terminal
+    * you can also use pip install azure-cli --upgrade after creating the azure environment in `download_dmsbatch`_
 * `AzCopy <https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10?tabs=dnf>`_
     * download and install on your machine to upload content to storage container
 * `Azure Batch Explorer (desktop app) <https://azure.github.io/BatchExplorer/>`_
@@ -49,30 +54,67 @@ To test that your login worked, use:
 
 This will show your account info.
 
-Create a Resource Group
+Register with Azure
 ``````````````````````````
 
-See the Azure docs for details. To use the commands below, enter your values (replacing the <angle brackets and values>)
+.. _console_vars:
+
+Set Console Variables
+:::::::::::::::::::::::
+
+See the Azure docs for details. To use the commands below, enter your values (replacing the <angle brackets and values>) and export them to your console. You'll need to do this each time you open a new console, or you can set them in your .bashrc or .zshrc file.
 
     .. code-block:: console
 
-        az group create --name <resource_group_name> --location <location_name>
+        export MY_RG="<resourcegroupname>"
+        export MY_LOCATION="<location_name>"
+        export MY_STORAGE="<storage_account_name>"
+        export MY_BATCH_ACCOUNT="<batchaccountname>"
 
-        az storage account create --resource-group <resource_group_name> --name <storage_account_name> --location <location_name> --sku Standard_LRS
+For the --location, you can use any location, but eastus and westus2 is what DWR uses. For a whole list of all Azure locations see `this link <https://learn.microsoft.com/en-us/azure/reliability/regions-list>`_. 
 
-        az batch account create --name <batch_account_name> --storage-account <storage_account_name> --resource-group <resource_group_name> --location <location_name>
+For naming conventions: The storage account name typically ends in "sa", and the batch account typically ends in "batch" for ease of navigating resources on Azure. **You'll want your resource group, storage account, and batch account in the same region/location.**
 
-For the --location, you can use any location, but eastus and eastus2 is what DWR uses. The storage account name typically ends in "sa", and the batch account typically ends in "batch" for ease of navigating resources on Azure.
+Create Azure Accounts
+:::::::::::::::::::::::::
+
+    .. code-block:: console
+
+        az group create --name $MY_RG --location $MY_LOCATION
+
+        az storage account create --resource-group $MY_RG --name $MY_STORAGE --location $MY_LOCATION --sku Standard_LRS
+
+        az batch account create --name $MY_BATCH_ACCOUNT --storage-account $MY_STORAGE --resource-group $MY_RG --location $MY_LOCATION
+
 
 You can also create the batch account and associated account as `explained here <https://docs.microsoft.com/en-us/azure/batch/batch-account-create-portal>`_.
 
-You may encounter some errors about regional quotas. You'll want your resource group, storage account, and batch account in the same region/location.
+You may encounter some errors about regional quotas. **You'll want your resource group, storage account, and batch account in the same region/location.** So you may want to ensure that the machine type is available in your region before picking your resource group's location. To see what VM types are available in your region, use:
 
+    .. code-block:: console
 
+        az batch location list-skus --location westus2 | grep -i hb
+
+where "hb" is the VM type that we typically use for SCHISM (as of writing this version of the support documentation - see `azure_dms_batch templates' default_config.yamls <https://github.com/CADWRDeltaModeling/azure_dms_batch/tree/main/dmsbatch/templates>`_ for the current uses) If you see no output, then that VM type is not available in that region.
+
+Removing a Resource Group
+::::::::::::::::::::::::::
+
+To remove a resource group and all associated resources, use:
+
+    .. code-block:: console
+
+        az group delete --name <resource_group_name>
+
+    .. warning::
+
+        If you remove a resource group, all associated batch accounts, storage accounts, and data will also be permanently deleted.
+
+.. _download_dmsbatch:
 Download azure_dms_batch
 ````````````````````````````
 
-**Git clone *this* project**
+Git clone the azure_dms_batch repository
 
     .. code-block:: console
 
@@ -116,14 +158,13 @@ For SCHISM, you'll need to either compile and zip the executables yourself, or y
 
 Save the .zip file to your local azure_dms_batch repository under azure_dms_batch/app-packages.
 
-Now use `app-packages/batch_app_package_and_upload.sh <https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/app-packages/batch_app_package_and_upload.sh>`_ to upload in the command line:
+Now use `app-packages/batch_app_package_and_upload.sh <https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/app-packages/batch_app_package_and_upload.sh>`_ to upload in the command line.
+
+Use the export variables like MY_BATCH_ACCOUNT etc before using these commands (guidance :ref:`console_vars`):
 
     .. code-block:: console
 
-        export MY_BATCH_ACCOUNT="<batchaccountname>"
-        export MY_RG="<resourcegroupname>"
-
-        cd azure_dms_batch/app-packages
+        cd <path-to-azure_dms_batch>/app-packages
 
         source batch_app_package_and_upload.sh
         
@@ -140,10 +181,7 @@ For python packages like schimpy and BayDeltaSCHISM's bdschism you can also use 
 
     .. code-block:: console
 
-        export MY_BATCH_ACCOUNT="<batchaccountname>"
-        export MY_RG="<resourcegroupname>"
-
-        cd azure_dms_batch/app-packages
+        cd <path-to-azure_dms_batch>/app-packages
 
         source batch_app_package_and_upload.sh
 
@@ -232,6 +270,24 @@ These are some of the most frequently used azcopy flag options:
     * this is particularly useful for things like outputs \*.nc files and sflux \*.nc files which are very large and costly to upload
     * ex: --exclude-regex="outputs.\*/.\*nc;sflux/.\*nc"
         * this would exclude any files that end in "nc" that are found in the sflux, outputs, or outputs\* folders
+
+.. _batch_quota:
+
+Ensure Batch Quota
+-------------------
+
+You'll need to go to the Azure portal, to your batch account, and then to Settings /> Quotas.
+
+From here you'll want to click "Request Quota Increase". Then you'll do the following to get this message to "Manage Quota".
+
+.. figure:: ../img/batch_quota.png
+   :class: with-border
+   
+   Batch quota request fields to get to "Manage Quota"
+
+From here, you'll want to increase the quota for HBv2 Series to approximately 300. That should be enough for a HelloSCHISM tutorial run.
+
+If your region doesn't support HBv2 or you have any deeper issues with Azure, you may need to consult with your IT support. Anything that isn't covered on this page is not within the scope of the HelloSCHISM or BayDeltaSCHISM tutorial realm.
 
 References
 -----------

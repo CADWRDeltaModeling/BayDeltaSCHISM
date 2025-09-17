@@ -9,6 +9,10 @@ This guide will walk you through the process of running the tutorial HelloSCHISM
 .. note::
     This assumes you have already `set up your Azure account <https://learn.microsoft.com/en-us/azure/batch/batch-account-create-portal>`_ and have access to the Azure Batch service. If you haven't done this yet, please refer to the Azure documentation for instructions on how to create an account and set up Batch.
 
+.. warning::
+
+    This documentation is provided solely as guidance for using Azure Batch with SCHISM and related tools. The authors and organizations involved are not affiliated with, endorsed by, or in partnership with Microsoft Azure. No promotion or recommendation of Azure services is intended; Azure is referenced here only because it is the platform currently used for these workflows by DWR's Modeling Support Office.
+
 Initial Setup
 --------------
 
@@ -28,27 +32,28 @@ Your simulation input files (e.g., mesh, forcing files, etc.) should be uploaded
 
 For more detailed info see the `Microsoft documentation <https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json&tabs=dnf>`_.
 
-#. Navigate to "./modules/**m1_hello_schism**" in a terminal (PowerShell, Bash, etc.)
+#. Navigate to "./modules/**m1_hello_schism**" in a terminal (PowerShell, Bash, etc.) and activate your azure_dms_batch conda environment.
     ex: 
 
     .. code-block:: console
 
         cd ./modules/m1_hello_schism
+        conda activate azure
 
 #. Make sure that there is an **/outputs** directory inside the module directory. We include this with the module folder, so it should be there.
 
-#. Create a blob container within your storage account
+#. Create a blob container within your storage account. You can use the console variables as described in :ref:`console_vars` or just replace the values in the command below with your own.
 
     .. code-block:: console
 
-        az storage container create --name modules --account-name <storage_account_name> --auth-mode login
+        az storage container create --name modules --account-name $MY_STORAGE --auth-mode login
 
 #. Now you'll need to generate an SAS token in order to read/write/copy/etc. to and from your storage account's blob container "modules". See :ref:`azuresas` for more info on this process, but copy the Blob url link for the next step.
 
 #. Specify the sas variable using the url you generate in :ref:`azuresas`
     .. code-block:: console
 
-        export sas="url.link.here"
+        export sas="<url.link.here>"
 
     Be sure to include the quotation marks.
 
@@ -60,7 +65,7 @@ For more detailed info see the `Microsoft documentation <https://learn.microsoft
 
         export AZLINK="https://<storage account name>.blob.core.windows.net/modules/"
 
-    Replace <storage account name> with the name of your storage account.
+    Replace <storage account name> with the name of your storage account. And the blob container name is "modules" as specified in step 4.
 
 #. Now you can copy the contents of the module 1 folder into your blob container using `azcopy`. First, keep the **--dry-run** flag on so you can be *sure* that your files are going where you want them to go.
 
@@ -88,7 +93,7 @@ But First,you'll need to modify HelloSCHISM/azure_yml_files/m1_hello_schism_run.
 * resource_group: fill in the name of your Azure Resource Group
 * batch_account_name: fill in your Batch Account name
 * storage_account_name: fill in your Storage Account name
-* location: (at the bottom), if your Azure resources were created in a location other than "eastus" then you'll need to specify the location here.
+* location: **(at the bottom)**, if your Azure resources were created in a location other than "eastus" then you'll need to specify the location here.
 
 Some important things to note: 
 
@@ -107,26 +112,16 @@ This `example schism.yml file uses spot pricing <https://github.com/CADWRDeltaMo
 
 This `example schism.yml file uses dedicated nodes <https://github.com/CADWRDeltaModeling/azure_dms_batch/blob/main/sample_configs/sample_schism.yml>`. The example yml file has many comments on each input with explanations.
 
-Ensure Batch Quota
--------------------
-
-You'll need to go to the Azure portal, to your batch account, and then to Settings /> Quotas.
-
-From here you'll want to click "Request Quota Increase". Then you'll do the following to get this message to "Manage Quota".
-
-.. figure:: ../img/batch_quota.png
-   :class: with-border
-   
-   Batch quota request fields to get to "Manage Quota"
-
-From here, you'll want to increase the quota for HBv2 Series to approximately 300. That should be enough for a HelloSCHISM tutorial run.
-
-If your region doesn't support HBv2 or you have any deeper issues with Azure, you may need to consult with your IT support. Anything that isn't covered on this page is not within the scope of the HelloSCHISM or BayDeltaSCHISM tutorial realm.
 
 Run Simulation!
 ---------------
 
-Navigate to HelloSCHISM/azure_yml_files in the console, to fire a run you just need to submit the following command in a console which you have **azure_cli**, **azcopy**, and **azure_dms_batch** activated and which you're logged into.
+.. note::
+    Make sure you have machine quota as specified in :ref:`batch_quota` before submitting a job.
+
+Navigate to HelloSCHISM/azure_yml_files in the console.
+
+To submit a run you just need to enter the following command in a console which you have **azure_cli**, **azcopy**, and **azure_dms_batch** activated and which you're logged into (likely using the `azure` conda environment you created earlier).
 
     .. code-block:: console
 

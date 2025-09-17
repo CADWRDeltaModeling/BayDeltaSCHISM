@@ -9,6 +9,14 @@ This guide will walk you through the process of setting up and running the Bay-D
 .. note::
     This assumes you have already `set up your Azure account <https://learn.microsoft.com/en-us/azure/batch/batch-account-create-portal>`_ and have access to the Azure Batch service. If you haven't done this yet, please refer to the Azure documentation for instructions on how to create an account and set up Batch.
 
+.. warning::
+
+    This documentation is provided solely as guidance for using Azure Batch with SCHISM and related tools. The authors and organizations involved are not affiliated with, endorsed by, or in partnership with Microsoft Azure. No promotion or recommendation of Azure services is intended; Azure is referenced here only because it is the platform currently used for these workflows by DWR's Modeling Support Office.
+
+.. warning::
+
+    The documentation and support from DWR's Modeling Support Office is limited to the most current Bay Delta SCHISM model and it's inputs. We do not offer general SCHISM support.
+
 Initial Setup
 --------------
 
