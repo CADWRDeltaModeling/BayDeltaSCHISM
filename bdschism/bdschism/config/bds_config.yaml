@@ -3,6 +3,5 @@ link_style:
   Windows: copy   # options are 'copy' or 'junction'
   Linux: symlink  # Linux users should alway use this
 # These are maps to the versioned names of utilities
-interpolate_variables: interpolate_variables10
+interpolate_variables: interpolate_variables8
 combine_hotstart: combine_hotstart7
-
