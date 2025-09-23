@@ -148,3 +148,22 @@ def interpolate_variables(config_log=False):
 
     # run interpolate_variables
     os.system(settings.interpolate_variables)
+
+def get_output_from_interpolate_variables(varname, config_log=False):
+    """
+    Get the output filename for the interpolate_variables function.
+
+    Parameters
+    ----------
+    varname : str
+        The variable name for which to retrieve the output filename (e.g., 'uv3d').
+    config_log : bool, optional
+        If True, log the configuration source being used.
+
+    Returns
+    -------
+    str
+        The output filename for the interpolate_variables utility.
+    """
+    settings = get_settings(config_log=config_log)
+    return settings.output_from_interpolate_variables[varname]

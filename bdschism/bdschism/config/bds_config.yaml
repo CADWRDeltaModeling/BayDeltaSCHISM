@@ -5,3 +5,7 @@ link_style:
 # These are maps to the versioned names of utilities
 interpolate_variables: interpolate_variables8
 combine_hotstart: combine_hotstart7
+
+# Name of the file generated from running interpolate_variables
+output_from_interpolate_variables:
+  uv3d: "uv3D.th.nc"

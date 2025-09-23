@@ -153,14 +153,17 @@ def interpolate_uv3d(
     os.chdir(os.path.abspath(interp_dir))
     config.interpolate_variables()
 
+    # Obtain output filename from config
+    output_from_interpolate_variables = config.get_output_from_interpolate_variables("uv3d")
+
     #
     # Move the resulting file to fg_dir
     #
     if write_clinic == True:
         print(
-            f"'write_clinic'=True. Moving {os.path.join(interp_dir, 'uv3D.th.nc')} to {os.path.join(fg_dir, output_name)}"
+            f"'write_clinic'=True. Moving {os.path.join(interp_dir, output_from_interpolate_variables)} to {os.path.join(fg_dir, output_name)}"
         )
-        shutil.move(os.path.join(interp_dir, 'uv3D.th.nc'), os.path.join(fg_dir, output_name))
+        shutil.move(os.path.join(interp_dir, output_from_interpolate_variables), os.path.join(fg_dir, output_name))
 
 @click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
 @click.option(
