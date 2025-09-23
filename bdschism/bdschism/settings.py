@@ -119,3 +119,32 @@ def create_link(source, symlink, config_log=False):
         shutil.copyfile(source, symlink)  # Windows junction link
     else:
         raise ValueError(f"Unsupported link style: {link_style}")
+
+def interpolate_variables(config_log=False):
+    """
+    interpolate SCHISM variables from background grid to foreground grid for elevation, tracers, or uv3D
+
+    Parameters
+    ----------
+    config_log : bool, optional
+        If True, log the configuration source being used.
+
+    Raises
+    ------
+    ValueError
+        If the link style retrieved from `get_settings()` is unsupported.
+
+    Notes
+    -----
+    - `interpolate_variables8` is the version of interpolate_variables associated with SCHISM 5.11
+
+    Examples
+    --------
+    Interpolate SCHISM variables on Unix-like systems or an appropriate alternative on Windows:
+
+    >>> interpolate_variables()
+    """
+    settings = get_settings(config_log=config_log)
+
+    # run interpolate_variables
+    os.system(settings.interpolate_variables)

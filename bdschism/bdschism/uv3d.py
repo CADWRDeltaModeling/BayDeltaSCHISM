@@ -148,11 +148,10 @@ def interpolate_uv3d(
     # Load SCHISM module and execute interpolate_variables
     #
     print(
-        f"Running `interpolate_variables8` in {os.path.abspath(os.path.join(bg_dir,bg_output_dir))}"
+        f"Running interpolate_variables utility in {os.path.abspath(os.path.join(bg_dir,bg_output_dir))}"
     )
     os.chdir(os.path.abspath(interp_dir))
-    command = "module purge \n module load intel/2024.0 hmpt/2.29 hdf5/1.14.3 netcdf-c/4.9.2 netcdf-fortran/4.6.1 schism/5.11.1 \n ulimit -s unlimited \n interpolate_variables8"
-    os.system(command)
+    config.interpolate_variables()
 
     #
     # Move the resulting file to fg_dir
