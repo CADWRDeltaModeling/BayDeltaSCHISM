@@ -19,7 +19,7 @@ requires-python = ">=3.10,<3.13"
 dependencies = [
     "schimpy>=1.12.1",
     "suxarray",
-    "vtools>=3.9",
+    "vtools>=3.9.6",
     "dms_datastore",
     "dynaconf",
     "click",
