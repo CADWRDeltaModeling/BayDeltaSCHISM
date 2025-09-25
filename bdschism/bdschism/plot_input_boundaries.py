@@ -687,6 +687,7 @@ def plot_bds_bc_cli(
         Output data frequency. Default is one day.
     --boundary-list
         List of boundary types to include in the plot. Can specify multiple times.
+
     extra
         Extra keyword arguments as --key value pairs.
 

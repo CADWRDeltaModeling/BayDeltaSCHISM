@@ -45,14 +45,14 @@ to convert or graft outputs from various data formats (other models or forecasts
 files in SCHISM time history (.th) formats. There are a few examples of how to use this utility in `the examples folder <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/examples/port_boundary>`_. 
 You can find an example to take outputs `from CalSim DSS <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/examples/port_boundary/from_CalSim>`_, `from CSV files <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/examples/port_boundary/from_csv>`_, and `from monthly CSV files <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/examples/port_boundary/from_monthly_csv>` and convert them to SCHISM inputs. All of the example data are available within the folders so you can see what gets exported based on the examples.
 
-  **File Descriptions**
-  ----------------------
+**File Descriptions**
+----------------------
 
-    :file:`port_boundary.py`: main script
-  
-    :file:`port_boundary.yaml`: configuration file 
+  :file:`port_boundary.py`: main script
 
-    :file:`port_boundary_map.csv`: configuration mapping file 
+  :file:`port_boundary.yaml`: configuration file 
+
+  :file:`port_boundary_map.csv`: configuration mapping file 
 
 
 .. currentmodule:: port_boundary

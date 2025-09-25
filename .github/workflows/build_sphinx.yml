@@ -79,7 +79,7 @@ jobs:
           DOCS_USE_MOCKS: "0"
           SETUPTOOLS_SCM_ROOT: ${{ github.workspace }}
         run: |
-          sphinx-apidoc --force -o . ../bdschism -T --templatedir ./_templates
+          sphinx-apidoc --force -T --templatedir ./_templates -o . ../bdschism ../bdschism/setup.py ../bdschism/tests/*
           make -C docsrc clean
           make -C docsrc html
 

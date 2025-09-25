@@ -52,6 +52,14 @@ bdschism.diff\_gr3 module
    :undoc-members:
    :show-inheritance:
 
+bdschism.gen\_elev2d module
+---------------------------
+
+.. automodule:: bdschism.gen_elev2d
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 bdschism.generate\_realtime\_elev2d module
 ------------------------------------------
 
@@ -116,10 +124,26 @@ bdschism.profile\_plot module
    :undoc-members:
    :show-inheritance:
 
+bdschism.read\_dss module
+-------------------------
+
+.. automodule:: bdschism.read_dss
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 bdschism.run\_sequence module
 -----------------------------
 
 .. automodule:: bdschism.run_sequence
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+bdschism.runtime\_hotstart module
+---------------------------------
+
+.. automodule:: bdschism.runtime_hotstart
    :members:
    :undoc-members:
    :show-inheritance:
