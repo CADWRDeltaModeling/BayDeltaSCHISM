@@ -144,3 +144,70 @@ For a run that has two different physical domains (e.g. with and without restora
 		├───elapsed              # staging point for /project and repo time series converted to elapsed
 		└───project              # any study specific time series in datetime-stamped form 
 
+Input/Output Units
+======================
+
+SCHISM input and output files are described in the `SCHISM manual <https://schism-dev.github.io/schism/master/index.html>`_, however the input file units and output file units are not always clear. The following table summarizes the units for the most commonly used input and output files.
+
+.. list-table:: Common SCHISM Input/Output Units
+  :header-rows: 1
+  :widths: 25 25 50 50
+
+  * - Variable
+    - Unit
+    - Relevant Inputs
+    - Relevant Outputs
+  * - Water Surface Elevation
+    - m (positive up)
+    - elev2D.th, elev.ic, uv3D.th.nc
+    - staout_1, out2d_*.nc
+  * - Bathymetry
+    - m (positive down)
+    - hgrid.gr3
+    - out2d_*.nc
+  * - Velocity (u, v)
+    - m/s
+    - sflux_air_1.*.nc (wind speed), uv3D.th.nc (water velocity)
+    - horizontalVelX_*.nc, horizontalVelY_*.nc, staout_3 (wind u), staout_4 (wind v), staout_7 (hydro u), staout_8 (hydro v), staout_9 (hydro w)
+  * - Salinity
+    - PSU
+    - SAL_*.th, SAL_nu.nc
+    - salinity_*.nc, staout_6
+  * - Water Temperature
+    - °C
+    - TEM_*.th, TEM_nu.nc
+    - temperature_*.nc, staout_5
+  * - Generic Tracer
+    - 1 (unitless. volumetric fraction)
+    - gen_*.th
+    - 
+  * - Air Temperature
+    - K (2m AGL)
+    - sflux_air_1.*.nc
+    - N/A
+  * - Specific Humidity
+    - 1 (2m AGL)
+    - sflux_air_1.*.nc
+    - N/A
+  * - Atmospheric pressure
+    - Pa (reduced to MSL)
+    - sflux_air_1.*.nc
+    - staout_2
+  * - Precipitation
+    - kg/m²/s (flux)
+    - sflux_prc_1.*.nc
+    - N/A
+  * - Shortwave radiation
+    - W/m² (long- and short-wave)
+    - sflux_rad_1.*.nc
+    - N/A
+  * - Evaporation
+    - kg/m²/s (flux)
+    - N/A
+    - out2d_*.nc
+  * - Suspended Sediment Concentration
+    - g/L
+    - ...
+    - ...
+
+The geospatial projection uses NAD83 UTM Zone 10N with horizontal coordinates in meters. Vertical coordinates are against NAVD88. Time is in seconds since whichever start date specified in the param.nml.
