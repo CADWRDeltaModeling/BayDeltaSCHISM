@@ -70,6 +70,7 @@ cli.add_command(parse_cu_yaml_cli, "parse_cu_yaml")
 cli.add_command(plot_bds_bc_cli, "plot_bds_bc")
 cli.add_command(precheck, "precheck")
 cli.add_command(analyze_dt_cli, "analyze_dt")
+cli.add_command(gen_elev2d_cli, "gen_elev2d")
 
 if __name__ == "__main__":
     cli()

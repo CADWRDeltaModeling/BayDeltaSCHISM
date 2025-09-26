@@ -24,19 +24,6 @@ mesh:
   # because of their high probability of completion.  
   dem_list:
     include:
-<<<<<<< HEAD
-<<<<<<< HEAD
-      - dem_4.3_cc.yaml
-  depth_optimization: 
-    method: volume_tvd
-    include: depth_opt_params_volume_tvd.yaml
-=======
-      - dem_restorations_future_20250822.yaml
-      - dem_restorations_2024_20250822.yaml
-      - dem_4.3_suisun_20250430.yaml
-  depth_optimization: !include depth_opt_params_volume_tvd.yaml
->>>>>>> 14be04d (Updated SAV density upper/lower bracket, added required DEM and minmaxlayers.)
-=======
       #- dem_restorations_future_20250822.yaml  # Selected proposed locations. Vet carefully to make sure it covers your area of interest
       #- dem_restorations_2024_20250822.yaml    # Restoration sites up to 2024. See comments in this file for year of introduction if you are targetting surgically
       - dem_4.3_suisun_20250430.yaml            # Contemporary soundings through 2024, restoration in Delta to approximately 2019
@@ -48,7 +35,6 @@ s
   depth_optimization: !include depth_opt_params_volume_tvd.yaml
   
   # Defines and names the open boundaries, which will be appended to hgrid.gr3. 
->>>>>>> ca08b92 (Added annotation and commented out some restoration stuff in main_bay_delta.yaml. Also updated yaml for depth opt.)
   open_boundaries: !include open_boundary.yaml
   
   # The final depth adjustment is to manually enforce features, make up for known DEM defects or 
