@@ -217,7 +217,7 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
 
     pt_reyes.interpolate(limit=max_gap, inplace=True)
     if pt_reyes.isna().any(axis=None):
-        describe_null(pt_reyes,"Pt Reyes")
+        describe_null(pt_reyes, "Pt Reyes")
         raise ValueError("pt_reyes has gaps larger than fill limit")
     if pt_reyes.empty:
         raise ValueError(
@@ -246,7 +246,7 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
 
     monterey.interpolate(limit=max_gap, inplace=True)
     if monterey.isna().any(axis=None):
-        describe_null(monterey,"Monterey")
+        describe_null(monterey, "Monterey")
         raise ValueError("monterey has gaps larger than fill limit")
     if monterey.empty:
         raise ValueError("No data loaded for Monterey. Check file path and date range.")
@@ -384,4 +384,4 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
 
 
 if __name__ == "__main__":
-    main()
+    gen_elev2d_cli()
