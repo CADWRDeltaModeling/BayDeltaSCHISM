@@ -24,16 +24,10 @@ mesh:
   # because of their high probability of completion.  
   dem_list:
     include:
-      - dem_restorations_future_20250822.yaml
-      - dem_restorations_2024_20250822.yaml
-      - dem_4.3_suisun_20250430.yaml
-  depth_optimization: 
-    method: volume_tvd
-    include: depth_opt_params_volume_tvd.yaml
       #- dem_restorations_future_20250822.yaml  # Selected proposed locations. Vet carefully to make sure it covers your area of interest
       #- dem_restorations_2024_20250822.yaml    # Restoration sites up to 2024. See comments in this file for year of introduction if you are targetting surgically
       - dem_4.3_suisun_20250430.yaml            # Contemporary soundings through 2024, restoration in Delta to approximately 2019
-s
+
   # The depth optimization step:
   # 1. adjusts the node depths so that the elements (based on shape functions) better match the volume of the DEM (as given by a large number of quadrature samples). 
   # 2. reduces total variation (a TV metric). 
@@ -51,8 +45,9 @@ s
         - depth_enforcement_polygons_115p3.yaml
         - depth_enforcement_ss_polygons.yaml
         - depth_enforcement_suisun_polygons.yaml
-        - depth_enforcement_grizzly.yaml
         - depth_enforcement_v115p3_restoration_polygons.yaml
+        #- depth_enforcement_poly_suisun_retro2025_f.yaml
+        - depth_enforcement_polyfill_pre_2018_nurse.yaml  # Must come last
     linestrings:
       include:
         - depth_enforcement_morrow_linestrings.yaml
