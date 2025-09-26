@@ -11251,6 +11251,7 @@ polygons:
     - 4197360.823195835
 - attribute: max(z,0.5*z)
   name: sugar_cut_south
+  type: 'none'
   vertices:
   - - 639116.7575110939
     - 4182215.5748744668

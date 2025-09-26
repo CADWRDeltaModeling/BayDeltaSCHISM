@@ -1,8 +1,8 @@
-# Main input file for default bay_delta template based on version 113 of the mesh
+# Main input file for default bay_delta template based on version 116 of the mesh
 
 mesh:
   # SMS formatted 2dm file (which will be formatted) or a preexisting SCHISM hgrid.gr3
-  mesh_inputfile: ./115p3_beta_20250911_prune2018.2dm   
+  mesh_inputfile: ./bay_delta_116.2dm
   
   # Mesh generation produces some skew elements. These are handled more robustly
   # if they are triangles rather than quads. These criteria are used for identifying skew and splitting
@@ -42,21 +42,21 @@ mesh:
   depth_enforcement:
     polygons:
       include:
-        - depth_enforcement_polygons_115p3.yaml
+        - depth_enforcement_polygons_116.yaml
         - depth_enforcement_ss_polygons.yaml
         - depth_enforcement_suisun_polygons.yaml
-        - depth_enforcement_v115p3_restoration_polygons.yaml
-        #- depth_enforcement_poly_suisun_retro2025_f.yaml
-        - depth_enforcement_polyfill_pre_2018_nurse.yaml  # Must come last
+        - depth_enforcement_v116_restoration_polygons.yaml
+        - depth_enforcement_polyfill_pre_2018_nurse.yaml  # Must come last and only needed if eliminating 2018 accidental breaches
     linestrings:
       include:
         - depth_enforcement_morrow_linestrings.yaml
         - depth_enforcement_sjr_linestrings.yaml
         - depth_enforcement_suisun_linestrings.yaml
         - depth_enforcement_suisun_restoration.yaml
-        - depth_enforcement_v115_linestrings.yaml
+        - depth_enforcement_v116_linestrings.yaml
         - depth_enforcement_linestrings.yaml
-        - depth_enforcement_v115p3_restoration_linestrings.yaml
+        - depth_enforcement_v116_restoration_linestrings.yaml
+
   ll_outputfile: hgrid.ll
   gr3_outputfile: hgrid.gr3
 
@@ -68,8 +68,8 @@ flow_outputs:
 
 # The gr3 file is a node-centered file used to populate many of the most important spatial inputs to SCHISM
 gr3:
-  diffmin.gr3: !include diffmin.yaml # Updated for MSS grid 2024-06-04
-  rough.gr3: !include rough.yaml  # Updated for MSS grid 2024-06-04
+  diffmin.gr3: !include diffmin.yaml # Updated for retrospective (diffmin_retro_2025g.yaml)
+  rough.gr3: !include rough.yaml  #
 
   #rough.gr3:     # Approximately what Works with GOTM k-eps last time we tried it.
   #  default: 4.e-5
@@ -97,10 +97,6 @@ gr3:
   elev.ic: !include elev.yaml
 
   krvel.gr3: !include krvel.yaml
-  #rough.gr3:     # Approximately what Works with GOTM k-eps. Documentation pending
-  #  default: 4.e-5
-  #diffmin.gr3:   # Approximately what works with GOTM k-eps. Documentation pending
-  #  default: 1.e-5
   albedo.gr3:
     default: 0.1
   watertype.gr3:
