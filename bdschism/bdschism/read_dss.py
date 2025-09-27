@@ -7,7 +7,7 @@ import re
 import os
 
 
-dss_e2_freq = {"1HOUR": "H", "1DAY": "D", "1MON": "M"}
+dss_e2_freq = {"1HOUR": "h", "1DAY": "D", "1MON": "M", "15MIN": "15min"}
 
 
 def check_exclude(pathname, exclude_pathname):
