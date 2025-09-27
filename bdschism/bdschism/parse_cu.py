@@ -269,7 +269,7 @@ def calc_srcsnk_dsm2(
     start_date=None,
     end_date=None,
     dt=days(1),
-    exclude_pathname="//TOTAL*/////",
+    exclude_pathname=["//*TOTAL*/////", "//CU/////", "//*DIV*SEEP*/////", "//SUM/////"],
 ):
     """Get net source and net sink timeseries from DCD DSS file.
 
@@ -346,7 +346,7 @@ def calc_net_dsm2(
     start_date=None,
     end_date=None,
     dt=days(1),
-    exclude_pathname="//TOTAL*/////",
+    exclude_pathname=["//*TOTAL*/////", "//CU/////", "//*DIV*SEEP*/////", "//SUM/////"],
     **kwargs,
 ):
     """Get net timeseries from DCD DSS file.
