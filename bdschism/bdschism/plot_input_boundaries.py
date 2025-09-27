@@ -231,7 +231,7 @@ def get_observed_tide(
 
         # Read the data and delete the file
         fname = f"./tempdeletenoaa/noaa_{station_id}_{station_id}_{product}_{start_year}_{end_year}.csv"
-        df = read_ts(fname)
+        df = dms_datastore.read_ts.read_noaa(fname)
         os.remove(fname)
         # Rename the value column to the station_id
         df = df.rename(columns={df.columns[0]: station_id})
