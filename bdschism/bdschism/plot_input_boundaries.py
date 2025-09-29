@@ -599,7 +599,7 @@ def plot_bds_boundaries(
                 ticktext=["Downstream Open", "Closed", "Upstream Open"],
             )
         elif col == "tide":
-            fig.update_yaxes(title_text="Stage (ft)", row=i + 1, col=1)
+            fig.update_yaxes(title_text="Stage (ft daily ave)", row=i + 1, col=1)
 
     fig.update_xaxes(
         showspikes=True,
