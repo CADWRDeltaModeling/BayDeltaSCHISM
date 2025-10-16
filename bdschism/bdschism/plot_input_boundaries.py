@@ -524,8 +524,13 @@ def plot_bds_boundaries(
     subplot_names = [b for b in boundary_list if b in subplot_names]
 
     # Create subplots
+    n_subplots = len(subplot_names)
+    max_height = 1200  # px, adjust as desired
+    min_height = 400   # px, for a single panel
+    row_height = 300   # px per subplot
+
     fig = make_subplots(
-        rows=len(subplot_names),
+        rows=n_subplots,
         cols=1,
         shared_xaxes=True,
         vertical_spacing=0.01,
@@ -578,7 +583,7 @@ def plot_bds_boundaries(
 
     # Update layout
     fig.update_layout(
-        height=4000,
+        height=min(max_height, max(min_height, n_subplots * row_height)),
         title_text="Model Boundary Time Series",
         showlegend=True,
         hoversubplots="axis",
