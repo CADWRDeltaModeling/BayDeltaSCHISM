@@ -4,8 +4,10 @@ import datetime
 import click
 from pathlib import Path
 import pandas as pd
-
-
+from bdschism.settings import get_settings
+from schimpy.schism_yaml import load
+import shutil
+import pdb
 
 
 @click.command(
@@ -15,20 +17,20 @@ import pandas as pd
          and precipitation and baydelta schism air pressure are linked. After 2020, hrrr \
          data are linked \n\n"
         "Example:\n"
-        "  make_links_full --source ../data/atoms --dest ./sflux --start 2020-1-1 --end 2022-2-2 "
+        "  make_links_full --config sflux.yaml --dest ./sflux --sdate 2020-1-1 --edate 2022-2-2 "
     )
 )
 
 @click.option(
-    "--source",
-    required=True,
+    "--config",
+    required=False,
     type=click.Path(exists=True, path_type=Path),
-    help="folder containing original air netcdf data files.",
+    help="configuration file specifying source data folder, if not given, use sflux setting yaml in bdschism config.",
 )
 
 @click.option(
     "--dest",
-    required=True,
+    required=False,
     default="./sflux",
     type=click.Path(exists=True, path_type=Path),
     help="folder where symbolic links will be put. [default: ./sflux]",
@@ -36,63 +38,98 @@ import pandas as pd
 
 
 @click.option(
-    "--start_date",
-    required=True,
+    "--sdate",
+    required=False,
     type=str,
     help="data file start date in format YEAR-MONTH-DAY, e.g., 2020-1-1.",
 )
 
 @click.option(
-    "--end_date",
-    required=True,
+    "--edate",
+    required=False,
     type=str,
     help="data file end date in format YEAR-MONTH-DAY, e.g., 2022-2-2.",
 )
 
-def make_links(start_date,end_date,source,dest):
+def make_links(sdate,edate,config,dest):
 
-    start = pd.to_datetime(start_date)
+    ## first read in bds_config.yaml to get source folder
+    
+    settings = get_settings()
+
+    ## if config is none, try trying to find config file from
+    ## bdschism/bdschism/config/bds_config.yaml
+    if config is None or not os.path.exists(config):
+        if hasattr(settings, "sflux_config"):
+            config = Path(settings.sflux_config)
+            if not os.path.exists(config):
+                raise FileNotFoundError(
+                f"Configuration file {config} not found. Please provide a valid config file."
+            )
+    
+
+    ## read in config file using schism_yaml
+    f= open(config, "r")
+    sflux_config = load(f)
+    f.close()
+    pdb.set_trace()
+    if sdate is None:
+        sdate = sflux_config["run_start_date"]
+    if edate is None:
+        edate = sflux_config["run_end_date"]
+
+    start = pd.to_datetime(sdate)
     dt = pd.Timedelta(days=1)
-    end = pd.to_datetime(end_date)
+    end = pd.to_datetime(edate)
     current = start
     if (current >= end):
         print(f'ERROR: Start date {start.strftime("%b %d, %Y")} is after end date {end.strftime("%b %d, %Y")}')
     nfile = 0
 
-    hrrr_transition = pd.to_datetime("2020-1-1")
+    synthetic_start_date = sflux_config["synthetic_start_date"]
+    transition_start = pd.to_datetime(synthetic_start_date)
 
-    src_dir = source.joinpath("baydelta_sflux_v20220916") 
-    src_dir_narr = source.joinpath("NARR") 
-    src_dir_hrrr = source.joinpath("hrrr")
+    sflux_specification = sflux_config["sflux_specification"]
     link_dir = dest
 
     while (current <= end):
-        # Air data
-        # Ours
-        if current<hrrr_transition:
-            src_str_air = os.path.join(src_dir,"baydelta_schism_air_%s%02d%02d.nc" % (current.year, current.month, current.day))
-            # NARR
-            # src_str_air = os.path.join(src_dir_narr, "%4d_%02d/narr_air.%4d_%02d_%02d.nc" % (current.year, current.month, current.year, current.month, current.day))
-            src_str_rad = os.path.join(src_dir_narr, "%4d_%02d/narr_rad.%4d_%02d_%02d.nc" % (current.year, current.month, current.year, current.month, current.day))
-            src_str_prc = os.path.join(src_dir_narr, "%4d_%02d/narr_prc.%4d_%02d_%02d.nc" % (current.year, current.month, current.year, current.month, current.day))
-
-        ### HRRR
-        else:
-            src_str_atm = os.path.join(src_dir_hrrr,"%4d/hrrr_%4d%02d%02d00.nc" % (current.year, current.year, current.month, current.day))
-            src_str_air = src_str_atm
-            src_str_rad = src_str_atm
-            src_str_prc = src_str_atm
-
-        nfile += 1
-        link_str_air = os.path.join(link_dir, "sflux_air_1.%04d.nc" % (nfile))
-        link_str_rad = os.path.join(link_dir, "sflux_rad_1.%04d.nc" % (nfile))
-        link_str_prc = os.path.join(link_dir, "sflux_prc_1.%04d.nc" % (nfile))
-        if not os.path.exists(link_str_air):
-            os.symlink(src_str_air, link_str_air)
-        if not os.path.exists(link_str_rad):
-            os.symlink(src_str_rad, link_str_rad)
-        if not os.path.exists(link_str_prc):
-            os.symlink(src_str_prc, link_str_prc)
+        for par in sflux_specification.keys():
+            par_spec = sflux_specification.get(par, None)
+            if par_spec is None:
+                raise ValueError(f"Parameter {par} not found in sflux_specification.")
+            ## retrieve list of sources for this parameeter and sort list index by use_after date
+            use_dates = [s.get("use_after", "1900-01-01") for s in par_spec]
+            use_dates = [pd.to_datetime(d) for d in use_dates]
+            ## sort use_dates and get the indices
+            sorted_dates = sorted(use_dates)
+            sorted_indices = sorted(range(len(use_dates)), key=lambda i: use_dates[i])
+            ## find out the insertion point of current date in sorted_dates
+            insert_point = 0
+            for i, d in enumerate(sorted_dates):
+                if current >= d:
+                    insert_point = i
+                else:
+                    break
+            selected_index = sorted_indices[insert_point]
+            selected_source = par_spec[selected_index]
+            label = selected_source.get("label", None)
+            directory = selected_source.get("directory", None)
+            rel_path = selected_source.get("rel_path", None)
+            if  directory is None or rel_path is None:
+                raise ValueError(f"Parameter {par} source {label} is missing directory or rel_path.")
+            src_str = os.path.join(directory, rel_path.format(year=current.year, month=current.month, day=current.day))
+            nfile += 1
+            link_str = os.path.join(link_dir, f"sflux_{par}_1.{nfile:04d}.nc")
+            if not os.path.exists(link_str):
+                ## if system is windows copy files
+                if os.name == 'nt':    
+                    shutil.copy(src_str, link_str)
+                    print(f"Copying {src_str} to {link_str}")
+                else:
+                    os.symlink(src_str, link_str)
+                    print(f"Linking {src_str} to {link_str}")
+            else:
+                print(f"Link {link_str} already exists. Skipping.")
         current += dt
 
 
