@@ -7,14 +7,19 @@ import re
 import os
 
 
-dss_e2_freq = {"1HOUR": "H", "1DAY": "D", "1MON": "M"}
+dss_e2_freq = {"1HOUR": "h", "1DAY": "D", "1MON": "M", "15MIN": "15min"}
 
 
 def check_exclude(pathname, exclude_pathname):
     """
-    Returns True if pathname matches the exclude_pathname pattern.
+    Returns True if pathname matches any of the exclude_pathname patterns.
     Wildcards (*) in exclude_pathname are supported.
     """
+    if isinstance(exclude_pathname, list):
+        for ex_path in exclude_pathname:
+            if check_exclude(pathname, ex_path):
+                return True
+        return False
     path_parts = pathname.split("/")[1:-1]
     exclude_parts = exclude_pathname.split("/")[1:-1]
     for p, ex in zip(path_parts, exclude_parts):
@@ -73,15 +78,14 @@ def read_dss(
                 path_e = path_lst[5]
                 # Set default start_date and end_date to cover the full period of record if not specified
                 tt_full = tsi[0]
+                first_ts, last_ts = _get_first_last_timestamp(tt_full.index)
                 if start_date is None:
-                    start_date = tt_full.index[0].to_timestamp()
+                    start_date = first_ts
                 if end_date is None:
-                    end_date = tt_full.index[-1].to_timestamp()
-                if tt_full.index[0].to_timestamp() > end_date or (
-                    tt_full.index[-1].to_timestamp() < start_date
-                ):
+                    end_date = last_ts
+                if first_ts > end_date or last_ts < start_date:
                     raise ValueError(
-                        f"File: {filename} does not cover the dates requested. \n\tRequested dates are: {start_date} to {end_date}, \n\tand the file covers {tt_full.index[0]} to {tt_full.index[-1]}"
+                        f"File: {filename} does not cover the dates requested. \n\tRequested dates are: {start_date} to {end_date}, \n\tand the file covers {first_ts} to {last_ts}"
                     )
                 tt = tt_full[start_date:end_date]
                 pidx = pd.period_range(
@@ -111,3 +115,16 @@ def read_dss(
         )
 
     return ts_out
+
+
+def _get_first_last_timestamp(idx):
+    """Return first and last timestamp from DatetimeIndex or PeriodIndex."""
+    if isinstance(idx, pd.PeriodIndex):
+        first = idx[0].to_timestamp()
+        last = idx[-1].to_timestamp()
+    elif isinstance(idx, pd.DatetimeIndex):
+        first = idx[0]
+        last = idx[-1]
+    else:
+        raise TypeError("Index must be DatetimeIndex or PeriodIndex")
+    return first, last

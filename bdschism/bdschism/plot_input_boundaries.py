@@ -32,7 +32,7 @@ from vtools.functions.unit_conversions import CMS2CFS, M2FT
 
 import dms_datastore.process_station_variable
 import dms_datastore.download_noaa
-import dms_datastore.read_ts
+from dms_datastore.read_ts import read_noaa
 
 from bdschism.calc_ndoi import calc_indoi
 
@@ -231,7 +231,7 @@ def get_observed_tide(
 
         # Read the data and delete the file
         fname = f"./tempdeletenoaa/noaa_{station_id}_{station_id}_{product}_{start_year}_{end_year}.csv"
-        df = dms_datastore.read_ts.read_ts(fname)
+        df = read_noaa(fname)
         os.remove(fname)
         # Rename the value column to the station_id
         df = df.rename(columns={df.columns[0]: station_id})
@@ -524,8 +524,13 @@ def plot_bds_boundaries(
     subplot_names = [b for b in boundary_list if b in subplot_names]
 
     # Create subplots
+    n_subplots = len(subplot_names)
+    max_height = 1200  # px, adjust as desired
+    min_height = 400   # px, for a single panel
+    row_height = 300   # px per subplot
+
     fig = make_subplots(
-        rows=len(subplot_names),
+        rows=n_subplots,
         cols=1,
         shared_xaxes=True,
         vertical_spacing=0.01,
@@ -578,7 +583,7 @@ def plot_bds_boundaries(
 
     # Update layout
     fig.update_layout(
-        height=4000,
+        height=min(max_height, max(min_height, n_subplots * row_height)),
         title_text="Model Boundary Time Series",
         showlegend=True,
         hoversubplots="axis",
@@ -599,7 +604,7 @@ def plot_bds_boundaries(
                 ticktext=["Downstream Open", "Closed", "Upstream Open"],
             )
         elif col == "tide":
-            fig.update_yaxes(title_text="Stage (ft)", row=i + 1, col=1)
+            fig.update_yaxes(title_text="Stage (ft daily ave)", row=i + 1, col=1)
 
     fig.update_xaxes(
         showspikes=True,

@@ -8,6 +8,7 @@ from vtools.functions.interpolate import rhistinterp
 from vtools.functions.filter import ts_gaussian_filter
 from vtools.data.vtime import minutes
 from schimpy.util.yaml_load import yaml_from_file, csv_from_file
+from schimpy.model_time import read_th
 from bdschism.parse_cu import orig_pert_to_schism_dcd_yaml
 from bdschism.plot_input_boundaries import (
     get_observed_data,
@@ -464,24 +465,44 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
                     dfi = dfi.set_index("datetime")
 
                     dfi[name] = [float(var)] * len(df_rng)
+                if source_kind == "SCHISM":
+                    # Substitute in an interpolated monthly forecast
+                    if derived:
+                        print(
+                            f"Updating SCHISM {name} with derived timeseries\
+                            expression: {formula}"
+                        )
+                        th = pd.DataFrame()
+                        dfi = read_th(source_file) 
+                        vars = var.split(";")
+                        for v in vars:
+                            th[[v]] = dfi[[v]]
+                        dts = eval(formula).to_frame(name).reindex(df_rng)
+                        if interp:
+                            dfi = ts_gaussian_filter(dts, sigma=100)
+                        else:
+                            dfi = dts
+                    else:
+                        print("Use existing SCHISM input")
 
             # Maintain the rounding preference of the formula
             if isinstance(formula, str) and "round" in formula:
                 dfi = dfi.round(int(formula[-2]))
 
-            if source_kind == "SCHISM":
-                # Simplest case: use existing reference SCHISM data; do nothing
-                print("Use existing SCHISM input")
-            elif source_kind.upper() in ["YAML", "YML"]:
+            if source_kind.upper() in ["YAML", "YML"]:
                 print(
                     "Unit conversion unecessary for consumptive use (handled in yaml)"
                 )
             else:
-                # Do conversions.
-                if convert == "CFS_CMS":
-                    dfi = dfi * CFS2CMS * sign
-                elif convert == "EC_PSU":
-                    dfi = ec_psu_25c(dfi) * sign
+                if source_kind == "SCHISM":
+                    # Simplest case: use existing reference SCHISM data
+                    print("Use existing SCHISM input, no unit conversion necessary")
+                else:
+                    # Do conversions.
+                    if convert == "CFS_CMS":
+                        dfi = dfi * CFS2CMS * sign
+                    elif convert == "EC_PSU":
+                        dfi = ec_psu_25c(dfi) * sign
 
                 # Trim dfi so that it starts where schism input file ends, so that dfi doesn't
                 # overwrite any historical data
@@ -544,12 +565,12 @@ def plot_ported_bc(plot_dict, html_name, sd, ed, sim_dir, out_file_suffix=""):
     os.chdir(sim_dir)
     # Pass envvar as keyword arguments to get_boundary_data
     bc_data = get_boundary_data(
-        flux_file=plot_dict["flux_file"],
-        vsource_file=plot_dict["vsource_file"],
-        vsink_file=plot_dict["vsink_file"],
-        gate_dir=plot_dict["gate_dir"],
+        flux_file=plot_dict.get("flux_file", None),
+        vsource_file=plot_dict.get("vsource_file", None),
+        vsink_file=plot_dict.get("vsink_file", None),
+        gate_dir=plot_dict.get("gate_dir", None),
         gate_suffix=out_file_suffix,
-        boundary_list=plot_dict["boundary_list"],
+        boundary_list=plot_dict.get("boundary_list", None),
         time_basis=pd.to_datetime(sd),
         rndays=int((pd.to_datetime(ed) - pd.to_datetime(sd)).days),
         struct_fn=os.path.join(
@@ -610,8 +631,8 @@ def port_boundary_cli(config_yaml, plot, extra=()):
 
 if __name__ == "__main__":
     # os.chdir(os.path.dirname(__file__))
-    # os.chdir("../../examples/port_boundary/from_csv")
-    # config_yaml = "./port_monthly_to_schism_flows_dcc.yaml"
-    # envvar = {"alt_name": "2016_noaction", "sd": "2016/1/1", "ed": "2016/12/31"}
+    # os.chdir(r"D:\python\scripts\flux_mod_example")
+    # config_yaml = "./port_flux_multiplier_to_schism.yaml"
+    # envvar = {"alt_name": "sac_mult_1p5", "sd": "2016/1/1", "ed": "2016/12/31", "sacmult": "1.5"}
     # create_schism_bc(config_yaml, plot=True, kwargs=envvar if envvar else None)
     port_boundary_cli()

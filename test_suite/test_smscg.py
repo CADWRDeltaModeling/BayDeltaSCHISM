@@ -49,8 +49,8 @@ def align_dfs(boat, flash, radial):
     radial = extend_idx(radial, org_indices[0], org_indices[-1])
 
     boat = boat.resample("1min").asfreq().ffill()
-    flash = boat.resample("1min").asfreq().ffill()
-    radial = boat.resample("1min").asfreq().ffill()
+    flash = flash.resample("1min").asfreq().ffill()
+    radial = radial.resample("1min").asfreq().ffill()
 
     # Get rid of unecessary (unchanged) timestamps
     boat = boat.loc[org_indices]

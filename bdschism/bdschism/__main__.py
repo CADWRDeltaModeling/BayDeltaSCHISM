@@ -37,8 +37,9 @@ def cli():
     help="Simulation directory to check (default: current directory).",
 )
 @click.argument("pytest_args", nargs=-1, type=click.UNPROCESSED)
+@click.help_option("-h", "--help")  # Add the help option at the group level
 def precheck(simdir, pytest_args):
-    """Run the Bay-Delta SCHISM precheck test suite using pytest.
+    """Run the Bay-Delta SCHISM precheck test suite using pytest. Using '-- --hist_gate' after the command will eliminate the historical Suisun Marsh gate data errors from the checks.
 
     Example usage:
         bds precheck --simdir /path/to/simdir -- --hist_gate"""
