@@ -21,7 +21,7 @@ mesh:
     fail: 4.
   # This section specifies the "stack" of DEMs that will be used to prioritize the mesh from highest to lowest.
   # The list includes some restoration designs commonly incorporated into "current conditions" for studies 
-  # because of their high probability of completion.  
+  # because of their high probability of completion.
   dem_list:
     include:
       #- dem_restorations_future_20250822.yaml  # Selected proposed locations. Vet carefully to make sure it covers your area of interest
