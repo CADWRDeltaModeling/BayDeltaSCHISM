@@ -72,7 +72,7 @@ def make_links(sdate,edate,config,dest):
     f= open(config, "r")
     sflux_config = load(f)
     f.close()
-    pdb.set_trace()
+
     if sdate is None:
         sdate = sflux_config["run_start_date"]
     if edate is None:
