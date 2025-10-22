@@ -7,8 +7,11 @@ import pandas as pd
 from bdschism.settings import get_settings
 from schimpy.schism_yaml import load
 import shutil
-import pdb
+import platform
 
+
+op_dic = {"symlink": os.symlink, "copy": shutil.copy}
+os_name = platform.system().lower()
 
 @click.command(
     help=(
@@ -92,9 +95,17 @@ def make_links(sdate,edate,config,dest):
     sflux_specification = sflux_config["sflux_specification"]
     link_dir = dest
 
+    link_style = settings.get("link_style")
+    op = op_dic["symlink"]
+    if link_style is None:
+        print("no link style specified in bds_config.yaml, using symlink as default")  
+    else:
+        op_id = link_style[os_name]
+        op = op_dic[op_id]
+        print(f"Using {link_style[os_name]} as link style on {os_name} system")
     while (current <= end):
         for par in sflux_specification.keys():
-            par_spec = sflux_specification.get(par, None)
+            par_spec = sflux_specification.get(par, None)   
             if par_spec is None:
                 raise ValueError(f"Parameter {par} not found in sflux_specification.")
             ## retrieve list of sources for this parameeter and sort list index by use_after date
@@ -121,13 +132,8 @@ def make_links(sdate,edate,config,dest):
             nfile += 1
             link_str = os.path.join(link_dir, f"sflux_{par}_1.{nfile:04d}.nc")
             if not os.path.exists(link_str):
-                ## if system is windows copy files
-                if os.name == 'nt':    
-                    shutil.copy(src_str, link_str)
-                    print(f"Copying {src_str} to {link_str}")
-                else:
-                    os.symlink(src_str, link_str)
-                    print(f"Linking {src_str} to {link_str}")
+                op(src_str, link_str)
+                print(f"Linking {src_str} to {link_str}")
             else:
                 print(f"Link {link_str} already exists. Skipping.")
         current += dt
