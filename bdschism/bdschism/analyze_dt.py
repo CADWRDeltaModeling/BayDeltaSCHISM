@@ -274,7 +274,7 @@ def summarize(filename, num_elements, num_active, plot, label_top, csv_out, shp_
     else:
         print("elem_idx, count, max_count, x, y, timesteps")
         for pt in points:
-            print(f"{pt['index']}, {pt['count']}, {pt['max_count']}, {pt['x']:.2f}, {pt['y']:.2f}, {','.join(str(round(dt,1)) for dt in pt["timesteps"])}")
+            print(f"{pt['index']}, {pt['count']}, {pt['max_count']}, {pt['x']:.2f}, {pt['y']:.2f}, {','.join(str(round(dt,1)) for dt in pt['timesteps'])}")
     if plot:
         plot_summarized_bad_actors(points, all_x, all_y, label_top=label_top)
 
