@@ -199,13 +199,18 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
 
     # Data
     print("Reading Point Reyes...")
-    pt_reyes = read_noaa(
-        pt_reyes_fpath, start=sdate - tbuf, end=bufend, force_regular=True
+    try:
+        pt_reyes = read_noaa(
+            pt_reyes_fpath, start=sdate - tbuf, end=bufend, force_regular=True
+        )
+    except Exception as e:
+        pt_reyes = read_ts(
+            pt_reyes_fpath, start=sdate - tbuf, end=bufend, force_regular=True
     )
 
     # --- Add this check for coverage ---
-    pt_start = pt_reyes.index.min()
-    pt_end = pt_reyes.index.max()
+    pt_start = pt_reyes.first_valid_index()
+    pt_end = pt_reyes.last_valid_index()
     expected_start = sdate - tbuf
     expected_end = bufend
     if pt_start > expected_start or pt_end < expected_end:
@@ -230,13 +235,18 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
     del noise
 
     print("Reading Monterey...")
-    monterey = read_noaa(
-        monterey_fpath, start=sdate - tbuf, end=bufend, force_regular=True
-    )
+    try:
+        monterey = read_noaa(
+            monterey_fpath, start=sdate - tbuf, end=bufend, force_regular=True
+        )
+    except Exception as e:
+        monterey = read_ts(
+            monterey_fpath, start=sdate - tbuf, end=bufend, force_regular=True
+        )
 
     # --- Add this check for coverage ---
-    mt_start = monterey.index.min()
-    mt_end = monterey.index.max()
+    mt_start = monterey.first_valid_index()
+    mt_end = monterey.last_valid_index()
     if mt_start > expected_start or mt_end < expected_end:
         warnings.warn(
             f"Monterey data does not fully span required range: {expected_start} to {expected_end}. "
