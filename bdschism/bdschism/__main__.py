@@ -12,7 +12,7 @@ from bdschism.plot_input_boundaries import plot_bds_bc_cli
 from bdschism.analyze_dt import analyze_dt_cli
 from bdschism.runtime_hotstart import restart_from_hotstart_cli
 from bdschism.gen_elev2d import gen_elev2d_cli
-
+#
 import subprocess
 import sys
 import os
@@ -72,7 +72,6 @@ cli.add_command(plot_bds_bc_cli, "plot_bds_bc")
 cli.add_command(precheck, "precheck")
 cli.add_command(analyze_dt_cli, "analyze_dt")
 cli.add_command(gen_elev2d_cli, "gen_elev2d")
-cli.add_command(restart_from_hotstart_cli, "start_from_hot")
 
 if __name__ == "__main__":
     cli()

@@ -976,3 +976,33 @@ linestrings:
   name: old_flux_3
   station_id: old_flux_3
   station_name: old_flux_3
+- comment: ec station
+  coordinates:
+  - - 578808.
+    - 4215148.
+  - - 578795.
+    - 4215130.
+  name: goodyear_outfall_flt
+  station_id: flt
+  station_name: goodyear_outfall_flt 
+- comment: ec station
+  coordinates:
+  - - 579251.
+    - 4219346.
+  - - 579219.
+    - 4219360.
+  name: goodyear 
+  station_id: gys
+  station_name: Goodyear Slough Inflow Morrow 
+- comment: stage station
+  coordinates:
+  - - 579052.
+    - 4218646.
+  - - 579050.
+    - 4218623.
+  name: morrow_intake 
+  station_id: mrw
+  station_name: Morrow Island Intake
+
+
+  

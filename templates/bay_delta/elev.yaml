@@ -1,5 +1,5 @@
 # elev.ic
-default: 0.96
+default: 0.96                # Generic sea level in the estuarine zone
 polygons:
   - name: slr_or_below_bed   # Places the nominal surface right below bed in dry areas
     type: none
@@ -11,7 +11,7 @@ polygons:
       - [450000.,4500000.]
   - name: ccfb
     type: none
-    attribute: 0.525
+    attribute: 0.525         # CCF is operated at water levels below sea level
     vertices:
       - [626959.499660, 4187850.733596]
       - [627017.975679, 4187967.794900]
