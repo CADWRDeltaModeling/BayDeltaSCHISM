@@ -834,7 +834,7 @@ def ccf_gate(
             where="post",
             label="ccfb gate height predicted",
         )
-        ax1.set_ylabel("Height (ft)")
+        ax1.set_ylabel("Height (m)")
         plt.show()
 
 
