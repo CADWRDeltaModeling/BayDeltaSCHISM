@@ -21,7 +21,7 @@ mesh:
     fail: 4.
   # This section specifies the "stack" of DEMs that will be used to prioritize the mesh from highest to lowest.
   # The list includes some restoration designs commonly incorporated into "current conditions" for studies 
-  # because of their high probability of completion.
+  # because of their high probability of completion.  
   dem_list:
     include:
       #- dem_restorations_future_20250822.yaml  # Selected proposed locations. Vet carefully to make sure it covers your area of interest
@@ -46,7 +46,10 @@ mesh:
         - depth_enforcement_ss_polygons.yaml
         - depth_enforcement_suisun_polygons.yaml
         - depth_enforcement_v116_restoration_polygons.yaml
-        - depth_enforcement_polyfill_pre_2018_nurse.yaml  # Must come last and only needed if eliminating 2018 accidental breaches
+        # Must come last and only needed if eliminating 
+        # effects of 2018 accidental breaches from early runs
+        # Should not be used post-2018
+        #- depth_enforcement_polyfill_pre_2018_nurse.yaml  
     linestrings:
       include:
         - depth_enforcement_morrow_linestrings.yaml

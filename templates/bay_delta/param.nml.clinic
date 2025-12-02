@@ -224,7 +224,7 @@
 !           If iwbl/=0, nchi must =1.
 !-----------------------------------------------------------------------
   nchi = 1
-  dzb_min = 0.7  !needed if nchi=1; min. bottom boundary layer thickness [m].
+  dzb_min = 0.8  !needed if nchi=1; min. bottom boundary layer thickness [m].
 !  dzb_decay = 0. !needed if nchi=1; a decay const. [-]. should =0
 !  hmin_man = 1. !needed if nchi=-1: min. depth in Manning's formulation [m]
 
@@ -454,9 +454,9 @@
 ! locally turning off air-sea exchange in shallow waters (<0.25 m) is recommended.
 ! Options for locally turning off heat/salt exchange are specified by
   i_hmin_airsea_ex = 2 ! no effect if ihconsv=0 
-  hmin_airsea_ex = 0.1 ![m], no effect if ihconsv=0 
+  hmin_airsea_ex = 0.2 ![m], no effect if ihconsv=0 
   i_hmin_salt_ex = 2 ! no effect if isconsv=0 
-  hmin_salt_ex = 0.1 ![m], no effect if isconsv=0 
+  hmin_salt_ex = 0.2 ![m], no effect if isconsv=0 
   iprecip_off_bnd = 0 !if /=0, precip will be turned off near land bnd
 
 !-----------------------------------------------------------------------
