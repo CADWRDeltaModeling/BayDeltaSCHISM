@@ -49,11 +49,13 @@ def get_settings(config_log: bool=False):
     env_config = os.getenv("BDS_CONFIG")  # Custom config from environment variable
 
     # Configuration hierarchy
-    config_files = [package_default_config]  # Default package config
+    config_files = [package_default_config]  # start with lowest precedence
+
     if os.path.exists(local_config):
-        config_files.insert(0, local_config)  # Project-level config
+        config_files.append(local_config)  # project-level overrides
+
     if env_config and os.path.exists(env_config):
-        config_files.insert(0, env_config)  # Custom config via MYPROJ_CONFIG
+        config_files.append(env_config)  # env-specific overrides (highest)
 
     # Load settings
     settings = Dynaconf(settings_files=config_files)
