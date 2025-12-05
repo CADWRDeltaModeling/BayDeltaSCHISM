@@ -40,23 +40,6 @@ ihot=2: (restart)
     invoking a new set of modules or backing up and restart a failed run. In this case the hotstart file is
     generated using per-processor hotstart file in the outputs directory. 
           
-Combining hotstarts
--------------------
-In order to combine hotstarts for a restart you need to have the combine_hotstart utility on path. The actual name of the utility will be
-something like `combine_hotstart7`, where the '7' part is a version that may evolve if the hotstart format changes.
-The hotstart combining command is invoked in the outputs directory and requires specification of an iteration number:
-`combine_hotstart7 -i 24000`. It will take the many per-processor files associated with the iteration 
-(hotstart_000000_24000.nc, hotstart_000001_24000.nc, etc) and generate a single hotstart with a name like
-`hotstart_it=24000.nc`. We prefer that you move this out of the outputs directory and rename it according to the following convention:
-`hotstart.20210515.24000.nc`.
-
-To do this you will need to know how to associate real dates with the iteration. Actually iteration is a possibly confusing term. 
-The real interpretation is time step. So if the iteration is 24000, dt=90 seconds, then the time stamp of the hotstart is the start time 
-of the run plus 24000*90 seconds. This is tedious, so if you have a `schimpy` installation on your machine, you can use the hotstart_inventory command line 
-utility to get a list without doing all this calculation: `hotstart_inventory --dt=90 --start=2021-04-20`. 
-
-The best translation of 'restart' in SCHISM is hotstart with ihot=2. 
-
 
 .. _choose_runtime:
 
@@ -112,14 +95,158 @@ If you are using in-Delta observations you will also need QA/QC'd data at least 
 Within the Delta Modeling Section, the script that does gathers these is `BayDeltaSCHISM/bdschism/bdschism/hotstart_nudging_data.py`. 
 That script assumes a data repository full of observed data from multiple agencies that is not yet disseminated. If you need help, please contact us. 
 
+Combining Hotstarts and Managing Restart Files
+----------------------------------------------
 
+In modern SCHISM workflows, combining hotstarts is a routine operation and no
+longer something that should be done manually. The process has three steps:
 
-Configuring the Hotstart request (yaml)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. Identify which hotstart (time step / date) you want.
+2. Combine the per-processor hotstart files into one file.
+3. Move it out of ``outputs/`` and give it a meaningful name.
 
+Historically, this was done by hand using the native SCHISM utility
+``combine_hotstart7`` (the trailing number varies by SCHISM version).  
+A typical manual workflow looked like the following::
 
-Running the hotstart generator
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    cd outputs
+    combine_hotstart7 -i 24000
+    mv hotstart_it=24000.nc ../hotstart.20210515.24000.nc
+
+This still works, but it requires you to know which iteration corresponds to
+which calendar date and where to put the final file.  We now automate this
+process for consistency and to reduce the chance of user error.
+
+Hotstart Inventory Utility (``schimpy.hotstart_inventory``)
+-----------------------------------------------------------
+
+The ``hotstart_inventory`` tool reads the hotstart files in your ``outputs/``
+directory and constructs a table linking:
+
+* iteration (SCHISM time step),
+* model datetime (based on ``run_start`` and ``dt``),
+* and hotstart file availability.
+
+This means you no longer need to calculate dates by hand.  For example::
+
+    hotstart_inventory --workdir outputs
+
+might print something like::
+
+    2014-03-25T00:00:00    iteration 7200
+    2014-03-25T12:00:00    iteration 10800
+    2014-03-26T00:00:00    iteration 14400
+
+The same utility is available from Python:
+
+.. code-block:: python
+
+    from schimpy.hotstart_inventory import hotstart_inventory
+    df = hotstart_inventory(workdir="outputs")
+    print(df)
+
+This returns a ``pandas`` DataFrame indexed by datetime with one column,
+``iteration``.  This date ↔ iteration mapping is also what powers the new
+``combine_hotstart`` workflow described next.
+
+Automated Hotstart Combining (``bdschism.combine_hotstart``)
+------------------------------------------------------------
+
+The ``bdschism`` CLI and library provide a wrapper around the native
+``combine_hotstart7`` program.  The wrapper:
+
+* finds the correct hotstart in the inventory,
+* calls the SCHISM combine utility for the right iteration,
+* renames the result using a consistent convention,
+* optionally archives it, and
+* optionally creates ``hotstart.nc`` in the run directory for restart runs.
+
+This avoids the need to enter ``outputs/`` manually or guess iteration numbers.
+
+### File Naming Convention
+
+The wrapper names combined hotstarts as::
+
+    hotstart[.PREFIX].YYYYMMDD.ITER.nc
+
+Examples::
+
+    hotstart.20240312.14400.nc
+    hotstart.clinic.20240312.14400.nc
+
+The optional ``PREFIX`` is useful when creating multiple hotstarts for different
+scenarios (e.g., ``clinic`` vs. ``tropic`` configurations).
+
+### Typical Use Cases
+
+**1. Get the latest hotstart and make it the restart file**
+
+.. code-block:: bash
+
+    combine_hotstart --latest --links --prefix clinic
+
+This creates ``hotstart.clinic.YYYYMMDD.ITER.nc`` in the run directory and a
+link named ``hotstart.nc`` pointing to it (required for ``ihot=2`` restarts).
+
+**2. Choose the last hotstart on or before a specific date**
+
+.. code-block:: bash
+
+    combine_hotstart --before 2014-03-26 --prefix retro
+
+Useful for runs aligned with field observations (e.g., USGS cruises).
+
+**3. Combine a specific iteration**
+
+.. code-block:: bash
+
+    combine_hotstart --it 14400 --out-dir hotstart_archive --prefix retro
+
+**4. Archive every Nth hotstart**
+
+.. code-block:: bash
+
+    combine_hotstart --every 10 --out-dir hotstart_archive
+
+This writes only selected hotstarts (10th, 20th, …) into ``hotstart_archive/``.
+
+### Python API
+
+You may also use the wrapper programmatically:
+
+.. code-block:: python
+
+    from bdschism.combine_hotstart import combine_hot
+
+    files = combine_hot(
+        run_dir=".",
+        outputs_dir="outputs",
+        prefix="clinic",
+        latest=True,
+        links=True,
+    )
+
+This returns a list of absolute paths to the newly created combined hotstarts.
+
+Why This Matters
+----------------
+
+Combined and dated hotstart files serve three roles:
+
+* They document model readiness at specific points in time.
+* They allow reruns and branching studies without repeating long spinups.
+* They provide stable initial conditions when modules are changed or new
+  alternatives are introduced.
+
+The ``bdschism.combine_hotstart`` workflow standardizes naming, reduces errors,
+and maintains a clean audit trail of how and when hotstarts were created.
+
+``combine_hotstart`` is now the recommended way to prepare restart files for all
+production SCHISM runs.
+
+``ihot=2`` in ``param.nml`` continues to be the SCHISM-side “restart mode”, but
+the management and naming of hotstart files is handled entirely outside the
+model via this utility.
 
 
 
