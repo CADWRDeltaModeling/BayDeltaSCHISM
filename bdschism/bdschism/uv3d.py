@@ -17,7 +17,7 @@ def interpolate_uv3d(
     vgrid_fg,
     interp_template,
     nday,
-    output_dir,
+    output,
     overwrite,
 ):
     """Run interpolate_variables utility to generate uv3d.th.nc.
@@ -47,8 +47,8 @@ def interpolate_uv3d(
     nday : int or None
         Number of days to process when interp_template is None. If None,
         rnday is read from param_nml.
-    output_dir : str
-        Directory where the final uv3d output will be written (moved).
+    output : str
+        Path where the final uv3d output will be written (moved).
     overwrite : bool
         If True, overwrite an existing file in output_dir. If False, fail
         fast if the file already exists.
@@ -92,13 +92,16 @@ def interpolate_uv3d(
     #
     # Determine final output filename and check overwrite EARLY
     #
-    # Canonical filename from settings
-    canonical = config.get_output_from_interpolate_variables("uv3d")
 
-    # If --output was not provided, default to ./canonical
+    # Canonical name of the file produced by interpolate_variables in interp_dir
+    output_from_interpolate_variables = config.get_output_from_interpolate_variables("uv3d")
+
+    # Determine final output path (full path to the file we will write)
     if output is None:
-        output = os.path.abspath(canonical)
+        # Default: write into the current working directory with the canonical name
+        output = os.path.abspath(output_from_interpolate_variables)
     else:
+        # Honor whatever the user passed, relative or absolute
         output = os.path.abspath(output)
 
     # Early overwrite check
@@ -108,18 +111,6 @@ def interpolate_uv3d(
             f"Use --overwrite to replace it."
         )
 
-
-    if os.path.exists(destination_file):
-        if overwrite:
-            print(
-                f"Warning: {destination_file} already exists and will be overwritten "
-                f"(use --overwrite to suppress this check)."
-            )
-        else:
-            raise Exception(
-                f"Error: {destination_file} already exists. "
-                f"Delete it or rerun with --overwrite."
-            )
 
     #
     # Make sure "interpolate_variables.in" is present
@@ -212,13 +203,13 @@ def interpolate_uv3d(
         )
 
     print(
-        f"Moving {src_file} to {destination_file}"
+        f"Moving {src_file} to {output}"
     )
     shutil.move(src_file, output)
 
 
 @click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
-@click.option(``
+@click.option(
     "--param_nml",
     default=None,
     type=click.Path(exists=True),
