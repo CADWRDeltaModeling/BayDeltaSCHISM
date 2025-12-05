@@ -19,5 +19,5 @@ modes:
   clinic:
     links:
       - param.nml: param.nml.clinic
-      - bctides.in: bctides.in.2d
+      - bctides.in: bctides.in.3d
       - vgrid.in: vgrid.in.3d
