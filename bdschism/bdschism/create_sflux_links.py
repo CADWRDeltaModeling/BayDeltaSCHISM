@@ -51,8 +51,8 @@ os_name = platform.system().lower()
     Linked files are named with pattern: sflux_{parameter}_{index}.{counter:04d}.nc
     Examples
     --------
-    >>> make_links_full --config sflux.yaml --dest ./sflux --sdate 2020-1-1 --edate 2022-2-2
-    """
+    >>> make_links --config sflux.yaml --dest ./sflux --sdate 2020-1-1 --edate 2022-2-2
+    """,
     help=(
         "The tool create symblic links to existing hrrr/narr/other sources containing air \
          pressure, solar radiation and precipitation data. Before year 2020, narr radiation \

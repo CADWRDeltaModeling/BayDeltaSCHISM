@@ -1,0 +1,46 @@
+
+run_start_date: 2025-10-1
+run_end_date: 2025-10-23
+synthetic_start_date:  &synthetic_start_date  
+                       2025-10-18
+
+sflux_specification:   
+   air:
+       - label: NARR
+         directory: "//cnrastore-bdo/Modeling_Data/atmospheric/narr"            
+         rel_path: "{year:4d}_{month:02d}/narr_air.{year:4d}_{month:02d}_{day:02d}.nc"
+         use_after: 2009-01-01                                            # If early spec is out of time window of run it will be skipped
+       - label: HRRR
+         directory: "//cnrastore-bdo/Modeling_Data/atmospheric/atmospheric_hrrr"
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"          
+         use_after: 2018-01-01
+       - label: HRRR copied                                                    
+         directory: "C:/Users/qshu/temp/synthetic_hrrr"            
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"    # This is just HRRR, not the real DMS directory. Should we consider methods for synthesis? 
+         use_after: *synthetic_start_date
+   rad:
+       - label: NARR
+         directory: "//cnrastore-bdo/Modeling_Data/atmospheric/narr"            
+         rel_path: "{year:4d}_{month:02d}/narr_rad.{year:4d}_{month:02d}_{day:02d}.nc"
+         use_after: 2009-01-01   
+       - label: HRRR
+         directory: "//cnrastore-bdo/Modeling_Data/atmospheric/atmospheric_hrrr"
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"         # Not real, change to the actual NARR pattern
+         use_after: 2018-01-01   
+       - label: HRRR copied
+         directory: "C:/Users/qshu/temp/synthetic_hrrr"            
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"    # Change to actual synthetic path and discuss method
+         use_after: *synthetic_start_date 
+   prc:
+       - label: NARR
+         directory: "//cnrastore-bdo/Modeling_Data/atmospheric/narr"             
+         rel_path: "{year:4d}_{month:02d}/narr_prc.{year:4d}_{month:02d}_{day:02d}.nc"
+         use_after: 2009-01-01     
+       - label: HRRR
+         directory: "//cnrastore-bdo/Modeling_Data/atmospheric/atmospheric_hrrr"
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"        # Not real. Change to the actual NARR pattern
+         use_after: 2018-01-01         
+       - label: HRRR copied
+         directory: "C:/Users/qshu/temp/synthetic_hrrr"            
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"    # Change to actual synthetic path and disuss method
+         use_after: *synthetic_start_date
