@@ -5,6 +5,7 @@ import os
 import shutil
 import datetime
 
+
 def interpolate_uv3d(
     param_nml,
     bg_dir,
@@ -16,16 +17,45 @@ def interpolate_uv3d(
     vgrid_fg,
     interp_template,
     nday,
-    write_clinic,
-    output_name,
-    overwrite_existing,
+    output_dir,
+    overwrite,
 ):
-    """Main function to run interpolate_variables utility."""
+    """Run interpolate_variables utility to generate uv3d.th.nc.
+
+    Parameters
+    ----------
+    param_nml : str or None
+        Path to param.nml. If None, defaults to bg_dir/param.nml.
+    bg_dir : str
+        Background simulation directory.
+    bg_output_dir : str or None
+        Output directory inside bg_dir where interpolate_variables is run.
+    fg_dir : str or None
+        Foreground (baroclinic) run directory. Used for hgrid_fg/vgrid_fg links.
+        If None, defaults to bg_dir.
+    hgrid_bg : str
+        Background hgrid filename (relative to bg_dir).
+    hgrid_fg : str
+        Foreground hgrid filename (relative to fg_dir).
+    vgrid_bg : str
+        Background vgrid filename (relative to bg_dir).
+    vgrid_fg : str
+        Foreground vgrid filename (relative to fg_dir).
+    interp_template : str or None
+        Path to interpolate_variables.in template. If None, a minimal file
+        is written based on nday (or rnday from param.nml).
+    nday : int or None
+        Number of days to process when interp_template is None. If None,
+        rnday is read from param_nml.
+    output_dir : str
+        Directory where the final uv3d output will be written (moved).
+    overwrite : bool
+        If True, overwrite an existing file in output_dir. If False, fail
+        fast if the file already exists.
+    """
     #
     # Validate directory paths
     #
-
-    # bg_dir
     try:
         assert os.path.exists(bg_dir)
     except AssertionError:
@@ -55,23 +85,41 @@ def interpolate_uv3d(
     if fg_dir is None:
         print("`fg_dir` is not specified. Setting it to `bg_dir`.")
         fg_dir = bg_dir
-
     fg_dir = os.path.abspath(fg_dir)
 
+
+
     #
-    # Check if output file already exists in fg_dir
+    # Determine final output filename and check overwrite EARLY
     #
-    if write_clinic == True:
-        destination_file = os.path.join(fg_dir, output_name)
-        if os.path.exists(destination_file):
-            if overwrite_existing == True:
-                print(
-                    f"Warning: {destination_file} already exists and will be overwritten."
-                )
-            else:
-                raise Exception(
-                    f"Error: {destination_file} already exists. Rename it or set 'overwrite_existing=True' to overwrite."
-                )
+    # Canonical filename from settings
+    canonical = config.get_output_from_interpolate_variables("uv3d")
+
+    # If --output was not provided, default to ./canonical
+    if output is None:
+        output = os.path.abspath(canonical)
+    else:
+        output = os.path.abspath(output)
+
+    # Early overwrite check
+    if os.path.exists(output) and not overwrite:
+        raise Exception(
+            f"Error: output file already exists: {output}. "
+            f"Use --overwrite to replace it."
+        )
+
+
+    if os.path.exists(destination_file):
+        if overwrite:
+            print(
+                f"Warning: {destination_file} already exists and will be overwritten "
+                f"(use --overwrite to suppress this check)."
+            )
+        else:
+            raise Exception(
+                f"Error: {destination_file} already exists. "
+                f"Delete it or rerun with --overwrite."
+            )
 
     #
     # Make sure "interpolate_variables.in" is present
@@ -148,101 +196,113 @@ def interpolate_uv3d(
     # Load SCHISM module and execute interpolate_variables
     #
     print(
-        f"Running interpolate_variables utility in {os.path.abspath(os.path.join(bg_dir,bg_output_dir))}"
+        f"Running interpolate_variables utility in "
+        f"{os.path.abspath(os.path.join(bg_dir, bg_output_dir))}"
     )
     os.chdir(os.path.abspath(interp_dir))
     config.interpolate_variables()
 
-    # Obtain output filename from config
-    output_from_interpolate_variables = config.get_output_from_interpolate_variables("uv3d")
-
     #
-    # Move the resulting file to fg_dir
+    # Move the resulting file to output_dir
     #
-    if write_clinic == True:
-        print(
-            f"'write_clinic'=True. Moving {os.path.join(interp_dir, output_from_interpolate_variables)} to {os.path.join(fg_dir, output_name)}"
+    src_file = os.path.join(interp_dir, output_from_interpolate_variables)
+    if not os.path.exists(src_file):
+        raise Exception(
+            f"Expected output file {src_file} not found after interpolate_variables."
         )
-        shutil.move(os.path.join(interp_dir, output_from_interpolate_variables), os.path.join(fg_dir, output_name))
+
+    print(
+        f"Moving {src_file} to {destination_file}"
+    )
+    shutil.move(src_file, output)
+
 
 @click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
-@click.option(
+@click.option(``
     "--param_nml",
     default=None,
     type=click.Path(exists=True),
-    help="Name of parameter file (default: param.nml).",
+    help="Name of parameter file (default: param.nml in bg_dir).",
 )
 @click.option(
     "--bg_dir",
     default=".",
     type=click.Path(exists=True),
-    help="Name of background simulation (e.g., larger or barotropic) directory (default: current directory).",
+    help=(
+        "Background simulation directory (e.g., larger or barotropic) "
+        "(default: current directory)."
+    ),
 )
 @click.option(
     "--bg_output_dir",
     default=None,
     type=click.Path(),
-    help="Name of output directory in background. If None, will try outputs.tropic then outputs.",
+    help="Output directory in background. If None, will try outputs.tropic then outputs.",
 )
 @click.option(
     "--fg_dir",
     default=None,
     type=click.Path(),
-    help="Name of foreground baroclinic run directory. If None, will copy from tropic_dir.",
+    help=(
+        "Foreground baroclinic run directory used for fg hgrid/vgrid links. "
+        "If None, will use bg_dir."
+    ),
 )
 @click.option(
     "--hgrid_bg",
     default="hgrid.gr3",
     type=click.Path(),
-    help="Name of hgrid.gr3 file in tropic_, which will be linked to bg.gr3.",
+    help="Name of hgrid.gr3 file in bg_dir, which will be linked to bg.gr3.",
 )
 @click.option(
     "--hgrid_fg",
     default="hgrid.gr3",
     type=click.Path(),
-    help="Name of hgrid.gr3 file in clinic_, which will be linked to fg.gr3.",
+    help="Name of hgrid.gr3 file in fg_dir, which will be linked to fg.gr3.",
 )
 @click.option(
     "--vgrid_bg",
     default="vgrid.in.2d",
     type=click.Path(),
-    help="Name of the (2D barotropic) vgrid file.",
+    help="Name of the (2D barotropic) vgrid file in bg_dir.",
 )
 @click.option(
     "--vgrid_fg",
     default="vgrid.in.3d",
     type=click.Path(),
-    help="Name of the (3D) baroclinic vgrid file.",
+    help="Name of the (3D) baroclinic vgrid file in fg_dir.",
 )
 @click.option(
     "--interp_template",
     default=None,
     type=click.Path(),
-    help="Name of interpolate_variables.in file. If None, will use an internal version with nday as template.",
+    help=(
+        "Path to interpolate_variables.in file. If None, a minimal file is "
+        "created using nday or rnday from param.nml."
+    ),
 )
 @click.option(
     "--nday",
     default=None,
     type=int,
-    help="Number of days to process. If None, param.nml is parsed in tropic_dir and the full length of the run is used.",
+    help=(
+        "Number of days to process when interp_template is not given. "
+        "If None, rnday is parsed from param.nml."
+    ),
 )
 @click.option(
-    "--write_clinic",
-    default=False,
-    type=bool,
-    help="If true, the file will be moved to fg_dir. Otherwise, it will be kept in bg_output_dir.",
+    "--output",
+    default=None,
+    type=click.Path(),
+    help=(
+        "Full path to the output file (including filename). "
+        "Default: ./<canonical_output_name>."
+    ),
 )
 @click.option(
-    "--output_name",
-    default="uv3D.th.nc",
-    type=str,
-    help="Name of the output file if write_clinic=True (default: uv3D.th.nc).",
-)
-@click.option(
-    "--overwrite_existing",
-    default=False,
-    type=bool,
-    help="If true, existing output files will be overwritten. If false, warning given without generating file.",
+    "--overwrite",
+    is_flag=True,
+    help="Overwrite an existing uv3d output file in output_dir, if present.",
 )
 @click.help_option("-h", "--help")
 def interpolate_uv3d_cli(
@@ -256,9 +316,8 @@ def interpolate_uv3d_cli(
     vgrid_fg,
     interp_template,
     nday,
-    write_clinic,
-    output_name,
-    overwrite_existing,
+    output,
+    overwrite,
 ):
     """
     Command-line interface for the interpolate_uv3d function.
@@ -274,9 +333,8 @@ def interpolate_uv3d_cli(
         vgrid_fg,
         interp_template,
         nday,
-        write_clinic,
-        output_name,
-        overwrite_existing,
+        output,
+        overwrite,
     )
 
 
