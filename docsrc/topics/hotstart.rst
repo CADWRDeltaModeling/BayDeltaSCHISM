@@ -22,7 +22,8 @@ What is the difference between a cold and hot start?
 -----------------------------------------------------
 
 A cold start means values are initialized from very simple and well behaved values. Typically velocity is zero
-and the water surface is flat. This avoids "mini-tsunamis".  Cold starts are invoked using `ihot=0` 
+and the water surface is flat. This avoids "mini-tsunamis" that develop if we try to get too clever
+with the initial water surface profile.  Cold starts are invoked using `ihot=0` 
 in the control file `param.nml`. You also need plausible values for initialization. 
 If you our using our schism templates and requires some 
 initial conditions be provided in the form of text \*.ic files which are like \*.gr3 files with values at each node, 
@@ -32,13 +33,16 @@ then a cold start is assumed and the text initialization file elev.ic (and any o
 A hotstart means initializing a model with non-trivial values. There are two main cases:
 
 ihot=1 (initial condition) 
-    Start of run. In this case the hotstart file is compiled by the user using interpolated data. Often for this case
-          the assumptions for elev and velocity are simplified and the details are supplied for tracers like temperature/salinity
+    Start of run. In this case the hotstart file is compiled by the user using interpolated data. Often for this case the assumptions for elev and velocity are simple and the details are supplied 
+	only for tracers like temperature/salinity
 
 ihot=2: (restart) 
-    Restart of run. This is used in case you are transitioning to new conditions like study alternatives, 
-    invoking a new set of modules or backing up and restart a failed run. In this case the hotstart file is
-    generated using per-processor hotstart file in the outputs directory. 
+    Restart of run. This is used in case you are transitioning to new conditions (say, at the
+	branching point where study alternatives diverge), invoking a new set of modules or 
+	backing up and restarting a failed run. In this case the hotstart file is generated 
+	by checkpoint hotstarts written out at regular intervals (often we choose one per five days).
+	These are fragmented files, one per-processor, and need to be combined 
+	using the `combine_hotstart` utility. This utility and a utility hotstart_inventory are described below. 
           
 
 .. _choose_runtime:
