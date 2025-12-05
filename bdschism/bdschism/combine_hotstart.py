@@ -17,21 +17,6 @@ def _resolve_paths(
 ) -> tuple[str, str, Optional[str]]:
     """
     Resolve absolute paths for run_dir, outputs_dir, and out_dir.
-
-    Parameters
-    ----------
-    run_dir : str
-        SCHISM run directory (where param.nml typically lives).
-    outputs_dir : str
-        Directory containing parallel hotstart_000000_*.nc files. If relative,
-        it is interpreted relative to run_dir.
-    out_dir : str or None
-        Archive directory. If relative, it is interpreted relative to run_dir.
-
-    Returns
-    -------
-    run_dir_abs, outputs_dir_abs, out_dir_abs : tuple[str, str, Optional[str]]
-        Absolute paths.
     """
     run_dir_abs = os.path.abspath(run_dir)
 
@@ -54,27 +39,11 @@ def _get_settings_executable(config_log: bool = False) -> str:
     """
     Get the combine_hotstart executable name from bdschism settings and verify
     that it is on PATH.
-
-    Parameters
-    ----------
-    config_log : bool, optional
-        If True, log configuration source via get_settings.
-
-    Returns
-    -------
-    str
-        Name (or full path) of the combine_hotstart executable.
-
-    Raises
-    ------
-    RuntimeError
-        If combine_hotstart is not defined in settings, or is not on PATH.
     """
     import shutil as _shutil
 
     settings = config.get_settings(config_log=config_log)
 
-    # Dynaconf returns attributes; we expect "combine_hotstart" key in config.
     if not hasattr(settings, "combine_hotstart"):
         raise RuntimeError(
             "Configuration error: 'combine_hotstart' is not defined in bds_config.yaml."
@@ -98,25 +67,12 @@ def _get_settings_executable(config_log: bool = False) -> str:
 def _load_inventory(outputs_dir_abs: str) -> pd.DataFrame:
     """
     Load a hotstart inventory from the outputs directory.
-
-    Parameters
-    ----------
-    outputs_dir_abs : str
-        Absolute path to outputs directory containing hotstart_000000_*.nc.
-
-    Returns
-    -------
-    pandas.DataFrame
-        DataFrame indexed by datetime with a single column 'iteration'.
-
-    Raises
-    ------
-    RuntimeError
-        If no hotstarts are found or inventory cannot be constructed.
     """
     if not os.path.isdir(outputs_dir_abs):
         raise RuntimeError(f"Outputs directory does not exist: {outputs_dir_abs}")
 
+    # Let hotstart_inventory infer run_start, dt, nday, hot_freq from param.nml
+    # in the run directory (CWD), while searching for hotstarts in outputs_dir_abs.
     df = hotstart_inventory(
         run_start=None,
         dt=None,
@@ -126,12 +82,12 @@ def _load_inventory(outputs_dir_abs: str) -> pd.DataFrame:
         hot_freq=None,
         expected=False,
     )
+    print(df)
     if df is None or df.empty:
         raise RuntimeError(
             f"No hotstarts found in outputs directory: {outputs_dir_abs}"
         )
 
-    # Ensure sorted by datetime
     df = df.sort_index()
     return df
 
@@ -145,30 +101,6 @@ def _select_iteration_and_time(
 ) -> List[tuple[int, pd.Timestamp]]:
     """
     Given an inventory DataFrame, select one or more (iteration, datetime) pairs.
-
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        Hotstart inventory with DatetimeIndex and column 'iteration'.
-    latest : bool, optional
-        If True, select the most recent hotstart.
-    before : str or pandas.Timestamp, optional
-        If given, select the last hotstart with datetime on or before this date.
-        Date string is interpreted by pandas.to_datetime.
-    iteration : int, optional
-        If given, select the row with this iteration.
-    every : int, optional
-        If given, select every Nth hotstart in time order (10 -> 10th, 20th, ...).
-
-    Returns
-    -------
-    list of (iteration, datetime)
-        List of pairs representing the desired hotstarts.
-
-    Raises
-    ------
-    ValueError
-        If no matching hotstarts are found, or parameters are inconsistent.
     """
     modes = sum(
         [
@@ -184,27 +116,27 @@ def _select_iteration_and_time(
             "must be specified."
         )
 
-    df = df.copy()
-    df = df.sort_index()
+    df = df.copy().sort_index()
 
     if latest:
-        # Most recent hotstart
         it = int(df["iteration"].iloc[-1])
         t = df.index[-1]
+        print(f"Selected latest hotstart: iteration={it}, time={t}")
         return [(it, t)]
 
     if before is not None:
-        # "On or before" a calendar date
         before_ts = pd.to_datetime(before)
+        # "On or before" the given calendar date
         mask = df.index <= before_ts + pd.Timedelta(days=1) - pd.Timedelta(microseconds=1)
         df_sel = df[mask]
         if df_sel.empty:
             raise ValueError(
                 f"No hotstarts found on or before {before_ts.date()} "
-                f"(outputs start at {df.index[0]})."
+                f"(inventory starts at {df.index[0]})."
             )
         it = int(df_sel["iteration"].iloc[-1])
         t = df_sel.index[-1]
+        print(f"Selected hotstart on/before {before_ts.date()}: iteration={it}, time={t}")
         return [(it, t)]
 
     if iteration is not None:
@@ -213,20 +145,21 @@ def _select_iteration_and_time(
             raise ValueError(
                 f"No hotstart with iteration={iteration} found in inventory."
             )
-        # If multiple entries (shouldn't normally happen), take the last one
         it = int(iteration)
         t = df_sel.index[-1]
+        print(f"Selected hotstart by iteration: iteration={it}, time={t}")
         return [(it, t)]
 
     # every
     if every is not None:
         if every <= 0:
             raise ValueError("--every must be a positive integer.")
-        # Every Nth hotstart (10th, 20th, 30th, ...)
         pairs: List[tuple[int, pd.Timestamp]] = []
         for idx, (t, row) in enumerate(df.iterrows(), start=1):
             if idx % every == 0:
-                pairs.append((int(row["iteration"]), t))
+                it = int(row["iteration"])
+                print(f"Selected hotstart #{idx} for --every={every}: iteration={it}, time={t}")
+                pairs.append((it, t))
         if not pairs:
             raise ValueError(
                 f"--every={every} selected no hotstarts "
@@ -234,7 +167,6 @@ def _select_iteration_and_time(
             )
         return pairs
 
-    # Should not reach here
     raise ValueError("Selection logic error: no mode matched.")
 
 
@@ -244,24 +176,9 @@ def _make_hotstart_name(
     prefix: str = "",
 ) -> str:
     """
-    Construct the canonical hotstart filename.
+    Construct the canonical hotstart filename:
 
-    Pattern:
         hotstart[.PREFIX].YYYYMMDD.ITER.nc
-
-    Parameters
-    ----------
-    dt : pandas.Timestamp
-        Datetime associated with the hotstart.
-    iteration : int
-        Iteration number.
-    prefix : str, optional
-        Optional prefix to insert after 'hotstart.'.
-
-    Returns
-    -------
-    str
-        Filename (no directory).
     """
     datestr = dt.strftime("%Y%m%d")
     if prefix:
@@ -278,27 +195,10 @@ def _run_combine_executable(
     """
     Run the native combine_hotstart executable for a single iteration.
 
-    Parameters
-    ----------
-    exe : str
-        Executable name (e.g., 'combine_hotstart7').
-    iteration : int
-        Iteration to combine.
-    outputs_dir_abs : str
-        Directory to use as cwd when running the executable.
-
-    Returns
-    -------
-    str
-        Absolute path to the combined file 'hotstart_it=ITER.nc'.
-
-    Raises
-    ------
-    RuntimeError
-        If the executable fails or the expected output file is missing.
+    Returns absolute path to 'hotstart_it=ITER.nc'.
     """
     cmd = [exe, "-i", str(iteration)]
-    # Run in outputs dir so the exe finds the partitioned hotstart files.
+    print(f"Running {exe} in {outputs_dir_abs} with iteration {iteration}")
     result = subprocess.run(
         cmd,
         cwd=outputs_dir_abs,
@@ -314,7 +214,6 @@ def _run_combine_executable(
             f"stderr:\n{result.stderr}"
         )
 
-    # Expect output file named hotstart_it=ITER.nc in outputs_dir_abs
     basename = f"hotstart_it={iteration}.nc"
     src = os.path.join(outputs_dir_abs, basename)
     if not os.path.exists(src):
@@ -323,7 +222,6 @@ def _run_combine_executable(
         )
 
     return src
-
 
 def combine_hot(
     run_dir: str = ".",
@@ -341,22 +239,9 @@ def combine_hot(
     """
     High-level API to combine SCHISM hotstart files.
 
-    This function wraps the native combine_hotstart executable (configured via
-    bdschism settings) and uses schimpy.hotstart_inventory to map between
-    iterations and datetimes. It can:
-      * select the latest hotstart,
-      * select the last hotstart on or before a date,
-      * select a specific iteration, or
-      * archive every Nth hotstart.
-
-    The combined files are renamed to:
-
-        hotstart[.PREFIX].YYYYMMDD.ITER.nc
-
-    and either:
-      * placed in `run_dir` and linked to `hotstart.nc` (links=True),
-      * placed in `out_dir` (out_dir != None, links=False), or
-      * placed in `run_dir` (links=False, out_dir=None).
+    This wraps the native combine_hotstart executable (configured via
+    bdschism settings) and schimpy.hotstart_inventory to map between
+    iterations and datetimes.
 
     Parameters
     ----------
@@ -370,34 +255,27 @@ def combine_hot(
     latest : bool, optional
         If True, select the most recent hotstart.
     before : str or pandas.Timestamp, optional
-        If provided, select the last hotstart on or before this date.
+        Select the last hotstart on or before this date.
     iteration : int, optional
-        If provided, combine this specific iteration.
+        Combine this specific iteration.
     every : int, optional
-        If provided, archive every Nth hotstart in time order (10 -> 10th, 20th, ...).
+        Archive every Nth hotstart in time order (10 -> 10th, 20th, ...).
     out_dir : str, optional
-        Archive directory. If relative, interpreted relative to run_dir. Mutually
-        exclusive with `links` if you want "links-only" semantics; if both are
-        provided, a ValueError is raised.
+        Archive directory. If relative, interpreted relative to run_dir.
     links : bool, optional
-        If True, create a link named hotstart.nc in run_dir pointing to the most
-        recently combined file. Uses bdschism.settings.create_link.
+        If True, create hotstart.nc in run_dir pointing to the most
+        recently created file using bdschism.settings.create_link.
     config_log : bool, optional
         If True, log configuration source when loading settings.
+    overwrite : bool, optional
+        If True, allow overwriting an existing destination file.
 
     Returns
     -------
     list of str
         Absolute paths of the combined hotstart files that were created.
-
-    Raises
-    ------
-    ValueError
-        If selection flags are inconsistent or if both out_dir and links are
-        used in an incompatible way.
-    RuntimeError
-        For configuration or execution failures.
     """
+    # Guard against the most confusing combo
     if links and every is not None and out_dir is not None:
         raise ValueError(
             "Using --every with both --links and --out-dir is ambiguous. "
@@ -411,7 +289,14 @@ def combine_hot(
         out_dir=out_dir,
     )
 
+    print(f"Run directory:     {run_dir_abs}")
+    print(f"Outputs directory: {outputs_dir_abs}")
+    if out_dir_abs is not None:
+        print(f"Archive directory: {out_dir_abs}")
+
     exe = _get_settings_executable(config_log=config_log)
+    print(f"Using combine_hotstart executable: {exe}")
+
     inventory_df = _load_inventory(outputs_dir_abs)
     selections = _select_iteration_and_time(
         df=inventory_df,
@@ -423,51 +308,55 @@ def combine_hot(
 
     created_files: List[str] = []
 
-    # Ensure archive directory exists if specified
     if out_dir_abs is not None:
         os.makedirs(out_dir_abs, exist_ok=True)
 
-    # For each selected (iteration, datetime), run the exe, rename, move, and
-    # optionally create links.
+    # === THIS IS THE LOOP WE’RE TALKING ABOUT ===
     for it, dt in selections:
-        # 1. Run native combine executable
-        src = _run_combine_executable(exe=exe, iteration=it, outputs_dir_abs=outputs_dir_abs)
-
-        # 2. Decide destination directory
+        # 1. Decide destination directory BEFORE running the combine exe
         if out_dir_abs is not None and every is not None:
-            # Archive mode for every-N hotstarts
             dest_dir = out_dir_abs
         elif out_dir_abs is not None and every is None and not links:
-            # Archive single hotstart
             dest_dir = out_dir_abs
         else:
-            # Default: place in run_dir
             dest_dir = run_dir_abs
 
         os.makedirs(dest_dir, exist_ok=True)
 
-        # 3. Destination filename
+        # 2. Destination filename BEFORE running the combine exe
         dest_basename = _make_hotstart_name(dt=dt, iteration=it, prefix=prefix)
         dest = os.path.join(dest_dir, dest_basename)
 
+        # 3. Pre-check for existing file so we can fail fast
+        if os.path.exists(dest) and not overwrite:
+            raise RuntimeError(
+                f"Destination file already exists: {dest}\n"
+                f"Use --overwrite to replace it."
+            )
+
+        # 4. Run native combine executable to produce hotstart_it=ITER.nc
+        src = _run_combine_executable(
+            exe=exe,
+            iteration=it,
+            outputs_dir_abs=outputs_dir_abs,
+        )
+
+        # 5. Handle overwrite only after successful combine
         if os.path.exists(dest):
-            if not overwrite:
-                raise RuntimeError(
-                    f"Destination file already exists: {dest}\n"
-                    f"Use --overwrite to replace it."
-                )
+            # Only possible if overwrite=True, because we already bailed above otherwise
+            print(f"Overwriting existing file: {dest}")
             os.remove(dest)
 
+        # 6. Move combined file to destination
+        print(f"Moving combined file:\n  {src}\n-> {dest}")
         shutil.move(src, dest)
 
         created_files.append(os.path.abspath(dest))
 
-    # 5. Links behavior
-    # For links=True, always link to the *latest* combined file in run_dir_abs.
+    # 7. Links behavior
     if links:
         if not created_files:
             raise RuntimeError("No hotstart files were created to link.")
-        # Choose the last created file as the target for hotstart.nc
         target = created_files[-1]
         link_path = os.path.join(run_dir_abs, "hotstart.nc")
         print(f"Creating link {link_path} -> {target}")
@@ -476,12 +365,13 @@ def combine_hot(
     return created_files
 
 
+
 @click.command(
     help=(
         "Combine SCHISM parallel hotstart files using the configured "
-        "combine_hotstart executable, and rename/optionally link them.\n\n"
+        "combine_hotstart executable, then rename / optionally link them.\n\n"
         "Examples:\n"
-        "  combine_hotstart --latest --links --prefix retro\n"
+        "  combine_hotstart --latest --links --prefix clinic\n"
         "  combine_hotstart --before 2014-03-26 --prefix retro\n"
         "  combine_hotstart --it 14400 --out-dir hotstart_archive --prefix retro\n"
         "  combine_hotstart --every 10 --out-dir hotstart_archive --prefix retro\n"
@@ -549,17 +439,15 @@ def combine_hot(
     ),
 )
 @click.option(
+    "--overwrite",
+    is_flag=True,
+    help="Allow overwriting an existing destination hotstart file.",
+)
+@click.option(
     "--config-log",
     is_flag=True,
     help="Log configuration source when loading bdschism settings.",
 )
-
-@click.option(
-    "--overwrite",
-    is_flag=True,
-    help="Allow overwriting an existing destination hotstart file."
-)
-
 @click.help_option("-h", "--help")
 def combine_hotstart_cli(
     run_dir,
@@ -571,13 +459,11 @@ def combine_hotstart_cli(
     every,
     out_dir,
     links,
+    overwrite,
     config_log,
-    overwrite
 ):
     """
-    CLI wrapper for combine_hot.
-
-    This function parses command-line options and delegates to combine_hot().
+    CLI wrapper for combine_hot().
     """
     try:
         created = combine_hot(
@@ -591,10 +477,9 @@ def combine_hotstart_cli(
             out_dir=out_dir,
             links=links,
             config_log=config_log,
-            overwrite=overwrite
+            overwrite=overwrite,
         )
     except Exception as exc:
-        # ClickException gives a non-zero exit with a readable message.
         raise click.ClickException(str(exc))
 
     if not created:
