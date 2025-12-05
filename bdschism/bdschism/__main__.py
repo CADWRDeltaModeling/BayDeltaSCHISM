@@ -13,6 +13,7 @@ from bdschism.analyze_dt import analyze_dt_cli
 from bdschism.runtime_hotstart import restart_from_hotstart_cli
 from bdschism.gen_elev2d import gen_elev2d_cli
 from bdschism.set_mode import main as set_mode_cli
+
 #
 import subprocess
 import sys
@@ -74,6 +75,6 @@ cli.add_command(precheck, "precheck")
 cli.add_command(analyze_dt_cli, "analyze_dt")
 cli.add_command(gen_elev2d_cli, "gen_elev2d")
 cli.add_command(set_mode_cli, "set_mode")
-
+cli.add_command(combine_hotstart_cli, "combine_hotstart")
 if __name__ == "__main__":
     cli()
