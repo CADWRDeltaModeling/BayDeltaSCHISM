@@ -146,10 +146,24 @@ def interpolate_variables(config_log=False):
 
     >>> interpolate_variables()
     """
+    import subprocess
+
     settings = get_settings(config_log=config_log)
 
-    # run interpolate_variables
-    os.system(settings.interpolate_variables)
+    result = subprocess.run(
+        settings.interpolate_variables,
+        shell=True,          # keeps behavior similar to os.system
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(
+            "interpolate_variables command failed:\n"
+            f"  Command: {settings.interpolate_variables}\n"
+            f"  Exit code: {result.returncode}\n"
+            f"  Stdout:\n{result.stdout}\n"
+            f"  Stderr:\n{result.stderr}"
+        )
 
 def get_output_from_interpolate_variables(varname, config_log=False):
     """
