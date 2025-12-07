@@ -1,196 +1,387 @@
-datetime      install  ndup  op_down   op_up     elev	  width	   height
-1999-09-01T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-1999-10-15T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-1999-11-10T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-1999-12-10T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2000-01-17T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2000-03-01T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2000-11-04T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2001-05-14T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2001-10-08T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2001-10-22T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2001-10-26T00:00     1    3    0.667    0.000    -6.86    10.97    10.0
-2001-10-29T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2001-11-06T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2002-01-17T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2002-09-25T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2002-10-09T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2002-10-23T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2002-11-07T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2002-12-31T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2003-09-30T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2003-10-14T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2003-10-29T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2003-11-12T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2003-12-15T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2004-09-28T00:00     1    3    0.667    0.667    -6.86    10.97    10.0    # One closed, two open
-2004-10-12T00:00     1    3    0.667    0.000    -6.86    10.97    10.0    # One closed, two op
-2005-01-14T00:00     1    3    0.667    0.333    -6.86    10.97    10.0    # One closed, one op, one open
-2005-02-09T00:00     1    2    0.667    0.667    -6.86    10.97    10.0
-2005-07-19T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2005-11-14T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2005-12-01T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2007-01-25T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2007-03-01T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2007-11-30T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2007-12-17T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2008-10-02T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2008-10-15T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2008-11-24T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2008-11-27T00:00     1    3    0.667    0.000    -6.86    10.97    10.0
-2008-11-30T00:00     1    3    0.000    0.000    -6.86    10.97    10.0
-2008-12-01T00:00     1    3    0.667    0.667    -6.86    10.97    10.0
-2008-12-02T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2008-12-05T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2008-12-06T00:00     1    3    0.667    0.000    -6.86    10.97    10.0
-2008-12-08T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2008-12-19T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2009-01-16T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2009-01-20T00:00     1    3    0.667    0.000    -6.86    10.97    10.0
-2009-01-30T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2009-02-05T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2009-02-19T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2009-02-27T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2009-11-24T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2009-12-01T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2009-12-21T00:00     1    3    1.000    0.333    -6.86    10.97    10.0
-2009-12-23T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2009-12-28T00:00     1    3    0.667    0.000    -6.86    10.97    10.0
-2010-01-04T00:00     1    3    0.667    0.667    -6.86    10.97    10.0
-2010-01-06T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2010-04-14T00:00     1    3    1.000    0.333    -6.86    10.97    10.0
-2010-04-26T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2010-11-16T00:00     1    3    1.000    0.667    -6.86    10.97    10.0
-2010-11-25T00:00     1    3    0.333    0.000    -6.86    10.97    10.0
-2010-11-30T00:00     1    3    0.667    0.000    -6.86    10.97    10.0
-2010-12-08T00:00     1    3    0.667    0.667    -6.86    10.97    10.0
-2011-02-03T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2012-01-04T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2012-02-28T00:00     1    3    1.000    1.000    -6.86    10.97    10.0   #There is a gap in the table between Feb15 and Feb27.  Something that will have to be checked.
-2012-10-11T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2012-11-28T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2013-05-02T00:00     1    3    1.000    0.333    -6.86    10.97    10.0
-2013-05-10T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2013-05-21T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2013-10-18T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2013-11-25T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2013-12-02T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2014-06-02T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2014-09-03T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2014-10-07T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2014-10-22T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2014-11-19T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2014-12-04T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2014-12-15T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2015-01-01T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2015-06-02T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2015-08-28T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2015-11-20T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2015-12-03T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2016-02-03T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2016-10-17T00:00     1    3    1.000    0.000    -6.86    10.97    10.0
-2016-12-08T00:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2017-12-15T00:00     1    3    0.667    0.000    -6.86    10.97    10.0
-2017-12-16T00:00     1    3    0.333    0.000    -6.86    10.97    10.0
-2017-12-21T00:00     1    3    0.667    0.000    -6.86    10.97    10.0
-2017-12-29T00:00     1    3    0.333    0.000    -6.86    10.97    10.0
-2018-01-03T00:00     1    3    1.000    0.000    -6.86    10.97    10.0  # Month and day were switched
-2018-02-02T17:00     1    3    1.000    1.000    -6.86    10.97    10.0
-2018-02-14T14:15     1    3    1.000    0.000    -6.86    10.97    10.0
-2018-03-14T15:15     1    3    1.000    1.000    -6.86    10.97    10.0
-2018-08-02T00:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Manual operation
-2018-08-10T21:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-08-11T06:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-08-17T03:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-08-18T00:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-08-21T16:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-08-22T04:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-08-28T12:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-08-29T00:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-09-04T16:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-09-05T17:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-09-07T00:00      1    3    1.000    1.000    -6.86    10.97    10.0
-2018-10-17T00:00      1    3    1.000    0.000    -6.86    10.97    10.0
-2018-10-21T08:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-10-22T00:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-10-23T09:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-10-23T18:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-10-24T08:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-10-24T18:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-10-27T12:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-10-28T00:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-11-18T06:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-11-18T18:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-11-25T00:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-11-25T06:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-12-07T06:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-12-08T00:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-12-08T10:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-12-09T00:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-12-10T00:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-12-10T12:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-12-17T04:00      1    3    1.000    1.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2018-12-17T16:00      1    3    1.000    0.000    -6.86    10.97    10.0 #Inferred from NSL flow
-2019-01-23T00:00      1    3    1.000    1.000    -6.86    10.97    10.0
-2019-01-23T15:05     1    3    1.000    1.000    -6.86    10.97    10.0
-2019-11-15T14:07     1    3    1.000    0.000    -6.86    10.97    10.0   # Tidal mode works for opening, but must be closed manually.   During flashboards install in July 2018, a boat damaged the flow meter.
-2019-12-04T10:15     1    3    1.000    1.000    -6.86    10.97    10.0   # Low salinity
-2019-12-11T08:01     1    3    0.000    0.000    -6.86    10.97    10.0   # Closed to fix flow meter
-2019-12-11T15:41     1    3    1.000    1.000    -6.86    10.97    10.0   # Reopened after flow meter was fixed
-2020-01-10T12:00     1    3    1.000    0.000    -6.86    10.97    10.0   # Rising salinity
-2020-04-20T11:42     1    3    1.000    1.000    -6.86    10.97    10.0   # Low salinity
-2020-05-11T14:28     1    3    1.000    0.000    -6.86    10.97    10.0   # Rising salinity
-2020-05-27T08:00     1    3    1.000    1.000    -6.86    10.97    10.0   # Preparing for flashboard removal
-2020-09-08T13:20     1    3    1.000    0.000    -6.86    10.97    10.0   # High salinity conditions
-2020-09-24T06:35     1    3    0.000    0.000    -6.86    10.97    10.0   # Dive inspection
-2020-09-24T15:58     1    3    1.000    1.000    -6.86    10.97    10.0   # Operations suspended due to low enough salinities
-2020-10-09T14:00     1    3    1.000    0.000    -6.86    10.97    10.0   # Rising salinities
-2020-11-18T02:25     1    3    0.000    0.000    -6.86    10.97    10.0   # Closed for Gate 3 refurbishment
-2020-11-23T10:48     1    3    0.667    0.000    -6.86    10.97    10.0   # Gates 1 and 2 restored to tidal, 3 closed
-2021-02-15T13:20     1    3    0.667    0.667    -6.86    10.97    10.0   # Gates 1 and 2 open, 3 closed
-2021-02-16T14:14     1    3    0.667    0.000    -6.86    10.97    10.0   # Gates 1 and 2 tidal, 3 closed
-2021-05-07T12:00     1    3    0.333    0.000    -6.86    10.97    10.0   # Gate 1 gearbox failure
-2021-05-15T09:09     1    3    0.333    0.000    -6.86    10.97    10.0   # Gate 1 repaired and returned to service
-2021-06-01T08:45     1    3    0.666    0.666    -6.86    10.97    10.0   # Gates opened due to end of control season
-2021-06-03T09:30     1    3    0.666    0.666    -6.86    10.97    10.0   # Continuation of above op after flashboards removed
-2021-08-23T12:18     1    3    0.666    0.666    -6.86    10.97    10.0   # Open on two gates, other closed
-2021-09-01T00:01     1    3    0.000    0.000    -6.86    10.97    10.0   # Override log based on near zero NSL flow
-2021-09-03T14:00     1    3    0.666    0.000    -6.86    10.97    10.0   # Override log based on tidal/net flow at NSL
-2021-09-05T10:01     1    3    0.666    0.050    -6.86    10.97    10.0   # Added (guess) to approximate mixed open/tidal behavior at NSL
-2021-09-13T14:00     1    3    0.666    0.000    -6.86    10.97    10.0   # Transducer card fixed
-2021-10-24T18:35     1    3    0.666    0.100    -6.86    10.97    10.0   # Manual operation which apparently didn't work fully
-2021-10-25T12:07     1    3    0.666    0.000    -6.86    10.97    10.0   # Automatic op issue fixed
-2021-11-10T10:40     1    3    0.667    0.667    -6.86    10.97    10.0   # Operations suspended due to low enough salinities
-2021-11-29T13:25     1    3    0.667    0.000    -6.86    10.97    10.0   # Operations started due to rising salinities
-2021-12-21T15:05     1    3    0.667    0.667    -6.86    10.97    10.0   # Operations suspended due to low salinities
-2022-02-11T11:26     1    3    1.000    0.000    -6.86    10.97    10.0   # Operations started due to rising salinity at S-35
-2022-03-08T18:18     1    3    1.000    1.000    -6.86    10.97    10.0   # Operations suspended due to low salinities
-2022-04-07T14:40     1    3    1.000    0.000    -6.86    10.97    10.0   # Operations started due to rising salinity in western marsh
-2022-05-31T23:59     1    3    1.000    1.000    -6.86    10.97    10.0   # Gates opened at end of control season
-2022-08-03T06:50     1    3    0.000    0.000    -6.86    10.97    10.0   # Closed for refurbishment
-2022-08-26T16:55     1    3    0.333    0.000    -6.86    10.97    10.0   # Gate 2 returned to open, gate 1 has stoplog
-2022-09-01T00:01     1    3    0.667    0.000    -6.86    10.97    10.0   # Tidal with two gates operating
-2022-09-08T12:41     1    3    0.667    0.333    -6.86    10.97    10.0   # Gate 3 failed to close
-2022-09-08T15:04     1    3    0.667    0.000    -6.86    10.97    10.0   # Gate 3 repaired, tidal
-2023-01-05T14:38     1    3    0.667    0.667    -6.86    10.97    10.0   # Gate 1 closed, other two open
-2023-06-11T11:13     1    3    0.667    0.667    -6.86    10.97    10.0   # No change radial gate but flashboards opened
-2023-08-14T13:18     1    3    0.667    0.667    -6.86    10.97    10.0   # No change radial gate but flashboards installed for 100TAF
-2023-08-15T00:02     1    3    0.667    0.000    -6.86    10.97    10.0   # Gate 1 closed, other two operating tidally for 100TAF
-2023-10-18T00:01     1    3    0.667    0.667    -6.86    10.97    10.0   # End 100TAF, radial gates open. Ops through end of year approximate
-2023-11-06T07:42     1    3    0.000    0.000    -6.86    10.97    10.0   # Gates closed for refurbishment work.  Gate 3 was installed and Gate 2 was sent for refurbishment.
-2023-11-21T09:42     1    3    0.333    0.333    -6.86    10.97    10.0   # Gate 3 opened to freshen up Montezuma Slough.  Gate 1 is down due an electrical issue. 
-2023-11-27T10:00     1    3    0.333    0.000    -6.86    10.97    10.0   # Manual Tidal operations started for Gate 3 due to rising salinties.  Operations are manual due to downstream water level data being supsect.  Gate 1 is still out due to electrical issues.  
-2023-12-02T13:45     1    3    0.667    0.000    -6.86    10.97    10.0   # Gate 1 fixed and returned to service.   Gates 1 and 3 still in manual operation mode due to problems with downstream sensor.
-2023-12-05T14:00     1    3    0.667    0.000    -6.86    10.97    10.0   # Downstream sensor fixed and Tidal Mode resumed for gate openings.  However, now the velocity meter is malfunctioning and gate openings are manual.  
-2023-12-15T22:42     1    3    0.333    0.000    -6.86    10.97    10.0   # Gate 1 cannot stay open and was closed to prevent damage.  Gate 3 is not opening and closing at the correct times.  Some operators are using manual operations and some are using tidal operations.    
-2023-12-19T15:31     1    3    0.667    0.000    -6.86    10.97    10.0   # The brakes were replaced for Gate 1 and it was returned to service.   Both gates are operated manually due to sensor malfunctions.
-2024-01-18T11:55     1    3    0.667    0.000    -6.86    10.97    10.0   # Downstream sensor fixed and Tidal Mode resumed for gate openings.  The velocity meter is still malfunctioning and gate openings are manual.  \
-2024-01-29T08:15     1    3    0.667    0.667    -6.86    10.97    10.0   # Ops suspended due to declining salinities and more rain on the way.
-2024-07-01T12:01     1    3    0.667    0.000    -6.86    10.97    10.0   # Operations begin for Summer-Fall Action, running for 60 days, followed by use of 100 TAF of water.
-2024-08-29T23:59     1    3    0.667    0.667    -6.86    10.97    10.0   # Ops suspended due to the end of the 60 days of Delta Smelt Summer-Fall operations.
-2024-09-06T17:58     1    3    0.667    0.000    -6.86    10.97    10.0   # Operations extended for Summer-Fall Action, running through the end of September.
-2024-09-30T23:59     1    3    0.667    0.667    -6.86    10.97    10.0   # Ops suspended due to the end of the September Delta Smelt Summer-Fall operations.
-2024-10-28T08:00     1    3    0.667    0.000    -6.86    10.97    10.0   # Ops begun for 1 week prior to Gate 2 reinstall due to rising salinities.  
-2024-11-04T09:58     1    3    0.000    0.000    -6.86    10.97    10.0   # Ops suspended and gates closed for dredging and the reinstall of Gate 2.
-2024-11-18T14:35     1    3    0.667    0.000    -6.86    10.97    10.0   # Tidal Ops started prior to Gate 2 reinstall due to rising salinities.  
-2024-11-24T14:00     1    3    1.000    0.000    -6.86    10.97    10.0   # Gate 2 reinstall completed and returned to Tidal Ops.  
+datetime      install  ndup  op_down   op_up     elev      width     height
+1988-11-01T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1989-04-07T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates Held Open
+1989-09-26T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1989-12-08T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates Held Open for Gate Test # 5
+1989-12-17T00:00 1 0 0.000 0.000 -6.86 10.97 10.00 # 3 Gates Closed for Gate Test # 5
+1989-12-22T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1990-05-31T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates Held Open
+1990-07-16T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Gate Test # 1
+1990-09-28T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1990-10-01T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Operating Daylight Hours Only
+1990-10-30T00:00 1 0 0.000 0.000 -6.86 10.97 10.00 # Middle Gate Broken
+1990-11-16T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # Middle Gate Broken
+1990-11-20T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1990-11-28T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Remove stop logs to pass barge
+1990-12-05T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1990-12-11T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Rock Slough Standard
+1990-12-25T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1991-01-02T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates Open
+1991-01-18T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1991-05-31T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates Held Open
+1991-07-18T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Gate Test # 2
+1991-09-16T00:00 1 0 0.000 0.000 -6.86 10.97 10.00 # Maintenance work
+1991-10-18T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1991-11-18T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates Held Open
+1991-11-22T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1991-12-12T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Daylight operations for WR salmon
+1992-01-09T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1992-03-01T00:00 1 0 0.000 0.000 -6.86 10.97 10.00 # Winter Run salmon
+1992-03-24T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1992-05-27T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates Held Open
+1992-10-01T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Operate with 1/3 Partial Gate Opening
+1992-10-06T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Operate with 2/3 Partial Gate Opening
+1992-10-09T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1992-10-15T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Operate with 1/3 Partial Gate Opening
+1992-10-19T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Operate with 2/3 Partial Gate Opening
+1992-10-27T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Operate with 1/3 Partial Gate Opening
+1992-10-28T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Gates Oper. Manually b/c AVM broken
+1992-11-01T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Operate with 1/3 Partial Gate Opening
+1992-11-03T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1992-11-09T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Operate with 1/3 Partial Gate Opening
+1993-01-05T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1993-01-22T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Channel salinity well below standards
+1993-05-31T00:00 1 3 1.000 1.000 -6.86 10.97 10.00
+1993-09-07T00:00 1 3 1.000 1.000 -6.86 10.97 10.00
+1993-09-17T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1993-12-13T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates Held Open
+1993-12-14T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1994-02-10T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # Full Bore with one gate under repair
+1994-02-16T00:00 1 0 0.000 0.000 -6.86 10.97 10.00 # 3 Gates Closed
+1994-02-18T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # Full Bore with one gate under repair
+1994-05-09T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # Full Bore with one gate under repair
+1994-05-11T00:00 1 2 1.000 1.000 -6.86 10.97 10.00 # One gate closed and two open
+1994-09-01T00:00 1 0 0.000 0.000 -6.86 10.97 10.00 # 3 Gates Closed
+1994-09-03T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1994-09-06T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # One gate closed and two operating
+1994-09-08T00:00 1 0 0.000 0.000 -6.86 10.97 10.00 # 3 Gates Closed
+1994-09-09T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Full Bore Operation
+1994-10-02T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates Held Open
+1994-10-08T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Fish Study with flashboards installed
+1994-10-24T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Fish Study without flashboards installed
+1994-11-15T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Manual Full Bore Operation
+1994-11-18T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Automatic Full Bore Operation
+1995-01-11T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates open b/c well below standards and high Delta outflows.
+1995-02-08T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates open b/c well below standards and high Delta outflows
+1995-06-01T00:00 1 3 1.000 1.000 -6.86 10.97 10.00
+1996-11-13T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Operate due to observed salinity increase.
+1996-11-28T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates open b/c well below stds.
+1997-02-03T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates open b/c well below stds.
+1997-10-14T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Operate due to observed salinity increase
+1997-12-04T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates open b/c well below stds.
+1998-02-08T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # FB taken out due to flood reasons
+1998-09-28T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates open, FB installed
+1998-10-01T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # 3 Gates Tidal operation
+1998-10-13T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Stoplogs under spacers fabrication
+1998-10-27T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Tidal operation w/ modified flashboards
+1998-11-13T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # modified fb installed, 3 gates open
+1999-02-03T00:00 1 0 0.000 0.000 -6.86 10.97 10.00 # modified fb installed, 3 gates closed from 10:35 to 14:07 for velocity test at stoplogs
+1999-04-07T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Stoplogs out; 3 gates open
+1999-09-01T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # automated operation w/modified fb
+1999-09-27T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # operation w/original fb installed
+1999-10-15T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # gates opened and flashboards out
+1999-11-10T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # operate despite variance w/modified fb due to water quality concerns in the marsh.
+1999-12-10T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Gates held open temporarily to provide additional 300 cfs outflows for water quality concerns in the Delta.
+2000-01-17T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # operate despite variance w/modified fb due to water quality concerns in the marsh.
+2000-03-01T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # good water quality conditions, but still monitoring
+2000-03-28T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # anticipate no water quality problem
+2000-11-04T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # operated due to water quality concerns
+2001-05-14T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Stop operations.  Anticipate no w.q. concern for remaining month
+2001-10-08T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # boat lock gates held open for fish study
+2001-10-22T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # boat lock gates closed for fish study
+2001-10-26T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # gate #3 was stuck closed. Fish test continued
+2001-10-29T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # gate #3 fixed.
+2001-11-06T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # gates automatic operations resumed.
+2002-01-17T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # condition is good to stop gate oper., but keep fb installed if need to resume gate oper.
+2002-05-06T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # conditions good for the remaining control season
+2002-05-31T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # FB in with 3 gates held Open due to good WQ
+2002-09-25T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # full bore operation with boat lock closed for fish passage test
+2002-10-09T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # All gates Open with boat lock closed for fish test
+2002-10-23T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # full bore operation with boat lock open
+2002-11-07T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # normal operation with boat lock closed
+2003-05-16T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # FB removed; anticipate no wq concerns for remaining control season
+2003-09-28T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # FB installed but gates open
+2003-10-14T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # full ops with boat lock open; contractors had problems with equip., so removal of fb not done until Oct.28 morning
+2003-10-29T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # full open with FB out and boat lock closed
+2003-11-12T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # normal operation with boat lock closed to control salinity
+2003-12-15T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # gates held open due to favorable outlfow in Dec per O&M
+2004-05-13T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # removal of stoplogs due to favorable salinity levels
+2004-09-28T00:00 1 2 1.000 1.000 -6.86 10.97 10.00 # gate 1 closed position due to cable failure.  Repair underway. Boatlock closed.
+2004-10-12T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # oper. With gate 1 closed and boatlock open for fish study.
+2004-10-26T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # oper. With gate 1 closed and boatlock closed for fish study.
+2004-11-10T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # oper. With gate 1 closed and boatlock OPEN per NOAA request for this season only.  Per DFD staff, had pressure transducer problems on Nov. 13 or earlier and both u/s and d/s wiring were pulled and calibrated on Nov. 17. Thereafter, gate seems to be operating normally with the tidal cycle.
+2005-01-14T00:00 1 2 1.000 0.500 -6.86 10.97 10.00 # Gate # 3 cable broke and placed in OPEN position; boatlock still open per NOAA request; Gate # 1 still in closed position due to cable failure in Sept. 2004; Per OCO staff, dive time schedule to do an inspection dive on Gate # 3 on 1/21/05.  Per OCO staff, dive time schedule to do an inspection dive on Gate # 3 on 1/21/05.
+2005-02-09T00:00 1 2 1.000 1.000 -6.86 10.97 10.00 # Gate 1 and 3 broken cable awaiting repairs; boatlock open per NOAA for remainder of control season and closed only for safe boat passage; Gate 2 in Open status due to ceased operations as a result of good water quality conditions and will resume operation as needed to control salinity
+2005-05-20T00:00 1 2 1.000 1.000 -6.86 10.97 10.00 # Stoplogs removed at 1130 hrs per DFD staff.
+2005-07-19T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Gate 1 repair completed and place in OPEN status at 1600hrs.
+2005-11-09T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Flashboards installed and gates open; failed communication resulted no gate operation to go as schedule after fb installation.
+2005-11-14T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Manual mode operation on 11/14/05; have transducer and power problems so auto mode failed to work correctly and ISR data questionable; auto PLC mode active on 11/15/05 @1645 hrs per email from DFD staff. Boatlock open through the control season per agrement with NOAA, however, only open daytime due to no boat lock staff night time hours.
+2005-12-01T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 gates held open due to good water quality; fb remains installed;bl open during daylight hrs
+2006-01-06T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 gates held open and fb removed at 800 hr to allow access for levee repair from flood damage in suisun marsh w/boat lock gates closed since flashboards are removed.
+2007-01-24T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # flashboards installed and 3 gates held open
+2007-01-25T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # gates operating tidally with fb installed and boat lock gates open per NOAA agreement, however, during daylight hrs are the bl gates open; closed at night time
+2007-03-01T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 gates held open due to good water quality; fb remains installed;bl open all day long since the signage and notices for safety reasons are completed by DFD.
+2007-04-23T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # due to favorable water quality conditions, flashboards were removed today and 3 gates remain held open
+2007-11-30T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Operate gates auto mode at noon or 12:00 hrs due to salinity concern with boat lock gates open 24/7
+2007-12-17T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 gates held open at 15:15 hr per DFD to balance smelt concern in west Delta but will not compromise salinity standards in the process.  Boat lock gates open 24/7
+2008-04-30T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Flashboards removed around late afternoon.
+2008-10-02T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # 3 gates tidally operating with fb installed and boat lock gates open 24/7 per NOAA agreement
+2008-10-15T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 gates held open at 18:30 due to lower salinity levels at most marsh stations and to balance fish concern in the Delta; boatlock open 24/7; Between Nov.18 20, repair work was done on boat lock hydraulic leaks with lock open mode
+2008-11-25T09:00 1 3 1.000 0.000 -6.86 10.97 10.00 # resume gate operations in manual mode (since auto PLC is down) due to salinity concern at S49 due to good faith effort; | updated timing based on nsl flow
+2008-11-27T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # manual ops continue due to electical problem with PLC; Delta staff reported gate #1 failed on 11/27 @ 1700 hrs and in closed position; will assess and determine repair work needed
+2008-11-30T03:00 1 0 0.000 0.000 -6.86 10.97 10.00 # Between 11/30 5:30pm to 12/1 5:30pm all three gates held closed | updated timing based on nsl flow
+2008-12-01T17:00 1 2 1.000 1.000 -6.86 10.97 10.00 # 12/1 @ 1731 hrs DFD suspend gate op per SMSCG ops group effort to balance fish concerns | updated timing based on nsl flow
+2008-12-02T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Gate #1 repaired and placed Open @ 1309 hr and Auto-PLC repaired per DFD staff
+2008-12-05T16:00 1 3 1.000 0.000 -6.86 10.97 10.00 # salinity concern in the marsh, thus DFD resumed gate oper. in auto mode | updated timing based on nsl flow
+2008-12-06T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # gate #1 failed again and in clsd mode since 12/6/08 @1226 hr and 2 gates auto mode per DFD
+2008-12-19T12:00 1 3 1.000 1.000 -6.86 10.97 10.00 # suspended gate operations due to favorable precip. forecasted and salinity slightly below standard | updated timing based on nsl flow
+2009-01-16T12:00 1 2 1.000 0.000 -6.86 10.97 10.00 # Gate #2 in clsd position due to motor blow out per DFD; awaiting repair work/parts | updated timing based on flow records
+2009-02-05T12:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Suspend gate ops due to low salinity levels throughout marsh and anticipated precip. | updated timing based on nsl flow
+2009-02-19T08:30 1 3 1.000 0.000 -6.86 10.97 10.00 # resume gate operations in auto mode @ 8:35 am per DFD due to salinity concerns in the marsh. | updated timing based on nsl flow
+2009-02-21T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # gates cycling (i.e. open/close) every hour due to avm failure and put under manual oper and operate on elevation criteria ONLY for now per DFD
+2009-02-27T07:00 1 3 1.000 1.000 -6.86 10.97 10.00 # suspended gate operations as of 0930 hrs per DFD due to low salinity levels in the marsh; AVM remained out of service | updated timing based on nsl flow
+2009-05-20T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # flashboards removed early morning; ceased gate oper. for the remainder of the control season due to low salinity levels in the marsh;AVM remained out of service
+2009-10-08T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # installed fb but no gate ops with boatlock open 24/7 per NOAA agreement
+2009-11-24T12:00 1 3 1.000 0.000 -6.86 10.97 10.00 # oper. gates at 2:30pm per DFD; due to salinity concern at S49 to meet DRF, 1c criteria; oper. Based on .3 ft trigger but data indicates improper operations of the gates and DFD chief Doug Thompson has been informed | updated timing based on nsl flow
+2009-12-01T05:00 1 3 1.000 1.000 -6.86 10.97 10.00 # ceased gate op due to no salinity concern at this time and early in the month; AVM still out; repair work on boatlock gates hydraulic ram due to oil leak prior days was complete done and complete on same day, 12/7, sooner than expected; DFD plans to refurb. the hydraulic unit summer of 2010 to prevent future oil leaks. | updated timing based on nsl flow
+2009-12-21T13:00 1 3 1.000 0.333 -6.86 10.97 10.00 # gate #1 failed @ 1345hr in an attempt to operate the gates for salinity concerns per DFD.  DFD put in repair request.  Gate #1 held open until repair work done. | updated timing based on nsl flow
+2009-12-23T19:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Gate 1 repaired and put into operation. | updated timing based on nsl flow
+2009-12-28T00:00 1 2 1.000 0.000 -6.86 10.97 10.00 # Gate 1 broke open on 12/27. Forced closed on 12/28.
+2010-01-04T08:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Gate 1 forced open. | updated timing based on nsl flow records
+2010-02-03T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # DFD repaired gate #3 and completed gate test.  Placed in held open position for now.
+2010-03-10T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # New AVM installed 3/10 but gates remained open and no salinity concerns.
+2010-04-14T05:00 1 3 1.000 0.333 -6.86 10.97 10.00 # operate gates to test auto mode operations with new AVM recently installed; AVM triggers need to verify if set at clsd < .1 ft/s and open > .3 ft; gate 1 still out and awaiting repair work | updated timing based on flow records
+2010-04-26T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Flashboards removed; BL clsd; 3 gates held open; end gate ops for remainder of control season
+2010-10-12T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Flashboards installed and BL open at 1100 hrs DST with 3 gates held open b/c no salinity concern yet
+2010-11-16T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Only gate # 1 works in auto PLC; gate#2 and #3 failed to open/closed remotely due to electrical problems per DFD; awaiting repair work | updated ops based on flow records and dsm2 changes
+2010-11-24T08:00 1 1 1.000 0.000 -6.86 10.97 10.00 # gates 2 and 3 set in closed position; gate 1 oper. in auto PLC | updated timing based flow records
+2010-11-26T00:00 1 1 1.000 0.000 -6.86 10.97 10.00 # gate 1 operate in manual mode based on .3 ft trigger b/c auto failed
+2010-11-29T18:00 1 3 1.000 1.000 -6.86 10.97 10.00 # gate 1 and 2 operating; gate 3 still out per DFD | updated timing and ops based on flow records edits
+2010-12-01T14:30 1 2 1.000 0.000 -6.86 10.97 10.00 # added based on flow records and dsm2 edit
+2010-12-08T09:30 1 2 1.000 1.000 -6.86 10.97 10.00 # Suspend gate ops due to low salinity levels throughout marsh | updated timing based on flow records
+2011-05-18T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # removal of stoplogs due to favorable salinity levels and bl closed; later in the year because of owl situation in early months, otherwise would have removed sooner in April; FYI, DFD will refurb. d/s boatlock gates due to corrosion and will do u/s next yr
+2011-10-21T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # FB installed but gates open due to no salinity concern at this time; bl open partially due to safety concerns
+2012-01-04T10:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Gates operated due to salinity concerns. | updated timing based on flow records
+2012-02-13T12:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Special conditions tag placed on gate 1 to prevent operations due to Great Horned Owl nesting there. | changed timing based on nsl flow
+2012-05-01T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Great Horned Owl eggs disappeared.  Special conditions tag removed 4/24/12.
+2012-10-11T11:30 1 3 1.000 0.000 -6.86 10.97 10.00 # Flashboards installed.  Boat lock and gates operational.
+2012-11-10T06:00 1 3 1.000 1.000 -6.86 10.97 10.00 # inferred gate and timing based on nsl flow
+2012-11-11T20:00 1 3 1.000 0.333 -6.86 10.97 10.00 # inferred gate and timing based on nsl flow
+2012-11-24T08:00 1 3 1.000 1.000 -6.86 10.97 10.00 # inferred gate and timing based on nsl flow
+2012-11-24T20:00 1 3 1.000 0.333 -6.86 10.97 10.00 # inferred gate and timing based on nsl flow
+2012-11-28T11:00 1 3 1.000 1.000 -6.86 10.97 10.00 # 3 Gates Held Open | updated timing based on nsl flow
+2013-05-02T10:00 1 3 1.000 0.333 -6.86 10.97 10.00 # Gates 1 and 2 started operating at 11 AM.  Gate 3 malfunctioned. | time adjusted from 00:00 to 10:00
+2013-05-10T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Gate 3 is back in service 2:36 PM. DFD electricians and mechanics found the brakes welded to the motor housing.  They were able to remove the damaged brake and replace with a new one.
+2013-05-23T03:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Email sent by Dan Y to stop gate ops. 5/21/13 3:49 PM | timestamp changed from 2013-05-21T00:00 to 2013-05-23T03:00
+2013-05-30T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Removed flashboards, boat lock closed.
+2013-10-11T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Flashboards installed & boat lock operational. Delay in installing FB due to refurbishing.
+2013-10-18T09:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Gates operated due to salinity concerns. Auto mode failed. DFD operating in manual mode. Parts were ordered. | time changed from 00:00 to 09:00
+2013-10-18T23:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-10-25T20:00 1 0 0.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-10-26T03:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-10-28T06:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-10-28T16:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-10-29T05:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-10-29T15:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-10-31T11:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-11-03T08:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-11-04T07:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-11-05T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-11-05T07:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-11-05T20:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-11-06T15:00 1 0 0.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-11-07T08:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2013-11-08T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Gates back in PLC auto mode.
+2013-11-25T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Gates set in OPEN position as of 6:30 AM 11/25/13
+2013-12-02T17:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Gates operated due to salinity concerns. PLC Auto at 1500 | time changed from 00:00 to 17:00
+2014-03-13T20:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-03-14T05:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-03-31T11:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-03-31T18:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-06-02T12:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Gates placed in open position on June 2nd. | time changed from 00:00 to 12:00
+2014-06-03T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Flashboards removed June 3rd.
+2014-09-05T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Flashboards intalled.  Operation to meet the 7-day running avg of 17 mS/cm for the RSMPA | date changed from 09-03 to 09-05
+2014-09-17T18:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-09-18T06:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-09-18T18:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-09-19T07:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-09-19T18:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-09-20T07:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-09-20T18:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-09-21T12:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-09-29T12:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-10-01T06:30 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-10-03T12:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-10-07T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Stopped gate operations. Interior Delta needs help meeting stds.
+2014-10-22T08:30 1 3 1.000 0.000 -6.86 10.97 10.00 # Started ops to bring salinity down. Want to enter Nov w/ stations near Nov stds. | changed time from 00:00 to 08:30
+2014-10-22T22:30 1 3 1.000 0.667 -6.86 10.97 10.00 # updated based on nsl flow
+2014-10-23T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-10-23T16:30 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-10-28T12:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2014-11-19T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Electrical control system failure. Gates set in O position while repairs conducted.
+2014-12-15T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # PLC replacement project started Dec 15th. Completed on Dec 31st. Set in tidal ops. | removed entry from 2014-12-04T00:00
+2015-01-01T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Even tho salinity is low, tidal ops are continuing so that bugs in the programming can be worked out.  Gates are operating erratically.
+2015-01-04T09:00 1 3 1.000 1.000 -6.86 10.97 10.00 # upstream flow noticed in NSL record
+2015-01-04T20:00 1 3 1.000 0.000 -6.86 10.97 10.00 # flow returned to tidal in NSL record
+2015-01-14T19:00 1 3 1.000 1.000 -6.86 10.97 10.00 # upstream flow noticed in NSL record
+2015-01-16T08:00 1 3 1.000 0.000 -6.86 10.97 10.00 # flow returned to tidal in NSL record
+2015-02-07T21:00 1 0 0.000 0.000 -6.86 10.97 10.00 # reduced flow (~1300 cfs both dirs) noticed in NSL record
+2015-02-09T08:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2015-02-09T16:00 1 0 0.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2015-02-10T08:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2015-02-10T16:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2015-02-14T05:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2015-02-14T20:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2015-02-16T08:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2015-02-16T16:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2015-02-17T05:00 1 3 1.000 0.000 -6.86 10.97 10.00 # flow returned to tidal in NSL record
+2015-04-13T09:00 1 3 1.000 0.000 -6.86 10.97 10.00 # flow returned to tidal in NSL record
+2015-06-02T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Concerns over salinity. Operated until June 2 when the flashboards were removed.
+2015-08-28T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Flashboards installed.  Sept operations.
+2015-09-19T21:00 1 3 1.000 0.000 -6.86 10.97 10.00 # flow returned to tidal in NSL record
+2015-09-21T07:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Missing NSL record, no way to verify gate ops
+2015-11-20T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Salinity is in the 12-14 range for the compliance stations. | Missing NSL record, no way to verify gate ops
+2015-12-02T10:15 1 3 1.000 1.000 -6.86 10.97 10.00 # Salinity is in the 12-14 range for the compliance stations. | NSL record returns
+2015-12-04T13:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Flow returned to tidal in NSL record
+2016-01-12T01:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Reduced flow (~1300 cfs both dirs) noticed in NSL record
+2016-01-12T12:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Flow returned to tidal in NSL record
+2016-01-29T12:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2016-01-29T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2016-02-03T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Salinity is low for the compliance stations.  We're watching the monitoring stations for DRF
+2016-05-24T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Flashboards removed and gates are closed.
+2016-10-01T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Flashboards installed.
+2016-10-17T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Ops started given increasing salinity at compliance stations (14-18 range). Std is 15.5 for Nov.
+2016-11-02T16:00 1 0 0.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2016-11-02T22:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2016-12-03T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Salinity increased at Sunrise (16.9) and Beldon (18.48).
+2016-12-07T19:00 1 0 0.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2016-12-08T07:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Salinity levels are low so stopped op of gates. | Modified log time from 0:00 to 7:00
+2017-04-07T22:45 1 3 1.000 1.000 -6.86 10.97 10.00 # Missing NSL record, no way to verify gate ops
+2017-04-10T11:45 1 3 1.000 1.000 -6.86 10.97 10.00 # NSL record returns
+2017-05-12T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Removed flashboards, boat lock closed. | Boat lock wasn't closed in log, but is remarked to be
+2017-11-20T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Flashboards installed.
+2017-12-14T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Gate 3 circuit breaker failed.
+2017-12-15T00:00 1 0 0.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2017-12-16T15:00 1 1 1.000 0.000 -6.86 10.97 10.00 # Gates 1 and 2 tidal ops, Gate 3 closed due to electrical circuit breaker failure. (gate 3 o/s, placed in closed position). | Modified log time and closed one more gate. updated based on nsl flow
+2017-12-17T00:00 1 0 0.000 0.000 -6.86 10.97 10.00 # Gate 1 tidal ops, Gate 2 closed due to mechanical bind, Gate 3 closed due to electrical circuit breaker failure.  (gate 2 issue resolved at 1145 hrs. Positioning possible, still has encoder issues. Gates 1 & 2 tidal operations confirmed at 1805 hrs). | Modified log time and gate closures:  updated based on nsl flow
+2017-12-18T14:00 1 1 1.000 0.000 -6.86 10.97 10.00 # gate 2 encoder adjusted. Gate is available in tidal mode. | Modified log time and closed one more gate. updated based on nsl flow
+2017-12-20T13:00 1 0 0.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2017-12-21T15:00 1 2 1.000 0.000 -6.86 10.97 10.00 # gate 2 circuit breaker tripped, reset at 1143 hrs. Gate 1 sending erroneous position value to ACC SCADA. | Modified log time. updated based on nsl flow
+2017-12-27T08:00 1 0 0.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2017-12-27T21:00 1 2 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2017-12-28T00:00 1 1 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2017-12-29T09:00 1 0 0.000 0.000 -6.86 10.97 10.00 # Gate 1 tidal ops, Gates 2 and 3 closed.    (ACC instructed to operate gate 1 in position mode only). | Modified log time and closed one more gate. updated based on nsl flow
+2018-01-03T16:00 1 3 1.000 0.000 -6.86 10.97 10.00 # All three gates operational. | Modified log time. updated based on nsl flow
+2018-02-02T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Gate operations suspended due to low salinity at 17:00.
+2018-02-14T14:15 1 3 1.000 0.000 -6.86 10.97 10.00 # Gates placed in tidal mode at 14:15. | Modified log time. updated based on nsl flow
+2018-03-14T15:15 1 3 1.000 1.000 -6.86 10.97 10.00 # Gates placed in open position at 15:15. | Modified log time. updated based on nsl flow
+2018-05-08T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Flashboards removed at 10:00 hrs.
+2018-05-08T10:00 1 3 1.000 1.000 -6.86 10.97 10.00
+2018-07-27T14:50 1 3 1.000 1.000 -6.86 10.97 10.00
+2018-08-02T08:39 1 3 1.000 0.000 -6.86 10.97 10.00 # Manual Operations.
+2018-08-10T21:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-08-11T06:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-08-17T03:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-08-18T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-08-21T16:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-08-22T04:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-08-28T07:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-08-29T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-09-04T11:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-09-05T17:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-09-07T13:34 1 3 1.000 1.000 -6.86 10.97 10.00
+2018-10-17T15:06 1 3 1.000 0.000 -6.86 10.97 10.00
+2018-10-21T08:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-10-21T18:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-10-23T08:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-10-23T18:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-10-24T08:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-10-24T18:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-10-27T12:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-10-28T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-11-13T03:00 1 0 0.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-11-13T21:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-11-18T06:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-11-18T18:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-11-25T00:00 1 0 0.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-11-25T06:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-12-06T06:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-12-06T12:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-12-07T06:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-12-08T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-12-08T10:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-12-09T00:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-12-10T00:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-12-10T04:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-12-17T04:00 1 3 1.000 1.000 -6.86 10.97 10.00 # updated based on nsl flow
+2018-12-17T09:00 1 3 1.000 0.000 -6.86 10.97 10.00 # updated based on nsl flow
+2019-01-23T15:05 1 3 1.000 1.000 -6.86 10.97 10.00 # Op inferred from NSL flow
+2019-05-07T12:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Specific log entry missing. Boat Lock Operator reported off at 12:00, which can only have occurred because he was no longer required. | import pandas as pd
+2019-10-01T13:06 1 3 1.000 1.000 -6.86 10.97 10.00 # Start of Control Season.
+2019-11-15T14:07 1 3 1.000 0.000 -6.86 10.97 10.00 # Tidal mode works for opening, but must be closed manually.   During flashboards install in July 2018, a boat damaged the flow meter. | inferred from NSL flow
+2019-12-04T10:15 1 3 1.000 1.000 -6.86 10.97 10.00 # Low salinities.
+2019-12-11T08:01 1 0 0.000 0.000 -6.86 10.97 10.00 # Closed to fix flow meter.
+2019-12-11T15:41 1 3 1.000 1.000 -6.86 10.97 10.00 # Reopened after flow meter was fixed.
+2020-01-10T12:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Rising salinities. | inferred from NSL flow
+2020-04-20T11:42 1 3 1.000 1.000 -6.86 10.97 10.00 # Low salinities.
+2020-05-11T14:28 1 3 1.000 0.000 -6.86 10.97 10.00 # Rising salinities.
+2020-05-27T08:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Preparing for flashboard removal.
+2020-05-28T09:32 1 3 1.000 1.000 -6.86 10.97 10.00 # End of Control Season
+2020-09-08T13:19 1 3 1.000 1.000 -6.86 10.97 10.00 # Flashboards installed early due to high salinity conditions.
+2020-09-08T13:20 1 3 1.000 0.000 -6.86 10.97 10.00 # High salinity conditions. | inferred from NSL flow
+2020-09-24T06:35 1 0 0.000 0.000 -6.86 10.97 10.00 # Dive inspection.
+2020-09-24T15:58 1 3 1.000 1.000 -6.86 10.97 10.00 # Operations suspended due to low enough salinities.
+2020-10-09T14:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Rising salinities. | inferred from NSL flow
+2020-11-18T02:25 1 0 0.000 0.000 -6.86 10.97 10.00 # Closed for Gate 3 refurbishment
+2020-11-23T10:48 1 2 1.000 0.000 -6.86 10.97 10.00 # Gates 1 and 2 returned to service while Gate 3 is out for refurbishment. | inferred from NSL flow
+2021-02-15T13:20 1 2 1.000 1.000 -6.86 10.97 10.00 # Gates 1 and 2 temporarilly placed in Open position due to severed conduit.
+2021-02-16T14:14 1 2 1.000 0.000 -6.86 10.97 10.00 # Gates 1 and 2 returned to service after conduit fixed.
+2021-05-07T12:00 1 1 1.000 0.000 -6.86 10.97 10.00 # Gate 1 gearbox failure.
+2021-05-15T09:09 1 2 1.000 0.000 -6.86 10.97 10.00 # Gate 1 repaired and returned to service.
+2021-06-01T08:45 1 2 1.000 1.000 -6.86 10.97 10.00 # Gates opened due to end of control season.
+2021-06-03T09:30 1 2 1.000 1.000 -6.86 10.97 10.00 # Flashboards removed at end of control season.
+2021-08-23T12:18 1 2 1.000 1.000 -6.86 10.97 10.00 # Flashboards Installed
+2021-09-01T00:01 1 2 1.000 0.000 -6.86 10.97 10.00 # September operations began due to high salinity. | updated operations based on NSL flow
+2021-09-03T11:15 1 0 0.000 0.000 -6.86 10.97 10.00 # Faulty transducer card | updated operations based on NSL flow
+2021-09-13T14:00 1 2 1.000 0.000 -6.86 10.97 10.00 # Transducer card fixed
+2021-10-24T18:35 1 2 1.000 0.000 -6.86 10.97 10.00 # Manual Operation due to suspect data. | inferred from NSL flow
+2021-10-25T12:07 1 2 1.000 0.000 -6.86 10.97 10.00 # Issue fixed.
+2021-11-10T10:40 1 2 1.000 1.000 -6.86 10.97 10.00 # Operations suspended due to low enough salinities.
+2021-11-29T13:25 1 2 1.000 0.000 -6.86 10.97 10.00 # Operations started due to rising salinities
+2021-12-21T15:05 1 2 1.000 1.000 -6.86 10.97 10.00 # Operations suspended due to low salinities. | inferred from NSL flow
+2022-02-11T11:26 1 2 1.000 0.000 -6.86 10.97 10.00 # Operations started due to rising salinities at S-35.
+2022-03-08T08:18 1 2 1.000 1.000 -6.86 10.97 10.00 # Operations suspended due to low salinities at Compliance Stations.  Control Stations remain higher.
+2022-04-07T14:40 1 2 1.000 0.000 -6.86 10.97 10.00 # Operations started due to rising salinities in the western Marsh.
+2022-05-31T23:59 1 2 1.000 1.000 -6.86 10.97 10.00 # End of Control Season
+2022-08-03T06:50 1 0 0.000 0.000 -6.86 10.97 10.00 # Gates closed for refurbishment work.
+2022-08-26T16:55 1 1 1.000 1.000 -6.86 10.97 10.00 # Gate 2 returned to open position. Gate 1 removed for refurbishment with a stoplog in its place. Gate 3 closed for calibration testing.
+2022-09-01T00:01 1 2 1.000 0.000 -6.86 10.97 10.00 # September operations began due to high salinity.
+2022-09-08T12:41 1 2 1.000 0.500 -6.86 10.97 10.00 # Gate 3 failed to close due to mechanical issues.
+2022-09-08T15:04 1 2 1.000 0.000 -6.86 10.97 10.00 # Gate 3 repaired and returned to tidal operations.
+2023-01-05T14:38 1 2 1.000 1.000 -6.86 10.97 10.00 # Gates placed in open position to reduce stage to combat overtopping RRDS levees at the intakes.
+2023-06-11T11:13 1 2 1.000 1.000 -6.86 10.97 10.00 # Flashboards removed at end of control season.
+2023-08-14T13:18 1 2 1.000 1.000 -6.86 10.97 10.00 # Flashboards installed early to meet new ITP requirement of using 100 TAF of water.
+2023-08-15T00:02 1 2 1.000 0.000 -6.86 10.97 10.00 # Operations started to meet new ITP requirement of using 100 TAF of water.
+2023-10-18T00:01 1 2 1.000 1.000 -6.86 10.97 10.00 # Operations suspended when 100 TAF block of water exhausted.
+2023-11-06T07:42 1 0 0.000 0.000 -6.86 10.97 10.00 # Gates closed for refurbishment work.  Gate 3 was installed and Gate 2 was sent for refurbishment.
+2023-11-21T09:42 1 1 1.000 1.000 -6.86 10.97 10.00 # Gate 3 opened to freshen up Montezuma Slough.  It had been accidentally left closed since the refurbishment swap out was done.  Gate 1 is down due an electrical issue.  Once fixed, tidal operations will begin due to rising salinities.
+2023-11-27T10:00 1 1 1.000 0.000 -6.86 10.97 10.00 # Manual Tidal operations started for Gate 3 due to rising salinties.  Operations are manual due to downstream water level data being supsect.  Gate 1 is still out due to electrical issues.
+2023-12-02T13:45 1 2 1.000 0.000 -6.86 10.97 10.00 # Gate 1 fixed and returned to service.   Gates 1 and 3 still in manual operation mode due to problems with downstream sensor.
+2023-12-05T14:00 1 2 1.000 0.000 -6.86 10.97 10.00 # Downstream sensor fixed and Tidal Mode resumed for gate openings.  However now the velocity meter is malfunctioning and gate closings are manual.
+2023-12-15T22:42 1 1 1.000 0.000 -6.86 10.97 10.00 # Gate 1 cannot stay open and was closed to prevent damage.  Gate 3 is not opening and closing at the correct times.  Some operators are using manual operations and some are using tidal operations.
+2023-12-19T15:31 1 2 1.000 0.000 -6.86 10.97 10.00 # The brakes were replaced for Gate 1 and it was returned to service.   Both gates are operated manually due to sensor malfunctions.
+2024-01-18T11:55 1 2 1.000 0.000 -6.86 10.97 10.00 # Downstream sensor fixed and Tidal Mode resumed for gate openings.  The velocity meter is still malfunctioning and gate openings are manual.
+2024-01-29T08:15 1 2 1.000 1.000 -6.86 10.97 10.00 # Ops suspended due to declining salinities and more rain on the way.
+2024-07-01T12:01 1 2 1.000 0.000 -6.86 10.97 10.00 # Operations begin for Summer-Fall Action, running for 60 days, followed by use of 100 TAF of water.
+2024-08-29T23:59 1 2 1.000 1.000 -6.86 10.97 10.00 # Ops suspended due to the end of the 60 days of Delta Smelt Summer-Fall operations.
+2024-09-06T17:58 1 2 1.000 0.000 -6.86 10.97 10.00 # Operations extended for Summer-Fall Action; running through the end of September.
+2024-09-30T23:59 1 2 1.000 1.000 -6.86 10.97 10.00 # Ops suspended due to the end of the September Delta Smelt Summer-Fall operations.
+2024-10-28T08:00 1 2 1.000 0.000 -6.86 10.97 10.00 # Ops begun for 1 week prior to Gate 2 reinstall due to rising salinities.
+2024-11-04T09:58 1 0 0.000 0.000 -6.86 10.97 10.00 # Ops suspended and gates closed for dredging and the reinstall of Gate 2.
+2024-11-18T14:35 1 2 1.000 0.000 -6.86 10.97 10.00 # Tidal Ops started prior to Gate 2 reinstall due to rising salinities.
+2024-11-24T14:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Gate 2 reinstall completed and returned to Tidal Ops.
+2025-03-24T14:25 1 3 1.000 1.000 -6.86 10.97 10.00 # Ops suspended due to very low salinities coupled with a possible upstream water cost as the X2 requirement shifts to Port Chicago.
+2025-06-23T09:50 1 3 1.000 0.000 -6.86 10.97 10.00 # Ops begun to comply with Summer Action for Delta Smelt.
+2025-08-25T17:00 1 0 0.000 0.000 -6.86 10.97 10.00 # Ops suspended after conclusion of Summer Action.  Gates were mistakenly placed in Closed Position.
+2025-08-25T18:40 1 3 1.000 1.000 -6.86 10.97 10.00 # Gates were changed to the proper Open Position.
+2025-09-05T10:04 1 3 1.000 0.000 -6.86 10.97 10.00 # Ops restarted due to 7-day extension of the Summer-Fall Action under the ITP.

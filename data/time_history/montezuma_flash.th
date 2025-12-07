@@ -1,56 +1,79 @@
-datetime	   install  ndup op_down op_up    elev	  width	   
-1999-09-01T00:00     1    1    0.2    0.2    -5.34    20.73    # Faking modified flashboard (uncalibrated)
-1999-09-27T00:00     1    1    0.0    0.0    -5.34    20.73
-1999-10-15T00:00     1    1    1.0    1.0    -5.34    20.73
-1999-11-10T00:00     1    1    0.2    0.2    -5.34    20.73    # Faking modified flashboard (uncalibrated)
-2000-03-28T00:00     1    1    1.0    1.0    -5.34    20.73
-2000-11-04T00:00     1    1    0.0    0.0    -5.34    20.73
-2001-05-14T00:00     1    1    1.0    1.0    -5.34    20.73
-2001-10-08T00:00     1    1    0.0    0.0    -5.34    20.73
-2002-05-06T00:00     1    1    1.0    1.0    -5.34    20.73
-2002-09-25T00:00     1    1    0.0    0.0    -5.34    20.73
-2003-05-16T00:00     1    1    1.0    1.0    -5.34    20.73
-2003-09-28T00:00     1    1    0.0    0.0    -5.34    20.73
-2003-10-29T00:00     1    1    1.0    1.0    -5.34    20.73
-2003-11-12T00:00     1    1    0.0    0.0    -5.34    20.73
-2004-05-13T00:00     1    1    1.0    1.0    -5.34    20.73
-2004-10-12T00:00     1    1    0.0    0.0    -5.34    20.73
-2005-05-20T00:00     1    1    1.0    1.0    -5.34    20.73
-2005-11-09T00:00     1    1    0.0    0.0    -5.34    20.73
-2006-01-06T00:00     1    1    1.0    1.0    -5.34    20.73
-2007-01-24T00:00     1    1    0.0    0.0    -5.34    20.73
-2007-04-23T00:00     1    1    1.0    1.0    -5.34    20.73
-2007-11-30T00:00     1    1    0.0    0.0    -5.34    20.73
-2008-04-30T00:00     1    1    1.0    1.0    -5.34    20.73
-2008-10-02T00:00     1    1    0.0    0.0    -5.34    20.73
-2009-05-20T00:00     1    1    1.0    1.0    -5.34    20.73
-2009-10-08T00:00     1    1    0.0    0.0    -5.34    20.73
-2010-04-26T00:00     1    1    1.0    1.0    -5.34    20.73
-2010-10-12T00:00     1    1    0.0    0.0    -5.34    20.73		
-2011-05-18T00:00     1    1    1.0    1.0    -5.34    20.73
-2011-10-21T00:00     1    1    0.0    0.0    -5.34    20.73
-2012-05-01T00:00     1    1    1.0    1.0    -5.34    20.73
-2012-10-11T00:00     1    1    0.0    0.0    -5.34    20.73
-2013-05-30T00:00     1    1    1.0    1.0    -5.34    20.73
-2013-10-11T00:00     1    1    0.0    0.0    -5.34    20.73
-2014-06-03T00:00     1    1    1.0    1.0    -5.34    20.73
-2014-09-03T00:00     1    1    0.0    0.0    -5.34    20.73
-2015-06-02T00:00     1    1    1.0    1.0    -5.34    20.73
-2015-08-28T00:00     1    1    0.0    0.0    -5.34    20.73
-2016-05-24T00:00     1    1    1.0    1.0    -5.34    20.73
-2016-10-01T00:00     1    1    0.0    0.0    -5.34    20.73
-2017-05-12T00:00     1    1    1.0    1.0    -5.34    20.73
-2017-11-20T00:00     1    1    0.0    0.0    -5.34    20.73
-2018-05-08T00:00     1    1    1.0    1.0    -5.34    20.73
-2018-07-27T00:00     1    1    0.0    0.0    -5.34    20.73
-2019-05-07T12:00     1    1    1.0    1.0    -5.34    20.73   # Specific log entry missing.  Boat Lock Operator reported off at 12:00, which can only have occurred because he was no longer required.
-2019-10-01T13:06     1    1    0.0    0.0    -5.34    20.73
-2020-05-28T09:32     1    1    1.0    1.0    -5.34    20.73
-2020-09-08T13:19     1    1    0.0    0.0    -5.34    20.73   # Flashboards installed early due to high salinity conditions.
-2021-06-03T09:30     1    1    1.0    1.0    -5.34    20.73   # Flashboards removed at end of control season
-2021-08-23T12:18     1    1    0.0    0.0    -5.34    20.73   # Flashboards installed early due to high salinity conditions
-2022-06-01T00:00     1    1    0.0    0.0    -5.34    20.73   # Flashboards remain in through summer
-2022-09-01T13:20     1    1    0.0    0.0    -5.34    20.73   # Flashboards remain in for control season
-2023-06-11T11:13     1    1    1.0    1.0    -5.34    20.73   # Flashboards removed at end of control season
-2023-08-14T13:18     1    1    0.0    0.0    -5.34    20.73   # Flashboards installed early to meet 100TAF
-2024-01-01T00:00     1    1    0.0    0.0    -5.34    20.73   # Flashboards continue to be closed through 2024
+datetime      install  ndup  op_down   op_up     elev      width
+1988-11-01T00:00 1 1 0.000 0.000 -5.34 20.73 # Full Bore Operation
+1989-04-07T00:00 1 1 1.000 1.000 -5.34 20.73 # 3 Gates Held Open
+1989-09-26T00:00 1 1 0.000 0.000 -5.34 20.73 # Full Bore Operation
+1990-05-31T00:00 1 1 1.000 1.000 -5.34 20.73 # 3 Gates Held Open
+1990-09-28T00:00 1 1 0.000 0.000 -5.34 20.73 # Full Bore Operation
+1990-11-28T00:00 1 1 1.000 1.000 -5.34 20.73 # Remove stop logs to pass barge
+1990-12-05T00:00 1 1 0.000 0.000 -5.34 20.73 # Full Bore Operation
+1991-05-31T00:00 1 1 1.000 1.000 -5.34 20.73 # 3 Gates Held Open
+1991-10-18T00:00 1 1 0.000 0.000 -5.34 20.73 # Full Bore Operation
+1992-05-27T00:00 1 1 1.000 1.000 -5.34 20.73 # 3 Gates Held Open
+1992-10-01T00:00 1 1 0.000 0.000 -5.34 20.73 # Operate with 1/3 Partial Gate Opening
+1993-05-31T00:00 1 1 1.000 1.000 -5.34 20.73
+1993-09-07T00:00 1 1 0.000 0.000 -5.34 20.73
+1994-05-09T00:00 1 1 1.000 1.000 -5.34 20.73 # Full Bore with one gate under repair
+1994-09-01T00:00 1 1 0.000 0.000 -5.34 20.73 # 3 Gates Closed
+1994-10-02T00:00 1 1 1.000 1.000 -5.34 20.73 # 3 Gates Held Open
+1994-10-08T00:00 1 1 0.000 0.000 -5.34 20.73 # Fish Study with flashboards installed
+1994-10-24T00:00 1 1 1.000 1.000 -5.34 20.73 # Fish Study without flashboards installed
+1994-11-15T00:00 1 1 0.000 0.000 -5.34 20.73 # Manual Full Bore Operation
+1995-02-08T00:00 1 1 1.000 1.000 -5.34 20.73 # 3 Gates open b/c well below standards and high Delta outflows
+1996-11-13T00:00 1 1 0.000 0.000 -5.34 20.73 # Operate due to observed salinity increase.
+1997-02-03T00:00 1 1 1.000 1.000 -5.34 20.73 # 3 Gates open b/c well below stds.
+1997-10-14T00:00 1 1 0.000 0.000 -5.34 20.73 # Operate due to observed salinity increase
+1998-02-08T00:00 1 1 1.000 1.000 -5.34 20.73 # FB taken out due to flood reasons
+1998-09-28T00:00 1 1 0.000 0.000 -5.34 20.73 # 3 Gates open, FB installed
+1998-10-13T00:00 1 1 1.000 1.000 -5.34 20.73 # Stoplogs under spacers fabrication
+1999-09-27T00:00 1 1 0.000 0.000 -5.34 20.73 # operation w/original fb installed
+1999-10-15T00:00 1 1 1.000 1.000 -5.34 20.73 # gates opened and flashboards out
+2000-11-04T00:00 1 1 0.000 0.000 -5.34 20.73 # operated due to water quality concerns
+2001-05-14T00:00 1 1 1.000 1.000 -5.34 20.73 # Stop operations.  Anticipate no w.q. concern for remaining month
+2001-10-08T00:00 1 1 0.000 0.000 -5.34 20.73 # boat lock gates held open for fish study
+2002-05-06T00:00 1 1 1.000 1.000 -5.34 20.73 # conditions good for the remaining control season
+2002-05-31T00:00 1 1 0.000 0.000 -5.34 20.73 # FB in with 3 gates held Open due to good WQ
+2003-05-16T00:00 1 1 1.000 1.000 -5.34 20.73 # FB removed; anticipate no wq concerns for remaining control season
+2003-09-28T00:00 1 1 0.000 0.000 -5.34 20.73 # FB installed but gates open
+2003-10-29T00:00 1 1 1.000 1.000 -5.34 20.73 # full open with FB out and boat lock closed
+2003-11-12T00:00 1 1 0.000 0.000 -5.34 20.73 # normal operation with boat lock closed to control salinity
+2004-05-13T00:00 1 1 1.000 1.000 -5.34 20.73 # removal of stoplogs due to favorable salinity levels
+2004-10-12T00:00 1 1 0.000 0.000 -5.34 20.73 # oper. With gate 1 closed and boatlock open for fish study.
+2005-05-20T00:00 1 1 1.000 1.000 -5.34 20.73 # Stoplogs removed at 1130 hrs per DFD staff.
+2005-11-09T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboards installed and gates open; failed communication resulted no gate operation to go as schedule after fb installation.
+2006-01-06T00:00 1 1 1.000 1.000 -5.34 20.73 # 3 gates held open and fb removed at 800 hr to allow access for levee repair from flood damage in suisun marsh w/boat lock gates closed since flashboards are removed.
+2007-01-24T00:00 1 1 0.000 0.000 -5.34 20.73 # flashboards installed and 3 gates held open
+2007-04-23T00:00 1 1 1.000 1.000 -5.34 20.73 # due to favorable water quality conditions, flashboards were removed today and 3 gates remain held open
+2007-11-30T00:00 1 1 0.000 0.000 -5.34 20.73 # Operate gates auto mode at noon or 12:00 hrs due to salinity concern with boat lock gates open 24/7
+2008-04-30T00:00 1 1 1.000 1.000 -5.34 20.73 # Flashboards removed around late afternoon.
+2008-10-02T00:00 1 1 0.000 0.000 -5.34 20.73 # 3 gates tidally operating with fb installed and boat lock gates open 24/7 per NOAA agreement
+2009-05-20T00:00 1 1 1.000 1.000 -5.34 20.73 # flashboards removed early morning; ceased gate oper. for the remainder of the control season due to low salinity levels in the marsh;AVM remained out of service
+2009-10-08T00:00 1 1 0.000 0.000 -5.34 20.73 # installed fb but no gate ops with boatlock open 24/7 per NOAA agreement
+2010-04-26T00:00 1 1 1.000 1.000 -5.34 20.73 # Flashboards removed; BL clsd; 3 gates held open; end gate ops for remainder of control season
+2010-10-12T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboards installed and BL open at 1100 hrs DST with 3 gates held open b/c no salinity concern yet
+2011-05-18T00:00 1 1 1.000 1.000 -5.34 20.73 # removal of stoplogs due to favorable salinity levels and bl closed; later in the year because of owl situation in early months, otherwise would have removed sooner in April; FYI, DFD will refurb. d/s boatlock gates due to corrosion and will do u/s next yr
+2011-10-21T00:00 1 1 0.000 0.000 -5.34 20.73 # FB installed but gates open due to no salinity concern at this time; bl open partially due to safety concerns
+2012-05-01T00:00 1 1 1.000 1.000 -5.34 20.73 # Great Horned Owl eggs disappeared.  Special conditions tag removed 4/24/12.
+2012-10-11T11:30 1 1 0.000 0.000 -5.34 20.73 # Flashboards installed.  Boat lock and gates operational.
+2013-05-30T00:00 1 1 1.000 1.000 -5.34 20.73 # Removed flashboards, boat lock closed.
+2013-10-11T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboards installed & boat lock operational. Delay in installing FB due to refurbishing.
+2014-06-03T00:00 1 1 1.000 1.000 -5.34 20.73 # Flashboards removed June 3rd.
+2014-09-05T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboards intalled.  Operation to meet the 7-day running avg of 17 mS/cm for the RSMPA | date changed from 09-03 to 09-05
+2015-06-02T00:00 1 1 1.000 1.000 -5.34 20.73 # Concerns over salinity. Operated until June 2 when the flashboards were removed.
+2015-08-28T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboards installed.  Sept operations.
+2016-05-24T00:00 1 1 1.000 1.000 -5.34 20.73 # Flashboards removed and gates are closed.
+2016-10-01T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboards installed.
+2017-05-12T00:00 1 1 1.000 1.000 -5.34 20.73 # Removed flashboards, boat lock closed. | Boat lock wasn't closed in log, but is remarked to be
+2017-11-20T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboards installed.
+2018-05-08T00:00 1 1 1.000 1.000 -5.34 20.73 # Flashboards removed at 10:00 hrs.
+2018-07-27T14:50 1 1 0.000 0.000 -5.34 20.73
+2019-05-07T12:00 1 1 1.000 1.000 -5.34 20.73 # Specific log entry missing. Boat Lock Operator reported off at 12:00, which can only have occurred because he was no longer required. | import pandas as pd
+2019-10-01T13:06 1 1 0.000 0.000 -5.34 20.73 # Start of Control Season.
+2020-05-28T09:32 1 1 1.000 1.000 -5.34 20.73 # End of Control Season
+2020-09-08T13:19 1 1 0.000 0.000 -5.34 20.73 # Flashboards installed early due to high salinity conditions.
+2021-06-03T09:30 1 1 1.000 1.000 -5.34 20.73 # Flashboards removed at end of control season.
+2021-08-23T12:18 1 1 0.000 0.000 -5.34 20.73 # Flashboards Installed
+2022-06-01T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboards remain in through summer
+2022-09-01T13:20 1 1 0.000 0.000 -5.34 20.73 # Flashboards remain in for control season
+2022-01-01T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboard/boatlock state unchanged in 2022
+2023-06-11T11:13 1 1 1.000 1.000 -5.34 20.73 # Flashboards removed at end of control season.
+2023-08-14T13:18 1 1 0.000 0.000 -5.34 20.73 # Flashboards installed early to meet new ITP requirement of using 100 TAF of water.
