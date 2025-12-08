@@ -11,6 +11,7 @@ output_from_interpolate_variables:
   uv3d: "uv3D.th.nc"
 
 modes:
+  dynaconf_merge: true
   tropic:
     links:
       - param.nml: param.nml.tropic

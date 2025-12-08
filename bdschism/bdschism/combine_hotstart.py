@@ -232,7 +232,7 @@ def combine_hot(
     iteration: Optional[int] = None,
     every: Optional[int] = None,
     out_dir: Optional[str] = None,
-    links: bool = False,
+    link: bool = False,
     config_log: bool = False,
     overwrite: bool = False,
 ) -> List[str]:
@@ -262,7 +262,7 @@ def combine_hot(
         Archive every Nth hotstart in time order (10 -> 10th, 20th, ...).
     out_dir : str, optional
         Archive directory. If relative, interpreted relative to run_dir.
-    links : bool, optional
+    link : bool, optional
         If True, create hotstart.nc in run_dir pointing to the most
         recently created file using bdschism.settings.create_link.
     config_log : bool, optional
@@ -276,11 +276,11 @@ def combine_hot(
         Absolute paths of the combined hotstart files that were created.
     """
     # Guard against the most confusing combo
-    if links and every is not None and out_dir is not None:
+    if link and every is not None and out_dir is not None:
         raise ValueError(
-            "Using --every with both --links and --out-dir is ambiguous. "
-            "Please choose either links-only (no out_dir) or archive-only "
-            "(out_dir without links)."
+            "Using --every with both --link and --out-dir is ambiguous. "
+            "Please choose either link-only (no out_dir) or archive-only "
+            "(out_dir without link)."
         )
 
     run_dir_abs, outputs_dir_abs, out_dir_abs = _resolve_paths(
@@ -316,7 +316,7 @@ def combine_hot(
         # 1. Decide destination directory BEFORE running the combine exe
         if out_dir_abs is not None and every is not None:
             dest_dir = out_dir_abs
-        elif out_dir_abs is not None and every is None and not links:
+        elif out_dir_abs is not None and every is None and not link:
             dest_dir = out_dir_abs
         else:
             dest_dir = run_dir_abs
@@ -353,8 +353,8 @@ def combine_hot(
 
         created_files.append(os.path.abspath(dest))
 
-    # 7. Links behavior
-    if links:
+    # 7. link behavior
+    if link:
         if not created_files:
             raise RuntimeError("No hotstart files were created to link.")
         target = created_files[-1]
@@ -371,7 +371,7 @@ def combine_hot(
         "Combine SCHISM parallel hotstart files using the configured "
         "combine_hotstart executable, then rename / optionally link them.\n\n"
         "Examples:\n"
-        "  combine_hotstart --latest --links --prefix clinic\n"
+        "  combine_hotstart --latest --link --prefix clinic\n"
         "  combine_hotstart --before 2014-03-26 --prefix retro\n"
         "  combine_hotstart --it 14400 --out-dir hotstart_archive --prefix retro\n"
         "  combine_hotstart --every 10 --out-dir hotstart_archive --prefix retro\n"
@@ -431,7 +431,7 @@ def combine_hot(
     ),
 )
 @click.option(
-    "--links",
+    "--link",
     is_flag=True,
     help=(
         "Create 'hotstart.nc' in run-dir pointing to the most recently created "
@@ -458,7 +458,7 @@ def combine_hotstart_cli(
     iteration,
     every,
     out_dir,
-    links,
+    link,
     overwrite,
     config_log,
 ):
@@ -475,7 +475,7 @@ def combine_hotstart_cli(
             iteration=iteration,
             every=every,
             out_dir=out_dir,
-            links=links,
+            link=link,
             config_log=config_log,
             overwrite=overwrite,
         )

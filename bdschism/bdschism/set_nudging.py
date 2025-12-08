@@ -139,7 +139,7 @@ def set_nudging(suffix: str, workdir=".", var_map={}, param_fn="param.nml"):
         "For instance 'obshycom' in SAL_nu_obshycom.nc"
     )
 )
-@click.argument("suffix")
+@click.argument("suffix", required=False)
 @click.option(
     "--workdir", default=".", show_default=True, help="Simulation directory path."
 )
@@ -147,19 +147,59 @@ def set_nudging(suffix: str, workdir=".", var_map={}, param_fn="param.nml"):
     "--var_map",
     default="",
     callback=parse_var_map,
-    help="Unexpected mapping in key=value pairs, separated by commas. Ex: --var_map 'TEM=temperature,SAL=salinity'",
+    help=(
+        "Mapping in key=value pairs, separated by commas. "
+        "Ex: --var_map 'TEM=temperature,SAL=salinity'"
+    ),
 )
 @click.option(
     "--param",
     default="param.nml",
-    help="Which param.nml file will be used to determine module list. Should be the baroclinic param file. Default is `param.nml`",
+    help=(
+        "Which param.nml file will be used to determine module list. "
+        "Should be the baroclinic param file. Default is `param.nml`"
+    ),
+)
+@click.option(
+    "--config",
+    "config_key",
+    help=(
+        "Name of a bdschism config key whose value should be used "
+        "as the nudging suffix. Example: --config nudge_prefix"
+    ),
 )
 @click.help_option("-h", "--help")
-def set_nudging_cli(suffix: str, workdir, param, var_map={}):
+def set_nudging_cli(suffix, workdir, param, var_map, config_key):
     """Wrapper function for the `set_nudging` command."""
+    from bdschism.settings import get_settings
+    import os
+
+    # Allow suffix to come from config if not given positionally
+    if suffix is None and config_key:
+        settings = get_settings()
+        try:
+            suffix = getattr(settings, config_key)
+        except AttributeError as e:
+            raise click.ClickException(
+                f"Config key '{config_key}' not found in bdschism settings."
+            ) from e
+        click.echo(f"Using suffix '{suffix}' from config key '{config_key}'.")
+    elif suffix is not None and config_key:
+        # Explicit suffix overrides config; just be noisy about it
+        settings = get_settings()
+        cfg_val = getattr(settings, config_key, "<not found>")
+        click.echo(
+            f"Suffix '{suffix}' overrides --config {config_key} "
+            f"(config value was {cfg_val!r})."
+        )
+
+    if suffix is None:
+        raise click.ClickException(
+            "You must supply either SUFFIX or --config CONFIG_KEY."
+        )
+
     os.chdir(os.path.abspath(os.path.dirname(workdir)))
     set_nudging(suffix, workdir, var_map, param_fn=param)
-
 
 if __name__ == "__main__":
     set_nudging_cli()

@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from schimpy import param as sch_param
 
 import click
 
@@ -75,6 +76,85 @@ def _resolve_mode(settings, mode_name: str):
 
     return mode
 
+def _apply_mode_params(params_spec, rundir: Path, dry_run: bool, hard_fail: bool) -> bool:
+    """
+    Apply 'params' entries for a mode.
+
+    Expected config shape:
+
+      modes:
+        clinic:
+          links: ...
+          params:
+            - file: param.nml
+              set:
+                run_nday: 365
+                ihot: 1
+
+    Returns
+    -------
+    any_error : bool
+        True if any warnings were emitted (missing param files) while hard_fail=False.
+    """
+    any_error = False
+
+    if not isinstance(params_spec, (list, tuple)):
+        raise click.ClickException(
+            "'params' must be a list of mappings with 'file' and 'set' keys."
+        )
+
+    for entry in params_spec:
+        if not isinstance(entry, dict):
+            raise click.ClickException(
+                f"Each item in 'params' must be a mapping, got {type(entry)}"
+            )
+
+        param_file = entry.get("file")
+        changes = entry.get("set")
+
+        if not param_file or not isinstance(changes, dict):
+            raise click.ClickException(
+                "Each 'params' entry must have 'file' and a 'set' mapping."
+            )
+
+        param_path = rundir / param_file
+
+        if not param_path.exists():
+            msg = f"Param file does not exist for params entry: {param_path}"
+            if hard_fail:
+                raise click.ClickException(msg)
+            click.echo(f"WARNING: {msg}", err=True)
+            any_error = True
+            continue
+
+        if dry_run:
+            click.echo(f"[DRY-RUN] Would update parameters in {param_path}:")
+            for name, value in changes.items():
+                click.echo(f"    {name} = {value}")
+            continue
+
+        # Read, modify, write using schimpy.param
+        try:
+            params = sch_param.read_params(str(param_path))
+        except Exception as e:
+            raise click.ClickException(f"Failed to read {param_path}: {e}") from e
+
+        for name, value in changes.items():
+            try:
+                params.set_by_name_or_alias(name, value)
+            except Exception as e:
+                raise click.ClickException(
+                    f"Failed to set '{name}' in {param_path}: {e}"
+                ) from e
+
+        try:
+            params.write(str(param_path))
+        except Exception as e:
+            raise click.ClickException(
+                f"Failed to write updated params to {param_path}: {e}"
+            ) from e
+
+    return any_error
 
 
 @click.command(context_settings={"help_option_names": ["-h", "--help"]})
@@ -151,13 +231,13 @@ def main(arg1, arg2, rundir_opt, dry_run, hard_fail):
     settings = get_settings()
     mode = _resolve_mode(settings, mode_name)
 
-    # Extract links.
-    links = mode["links"] if isinstance(mode, dict) else getattr(mode, "links", None)
-    if links is None:
-        raise click.ClickException(
-            f"Mode '{mode_name}' has no 'links' defined in configuration."
-        )
+    # links is optional — use .get to avoid BoxKeyError on Dynaconf Box
+    links = mode.get("links") if isinstance(mode, dict) else getattr(mode, "links", None)
 
+    # If no links are defined, treat as empty and continue
+    if links is None:
+        links = {}
+    
     click.echo(f"Setting mode '{mode_name}' in run directory: {rundir}")
 
     any_error = False
@@ -193,6 +273,17 @@ def main(arg1, arg2, rundir_opt, dry_run, hard_fail):
             click.echo(f"Linking {target} -> {source}")
             create_link(str(source), str(target))
 
+    # After links, optionally apply param changes if configured.
+    params_spec = None
+    if isinstance(mode, dict):
+        params_spec = mode.get("params")
+    else:
+        params_spec = getattr(mode, "params", None)
+
+    if params_spec:
+        params_error = _apply_mode_params(params_spec, rundir, dry_run, hard_fail)
+        any_error = any_error or params_error
+
     # If we had warnings but not hard failures, still exit 0.
     if any_error and not hard_fail:
         click.echo(
@@ -200,6 +291,7 @@ def main(arg1, arg2, rundir_opt, dry_run, hard_fail):
             "Use --hard-fail to get a non-zero exit code on such problems.",
             err=True,
         )
+
 
 
 if __name__ == "__main__":
