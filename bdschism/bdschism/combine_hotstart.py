@@ -71,7 +71,7 @@ def _load_inventory(outputs_dir_abs: str) -> pd.DataFrame:
     if not os.path.isdir(outputs_dir_abs):
         raise RuntimeError(f"Outputs directory does not exist: {outputs_dir_abs}")
 
-    # Let hotstart_inventory infer run_start, dt, nday, hot_freq from param.nml
+    # Let hotstart_inventory infer run_start, dt, nday, hot_interval from param.nml
     # in the run directory (CWD), while searching for hotstarts in outputs_dir_abs.
     df = hotstart_inventory(
         run_start=None,
@@ -82,7 +82,7 @@ def _load_inventory(outputs_dir_abs: str) -> pd.DataFrame:
         hot_freq=None,
         expected=False,
     )
-    print(df)
+
     if df is None or df.empty:
         raise RuntimeError(
             f"No hotstarts found in outputs directory: {outputs_dir_abs}"

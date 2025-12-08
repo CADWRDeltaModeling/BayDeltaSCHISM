@@ -41,7 +41,7 @@ def parse_var_map(ctx, param, value):
 def get_nudge_list(fname):
 
     params = parms.read_params(fname)
-    if params.get_baro() == "tropic":
+    if params["ibc"] !=0:
         raise ValueError(
             f"Barotropic model detected in {fname}- Nudging not applicable."
         )
