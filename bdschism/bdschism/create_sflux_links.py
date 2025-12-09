@@ -5,7 +5,7 @@ import click
 from pathlib import Path
 import pandas as pd
 from bdschism.settings import get_settings
-from schimpy.schism_yaml import load
+from schimpy.schism_yaml import load_raw
 import shutil
 import platform
 
@@ -119,31 +119,47 @@ def make_links(sdate,edate,config,dest):
     This function reads the configuration from a YAML file, retrieves the necessary parameters, and creates symbolic links for the synthetic flux data files based on the specified date range. The linking operation is determined by the link style specified in the configuration.
     """
 
-    ## first read in bds_config.yaml to get source folder
-    
+    ## first read in bds_config.yaml to get source folder   
     settings = get_settings()
 
     ## if config is none, try trying to find config file from
     ## bdschism/bdschism/config/bds_config.yaml
-    if config is None or not os.path.exists(config):
+    if config is None:
         if hasattr(settings, "sflux_config"):
             config = Path(settings.sflux_config)
             if not os.path.exists(config):
                 raise FileNotFoundError(
                 f"Configuration file {config} not found. Please provide a valid config file."
             )
+        else:
+            raise FileNotFoundError(
+                "No configuration file not provided and sflux_config not found in bds_config.yaml. Please provide a valid config file."
+            )
     
+    ## if config is given but file does not exist, raise error
+    else:
+        if not os.path.exists(config):
+            raise FileNotFoundError(
+                f"Configuration file {config} not found. Please provide a valid config file."
+            )
 
     ## read in config file using schism_yaml
     f= open(config, "r")
-    sflux_config = load(f)
+    sflux_config = load_raw(f)
     f.close()
 
     if sdate is None:
-        sdate = sflux_config["run_start_date"]
+        ## check run_start_date in sflux_config 
+        ## if not found, raise error
+        if not( hasattr(settings, "run_start_date")):
+            raise ValueError("run_start_date is not provided, and not found in User Env,BDSCHISM or Local Setting." \
+            " Please provide run_start_date.")
+        sdate = settings.run_start_date
     if edate is None:
-        edate = sflux_config["run_end_date"]
-
+        if not(hasattr(settings, "run_end_date")):
+            raise ValueError("run_end_date is not provided, and not found in User Env,BDSCHISM or Local Setting." \
+            " Please provide run_end_date.")
+        edate = settings.run_end_date
     start = pd.to_datetime(sdate)
     dt = pd.Timedelta(days=1)
     end = pd.to_datetime(edate)
