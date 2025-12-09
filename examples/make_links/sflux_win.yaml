@@ -12,7 +12,7 @@ sflux_specification:
          use_after: 2018-01-01
        - label: HRRR copied                                                    
          directory: "C:/Users/qshu/temp/synthetic_hrrr"            
-         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"    # This is just HRRR, not the real DMS directory. Should we consider methods for synthesis? 
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"   
          use_after: $synthetic_start_date 
    rad:
        - label: NARR
@@ -21,11 +21,11 @@ sflux_specification:
          use_after: 2009-01-01   
        - label: HRRR
          directory: "//cnrastore-bdo/Modeling_Data/atmospheric/atmospheric_hrrr"
-         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"         # Not real, change to the actual NARR pattern
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"         
          use_after: 2018-01-01   
        - label: HRRR copied
          directory: "C:/Users/qshu/temp/synthetic_hrrr"            
-         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"    # Change to actual synthetic path and discuss method
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"    
          use_after: $synthetic_start_date 
    prc:
        - label: NARR
@@ -34,9 +34,9 @@ sflux_specification:
          use_after: 2009-01-01     
        - label: HRRR
          directory: "//cnrastore-bdo/Modeling_Data/atmospheric/atmospheric_hrrr"
-         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"        # Not real. Change to the actual NARR pattern
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"        
          use_after: 2018-01-01         
        - label: HRRR copied
          directory: "C:/Users/qshu/temp/synthetic_hrrr"            
-         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"    # Change to actual synthetic path and disuss method
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"    
          use_after: $synthetic_start_date
