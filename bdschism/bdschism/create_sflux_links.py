@@ -5,7 +5,7 @@ import click
 from pathlib import Path
 import pandas as pd
 from bdschism.settings import get_settings
-from schimpy.schism_yaml import load_raw
+from schimpy.schism_yaml import load
 import shutil
 import platform
 
@@ -123,7 +123,7 @@ def make_links(sdate,edate,config,dest):
     settings = get_settings()
 
     ## if config is none, try trying to find config file from
-    ## bdschism/bdschism/config/bds_config.yaml
+    ## bdschism settings
     if config is None:
         if hasattr(settings, "sflux_config"):
             config = Path(settings.sflux_config)
@@ -145,7 +145,7 @@ def make_links(sdate,edate,config,dest):
 
     ## read in config file using schism_yaml
     f= open(config, "r")
-    sflux_config = load_raw(f)
+    sflux_config = load(f)
     f.close()
 
     if sdate is None:
