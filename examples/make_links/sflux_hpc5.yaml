@@ -1,8 +1,5 @@
-
-run_start_date: 2017-12-1
-run_end_date: 2018-3-1
-synthetic_start_date:  &synthetic_start_date
-                        2025-10-18
+env:
+    synthetic_start_date: 2025-10-18
 sflux_specification:   
    air:
        - label: NARR
@@ -16,7 +13,7 @@ sflux_specification:
        - label: HRRR copied                                                    
          directory: "C:/Users/qshu/temp/synthetic_hrrr"            
          rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"    # This is just HRRR, not the real DMS directory. Should we consider methods for synthesis? 
-         use_after: *synthetic_start_date
+         use_after: $synthetic_start_date
    rad:
        - label: NARR
          directory: "/scratch/data/atmos/NARR"            
@@ -29,7 +26,7 @@ sflux_specification:
        - label: HRRR copied
          directory: "C:/Users/qshu/temp/synthetic_hrrr"            
          rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"    # Change to actual synthetic path and discuss method
-         use_after: *synthetic_start_date 
+         use_after: $synthetic_start_date 
    prc:
        - label: NARR
          directory: "/scratch/data/atmos/NARR"             
@@ -42,4 +39,4 @@ sflux_specification:
        - label: HRRR copied
          directory: "C:/Users/qshu/temp/synthetic_hrrr"            
          rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"    # Change to actual synthetic path and disuss method
-         use_after: *synthetic_start_date
+         use_after: $synthetic_start_date
