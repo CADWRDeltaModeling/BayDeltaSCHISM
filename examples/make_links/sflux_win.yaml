@@ -1,4 +1,5 @@
 env:
+    synthetic_dates: [2025-10-1,2025-10-2]
     synthetic_start_date: 2025-10-18
 sflux_specification:   
    air:
@@ -13,7 +14,7 @@ sflux_specification:
        - label: HRRR copied                                                    
          directory: "C:/Users/qshu/temp/synthetic_hrrr"            
          rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"   
-         use_after: $synthetic_start_date 
+         use_after: $synthetic_dates
    rad:
        - label: NARR
          directory: "//cnrastore-bdo/Modeling_Data/atmospheric/narr"            
