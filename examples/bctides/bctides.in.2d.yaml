@@ -1,0 +1,51 @@
+bctides:
+    date: 2011-01-28
+    open_boundaries:
+      - name: ocean
+        elevation_boundary:
+              source: elev history
+      - name: coyote
+        velocity_boundary:
+              source: flux history
+      - name: ccc_rock_slough
+        velocity_boundary:
+              source: flux history
+      - name: ccc_old
+        velocity_boundary:
+              source: flux history
+      - name: swp
+        velocity_boundary:
+              source: flux history
+      - name: cvp
+        velocity_boundary:
+              source: flux history
+      - name: sjr
+        velocity_boundary:
+              source: flux history
+      - name: calaveras
+        velocity_boundary:
+              source: flux history
+      - name: mokelumne+cosumnes
+        velocity_boundary:
+              source: flux history
+      - name: american
+        velocity_boundary:
+              source: flux history
+      - name: sacramento
+        velocity_boundary:
+              source: flux history
+      - name: yolo_toedrain
+        velocity_boundary:
+              source: flux history
+      - name: yolo
+        velocity_boundary:
+              source: flux history
+      - name: north_bay
+        velocity_boundary:
+              source: flux history
+      - name: napa
+        velocity_boundary:
+              source: flux history
+      - name: ccc_victoria
+        velocity_boundary:
+              source: flux history

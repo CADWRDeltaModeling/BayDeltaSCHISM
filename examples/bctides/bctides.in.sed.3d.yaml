@@ -1,0 +1,173 @@
+bctides:
+    date: 2011-01-28
+    open_boundaries:
+      -  name: ocean
+         elevation_boundary:
+              source: elev history
+         velocity_boundary:
+              source: 3D uv history
+         temperature_boundary:
+              source: initial profile
+              nudge: 0.01
+         salinity_boundary::
+              source: initial profile  
+              nudge: 0.01 
+         tracers: 
+           - tracer: SED
+             source: [0.007,0.008, 0.]
+             relax: 0.01   
+      -  name: coyote
+         velocity_boundary:
+              source: flux history
+         temperature_boundary:
+              source: temperature history
+              nudge: 1.0
+         salinity_boundary:
+              source: 0.074318
+              nudge: 1.0
+         tracers: 
+           - tracer: SED
+             source: [0.005,0.005, 0.]
+             relax: 0.01   
+      -  name: ccc_rock_slough
+         velocity_boundary:
+              source: flux history
+         tracers: 
+           - tracer: SED
+             source: [0.00,0.00,0.00]
+             relax: 0.01   
+      -  name: ccc_old
+         velocity_boundary:
+              source: flux history
+         tracers: 
+           - tracer: SED
+             source: [0.00,0.00,0.00]
+             relax: 0.01 
+      -  name: swp
+         velocity_boundary:
+              source: flux history
+         tracers: 
+           - tracer: SED
+             source: [0.00,0.00,0.00]
+             relax: 0.01 
+      -  name: cvp
+         velocity_boundary:
+              source: flux history
+         tracers: 
+           - tracer: SED
+             source: [0.00,0.00,0.00]
+             relax: 0.01 
+      -  name: sjr
+         velocity_boundary:
+              source: flux history
+         temperature_boundary:
+              source: temperature history
+              nudge: 1.0
+         salinity_boundary:
+              source: salinity history
+              nudge: 1.0
+         tracers: 
+           - tracer: SED
+             source: time history
+             relax: 1 
+      -  name: calaveras
+         velocity_boundary:
+              source: flux history
+         temperature_boundary:
+              source: temperature history
+              nudge: 1.0
+         salinity_boundary:
+              source: 0.062920
+              nudge: 1.0
+         tracers: 
+           - tracer: SED
+             source: [0.06,0.07,0]
+             relax: 1 
+      -  name: mokelumne+cosumnes
+         velocity_boundary:
+              source: flux history
+         temperature_boundary:
+              source: temperature history
+              nudge: 1.0
+         salinity_boundary:
+              source: 0.062920
+              nudge: 1.0
+         tracers: 
+           - tracer: SED
+             source: time history
+             relax: 1 
+      -  name: american
+         velocity_boundary:
+              source: flux history
+         temperature_boundary:
+              source: temperature history
+              nudge: 1.0
+         salinity_boundary:
+              source: 0.062920
+              nudge: 1.0
+         tracers: 
+           - tracer: SED
+             source: time history
+             relax: 1 
+      -  name: sacramento
+         velocity_boundary:
+              source: flux history
+         temperature_boundary:
+              source: temperature history
+              nudge: 1.0
+         salinity_boundary:
+              source: salinity history
+              nudge: 1.0
+         tracers: 
+           - tracer: SED
+             source: time history
+             relax: 1 
+      -  name: yolo_toedrain
+         velocity_boundary:
+              source: flux history
+         temperature_boundary:
+              source: temperature history
+              nudge: 1.0
+         salinity_boundary:
+              source: salinity history
+              nudge: 1.0
+         tracers: 
+           - tracer: SED
+             source: time history
+             relax: 1 
+      -  name: yolo
+         velocity_boundary:
+              source: flux history
+         temperature_boundary:
+              source: temperature history
+              nudge: 1.0
+         salinity_boundary:
+              source: 0.062920
+              nudge: 1.0
+         tracers: 
+           - tracer: SED
+             source: time history
+             relax: 1 
+      -  name: north_bay
+         velocity_boundary:
+              source: flux history
+         tracers: 
+           - tracer: SED
+             source: [0.0,0.0,0.0]
+             relax: 0.01 
+      -  name: napa
+         velocity_boundary:
+              source: flux history
+         temperature_boundary:
+              source: temperature history
+              nudge: 1.0
+         salinity_boundary:
+              source: 0.074318
+              nudge: 1.0
+         tracers: 
+           - tracer: SED
+             source: [0.0,0.0,0.0]
+             relax: 0.01
+      -  name: ccc_victoria
+         velocity_boundary:
+              source: flux history
