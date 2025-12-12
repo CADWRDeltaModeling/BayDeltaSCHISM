@@ -477,7 +477,7 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
                             expression: {formula}"
                         )
                         th = pd.DataFrame()
-                        dfi = read_th(source_file) 
+                        dfi = read_th(source_file)
                         vars = var.split(";")
                         for v in vars:
                             th[[v]] = dfi[[v]]
@@ -635,7 +635,6 @@ def port_boundary_cli(config_yaml, plot, extra=()):
 
 if __name__ == "__main__":
     # os.chdir(os.path.dirname(__file__))
-    # os.chdir(r"D:\python\scripts\flux_mod_example")
     # config_yaml = "./port_flux_multiplier_to_schism.yaml"
     # envvar = {"alt_name": "sac_mult_1p5", "sd": "2016/1/1", "ed": "2016/12/31", "sacmult": "1.5"}
     # create_schism_bc(config_yaml, plot=True, kwargs=envvar if envvar else None)
