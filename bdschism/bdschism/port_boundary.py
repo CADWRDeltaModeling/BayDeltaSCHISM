@@ -303,7 +303,7 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
         source_map_bc = source_map.loc[source_map["boundary_kind"] == boundary_kind]
         out_file = os.path.join(out_dir, f"{boundary_kind}.{out_file_suffix}.th")
 
-        if boundary_kind == "flow":
+        if boundary_kind == "flux":
             dd = flux.copy().reindex(df_rng)
             plot_dict["flux_file"] = os.path.abspath(out_file)
         elif boundary_kind == "ec":

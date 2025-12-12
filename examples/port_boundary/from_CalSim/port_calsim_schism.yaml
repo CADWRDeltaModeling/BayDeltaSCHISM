@@ -8,7 +8,7 @@ config:
   calsim_dss: ${project_dir}/calsim_output_example.dss # used in the cu section below as well as in the source_map_file
 param:
   # determine which kinds of boundaries will be ported, all must be represented in the source_map_file
-  boundary_kinds: [flow,delta_cross_channel,montezuma_boat_lock,montezuma_flash,montezuma_radial,cu] #[flow,delta_cross_channel,montezuma_boat_lock,montezuma_flash,montezuma_radial,cu,salt,temp]
+  boundary_kinds: [flux,delta_cross_channel,montezuma_boat_lock,montezuma_flash,montezuma_radial,cu] #[flux,delta_cross_channel,montezuma_boat_lock,montezuma_flash,montezuma_radial,cu,salt,temp]
   overwrite: true # if true, overwrite the existing boundary inputs (should be false for forecast)
   start_date: ${sd} #YYYY,MM,DD - but can be filled using --sd flags (see example at bottom)
   end_date: ${ed} #YYYY,MM,DD - but can be filled using --sd flags (see example at bottom)

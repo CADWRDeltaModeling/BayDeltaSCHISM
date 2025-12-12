@@ -1,19 +1,19 @@
 schism_boundary,boundary_kind,source_kind,derived,interp,source_file,var,sign,convert,rhistinterp_p,formula,note,
-east,flow,CSV,TRUE,TRUE,monthly_csv_example.csv,RCSM075;RMKL070,-1,CFS_CMS,2,(csv.RCSM075+csv.RMKL070),,east
-american,flow,CSV,TRUE,TRUE,monthly_csv_example.csv,RSAC155,-1,CFS_CMS,2,(flux.american/(flux.sac+flux.american)).mul(csv.RSAC155),,amer
-sac,flow,CSV,TRUE,TRUE,monthly_csv_example.csv,RSAC155,-1,CFS_CMS,2,(flux.sac/(flux.sac+flux.american)).mul(csv.RSAC155),,sac
-coyote,flow,SCHISM,,,,,,,,,,coyote
-ccc_rock,flow,CSV,,TRUE,monthly_csv_example.csv,CHCCC006,1,CFS_CMS,2,,,ccc rs
-ccc_old,flow,CONSTANT,,,,0,,,,,,cccold
-swp,flow,CSV,,TRUE,monthly_csv_example.csv,CHSWP003,1,CFS_CMS,2,,,swp
-cvp,flow,CSV,,TRUE,monthly_csv_example.csv,CHDMC004,1,CFS_CMS,2,,,cvp
-sjr,flow,DSS,,TRUE,dsm2_output_example.dss,/HYDROV8.2.0/RSAN112/FLOW//1DAY/HIST_V82/,-1,CFS_CMS,1,,,sjr
-calaveras,flow,CSV,,TRUE,monthly_csv_example.csv,RCAL009,-1,CFS_CMS,2,,,cal
-yolo_toedrain,flow,SCHISM,,,,,,,,,,yolo td
-yolo,flow,CONSTANT,,,,-0.001,,,,,,yolo
-northbay,flow,CSV,,TRUE,monthly_csv_example.csv,SLBAR002,1,CFS_CMS,2,,,nb
-napa,flow,SCHISM,,,,,,,,,,napa
-ccc_victoria,flow,CSV,,TRUE,monthly_csv_example.csv,CHVCT001,1,CFS_CMS,2,,,ccc vic
+east,flux,CSV,TRUE,TRUE,monthly_csv_example.csv,RCSM075;RMKL070,-1,CFS_CMS,2,(csv.RCSM075+csv.RMKL070),,east
+american,flux,CSV,TRUE,TRUE,monthly_csv_example.csv,RSAC155,-1,CFS_CMS,2,(flux.american/(flux.sac+flux.american)).mul(csv.RSAC155),,amer
+sac,flux,CSV,TRUE,TRUE,monthly_csv_example.csv,RSAC155,-1,CFS_CMS,2,(flux.sac/(flux.sac+flux.american)).mul(csv.RSAC155),,sac
+coyote,flux,SCHISM,,,,,,,,,,coyote
+ccc_rock,flux,CSV,,TRUE,monthly_csv_example.csv,CHCCC006,1,CFS_CMS,2,,,ccc rs
+ccc_old,flux,CONSTANT,,,,0,,,,,,cccold
+swp,flux,CSV,,TRUE,monthly_csv_example.csv,CHSWP003,1,CFS_CMS,2,,,swp
+cvp,flux,CSV,,TRUE,monthly_csv_example.csv,CHDMC004,1,CFS_CMS,2,,,cvp
+sjr,flux,DSS,,TRUE,dsm2_output_example.dss,/HYDROV8.2.0/RSAN112/FLOW//1DAY/HIST_V82/,-1,CFS_CMS,1,,,sjr
+calaveras,flux,CSV,,TRUE,monthly_csv_example.csv,RCAL009,-1,CFS_CMS,2,,,cal
+yolo_toedrain,flux,SCHISM,,,,,,,,,,yolo td
+yolo,flux,CONSTANT,,,,-0.001,,,,,,yolo
+northbay,flux,CSV,,TRUE,monthly_csv_example.csv,SLBAR002,1,CFS_CMS,2,,,nb
+napa,flux,SCHISM,,,,,,,,,,napa
+ccc_victoria,flux,CSV,,TRUE,monthly_csv_example.csv,CHVCT001,1,CFS_CMS,2,,,ccc vic
 sjr,ec,SCHISM,,,,,,,,,,
 sac,ec,SCHISM,,,,,,,,,,
 yolo_toedrain,ec,SCHISM,,,,,,,,,,

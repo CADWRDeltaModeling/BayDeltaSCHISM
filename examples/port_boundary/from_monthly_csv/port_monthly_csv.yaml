@@ -7,7 +7,7 @@ config:
   project_dir: ./ # useful but not necessary
 param:
   # determine which kinds of boundaries will be ported, all must be represented in the source_map_file
-  boundary_kinds: [flow] #[flow,delta_cross_channel,montezuma_boat_lock,montezuma_flash,montezuma_radial,cu,salt,temp]
+  boundary_kinds: [flux] #[flux,delta_cross_channel,montezuma_boat_lock,montezuma_flash,montezuma_radial,cu,salt,temp]
   overwrite: true # if true, overwrite the existing boundary inputs (should be false for forecast)
   start_date: '2024/9/30' #YYYY,MM,DD - but can be filled using --sd flags 
   end_date: '2024/11/30' #YYYY,MM,DD - but can be filled using --sd flags 
