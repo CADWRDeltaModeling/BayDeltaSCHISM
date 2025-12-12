@@ -446,7 +446,11 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
                         flux_clipped = flux[clip_1ybackward_start:clip_1ybackward_end]
                         ## reset clipped flux index to dss year
                         flux_clipped.index = flux_clipped.index.map(
-                            lambda x: x.replace(year=start_date.year)
+                            lambda x: (
+                                x.replace(year=start_date.year)
+                                if not (x.month == 2 and x.day == 29)
+                                else x.replace(year=start_date.year, day=28)
+                            )
                         )
                         dts = eval(formula).to_frame(name).reindex(df_rng)
                         if interp:
