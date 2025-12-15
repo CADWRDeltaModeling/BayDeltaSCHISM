@@ -668,12 +668,22 @@ def plot_bds_boundaries(
     "--boundary-list",
     multiple=True,
     default=boundary_list,
-    help="List of boundary types to include in the plot. Can specify multiple times.",
+    help="List of boundary types to include in the plot. Can specify multiple times. (ex: --boundary-list flux ndoi)",
+)
+@click.option(
+    "--sink-head",
+    default=os.path.join(bds_dir, "./data/channel_depletion/vsink_dated.th"),
+    help="Specification of vsink header file",
+)
+@click.option(
+    "--source-head",
+    default=os.path.join(bds_dir, "./data/channel_depletion/vsource_dated.th"),
+    help="Specification of vsource header file",
 )
 @click.argument("extra", nargs=-1)
 @click.help_option("-h", "--help")
 def plot_bds_bc_cli(
-    obs, sim_dirs, scenario_names, html_name, out_freq, boundary_list, extra=()
+    obs, sim_dirs, scenario_names, html_name, out_freq, boundary_list, sink_head, source_head, extra=()
 ):
     """
     CLI to plot boundary data from observed and/or simulation directories.
@@ -738,6 +748,9 @@ def plot_bds_bc_cli(
         )
         bc_data_list.append(obs_data)
         scenario_list.append("Observed")
+        
+    envvar['sink_head'] = sink_head
+    envvar['source_head'] = source_head
 
     # Simulation data
     for i, sim_dir in enumerate(sim_dirs):
