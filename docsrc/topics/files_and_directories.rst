@@ -205,9 +205,9 @@ SCHISM input and output files are described in the `SCHISM manual <https://schis
     - kg/m²/s (flux)
     - N/A
     - out2d_*.nc
-  * - Suspended Sediment Concentration
-    - g/L
-    - ...
-    - ...
+  * - Suspended Sediment Concentration (ssc)
+    - kg/m<sup>3</sup>
+    - SED_hvar_[class].ic (initial condition for ssc for each size class, in kg/m<sup>3</sup>), bed_frac_[class].ic (initial bed composition fraction for each size class, unitless), bedthick.ic (initial bed thickness, in m), imorphogrid.gr3 (scale applied to depth change at each node, unitless, used only when imorpho==1).
+    - sedConcentration_[class]_*.nc
 
 The geospatial projection uses NAD83 UTM Zone 10N with horizontal coordinates in meters. Vertical coordinates are against NAVD88. Time is in seconds since whichever start date specified in the param.nml.
