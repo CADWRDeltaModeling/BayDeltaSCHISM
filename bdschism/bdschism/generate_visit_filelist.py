@@ -33,7 +33,7 @@ def visit_list(
     # Make sure var is a SCHISM output variable
     try:
         assert var in ["horizontalVelX", "horizontalVelY", "zCoordinates", "out2d", "salinity",
-                        "sedConcentration_1", "sedConcentration_2", "sedConcentration_3"]
+                        "sedConcentration_1", "sedConcentration_2", "sedConcentration_3", "GEN_1", "GEN_2", "GEN_3", "temperature", "verticalVel"]
     except AssertionError:
         print(f"Invalid SCHISM output variable: {var}")
 
