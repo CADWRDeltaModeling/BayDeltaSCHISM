@@ -166,7 +166,7 @@ def make_links(sdate,edate,config,dest):
     current = start
     if (current >= end):
         print(f'ERROR: Start date {start.strftime("%b %d, %Y")} is after end date {end.strftime("%b %d, %Y")}')
-    nfile = 0
+    nfile = 1
 
 
     sflux_specification = sflux_config["sflux_specification"]
