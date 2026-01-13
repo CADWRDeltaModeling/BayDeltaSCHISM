@@ -4,11 +4,11 @@
 # Let's be rigorous about velocity/flow and make sure exactly zero (tidal) or one is specified 
 bctides.sed.in.3d:
     modules:
-      - name: HYDRO
-        num_tracers: 0 | 2  
+      - name: GEN
+        num_tracers: 1
       - name: SED
         num_tracers: 5
-    date: 2011-01-28 #optional
+    date: 2011-01-28 #optional 
     earth_tides:
         cutoff_depth: 40  # just cutoff depth
         constituents:  # just constituents
@@ -49,11 +49,11 @@ bctides.sed.in.3d:
     open_boundaries:
       - name:: ocean
         variables:
-          elev: #elevation_boundary:
+          - elevation: #elevation_boundary:
             source: tidal
             spatial: local 
             # options: list for local tidal amp/phase, scalar for uniform amp/phase         
-            tidal_constituents:  # just constituents
+            constituents:  # just constituents
               - Z0 : 
                     - amplitude: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 
                                   1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 
@@ -129,10 +129,10 @@ bctides.sed.in.3d:
                            34.68674699, 34.71084337, 34.73493976, 34.75903614, 34.78313253,
                            34.80722892, 34.8313253 , 34.85542169, 34.87951807, 34.90361446,
                            34.92771084, 34.95180723, 34.97590361]
-        velocity_boundary:
+          - velocity:
             source: tidal
             spatial: local
-            tidal_constituents:
+            constituents:
               - Z0 : 
                     - u_amplitude: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 
                                   0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 
@@ -281,37 +281,39 @@ bctides.sed.in.3d:
                            34.68674699, 34.71084337, 34.73493976, 34.75903614, 34.78313253,
                            34.80722892, 34.8313253 , 34.85542169, 34.87951807, 34.90361446,
                            34.92771084, 34.95180723, 34.97590361]
-        temperature_boundary:
+          - temperature:
             source: initial profile
             nudge: 0.5
-        salinity_boundary:
+          - salinity:
             source: initial profile
             nudge: 0.5
-        tracer_boundaries:
+          - tracers:
             source: none
       - open_boundary:
         name: coyote
-        elevation_boundary:
+        variables:
+        - elevation:
             source: 2D elev history
-        velocity_boundary:
+        - velocity:
             source: 3D uv history
-        temperature_boundary:
+        - temperature:
             source: initial profile
             nudge: 0.5
-        salinity_boundary:
+        - salinity:
             source: initial profile
             nudge: 0.5
       - open_boundary:
         name: ccc_rock_slough
-        velocity_boundary:
+        variables:
+        - velocity:
             source: flux history
-        temperature_boundary:
+        - temperature:
             source: initial profile
             nudge: 1.0
-        salinity_boundary:
+        - salinity:
             source: initial profile
             nudge: 1.0
-        tracer_modules: 
+        - tracers: 
           - module: GEN
             source: time history  # Hans will tell us if this can be mixed and this possibly a list
             relax: 1.0  # If scalar, will be repeated for both tracers
@@ -323,108 +325,114 @@ bctides.sed.in.3d:
             relax: 1.0
       - open_boundary:
         name: ccc_old
-        velocity_boundary:
+        variables:
+        - velocity:
             source: flux history
-        temperature_boundary:
+        - temperature:
             source: initial profile
             nudge: 0.5
-        salinity_boundary:
+        - salinity:
             source: initial profile
             nudge: 0.5
-        tracers:
+        - tracers:
           - tracer: GEN
             source: 10
             relax: 0.5
       - open_boundary:
         name: swp
-        velocity_boundary:
+        flow_direction: outflow 
+        variables:
+        - velocity:
             source: flux history
-        temperature_boundary:
-            source: 10.0
-            nudge: 1.0
-        salinity_boundary:
-            source: 3D salinity history
-            nudge: 1.0
       - open_boundary:
         name: cvp
         flow_direction: outflow # specify outflow direction for validation puroses, if any tracer/scalar, throw error
-        velocity_boundary:
+        variables:
+        - velocity:
             source: flux history
       - open_boundary:
         name: sjr
-        velocity_boundary:
+        variables:
+        - velocity:
             source: flux history
-        temperature_boundary:
+        - temperature:
             source: 10.0
             nudge: 1.0
-        salinity_boundary:
+        - salinity:
             source: 3D salinity history
             nudge: 1.0
       - open_boundary:
         name: calaveras
-        elevation_boundary:
+        variables:
+        - elevation:
              source: 0.3
-        velocity_boundary:
+        - velocity:
              source: 0.3
-        temperature_boundary:
+        - temperature:
             source: 10.0
             nudge: 1.0
-        salinity_boundary:
+        - salinity:
             source: 3D salinity history
             nudge: 1.0
       - open_boundary:
         name: mokelumne+cosumnes
-        velocity_boundary:
+        variables:
+        - velocity:
             source: flux history
-        temperature_boundary:
+        - temperature:
             source: 10.0
             nudge: 1.0
-        salinity_boundary:
+        - salinity:
             source: 3D salinity history
             nudge: 1.0
       - open_boundary:
         name: american
-        velocity_boundary:
+        variables:
+        - velocity:
             source: flux history
-        temperature_boundary:
+        - temperature:
             source: 10.0
             nudge: 1.0
-        salinity_boundary:
+        - salinity:
             source: 3D salinity history 
             nudge: 1.0
       - open_boundary:
         name: sacramento
-        velocity_boundary:
+        variables:
+        - velocity:
              source: flux history
-        temperature_boundary:
+        - temperature:
             source: 10.0
             nudge: 1.0
-        salinity_boundary:
+        - salinity:
             source: 3D salinity history
             nudge: 1.0
       - open_boundary:
         name: yolo_toedrain
-        velocity_boundary:
+        variables:
+        - velocity:
              source: flux history
-        temperature_boundary:
+        - temperature:
             source: 10.0
             nudge: 1.0
-        salinity_boundary:
+        - salinity:
             source: 3D salinity history
             nudge: 1.0
       - open_boundary:
         name: yolo
-        velocity_boundary:
+        variables:
+        - velocity:
             source: flux history
-        temperature_boundary:
+        - temperature_:
             source: 10.0
             nudge: 1.0
-        salinity_boundary:
+        - salinity:
             source: 3D salinity history
             nudge: 1.0
       - open_boundary:
         name: north_bay
-        elevation_boundary:
+        variables:
+        - elevation:
             source: tidal and 2D elev history 
             spatial: uniform
             tidal_constituents:
@@ -440,7 +448,7 @@ bctides.sed.in.3d:
               - M2:
                 - amplitude: 0.578
                 - phase: 190
-        velocity_boundary:
+        - velocity:
              source: tidal and 3D uv history
              spatial: uniform
              tidal_constituents:
@@ -464,15 +472,16 @@ bctides.sed.in.3d:
                 - u_phase: 190
                 - v_amplitude: 0.0226
                 - v_phase: 206
-        temperature_boundary:
+        - temperature:
             source: 10.0
             nudge: 1.0
-        salinity_boundary:
+        - salinity:
             source: 3D salinity history
             nudge: 1.0
       - open_boundary:
         name: napa
-        velocity_boundary:
+        variables:
+        - velocity:
              source: flather 1
              eta_mean: 0.23
              eta_m0: [0.23,0.23,0.23]
@@ -481,21 +490,22 @@ bctides.sed.in.3d:
                - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.01, 0.01]
                - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.01, 0.01]
                - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.01, 0.01]
-        temperature_boundary:
+        - temperature:
             source: 10.0
             nudge: 1.0
-        salinity_boundary:
+        - salinity:
             source: 3D salinity history
             nudge: 1.0
       - open_boundary:
         name: ccc_victoria
-        elevation_boundary:
+        variables:
+        - elevation:
             source: elev history
-        velocity_boundary:
+        - velocity:
             source: flux history
-        temperature_boundary:
+        - temperature:
             source:  10.0
             nudge: 1.0
-        salinity_boundary:
+        - salinity:
             source: 3D salinity history
             nudge: 1.0
