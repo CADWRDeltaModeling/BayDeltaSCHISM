@@ -15,12 +15,13 @@ from schimpy.schism_mesh import read_mesh
 from vtools import days, seconds
 from vtools.data.gap import describe_null
 from dms_datastore.read_ts import read_noaa, read_ts
+from dms_datastore.read_multi import read_ts_repo
 import numpy as np
 from datetime import datetime
 import struct, argparse
 import click
 import warnings
-from dms_datastore import read_ts_repo
+import glob
 
 class THWriter(object):
     def __init__(self, path, size, starttime):
