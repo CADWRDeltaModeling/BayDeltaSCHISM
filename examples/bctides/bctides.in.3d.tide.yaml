@@ -289,8 +289,7 @@ bctides.sed.in.3d:
             nudge: 0.5
           - tracers:
             source: none
-      - open_boundary:
-        name: coyote
+      - name: coyote
         variables:
         - elevation:
             source: 2D elev history
@@ -302,8 +301,7 @@ bctides.sed.in.3d:
         - salinity:
             source: initial profile
             nudge: 0.5
-      - open_boundary:
-        name: ccc_rock_slough
+      - name: ccc_rock_slough
         variables:
         - velocity:
             source: flux history
@@ -323,8 +321,7 @@ bctides.sed.in.3d:
           - module: SED
             source: [0.1, 0.2, 0.1, 0.12, 0.23]
             relax: 1.0
-      - open_boundary:
-        name: ccc_old
+      - name: ccc_old
         variables:
         - velocity:
             source: flux history
@@ -338,20 +335,17 @@ bctides.sed.in.3d:
           - tracer: GEN
             source: 10
             relax: 0.5
-      - open_boundary:
-        name: swp
+      - name: swp
         flow_direction: outflow 
         variables:
         - velocity:
             source: flux history
-      - open_boundary:
-        name: cvp
+      - name: cvp
         flow_direction: outflow # specify outflow direction for validation puroses, if any tracer/scalar, throw error
         variables:
         - velocity:
             source: flux history
-      - open_boundary:
-        name: sjr
+      - name: sjr
         variables:
         - velocity:
             source: flux history
@@ -361,8 +355,7 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
-      - open_boundary:
-        name: calaveras
+      - name: calaveras
         variables:
         - elevation:
              source: 0.3
@@ -374,8 +367,7 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
-      - open_boundary:
-        name: mokelumne+cosumnes
+      - name: mokelumne+cosumnes
         variables:
         - velocity:
             source: flux history
@@ -385,8 +377,7 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
-      - open_boundary:
-        name: american
+      - name: american
         variables:
         - velocity:
             source: flux history
@@ -396,8 +387,7 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history 
             nudge: 1.0
-      - open_boundary:
-        name: sacramento
+      - name: sacramento
         variables:
         - velocity:
              source: flux history
@@ -407,8 +397,7 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
-      - open_boundary:
-        name: yolo_toedrain
+      - name: yolo_toedrain
         variables:
         - velocity:
              source: flux history
@@ -418,8 +407,7 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
-      - open_boundary:
-        name: yolo
+      - name: yolo
         variables:
         - velocity:
             source: flux history
@@ -429,8 +417,7 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
-      - open_boundary:
-        name: north_bay
+      - name: north_bay
         variables:
         - elevation:
             source: tidal and 2D elev history 
@@ -478,8 +465,7 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
-      - open_boundary:
-        name: napa
+      - name: napa
         variables:
         - velocity:
              source: flather 1
@@ -496,8 +482,7 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
-      - open_boundary:
-        name: ccc_victoria
+      - name: ccc_victoria
         variables:
         - elevation:
             source: elev history
