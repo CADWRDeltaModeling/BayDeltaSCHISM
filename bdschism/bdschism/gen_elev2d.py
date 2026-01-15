@@ -20,7 +20,7 @@ from datetime import datetime
 import struct, argparse
 import click
 import warnings
-
+from dms_datastore import read_ts_repo
 
 class THWriter(object):
     def __init__(self, path, size, starttime):
@@ -138,8 +138,9 @@ class NetCDFTHWriter(THWriter):
     required=False,
     help="Scalar sea level rise increment",
 )
-@click.argument("pt_reyes", type=click.Path(exists=True))
-@click.argument("monterey", type=click.Path(exists=True))
+
+@click.argument("pt_reyes", type=str,default="pryc1")
+@click.argument("monterey", type=str,default="mtyc1")
 def gen_elev2d_cli(stime, etime, hgrid, outfile, slr, pt_reyes, monterey):
     """
     Script to create elev2D.th.nc boundary condition from Point Reyes and Monterey NOAA file
@@ -149,6 +150,27 @@ def gen_elev2d_cli(stime, etime, hgrid, outfile, slr, pt_reyes, monterey):
     """
     return gen_elev2D(hgrid, outfile, pt_reyes, monterey, stime, etime, slr)
 
+
+def _get_data(src,start,end):
+    if src.endswith(".csv"):
+        try:
+            out = read_noaa(
+                src, start=sdate - tbuf, end=bufend, force_regular=True
+            )
+        except Exception as e:
+            out = read_ts(
+                src, start=sdate - tbuf, end=bufend, force_regular=True
+        )
+    else:
+        # assume it is from repo
+        if src not in ("pryc1","pt_reyes","mtyc1","monterey"):
+            raise ValueError(f"Station code {src} not known")
+        if src in ("pryc1","pt_reyes"):
+            src = "pryc1"
+        elif src in ("mtyc1","monterey"):
+            src = "mtyc1"
+        out = read_ts_repo(src,"elev",start=start,end=end)
+    return out
 
 def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end, slr):
     max_gap = 5
@@ -199,14 +221,8 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
 
     # Data
     print("Reading Point Reyes...")
-    try:
-        pt_reyes = read_noaa(
-            pt_reyes_fpath, start=sdate - tbuf, end=bufend, force_regular=True
-        )
-    except Exception as e:
-        pt_reyes = read_ts(
-            pt_reyes_fpath, start=sdate - tbuf, end=bufend, force_regular=True
-    )
+    pt_reyes = _get_data(pt_reyes_fpath,sdate - tbuf, bufend)
+
 
     # --- Add this check for coverage ---
     pt_start = pt_reyes.first_valid_index()
@@ -235,14 +251,7 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
     del noise
 
     print("Reading Monterey...")
-    try:
-        monterey = read_noaa(
-            monterey_fpath, start=sdate - tbuf, end=bufend, force_regular=True
-        )
-    except Exception as e:
-        monterey = read_ts(
-            monterey_fpath, start=sdate - tbuf, end=bufend, force_regular=True
-        )
+    monterey = _get_data(monterey_fpath,sdate - tbuf, bufend)
 
     # --- Add this check for coverage ---
     mt_start = monterey.first_valid_index()
