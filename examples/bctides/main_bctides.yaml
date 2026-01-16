@@ -1,0 +1,11 @@
+mesh:
+  mesh_inputfile: ./hgrid.gr3  
+  
+bctides:
+  include:
+    - bctides.in.3d.tide.yaml
+    - bctides.in.2d.yaml
+    - bctides.in.3d.yaml
+    - bctides.in.sed.3d.yaml
+
+ 
