@@ -1,51 +1,66 @@
-bctides:
-    date: 2011-01-28
+bctbctides.2d.in:
     open_boundaries:
       - name: ocean
-        elevation_boundary:
+        variables:
+          - elevation:
               source: elev history
       - name: coyote
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: ccc_rock_slough
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: ccc_old
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: swp
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: cvp
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: sjr
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: calaveras
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: mokelumne+cosumnes
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: american
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: sacramento
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: yolo_toedrain
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: yolo
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: north_bay
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: napa
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history
       - name: ccc_victoria
-        velocity_boundary:
+        variables:
+          - velocity:
               source: flux history

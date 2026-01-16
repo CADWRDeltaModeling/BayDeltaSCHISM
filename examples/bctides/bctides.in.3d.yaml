@@ -1,113 +1,129 @@
-bctides:
+bctides.3d.in:
     date: 2011-01-28
     open_boundaries:
       -  name: ocean
-         elevation_boundary:
-              source: elev history
-         velocity_boundary:
-              source: 3D uv history
-         temperature_boundary:
-              source: initial profile
-              nudge: 0.01
-         salinity_boundary::
-              source: initial profile  
-              nudge: 0.01       
+         variables:
+            - elevation:
+                source: elev history
+            - velocity:
+                source: 3D uv history
+            - temperature:
+                source: initial profile
+                nudge: 0.01
+            - salinity:
+                source: initial profile  
+                nudge: 0.01
       -  name: coyote
-         velocity_boundary:
-              source: flux history
-         temperature_boundary:
-              source: temperature history
-              nudge: 1.0
-         salinity_boundary:
-              source: 0.074318
-              nudge: 1.0
+         variables:
+            - velocity:
+                source: flux history
+            - temperature:
+                source: temperature history
+                nudge: 1.0
+            - salinity:
+                source: 0.074318
+                nudge: 1.0
       -  name: ccc_rock_slough
-         velocity_boundary:
-              source: flux history
+         variables:
+            - velocity:
+                source: flux history
       -  name: ccc_old
-         velocity_boundary:
-              source: flux history
+         variables:
+            - velocity:
+                source: flux history
       -  name: swp
-         velocity_boundary:
-              source: flux history
+         variables:
+            - velocity:
+                source: flux history
       -  name: cvp
-         velocity_boundary:
-              source: flux history
+         variables:
+            - velocity:
+                source: flux history
       -  name: sjr
-         velocity_boundary:
-              source: flux history
-         temperature_boundary:
-              source: temperature history
-              nudge: 1.0
-         salinity_boundary:
-              source: salinity history
-              nudge: 1.0
+         variables:
+            - velocity:
+                source: flux history
+            - temperature:
+                source: temperature history
+                nudge: 1.0
+            - salinity:
+                source: salinity history
+                nudge: 1.0
       -  name: calaveras
-         velocity_boundary:
-              source: flux history
-         temperature_boundary:
-              source: temperature history
-              nudge: 1.0
-         salinity_boundary:
-              source: 0.062920
-              nudge: 1.0
+         variables:
+            - velocity:
+                source: flux history
+            - temperature:
+                source: temperature history
+                nudge: 1.0
+            - salinity:
+                source: 0.062920
+                nudge: 1.0
       -  name: mokelumne+cosumnes
-         velocity_boundary:
-              source: flux history
-         temperature_boundary:
-              source: temperature history
-              nudge: 1.0
-         salinity_boundary:
-              source: 0.062920
-              nudge: 1.0
+         variables:
+            - velocity:
+                source: flux history
+            - temperature:
+                source: temperature history
+                nudge: 1.0
+            - salinity:
+                source: 0.062920
+                nudge: 1.0
       -  name: american
-         velocity_boundary:
-              source: flux history
-         temperature_boundary:
-              source: temperature history
-              nudge: 1.0
-         salinity_boundary:
-              source: 0.062920
-              nudge: 1.0
+         variables:
+            - velocity:
+                source: flux history
+            - temperature:
+                source: temperature history
+                nudge: 1.0
+            - salinity:
+                source: 0.062920
+                nudge: 1.0
       -  name: sacramento
-         velocity_boundary:
-              source: flux history
-         temperature_boundary:
-              source: temperature history
-              nudge: 1.0
-         salinity_boundary:
-              source: salinity history
-              nudge: 1.0
+         variables:
+            - velocity:
+                source: flux history
+            - temperature:
+                source: temperature history
+                nudge: 1.0
+            - salinity:
+                source: salinity history
+                nudge: 1.0
       -  name: yolo_toedrain
-         velocity_boundary:
-              source: flux history
-         temperature_boundary:
-              source: temperature history
-              nudge: 1.0
-         salinity_boundary:
-              source: salinity history
-              nudge: 1.0
+         variables:
+            - velocity:
+                source: flux history
+            - temperature:
+                source: temperature history
+                nudge: 1.0
+            - salinity:
+                source: salinity history
+                nudge: 1.0
       -  name: yolo
-         velocity_boundary:
-              source: flux history
-         temperature_boundary:
-              source: temperature history
-              nudge: 1.0
-         salinity_boundary:
-              source: 0.062920
-              nudge: 1.0
+         variables:
+            - velocity:
+                source: flux history
+            - temperature:
+                source: temperature history
+                nudge: 1.0
+            - salinity:
+                source: 0.062920
+                nudge: 1.0
       -  name: north_bay
-         velocity_boundary:
-              source: flux history
+         variables:
+            - velocity:
+                source: flux history
       -  name: napa
-         velocity_boundary:
-              source: flux history
-         temperature_boundary:
-              source: temperature history
-              nudge: 1.0
-         salinity_boundary:
-              source: 0.074318
-              nudge: 1.0
+         variables:
+            - velocity:
+                source: flux history
+            - temperature:
+                source: temperature history
+                nudge: 1.0
+            - salinity:
+                source: 0.074318
+                nudge: 1.0
       -  name: ccc_victoria
-         velocity_boundary:
-              source: flux history
+         variables:
+            - velocity:
+                source: flux history   
