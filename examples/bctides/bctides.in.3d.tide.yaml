@@ -8,6 +8,8 @@ bctides.sed.in.3d:
         num_tracers: 1
       - name: SED
         num_tracers: 5
+      - name: AGE
+        num_tracers: 2
     date: 2011-01-28 #optional 
     earth_tides:
         cutoff_depth: 40  # just cutoff depth
@@ -47,7 +49,7 @@ bctides.sed.in.3d:
               node_factor: 0.97907
               equilibrium_argument: 217.04138
     open_boundaries:
-      - name:: ocean
+      - name: ocean
         variables:
           - elevation: #elevation_boundary:
             source: tidal
@@ -332,7 +334,7 @@ bctides.sed.in.3d:
             source: initial profile
             nudge: 0.5
         - tracers:
-          - tracer: GEN
+          - module: GEN
             source: 10
             relax: 0.5
       - name: swp
