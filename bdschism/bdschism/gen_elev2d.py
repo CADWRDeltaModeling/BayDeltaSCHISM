@@ -216,9 +216,19 @@ def _get_data(src, start, end, tbuf, bufend):
     # Handle single file or station code
     if isinstance(src, str) and src.endswith(".csv"):
         try:
+<<<<<<< HEAD
             out = read_noaa(src, start=start - tbuf, end=bufend, force_regular=True)
         except Exception:
             out = read_ts(src, start=start - tbuf, end=bufend, force_regular=True)
+=======
+            out = read_noaa(
+                src, start=start, end=end, force_regular=True
+            )
+        except Exception as e:
+            out = read_ts(
+                src, start=start, end=end, force_regular=True
+        )
+>>>>>>> f5d84e5 (Eliminate undefined variables.)
     else:
         # assume it is from repo
         if src not in ("pryc1","pt_reyes","mtyc1","monterey"):
