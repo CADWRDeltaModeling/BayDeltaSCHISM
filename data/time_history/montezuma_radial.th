@@ -385,3 +385,8 @@ datetime      install  ndup  op_down   op_up     elev      width     height
 2025-08-25T17:00 1 0 0.000 0.000 -6.86 10.97 10.00 # Ops suspended after conclusion of Summer Action.  Gates were mistakenly placed in Closed Position.
 2025-08-25T18:40 1 3 1.000 1.000 -6.86 10.97 10.00 # Gates were changed to the proper Open Position.
 2025-09-05T10:04 1 3 1.000 0.000 -6.86 10.97 10.00 # Ops restarted due to 7-day extension of the Summer-Fall Action under the ITP.
+2025-09-12T10:00 1 3 1.000 1.000 -6.86 10.97 10.00 # Ops suspended at the conclusion of non-prescriptive Gate actions.
+2025-12-02T11:30 1 3 1.000 0.000 -6.86 10.97 10.00 # Ops started due to rising salinities.
+2025-12-02T17:00 1 2 1.000 0.000 -6.86 10.97 10.00 # Gate 1 malfunctioned in Open Position and was placed in Closed Position for troubleshooting.
+2025-12-04T11:00 1 3 1.000 0.000 -6.86 10.97 10.00 # Gate 1 was fixed and is now operating in Tidal Mode.
+2025-12-31T09:42 1 3 1.000 0.000 -6.86 10.97 10.00 # Ops in manual mode due to gates not closing in Tidal Mode.
