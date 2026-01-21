@@ -65,7 +65,7 @@ class BinaryTHWriter(THWriter):
 
 
 class NetCDFTHWriter(THWriter):
-    def __init__(self, fpath_out, nloc, starttime, dt):
+    def __init__(self, fpath_out, nloc, starttime, dt, slr):
         self.outfile = Dataset(fpath_out, "w", format="NETCDF4_CLASSIC")
         fout = self.outfile
 
@@ -100,6 +100,7 @@ class NetCDFTHWriter(THWriter):
         )
         fout.history = "Created " + str(datetime.now())
         fout.source = "gen_ elev2D.py"
+        fout.slr = str(slr)
 
     def write_step(self, iter, time, vals):
         self.timeseries[iter, :, 0, 0] = vals
@@ -371,7 +372,7 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
     if fpath_out.endswith("th"):
         thwriter = BinaryTHWriter(fpath_out, nnode, None)
     elif fpath_out.endswith("nc"):
-        thwriter = NetCDFTHWriter(fpath_out, nnode, sdate, dt)
+        thwriter = NetCDFTHWriter(fpath_out, nnode, sdate, dt, slr)
     else:
         raise ValueError(
             "File extension for output not recognized in file: {}".format(fpath_out)
