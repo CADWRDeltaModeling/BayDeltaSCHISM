@@ -219,19 +219,13 @@ def _get_data(src, start, end, tbuf, bufend):
     # Handle single file or station code
     if isinstance(src, str) and src.endswith(".csv"):
         try:
-<<<<<<< HEAD
-            out = read_noaa(src, start=start - tbuf, end=bufend, force_regular=True)
-        except Exception:
-            out = read_ts(src, start=start - tbuf, end=bufend, force_regular=True)
-=======
             out = read_noaa(
-                src, start=start, end=end, force_regular=True
+                src, start=start - tbuf, end=bufend, force_regular=True
             )
         except Exception as e:
             out = read_ts(
-                src, start=start, end=end, force_regular=True
+                src, start=start - tbuf, end=bufend, force_regular=True
         )
->>>>>>> f5d84e5 (Eliminate undefined variables.)
     else:
         # assume it is from repo
         if src not in ("pryc1","pt_reyes","mtyc1","monterey"):
@@ -240,7 +234,7 @@ def _get_data(src, start, end, tbuf, bufend):
             src = "pryc1"
         elif src in ("mtyc1","monterey"):
             src = "mtyc1"
-        out = read_ts_repo(src, "elev", start=start, end=end)
+        out = read_ts_repo(src, "elev", start=start - tbuf, end=bufend)
     return out
 
 def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end, slr):
