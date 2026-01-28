@@ -111,10 +111,30 @@ See :ref:`hotstart section <choose_runtime>` on this topic
 
 
 
+======================
+Sea level rise (SLR) runs
+======================
 
+SLR-specific items
+------------------------
+    |cbox| generate elev2D.th.nc with desired sea level rise increment
+        |cbox| use `--slr` flag when running `gen_elev2d`
 
+    |cbox| add one additional vertical layer per meter of SLR, rounding up to the nearest meter (i.e., SLR of 60cm = one added layer)
+        |cbox| maxinum number of vertical layers is 23
 
+    |cbox| determine how to apply sea level rise in initial conditions and hotstart files
 
+Workflow for setting up a SLR run where bathymetry and hydrology come from two separate, existing runs
+------------------------
+    |cbox| make a copy of the bathymetry run as the slr run.
 
+    |cbox| from the hydrology run, copy `param.nml` and `sflux/` into the slr run.
 
+    |cbox| from the hydrology run, copy `*.th*` into the slr run.
 
+    |cbox| interpolate the hydrology run's `hotstart.nc` onto the desired bathymetry.
+
+    |cbox| create nudeing files with desired field observations and bathymetry.
+
+    |cbox| create elev2D.th.nc with `--slr` flag
