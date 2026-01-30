@@ -700,6 +700,12 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev):
         sffpx_elev, export_ts_daily_average
     )
 
+    full_path = os.path.abspath(os.path.join("./prio_ts","priority.csv"))
+    priority.to_csv(full_path,sep=" ",
+        header=True,
+        float_format="%.3f",
+        date_format="%Y-%m-%dT%H:%M"
+    )
     oh4_predict = predict_oh4_level(s1 - margin, s2 + margin, oh4_astro, sffpx_elev)
 
     sim_gate_height, zin_df = gen_gate_height(
