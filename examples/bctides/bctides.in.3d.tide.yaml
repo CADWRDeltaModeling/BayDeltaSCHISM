@@ -53,7 +53,7 @@ bctides.sed.in.3d:
         variables:
           - elevation: #elevation_boundary:
                source: tidal
-               spatial: local 
+               spatial: local #uniform
             # options: list for local tidal amp/phase, scalar for uniform amp/phase         
                constituents:  # just constituents
                 - Z0 : 
@@ -338,7 +338,7 @@ bctides.sed.in.3d:
             source: 10
             relax: 0.5
       - name: swp
-        flow_direction: outflow 
+        flow_direction: outflow #inflow check enforced
         variables:
         - velocity:
             source: flux history

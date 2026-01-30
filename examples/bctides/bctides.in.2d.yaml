@@ -1,4 +1,4 @@
-bctbctides.2d.in:
+bctides.2d.in:
     open_boundaries:
       - name: ocean
         variables:
