@@ -90,7 +90,7 @@ polygons:
     - 4212326.736910023
   - - 575881.1852179505
     - 4211432.355011238
-- attribute: '0.0018'
+- attribute: '0.0023'
   name: main_delta
   type: none
   vertices:
@@ -160,7 +160,7 @@ polygons:
     - 4210264.32698772
   - - 576496.8607880379
     - 4210453.375388531
-- attribute: '0.0008'
+- attribute: '0.0018'
   name: confluence1
   type: none
   vertices:
@@ -230,7 +230,7 @@ polygons:
     - 4216065.498715325
   - - 598486.5028512175
     - 4213609.741385752
-- attribute: '0.0004'
+- attribute: '0.001'
   name: suisun_bay
   type: none
   vertices:
@@ -294,7 +294,7 @@ polygons:
     - 4215931.81156793
   - - 576957.7218547607
     - 4212700.018108874
-- attribute: '0.001'
+- attribute: '0.0023'
   name: confluence2
   type: none
   vertices:

@@ -86,7 +86,7 @@ polygons:
     - 4216619.114860171
   - - 560280.9619276294
     - 4250043.625580285
-- attribute: bound_linear.bound_linear(z,4,10,3.e-5,0.003)
+- attribute: bound_linear.bound_linear(z,4,10,3.e-5,0.004)
   imports: schimpy.bound_linear
   name: carquinez
   type: none
@@ -103,7 +103,7 @@ polygons:
     - 4204224.204825808
   - - 574692.1115194695
     - 4216619.114860171
-- attribute: bound_linear.bound_linear(z,4,10,2.5e-5,0.005)
+- attribute: bound_linear.bound_linear(z,4,10,2.5e-5,0.007)
   imports: schimpy.bound_linear
   name: suisun_bay
   type: none
@@ -257,7 +257,7 @@ polygons:
     - 4219800.564158376
   - - 590076.6812699313
     - 4216958.354568722
-- attribute: bound_linear.bound_linear(z,4,12,1.75e-5,0.008)
+- attribute: bound_linear.bound_linear(z,4,12,1.75e-5,0.009)
   imports: schimpy.bound_linear
   name: confluence
   type: none
@@ -312,7 +312,7 @@ polygons:
     - 4211717.275451956
   - - 591650.226507305
     - 4210907.04556684
-- attribute: bound_linear.bound_linear(z,4,12,1.75e-5,0.006)
+- attribute: bound_linear.bound_linear(z,4,12,1.75e-5,0.009)
   imports: schimpy.bound_linear
   name: sjr_above_confluence
   type: none
@@ -389,7 +389,7 @@ polygons:
     - 4210013.9463032335
   - - 608967.0320653111
     - 4207997.3574827425
-- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.004)
+- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.007)
   imports: schimpy.bound_linear
   name: sjr_to_delta_1
   type: none
@@ -404,7 +404,7 @@ polygons:
     - 4219408.249935184
   - - 625154.501478403
     - 4219726.860694235
-- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.002)
+- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.003)
   imports: schimpy.bound_linear
   name: sjr_to_delta_2
   type: none
@@ -433,7 +433,7 @@ polygons:
     - 4223281.004068301
   - - 620456.8290694134
     - 4222342.74577157
-- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.004)
+- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.007)
   imports: schimpy.bound_linear
   name: sjr_to_delta1b
   type: none
@@ -450,7 +450,7 @@ polygons:
     - 4216769.569419922
   - - 624370.671401116
     - 4216390.937350137
-- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.006)
+- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.009)
   imports: schimpy.bound_linear
   name: sac_above_confluence
   type: none
@@ -481,7 +481,7 @@ polygons:
     - 4220082.085545454
   - - 615136.9980155303
     - 4220399.744843384
-- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.004)
+- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.007)
   imports: schimpy.bound_linear
   name: sac_to_delta1
   type: none
@@ -498,7 +498,7 @@ polygons:
     - 4223518.541994294
   - - 618209.900967738
     - 4223946.7171519445
-- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.002)
+- attribute: bound_linear.bound_linear(z,4,10,1.75e-5,0.003)
   imports: schimpy.bound_linear
   name: sac_to_delta_2
   type: none

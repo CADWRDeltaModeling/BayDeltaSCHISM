@@ -185,7 +185,7 @@ def gen_elev2d_cli(stime, etime, hgrid, outfile, slr, files):
     return gen_elev2D(hgrid, outfile, pt_reyes, monterey, stime, etime, slr)
 
 
-def _get_data(src, start, end, tbuf, bufend):
+def _get_data(src, start, end=None):
     """Get data from file(s) or repository.
     
     Args:
@@ -206,9 +206,9 @@ def _get_data(src, start, end, tbuf, bufend):
             dfs = []
             for fpath in sorted(src):  # Sort to ensure chronological order
                 try:
-                    df = read_noaa(fpath, start=start - tbuf, end=bufend, force_regular=True)
+                    df = read_noaa(fpath, start=start, end=end, force_regular=True)
                 except Exception:
-                    df = read_ts(fpath, start=start - tbuf, end=bufend, force_regular=True)
+                    df = read_ts(fpath, start=start, end=end, force_regular=True)
                 dfs.append(df)
             # Concatenate and remove duplicates
             out = pd.concat(dfs, axis=0)
@@ -249,6 +249,7 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
     tbuf = days(16)
     # convert start time string input to datetime
     sdate = pd.Timestamp(stime)
+    bufstart = sdate - tbuf
 
     if not etime is None:
         # convert start time string input to datetime
@@ -286,13 +287,13 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
 
     # Data
     print("Reading Point Reyes...")
-    pt_reyes = _get_data(pt_reyes_fpath, sdate, bufend, tbuf, bufend)
+    pt_reyes = _get_data(pt_reyes_fpath, bufstart, bufend)
 
 
     # --- Add this check for coverage ---
     pt_start = pt_reyes.first_valid_index()
     pt_end = pt_reyes.last_valid_index()
-    expected_start = sdate - tbuf
+    expected_start = bufstart
     expected_end = bufend
     if pt_start > expected_start or pt_end < expected_end:
         warnings.warn(
@@ -316,7 +317,7 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
     del noise
 
     print("Reading Monterey...")
-    monterey = _get_data(monterey_fpath, sdate, bufend, tbuf, bufend)
+    monterey = _get_data(monterey_fpath, bufstart, bufend)
 
     # --- Add this check for coverage ---
     mt_start = monterey.first_valid_index()
