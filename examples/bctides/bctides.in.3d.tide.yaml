@@ -2,7 +2,7 @@
 # If so we should accommodate that here.
 # Don't forget that time_history_nc is an option
 # Let's be rigorous about velocity/flow and make sure exactly zero (tidal) or one is specified 
-bctides.sed.in.3d:
+bctides.tide.sed.in.3d:
     modules:
       - name: GEN
         num_tracers: 1
@@ -11,6 +11,12 @@ bctides.sed.in.3d:
       - name: AGE
         num_tracers: 2
     date: 2011-01-28 #optional 
+    mode: baroclinic # option barotropic or baroclinic
+    temperature_salinity_computation: true # true/false, it is used only when mode is barotropic,
+                                            # if true then temperature and salinity is requried on 
+                                            # inflow/bidirection boundary. if false, there should
+                                            # not be temperature and salinity specified on 
+                                            # inflow/bidirection boundary
     earth_tides:
         cutoff_depth: 40  # just cutoff depth
         constituents:  # just constituents
@@ -50,6 +56,7 @@ bctides.sed.in.3d:
               equilibrium_argument: 217.04138
     open_boundaries:
       - name: ocean
+        flow_direction: bidirection #inflow check enforced
         variables:
           - elevation: #elevation_boundary:
                source: tidal
@@ -284,14 +291,20 @@ bctides.sed.in.3d:
                            34.80722892, 34.8313253 , 34.85542169, 34.87951807, 34.90361446,
                            34.92771084, 34.95180723, 34.97590361]
           - temperature:
-            source: initial profile
-            nudge: 0.5
+              source: initial profile
+              nudge: 0.5
           - salinity:
-            source: initial profile
-            nudge: 0.5
-          - tracers:
-            source: none
+              source: initial profile
+              nudge: 0.5
+          - tracers: 
+            - module: GEN
+              source: unspecified 
+            - module: AGE
+              source: unspecified 
+            - module: SED
+              source: unspecified 
       - name: coyote
+        flow_direction: inflow
         variables:
         - elevation:
             source: 2D elev history
@@ -303,7 +316,15 @@ bctides.sed.in.3d:
         - salinity:
             source: initial profile
             nudge: 0.5
+        - tracers: 
+            - module: GEN
+              source: unspecified 
+            - module: AGE
+              source: unspecified 
+            - module: SED
+              source: unspecified 
       - name: ccc_rock_slough
+        flow_direction: inflow
         variables:
         - velocity:
             source: flux history
@@ -324,6 +345,7 @@ bctides.sed.in.3d:
             source: [0.1, 0.2, 0.1, 0.12, 0.23]
             relax: 1.0
       - name: ccc_old
+        flow_direction: inflow
         variables:
         - velocity:
             source: flux history
@@ -337,6 +359,12 @@ bctides.sed.in.3d:
           - module: GEN
             source: 10
             relax: 0.5
+          - module: AGE
+            source: [10, 20]
+            relax: 1.0
+          - module: SED
+            source: [0.1, 0.2, 0.1, 0.12, 0.23]
+            relax: 1.0
       - name: swp
         flow_direction: outflow #inflow check enforced
         variables:
@@ -348,6 +376,7 @@ bctides.sed.in.3d:
         - velocity:
             source: flux history
       - name: sjr
+        flow_direction: inflow
         variables:
         - velocity:
             source: flux history
@@ -357,7 +386,15 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
+        - tracers: 
+            - module: GEN
+              source: unspecified 
+            - module: AGE
+              source: unspecified 
+            - module: SED
+              source: unspecified 
       - name: calaveras
+        flow_direction: inflow
         variables:
         - elevation:
              source: 0.3
@@ -369,7 +406,15 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
+        - tracers: 
+            - module: GEN
+              source: unspecified 
+            - module: AGE
+              source: unspecified 
+            - module: SED
+              source: unspecified 
       - name: mokelumne+cosumnes
+        flow_direction: inflow
         variables:
         - velocity:
             source: flux history
@@ -379,7 +424,15 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
+        - tracers: 
+            - module: GEN
+              source: unspecified 
+            - module: AGE
+              source: unspecified 
+            - module: SED
+              source: unspecified 
       - name: american
+        flow_direction: inflow
         variables:
         - velocity:
             source: flux history
@@ -389,7 +442,15 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history 
             nudge: 1.0
+        - tracers: 
+            - module: GEN
+              source: unspecified 
+            - module: AGE
+              source: unspecified 
+            - module: SED
+              source: unspecified 
       - name: sacramento
+        flow_direction: inflow
         variables:
         - velocity:
              source: flux history
@@ -399,7 +460,15 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
+        - tracers: 
+            - module: GEN
+              source: unspecified 
+            - module: AGE
+              source: unspecified 
+            - module: SED
+              source: unspecified 
       - name: yolo_toedrain
+        flow_direction: bidirection
         variables:
         - velocity:
              source: flux history
@@ -409,17 +478,33 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
+        - tracers: 
+            - module: GEN
+              source: unspecified 
+            - module: AGE
+              source: unspecified 
+            - module: SED
+              source: unspecified 
       - name: yolo
+        flow_direction: inflow
         variables:
         - velocity:
             source: flux history
-        - temperature_:
+        - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
             source: 3D salinity history
             nudge: 1.0
+        - tracers: 
+            - module: GEN
+              source: unspecified 
+            - module: AGE
+              source: unspecified 
+            - module: SED
+              source: unspecified 
       - name: north_bay
+        flow_direction: bidirection
         variables:
         - elevation:
             source: tidal and 2D elev history 
@@ -467,7 +552,15 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
+        - tracers: 
+            - module: GEN
+              source: unspecified 
+            - module: AGE
+              source: unspecified 
+            - module: SED
+              source: unspecified 
       - name: napa
+        flow_direction: inflow
         variables:
         - velocity:
              source: flather 1
@@ -484,15 +577,18 @@ bctides.sed.in.3d:
         - salinity:
             source: 3D salinity history
             nudge: 1.0
+        - tracers: 
+            - module: GEN
+              source: unspecified 
+            - module: AGE
+              source: unspecified 
+            - module: SED
+              source: unspecified 
       - name: ccc_victoria
+        flow_direction: outflow
         variables:
         - elevation:
             source: elev history
         - velocity:
             source: flux history
-        - temperature:
-            source:  10.0
-            nudge: 1.0
-        - salinity:
-            source: 3D salinity history
-            nudge: 1.0
+

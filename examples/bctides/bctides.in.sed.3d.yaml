@@ -2,17 +2,24 @@ bctides.sed.3d.in:
     modules:
       - name: SED
         num_tracers: 3
+    mode: baroclinic # option barotropic or baroclinic
+    temperature_salinity_computation: true # true/false, it is used only when mode is barotropic,
+                                            # if true then temperature and salinity is requried on 
+                                            # inflow/bidirection boundary. if false, there should
+                                            # not be temperature and salinity specified on 
+                                            # inflow/bidirection boundary
     open_boundaries:
       -  name: ocean
+         flow_direction: bidirection
          variables:
            - elevation:
                source: elev history
-           - velocity_boundary:
+           - velocity:
                source: 3D uv history
            - temperature:
                source: initial profile
                nudge: 0.01
-           - salinity_boundary::
+           - salinity:
                source: initial profile  
                nudge: 0.01 
            - tracers: 
@@ -20,6 +27,7 @@ bctides.sed.3d.in:
                source: [0.007,0.008, 0.]
                relax: 0.01   
       -  name: coyote
+         flow_direction: inflow
          variables:
            - velocity:
                source: flux history
@@ -34,6 +42,7 @@ bctides.sed.3d.in:
                source: [0.005,0.005, 0.]
                relax: 0.01   
       -  name: ccc_rock_slough
+         flow_direction: outflow
          variables:
            - velocity:
                source: flux history
@@ -42,6 +51,7 @@ bctides.sed.3d.in:
                source: [0.00,0.00,0.00]
                relax: 0.01   
       -  name: ccc_old
+         flow_direction: outflow
          variables:
            - velocity:
              source: flux history
@@ -53,55 +63,59 @@ bctides.sed.3d.in:
          flow_direction: outflow
          variables:
              - velocity:
-               source: flux history
+                 source: flux history
       -  name: cvp
          flow_direction: outflow
          variables:
            - velocity:
-             source: flux history
+               source: flux history
       -  name: sjr
+         flow_direction: inflow
          variables:
            - velocity:
-             source: flux history
+               source: flux history
            - temperature:
-             source: temperature history
-             nudge: 1.0
+               source: temperature history
+               nudge: 1.0
            - salinity:
-             source: salinity history
-             nudge: 1.0
+               source: salinity history
+               nudge: 1.0
            - tracers: 
              - module: SED
                source: time history
                relax: 1 
       -  name: calaveras
+         flow_direction: inflow
          variables:
            - velocity:
-              source: flux history
+               source: flux history
            - temperature:
-              source: temperature history
-              nudge: 1.0
+               source: temperature history
+               nudge: 1.0
            - salinity:
-              source: 0.062920
-              nudge: 1.0
+               source: 0.062920
+               nudge: 1.0
            - tracers: 
              - module: SED
                source: [0.05,0.06,0]
                relax: 1 
       -  name: mokelumne+cosumnes
+         flow_direction: inflow
          variables:
           - velocity:
-            source: flux history
+              source: flux history
           - temperature:
-            source: temperature history
-            nudge: 1.0
+              source: temperature history
+              nudge: 1.0
           - salinity:
-            source: 0.062920
-            nudge: 1.0
+              source: 0.062920
+              nudge: 1.0
           - tracers: 
             - module: SED
               source: [0.05,0.06,0]
               relax: 1
       -  name: american
+         flow_direction: inflow
          variables:
           - velocity:
                source: flux history
@@ -116,6 +130,7 @@ bctides.sed.3d.in:
                  source: time history
                  relax: 1 
       -  name: sacramento
+         flow_direction: inflow
          variables:
           - velocity:
                source: flux history
@@ -130,61 +145,69 @@ bctides.sed.3d.in:
                  source: time history
                  relax: 1 
       -  name: yolo_toedrain
+         flow_direction: bidirection
          variables:
           - velocity:
-            source: flux history
+              source: flux history
           - temperature:
-            source: temperature history
-            nudge: 1.0
+              source: temperature history
+              nudge: 1.0
           - salinity:
-            source: salinity history
-            nudge: 1.0
+              source: salinity history
+              nudge: 1.0
           - tracers:
                - module: SED
                  source: time history
                  relax: 1 
       -  name: yolo
+         flow_direction: inflow
          variables:
           - velocity:
-            source: flux history
+              source: flux history
           - temperature:
-            source: temperature history
-            nudge: 1.0
+              source: temperature history
+              nudge: 1.0
           - salinity:
-            source: 0.062920
-            nudge: 1.0
+              source: 0.062920
+              nudge: 1.0
           - tracers:
                - module: SED
                  source: time history
                  relax: 1 
       -  name: north_bay
+         flow_direction: bidirection
          variables:
           - velocity:
-            source: flux history
+              source: flux history
+          - temperature:
+              source: temperature history
+              nudge: 1.0
+          - salinity:
+              source: 0.062920
+              nudge: 1.0
           - tracers:
                - module: SED
                  source: [0.0,0.0,0.0]
                  relax: 1
       -  name: napa
+         flow_direction: inflow
          variables:
           - velocity:
-            source: flux history
+              source: flux history
           - temperature:
-            source: temperature history
-            nudge: 1.0
+              source: temperature history
+              nudge: 1.0
           - salinity:
-            source: 0.074318
-            nudge: 1.0
+              source: 0.074318
+              nudge: 1.0
           - tracers:
             - module: SED
               source: [0.0,0.0,0.0]
               relax: 1
       -  name: ccc_victoria
+         flow_direction: outflow
          variables:
           - velocity:
                source: flux history
-          - tracers:
-               - module: SED
-                 source: [0.0,0.0,0.0]
-                 relax: 1
+ 
      
