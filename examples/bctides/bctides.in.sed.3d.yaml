@@ -1,4 +1,5 @@
-bctides.sed.3d.in:
+bctides:
+  - name: bctides.sed.3d.in
     modules:
       - name: SED
         num_tracers: 3

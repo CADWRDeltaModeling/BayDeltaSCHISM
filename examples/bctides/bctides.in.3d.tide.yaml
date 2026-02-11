@@ -2,7 +2,8 @@
 # If so we should accommodate that here.
 # Don't forget that time_history_nc is an option
 # Let's be rigorous about velocity/flow and make sure exactly zero (tidal) or one is specified 
-bctides.tide.sed.in.3d:
+bctides:
+  - name: bctides.sed.in.3d
     modules:
       - name: GEN
         num_tracers: 1

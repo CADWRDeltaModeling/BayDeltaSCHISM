@@ -1,4 +1,5 @@
-bctides.3d.in:
+bctides:    
+  - name: bctides.3d.in
     date: 2011-01-28
     mode: baroclinic # option barotropic or baroclinic
     temperature_salinity_computation: true # true/false, it is used only when mode is barotropic,

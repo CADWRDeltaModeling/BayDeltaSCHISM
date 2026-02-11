@@ -1,4 +1,5 @@
-bctides.2d.in:
+bctides:
+  - name: bctides.2d.in
     mode: barotropic # option barotropic or baroclinic
     temperature_salinity_computation: false # true/false, it is used only when mode is barotropic,
                                             # if true then temperature and salinity is requried on 
