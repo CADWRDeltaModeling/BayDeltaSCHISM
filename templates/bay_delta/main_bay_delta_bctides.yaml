@@ -1,0 +1,20 @@
+# Main input file for default bay_delta template based on exisiting hgrid,
+# this input file is intended to show how to add bctides section into
+# main input yaml for prepare_schism tool. It is very simple with all other
+# regular sections of main_bay_delta yaml are removed.
+
+mesh:
+  # a preexisting SCHISM hgrid.gr3
+  mesh_inputfile: hgrid.gr3
+  
+
+
+bctides:
+  include:
+    - bctides.in.3d.tide.yaml
+    - bctides.in.2d.yaml
+    - bctides.in.3d.yaml
+    - bctides.in.sed.3d.yaml
+ 
+prepro_output_dir: ./prepro_out
+
