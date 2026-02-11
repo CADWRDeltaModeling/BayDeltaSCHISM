@@ -106,6 +106,9 @@ venv.bak/
 # Unit test results
 junit.xml
 
+# GIS refuge
+*LOCK*
+
 # VSCode
 .vscode/
 *.code-workspace

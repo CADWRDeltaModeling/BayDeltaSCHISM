@@ -25,7 +25,7 @@ mesh:
   dem_list:
     include:
       #- dem_restorations_future_20250822.yaml  # Selected proposed locations. Vet carefully to make sure it covers your area of interest
-      #- dem_restorations_2024_20250822.yaml    # Restoration sites up to 2024. See comments in this file for year of introduction if you are targetting surgically
+      #- dem_restorations_2024_20260211.yaml    # Restoration sites up to 2024. See comments in this file for year of introduction if you are targetting surgically
       - dem_4.3_suisun_20250430.yaml            # Contemporary soundings through 2024, restoration in Delta to approximately 2019
 
   # The depth optimization step:
