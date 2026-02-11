@@ -1,8 +1,8 @@
-# Main input file for default bay_delta template based on version 116 of the mesh
+# Main input file for default bay_delta template based on version 117 of the mesh
 
 mesh:
   # SMS formatted 2dm file (which will be formatted) or a preexisting SCHISM hgrid.gr3
-  mesh_inputfile: ./bay_delta_116.2dm
+  mesh_inputfile: ./bay_delta_117.2dm
   
   # Mesh generation produces some skew elements. These are handled more robustly
   # if they are triangles rather than quads. These criteria are used for identifying skew and splitting
@@ -42,10 +42,10 @@ mesh:
   depth_enforcement:
     polygons:
       include:
-        - depth_enforcement_polygons_116.yaml
+        - depth_enforcement_polygons_117.yaml
         - depth_enforcement_ss_polygons.yaml
         - depth_enforcement_suisun_polygons.yaml
-        - depth_enforcement_v116_restoration_polygons.yaml
+        - depth_enforcement_v117_restoration_polygons.yaml
         # Must come last and only needed if eliminating 
         # effects of 2018 accidental breaches from early runs
         # Should not be used post-2018
@@ -56,9 +56,9 @@ mesh:
         - depth_enforcement_sjr_linestrings.yaml
         - depth_enforcement_suisun_linestrings.yaml
         - depth_enforcement_suisun_restoration.yaml
-        - depth_enforcement_v116_linestrings.yaml
+        - depth_enforcement_v117_linestrings.yaml
         - depth_enforcement_linestrings.yaml
-        - depth_enforcement_v116_restoration_linestrings.yaml
+        - depth_enforcement_v117_restoration_linestrings.yaml
 
   ll_outputfile: hgrid.ll
   gr3_outputfile: hgrid.gr3
