@@ -18,9 +18,9 @@ def read_th(sim_dir, params, fname):
 def source_dfs(sim_dir, params):
     """Reads vsource, vsink and msource.th files and returns as list of DataFrames"""
     start = params.run_start
-    vsource = pd.read_csv(os.path.join(sim_dir, "vsource.th"), index_col=0, sep=r"\s+")
-    vsink = pd.read_csv(os.path.join(sim_dir, "vsink.th"), index_col=0, sep=r"\s+")
-    msource = pd.read_csv(os.path.join(sim_dir, "msource.th"), index_col=0, sep=r"\s+")
+    vsource = pd.read_csv(os.path.join(sim_dir, "vsource.th"), index_col=0, sep=r"\s+", header=None)
+    vsink = pd.read_csv(os.path.join(sim_dir, "vsink.th"), index_col=0, sep=r"\s+", header=None)
+    msource = pd.read_csv(os.path.join(sim_dir, "msource.th"), index_col=0, sep=r"\s+", header=None)
     return [elapsed_datetime(x, reftime=start) for x in (vsource, vsink, msource)]
 
 
