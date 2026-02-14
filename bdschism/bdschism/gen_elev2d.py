@@ -185,7 +185,7 @@ def gen_elev2d_cli(stime, etime, hgrid, outfile, slr, files):
     return gen_elev2D(hgrid, outfile, pt_reyes, monterey, stime, etime, slr)
 
 
-def _get_data(src, start, end=None):
+def _get_data(src, start,end=None):
     """Get data from file(s) or repository.
     
     Args:
@@ -220,11 +220,11 @@ def _get_data(src, start, end=None):
     if isinstance(src, str) and src.endswith(".csv"):
         try:
             out = read_noaa(
-                src, start=start - tbuf, end=bufend, force_regular=True
+                src, start=start, end=end, force_regular=True
             )
         except Exception as e:
             out = read_ts(
-                src, start=start - tbuf, end=bufend, force_regular=True
+                src, start=start, end=end, force_regular=True
         )
     else:
         # assume it is from repo
@@ -234,7 +234,7 @@ def _get_data(src, start, end=None):
             src = "pryc1"
         elif src in ("mtyc1","monterey"):
             src = "mtyc1"
-        out = read_ts_repo(src, "elev", start=start - tbuf, end=bufend)
+        out = read_ts_repo(src, "elev", start=start)
     return out
 
 def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end, slr):
