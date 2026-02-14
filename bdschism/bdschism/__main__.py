@@ -52,6 +52,7 @@ def precheck(simdir, pytest_args):
         "pytest",
         test_suite_dir,
         f"--sim_dir={simdir}",
+        "-v",  # Verbose mode to show test names
     ] + list(pytest_args)
     click.echo(f"Running: {' '.join(cmd)}")
     result = subprocess.run(cmd)
