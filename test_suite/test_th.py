@@ -44,7 +44,14 @@ def read_th_file(file_path):
     pd.DataFrame
         DataFrame with time index (first column treated as elapsed time)
     """
-    df = pd.read_csv(file_path, index_col=0, sep=r"\s+", header=None, dtype=float)
+    df = pd.read_csv(
+        file_path, 
+        index_col=0, 
+        sep=r"\s+", 
+        header=None, 
+        dtype=float,
+        parse_dates=[0]
+    )
     return df
 
 
