@@ -28,10 +28,14 @@ ________________________
 
 Boundaries & Input Files
 --------------------------
+
+This section provides an overview of boundary and input file concepts, with links to the detailed guides below.
+
 .. toctree::
   :maxdepth: 3
   :titlesonly:
 
+  topics/baydelta_boundaries.rst
   topics/ocean.rst
   topics/flow_boundary.rst
   topics/atmospheric.rst
