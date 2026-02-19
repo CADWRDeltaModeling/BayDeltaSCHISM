@@ -1,9 +1,9 @@
 
 .. _barotropic:
 
-###############################################
-Ocean Boundary Stabilization: Barotropic Warmup
-###############################################
+############################################################
+Ocean Boundary Stabilization: Barotropic Warmup (uv3D.th.nc)
+############################################################
 
 Introduction
 ============

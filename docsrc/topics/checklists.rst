@@ -111,9 +111,9 @@ See :ref:`hotstart section <choose_runtime>` on this topic
 
 
 
-======================
+=========================
 Sea level rise (SLR) runs
-======================
+=========================
 
 SLR-specific items
 ------------------------
@@ -126,7 +126,7 @@ SLR-specific items
     |cbox| determine how to apply sea level rise in initial conditions and hotstart files
 
 Workflow for setting up a SLR run where bathymetry and hydrology come from two separate, existing runs
-------------------------
+--------------------------------------------------------------------------------------------------------
     |cbox| make a copy of the bathymetry run as the slr run.
 
     |cbox| from the hydrology run, copy `param.nml` and `sflux/` into the slr run.

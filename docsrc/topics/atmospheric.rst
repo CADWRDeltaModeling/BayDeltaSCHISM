@@ -1,8 +1,8 @@
 
 
-#################
-Atmospheric setup
-#################
+###############################
+Atmospheric setup (sflux_*.nc)
+###############################
 
 Basic introduction and requirements
 -----------------------------------

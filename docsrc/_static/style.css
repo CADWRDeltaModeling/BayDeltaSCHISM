@@ -28,3 +28,14 @@ a:hover {
     margin-left: 1em;
     text-align: left;
 }
+
+/* Word wrapping in tables */
+.wy-table-responsive table td, .wy-table-responsive table th {
+    white-space: normal;
+}
+
+/* Right-align first column in selected tables */
+.wy-table-responsive table.right-align-first-col td:first-child,
+.wy-table-responsive table.right-align-first-col th:first-child {
+    text-align: right;
+}

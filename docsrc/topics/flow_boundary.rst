@@ -1,6 +1,6 @@
-#########################
-Inflow/Outflow Boundaries
-#########################
+####################################
+Inflow/Outflow Boundaries (flux.th)
+####################################
 
 Inflow/outflow boundaries locations specified in `hgrid.gr3`, usually with the preprocessor identifying the start 
 and end of the string of nodes. The fact that a boundary is a flow or tracer
