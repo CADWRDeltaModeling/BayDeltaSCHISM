@@ -16,13 +16,35 @@ gate_dir = os.path.abspath(os.path.join(bds_dir, "data/time_history/"))
 
 
 def read_smscg_dfs(file_dir, time_basis=None):
+    """Reads the three time history files for the boat lock, flashboards, and radial gates into pandas DataFrames."""
     boat = read_th(
         os.path.join(file_dir, "montezuma_boat_lock.th"), time_basis=time_basis
     )
+    boatcol = ["install", "ndup", "op_down", "op_up", "elev","width"]
+    if boat.shape[1] == 7:
+        boatcol = boatcol + ["__comment__"]
+    boat.columns = boatcol
+
     flash = read_th(os.path.join(file_dir, "montezuma_flash.th"), time_basis=time_basis)
+    flashcol = ["install", "ndup", "op_down", "op_up", "elev","width"]
+    if flash.shape[1] == 7:
+        flashcol = flashcol + ["__comment__"]
+    flash.columns = flashcol
+    
     radial = read_th(
         os.path.join(file_dir, "montezuma_radial.th"), time_basis=time_basis
     )
+    radialcol = ["install", "ndup", "op_down", "op_up", "elev","width","height"]
+    if radial.shape[1] == 8:
+        radialcol = radialcol + ["__comment__"]
+    radial.columns = radialcol
+
+    for df in [boat, flash, radial]:
+        for col in ("install", "ndup"):
+            if col in df.columns:
+                df[col] = df[col].astype("Int64")
+        if "__comment__" in df.columns:
+            df["__comment__"] = df["__comment__"].astype("string")
 
     return boat, flash, radial
 
@@ -42,34 +64,37 @@ def elapse_smscg_dfs(smscg_dfs, params):
 
 
 def align_dfs(boat, flash, radial):
-    """Ensures alignment of the three dataframes and fills to radial index"""
-    org_indices = sorted(set(pd.concat([boat, flash, radial]).index))
-    boat = extend_idx(boat, org_indices[0], org_indices[-1])
-    flash = extend_idx(flash, org_indices[0], org_indices[-1])
-    radial = extend_idx(radial, org_indices[0], org_indices[-1])
+    """
+    Align three step-function-like time series on the union of their timestamps,
+    using forward-fill semantics (no regular resampling grid).
 
-    boat = boat.resample("1min").asfreq().ffill()
-    flash = flash.resample("1min").asfreq().ffill()
-    radial = radial.resample("1min").asfreq().ffill()
+    Assumptions:
+      - DatetimeIndex, sorted, unique (duplicates handled elsewhere).
+      - Values represent state that persists until the next timestamp.
+      - You want values defined over the full union span, so we pad each series
+        to the global start/end using extend_idx().
 
-    # Get rid of unecessary (unchanged) timestamps
-    boat = boat.loc[org_indices]
-    flash = flash.loc[org_indices]
-    radial = radial.loc[org_indices]
+    Returns
+    -------
+    list[pd.DataFrame]
+        [boat_aligned, flash_aligned, radial_aligned], each indexed by the union
+        of original timestamps across all three inputs.
+    """
+    # Union of all original timestamps (these are the only times we will keep)
+    idx = pd.Index(pd.concat([boat, flash, radial]).index).unique().sort_values()
+
+    dfs = [boat, flash, radial]
+    start = max(df.index.min() for df in dfs)
+    end   = min(df.index.max() for df in dfs)
+
+    idx = idx[(idx >= start) & (idx <= end)]
+
+    # Reindex to the union timestamps and forward-fill within each dataframe.
+    # (ffill fills NaNs introduced by reindexing; start is guaranteed by extend_idx)
+    boat = boat.reindex(idx).ffill()
+    flash = flash.reindex(idx).ffill()
+    radial = radial.reindex(idx).ffill()
     return [boat, flash, radial]
-
-
-def extend_idx(df, start, end):
-    start_row = df.iloc[0].to_frame().T
-    if start_row.index[0] > start:
-        start_row.index = [start]
-        df = pd.concat([start_row, df])
-    end_row = df.iloc[-1].to_frame().T
-    if end_row.index[0] < end:
-        end_row.index = [end]
-        df = pd.concat([df, end_row])
-
-    return df
 
 
 def compare_matches(matches, matches_hist):
@@ -89,10 +114,10 @@ def compare_matches(matches, matches_hist):
 
 
 @pytest.mark.prerun
-def test_smscg_boatlock(sim_dir, params, elapse_smscg_dfs, historical_gates):
+def test_smscg_boatlock(sim_dir, params, smscg_dfs, historical_gates):
     """Checks that the boatlock is open whenever the radial gates are operated tidally (op_up=0)"""
 
-    boat, flash, radial = elapse_smscg_dfs
+    boat, flash, radial = smscg_dfs
 
     # Compare the 4th column (op_up) of `boat` with `radial`
     matches = (radial.iloc[:, 3] == 0) & (boat.iloc[:, 3] == 0)
@@ -125,10 +150,10 @@ def test_smscg_boatlock(sim_dir, params, elapse_smscg_dfs, historical_gates):
 
 
 @pytest.mark.prerun
-def test_smscg_flash(sim_dir, params, elapse_smscg_dfs, historical_gates):
+def test_smscg_flash(sim_dir, params, smscg_dfs, historical_gates):
     """Checks that the flashboards are closed when the radial gates are operated tidally (op_up=0)"""
 
-    boat, flash, radial = elapse_smscg_dfs
+    boat, flash, radial = smscg_dfs
 
     # Compare the 4th column (op_up) of `flash` with `radial`, ensuring that when radial gates are tidally operated, the flashboards are closed
     matches = (radial.iloc[:, 3] == 0) & (flash.iloc[:, 3] != 0)
@@ -160,10 +185,10 @@ def test_smscg_flash(sim_dir, params, elapse_smscg_dfs, historical_gates):
 
 
 @pytest.mark.prerun
-def test_smscg_radial_tides(sim_dir, params, elapse_smscg_dfs, historical_gates):
+def test_smscg_radial_tides(sim_dir, params, smscg_dfs, historical_gates):
     """Checks that the tidal radial operations make sense"""
 
-    boat, flash, radial = elapse_smscg_dfs
+    boat, flash, radial = smscg_dfs
 
     # Compare the 3rd and 4th columns (op_down and op_up) of radial, ensuring tidal operation
     matches = (radial.iloc[:, 3] == 0) & (radial.iloc[:, 2] == 0)
@@ -196,10 +221,10 @@ def test_smscg_radial_tides(sim_dir, params, elapse_smscg_dfs, historical_gates)
 
 
 @pytest.mark.prerun
-def test_smscg_radial_open(sim_dir, params, elapse_smscg_dfs, historical_gates):
+def test_smscg_radial_open(sim_dir, params, smscg_dfs, historical_gates):
     """Checks that the radial operations make sense"""
 
-    boat, flash, radial = elapse_smscg_dfs
+    boat, flash, radial = smscg_dfs
 
     # Compare the 3rd and 4th columns (op_down and op_up) of radial, ensuring tidal operation
     matches = (radial.iloc[:, 3] == 1) & (radial.iloc[:, 2] != 1)
