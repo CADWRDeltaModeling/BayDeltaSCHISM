@@ -46,7 +46,7 @@ def gen_constituents_tree():
     This function generates the constituent trees of Choice of constituents and Rayleigh comparison pairs 
     It returns a list of root nodes for subtide, diurnal, semidiurnal and terdiurnal, and a list of shallow
     water constituents that have multiple parents. It is implementation from Table 1 to Table 5 in
-    "MANUAL FOR TIDAL HEIGHTS ANALYSIS AND PREDICTION" by M.G.G. Foreman (1996)).
+    "MANUAL FOR TIDAL HEIGHTS ANALYSIS AND PREDICTION" by M.G.G. Foreman (1996).
     """
     nodes_tree_lst = []
 
@@ -315,7 +315,7 @@ def get_constituent_names(astro_group,shallow_group, record_length_hours=0):
     
     Returns: A sorted list of constituent names that can be analyzed with the given record length.
     """
-
+    astro_group,shallow_group=gen_constituents_tree()
     selected_constituents = set()
     selected_constituents=get_astro_constituent_names(astro_group, record_length_hours)
  
@@ -365,6 +365,6 @@ def get_astro_constituent_names(astro_group, record_length_hours=0):
     return sorted(selected_constituents)
 
 
-astro_constitues,shallow_constitues=gen_constituents_tree()
+
 record_length_hours = 5200
-selected_constituents = get_constituent_names(astro_constitues, shallow_constitues, record_length_hours)
+selected_constituents = get_constituent_names(record_length_hours)
