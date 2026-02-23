@@ -303,7 +303,7 @@ def gen_constituents_tree():
 
 
 
-def get_constituent_names(astro_group,shallow_group, record_length_hours=0):
+def get_constituents(record_length_hours=0):
     """
     Retrieves the names of all constituents in the astro_group and shallow_group 
     that can be analyazed by the specified record_length_hours.
@@ -367,4 +367,4 @@ def get_astro_constituent_names(astro_group, record_length_hours=0):
 
 
 record_length_hours = 5200
-selected_constituents = get_constituent_names(record_length_hours)
+selected_constituents = get_constituents(record_length_hours)
