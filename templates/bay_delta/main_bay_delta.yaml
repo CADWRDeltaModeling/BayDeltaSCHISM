@@ -1,5 +1,7 @@
 # Main input file for default bay_delta template based on version 117 of the mesh
 
+prepro_output_dir: ../prepro_out # where your preprocessor output will go
+
 mesh:
   # SMS formatted 2dm file (which will be formatted) or a preexisting SCHISM hgrid.gr3
   mesh_inputfile: ./bay_delta_117.2dm
@@ -19,6 +21,7 @@ mesh:
   small_areas:
     warn: 10.
     fail: 4.
+    write_out_smalls: True
   # This section specifies the "stack" of DEMs that will be used to prioritize the mesh from highest to lowest.
   # The list includes some restoration designs commonly incorporated into "current conditions" for studies 
   # because of their high probability of completion.  
@@ -157,6 +160,12 @@ station_output:
     # - GENERATE        # Use this key to trigger automatic revision using dms_datastore's station.py functionality 
     # - diagnostic.in   # Example of adding project specific output locations in the same format as station.in
 
+bctides:
+  include:
+    # - bctides.in.3d.tide.yaml # used for tidal boundary condition using tide constituents
+    - bctides.in.2d.yaml # used for barotropic runs
+    - bctides.in.3d.yaml # used for baroclinic runs
+    # - bctides.in.sed.3d.yaml # used for sediment, tracer, or other SCHISM module boundary conditions
 
 
 copy_resources:
@@ -167,5 +176,3 @@ copy_resources:
   param.nml.clinic: param.nml.clinic
   param.nml.tropic: param.nml.tropic
   interpolate_variables.in: interpolate_variables.in
-
-prepro_output_dir: ./prepro_out
