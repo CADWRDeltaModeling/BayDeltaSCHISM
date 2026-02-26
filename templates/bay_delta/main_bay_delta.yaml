@@ -132,15 +132,15 @@ sources_sinks:
   sinks:
     include:
     - sink_dcd.yaml
-    - sink_mss.yaml       # comment out if not using MSS
-    - sink_nullzone.yaml  # comment out if not using MSS
+    # - sink_mss.yaml       # comment out if not using MSS
+    # - sink_nullzone.yaml  # comment out if not using MSS
     - sink_suisun.yaml
   sources:
     include:
     - source_dcd.yaml
-    - source_mss.yaml     # comment out if not using MSS
+    # - source_mss.yaml     # comment out if not using MSS
     - source_suisun.yaml
-    - source_potw.yaml    # comment out if not using MSS
+    # - source_potw.yaml    # comment out if not using MSS
   outputfile: source_sink.in
 
 vgrid:
