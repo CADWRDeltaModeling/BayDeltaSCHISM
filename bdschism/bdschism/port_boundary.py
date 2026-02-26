@@ -37,7 +37,10 @@ def read_csv(file, var, name, dt, p=2.0, interp=True, freq="M"):
     Outputs an interpolated DataFrame of that variable
     """
     forecast_df = pd.read_csv(file, index_col=0, header=0, parse_dates=True)
+    forecast_df.columns = forecast_df.columns.astype(str).str.strip()
     forecast_df.index = forecast_df.index.to_period(freq)
+    if forecast_df.index.has_duplicates:
+        forecast_df = forecast_df.groupby(forecast_df.index).mean()
 
     # Check for % sign and convert to fraction
     if forecast_df[var].dtype == "object":  # Ensure it's a string column
@@ -48,16 +51,13 @@ def read_csv(file, var, name, dt, p=2.0, interp=True, freq="M"):
     else:
         forecast_df[var] = forecast_df[var].astype("float")
 
+    forecast_df[var] = forecast_df[var].astype("float")
     if interp:
-        interp_series = rhistinterp(forecast_df[var].astype("float"), dt, p=p)
+        interp_df = rhistinterp(forecast_df[[var]], dt, p=float(p))
     else:
         forecast_df.index = forecast_df.index.to_timestamp()
-        interp_series = forecast_df[var].resample(dt).ffill()
-    interp_df = pd.DataFrame()
-    if name is not None:
-        interp_df[[name]] = pd.DataFrame({var: interp_series})
-    else:
-        interp_df[[var]] = pd.DataFrame({var: interp_series})
+        interp_df = forecast_df[[var]].resample(dt).ffill()
+        
     return interp_df
 
 
@@ -223,6 +223,11 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
     schism_temp_file = config["file"]["schism_temp_file"]
     out_file_suffix = config["file"]["out_file_suffix"]
     boundary_kinds = config["param"]["boundary_kinds"]
+    if isinstance(boundary_kinds, str):
+        text = boundary_kinds.strip()
+        if text.startswith("[") and text.endswith("]"):
+            text = text[1:-1]
+        boundary_kinds = [item.strip() for item in text.split(",") if item.strip()]
     sd = config["param"]["start_date"]
     ed = config["param"]["end_date"]
 
@@ -352,6 +357,9 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
             if boundary_kind in gate_names:
                 if source_kind == "CSV":
                     var_df = read_csv(source_file, var, None, dt, p=p, interp=interp)
+                elif source_kind == "TH":
+                    var_df = read_th(source_file)
+                    var_df = var_df[[var]]
                 elif source_kind == "DSS":
                     var_df = pd.DataFrame()
                     b = var.split("/")[2]
@@ -364,10 +372,10 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
                     var_df = pd.DataFrame({name: [float(var)] * len(df_rng)})
                     var_df.index = df_rng
                 else:
-                    raise ValueError(f"source_kind={source_kind} is not yet supported")
+                    raise ValueError(f"source_kind={source_kind} is not yet supported for gates")
 
                 # use formula to set gate fraction (month_fraction, month_days)
-                if source_kind == "CONSTANT":
+                if source_kind in ["CSV", "TH", "CONSTANT"]:
                     dfi = var_df
                 else:
                     dfi = set_gate_ops(boundary_kind, var_df.ffill(), name, formula)
@@ -497,16 +505,15 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
                 print(
                     "Unit conversion unecessary for consumptive use (handled in yaml)"
                 )
+            elif source_kind in ["SCHISM", "TH"]:
+                # Simplest case: use existing reference SCHISM data
+                print("Use existing SCHISM input, no unit conversion necessary")
             else:
-                if source_kind == "SCHISM":
-                    # Simplest case: use existing reference SCHISM data
-                    print("Use existing SCHISM input, no unit conversion necessary")
-                else:
-                    # Do conversions.
-                    if convert == "CFS_CMS":
-                        dfi = dfi * CFS2CMS * sign
-                    elif convert == "EC_PSU":
-                        dfi = ec_psu_25c(dfi) * sign
+                # Do conversions.
+                if convert == "CFS_CMS":
+                    dfi = dfi * CFS2CMS * int(sign)
+                elif convert == "EC_PSU":
+                    dfi = ec_psu_25c(dfi) * int(sign)
 
                 # Trim dfi so that it starts where schism input file ends, so that dfi doesn't
                 # overwrite any historical data
