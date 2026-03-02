@@ -1,10 +1,23 @@
 import os
+import sys
 from pathlib import Path
 from schimpy import param as sch_param
 
 import click
 
 from bdschism.settings import get_settings, create_link
+
+
+class ModeError(Exception):
+    """Error raised for invalid mode configurations or runtime issues."""
+
+
+def _info(msg: str):
+    print(msg)
+
+
+def _warn(msg: str):
+    print(f"WARNING: {msg}", file=sys.stderr)
 
 
 def _iter_links(links, mode_name: str):
@@ -27,19 +40,19 @@ def _iter_links(links, mode_name: str):
     elif isinstance(links, (list, tuple)):
         for entry in links:
             if not isinstance(entry, dict):
-                raise click.ClickException(
+                raise ModeError(
                     f"Mode '{mode_name}': each item in 'links' must be a mapping "
                     f"like '- target: source', got {type(entry)}"
                 )
             if len(entry) != 1:
-                raise click.ClickException(
+                raise ModeError(
                     f"Mode '{mode_name}': each 'links' mapping must have exactly "
                     f"one key:value pair, got {entry}"
                 )
             (target, source), = entry.items()
             yield str(target), str(source)
     else:
-        raise click.ClickException(
+        raise ModeError(
             f"Mode '{mode_name}': unsupported 'links' type {type(links)}"
         )
 
@@ -56,7 +69,7 @@ def _resolve_mode(settings, mode_name: str):
     """
     modes = getattr(settings, "modes", None)
     if not modes:
-        raise click.ClickException(
+        raise ModeError(
             "No 'modes' configured in settings (bds_config.yaml or overrides)."
         )
 
@@ -70,7 +83,7 @@ def _resolve_mode(settings, mode_name: str):
         except Exception:
             available = []
 
-        raise click.ClickException(
+        raise ModeError(
             f"Unknown mode '{mode_name}'. Available modes: {', '.join(available) or '(none)'}"
         )
 
@@ -99,13 +112,13 @@ def _apply_mode_params(params_spec, rundir: Path, dry_run: bool, hard_fail: bool
     any_error = False
 
     if not isinstance(params_spec, (list, tuple)):
-        raise click.ClickException(
+        raise ModeError(
             "'params' must be a list of mappings with 'file' and 'set' keys."
         )
 
     for entry in params_spec:
         if not isinstance(entry, dict):
-            raise click.ClickException(
+            raise ModeError(
                 f"Each item in 'params' must be a mapping, got {type(entry)}"
             )
 
@@ -113,7 +126,7 @@ def _apply_mode_params(params_spec, rundir: Path, dry_run: bool, hard_fail: bool
         changes = entry.get("set")
 
         if not param_file or not isinstance(changes, dict):
-            raise click.ClickException(
+            raise ModeError(
                 "Each 'params' entry must have 'file' and a 'set' mapping."
             )
 
@@ -122,35 +135,35 @@ def _apply_mode_params(params_spec, rundir: Path, dry_run: bool, hard_fail: bool
         if not param_path.exists():
             msg = f"Param file does not exist for params entry: {param_path}"
             if hard_fail:
-                raise click.ClickException(msg)
-            click.echo(f"WARNING: {msg}", err=True)
+                raise ModeError(msg)
+            _warn(msg)
             any_error = True
             continue
 
         if dry_run:
-            click.echo(f"[DRY-RUN] Would update parameters in {param_path}:")
+            _info(f"[DRY-RUN] Would update parameters in {param_path}:")
             for name, value in changes.items():
-                click.echo(f"    {name} = {value}")
+                _info(f"    {name} = {value}")
             continue
 
         # Read, modify, write using schimpy.param
         try:
             params = sch_param.read_params(str(param_path))
         except Exception as e:
-            raise click.ClickException(f"Failed to read {param_path}: {e}") from e
+            raise ModeError(f"Failed to read {param_path}: {e}") from e
 
         for name, value in changes.items():
             try:
                 params.set_by_name_or_alias(name, value)
             except Exception as e:
-                raise click.ClickException(
+                raise ModeError(
                     f"Failed to set '{name}' in {param_path}: {e}"
                 ) from e
 
         try:
             params.write(str(param_path))
         except Exception as e:
-            raise click.ClickException(
+            raise ModeError(
                 f"Failed to write updated params to {param_path}: {e}"
             ) from e
 
@@ -181,9 +194,9 @@ def _apply_mode_params(params_spec, rundir: Path, dry_run: bool, hard_fail: bool
         "If disabled, problems are reported as warnings but the command exits successfully."
     ),
 )
-def main(arg1, arg2, rundir_opt, dry_run, hard_fail):
+def set_mode_cli(arg1, arg2, rundir_opt, dry_run, hard_fail):
     """
-    Set a SCHISM run directory into a named MODE by creating configured links.
+    Command Line utility for set_mode.
 
     Usage examples:
 
@@ -192,11 +205,22 @@ def main(arg1, arg2, rundir_opt, dry_run, hard_fail):
       set_mode rundir=/path/to/run tropic
       set_mode --rundir /path/to/run tropic
     """
+    
+    try:
+        main(arg1, arg2, rundir_opt, dry_run, hard_fail)
+    except ModeError as e:
+        raise click.ClickException(str(e)) from e
+    
+def set_mode(arg1, arg2=None, rundir_opt=None, dry_run=False, hard_fail=True):
+    """
+    Set a SCHISM run directory into a named MODE by creating configured links.
+
+    """
     # Resolve run directory and mode name from arguments/options.
     if rundir_opt is not None:
         # --rundir provided: treat ARG1 as mode, do not allow ARG2.
         if arg2 is not None:
-            raise click.ClickException(
+            raise ModeError(
                 "When using --rundir, provide exactly one positional argument (the MODE). "
                 "Example: set_mode --rundir /path/to/run tropic"
             )
@@ -211,7 +235,7 @@ def main(arg1, arg2, rundir_opt, dry_run, hard_fail):
         else:
             # set_mode rundir=/path/to/run MODE
             if not arg1.startswith("rundir="):
-                raise click.ClickException(
+                raise ModeError(
                     "When two positional arguments are given, the first must be of the form "
                     "'rundir=PATH'. Example: set_mode rundir=/path/to/run tropic"
                 )
@@ -223,8 +247,8 @@ def main(arg1, arg2, rundir_opt, dry_run, hard_fail):
     if not rundir.exists() or not rundir.is_dir():
         msg = f"Run directory does not exist or is not a directory: {rundir}"
         if hard_fail:
-            raise click.ClickException(msg)
-        click.echo(f"WARNING: {msg}", err=True)
+            raise ModeError(msg)
+        _warn(msg)
         return
 
     # Load settings and resolve mode.
@@ -238,7 +262,7 @@ def main(arg1, arg2, rundir_opt, dry_run, hard_fail):
     if links is None:
         links = {}
     
-    click.echo(f"Setting mode '{mode_name}' in run directory: {rundir}")
+    _info(f"Setting mode '{mode_name}' in run directory: {rundir}")
 
     any_error = False
 
@@ -250,8 +274,8 @@ def main(arg1, arg2, rundir_opt, dry_run, hard_fail):
         if not source.exists():
             msg = f"Source file does not exist for mode '{mode_name}': {source}"
             if hard_fail:
-                raise click.ClickException(msg)
-            click.echo(f"WARNING: {msg}", err=True)
+                raise ModeError(msg)
+            _warn(msg)
             any_error = True
             continue
 
@@ -262,15 +286,15 @@ def main(arg1, arg2, rundir_opt, dry_run, hard_fail):
                 "Refusing to overwrite."
             )
             if hard_fail:
-                raise click.ClickException(msg)
-            click.echo(f"WARNING: {msg}", err=True)
+                raise ModeError(msg)
+            _warn(msg)
             any_error = True
             continue
 
         if dry_run:
-            click.echo(f"[DRY-RUN] Would link {target} -> {source}")
+            _info(f"[DRY-RUN] Would link {target} -> {source}")
         else:
-            click.echo(f"Linking {target} -> {source}")
+            _info(f"Linking {target} -> {source}")
             create_link(str(source), str(target))
 
     # After links, optionally apply param changes if configured.
@@ -286,13 +310,12 @@ def main(arg1, arg2, rundir_opt, dry_run, hard_fail):
 
     # If we had warnings but not hard failures, still exit 0.
     if any_error and not hard_fail:
-        click.echo(
+        _warn(
             "Completed with warnings (see above). "
             "Use --hard-fail to get a non-zero exit code on such problems.",
-            err=True,
         )
 
 
 
 if __name__ == "__main__":
-    main()
+    main_cli()

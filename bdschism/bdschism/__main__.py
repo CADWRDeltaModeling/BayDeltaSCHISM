@@ -12,7 +12,7 @@ from bdschism.plot_input_boundaries import plot_bds_bc_cli
 from bdschism.analyze_dt import analyze_dt_cli
 from bdschism.runtime_hotstart import restart_from_hotstart_cli
 from bdschism.gen_elev2d import gen_elev2d_cli
-from bdschism.set_mode import main as set_mode_cli
+from bdschism.set_mode import set_mode_cli
 from bdschism.config_cli import config_cli
 #
 import subprocess
