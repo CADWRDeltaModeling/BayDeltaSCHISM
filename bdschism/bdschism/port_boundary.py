@@ -204,7 +204,7 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
     if kwargs is None:
         kwargs = {}
     config = yaml_from_file(config_yaml, envvar=kwargs)
-    plot_dict = {"boundary_list": []}  # For plotting if plot=True
+    plot_dict: dict[str, object] = {"boundary_list": []}  # For plotting if plot=True
 
     # Add config['config'] to kwargs if it exists, with kwargs taking precedence
     if "config" in config:
@@ -282,15 +282,18 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
                 sep="\\s+",
                 comment="#",
             )  # used to manipulate specific columns
-            df = df_in.copy().reindex(df_rng)
+            df_in = df_in.sort_index()
+            df = df_in.reindex(df_rng, method="ffill")
             # Take existing values from the reference file minus the columns to be replaced in csv
             cols_to_replace = source_map.loc[
                 source_map["boundary_kind"] == gbk, "schism_boundary"
             ].tolist()
-            df.iloc[:, ~df.columns.isin(cols_to_replace)] = df_in.iloc[
-                0, ~df_in.columns.isin(cols_to_replace)
+            cols_to_keep = df.columns[~df.columns.isin(cols_to_replace)]
+            df.loc[:, cols_to_keep] = df_in.reindex(df_rng, method="ffill").loc[
+                :, cols_to_keep
             ]
             # enforce integer type else get schism error
+            df[["install", "ndup"]] = df[["install", "ndup"]].ffill().bfill()
             df["install"] = df["install"].astype(int)
             df["ndup"] = df["ndup"].astype(int)
             df = df.resample("D").first()
@@ -299,14 +302,16 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
             schism_gate_files[gbk] = df
 
             # Set out_file_gates entry for boundary_kind
+            gate_suffix = f".{out_file_suffix}" if out_file_suffix else ""
             out_file_gates[gbk] = os.path.join(
-                out_dir, f"{gbk}.{out_file_suffix}.th"
+                out_dir, f"{gbk}{gate_suffix}.th"
             )  # used to write the boundary out
 
     for boundary_kind in boundary_kinds:
 
         source_map_bc = source_map.loc[source_map["boundary_kind"] == boundary_kind]
-        out_file = os.path.join(out_dir, f"{boundary_kind}.{out_file_suffix}.th")
+        boundary_suffix = f".{out_file_suffix}" if out_file_suffix else ""
+        out_file = os.path.join(out_dir, f"{boundary_kind}{boundary_suffix}.th")
 
         if boundary_kind == "flux":
             dd = flux.copy().reindex(df_rng)
