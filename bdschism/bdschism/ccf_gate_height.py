@@ -699,8 +699,10 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev):
     priority, max_height = gen_prio_for_varying_exports(
         sffpx_elev, export_ts_daily_average
     )
-
-    full_path = os.path.abspath(os.path.join("./prio_ts","priority.csv"))
+    prio_dir = "./prio_ts"
+    if not os.path.exists(prio_dir):
+        os.makedirs(prio_dir)
+    full_path = os.path.abspath(os.path.join(prio_dir,"priority.csv"))
     priority.to_csv(full_path,sep=" ",
         header=True,
         float_format="%.3f",
