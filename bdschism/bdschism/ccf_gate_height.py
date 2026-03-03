@@ -349,18 +349,25 @@ def predict_oh4_level(s1, s2, astro_tide_file, sffpx_elev):
     sffpx_subtide = cosine_lanczos(sffpx_elev, cutoff_period="40h")
     sffpx_subtide = sffpx_subtide.resample("15min").ffill()
 
-    oh4_astro = (
-        pd.read_csv(
-            astro_tide_file,
-            parse_dates=True,
-            index_col=0,
-
-            dtype=float,
-            date_format="%Y-%m-%d %H:%M",
-            header=None,
-            sep=",",
+    oh4_astro_raw = pd.read_csv(
+        astro_tide_file,
+        header=None,
+        sep=r"\s+",
+        names=["datetime", "value"],
+        engine="python",
+    )
+    oh4_astro_raw["datetime"] = pd.to_datetime(
+        oh4_astro_raw["datetime"], errors="coerce", format="%Y-%m-%d"
+    )
+    # If time is present in a second column-like token, fall back to generic parsing
+    if oh4_astro_raw["datetime"].isna().any():
+        oh4_astro_raw["datetime"] = pd.to_datetime(
+            oh4_astro_raw["datetime"].astype(str), errors="coerce"
         )
-        .squeeze()
+    oh4_astro = (
+        oh4_astro_raw.dropna(subset=["datetime"])
+        .set_index("datetime")["value"]
+        .astype(float)
         .asfreq("15min")
     )
 
@@ -675,7 +682,7 @@ def gen_gate_height(
     return df, zin_df2
 
 
-def process_height(s1, s2, export, oh4_astro, sffpx_elev):
+def process_height(s1, s2, export, oh4_astro, sffpx_elev, save_intermediate=False):
     """
     Create a ccfb radial gate height time series file
 
@@ -707,15 +714,14 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev):
     priority, max_height = gen_prio_for_varying_exports(
         sffpx_elev, export_ts_daily_average
     )
-    prio_dir = "./prio_ts"
-    if not os.path.exists(prio_dir):
-        os.makedirs(prio_dir)
-    full_path = os.path.abspath(os.path.join(prio_dir,"priority.csv"))
-    priority.to_csv(full_path,sep=" ",
-        header=True,
-        float_format="%.3f",
-        date_format="%Y-%m-%dT%H:%M"
-    )
+
+    if save_intermediate:
+        full_path = os.path.abspath(os.path.join("./prio_ts","priority.csv"))
+        priority.to_csv(full_path,sep=" ",
+            header=True,
+            float_format="%.3f",
+            date_format="%Y-%m-%dT%H:%M"
+        )
     oh4_predict = predict_oh4_level(s1 - margin, s2 + margin, oh4_astro, sffpx_elev)
 
     sim_gate_height, zin_df = gen_gate_height(
