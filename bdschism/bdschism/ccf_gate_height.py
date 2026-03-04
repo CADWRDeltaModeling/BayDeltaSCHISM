@@ -347,17 +347,25 @@ def predict_oh4_level(s1, s2, astro_tide_file, sffpx_elev):
     sffpx_subtide = cosine_lanczos(sffpx_elev, cutoff_period="40h")
     sffpx_subtide = sffpx_subtide.resample("15min").ffill()
 
-    oh4_astro = (
-        pd.read_csv(
-            astro_tide_file,
-            parse_dates=True,
-            index_col=0,
-            dtype=float,
-            date_format="%Y-%m-%d %H:%M",
-            header=None,
-            sep=",",
+    oh4_astro_raw = pd.read_csv(
+        astro_tide_file,
+        header=None,
+        sep=r"\s+",
+        names=["datetime", "value"],
+        engine="python",
+    )
+    oh4_astro_raw["datetime"] = pd.to_datetime(
+        oh4_astro_raw["datetime"], errors="coerce", format="%Y-%m-%d"
+    )
+    # If time is present in a second column-like token, fall back to generic parsing
+    if oh4_astro_raw["datetime"].isna().any():
+        oh4_astro_raw["datetime"] = pd.to_datetime(
+            oh4_astro_raw["datetime"].astype(str), errors="coerce"
         )
-        .squeeze()
+    oh4_astro = (
+        oh4_astro_raw.dropna(subset=["datetime"])
+        .set_index("datetime")["value"]
+        .astype(float)
         .asfreq("15min")
     )
 
