@@ -410,7 +410,7 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
             else:
                 # flux, salt, etc here on:
                 plot_dict["boundary_list"].append(name)
-                if source_kind == "CSV":
+                if source_kind.upper() == "CSV":
                     # Substitute in an interpolated monthly forecast
                     if derived:
                         print(
@@ -435,7 +435,7 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
                             forecast {var}"
                         )
 
-                elif source_kind == "DSS":
+                elif source_kind.upper() == "DSS":
                     # Substitute in CalSim value.
                     if derived:
                         vars_lst = var.split(";")
@@ -474,7 +474,7 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
                         print(f"Updating SCHISM {name} with DSS variable {var}")
                         dfi = read_dss(source_file, pathname=var, p=p)
 
-                elif source_kind == "CONSTANT":
+                elif source_kind.upper() == "CONSTANT":
                     print(f"Updating SCHISM {name} with constant value of {var}")
                     # Simply fill with a constant specified.
                     dd[name] = float(var)
@@ -482,18 +482,22 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
                     dfi = dfi.set_index("datetime")
 
                     dfi[name] = [float(var)] * len(df_rng)
-                if source_kind == "SCHISM":
-                    # Substitute in an interpolated monthly forecast
+                elif source_kind.upper() == "SCHISM":
+                    th = pd.DataFrame()
+                    dfi = read_th(source_file)
+                    vars = var.split(";")
+                    if vars == [""]:
+                        vars = [name] # for the case where we're simply reading in existing SCHISM th
+                    for v in vars:
+                        th[[v]] = dfi[[v]]
+                    dfi = th
+                    schism = dfi.copy()
+
                     if derived:
                         print(
                             f"Updating SCHISM {name} with derived timeseries\
                             expression: {formula}"
                         )
-                        th = pd.DataFrame()
-                        dfi = read_th(source_file)
-                        vars = var.split(";")
-                        for v in vars:
-                            th[[v]] = dfi[[v]]
                         dts = eval(formula).to_frame(name).reindex(df_rng)
                         if interp:
                             dfi = ts_gaussian_filter(dts, sigma=100)
@@ -501,6 +505,11 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
                             dfi = dts
                     else:
                         print("Use existing SCHISM input")
+                elif source_kind == "":
+                    print(f"\nWarning: No source_kind specified for {name}, skipping update for this boundary condition.\n")
+                    continue
+                else:
+                    raise ValueError(f"Unknown source_kind: {source_kind}")
 
             # Maintain the rounding preference of the formula
             if isinstance(formula, str) and "round" in formula:
@@ -520,16 +529,30 @@ def create_schism_bc(config_yaml, plot=False, kwargs=None):
                 elif convert == "EC_PSU":
                     dfi = ec_psu_25c(dfi) * int(sign)
 
-                # Trim dfi so that it starts where schism input file ends, so that dfi doesn't
-                # overwrite any historical data
-                if not overwrite:
-                    dfi = dfi[dfi.index >= dd.index[-1]]
-
+            # Trim dfi so that it starts where schism input file ends, so that dfi doesn't
+            # overwrite any historical data
+            if not overwrite:
+                dfi = dfi[dfi.index >= dd.index[-1]]
+                dd.update(dfi, overwrite=True)
+            else:
                 # Update the dataframe.
                 if isinstance(dfi.index, pd.PeriodIndex):
                     dfi.index = dfi.index.to_timestamp()
+                    
                 dfi.columns = [name]
-                dd.update(dfi, overwrite=True)
+                if not interp and not dfi.empty:
+                    t0 = dfi.index.min()
+                    t1 = dfi.index.max()
+
+                    # rows in dd that are inside [t0, t1] but not present in dfi -> delete
+                    to_drop = dd.index[(dd.index >= t0) & (dd.index <= t1) & (~dd.index.isin(dfi.index))]
+                    dd = dd.drop(index=to_drop)
+
+                    # then update exact matching timestamps
+                    dd.update(dfi)
+                else:
+                    dfi.columns = [name]
+                    dd.update(dfi, overwrite=True)
 
         if out_file:
             # Format the outputs.
