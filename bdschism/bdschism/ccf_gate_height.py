@@ -322,9 +322,10 @@ def sffpx_level(sdate, edate, sf_data_repo, margin=dtm.timedelta(days=30)):
 
     s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
     s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
-    ts_df = read_ts_repo("sffpx", "elev", repo=sf_data_repo, src_priority="infer")
+    
+    ts_df = read_ts_repo("sffpx", "elev", repo=sf_data_repo, src_priority="infer",start=s1-margin,end=s2+margin)
     ts_df_pred = read_ts_repo(
-        "sffpx", "predictions", repo=sf_data_repo, src_priority="infer"
+        "sffpx", "predictions", repo=sf_data_repo, src_priority="infer",start=s1-margin,end=s2+margin
     )
     # Check if missing values and replace with predicted values
     if ts_df.isnull().any().any():
@@ -335,7 +336,8 @@ def sffpx_level(sdate, edate, sf_data_repo, margin=dtm.timedelta(days=30)):
     shift_h = dtm.timedelta(hours=8.5)
     position_shift = int(shift_h / ts_df.index.freq)
     ts_df = ts_df.shift(position_shift)
-    ts_df = ts_df.loc[s1 - margin : s2 + margin]
+    
+    #ts_df = ts_df.loc[s1 - margin : s2 + margin]
     ts_df.columns = ["elev"]
 
     return ts_df
