@@ -206,7 +206,8 @@ def make_links(sdate,edate,config,dest):
             if  directory is None or rel_path is None:
                 raise ValueError(f"Parameter {par} source {label} is missing directory or rel_path.")
             src_str = os.path.join(directory, rel_path.format(year=current.year, month=current.month, day=current.day))
-            
+            if not os.path.exists(src_str):
+                raise ValueError(f"source {src_str} does not exist.")
             link_str = os.path.join(link_dir, f"sflux_{par}_1.{nfile:04d}.nc")
             if not os.path.exists(link_str):
                 op(src_str, link_str)
