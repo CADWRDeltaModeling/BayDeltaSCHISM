@@ -354,6 +354,7 @@ def predict_oh4_level(s1, s2, astro_tide_file, sffpx_elev):
             astro_tide_file,
             parse_dates=True,
             index_col=0,
+
             dtype=float,
             date_format="%Y-%m-%d %H:%M",
             header=None,
@@ -639,10 +640,10 @@ def gen_gate_height(
         height_target = min(11 * math.pow(zup - zin, -0.3) - 0.5, max_h)
 
         if height == 0:
-            ## open smoothly
             relax_n = smooth_steps
         else:
             relax_n = 1
+
         height_step = (height_target - height) / relax_n
 
         for i in range(relax_n):
@@ -661,6 +662,9 @@ def gen_gate_height(
             cvp = cvp_ts.iloc[loc]
             draw_down = draw_down_regression(cvp, qint)
             t += dt
+            ## if time passes the next day, reset the accumulate export
+            if t==tday1:
+                accumulate_export = 0.0
         height = height_target
 
     # Create the DataFrame
