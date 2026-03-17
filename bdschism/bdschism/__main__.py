@@ -15,6 +15,7 @@ from bdschism.runtime_hotstart import restart_from_hotstart_cli
 from bdschism.gen_elev2d import gen_elev2d_cli
 from bdschism.set_mode import set_mode_cli
 from bdschism.config_cli import config_cli
+from bdschism.combine_nc import combine_nc_cli
 #
 import subprocess
 import sys
@@ -79,6 +80,7 @@ cli.add_command(analyze_dt_cli, "analyze_dt")
 cli.add_command(gen_elev2d_cli, "gen_elev2d")
 cli.add_command(set_mode_cli, "set_mode")
 cli.add_command(config_cli, "config")
+cli.add_command(combine_nc_cli, "combine_nc")
 
 
 if __name__ == "__main__":
