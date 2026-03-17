@@ -207,7 +207,7 @@ def set_mode_cli(arg1, arg2, rundir_opt, dry_run, hard_fail):
     """
     
     try:
-        main(arg1, arg2, rundir_opt, dry_run, hard_fail)
+        set_mode(arg1, arg2, rundir_opt, dry_run, hard_fail)
     except ModeError as e:
         raise click.ClickException(str(e)) from e
     
@@ -318,4 +318,4 @@ def set_mode(arg1, arg2=None, rundir_opt=None, dry_run=False, hard_fail=True):
 
 
 if __name__ == "__main__":
-    main_cli()
+    set_mode_cli()
