@@ -25,7 +25,7 @@ import schimpy.param as parms
 from schimpy.schism_structure import SchismStructureIO as Struct
 from schimpy.prepare_schism import get_structures_from_yaml
 from schimpy.schism_input import *
-from schimpy.util.yaml_load import yaml_from_file
+from schimpy.yaml_util import yaml_from_file
 
 from vtools.functions.interpolate import rhistinterp
 from vtools.functions.unit_conversions import CMS2CFS, M2FT
