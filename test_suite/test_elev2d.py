@@ -12,14 +12,24 @@ def test_elev2d_time(sim_dir, params, elev2dfn="elev2D.th.nc"):
     """Reads elev2d.th.nc file and return start date, check against param.nml"""
     elev_df = xr.open_dataset(os.path.join(sim_dir, elev2dfn))
     elev_start = elev_df.time.values[0].astype("M8[ms]").astype(datetime.datetime)
+    elev_end = elev_df.time.values[-1].astype("M8[ms]").astype(datetime.datetime)
     param_start = params.run_start.to_pydatetime()
+    rnday = params["rnday"]
 
     print(f"elev_start: {elev_start}")
     print(f"param_start: {param_start}")
+    print(f"rnday: {rnday}")
+    print(f"elev_end: {elev_start}")
+    elev_rnday = (elev_end - elev_start).total_seconds() / (24 * 3600)
+    print(f"elev_rnday: {elev_rnday}")
 
     assert (
         elev_start == param_start
     ), f"elev2D.th.nc file start time {elev_start.strftime('%Y-%m-%d %H:%M')} does not match the param.nml start time {param_start.strftime('%Y-%m-%d %H:%M')}"
+
+    assert (
+        elev_rnday >= rnday
+    ), f"elev2D.th.nc file end time {elev_end.strftime('%Y-%m-%d %H:%M')} is not consistent with param.nml run duration of {rnday} days (elev2D.th.nc duration is {elev_rnday:.2f} days)"
 
 
 @pytest.mark.prerun
