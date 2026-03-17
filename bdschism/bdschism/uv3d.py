@@ -328,6 +328,224 @@ def interpolate_uv3d_cli(
         overwrite,
     )
 
+def setup_tmp_dir(bg_output_dir, tmp_bg_output_dir, nfile):
+    """Set up a temporary directory with links to the specific output files for uv3d interpolation."""
+
+    print("\n\tOutput files linked:")
+    print(
+        f"\t\t{os.path.join(bg_output_dir, f"out2d_{nfile}.nc")} -> {os.path.join(tmp_bg_output_dir, "out2d_1.nc")}"
+    )
+    print(
+        f"\t\t{os.path.join(bg_output_dir, f"zCoordinates_{nfile}.nc")} -> {os.path.join(tmp_bg_output_dir, "zCoordinates_1.nc")}"
+    )
+    print(
+        f"\t\t{os.path.join(bg_output_dir, f"horizontalVelX_{nfile}.nc")} -> {os.path.join(tmp_bg_output_dir, "horizontalVelX_1.nc")}"
+    )
+    print(
+        f"\t\t{os.path.join(bg_output_dir, f"horizontalVelY_{nfile}.nc")} -> {os.path.join(tmp_bg_output_dir, "horizontalVelY_1.nc")}\n"
+    )
+
+    config.create_link(
+        os.path.join(bg_output_dir, f"out2d_{nfile}.nc"),
+        os.path.join(tmp_bg_output_dir, "out2d_1.nc"),
+    )
+    config.create_link(
+        os.path.join(bg_output_dir, f"zCoordinates_{nfile}.nc"),
+        os.path.join(tmp_bg_output_dir, "zCoordinates_1.nc"),
+    )
+    config.create_link(
+        os.path.join(bg_output_dir, f"horizontalVelX_{nfile}.nc"),
+        os.path.join(tmp_bg_output_dir, "horizontalVelX_1.nc"),
+    )
+    config.create_link(
+        os.path.join(bg_output_dir, f"horizontalVelY_{nfile}.nc"),
+        os.path.join(tmp_bg_output_dir, "horizontalVelY_1.nc"),
+    )
+
+
+def single_uv3d(
+    nfile,
+    param_nml="param.nml",
+    bg_dir="./",
+    bg_output_dir="./outputs",
+    fg_dir="./",
+    hgrid_bg="./hgrid.gr3",
+    hgrid_fg="./hgrid.gr3",
+    vgrid_bg="./vgrid.in.2d",
+    vgrid_fg="./vgrid.in.3d",
+    out_dir="./",
+    overwrite=True,
+    cleanup=True,
+):
+    """
+    Process a single uv3d output file for the specified nfile index.
+    """
+    base_dir = os.path.abspath(bg_dir)
+
+    # Determine outputs directory to link to tmp dir
+    if bg_output_dir is None:
+        if os.path.exists(os.path.join(bg_dir, "outputs.tropic")):
+            bg_output_dir = "../outputs.tropic"
+        elif os.path.exists(os.path.join(bg_dir, "outputs")):
+            bg_output_dir = "../outputs"
+        else:
+            print(
+                f"Invalid path: {bg_output_dir} (Default is outputs.tropic or outputs)"
+            )
+            raise ValueError
+
+    # Create a temporary directory for the single uv3d output file
+    tmp_bg_output_dir = f"./tmp_outputs_{nfile}"
+    os.makedirs(tmp_bg_output_dir, exist_ok=True)
+    print(f"Linking outputs in {tmp_bg_output_dir}...")
+    
+    os.makedirs(out_dir, exist_ok=True)
+
+    try:
+        # Symlink all _{nfile}.nc files from bg_dir outputs to bg_output_dir
+        setup_tmp_dir(bg_output_dir, tmp_bg_output_dir, nfile)
+
+        print("Running interpolate_uv3d...")
+        interpolate_uv3d(
+            param_nml,
+            bg_dir,
+            tmp_bg_output_dir,
+            fg_dir,
+            hgrid_bg,
+            hgrid_fg,
+            vgrid_bg,
+            vgrid_fg,
+            None,
+            1,
+            f"{out_dir}/uv3d_{nfile}.th.nc",
+            overwrite,
+        )
+
+    finally:
+        os.chdir(base_dir)
+        print(f"\nCurrent dir: {os.getcwd()}")
+        if cleanup and os.path.exists(tmp_bg_output_dir):
+            print(f"\nDeleting temporary directory {tmp_bg_output_dir}...")
+            shutil.rmtree(tmp_bg_output_dir)
+
+
+@click.command(
+    help=(
+        "Generate a single uv3d boundary file from one SCHISM output index.\n\n"
+        "Links out2d/zCoordinates/horizontalVel files for one index into a "
+        "temporary folder, runs interpolate_variables, and writes "
+        "uv3d_<NFILE>.th.nc into --out_dir.\n\n"
+        "Example:\n"
+        "  bds uv3d_single 10 --out_dir outputs.tropic/uv3d --overwrite"
+    )
+)
+@click.argument(
+    "nfile",
+    type=int,
+)
+@click.option(
+    "--param",
+    default=None,
+    type=click.Path(exists=True),
+    help="Name of parameter file (default: param.nml in bg_dir).",
+)
+@click.option(
+    "--bg-dir",
+    default=".",
+    type=click.Path(exists=True),
+    help=(
+        "Background simulation directory (e.g., larger or barotropic) "
+        "(default: current directory)."
+    ),
+)
+@click.option(
+    "--bg-output-dir",
+    default=None,
+    type=click.Path(),
+    help="Output directory in background. If None, will try outputs.tropic then outputs.",
+)
+@click.option(
+    "--fg-dir",
+    default=None,
+    type=click.Path(),
+    help=(
+        "Foreground baroclinic run directory used for fg hgrid/vgrid links. "
+        "If None, will use bg_dir."
+    ),
+)
+@click.option(
+    "--hgrid-bg",
+    default="hgrid.gr3",
+    type=click.Path(),
+    help="Name of hgrid.gr3 file in bg_dir, which will be linked to bg.gr3.",
+)
+@click.option(
+    "--hgrid-fg",
+    default="hgrid.gr3",
+    type=click.Path(),
+    help="Name of hgrid.gr3 file in fg_dir, which will be linked to fg.gr3.",
+)
+@click.option(
+    "--vgrid-bg",
+    default="vgrid.in.2d",
+    type=click.Path(),
+    help="Name of the (2D barotropic) vgrid file in bg_dir.",
+)
+@click.option(
+    "--vgrid-fg",
+    default="vgrid.in.3d",
+    type=click.Path(),
+    help="Name of the (3D) baroclinic vgrid file in fg_dir.",
+)
+@click.option(
+    "-o",
+    "--out-dir",
+    default="./",
+    show_default=True,
+    type=click.Path(),
+    help="Directory where the generated uv3d file will be written.",
+)
+@click.option(
+    "--overwrite",
+    is_flag=True,
+    help="Overwrite an existing uv3d output file in output_dir, if present.",
+)
+@click.option(
+    "--cleanup/--no-cleanup",
+    default=True,
+    show_default=True,
+    help="Remove temporary linked files after interpolation.",
+)
+@click.help_option("-h", "--help")
+def single_uv3d_cli(
+    nfile,
+    param,
+    bg_dir,
+    bg_output_dir,
+    fg_dir,
+    hgrid_bg,
+    hgrid_fg,
+    vgrid_bg,
+    vgrid_fg,
+    out_dir,
+    overwrite,
+    cleanup,
+):
+    """Generate one uv3d file for output index NFILE."""
+    single_uv3d(
+        nfile,
+        param,
+        bg_dir,
+        bg_output_dir,
+        fg_dir,
+        hgrid_bg,
+        hgrid_fg,
+        vgrid_bg,
+        vgrid_fg,
+        out_dir,
+        overwrite,
+        cleanup,
+    )
 
 if __name__ == "__main__":
     interpolate_uv3d_cli()

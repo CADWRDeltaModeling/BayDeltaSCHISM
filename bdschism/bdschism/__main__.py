@@ -4,6 +4,7 @@ from bdschism.hotstart_from_hotstart import hotstart_newgrid_cli
 from bdschism.hotstart_date import set_hotstart_date_cli
 from bdschism.hotstart_nudging_data import hotstart_nudge_data_cli
 from bdschism.uv3d import interpolate_uv3d_cli
+from bdschism.uv3d import single_uv3d_cli
 from bdschism.port_boundary import port_boundary_cli
 from bdschism.ccf_gate_height import ccf_gate_cli
 from bdschism.calc_ndoi import calc_indoi_cli
@@ -65,6 +66,7 @@ cli.add_command(hotstart_newgrid_cli, "hot_from_hot")
 cli.add_command(set_hotstart_date_cli, "hot_date")
 cli.add_command(hotstart_nudge_data_cli, "hot_nudge_data")
 cli.add_command(interpolate_uv3d_cli, "uv3d")
+cli.add_command(single_uv3d_cli, "uv3d_single")
 cli.add_command(port_boundary_cli, "port_bc")
 cli.add_command(ccf_gate_cli, "ccf_gate")
 # create_nudging = "schimpy.nudging:main"
