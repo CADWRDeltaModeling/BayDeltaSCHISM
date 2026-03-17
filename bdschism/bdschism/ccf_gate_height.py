@@ -591,6 +591,8 @@ def gen_gate_height(
                 t = tt[-1] + dt
 
             for ttemp, htemp in zip(accumulate_time, relax_height):
+                if ttemp == tday1:
+                    accumulate_export = 0.0
                 loc = export_ts.index.searchsorted(ttemp) - 1
                 export = export_ts.iloc[loc]
                 loc = oh4_level.index.searchsorted(ttemp) - 1
