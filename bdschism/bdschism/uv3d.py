@@ -210,13 +210,13 @@ def interpolate_uv3d(
 
 @click.command(help="Runs interpolate_variables utility to generate uv3d.th.nc.")
 @click.option(
-    "--param_nml",
+    "--param",
     default=None,
     type=click.Path(exists=True),
     help="Name of parameter file (default: param.nml in bg_dir).",
 )
 @click.option(
-    "--bg_dir",
+    "--bg-dir",
     default=".",
     type=click.Path(exists=True),
     help=(
@@ -225,46 +225,46 @@ def interpolate_uv3d(
     ),
 )
 @click.option(
-    "--bg_output_dir",
+    "--bg-output_dir",
     default=None,
     type=click.Path(),
     help="Output directory in background. If None, will try outputs.tropic then outputs.",
 )
 @click.option(
-    "--fg_dir",
+    "--fg-dir",
     default=None,
     type=click.Path(),
     help=(
         "Foreground baroclinic run directory used for fg hgrid/vgrid links. "
-        "If None, will use bg_dir."
+        "If None, will use bg-dir."
     ),
 )
 @click.option(
-    "--hgrid_bg",
+    "--hgrid-bg",
     default="hgrid.gr3",
     type=click.Path(),
-    help="Name of hgrid.gr3 file in bg_dir, which will be linked to bg.gr3.",
+    help="Name of hgrid.gr3 file in bg-dir, which will be linked to bg.gr3.",
 )
 @click.option(
-    "--hgrid_fg",
+    "--hgrid-fg",
     default="hgrid.gr3",
     type=click.Path(),
-    help="Name of hgrid.gr3 file in fg_dir, which will be linked to fg.gr3.",
+    help="Name of hgrid.gr3 file in fg-dir, which will be linked to fg.gr3.",
 )
 @click.option(
-    "--vgrid_bg",
+    "--vgrid-bg",
     default="vgrid.in.2d",
     type=click.Path(),
-    help="Name of the (2D barotropic) vgrid file in bg_dir.",
+    help="Name of the (2D barotropic) vgrid file in bg-dir.",
 )
 @click.option(
-    "--vgrid_fg",
+    "--vgrid-fg",
     default="vgrid.in.3d",
     type=click.Path(),
-    help="Name of the (3D) baroclinic vgrid file in fg_dir.",
+    help="Name of the (3D) baroclinic vgrid file in fg-dir.",
 )
 @click.option(
-    "--interp_template",
+    "--interp-template",
     default=None,
     type=click.Path(),
     help=(
@@ -277,11 +277,12 @@ def interpolate_uv3d(
     default=None,
     type=int,
     help=(
-        "Number of days to process when interp_template is not given. "
+        "Number of days to process when interp-template is not given. "
         "If None, rnday is parsed from param.nml."
     ),
 )
 @click.option(
+    "-o",
     "--output",
     default=None,
     type=click.Path(),
@@ -297,7 +298,7 @@ def interpolate_uv3d(
 )
 @click.help_option("-h", "--help")
 def interpolate_uv3d_cli(
-    param_nml,
+    param,
     bg_dir,
     bg_output_dir,
     fg_dir,
