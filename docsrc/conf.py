@@ -364,6 +364,7 @@ autodoc_mock_imports = [
     "xarray",
     "schimpy",
     "vtools",
+    "dms_datastore",
     "pandas",
     "matplotlib",
     "dynaconf",
