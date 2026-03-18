@@ -24,6 +24,7 @@ import warnings
 import glob
 import os
 
+
 class THWriter(object):
     def __init__(self, path, size, starttime):
         pass
@@ -142,7 +143,6 @@ class NetCDFTHWriter(THWriter):
     required=False,
     help="Scalar sea level rise increment",
 )
-
 @click.argument("files", nargs=-1, type=str, required=False)
 def gen_elev2d_cli(stime, etime, hgrid, outfile, slr, files):
     """
@@ -150,13 +150,13 @@ def gen_elev2d_cli(stime, etime, hgrid, outfile, slr, files):
 
     ============== Example ==================
     > gen_elev2D.py --outfile elev2D.th.nc --stime=2009-03-12 --etime=2010-01-01 9415020_gageheight.csv 9413450_gageheight.csv
-    
+
     > bds gen_elev2d --outfile elev2D.th.nc --hgrid=hgrid.gr3 --stime=2025-8-27 --etime=2026-01-04 --slr 0.0 "/path/to/noaa_pryc1_9415020_elev_*.csv" "path/to/noaa_mtyc1_9413450_elev_*.csv"
     """
     # Default values
     pt_reyes = "pryc1"
     monterey = "mtyc1"
-    
+
     if files:
         if len(files) == 0:
             # Use defaults
@@ -172,26 +172,26 @@ def gen_elev2d_cli(stime, etime, hgrid, outfile, slr, files):
             # Multiple files - separate by station name
             pt_reyes_files = []
             monterey_files = []
-            
+
             for f in files:
-                if 'pryc1' in f.lower() or '9415020' in f:
+                if "pryc1" in f.lower() or "9415020" in f:
                     pt_reyes_files.append(f)
-                elif 'mtyc1' in f.lower() or '9413450' in f:
+                elif "mtyc1" in f.lower() or "9413450" in f:
                     monterey_files.append(f)
-            
+
             pt_reyes = pt_reyes_files if pt_reyes_files else "pryc1"
             monterey = monterey_files if monterey_files else "mtyc1"
-    
+
     return gen_elev2D(hgrid, outfile, pt_reyes, monterey, stime, etime, slr)
 
 
-def _get_data(src, start,end=None):
+def _get_data(src, start, end=None):
     """Get data from file(s) or repository.
-    
+
     Args:
         src: Either a single file path, list of file paths, or station code string
         start: Start time
-        end: End time  
+        end: End time
         tbuf: Time buffer
         bufend: Buffered end time
     """
@@ -212,30 +212,27 @@ def _get_data(src, start,end=None):
                 dfs.append(df)
             # Concatenate and remove duplicates
             out = pd.concat(dfs, axis=0)
-            out = out[~out.index.duplicated(keep='first')]
+            out = out[~out.index.duplicated(keep="first")]
             out = out.sort_index()
             return out
-    
+
     # Handle single file or station code
     if isinstance(src, str) and src.endswith(".csv"):
         try:
-            out = read_noaa(
-                src, start=start, end=end, force_regular=True
-            )
+            out = read_noaa(src, start=start, end=end, force_regular=True)
         except Exception as e:
-            out = read_ts(
-                src, start=start, end=end, force_regular=True
-        )
+            out = read_ts(src, start=start, end=end, force_regular=True)
     else:
         # assume it is from repo
-        if src not in ("pryc1","pt_reyes","mtyc1","monterey"):
+        if src not in ("pryc1", "pt_reyes", "mtyc1", "monterey"):
             raise ValueError(f"Station code {src} not known")
-        if src in ("pryc1","pt_reyes"):
+        if src in ("pryc1", "pt_reyes"):
             src = "pryc1"
-        elif src in ("mtyc1","monterey"):
+        elif src in ("mtyc1", "monterey"):
             src = "mtyc1"
         out = read_ts_repo(src, "elev", start=start)
     return out
+
 
 def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end, slr):
     """Generate elev2D.th or elev2D.th.nc file for Bay-Delta SCHISM model using Point Reyes and Monterey tide data.
@@ -302,7 +299,6 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
     # Data
     print("Reading Point Reyes...")
     pt_reyes = _get_data(pt_reyes_fpath, bufstart, bufend)
-
 
     # --- Add this check for coverage ---
     pt_start = pt_reyes.first_valid_index()
