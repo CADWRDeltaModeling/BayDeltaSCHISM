@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import os
 import click
+from pathlib import Path
 
 
 
@@ -19,30 +20,6 @@ def is_leap_year_manual(year):
 
 
 @click.command(
-    """
-    Create synthetic NARR files from existing hrrr repository by copying and shfiting dates forward by one year
-    to a data folder. Reuslting data files of different year will be saved to correpsoinding folders. If from leap year to non-leap year,
-    Feb 29 data will be skipped. If from non-leap year to leap year, Feb 29 data will be created by copying Feb 28 data and changing date to Feb 29.
-    Parameters
-    ----------
-    sdate : str, required
-        Source Data file start date in format YEAR-MONTH-DAY (e.g., 2020-1-1).
-        If not provided, defaults to run_start_date from config file.
-    edate : str, required
-        Source Data file end date in format YEAR-MONTH-DAY (e.g., 2022-2-2).
-        If not provided, defaults to run_end_date from config file.
-    source_repo : pathlib.Path, required
-        Source folder where existing data files stored.
-    dest_repo : pathlib.Path, required
-        Destination folder where synthetic data files will be put.
-
-    Notes
-    -----
-
-    Examples
-    --------
-    >>> synthetic_copy --source_repo //cnrastore-bdo/modeling_data/atmospheric/atmospheric_hrrr --dest_respo ./synthetic --sdate 2020-1-1 --edate 2020-2-2
-    """
     help=(
         "Create synthetic NARR files from existing hrrr repository by copying and shfiting dates forward by one year \n\n"
         "Example:\n"
@@ -84,8 +61,26 @@ def is_leap_year_manual(year):
 
 
 def main(source_repo, dest_repo, sdate, edate):
+    """
+    Create synthetic NARR files from existing hrrr repository by copying and shifting dates forward by one year
+    to a data folder. Resulting data files of different year will be saved to corresponding folders. If from leap year to non-leap year,
+    Feb 29 data will be skipped. If from non-leap year to leap year, Feb 29 data will be created by copying Feb 28 data and changing date to Feb 29.
+    
+    Parameters
+    ----------
+    sdate : str, required
+        Source Data file start date in format YEAR-MONTH-DAY (e.g., 2020-1-1).
+    edate : str, required
+        Source Data file end date in format YEAR-MONTH-DAY (e.g., 2022-2-2).
+    source_repo : pathlib.Path, required
+        Source folder where existing data files stored.
+    dest_repo : pathlib.Path, required
+        Destination folder where synthetic data files will be put.
 
-   
+    Examples
+    --------
+    >>> synthetic_copy --source_repo //cnrastore-bdo/modeling_data/atmospheric/atmospheric_hrrr --dest_repo ./synthetic --sdate 2020-1-1 --edate 2020-2-2
+    """
 
     ## checkk if dest_repos exists, if not create it
     if not os.path.exists(dest_repo):

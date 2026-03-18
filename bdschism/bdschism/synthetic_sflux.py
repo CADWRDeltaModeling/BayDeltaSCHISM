@@ -16,12 +16,14 @@ Leap-year handling
     * Feb 29 is created by copying Feb 28 and shifting the time one day.
 
 The script also:
+
 - Shifts the xarray Dataset `time` coordinate by +1 year (or +1 year +1 day
   for synthetic Feb 29).
 - Updates `time.attrs["base_date"]` to reflect the new date.
 - Adds provenance attributes:
-    - "creator" = "CA DWR Delta Modeling Section"
-    - "creation_method" = description of what was copied.
+  
+  - "creator" = "CA DWR Delta Modeling Section"
+  - "creation_method" = description of what was copied.
 
 This is intended for creating synthetic “next-year” met forcing when you want
 to reuse a prior year.

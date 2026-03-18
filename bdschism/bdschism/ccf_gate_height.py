@@ -421,20 +421,26 @@ def remove_continuous_duplicates(df, column_name):
     return df[mask]
 
 
-def radial_gate_flow(zdown, zup, height, n=5, width=6.096 * M2FT, zsill=-4.044 * M2FT):
+def radial_gate_flow(zdown, zup, height, n=5, width=None, zsill=None):
     """
     compuate ccf radial gate flow in cubic feet/s
 
     Args:
         n : number of gate opened
-        width: width of the each gate
+        width: width of the each gate (default: 6.096 * M2FT)
         zup: upstream water elevation
-        zill: elevation of gate sill
+        zsill: elevation of gate sill (default: -4.044 * M2FT)
         zdown: downstream water elev
         height: gate opening height
     Returns:
         gate flow in cfs
     """
+    # Set default values here to avoid issues with mocked imports during doc build
+    if width is None:
+        width = 6.096 * M2FT
+    if zsill is None:
+        zsill = -4.044 * M2FT
+    
     if zup < zdown:
         return 0
     d = 0.67  # constant 1
