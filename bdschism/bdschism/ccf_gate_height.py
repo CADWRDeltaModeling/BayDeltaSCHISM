@@ -322,10 +322,22 @@ def sffpx_level(sdate, edate, sf_data_repo, margin=dtm.timedelta(days=30)):
 
     s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
     s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
-    
-    ts_df = read_ts_repo("sffpx", "elev", repo=sf_data_repo, src_priority="infer",start=s1-margin,end=s2+margin)
+
+    ts_df = read_ts_repo(
+        "sffpx",
+        "elev",
+        repo=sf_data_repo,
+        src_priority="infer",
+        start=s1 - margin,
+        end=s2 + margin,
+    )
     ts_df_pred = read_ts_repo(
-        "sffpx", "predictions", repo=sf_data_repo, src_priority="infer",start=s1-margin,end=s2+margin
+        "sffpx",
+        "predictions",
+        repo=sf_data_repo,
+        src_priority="infer",
+        start=s1 - margin,
+        end=s2 + margin,
     )
     # Check if missing values and replace with predicted values
     if ts_df.isnull().any().any():
@@ -336,8 +348,8 @@ def sffpx_level(sdate, edate, sf_data_repo, margin=dtm.timedelta(days=30)):
     shift_h = dtm.timedelta(hours=8.5)
     position_shift = int(shift_h / ts_df.index.freq)
     ts_df = ts_df.shift(position_shift)
-    
-    #ts_df = ts_df.loc[s1 - margin : s2 + margin]
+
+    # ts_df = ts_df.loc[s1 - margin : s2 + margin]
     ts_df.columns = ["elev"]
 
     return ts_df
@@ -440,7 +452,7 @@ def radial_gate_flow(zdown, zup, height, n=5, width=None, zsill=None):
         width = 6.096 * M2FT
     if zsill is None:
         zsill = -4.044 * M2FT
-    
+
     if zup < zdown:
         return 0
     d = 0.67  # constant 1
@@ -678,7 +690,7 @@ def gen_gate_height(
             draw_down = draw_down_regression(cvp, qint)
             t += dt
             ## if time passes the next day, reset the accumulate export
-            if t==tday1:
+            if t == tday1:
                 accumulate_export = 0.0
         height = height_target
 
@@ -722,11 +734,13 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev, save_intermediate=Fals
     )
 
     if save_intermediate:
-        full_path = os.path.abspath(os.path.join("./prio_ts","priority.csv"))
-        priority.to_csv(full_path,sep=" ",
+        full_path = os.path.abspath(os.path.join("./prio_ts", "priority.csv"))
+        priority.to_csv(
+            full_path,
+            sep=" ",
             header=True,
             float_format="%.3f",
-            date_format="%Y-%m-%dT%H:%M"
+            date_format="%Y-%m-%dT%H:%M",
         )
     oh4_predict = predict_oh4_level(s1 - margin, s2 + margin, oh4_astro, sffpx_elev)
 
@@ -774,8 +788,15 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev, save_intermediate=Fals
     help="Path of the SF data. Ex: '//cnrastore-bdo/Modeling_Data/repo/continuous/screened/'",
 )
 @click.option("--plot", default=False, help="Switch to plot the predicted gate height.")
+@click.option(
+    "--save-intermediate",
+    "-si",
+    is_flag=True,
+    default=False,
+    help="If set, intermediate results such as priority time series will be saved to files in the 'prio_ts' directory.",
+)
 @click.help_option("--help", "-h")
-def ccf_gate_cli(sdate, edate, dest, astro_file, export_file, sf_data_repo, plot=False):
+def ccf_gate_cli(sdate, edate, dest, astro_file, export_file, sf_data_repo, plot, save_intermediate):
 
     if sdate is None or edate is None:
         # Get params from param.nml
@@ -785,7 +806,7 @@ def ccf_gate_cli(sdate, edate, dest, astro_file, export_file, sf_data_repo, plot
 
     sffpx_elev = sffpx_level(sdate, edate, sf_data_repo)
 
-    ccf_gate(sdate, edate, dest, astro_file, export_file, sffpx_elev, plot)
+    ccf_gate(sdate, edate, dest, astro_file, export_file, sffpx_elev, plot, save_intermediate)
 
 
 def ccf_gate(
