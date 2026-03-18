@@ -79,6 +79,8 @@ Symlink your vgrid.in file to vgrid.in.3d for baroclinic run and vgrid.in.2d for
 
    The following utilities will automatically look for the barotropic outputs in `outputs.tropic` and the baroclinic outputs in `outputs`. This is not strictly necessary, but it helps avoid confusion and mistakes.
 
+.. _gen_uv3d:
+
 Generate uv3D.th.nc
 ---------------------
 There are two ways to generate the uv3D.th.nc file. Both use the SCHISM utility `interpolate_variables` to interpolate the 2D barotropic velocity output to the 3D grid. 

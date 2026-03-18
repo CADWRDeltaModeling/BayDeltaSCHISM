@@ -148,7 +148,8 @@ def gen_elev2d_cli(stime, etime, hgrid, outfile, slr, files):
     """
     Script to create elev2D.th.nc boundary condition from Point Reyes and Monterey NOAA file
 
-    ============== Example ==================
+    Example Usage:
+    
     > gen_elev2D.py --outfile elev2D.th.nc --stime=2009-03-12 --etime=2010-01-01 9415020_gageheight.csv 9413450_gageheight.csv
 
     > bds gen_elev2d --outfile elev2D.th.nc --hgrid=hgrid.gr3 --stime=2025-8-27 --etime=2026-01-04 --slr 0.0 "/path/to/noaa_pryc1_9415020_elev_*.csv" "path/to/noaa_mtyc1_9413450_elev_*.csv"
