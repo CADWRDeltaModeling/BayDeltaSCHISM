@@ -20,6 +20,14 @@ bdschism.analyze\_dt module
    :undoc-members:
    :show-inheritance:
 
+bdschism.barrier\_status module
+-------------------------------
+
+.. automodule:: bdschism.barrier_status
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 bdschism.calc\_ndoi module
 --------------------------
 
@@ -32,6 +40,30 @@ bdschism.ccf\_gate\_height module
 ---------------------------------
 
 .. automodule:: bdschism.ccf_gate_height
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+bdschism.combine\_hotstart module
+---------------------------------
+
+.. automodule:: bdschism.combine_hotstart
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+bdschism.combine\_nc module
+---------------------------
+
+.. automodule:: bdschism.combine_nc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+bdschism.config\_cli module
+---------------------------
+
+.. automodule:: bdschism.config_cli
    :members:
    :undoc-members:
    :show-inheritance:
@@ -68,6 +100,14 @@ bdschism.generate\_realtime\_elev2d module
    :undoc-members:
    :show-inheritance:
 
+bdschism.generate\_visit\_filelist module
+-----------------------------------------
+
+.. automodule:: bdschism.generate_visit_filelist
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 bdschism.hotstart\_date module
 ------------------------------
 
@@ -88,6 +128,14 @@ bdschism.hotstart\_nudging\_data module
 ---------------------------------------
 
 .. automodule:: bdschism.hotstart_nudging_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+bdschism.nc\_metadata module
+----------------------------
+
+.. automodule:: bdschism.nc_metadata
    :members:
    :undoc-members:
    :show-inheritance:
@@ -148,6 +196,14 @@ bdschism.runtime\_hotstart module
    :undoc-members:
    :show-inheritance:
 
+bdschism.set\_mode module
+-------------------------
+
+.. automodule:: bdschism.set_mode
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 bdschism.set\_nudging module
 ----------------------------
 
@@ -164,10 +220,42 @@ bdschism.settings module
    :undoc-members:
    :show-inheritance:
 
+bdschism.smscg\_log\_2\_schism\_th module
+-----------------------------------------
+
+.. automodule:: bdschism.smscg_log_2_schism_th
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+bdschism.synthetic\_copy module
+-------------------------------
+
+.. automodule:: bdschism.synthetic_copy
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+bdschism.synthetic\_sflux module
+--------------------------------
+
+.. automodule:: bdschism.synthetic_sflux
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 bdschism.three\_point\_linear\_norm module
 ------------------------------------------
 
 .. automodule:: bdschism.three_point_linear_norm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+bdschism.tide module
+--------------------
+
+.. automodule:: bdschism.tide
    :members:
    :undoc-members:
    :show-inheritance:
