@@ -116,3 +116,14 @@ You can search for whatever you want, let's say we want a cactus! You can select
       color_cactus --> white_cactus --> blue_cactus
 
 From the code below you can see that you can change the color of an icon by adding `?color=white` to the end of the img src="" url.
+
+.. code-block:: RST
+    
+   graph LR
+      color_cactus[<span style='display: inline-flex; align-items: center;'><img src='https://api.iconify.design/emojione:cactus.svg' width='20' height='20' style='margin-right: 4px;' /> Colorful Cactus</span>]
+
+      white_cactus[<span style='display: inline-flex; align-items: center;'><img src='https://api.iconify.design/tabler:cactus.svg?color=white' width='20' height='20' style='margin-right: 4px;' /> White Cactus</span>]
+      
+      blue_cactus[<span style='display: inline-flex; align-items: center;'><img src='https://api.iconify.design/tabler:cactus.svg?color=blue' width='20' height='20' style='margin-right: 4px;' /> Blue Cactus</span>]
+
+      color_cactus --> white_cactus --> blue_cactus
