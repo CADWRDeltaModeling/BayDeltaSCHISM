@@ -238,6 +238,20 @@ def _get_data(src, start,end=None):
     return out
 
 def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end, slr):
+    """Generate elev2D.th or elev2D.th.nc file for Bay-Delta SCHISM model using Point Reyes and Monterey tide data.
+
+    Arguments:
+    hgrid_fpath: Path to hgrid file (e.g. hgrid.gr3)
+    outfile: Path to output file (e.g. elev2D.th or elev2D.th.nc)
+    pt_reyes_fpath: Path to Point Reyes data file(s) or station code (e.g. "/path/to/noaa_pryc1_9415020_elev_*.csv")
+    monterey_fpath: Path to Monterey data file(s) or station code (e.g. "path/to/noaa_mtyc1_9413450_elev_*.csv")
+    start: Start time (e.g. "2025-8-27")
+    end: End time (e.g. "2026-01-04")
+    slr: Sea level rise increment in meters (e.g. 0.0)
+
+    Example usage:
+    > gen_elev2D.py --outfile elev2D.th.nc --hgrid=hgrid.gr3 --stime=2025-8-27 --etime=2026-01-04 --slr 0.0 "/path/to/noaa_pryc1_9415020_elev_*.csv" "path/to/noaa_mtyc1_9413450_elev_*.csv"
+    """
     max_gap = 5
     stime = start
     etime = end
