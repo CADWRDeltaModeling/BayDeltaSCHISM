@@ -58,21 +58,47 @@ Note that technically you do not have to have `hotstart.in.nc` or the nudging fi
 
 bctides.in
 ^^^^^^^^^^
+Symlink your bctides file to bctides.in.3d for baroclinic run and bctides.in.2d for barotropic run.
 
 param.nml
 ^^^^^^^^^
+Symlink your param.nml file to param.nml.clinic for baroclinic run and param.nml.tropic for barotropic run.
 
 vgrid.in
 ^^^^^^^^
+Symlink your vgrid.in file to vgrid.in.3d for baroclinic run and vgrid.in.2d for barotropic run.
 
 
+.. note::
+   It's helpful to move your barotropic results before starting the baroclinic run:
+
+   .. code-block:: console
+
+      mv outputs outputs.tropic
+      mkdir -p outputs
+
+   The following utilities will automatically look for the barotropic outputs in `outputs.tropic` and the baroclinic outputs in `outputs`. This is not strictly necessary, but it helps avoid confusion and mistakes.
+
+Generate uv3D.th.nc
+---------------------
+There are two ways to generate the uv3D.th.nc file. Both use the SCHISM utility `interpolate_variables` to interpolate the 2D barotropic velocity output to the 3D grid. 
+The first method is to run the bdschism command line utility `bds uv3d` which runs the interpolation for you with no required arguments.
+
+.. code-block:: console
+    
+    bds uv3d
+
+The second method is to run the bdschism command line utility `bds uv3d_single` which allows you to run the interpolation in batch mode across all output files in the barotropic run. This cuts the time down from potentially hours to minutes. See `this example slurm batch script <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/examples/uv3d_batch/batch_create_uv3d.slurm>`_ for running uv3d in batch mode. After running the batch script you will have a uv3D.th.nc file for each output file (dayly typically) in the barotropic run. You can then use the `bds combine_nc` utility to combine these into a single file for use in the baroclinic run.
+
+.. code-block:: console
+
+    bds combine_nc ./outputs.tropic/uv3d/uv3d_*.th.nc 1 100 -o uv3d.combined.th.nc
+
+For the above example it would combine files 1 through 100 into a single file called uv3d.combined.th.nc. You can then link this to uv3D.th.nc for use in the baroclinic run.
+
+After combining, you can delete the intermediate uv3d files to save space.
 
 
-Run interpolate_variables to get uv3D.th.nc
--------------------------------------------
-
-Move the outputs directory aside
---------------------------------
 
 
 
