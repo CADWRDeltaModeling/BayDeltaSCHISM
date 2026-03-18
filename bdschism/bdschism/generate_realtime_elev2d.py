@@ -11,8 +11,8 @@ import pandas as pd
 import dms_datastore.process_station_variable
 import dms_datastore.download_noaa
 import dms_datastore.read_ts
-import schimpy.gen_elev2d
-import schimpy.separate_species
+from bdschism.gen_elev2d import gen_elev2D
+from vtools.functions.separate_species import separate_species
 
 
 # Commented out the command line arguments for now.
@@ -118,7 +118,7 @@ def main():
     hgrid_fpath = "hgrid.gr3"
     pt_reyes_fpath = "9415020_stitched_noaa.txt"
     monterey_fpath = "9413450_stitched_noaa.txt"
-    schimpy.gen_elev2d.gen_elev2D(
+    gen_elev2D(
         hgrid_fpath,
         fpath_elev2d,
         pt_reyes_fpath,
@@ -154,7 +154,7 @@ def stitch_station(df_cur, df_past, df_pred, t_stitch=None):
         f"{year_to_stich_in_past}-{t_stitch.month}-{t_stitch.day} {t_stitch.hour}:{t_stitch.minute}"
     )
 
-    df_subtidal_past = schimpy.separate_species.separate_species(df_past)[0]
+    df_subtidal_past = separate_species(df_past)[0]
 
     # Add the historial subtidal information to the prediction.
     # - Extra mean tide will be remove below by subtracting the difference at a transition point.
