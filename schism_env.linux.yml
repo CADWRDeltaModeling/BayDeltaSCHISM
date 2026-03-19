@@ -4,7 +4,7 @@ channels:
   - nodefaults               # For predictable behavior, set your conda config
   - cadwr-dms
 dependencies:
-  - python>=3.9, <=3.12     # 3.13 is the highest that pyhecdss supports
+  - python>=3.9,<=3.12     # 3.13 is the highest that pyhecdss supports
   - schimpy>=1.12.1         # Recommended for compatibiltiy with current code
   - vtools3>=3.9.6
   - dms-datastore>=0.1.0
@@ -12,7 +12,7 @@ dependencies:
   - libgdal
   - pyogrio
   - pydelmod
-  - libgfortran=3
+  - libgfortran
   - pandas>=2               # Below here minimum versions are to reduce solve space
   - numpy>=2.0
   - xarray>=2022.11
