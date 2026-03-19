@@ -3,7 +3,7 @@
 from vtools.functions.unit_conversions import CFS2CMS, CMS2CFS
 from vtools.functions.interpolate import rhistinterp
 from vtools.data.vtime import days
-from schimpy.model_time import read_th, is_elapsed
+from schimpy.th_io import read_th, is_elapsed
 from schimpy.th_calcs import calc_net_source_sink
 from schimpy.yaml_util import yaml_from_file
 from bdschism.read_dss import read_dss

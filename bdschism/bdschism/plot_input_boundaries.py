@@ -20,7 +20,7 @@ from schimpy.th_calcs import (
     read_flux,
     struct_open_props,
 )
-from schimpy.model_time import read_th, is_elapsed
+from schimpy.th_io import read_th, is_elapsed
 import schimpy.param as parms
 from schimpy.schism_structure import SchismStructureIO as Struct
 from schimpy.prepare_schism import get_structures_from_yaml

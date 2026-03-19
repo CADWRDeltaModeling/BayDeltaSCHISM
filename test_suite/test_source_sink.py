@@ -10,9 +10,6 @@ from schimpy.schism_source import read_sources
 from vtools import elapsed_datetime, days
 
 
-def read_th(sim_dir, params, fname):
-    df = pd.read_csv(os.path.join(sim_dir, "vsource.th"), index_col=0, sep=r"\s+")
-
 
 @pytest.fixture(scope="module")
 def source_dfs(sim_dir, params):

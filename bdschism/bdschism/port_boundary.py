@@ -8,7 +8,7 @@ from vtools.functions.interpolate import rhistinterp
 from vtools.functions.filter import ts_gaussian_filter
 from vtools.data.vtime import minutes
 from schimpy.yaml_util import yaml_from_file, csv_from_file
-from schimpy.model_time import read_th
+from schimpy.th_io import read_th
 from bdschism.parse_cu import orig_pert_to_schism_dcd_yaml
 from bdschism.plot_input_boundaries import (
     get_observed_data,

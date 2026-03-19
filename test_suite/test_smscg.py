@@ -5,7 +5,7 @@ import os
 import xarray as xr
 import datetime
 from vtools import elapsed_datetime, datetime_elapsed, days
-from schimpy.model_time import read_th
+from schimpy.th_io import read_th
 import pandas as pd
 import numpy as np
 
