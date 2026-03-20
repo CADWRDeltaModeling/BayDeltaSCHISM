@@ -55,7 +55,7 @@ Please email Eli.Ateljevich@water.ca.gov or Kijin.Nam@water.ca.gov. We will try 
 VIMS and Other External Resources
 ---------------------------------
 
-The SCHISM mailing list is very helpful. Online manual and other materials available at [link]
+The SCHISM mailing list is very helpful. Online manual and other materials available at `VIMS' SCHISM page <https://schism-dev.github.io/schism/master/index.html>`_.
 
 
 
