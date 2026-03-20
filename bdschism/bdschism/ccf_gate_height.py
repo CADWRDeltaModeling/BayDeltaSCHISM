@@ -8,7 +8,8 @@ OH4 stage level, and CVP pump rate for a given period.
 """
 import datetime as dtm
 import pandas as pd
-from vtools.functions.unit_conversions import M2FT, FT2M
+from vtools.functions.unit_conversions import M2FT, FT2M, CMS2CFS, CFS2CMS
+from vtools import days
 from dms_datastore.read_ts import read_ts
 from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
@@ -294,7 +295,7 @@ def read_th(fname):
     return df
 
 
-def get_export_ts(s1, s2, flux):
+def get_export_ts_cfs(s1, s2, flux):
     """
       retrieve swp and cvp pumping rate from a SCHISM flux.th
 
@@ -316,47 +317,56 @@ def get_export_ts(s1, s2, flux):
 
     """
     # flux = "//cnrastore-bdo/SCHISM/studies/itp202411/th_files/repo/flux_20241213.th"
-    flux_ts = pd.read_csv(flux, parse_dates=True, index_col=0, sep=r"\s+")
-    swp_ts = flux_ts["swp"][s1:s2] * M2FT * M2FT * M2FT
-    cvp_ts = flux_ts["cvp"][s1:s2] * M2FT * M2FT * M2FT
+    flux_ts = read_th(flux)
+    #flux_ts = pd.read_csv(flux, parse_dates=True, index_col=0, sep=r"\s+")
+    swp_ts = flux_ts["swp"][s1:s2]*CMS2CFS
+    cvp_ts = flux_ts["cvp"][s1:s2]*CMS2CFS
     return swp_ts, cvp_ts
 
 
-def sffpx_level(sdate, edate, sf_data_repo, margin=dtm.timedelta(days=30)):
+import glob
+import os
+import pandas as pd
+from dms_datastore.read_ts import read_ts
+from dms_datastore.read_multi import read_ts_repo
+from vtools import days
 
-    s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
-    s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
+def sffpx_level(sdate, edate, sffpx_datasrc):
+    margin = days(5)
+    s = pd.to_datetime(sdate) - margin
+    e = pd.to_datetime(edate) + margin
 
-    ts_df = read_ts_repo(
-        "sffpx",
-        "elev",
-        repo=sf_data_repo,
-        src_priority="infer",
-        start=s1 - margin,
-        end=s2 + margin,
-    )
-    ts_df_pred = read_ts_repo(
-        "sffpx",
-        "predictions",
-        repo=sf_data_repo,
-        src_priority="infer",
-        start=s1 - margin,
-        end=s2 + margin,
-    )
-    # Check if missing values and replace with predicted values
-    if ts_df.isnull().any().any():
-        print("Missing values detected in SFFPX data. Replacing with predicted values.")
-        ts_df = ts_df.combine_first(ts_df_pred)
+    matches = glob.glob(sffpx_datasrc) if any(ch in sffpx_datasrc for ch in "*?[]") else []
+    is_file_like = os.path.exists(sffpx_datasrc) or len(matches) > 0
 
-    # Shift for SCHISM time zone
-    shift_h = dtm.timedelta(hours=8.5)
-    position_shift = int(shift_h / ts_df.index.freq)
-    ts_df = ts_df.shift(position_shift)
+    if is_file_like:
+        print("Reading sffpx data from file(s):", sffpx_datasrc)
+        sf = read_ts(sffpx_datasrc, start=s, end=e, force_regular=True)
+    else:
+        try:
+            print("Reading sffpx data from repository:", sffpx_datasrc)
+            sf = read_ts_repo(
+                "sffpx",
+                "elev",
+                repo=sffpx_datasrc,
+                start=s,
+                end=e,
+                force_regular=True,
+            )
+        except Exception as exc:
+            print(exc)
+            raise ValueError(
+                f"Could not interpret --sffpx-datasrc={sffpx_datasrc!r} "
+                "as an existing file/pattern or as a repo name for "
+                "read_ts_repo('sffpx', 'elev', repo=...)."
+            ) from exc
 
-    # ts_df = ts_df.loc[s1 - margin : s2 + margin]
-    ts_df.columns = ["elev"]
-
-    return ts_df
+    sf.columns = ["elev"]
+    if sf.isnull().any(axis=None):
+        print("Warning: sffpx data contains NaN values. This may be an attempt to read straight from a repo or web site." \
+              "Please  learn how to acquire a properly vetted and filled series. "
+              "Make sure you understand the severe caveats on SF tidal data particularly in 2024. Vetted and filled series are available")
+    return sf
 
 
 def predict_oh4_level(s1, s2, astro_tide_file, sffpx_elev):
@@ -376,7 +386,7 @@ def predict_oh4_level(s1, s2, astro_tide_file, sffpx_elev):
     return oh4_predicted[s1:s2]
 
 
-def raidal_gate_flow_ts(zdown_ts, zup_ts, height_ts, s1, s2, dt):
+def radial_gate_flow_ts(zdown_ts, zup_ts, height_ts, s1, s2, dt):
 
     t = s1
 
@@ -703,13 +713,13 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev, save_intermediate=Fals
     Returns
     -------
     sim_gate_height : :py:class:`pandas.DataFrame`
-        predicted raidal gate height
+        predicted radial gate height
     zin_df : :py:class:`pandas.DataFrame`
         predicted ccfb interior surface stage.
     """
 
     margin = dtm.timedelta(days=3)
-    export_ts, cvp_ts = get_export_ts(s1 - margin, s2 + margin, export)
+    export_ts, cvp_ts = get_export_ts_cfs(s1 - margin, s2 + margin, export)
     export_ts_daily_average = export_ts.resample("D").mean()
     inside_level0 = 2.12  # in feet
     dt = dtm.timedelta(minutes=2)
@@ -737,61 +747,77 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev, save_intermediate=Fals
 
 
 @click.command(
-    help="Command Line function for generating Clifton Court Forebay gate height from predicted tide and export flows."
+    context_settings={"help_option_names": ["-h", "--help"]},
+    help="Generate Clifton Court Forebay gate height from predicted tide and export flows.",
 )
+
+@click.option("--sdate", default=None, help="Start date, e.g. 2024-04-16.")
+@click.option("--edate", default=None, help="End date, e.g. 2025-01-01.")
 @click.option(
-    "--sdate",
-    default=None,
-    help="Starting date of prediction, must be format like 2018-02-19. If not provided, find from param.nml",
-)
-@click.option(
-    "--edate",
-    default=None,
-    help="End date of prediction, format same as sdate. If not provided, find from param.nml",
-)
-@click.option(
-    "--dest",
+    "--output",
     type=click.Path(),
     default="./ccfb_gate_syn.th",
-    help="Path to store predicted gate height. Ex: './ccfb_gate_syn.th'",
+    show_default=True,
+    help="Output path for predicted gate height.",
 )
 @click.option(
-    "--astro_file",
-    type=click.Path(exists=True),
-    required=True,
-    help="Path of the predicted OH4 astronomic tide in vtide format. Ex: './astro/oh4_15min_predicted_10y_14_25.out'",
-)
-@click.option(
-    "--export_file",
-    type=click.Path(exists=True),
-    required=True,
-    help="Path of SCHISM export th file (flux.th with headers and dates)",
-)
-@click.option(
-    "--sf_data_repo",
+    "--oh4-astro-datasrc",
     type=str,
-    help="Path of the SF data. Ex: 'screened'",
+    required=True,
+    help="OH4 astronomical source: file or pattern.",
 )
-@click.option("--plot", is_flag=True, default=False, help="Switch to plot the predicted gate height.")
+@click.option(
+    "--export-datasrc",
+    type=str,
+    required=True,
+    help="Export source, typically flux.th.",
+)
+@click.option(
+    "--sffpx-datasrc",
+    type=str,
+    required=True,
+    help="SFFPX elevation source: file/pattern or repo name such as screened.",
+)
+@click.option(
+    "--length-unit",
+    type=click.Choice(["ft", "m"], case_sensitive=False),
+    default="ft",
+    show_default=True,
+    help="Output gate-height length unit.",
+)
+@click.option("--plot", is_flag=True, default=False, help="Plot predicted gate height.")
 @click.option(
     "--save-intermediate",
     "-si",
     is_flag=True,
     default=False,
-    help="If set, intermediate results such as priority time series will be saved to files in the 'prio_ts' directory.",
+    help="Save intermediate products such as priority time series.",
 )
-@click.help_option("--help", "-h")
-def ccf_gate_cli(sdate, edate, dest, astro_file, export_file, sf_data_repo, plot, save_intermediate):
-
+def ccf_gate_cli(
+    sdate,
+    edate,
+    output,
+    oh4_astro_datasrc,
+    export_datasrc,
+    sffpx_datasrc,
+    length_unit,
+    plot,
+    save_intermediate,
+):
     if sdate is None or edate is None:
-        # Get params from param.nml
-        params = parms.read_params("param.nml")
-        sdate = params.run_start
-        edate = sdate + dtm.timedelta(days=params["rndays"])
+        raise ValueError("Start date and end date must be provided.")
 
-    sffpx_elev = sffpx_level(sdate, edate, sf_data_repo)
-
-    ccf_gate(sdate, edate, dest, astro_file, export_file, sffpx_elev, plot, save_intermediate)
+    sffpx_elev = sffpx_level(sdate, edate, sffpx_datasrc)
+    ccf_gate(
+        sdate,
+        edate,
+        output,
+        oh4_astro_datasrc,
+        export_datasrc,
+        sffpx_elev,
+        plot,
+        save_intermediate,
+    )
 
 
 def ccf_gate(
@@ -874,22 +900,4 @@ def ccf_gate(
 
 if __name__ == "__main__":
     ccf_gate_cli()
-    # os.chdir(r"/scratch/projects/summer_x2_2025/th_files/project/scripts")
-    # sdate = "2024-04-16"
-    # edate = "2025-01-01"
-    # dest = "../ccfb_gate_syn.2024_noaciton.th"
-    # astro_file = "../../oh4/oh4_15min_predicted_10y_14_25.out"
-    # export_file = "../flux.2024_noaction.th"
-    # sf_data_repo = "../../noaa_sf/"
 
-    # sffpx_elev = sffpx_level(sdate, edate, sf_data_repo)
-
-    # ccf_gate(
-    #     sdate,
-    #     edate,
-    #     dest,
-    #     astro_file,
-    #     export_file,
-    #     sffpx_elev,
-    #     False,
-    # )
