@@ -23,7 +23,6 @@ import math
 import matplotlib.pyplot as plt
 import click
 
-# %% Functions
 
 ccf_A = 91868000  # area of ccf forbay above 0 navd 88 in ft^2
 ccf_reference_level = 2.0  # navd 88 in ft
@@ -99,7 +98,7 @@ def create_priority_series(p1, p2, p3, p4, priority, stime, etime):
     return pgate4
 
 
-def make_3_prio(input_tide, stime, etime, save_intermediate=False):
+def make_priorities(input_tide, stime, etime, save_intermediate=False):
     """
     Function that makes the priorities schedule time series based on the predicted tide at San Francisco.
 
@@ -280,7 +279,7 @@ def gen_prio_for_varying_exports(input_tide, export_df):
     stime = max(wl_df.index[0], stimee)
     etime = min(wl_df.index[-1], etimee)
 
-    tide_lag, p1, p2, p3, p4 = make_3_prio(input_tide, stime, etime)
+    tide_lag, p1, p2, p3, p4 = make_priorities(input_tide, stime, etime)
 
     # export flows to priorities type
     priority = flow_to_priority(export_1day)
@@ -290,7 +289,6 @@ def gen_prio_for_varying_exports(input_tide, export_df):
     max_gate_height = flow_to_max_gate(export_1day).astype("float64")
 
     return priority_df, max_gate_height
-
 
 
 def get_export_ts_cfs(s1, s2, flux):
@@ -316,9 +314,9 @@ def get_export_ts_cfs(s1, s2, flux):
     """
     # flux = "//cnrastore-bdo/SCHISM/studies/itp202411/th_files/repo/flux_20241213.th"
     flux_ts = read_th(flux)
-    #flux_ts = pd.read_csv(flux, parse_dates=True, index_col=0, sep=r"\s+")
-    swp_ts = flux_ts["swp"][s1:s2]*CMS2CFS
-    cvp_ts = flux_ts["cvp"][s1:s2]*CMS2CFS
+    # flux_ts = pd.read_csv(flux, parse_dates=True, index_col=0, sep=r"\s+")
+    swp_ts = flux_ts["swp"][s1:s2] * CMS2CFS
+    cvp_ts = flux_ts["cvp"][s1:s2] * CMS2CFS
     return swp_ts, cvp_ts
 
 
@@ -329,12 +327,15 @@ from dms_datastore.read_ts import read_ts
 from dms_datastore.read_multi import read_ts_repo
 from vtools import days
 
+
 def sffpx_level(sdate, edate, sffpx_datasrc):
     margin = days(5)
     s = pd.to_datetime(sdate) - margin
     e = pd.to_datetime(edate) + margin
 
-    matches = glob.glob(sffpx_datasrc) if any(ch in sffpx_datasrc for ch in "*?[]") else []
+    matches = (
+        glob.glob(sffpx_datasrc) if any(ch in sffpx_datasrc for ch in "*?[]") else []
+    )
     is_file_like = os.path.exists(sffpx_datasrc) or len(matches) > 0
 
     if is_file_like:
@@ -361,9 +362,11 @@ def sffpx_level(sdate, edate, sffpx_datasrc):
 
     sf.columns = ["elev"]
     if sf.isnull().any(axis=None):
-        print("Warning: sffpx data contains NaN values. This may be an attempt to read straight from a repo or web site." \
-              "Please  learn how to acquire a properly vetted and filled series. "
-              "Make sure you understand the severe caveats on SF tidal data particularly in 2024. Vetted and filled series are available")
+        print(
+            "Warning: sffpx data contains NaN values. This may be an attempt to read straight from a repo or web site."
+            "Please  learn how to acquire a properly vetted and filled series. "
+            "Make sure you understand the severe caveats on SF tidal data particularly in 2024. Vetted and filled series are available"
+        )
     return sf
 
 
@@ -373,8 +376,7 @@ def predict_oh4_level(s1, s2, astro_tide_file, sffpx_elev):
     sffpx_subtide = cosine_lanczos(sffpx_elev, cutoff_period="40h")
     sffpx_subtide = sffpx_subtide.resample("15min").ffill()
 
-    oh4_astro = read_ts(astro_tide_file,force_regular=True).squeeze()
-
+    oh4_astro = read_ts(astro_tide_file, force_regular=True).squeeze()
 
     ## linear regression of sffpx sub tide to oh4 sub tide
     oh4_sub_predicted = sffpx_subtide * 0.9620 + 1.1513
@@ -748,7 +750,6 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev, save_intermediate=Fals
     context_settings={"help_option_names": ["-h", "--help"]},
     help="Generate Clifton Court Forebay gate height from predicted tide and export flows.",
 )
-
 @click.option("--sdate", default=None, help="Start date, e.g. 2024-04-16.")
 @click.option("--edate", default=None, help="End date, e.g. 2025-01-01.")
 @click.option(
@@ -898,4 +899,3 @@ def ccf_gate(
 
 if __name__ == "__main__":
     ccf_gate_cli()
-
