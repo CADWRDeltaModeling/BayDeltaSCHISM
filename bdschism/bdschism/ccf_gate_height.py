@@ -8,13 +8,14 @@ OH4 stage level, and CVP pump rate for a given period.
 """
 import datetime as dtm
 import pandas as pd
-from vtools.functions.unit_conversions import M2FT, FT2M, CMS2CFS, CFS2CMS
+from vtools.functions.unit_conversions import M2FT, FT2M, CMS2CFS
 from vtools import days
 from dms_datastore.read_ts import read_ts
 from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
 from vtools.functions.merge import ts_merge
 import schimpy.param as parms
+from schimpy.th_io import read_th
 import numpy as np
 from vtools.functions import tidalhl
 import os
@@ -290,9 +291,6 @@ def gen_prio_for_varying_exports(input_tide, export_df):
 
     return priority_df, max_gate_height
 
-def read_th(fname):
-    df = pd.read_csv(fname, parse_dates=True, index_col=0, sep=r"\s+",comment="#", header=0)
-    return df
 
 
 def get_export_ts_cfs(s1, s2, flux):
