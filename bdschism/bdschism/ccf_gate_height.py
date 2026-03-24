@@ -807,6 +807,12 @@ def ccf_gate_cli(
         raise ValueError("Start date and end date must be provided.")
 
     sffpx_elev = sffpx_level(sdate, edate, sffpx_datasrc)
+    ## shift to match tidal phase at ccfb gate
+    shift_h = dtm.timedelta(hours=8.5)
+    position_shift = int(shift_h / sffpx_elev.index.freq)
+    sffpx_elev = sffpx_elev.shift(position_shift)
+
+
     ccf_gate(
         sdate,
         edate,
