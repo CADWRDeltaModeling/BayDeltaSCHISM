@@ -9,7 +9,7 @@ OH4 stage level, and CVP pump rate for a given period.
 import datetime as dtm
 import pandas as pd
 from vtools.functions.unit_conversions import M2FT, FT2M, CMS2CFS
-from vtools import days
+from vtools import days, hours,minutes
 from dms_datastore.read_ts import read_ts
 from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
@@ -26,7 +26,9 @@ import click
 
 ccf_A = 91868000  # area of ccf forbay above 0 navd 88 in ft^2
 ccf_reference_level = 2.0  # navd 88 in ft
-
+# this is the phase shift to match shiftted sffpx tide used for
+# gate opening priority system used in DSM2
+sffpx_level_shift_h = hours(8)+minutes(30)
 
 def tlmax(arr):
     """return HH(1) or LH (0)"""
@@ -808,7 +810,7 @@ def ccf_gate_cli(
 
     sffpx_elev = sffpx_level(sdate, edate, sffpx_datasrc)
     ## shift to match tidal phase at ccfb gate
-    shift_h = dtm.timedelta(hours=8.5)
+    shift_h = sffpx_level_shift_h
     position_shift = int(shift_h / sffpx_elev.index.freq)
     sffpx_elev = sffpx_elev.shift(position_shift)
 
