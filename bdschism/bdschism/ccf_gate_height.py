@@ -590,7 +590,8 @@ def gen_gate_height(
         loc = max_height.index.searchsorted(t) - 1
         max_h = max_height.iloc[loc]
 
-        if (prio < 1) or (op == 0) or ((zup - zin) < 0.0):
+        #if (prio < 1) or (op == 0) or ((zup - zin) < 0.0):
+        if (prio < 1) or (op == 0) :
             height_target = 0.0
             accumulate_time = []
             relax_height = []
@@ -660,8 +661,11 @@ def gen_gate_height(
             cvp = cvp_ts.iloc[loc]
             draw_down = draw_down_regression(cvp, 0)
             continue
-
-        height_target = min(11 * math.pow(zup - zin, -0.3) - 0.5, max_h)
+        
+        if zup - zin <= 0.0:
+            height_target = max_h
+        else:
+            height_target = min(11 * math.pow(zup - zin, -0.3) - 0.5, max_h)
 
         if height == 0:
             relax_n = smooth_steps
