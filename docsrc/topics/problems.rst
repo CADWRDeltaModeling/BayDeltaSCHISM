@@ -8,11 +8,22 @@ Common Problems and Diagnosis
 Where does SCHISM write error messages?
 ---------------------------------------
 
-My run says "segfault"
+If SCHISM is running and encounters an error, it will write the error message to the `outputs/fatal.error` file. If this file has any content, then you can guarantee the run has failed.
+
+At times you'll get errors in the job submission system (e.g., SLURM) that are not written to the `fatal.error` file. In this case, you can check the job's standard output and error files for any messages.
+
+Common Problems
 ----------------------
 
+SIGSEGV or segmentation fault
+``````````````````````````````
+
+This can be due to low disk space or insufficient memory. On linux use `ulimit -s unlimited` to allow for unlimited stack size. If the problem persists, check the `fatal.error` file for more details.
+
 The runs seems very slow compared to normal
--------------------------------------------
+````````````````````````````````````````````
+
+
 
 Dry boundary
 `````````````
