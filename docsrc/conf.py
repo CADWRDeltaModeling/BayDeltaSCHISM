@@ -362,7 +362,7 @@ autodoc_mock_imports = [
     "rtree",
     "param",
     "xarray",
-    "schimpy",
+    # "schimpy",  # Don't mock - needed for click directives to work
     "vtools",
     "dms_datastore",
     "pandas",
