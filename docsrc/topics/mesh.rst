@@ -1,5 +1,6 @@
 .. |cbox|   unicode:: U+2610
 
+.. _gridding_mesh:
 
 ==============================
 Gridding the Horizontal Mesh
