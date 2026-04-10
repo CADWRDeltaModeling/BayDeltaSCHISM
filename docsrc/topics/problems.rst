@@ -1,8 +1,8 @@
 .. _problems:
 
-#############################
+=============================
 Common Problems and Diagnosis
-#############################
+=============================
 
 At the bottom of this page you'll find tables of common SCHISM error messages and their solutions. 
 
