@@ -1,8 +1,8 @@
 .. _problems:
 
-#############################
+=============================
 Common Problems and Diagnosis
-#############################
+=============================
 
 
 Where does SCHISM write error messages?
