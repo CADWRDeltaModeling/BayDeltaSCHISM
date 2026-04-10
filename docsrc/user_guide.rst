@@ -6,94 +6,51 @@ Bay-Delta SCHISM User Guide
 
 The following topical guides take you through what it takes to set up a basic model run using the Bay-Delta SCHISM toolchain. You won't have action items on all the topics for every run, but the :ref:`Bay-Delta SCHISM Essentials <essentials>` section will get you started on a basic hindcast and the :ref:`Topical Guides <problems>` describe numerous common modeling tasks and where the gotchas are. 
 
-See :ref:`Installation And Getting Started <getstarted>` for programatic setup and basic introductory materials.
+The user guide assumes you have the necessary software and python packages required to follow our workflows. See :ref:`Installation And Getting Started <getstarted>` for programatic setup and basic introductory materials.
 
-.. _essentials:
+.. note::
+  This user guide is meant for someone with a decent amount of modeling knowledge to get going with our Bay-Delta SCHISM model. If you are new to modeling in SCHISM you may want to start with `Hello SCHISM <hello_schism>`_ and then come back to the user guide when you are ready to get going with the Bay-Delta SCHISM model. Of course there are alternate ways to approach the parameterization and setup of the model, but this is the way we have found to be the most efficient and effective for our purposes.
 
-Essentials for Running the Model
----------------------------------
 
-.. toctree::
-  :maxdepth: 3
-  
-  Running a Preprepared Setup <topics/processed_run>
-  topics/overview.rst
-  topics/vignette.rst
-  topics/files_and_directories  
-  topics/preprocess.rst
-  topics/volume.rst
-  
+See Model Essentials for a broad overview of the essential steps and input files, and then see the topical guides for more detailed information on specific modeling tasks and common issues.
 
-________________________
-
-Boundaries & Input Files
---------------------------
-
-This section provides an overview of boundary and input file concepts, with links to the detailed guides below.
-
-.. toctree::
-  :maxdepth: 3
-  :titlesonly:
-
-  topics/baydelta_boundaries.rst
-  topics/ocean.rst
-  topics/flow_boundary.rst
-  topics/atmospheric.rst
-  topics/barotropic.rst
-  topics/param.rst  
-  topics/hotstart.rst
-  topics/nudging.rst
-  topics/vegetation.rst 
-  topics/clifton_court_forebay_gate_operation.rst
-
-Inspection of Model Setup
---------------------------
 .. toctree::
   :maxdepth: 2
   :titlesonly:
+
+  topics/model_essentials.rst
+  
+.. toctree::
+  :maxdepth: 2
+  :titlesonly:
+
+  topics/input_overview
+
+.. toctree::
+  :maxdepth: 2
+  :titlesonly:
+
+  topics/inspection.rst
+
+.. toctree::
+  :maxdepth: 2
+  :titlesonly:
+
+  topics/output.rst 
+
+.. toctree::
+  :maxdepth: 2
+  :titlesonly:
+
+  topics/computing_resources.rst
+
+.. toctree::
+  :maxdepth: 2
+  :titlesonly:
+
+  topics/advanced_tasks.rst 
+
  
-  topics/checklists.rst
-  topics/run_tests.rst
-  
-Output Files
--------------
-.. toctree::
-  :maxdepth: 2
-  :titlesonly:
-
-  topics/output.rst  
-
-________________________
-
-
-Computing Resources
------------------------------
-
-.. toctree::
-  :maxdepth: 4
-
-  topics/hpc.rst
-  topics/azure.rst
-  topics/helloschism_azure.rst
-  topics/bds_guide_azure.rst
-
-
-Advanced Tasks and Concepts
------------------------------
-
-.. toctree::
-  :maxdepth: 2
-  :titlesonly:
-  
-  topics/problems.rst
-  topics/age.rst
-  topics/sea_level_rise.rst
-  topics/sources.rst
-  topics/structures.rst
-  topics/mesh.rst
-  topics/utilities.rst
-  
-  
 
 
 

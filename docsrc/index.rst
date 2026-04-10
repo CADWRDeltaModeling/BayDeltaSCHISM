@@ -4,15 +4,46 @@
    contain the root `toctree` directive.
 
 
-
-
+========================
 Bay-Delta SCHISM Project
 ========================
 
-Welcome. This is home base for the Bay-Delta SCHISM modeling project.
+.. image:: ./_static/logo6.png
+  :width: 70%
+
+Welcome! This is home base for the Bay-Delta SCHISM modeling project.
 
 Bay-Delta SCHISM is an application of the 3D open source `SCHISM <http://ccrm.vims.edu/schismweb/>`_ :cite:p:`zhang_new_2015` :cite:p:`zhang_seamless_2016` hydrodynamic and water quality suite to the San Francisco Bay Delta estuary. The project is a collaboration between the California Department of Water Resources and the Virginia Institute of Marine Sciences (VIMS).
 
+Necessary Software
+------------------
+
+You can find everything you need to know about the necessary software and python packages in `Installation and Getting Started <getstarted>`_. 
+
+User Guide
+-----------
+
+The `User Guide <user_guide>`_ has detailed guides on how to set up and run the model after you have downloaded the required software. The user guide is meant for someone with a decent amount of modeling knowledge to get going with our Bay-Delta SCHISM model. If you are new to modeling in SCHISM you may want to start with `Hello SCHISM <hello_schism>`_ and then come back to the user guide when you are ready to get going with the Bay-Delta SCHISM model.
+
+Learning Resources
+-------------------
+
+The `Learning Resources <learning>`_ has links to training materials and other resources for learning about hydrodynamic modeling with SCHISM. 
+
+Calibration Report and References
+---------------------------------
+
+The `Calibration <calibration>`_ section has information on how we calibrated the model and when, as well as reports on the Bay-Delta SCHISM model and its' applications.
+
+Contributing to the Documentation
+----------------------------------
+
+If you would like to contribute to this website, you can visit the `Documentation section <documentation>`_ to learn about `the best practices for Sphinx <doc_sphinx>`, see some `examples in Sphinx ReStrutured text <doc_sphinx>`_, `Mermaid diagrams and flow charts <doc_mermaid>`_, and `Click documentation principles <doc_click>`_. 
+
+References
+-----------
+
+Finally, the `References <refs>`_ section has links to articles referenced in this website.
 
 Contents
 --------
@@ -24,16 +55,20 @@ Contents
   self
   
 .. toctree::
-  :maxdepth: 1
+  :maxdepth: 2
 
   getmodel
   user_guide
   learning
-  documentation
   calibration
+  documentation
   help
   refs
-  bdschism
+
+.. toctree::
+  :maxdepth: 1
+
+  bdschism python package <bdschism.rst>
 
 
 Independent manual web pages are available for `VTools <http://cadwrdeltamodeling.github.io/vtools3/>`_ and 
