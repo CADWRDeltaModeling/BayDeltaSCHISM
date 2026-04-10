@@ -364,8 +364,7 @@ def sffpx_level(sdate, edate, sffpx_datasrc):
 
     sf.columns = ["elev"]
     if sf.isnull().any(axis=None):
-        print(
-            "Warning: sffpx data contains NaN values. This may be an attempt to read straight from a repo or web site."
+        raise ValueError("Error: sffpx data contains NaN values. This may be an attempt to read straight from a repo or web site."
             "Please  learn how to acquire a properly vetted and filled series. "
             "Make sure you understand the severe caveats on SF tidal data particularly in 2024. Vetted and filled series are available"
         )
