@@ -160,7 +160,7 @@ SCHISM input and output files are described in the `SCHISM manual <https://schis
   * - Water Surface Elevation
     - m (positive up)
     - elev2D.th, elev.ic, uv3D.th.nc
-    - staout_1, out2d_*.nc
+    - staout_1 (water surface elevation), out2d_*.nc
   * - Bathymetry
     - m (positive down)
     - hgrid.gr3
@@ -172,11 +172,11 @@ SCHISM input and output files are described in the `SCHISM manual <https://schis
   * - Salinity
     - PSU
     - SAL_*.th, SAL_nu.nc
-    - salinity_*.nc, staout_6
+    - salinity_*.nc, staout_6 (salinity)
   * - Water Temperature
     - °C
     - TEM_*.th, TEM_nu.nc
-    - temperature_*.nc, staout_5
+    - temperature_*.nc, staout_5 (water temperature)
   * - Generic Tracer
     - 1 (unitless. volumetric fraction)
     - gen_*.th
@@ -192,7 +192,7 @@ SCHISM input and output files are described in the `SCHISM manual <https://schis
   * - Atmospheric pressure
     - Pa (reduced to MSL)
     - sflux_air_1.*.nc
-    - staout_2
+    - staout_2 (air pressure)
   * - Precipitation
     - kg/m²/s (flux)
     - sflux_prc_1.*.nc
