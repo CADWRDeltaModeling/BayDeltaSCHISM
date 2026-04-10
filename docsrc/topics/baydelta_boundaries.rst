@@ -4,6 +4,8 @@ Bay Delta Boundaries
 
 .. _open_boundary_grid:  
 
+The information on these boundaries is accurate as of 2026-4-10, but may be subject to change as we update the model and input files. Please review the current state of the `repository template files <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/templates/bay_delta>`_ as well as `time history data <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/data>`_ for the up-to-date information on the boundaries.
+
 .. figure:: ../img/open_boundaries.png  
    :class: with-border  
    :width: 70%  
