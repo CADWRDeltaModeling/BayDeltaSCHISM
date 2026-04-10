@@ -16,6 +16,11 @@ NAME_MAP = {
     "netCDF4": "netcdf4",
 }
 
+# Packages that must be installed via pip (not available in conda-forge)
+PIP_ONLY = {
+    "sphinxcontrib-xlsxtable",
+}
+
 try:
     import tomllib  # Py>=3.11
 except ModuleNotFoundError:
@@ -42,9 +47,21 @@ def to_conda_name(spec: str) -> str:
     return NAME_MAP.get(name.strip(), name.strip()).lower()
 
 
-pkgs = sorted({to_conda_name(s) for s in docs if s})
-if pkgs:
-    print("Installing docs extras via conda:", pkgs, flush=True)
-    subprocess.check_call(["micromamba", "install", "-y", "-c", "conda-forge", *pkgs])
+all_pkgs = sorted({to_conda_name(s) for s in docs if s})
+conda_pkgs = [p for p in all_pkgs if p not in PIP_ONLY]
+pip_pkgs = [p for p in all_pkgs if p in PIP_ONLY]
+
+if conda_pkgs:
+    print("Installing docs extras via conda:", conda_pkgs, flush=True)
+    subprocess.check_call(["micromamba", "install", "-y", "-c", "conda-forge", *conda_pkgs])
 else:
+    print("No conda packages to install.", flush=True)
+
+if pip_pkgs:
+    print("Installing docs extras via pip:", pip_pkgs, flush=True)
+    subprocess.check_call([sys.executable, "-m", "pip", "install", *pip_pkgs])
+else:
+    print("No pip-only packages to install.", flush=True)
+
+if not all_pkgs:
     print("No [project.optional-dependencies].docs group found; skipping.", flush=True)

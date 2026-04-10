@@ -41,6 +41,7 @@ extensions = [
     "sphinxcontrib.mermaid",
     "sphinx.ext.napoleon",
     "sphinx_click",
+    "sphinxcontrib.xlsxtable",
 ]
 
 bibtex_bibfiles = ["bib/dms_20221119b.bib"]

@@ -9,7 +9,7 @@ OH4 stage level, and CVP pump rate for a given period.
 import datetime as dtm
 import pandas as pd
 from vtools.functions.unit_conversions import M2FT, FT2M, CMS2CFS
-from vtools import days
+from vtools import days, hours,minutes
 from dms_datastore.read_ts import read_ts
 from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
@@ -26,7 +26,9 @@ import click
 
 ccf_A = 91868000  # area of ccf forbay above 0 navd 88 in ft^2
 ccf_reference_level = 2.0  # navd 88 in ft
-
+# this is the phase shift to match shiftted sffpx tide used for
+# gate opening priority system used in DSM2
+sffpx_level_shift_h = hours(8)+minutes(30)
 
 def tlmax(arr):
     """return HH(1) or LH (0)"""
@@ -362,27 +364,23 @@ def sffpx_level(sdate, edate, sffpx_datasrc):
 
     sf.columns = ["elev"]
     if sf.isnull().any(axis=None):
-        print(
-            "Warning: sffpx data contains NaN values. This may be an attempt to read straight from a repo or web site."
+        raise ValueError("Error: sffpx data contains NaN values. This may be an attempt to read straight from a repo or web site."
             "Please  learn how to acquire a properly vetted and filled series. "
             "Make sure you understand the severe caveats on SF tidal data particularly in 2024. Vetted and filled series are available"
         )
     return sf
 
 
-def predict_oh4_level(s1, s2, astro_tide_file, sffpx_elev):
+def predict_oh4_level(s1, s2, oh4_astro_ts, sffpx_elev_ts):
 
-    sffpx = sffpx_elev * M2FT
-    sffpx_subtide = cosine_lanczos(sffpx_elev, cutoff_period="40h")
+    sffpx = sffpx_elev_ts 
+    sffpx_subtide = cosine_lanczos(sffpx, cutoff_period="40h")
     sffpx_subtide = sffpx_subtide.resample("15min").ffill()
-
-    oh4_astro = read_ts(astro_tide_file, force_regular=True).squeeze()
-
     ## linear regression of sffpx sub tide to oh4 sub tide
     oh4_sub_predicted = sffpx_subtide * 0.9620 + 1.1513
     best_shift = -10
     oh4_sub_predicted = oh4_sub_predicted.shift(-best_shift).squeeze()
-    oh4_predicted = oh4_sub_predicted + oh4_astro - oh4_sub_predicted.mean()
+    oh4_predicted = oh4_sub_predicted + oh4_astro_ts - oh4_sub_predicted.mean()
     return oh4_predicted[s1:s2]
 
 
@@ -547,7 +545,7 @@ def gen_gate_height(
         Predicted forebay inside water level time series.
     """
     t = s1
-    relax_period = dtm.timedelta(minutes=6)
+    relax_period = minutes(6)
     smooth_steps = int(relax_period / dt)
     height_ts = []
     tt = []
@@ -571,7 +569,7 @@ def gen_gate_height(
         zin_lst2.append(zin2)
         ztime2.append(t)
         tday = dtm.datetime(*t.timetuple()[:3])
-        tday1 = tday + dtm.timedelta(days=1)
+        tday1 = tday + days(1)
         tleft = tday1 - t
         nleft = int(tleft / dt)
 
@@ -588,7 +586,8 @@ def gen_gate_height(
         loc = max_height.index.searchsorted(t) - 1
         max_h = max_height.iloc[loc]
 
-        if (prio < 1) or (op == 0) or ((zup - zin) < 0.0):
+        #if (prio < 1) or (op == 0) or ((zup - zin) < 0.0):
+        if (prio < 1) or (op == 0) :
             height_target = 0.0
             accumulate_time = []
             relax_height = []
@@ -658,8 +657,11 @@ def gen_gate_height(
             cvp = cvp_ts.iloc[loc]
             draw_down = draw_down_regression(cvp, 0)
             continue
-
-        height_target = min(11 * math.pow(zup - zin, -0.3) - 0.5, max_h)
+        
+        if zup - zin <= 0.0:
+            height_target = max_h
+        else:
+            height_target = min(11 * math.pow(zup - zin, -0.3) - 0.5, max_h)
 
         if height == 0:
             relax_n = smooth_steps
@@ -695,7 +697,7 @@ def gen_gate_height(
     return df, zin_df2
 
 
-def process_height(s1, s2, export, oh4_astro, sffpx_elev, save_intermediate=False):
+def process_height(s1, s2, swp_ts,cvp_ts, oh4_astro_ts, sffpx_elev_ts, save_intermediate=False):
     """
     Create a ccfb radial gate height time series file
 
@@ -705,10 +707,15 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev, save_intermediate=Fals
         start time.
     s2 : :py:class:`datetime.datetime`
         end time.
-    export : str
-        path to SCHISM export th file.
-    oh4_astro : str
-        path to OH4 astronomic tide file .
+    swp_ts : :py:class:`pandas.dataframe`
+        swp export time series.
+    cvp_ts : :py:class:`pandas.dataframe`
+        cvp export time series.
+    oh4_astro_ts : :py:class:`pandas.dataframe`
+        OH4 astronomic tide time series.
+    sffpx_elev_ts : :py:class:`pandas.dataframe`
+        sffpx elevation time series.
+   
 
     Returns
     -------
@@ -718,14 +725,14 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev, save_intermediate=Fals
         predicted ccfb interior surface stage.
     """
 
-    margin = dtm.timedelta(days=3)
-    export_ts, cvp_ts = get_export_ts_cfs(s1 - margin, s2 + margin, export)
-    export_ts_daily_average = export_ts.resample("D").mean()
+    margin = days(3)
+    #export_ts, cvp_ts = get_export_ts_cfs(s1 - margin, s2 + margin, export)
+    export_ts_daily_average = swp_ts.resample("D").mean()
     inside_level0 = 2.12  # in feet
-    dt = dtm.timedelta(minutes=2)
+    dt = minutes(2)
 
     priority, max_height = gen_prio_for_varying_exports(
-        sffpx_elev, export_ts_daily_average
+        sffpx_elev_ts, export_ts_daily_average
     )
 
     if save_intermediate:
@@ -737,10 +744,10 @@ def process_height(s1, s2, export, oh4_astro, sffpx_elev, save_intermediate=Fals
             float_format="%.3f",
             date_format="%Y-%m-%dT%H:%M",
         )
-    oh4_predict = predict_oh4_level(s1 - margin, s2 + margin, oh4_astro, sffpx_elev)
+    oh4_predict = predict_oh4_level(s1 - margin, s2 + margin, oh4_astro_ts, sffpx_elev_ts)
 
     sim_gate_height, zin_df = gen_gate_height(
-        export_ts, priority, max_height, oh4_predict, cvp_ts, inside_level0, s1, s2, dt
+        swp_ts, priority, max_height, oh4_predict, cvp_ts, inside_level0, s1, s2, dt
     )
 
     return sim_gate_height, zin_df
@@ -806,14 +813,21 @@ def ccf_gate_cli(
     if sdate is None or edate is None:
         raise ValueError("Start date and end date must be provided.")
 
-    sffpx_elev = sffpx_level(sdate, edate, sffpx_datasrc)
+    sffpx_elev_ts = sffpx_level(sdate, edate, sffpx_datasrc)
+
+    s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
+    s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
+    margin = days(3)
+    swp_ts, cvp_ts = get_export_ts_cfs(s1 - margin, s2 + margin, export_datasrc)
+    oh4_astro_ts  = read_ts(oh4_astro_datasrc, force_regular=True).squeeze()
     ccf_gate(
-        sdate,
-        edate,
+        s1,
+        s2,
         output,
-        oh4_astro_datasrc,
-        export_datasrc,
-        sffpx_elev,
+        oh4_astro_ts,
+        swp_ts,
+        cvp_ts,
+        sffpx_elev_ts,
         plot,
         save_intermediate,
     )
@@ -823,9 +837,10 @@ def ccf_gate(
     sdate,
     edate,
     dest,
-    astro_file,
-    export_file,
-    sffpx_elev,
+    astro_ts,
+    swp_ts,
+    cvp_ts,
+    sffpx_ts,
     plot=False,
     save_intermediate=False,
 ):
@@ -834,16 +849,20 @@ def ccf_gate(
 
     Parameters
     ----------
-    sdate : str
-        Start date in the format "YYYY-MM-DD".
-    edate : str
-        End date in the format "YYYY-MM-DD".
+    sdate : datetime.datetime
+        Start date .
+    edate : datetime.datetime
+        End date .
     dest : str
         Destination file where the output file will be saved. ex: "ccfb_gate_syn.th"
-    astro_file : str
-        Path to the astronomical data file required for processing.
-    export_file : str
-        Path to the export file used in height processing.
+    astro_ts : pd.DataFrame
+        Astronomical oh4 tide time series required for processing.
+    swp_ts : pd.DataFrame
+        SWP time series required for height processing.
+    cvp_ts : pd.DataFrame
+        CVP time series required for height processing.
+    sffpx_ts : pd.DataFrame
+        SFFPX elevation time series required for height processing.
     plot : bool, optional
         If True, a plot of the predicted gate height will be displayed (default is False).
     save_intermediate : bool, optional
@@ -860,10 +879,13 @@ def ccf_gate(
     The function processes the height data, removes continuous duplicates, and adds additional
     columns for installation, operation, elevation, and width parameters.
     """
-    s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
-    s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
-    oneday = dtm.timedelta(days=1)
-    height, zin = process_height(s1, s2, export_file, astro_file, sffpx_elev)
+
+    ## shift sffpx to match tidal phase at ccfb gate
+    shift_h = sffpx_level_shift_h
+    position_shift = int(shift_h / sffpx_elev.index.freq)
+    sffpx_elev = sffpx_elev.shift(position_shift)
+    oneday = days(1)
+    height, zin = process_height(sdate, edate, swp_ts,cvp_ts, astro_ts, sffpx_ts)
     height_t = remove_continuous_duplicates(height, height.columns.tolist()[0])
     height_t = height_t * FT2M
     height_t.index.name = "datetime"
@@ -877,7 +899,7 @@ def ccf_gate(
     height_t.insert(5, "width", dlen * [6.096])
 
     print(f"Saving predicted gate height file to {dest}")
-    height_t[s1 : s2 + oneday].to_csv(
+    height_t[sdate : edate + oneday].to_csv(
         dest,
         sep=" ",
         header=True,
