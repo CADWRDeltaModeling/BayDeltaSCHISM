@@ -611,8 +611,8 @@ def gen_gate_height(
         loc = max_height.index.searchsorted(t) - 1
         max_h = max_height.iloc[loc]
 
-        #if (prio < 1) or (op == 0) or ((zup - zin) < 0.0):
-        if (prio < 1) or (op == 0) :
+        # if (prio < 1) or (op == 0) or ((zup - zin) < 0.0):
+        if (prio < 1) or (op == 0):
             height_target = 0.0
             accumulate_time = []
             relax_height = []
@@ -682,7 +682,7 @@ def gen_gate_height(
             cvp = cvp_ts.iloc[loc]
             draw_down = draw_down_regression(cvp, 0)
             continue
-        
+
         if zup - zin <= 0.0:
             height_target = max_h
         else:
@@ -845,17 +845,12 @@ def ccf_gate_cli(
     if sdate is None or edate is None:
         raise ValueError("Start date and end date must be provided.")
 
-    sffpx_elev_ts = sffpx_level(sdate, edate, sffpx_datasrc)
+    sffpx_elev = sffpx_level(sdate, edate, sffpx_datasrc)
+    ## shift to match tidal phase at ccfb gate
+    shift_h = sffpx_level_shift_h
+    position_shift = int(shift_h / sffpx_elev.index.freq)
+    sffpx_elev = sffpx_elev.shift(position_shift)
 
-    s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
-    s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
-    margin = days(3)
-    flux_ts = get_flux_ts_cfs(s1 - margin, s2 + margin, export_datasrc)
-    swp_ts = flux_ts["swp"]
-    cvp_ts = flux_ts["cvp"]
-    sjr_ts = flux_ts["sjr"]
-
-    oh4_astro_ts  = read_ts(oh4_astro_datasrc, force_regular=True).squeeze()
 
     ccf_gate(
         s1,
