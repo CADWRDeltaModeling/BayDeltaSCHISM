@@ -1,23 +1,36 @@
 
-===================================
-Grid, Spatial Data and Preprocessor
-===================================
+======================================
+Preprocesing Spatial Data
+======================================
 
-Do I need it? Copy existing run vs preprocess from template?
-------------------------------------------------------------
+This section refers to the use of schimpy's `prepare_schism` utility, which is a powerful preprocessor for preparing the mesh and spatial data for your model run. The preprocessor can be used to apply templates, modify existing runs, and configure input parameters through YAML files. It is a key part of the workflow for setting up and running the Bay-Delta SCHISM model, and is designed to be flexible and user-friendly.
 
+When to use the preprocessor
+-----------------------------
+
+We recommend using the preprocessor whenever you are setting up a new model run, especially if you are making changes to the mesh or spatial inputs. The preprocessor helps ensure that all necessary files are generated correctly and consistently, and can save time and reduce errors compared to manually preparing these files. 
+
+By using the up-to-date template files (found in `BayDeltaSCHISM/templates/bay_delta <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/tree/master/templates/bay_delta>`_), you can be confident that you are using the most current and validated spatial inputs for your model run. The preprocessor also allows you to easily modify and customize these inputs as needed for your specific modeling scenario.
+
+If you already have a model run set up and you're simply changing some of the timeseries inputs (e.g. changing the boundary flows), or if you're just running a simulation from a different start date, you may not need to use the preprocessor. In these cases, you can simply modify the relevant input files directly in the alternative simulation directory (e.g. modifying the flow boundary file or the hotstart file) without needing to run the preprocessor again. However, if you are making changes to the mesh or spatial inputs, or if you're unsure about whether you need to use the preprocessor, it's generally a good idea to run it to ensure that all necessary files are generated correctly.
 
 Running the preprocessor
 ------------------------
 
+The preprocessor is run using the `prepare_schism` command line utility. This utility takes care of running the necessary steps to prepare the mesh and spatial data for your model run based on the configuration specified in your YAML files. It requires one input which is the path to the main YAML configuration file (e.g. `main_bay_delta.yaml`), which contains references to all of the necessary input files and parameters for the preprocessor to generate the required outputs.
+
+.. click:: schimpy.prepare_schism:prepare_schism_cli
+        :prog: prepare_schism
+        :show-nested:
+        
 Applying the template
-^^^^^^^^^^^^^^^^^^^^^
+``````````````````````
 
 Partial preprocessing for modification
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+````````````````````````````````````````
 
 Configuring the input (yaml)
-----------------------------
+``````````````````````````````
 
 
 .. _copyfiles:
