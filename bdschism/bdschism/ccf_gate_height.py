@@ -14,6 +14,7 @@ from dms_datastore.read_ts import read_ts
 from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
 from vtools.functions.merge import ts_merge
+from vtools.functions.coarsen import ts_coarsen
 import schimpy.param as parms
 from schimpy.th_io import read_th
 import numpy as np
@@ -468,6 +469,8 @@ def draw_down_regression(cvp, qin):
 
 
 def simple_mass_balance(export, zup, zin0, height, dt, vt):
+    
+    
 
     qin0 = radial_gate_flow(zin0, zup, height, 5)
     zin_predict = zin0 - (export - qin0) * dt.total_seconds() / ccf_A
@@ -729,7 +732,8 @@ def process_height(s1, s2, swp_ts,cvp_ts, oh4_astro_ts, sffpx_elev_ts, save_inte
     #export_ts, cvp_ts = get_export_ts_cfs(s1 - margin, s2 + margin, export)
     export_ts_daily_average = swp_ts.resample("D").mean()
     inside_level0 = 2.12  # in feet
-    dt = minutes(2)
+    ## vtools time delta deosn't have total_seconds, so we use pandas timedelta here
+    dt = pd.Timedelta(minutes=2)
 
     priority, max_height = gen_prio_for_varying_exports(
         sffpx_elev_ts, export_ts_daily_average
@@ -840,7 +844,7 @@ def ccf_gate(
     astro_ts,
     swp_ts,
     cvp_ts,
-    sffpx_ts,
+    sffpx_elev_ts,
     plot=False,
     save_intermediate=False,
 ):
@@ -861,7 +865,7 @@ def ccf_gate(
         SWP time series required for height processing.
     cvp_ts : pd.DataFrame
         CVP time series required for height processing.
-    sffpx_ts : pd.DataFrame
+    sffpx_elev_ts : pd.DataFrame
         SFFPX elevation time series required for height processing.
     plot : bool, optional
         If True, a plot of the predicted gate height will be displayed (default is False).
@@ -882,11 +886,12 @@ def ccf_gate(
 
     ## shift sffpx to match tidal phase at ccfb gate
     shift_h = sffpx_level_shift_h
-    position_shift = int(shift_h / sffpx_elev.index.freq)
-    sffpx_elev = sffpx_elev.shift(position_shift)
+    position_shift = int(shift_h / sffpx_elev_ts.index.freq)
+    sffpx_elev_ts = sffpx_elev_ts.shift(position_shift)
     oneday = days(1)
-    height, zin = process_height(sdate, edate, swp_ts,cvp_ts, astro_ts, sffpx_ts)
-    height_t = remove_continuous_duplicates(height, height.columns.tolist()[0])
+    height, zin = process_height(sdate, edate, swp_ts,cvp_ts, astro_ts, sffpx_elev_ts)
+    #height_t = remove_continuous_duplicates(height, height.columns.tolist()[0])
+    height_t = ts_coarsen(height, grid="2min",preserve_vals=[0.0],qwidth=0.01,hyst=0.5,heartbeat_freq="60min")
     height_t = height_t * FT2M
     height_t.index.name = "datetime"
     height_t.columns = ["height"]
