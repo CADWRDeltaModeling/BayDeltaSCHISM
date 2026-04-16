@@ -1,3 +1,4 @@
 /config.local
 /tmp
 /cache
+**/2dms/*.2dm
