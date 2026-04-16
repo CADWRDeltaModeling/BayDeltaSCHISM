@@ -1,4 +1,6 @@
-[core]
-    remote = dms_internal
 ['remote "dms_internal"']
     url = \\cnrastore-bdo\SCHISM\mesh_files\_current_version
+['remote "azure"']
+    url = azure://bdschism-dvc/2dms
+    sas_token = sp=racwdli&st=2026-04-16T21:36:44Z&se=2026-04-17T05:51:44Z&spr=https&sv=2025-11-05&sr=c&sig=BhLauFRpPP0akEpAZbLzUbqblEBZNoxfUGO7t1%2F1M4M%3D
+    account_name = dwrmodelingstore

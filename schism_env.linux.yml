@@ -7,7 +7,9 @@ dependencies:
   - python>=3.9,<=3.12     # 3.13 is the highest that pyhecdss supports
   - schimpy>=1.12.1         # Recommended for compatibiltiy with current code
   - vtools3>=3.9.6
-  - dvc                     # for large file management. Required to access grid files
+  - dvc                       # for large file management. Required to access grid files
+  - dvc-s3                    # DVC remote support for S3
+  - dvc-azure                 # DVC remote support for Azure Blob Storage
   - dms-datastore>=0.1.0
   - dynaconf
   - libgdal
