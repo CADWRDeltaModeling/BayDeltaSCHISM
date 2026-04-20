@@ -29,7 +29,8 @@ ccf_A = 91868000  # area of ccf forbay above 0 navd 88 in ft^2
 ccf_reference_level = 2.0  # navd 88 in ft
 # this is the phase shift to match shiftted sffpx tide used for
 # gate opening priority system used in DSM2
-sffpx_level_shift_h = hours(8)+minutes(30)
+#sffpx_level_shift_h = hours(8)+minutes(30)
+sffpx_level_shift_h = minutes(30+8*60)
 
 def tlmax(arr):
     """return HH(1) or LH (0)"""
