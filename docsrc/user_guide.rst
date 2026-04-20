@@ -44,6 +44,7 @@ This section provides an overview of boundary and input file concepts, with link
   topics/hotstart.rst
   topics/nudging.rst
   topics/vegetation.rst 
+  topics/clifton_court_forebay_gate_operation.rst
 
 Inspection of Model Setup
 --------------------------
