@@ -1,0 +1,34 @@
+# The directory and layout may vary, but this is how the Delta Modeling Section lays it out on
+# its high performance computing clusters
+
+env:
+    sflux_root: /scratch/nasbdo/modeling_data/atmospheric
+        
+sflux_specification:   
+   air:
+       - label: NARR
+         directory: "${sflux_root}/NARR_cropped"            
+         rel_path: "{year:4d}_{month:02d}/narr_air.{year:4d}_{month:02d}_{day:02d}.nc"
+         use_after: 2009-01-01                                            # If early spec is out of time window of run it will be skipped
+       - label: HRRR
+         directory: "${sflux_root}/atmospheric_hrrr"
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"          
+         use_after: 2018-01-01
+   rad:
+       - label: NARR
+         directory: "${sflux_root}/NARR_cropped"            
+         rel_path: "{year:4d}_{month:02d}/narr_rad.{year:4d}_{month:02d}_{day:02d}.nc"
+         use_after: 2009-01-01   
+       - label: HRRR
+         directory: "${sflux_root}/atmospheric_hrrr"
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"         # Not real, change to the actual NARR pattern
+         use_after: 2018-01-01   
+   prc:
+       - label: NARR
+         directory: "${sflux_root}/NARR_cropped"             
+         rel_path: "{year:4d}_{month:02d}/narr_prc.{year:4d}_{month:02d}_{day:02d}.nc"
+         use_after: 2009-01-01     
+       - label: HRRR
+         directory: "/scratch/nasbdo/modeling_data/atmosphericatmospheric_hrrr"
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"        # Not real. Change to the actual NARR pattern
+         use_after: 2018-01-01         
