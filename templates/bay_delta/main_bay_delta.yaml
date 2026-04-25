@@ -1,6 +1,6 @@
 # Main input file for default bay_delta template based on version 117 of the mesh
 
-prepro_output_dir: ../prepro_out # where your preprocessor output will go
+prepro_output_dir: ./prepro_out # where your preprocessor output will go
 
 mesh:
   # SMS formatted 2dm file (which will be formatted) or a preexisting SCHISM hgrid.gr3
@@ -135,15 +135,15 @@ sources_sinks:
   sinks:
     include:
     - sink_dcd.yaml
-    # - sink_mss.yaml       # comment out if not using MSS
-    # - sink_nullzone.yaml  # comment out if not using MSS
+    - sink_mss.yaml       # comment out if excluding MSS for legacy reasons
+    - sink_nullzone.yaml  # comment out if excluding MSS for legacy reasons
     - sink_suisun.yaml
   sources:
     include:
     - source_dcd.yaml
-    # - source_mss.yaml     # comment out if not using MSS
+    - source_mss.yaml     # comment out if excluding MSS for legacy reasons
     - source_suisun.yaml
-    # - source_potw.yaml    # comment out if not using MSS
+    - source_potw.yaml    # comment out if excluding MSS for legacy reasons
   outputfile: source_sink.in
 
 vgrid:
@@ -169,8 +169,6 @@ bctides:
 
 
 copy_resources:
-  bctides.in.2d: bctides.in.2d
-  bctides.in.3d: bctides.in.3d
   sflux_inputs.txt: sflux_inputs.txt
   vgrid.in.2d: vgrid.in.2d
   param.nml.clinic: param.nml.clinic
