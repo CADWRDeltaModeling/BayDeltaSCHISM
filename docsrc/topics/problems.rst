@@ -27,6 +27,8 @@ SCHISM Errors & Solutions
 .. csv-table:: SCHISM Error Messages and Solutions
    :file: ../tables/schism_error_solutions.csv
    :header-rows: 1
+   :widths: 20 30 50
+   :class: longtable
    
 SCHISM Utility Errors & Solutions
 ----------------------------------
@@ -34,3 +36,5 @@ SCHISM Utility Errors & Solutions
 .. csv-table:: SCHISM Utility Error Messages and Solutions
    :file: ../tables/schism_utility_errors_solutions.csv
    :header-rows: 1
+   :widths: 15 35 50
+   :class: longtable
