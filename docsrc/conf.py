@@ -363,9 +363,9 @@ autodoc_mock_imports = [
     "param",
     "xarray",
     # "schimpy",  # Don't mock - needed for click directives to work
-    "vtools",
+    # "vtools",
     "dms_datastore",
-    "pandas",
+    # "pandas",
     "matplotlib",
     "dynaconf",
-]
+    "dask",]
