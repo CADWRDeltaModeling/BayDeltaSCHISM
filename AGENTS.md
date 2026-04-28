@@ -1,7 +1,11 @@
 
-# Library relationships
 
-## Dependencies between our projects:
+# Dependencies between our projects:
+
+bdschism is housed inside: https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/. The user guide provides documentation on context for SCHISM
+vtools refers to vtools3: https://github.com/CADWRDeltaModeling/vtools3. 
+schimpy: https://github.com/CADWRDeltaModeling/schimpy
+
 
 | Project         | Depends on                    | Notes                         | Purpose |
 |-----------------|------------------------------|-------------------------------|----------------|
