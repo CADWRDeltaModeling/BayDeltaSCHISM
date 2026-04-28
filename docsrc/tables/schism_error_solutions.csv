@@ -1,0 +1,112 @@
+﻿File with Error,Error Message,Solution/Notes
+\<RUNDIR>\outputs\fatal.error,"0: ABORT:  init: nc dim mismatch,      410577      540011      951102          23           2      410577      540011      951102           2           2  ",The run is looking for 2 dimensions (per the run) and the hotstart file has 3 (23 nVert)
+\<RUNDIR>\outputs\fatal.error,"0: ABORT: init: nc dim mismatch, 459056 547088 1006697 23 2 459056 547088 1006697 23 3",The run is looking for 3 tracers and finding 2 in the hotstart file
+\<RUNDIR>\outputs\fatal.error,122: ABORT: you must have sflux_inputs_file!,"SCHISM wants a file named sflux_inputs.txt under the sflux directory. Contents::
+
+    &sflux_inputs
+    /"
+\<RUNDIR>\outputs\fatal.error,0: ABORT: MISC: elev2D.th.nc,"Ended up being a capitalization issue (my filename was elev2d.th.nc
+
+Could have been that file was missing, run 'gen_elev2d' bdschism utility"
+\<RUNDIR>\outputs\fatal.error, 0: ABORT: STEP: tracer nudging nc(2),"Nudging data has run out. 
+This could be that your obs-coastal run has finished running and you need to restart and switch to coastal only (see `nudging warm-up documentation <https://cadwrdeltamodeling.github.io/BayDeltaSCHISM/topics/nudging.html>`_)"
+\<RUNDIR>\outputs\fatal.error,30: ABORT:  Inconsistent # of nodes at open boundary          13          50 \n 58,"This is an error at the Yolo boundary which has 58 nodes in hgrid but bctides doesn't reflect the correct number of nodes at that boundary. The Yolo boundary is boundary #13 and looks for 50 nodes but finds 58 in hgrid
+
+Solution would be to change 50 to 58 in the bctides.in.2d and 3d files, OR to run the `prepare_schism bctides utility <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/templates/bay_delta/main_bay_delta_bctides.yaml>`_"
+\<RUNDIR>\outputs\fatal.error,0: ABORT: Wind scaling factor must be positive: 200175 -2.00000000000000,"Info from File ``src/Hydro/schism_init.F90``: ``iwindoff = 1`` (needed only if ``nws/=0``; '1' needs ``windfactor.gr3``). Looks like element 200175 and its neighbors have values of -2.000. Use ``convert_polygon`` to convert yaml to shapefile to see ``windfactor.yaml`` polygons in GIS, edit and save. Commands::
+
+    convert_polygons --input windfactor.yaml --output windfactor/windfactor.shp
+    convert_polygons --input windfactor/windfactor.shp --output windfactor/windfactor.yaml
+
+Then copy the edited polygon into the ``windfactor.yaml`` input file to re-run ``prepare_schism main_bay_delta.yaml``."
+\<RUNDIR>\outputs\fatal.error,26: ABORT:  no appropriate time exists for: sflux_air_1                                       time_now =    2454983.33333333      first time available =    2458246.00000000      last time available =    2458484.95833331      got_bracket =  F got_suitable_bracket =  F  ,when make_links_full.py was ran the byear/eyear needs to be set appropriately for the model time period
+\<RUNDIR>\outputs\fatal.error,"  23: ABORT:  STEP: wetted cross section length on open bnd <=0; boundary ndx=           5 , length=  0.000000000000000E+000","Clifton Court Forebay (CCF) is drying out. From ``bctides.in`` you can see that swp is the fifth boundary index. One possible solution is to disable the strict gate operation timeseries based on historical reporting and instead allows the gate to operate on a more ""relaxed"" operational rule in ``hydraulics.in``. A better solution is to run the ``ccf_gate`` utility in bdschism."
+\<RUNDIR>\outputs\fatal.error,"112: ABORT: STEP: wetted cross section length on open bnd <=0; boundary ndx= 14 , length= 0.000000000000000E+000","By looking at bctides you can see that the 14th index is north_bay.
+
+Checking the flux.th for this timestep & the 13th column (no flux for ocean)"
+\<RUNDIR>\outputs\fatal.error,   0: ABORT: step: time_series in elev2D.th.nc (2),elev2d.th.nc has time indices that aren't compatible with the run period being requested in param.nml
+\<RUNDIR>\outputs\fatal.error,"46: ABORT:  MAIN: orphaned block face: 1","This was an issue of a flow line crossing a no-grid space and then entering another new grid element (e.g., when there's a gap between the channel and an island). Needed to modify this line in ``flow_station_xsects.yaml``."
+\<RUNDIR>\outputs\fatal.error,  49: ABORT:  EVAL_CUBIC: Falied to find:           1                     NaN                     NaN                     NaN  ,this turned out to be an issue of vgrid.in.3d not having the appropriate number of layers. Check your minmax layer function that's used in prepare_schism to generate the vgrid.in.3d file. I had some that were 0. This can also be checked with visit looking at nlayer.gr3
+\<RUNDIR>\outputs\fatal.error,"IBILINEAR: no roots / QUICKSEARCH: Cannot find a vert. level:","This stops after running for a while. In ``mirror.out`` you see ``etatot = NaN`` and ``average |eta| = NaN``. Then another timestep starts and you get the fatal.error message (QUICKSEARCH) and if you look into the HPC5 error stdout message you see IBILINEAR. Solution: The model has blown up, check for small/tiny cells."
+\<RUNDIR>\outputs\fatal.error, 82: ABORT:  Check block nodes (0):,"Possible causes: (1) hotstart file wasn't made for this grid - need to re-run hotstart; (2) error arises in ``schism_init.f90`` within the ``hydraulics.in`` handling - checking structures, the ``hydraulics.in`` was for a different grid, replace with updated grid; (3) space between Grantline partial and barrier (no mesh type/blank) was accidentally included as a mesh element."
+\<RUNDIR>\outputs\fatal.error,86: ABORT:  STEP: wrong sign vsink           1           1  1.9980000E-02  9.9900002E-03,"vsink needs to have a negative sign at all times. Even zeros need to be ""-0"""
+\<RUNDIR>\outputs\fatal.error,0: ABORT: MISC: uv3D.th dt wrong,The time variable in uv3D.th is not correct. be sure your param.nml aligns with the gen_uv3d output
+\<RUNDIR>\outputs\fatal.error,21: ABORT: Left out horizontal flux (3): 173 2,"Check that the uv3D.th file is large enough (should be hundreds of MBs). If it's not large, then your interpolate_variables or gen_uv3d command did not succeed"
+\<RUNDIR>\outputs\fatal.error,166: ABORT: INIT: ntrs(3)<=0,"This was an issue of calling the wrong SCHISM binaries. The error happened when I called pschism_PREC_EVAP_GOTM_GEN_TVD-VL and should've ran pschism_PREC_EVAP_GOTM_TVD-VL
+
+SCHISM is looking for three tracers (Salinity, temperature, and a generic tracer) and is not finding an initializaiton designation."
+\<RUNDIR>\outputs\fatal.error,107: ABORT: Impossible 82: 10848.9750000000,"This issue arises from when I'm trying to run a hotstart from the staout files. 
+
+I think this was because the nsteps_from_cold wasn't correct. There was a mismatch between time and nsteps_from_cold and iths. Once those were fixed and it was a proper multiple of ihot step and step_nu_tr then it worked."
+\<RUNDIR>\outputs\fatal.error,0: ABORT: MISC: elev time_series2,???
+\<RUNDIR>\outputs\fatal.error,0: ABORT: INIT: illegal sav\_: 48412 2.000000000000000E-002 -957.588019930000,The sav\_*.yaml files might not have been suitable for your grid. Check for extreme values interpolated from -999 (NA)
+\<RUNDIR>\outputs\fatal.error,0: ABORT: wtiminc < dt,This had to do with the analysis module
+\<RUNDIR>\outputs\fatal.error,51: ABORT: Tr. obc nudging factor wrong: 3.00000000000000 1,"This is with a run using generic tracers (``pschism_PREC_EVAP_GOTM_GEN_TVD-VL``) and no nudging was specified for the generic tracer (see `schism source code <https://github.com/schism-dev/schism/blob/d7f164537830b703074ec08094f26fd4d4eee8e6/src/Hydro/schism_init.F90#L2592>`_). Issue: for the tracers, if there's a constant value there also has to be a relax value. Example::
+
+    3 0 1 1 2 2 ! coyote
+    1.
+    0.074318
+    1.
+    0. ! Generic Tracer Concentration
+    ! Generic Tracer Relax"
+\<RUNDIR>\outputs\fatal.error,0: ABORT: Check tracer_nudge.gr3,"Could be mismatch of ``hgrid`` and ``gr3``. Trying to just make an empty ``GEN_nudge.gr3`` didn't work. The issue is that the number of elements in ``hgrid.gr3`` doesn't match that in ``{TRACER}_nudge.gr3``. Need to re-run ``create_nudging``. Check with ``head hgrid.gr3``."
+\<RUNDIR>\outputs\fatal.error,0: ABORT: MISC: vsource.th start time wrong,
+\<RUNDIR>\outputs\fatal.error,0: ABORT: init: nc time1,something is wrong with the initialization of the hotstart.nc file. Try recombining hotstarts and resubmitting simulation
+\<RUNDIR>\outputs\fatal.error,260: ABORT: STEP: station elev error 136 -6.7100000000000000,"From ``schism_step.f90``: the code indicates the station is wet, but ``k0=0``. From ``station.in``: ``136 578096.00 4151478.40 -6.71 ! dumbr upper ""San Francisco Bay at Old Dumbarton Bridge""``. This looks like a wet/dry issue or elevation problem, but the lines in question can do a calculation for any healthy state. This is caused by a NaN or an OS/MPI breakdown. Check the tail of your ``mirror.out`` file for ``etatot`` and look for infinite/NaN values. Otherwise run ``combine_hotstart --latest``."
+\<RUNDIR>\outputs\fatal.error,63: ABORT: init: hotstart.nc not found,"The odd thing is the ``hotstart.nc`` is RIGHT THERE. Check if it's corrupted with ``ncdump -h hotstart.nc``."
+<RUNDIR>\outputs\fatal.error,2: ABORT:  EQSTATE: Impossible dry (7):               -Infinity                Infinity           1       50225,"This was after running the barotropic then running the baroclinic model from an interpolated ``uv.3d.th``. Likely an issue with hotstart builds. Try updating schimpy post version 1.15.0 and re-running hotstart script. Check ``nlayer.gr3`` in VisIt and see if there are any cells with 0 layers. This can be a result of a bad ``minmaxlayer.shp`` file."
+"Batch Job Submission:
+\<RUNDIR>\*.log",0: ABORT: MSGP: need at least 1 compute process,"Likely an mpi issue. Check your job submission files for tasks, nodes, etc."
+"Batch Job Submission:
+\<RUNDIR>\*.log","forrtl: severe (24): end-of-file during read, unit 251, file …../simulations/suisun_lhc_1/.//outputs/staout_1","This typically means that the ``staout_1`` file doesn't extend to the timestep that's being set in ``hotstart.nc``. Check: (1) that ``station.in`` station numbers match length of ``staout_*`` files; (2) that ``param.nml`` is correct. This ended up being an issue that the ``param.nml`` was for the barotropic which has a different ``nspool_sta`` and is looking for a different output from ``staout_*``."
+"Batch Job Submission:
+\<RUNDIR>\*.log","forrtl: severe (24): end-of-file during read, unit 9, file .../schism/azure_dsp_2024_lhc_v3/simulations/cache_lhc_5/.//outputs/flux.out
+Image              PC                Routine            Line        Source
+pschism_PREC_EVAP  00000000006BDB73  Unknown               Unknown  Unknown
+pschism_PREC_EVAP  000000000059E52B  other_hot_init\_           222  misc_subs.F90
+pschism_PREC_EVAP  0000000000483A33  schism_init\_             7029  schism_init.F90
+pschism_PREC_EVAP  00000000004102FE  MAIN\_\_                    112  schism_driver.F90
+pschism_PREC_EVAP  000000000041012D  Unknown               Unknown  Unknown
+libc-2.28.so       000014E681019D85  __libc_start_main     Unknown  Unknown
+pschism_PREC_EVAP  000000000041004E  Unknown               Unknown  Unknown
+srun: error: cn01: task 0: Exited with exit code 24","This is typically due to the ``flux`` file not being long enough for the requested hotstart date. This can be a result of a cloud service not copying out the ``flux.out`` file as needed and being short of the hotstart file generated. Evaluate the ``flux.out`` and ``staout`` files to find the appropriate timestep to create a hotstart from."
+"Batch Job Submission:
+\<RUNDIR>\*.log","forrtl: severe (59): list-directed I/O syntax error, unit 32, file …./schism/roundtrip/suisun-suisun/.//fluxflag.prop",Need to make sure the fluxflag.prop matches your hgrid.gr3
+"Batch Job Submission:
+\<RUNDIR>\<RUNNAME>.e<RUNNUMBER>
+(ex: \v111_noage.e2568)","forrtl: severe (59): list-directed I/O syntax error, unit 51, file …./if_202211_agelessdemo/.//flux.th","Change ``flux.th`` filename to ``flux_datetime.th`` using ``model_time to_elapsed --start '2009-5-1' flux_datetime.th --out flux.th``. Do the same with ``salt.th`` and ``temp.th``."
+"Batch Job Submission:
+\<RUNDIR>\<RUNNAME>.e<RUNNUMBER>
+(ex: \v111_noage.e2568)","forrtl: severe (29): file not found, unit 3011, file ….././/¡9‰A_tra¡9‰Aulve¡9‰A    ¡9‰A.th","Not positive that this is the solution, but this error arose when I was running baroclinic after the internal obs nudging period was done, and the TEM/SAL_nu_roms.nc files with ROMS only files may have been corrupted. I think my machine restarted while writing those files. So I re-created them and this resolved the issue."
+"Batch Job Submission:
+\<RUNDIR>\<RUNNAME>.e<RUNNUMBER>
+(ex: \v111_noage.e2568)","forrtl: severe (29): file not found, unit 9, file …./schism_repos/if_202212_jonesdemo/.//outputs/flux.out","The simulation must be a hot start run, ihot = 2 in param.nml, because it's looking for flux.out to build on.
+
+The error message suggests that flux.out  under outputs  is not found. A hot start run needs a few output files from a previous run. One of them is flux.out , a flow output file."
+"Batch Job Submission:
+\var\spool\mail\<USERNAME>","PBS Job Id: 2564.hpc4
+Job Name:   v111_noage
+Post job file processing error; job 2564.hpc4 on host cn01",Storage issue on HPC4
+"Batch Job Submission:
+\var\spool\mail\<USERNAME>","PBS Job Id: 2569.hpc4
+Job Name:   v111_noage
+Execution terminated
+Exit_status=255",See next error
+"Batch Job Submission:
+console","qsub: directive error: -M <email_address>, <username>@localhost","This could be that your ``launch.pbs`` file has some errors. Example fix::
+
+    # Change the number of cores you want to use.
+    # This needs to agree with what you are asking above in the PBSPro setting.
+    n_cores=144
+    cd $PBS_O_WORKDIR
+    module load schism/5.10_intel2022.1
+    mpiexec --rsh=ssh -n $n_cores bash ./schism.sh"
+"Batch Job Submission:
+console","Job id            Name             User              Time Use S Queue
+----------------  ---------------- ----------------  -------- - -----
+2984.hpc4         v112_RAL_pAge_T  <username>                 0 Q workq","Won't leave this condition, Q=""queued"". Fix by running ``ulimit -s unlimited``. When that won't work, check that the number of nodes in ``launch.pbs`` is appropriate for the machine you're on. For HPC4: ``#PBS -l select=6:ncpus=24:mpiprocs=24``."
+"Batch Job Submission:
+console (from qstat)","Job id            Name             User              Time Use S Queue
+----------------  ---------------- ----------------  -------- - -----
+3424.hpc4         DSP_baseline_20  <username>          00:00:02 R workq","Stuck on this with no progress in ``mirror.out`` or any error messages elsewhere. Run ``qdel`` on the job, then check ``.e3424`` error messages (in this case it couldn't find the ``hgrid.gr3`` file)."
+not noted,[vsource.th missing],"Need a vsource.th file. Check if your file is mis-named, or if you need to generate the elapsed file."

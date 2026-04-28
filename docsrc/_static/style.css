@@ -34,6 +34,36 @@ a:hover {
     white-space: normal;
 }
 
+/* Ensure tables fit within page width */
+.wy-table-responsive {
+    overflow-x: visible !important;
+}
+
+.wy-table-responsive table {
+    table-layout: fixed;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+/* Force word wrapping in long text cells */
+.wy-table-responsive table td {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+/* Specific styling for longtable class */
+.longtable {
+    table-layout: fixed !important;
+    width: 100% !important;
+}
+
+.longtable td, .longtable th {
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+}
+
 /* Right-align first column in selected tables */
 .wy-table-responsive table.right-align-first-col td:first-child,
 .wy-table-responsive table.right-align-first-col th:first-child {
