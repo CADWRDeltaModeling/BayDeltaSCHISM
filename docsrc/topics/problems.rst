@@ -38,13 +38,13 @@ This most often appears in Clifton Court and in the Yolo Toedrain boundaries. Th
 SCHISM Errors & Solutions
 --------------------------
 
-.. xlsx-table:: SCHISM Error Messages and Solutions
-   :file: ../tables/schism_error_solutions.xlsx
+.. csv-table:: SCHISM Error Messages and Solutions
+   :file: ../tables/schism_error_solutions.csv
    :header-rows: 1
    
 SCHISM Utility Errors & Solutions
 ----------------------------------
 
-.. xlsx-table:: SCHISM Utility Error Messages and Solutions
-   :file: ../tables/schism_utility_errors_solutions.xlsx
+.. csv-table:: SCHISM Utility Error Messages and Solutions
+   :file: ../tables/schism_utility_errors_solutions.csv
    :header-rows: 1

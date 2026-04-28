@@ -43,7 +43,6 @@ doc = [
     "sphinx-argparse",
     "sphinxcontrib-bibtex",
     "sphinxcontrib-mermaid",
-    "sphinxcontrib-xlsxtable",
     "myst-parser",
 	"ghp-import",
 	"ipython",

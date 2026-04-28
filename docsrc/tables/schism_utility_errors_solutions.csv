@@ -1,0 +1,78 @@
+﻿Function,Error Message,Solution/Notes
+??,FutureWarning: '+init=<authority>:<code>' syntax is deprecated. '<authority>:<code>' is the preferred initialization method.,??
+combine_hotstart7,"forrtl: severe (24): end-of-file during read, unit -5, file Internal List-Directed Read
+Image              PC                Routine            Line        Source
+combine_hotstart7  000000000041BCF9  for__io_return        Unknown  Unknown
+combine_hotstart7  0000000000436CEC  for_read_int_lis\_     Unknown  Unknown
+combine_hotstart7  00000000004359F3  for_read_int_lis      Unknown  Unknown
+combine_hotstart7  0000000000416CDC  Unknown               Unknown  Unknown
+combine_hotstart7  000000000040B482  Unknown               Unknown  Unknown
+combine_hotstart7  000000000040B3A2  Unknown               Unknown  Unknown
+libc-2.17.so       00002AE015D983D5  __libc_start_main     Unknown  Unknown
+combine_hotstart7  000000000040B2A9  Unknown               Unknown  Unknown","Need to go to ``/home/<USERNAME>/schism_build/src/Utility/Combining_Scripts/combine_hotstart7.f90`` to get command below to compile ``combine_hotstart7``::
+
+    ifort -O2 -cpp -CB -mcmodel=medium -assume byterecl -g -traceback -o combine_hotstart7.exe ../UtilLib/argparse.f90 combine_hotstart7.f90 -I$NETCDF/include -I$NETCDF_FORTRAN/include -L$NETCDF_FORTRAN/lib -L$NETCDF/lib -lnetcdf -lnetcdff
+
+Note that your ``NETCDF`` and ``NETCDF_FORTRAN`` variables need to be set in your ``.bash_profile`` file in ``/home/<USERNAME>`` and then run ``source <PATH>/.bash_profile``."
+combine_hotstart7,combine_hotstart7.exe: error while loading shared libraries: libnetcdf.so.13: cannot open shared object file: No such file or directory,Restart shell and reload module
+combine_hotstart7,"forrtl: severe (29): file not found, unit 10, file SIMULATIONDIR/outputs/local_to_global_000000
+Image PC Routine Line Source 
+combine_hotstart7 0000000000426F7C Unknown Unknown Unknown
+combine_hotstart7 000000000040C569 combine_hotstart7 83 combine_hotstart7.f90
+combine_hotstart7 000000000040C0AB MAIN\_\_ 35 combine_hotstart7.f90
+combine_hotstart7 000000000040BFCD Unknown Unknown Unknown
+libc-2.28.so 00001532DA1ACD85 __libc_start_main Unknown Unknown
+combine_hotstart7 000000000040BEEE Unknown Unknown Unknown","This is an issue with Azure not uploading the blob ``./outputs`` contents to the compute node. In essence, the compute node wasn't able to allocate enough memory to start the job correctly."
+combine_hotstart7,"istep= 751200
+Global quantities: 456254 380408 837202
+nvars= 0 32764
+static info: 1.929871795483076E-316 0 0 -1827807652
+pre- and post-comb conflict",For me this was an issue that I was asking for a hotstart from a timestep that didn't exist.
+combine_hotstart7,"combine_hotstart7 --iteration 801600
+istep=      801600
+Global quantities:      565229      470472     1036261
+nvars=          21          14
+static info:   72144000.0000000           801600           1      340800
+last dim wrong:           5           0        1574        2412","From ``combine_hotstart7.f90``::
+
+    if(idims(dimids(ndims))/=npse_lcl) then
+        print*, 'last dim wrong:',m,irank,npse_lcl,idims(dimids(ndims))
+        stop
+    endif
+
+The problem: Variable #5 in rank 0's hotstart file has ``nResident_elem`` (2412) as its last dimension when it should have ``nResident_side`` (1574). I tried just marching back in hotstarts until I did not get this error."
+"gen_elev2d
+(bdschism)",ValueError: pt_reyes has gaps larger than fill limit,"Happened when trying to run::
+
+    gen_elev2d --outfile elev2D.th.nc --hgrid=hgrid.gr3 --stime=2009-1-1 --etime=2009-7-1 --slr 0.0 noaa_download/noaa_pryc1_9415020_water_level_2009_2010.csv noaa_download/noaa_mtyc1_9413450_water_level_2009_2010.csv
+
+The first 15 days of January in pryc are empty, in ``schimpy/gen_elev2d.py`` ``max_gap`` is set to 5. Use replacement data in meantime. Otherwise need to fill missing data."
+interpolate_variables7,ERROR: No such file or directory extract_mod: (1),Run interpolate_variables8
+interpolate_variables8,"ERROR: forrtl: severe (24): end-of-file during read, unit 19, file /scratch/dms/tomkovic/schism_repos/if_202211_agelessdemo/outputs_tropic/vgrid.fg","``vgrid.in.3d`` (symbolically linked to ``vgrid.fg``) is made in 5.8 format. This was due to a typo in ``main_bay_delta.yaml``: ``vgrid_version: 5.10`` should be ``vgrid_version: '5.10'`` (quoted)."
+interpolate_variables8,"0  pts have no immediate parent elements; see fort.12
+time=   1800.00000000000        3600.00000000000        5400.00000000000
+7200.00000000000        9000.00000000000        10800.0000000000
+12600.0000000000        14400.0000000000        16200.0000000000
+failed to open(1)","No U/V velocities written out to ``out2d_*.nc``. ""failed to open(1)"" was the error. Looked at ``schism/interpolate_variables8.f90`` and found it wasn't finding an ``.nc`` file it was expecting. Issue with ``param.nml`` inputs ``iof_hydro (#)`` - values have been re-interpreted to mean different things. Checked with ``ncdump out2d_1.nc`` and saw there was no U/V outputs. Need to re-run barotropic with correct specification of ``iof_hydro`` values. Unless the ``horizontalVel_X`` and ``_Y.nc`` files are not found in the outputs dir."
+interpolate_variables8,"forrtl: severe (174): SIGSEGV, segmentation fault occurred","Two solutions: (1) low disk space; (2) enter ``ulimit -s unlimited`` before running command."
+interpolate_variables8,"forrtl: severe (59): list-directed I/O syntax error, unit 21, file SIMULATIONDIR/outputs_tropic/interpolate_variables.in
+Image              PC                Routine            Line        Source             
+interpolate_varia  000000000043BC7B  for_read_seq_lis\_     Unknown  Unknown
+interpolate_varia  000000000043B141  for_read_seq_lis      Unknown  Unknown
+interpolate_varia  000000000040B5A1  Unknown               Unknown  Unknown
+interpolate_varia  000000000040B49D  Unknown               Unknown  Unknown
+libc-2.28.so       0000145AB09F0D85  __libc_start_main     Unknown  Unknown
+interpolate_varia  000000000040B3BE  Unknown               Unknown  Unknown",I just had an entirely wrong interpolate_variables.in (the text of a param.nml was copied into the interpolate_variables.in file)
+interpolate_variables8,"After header: 416486 357942 774965 23 48
+3 303885 303780 303674 9.9999998E-03
+652974.100000000 4171586.53000000 3.548943 1800.000 
+Inverted z-levels at: 0 3 0.0000000E+00 0.0000000E+00
+2.993011",?? unresolved. re-ran barotropic
+interpolate_variables8,failed to open out2d,?? unresolved.
+"prepare_schism
+(schimpy)","in console: Mesh contains areas smaller than the failure threshold. Consult the log or printout above for areas and warnings
+in prepare_schism.log: INFO:SCHISM:Checking for elements with small areas. Thresholds: warn=10.0, fail=4.0
+WARNING:SCHISM:Global element:    222056 Area: 1.461 Centroid: 616324.9,4207169.2","Looking at the coordinates, found small cells (little slivers with areas ~1m2) that were a result of dangling arcs in the SMS ``.map`` file. Removed dangling arcs and rebuilt grid. Then the issue was for cells that were just below the threshold. Needed to create arcs around the small elements to force grid to create > 4m2 cell areas."
+"prepare_schism
+(schimpy)","in console: scrit file 'C:\\Users\\....\\prepare_schism-script.py' is not present","An issue with the way conda turns scripts into mini executables. Need to re-install schimpy (pip or conda)."
+read_output10_xyz,The following floating-point exceptions are signalling: IEEE_INVALID_FLAG,?? unresolved.
