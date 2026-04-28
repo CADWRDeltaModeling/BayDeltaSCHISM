@@ -850,8 +850,13 @@ def ccf_gate_cli(
     s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
     s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
     margin = days(3)
-    swp_ts, cvp_ts = get_export_ts_cfs(s1 - margin, s2 + margin, export_datasrc)
+    flux_ts = get_flux_ts_cfs(s1 - margin, s2 + margin, export_datasrc)
+    swp_ts = flux_ts["swp"]
+    cvp_ts = flux_ts["cvp"]
+    sjr_ts = flux_ts["sjr"]
+
     oh4_astro_ts  = read_ts(oh4_astro_datasrc, force_regular=True).squeeze()
+
     ccf_gate(
         s1,
         s2,
