@@ -9,12 +9,13 @@ OH4 stage level, and CVP pump rate for a given period.
 import datetime as dtm
 import pandas as pd
 from vtools.functions.unit_conversions import M2FT, FT2M, CMS2CFS
-from vtools import days, hours,minutes
+from vtools import days, hours ,minutes, divide_interval
 from dms_datastore.read_ts import read_ts
 from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
 from vtools.functions.merge import ts_merge
 from vtools.functions.coarsen import ts_coarsen
+
 import schimpy.param as parms
 from schimpy.th_io import read_th
 import numpy as np
@@ -23,13 +24,26 @@ import os
 import math
 import matplotlib.pyplot as plt
 import click
+import glob
 
+
+Q_NORM = 5000.0
+
+OH4_SF_COEF = 1.057768
+OH4_SJR_EXCESS_COEF = 0.237763
+OH4_SJR_THRESHOLD = 2500.0
+
+# Fixed intercept from the fit. This replaces per-window mean removal.
+OH4_SUB_INTERCEPT = -3.716825
 
 ccf_A = 91868000  # area of ccf forbay above 0 navd 88 in ft^2
 ccf_reference_level = 2.0  # navd 88 in ft
-# this is the phase shift to match shiftted sffpx tide used for
-# gate opening priority system used in DSM2
-#sffpx_level_shift_h = hours(8)+minutes(30)
+
+# NOTE:
+# SFFPX is shifted by ~8.5 hours here to align tidal phase for priority logic.
+# The same shifted series is passed into OH4 prediction, where an additional
+# ~150-minute lag is applied to the subtidal component. Total effective shift
+# for OH4 subtidal is therefore ~11 hours.
 sffpx_level_shift_h = minutes(30+8*60)
 
 def tlmax(arr):
@@ -127,7 +141,7 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
         sframe = s.to_frame()
     else:
         sframe = s
-
+    
     # Find minimum and maximums
     sh, sl = tidalhl.get_tidal_hl(sframe)  # Get Tidal highs and lows
     sh = pd.concat([sh, get_tidal_hh_lh(sh)], axis=1)
@@ -135,7 +149,8 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
     sl = pd.concat([sl, get_tidal_ll_hl(sl)], axis=1)
     sl.columns = ["min", "min_name"]
 
-    # --------  flagg open and close portions - OG Priority 3
+
+    # --------  flag open and close portions - OG Priority 3
     # when it opens
     idx1 = sl[sl["min_name"] == "LL"].index + pd.Timedelta("1h")
     idx2 = sh[sh["max_name"] == "HH"].index - pd.Timedelta("1h")
@@ -144,6 +159,7 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
     )  # This is so it opens during the HL-LH-HL sequence
     ci = idx1.union(idx2).union(idx3)
     opens = pd.DataFrame(data=np.ones(len(ci)), index=ci)
+
 
     # when it closes
     idx1 = sl[sl["min_name"] == "HL"].index + pd.Timedelta("2h")
@@ -159,7 +175,7 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
     prio3_ts = prio3_ts[prio3_ts[3] != prio3_ts[3].shift()]
     prio3_ts.head()
 
-    # ------- flagg open and close portions - Priority 2
+    # ------- flag open and close portions - Priority 2
 
     # when it opens
     idx1 = sl[sl["min_name"] == "LL"].index + pd.Timedelta("1h")
@@ -184,7 +200,7 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
     prio2_ts = prio2_ts[prio2_ts[2] != prio2_ts[2].shift()]
     prio2_ts.head()
 
-    # ------ flagg open and close portions - Priority 1
+    # ------ flag open and close portions - Priority 1
 
     # when it opens
     idx1 = sh[sh["max_name"] == "LH"].index + pd.Timedelta("1h")
@@ -295,41 +311,26 @@ def gen_prio_for_varying_exports(input_tide, export_df):
     return priority_df, max_gate_height
 
 
-def get_export_ts_cfs(s1, s2, flux):
+def get_flux_ts_cfs(s1, s2, flux):
     """
-      retrieve swp and cvp pumping rate from a SCHISM flux.th
+    Retrieve SWP, CVP, and SJR flows from a SCHISM flux.th file in cfs.
 
-    Parameters
-    ----------
-    s1 : :py:class:'datetime <datetime.datetime>'
-        start time.
-    s2 : :py:class:'datetime <datetime.datetime>'
-        end time.
-    flux : str
-        path to the SCHISM flux th file.
-
-    Returns
-    -------
-    swp_ts : :py:class:'DataFrame <pandas.DataFrame>'
-        swp pump rate in cfs.
-    cvp_ts  : :py:class:'DataFrame <pandas.DataFrame>'
-        cvp pump rate in cfs.
-
+    SJR is sign-adjusted so positive values represent San Joaquin River inflow.
     """
-    # flux = "//cnrastore-bdo/SCHISM/studies/itp202411/th_files/repo/flux_20241213.th"
-    flux_ts = read_th(flux)
-    # flux_ts = pd.read_csv(flux, parse_dates=True, index_col=0, sep=r"\s+")
-    swp_ts = flux_ts["swp"][s1:s2] * CMS2CFS
-    cvp_ts = flux_ts["cvp"][s1:s2] * CMS2CFS
-    return swp_ts, cvp_ts
+    flux_ts = read_th(flux).loc[s1:s2]
 
+    required = ["swp", "cvp", "sjr"]
+    missing = [c for c in required if c not in flux_ts.columns]
+    if missing:
+        raise ValueError(
+            f"Missing columns in {flux!r}: {missing}. "
+            f"Found: {flux_ts.columns.tolist()}"
+        )
 
-import glob
-import os
-import pandas as pd
-from dms_datastore.read_ts import read_ts
-from dms_datastore.read_multi import read_ts_repo
-from vtools import days
+    out = flux_ts[required].copy() * CMS2CFS
+    out["sjr"] = -out["sjr"]
+    return out
+
 
 
 def sffpx_level(sdate, edate, sffpx_datasrc):
@@ -373,18 +374,38 @@ def sffpx_level(sdate, edate, sffpx_datasrc):
     return sf
 
 
-def predict_oh4_level(s1, s2, oh4_astro_ts, sffpx_elev_ts):
+def predict_oh4_level(s1, s2, oh4_astro_ts, sffpx_elev_ts, sjr_ts):
+    """Predict total OH4 stage using harmonic tide, SFFPX subtidal, and SJR flow."""
+    sffpx = sffpx_elev_ts
 
-    sffpx = sffpx_elev_ts 
-    sffpx_subtide = cosine_lanczos(sffpx, cutoff_period="40h")
+    # SFFPX input is meters in the processed repo; the OH4 fit is in feet.
+    sffpx_subtide = cosine_lanczos(sffpx * M2FT, cutoff_period="40h")
     sffpx_subtide = sffpx_subtide.resample("15min").ffill()
-    ## linear regression of sffpx sub tide to oh4 sub tide
-    oh4_sub_predicted = sffpx_subtide * 0.9620 + 1.1513
-    best_shift = -10
-    oh4_sub_predicted = oh4_sub_predicted.shift(-best_shift).squeeze()
-    oh4_predicted = oh4_sub_predicted + oh4_astro_ts - oh4_sub_predicted.mean()
-    return oh4_predicted[s1:s2]
 
+    # Existing workflow applies the additional 150-min subtidal lag here.
+    lag = divide_interval(minutes(150), sffpx_subtide.index.freq)
+    sffpx_subtide = sffpx_subtide.shift(lag).squeeze()
+
+    sjr = sjr_ts.resample("15min").ffill()
+    sjr_excess_norm = np.maximum(sjr - OH4_SJR_THRESHOLD, 0.0) / Q_NORM
+
+    parts = pd.concat(
+        [
+            oh4_astro_ts.rename("oh4_astro"),
+            sffpx_subtide.rename("sffpx_subtide"),
+            sjr_excess_norm.rename("sjr_excess_norm"),
+        ],
+        axis=1,
+    ).dropna()
+
+    oh4_sub_predicted = (
+        OH4_SUB_INTERCEPT
+        + OH4_SF_COEF * parts["sffpx_subtide"]
+        + OH4_SJR_EXCESS_COEF * parts["sjr_excess_norm"]
+    )
+
+    oh4_predicted = parts["oh4_astro"] + oh4_sub_predicted
+    return oh4_predicted[s1:s2]
 
 def radial_gate_flow_ts(zdown_ts, zup_ts, height_ts, s1, s2, dt):
 
@@ -701,7 +722,7 @@ def gen_gate_height(
     return df, zin_df2
 
 
-def process_height(s1, s2, swp_ts,cvp_ts, oh4_astro_ts, sffpx_elev_ts, save_intermediate=False):
+def process_height(s1, s2, swp_ts,cvp_ts, sjr_ts, oh4_astro_ts, sffpx_elev_ts, save_intermediate=False):
     """
     Create a ccfb radial gate height time series file
 
@@ -749,7 +770,13 @@ def process_height(s1, s2, swp_ts,cvp_ts, oh4_astro_ts, sffpx_elev_ts, save_inte
             float_format="%.3f",
             date_format="%Y-%m-%dT%H:%M",
         )
-    oh4_predict = predict_oh4_level(s1 - margin, s2 + margin, oh4_astro_ts, sffpx_elev_ts)
+    oh4_predict = predict_oh4_level(
+        s1 - margin,
+        s2 + margin,
+        oh4_astro_ts,
+        sffpx_elev_ts,
+        sjr_ts,
+    )
 
     sim_gate_height, zin_df = gen_gate_height(
         swp_ts, priority, max_height, oh4_predict, cvp_ts, inside_level0, s1, s2, dt
@@ -823,8 +850,13 @@ def ccf_gate_cli(
     s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
     s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
     margin = days(3)
-    swp_ts, cvp_ts = get_export_ts_cfs(s1 - margin, s2 + margin, export_datasrc)
+    flux_ts = get_flux_ts_cfs(s1 - margin, s2 + margin, export_datasrc)
+    swp_ts = flux_ts["swp"]
+    cvp_ts = flux_ts["cvp"]
+    sjr_ts = flux_ts["sjr"]
+
     oh4_astro_ts  = read_ts(oh4_astro_datasrc, force_regular=True).squeeze()
+
     ccf_gate(
         s1,
         s2,
@@ -832,6 +864,7 @@ def ccf_gate_cli(
         oh4_astro_ts,
         swp_ts,
         cvp_ts,
+        sjr_ts,        
         sffpx_elev_ts,
         plot,
         save_intermediate,
@@ -845,6 +878,7 @@ def ccf_gate(
     astro_ts,
     swp_ts,
     cvp_ts,
+    sjr_ts,
     sffpx_elev_ts,
     plot=False,
     save_intermediate=False,
@@ -890,7 +924,7 @@ def ccf_gate(
     position_shift = int(shift_h / sffpx_elev_ts.index.freq)
     sffpx_elev_ts = sffpx_elev_ts.shift(position_shift)
     oneday = days(1)
-    height, zin = process_height(sdate, edate, swp_ts,cvp_ts, astro_ts, sffpx_elev_ts)
+    height, zin = process_height(sdate, edate, swp_ts,cvp_ts, sjr_ts, astro_ts, sffpx_elev_ts)
     #height_t = remove_continuous_duplicates(height, height.columns.tolist()[0])
     height_t = ts_coarsen(height, grid="2min",preserve_vals=[0.0],qwidth=0.01,hyst=0.5,heartbeat_freq="60min")
     height_t = height_t * FT2M
