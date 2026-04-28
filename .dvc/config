@@ -1,3 +1,5 @@
+[core]
+    remote = dms_internal
 ['remote "dms_internal"']
     url = \\cnrastore-bdo\SCHISM\mesh_files\_current_version
 ['remote "azure"']
