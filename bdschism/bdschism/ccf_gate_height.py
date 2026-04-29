@@ -46,34 +46,6 @@ ccf_reference_level = 2.0  # navd 88 in ft
 # for OH4 subtidal is therefore ~11 hours.
 sffpx_level_shift_h = minutes(30+8*60)
 
-def tlmax(arr):
-    """return HH(1) or LH (0)"""
-    idx = np.argmax(arr)  # only the first occurence of the maxima is return
-    # print(arr,idx)
-    return idx
-
-
-def tlmin(arr):
-    """return LL(1) or HL(0)"""
-    idx = np.argmin(arr)
-    return idx
-
-
-def get_tidal_hh_lh(sh):
-    sth = sh.rolling(2).apply(tlmax, raw=True)
-    sth.iloc[0] = (
-        0 if sth.iloc[1, 0] > 0 else 1
-    )  # fill in the first value based on next value
-    return sth.iloc[:, 0].map({np.nan: "", 0: "LH", 1: "HH"}).astype(str)
-
-
-def get_tidal_ll_hl(sl):
-    stl = sl.rolling(2).apply(tlmin, raw=True)
-    stl.iloc[0] = (
-        0 if stl.iloc[1, 0] > 0 else 1
-    )  # fill in the first value based on next value
-    return stl.iloc[:, 0].map({np.nan: "", 0: "HL", 1: "LL"}).astype(str)
-
 
 def flow_to_priority(
     flow, breaks=[-100, 2000, 4000.0, 9000.0, 99999.0], labels=[1, 2, 3, 4]
@@ -144,9 +116,9 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
     
     # Find minimum and maximums
     sh, sl = tidalhl.get_tidal_hl(sframe)  # Get Tidal highs and lows
-    sh = pd.concat([sh, get_tidal_hh_lh(sh)], axis=1)
+    sh = pd.concat([sh, tidalhl.get_tidal_hh_lh(sh)], axis=1)
     sh.columns = ["max", "max_name"]
-    sl = pd.concat([sl, get_tidal_ll_hl(sl)], axis=1)
+    sl = pd.concat([sl, tidalhl.get_tidal_ll_hl(sl)], axis=1)
     sl.columns = ["min", "min_name"]
 
 
