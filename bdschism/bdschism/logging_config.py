@@ -108,7 +108,7 @@ def configure_logging_config(cfg: LoggingConfig) -> Path | None:
     # --- Optional: tame noisy third-party loggers ---
     if not cfg.include_third_party:
         # Typical offenders; adjust to taste
-        for noisy in ("urllib3", "botocore", "matplotlib", "fiona", "rasterio"):
+        for noisy in ("urllib3", "botocore", "matplotlib", "rasterio"):
             logging.getLogger(noisy).setLevel(logging.WARNING)
 
     # Helpful: also expose the chosen file path as a debug message

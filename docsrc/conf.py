@@ -355,7 +355,6 @@ autodoc_mock_imports = [
     "gdal",
     "osgeo",
     "rasterio",
-    "fiona",
     "pyproj",
     "geopandas",
     "shapely",
