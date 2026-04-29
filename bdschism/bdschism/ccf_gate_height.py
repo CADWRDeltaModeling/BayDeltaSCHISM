@@ -141,7 +141,7 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
     # combined the df
     open_close = pd.concat([opens, closes], axis=1)
 
-    prio3_ts = open_close.iloc[:, 0].combine_first(open_close.iloc[:, 1]).to_frame()
+    prio3_ts = ts_merge([open_close.iloc[:, 0],open_close.iloc[:, 1]]).to_frame()
     prio3_ts.columns = [3]
     prio3_ts.index.name = "DATETIME"
     prio3_ts = prio3_ts[prio3_ts[3] != prio3_ts[3].shift()]
@@ -166,7 +166,7 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
 
     # combined the df
     open_close = pd.concat([opens, closes], axis=1)
-    prio2_ts = open_close.iloc[:, 0].combine_first(open_close.iloc[:, 1]).to_frame()
+    prio2_ts = ts_merge([open_close.iloc[:, 0], open_close.iloc[:, 1]]).to_frame()
     prio2_ts.columns = [2]
     prio2_ts.index.name = "DATETIME"
     prio2_ts = prio2_ts[prio2_ts[2] != prio2_ts[2].shift()]
@@ -187,7 +187,7 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
 
     # combined the df
     open_close = pd.concat([opens, closes], axis=1)
-    prio1_ts = open_close.iloc[:, 0].combine_first(open_close.iloc[:, 1]).to_frame()
+    prio1_ts = ts_merge([open_close.iloc[:, 0], open_close.iloc[:, 1]]).to_frame()
     prio1_ts.columns = [1]
     prio1_ts.index.name = "DATETIME"
     prio1_ts = prio1_ts[prio1_ts[1] != prio1_ts[1].shift()]
