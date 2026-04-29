@@ -817,11 +817,15 @@ def ccf_gate_cli(
     if sdate is None or edate is None:
         raise ValueError("Start date and end date must be provided.")
 
-    sffpx_elev = sffpx_level(sdate, edate, sffpx_datasrc)
-    ## shift to match tidal phase at ccfb gate
-    shift_h = sffpx_level_shift_h
-    position_shift = int(shift_h / sffpx_elev.index.freq)
-    sffpx_elev = sffpx_elev.shift(position_shift)
+    sffpx_elev_ts = sffpx_level(sdate, edate, sffpx_datasrc)
+    
+    s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
+    s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
+    out =get_flux_ts_cfs(s1, s2, export_datasrc)
+    swp_ts = out['swp']
+    cvp_ts = out['cvp']
+    sjr_ts = out['sjr']
+    oh4_astro_ts  = read_ts(oh4_astro_datasrc, force_regular=True).squeeze()
 
 
     ccf_gate(
