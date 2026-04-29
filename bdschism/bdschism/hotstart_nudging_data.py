@@ -20,7 +20,6 @@ import click
 
 logger = logger = logging.getLogger(__name__)
 
-logging.basicConfig(filename="hotstart_nudge_data.log", level=logging.INFO)
 
 stations = [
     "anh",
@@ -299,11 +298,27 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
     help=f"path to the repo of observed time series. \
                         Default is {repo}",
 )
+@click.option("--logdir", type=click.Path(path_type=click.Path), default="logs")
+@click.option("--debug", is_flag=True)
+@click.option("--quiet", is_flag=True)
 @click.help_option("-h", "--help")
-def hotstart_nudge_data_cli(start_date, nudge_len, dest_dir, repo_dir):
+def hotstart_nudge_data_cli(start_date, nudge_len, dest_dir, repo_dir, logdir, debug, quiet):
     """
     Command-line interface for the hotstart_nudge_data function.
     """
+
+    level, console = resolve_loglevel(
+        debug=debug,
+        quiet=quiet,
+    )
+    configure_logging(
+          package_name="bdschism",
+          level=level,
+          console=console,
+          logdir=logdir,
+          logfile_prefix="hotstart_nudge_data",
+    ) 
+
     try:
         sdate = pd.to_datetime(start_date)
     except ValueError:

@@ -16,6 +16,11 @@ from bdschism.gen_elev2d import gen_elev2d_cli
 from bdschism.set_mode import set_mode_cli
 from bdschism.config_cli import config_cli
 from bdschism.combine_nc import combine_nc_cli
+from bdschism.channel_depletion import cd_prep_cli
+from bdschism.potw import potw_prep_cli
+from bdschism.convert_csv_th import csv_to_th_cli
+from bdschism.source_sink_postprocess import postprocess_source_sink_cli
+from bdschism.source_sink_workflow import source_sink_workflow_cli
 #
 import subprocess
 import sys
@@ -81,6 +86,11 @@ cli.add_command(gen_elev2d_cli, "gen_elev2d")
 cli.add_command(set_mode_cli, "set_mode")
 cli.add_command(config_cli, "config")
 cli.add_command(combine_nc_cli, "combine_nc")
+cli.add_command(cd_prep_cli, "cd_prep")
+cli.add_command(potw_prep_cli, "potw_prep")
+cli.add_command(csv_to_th_cli, "csv_to_th")
+cli.add_command(postprocess_source_sink_cli, "postprocess_source_sink")
+cli.add_command(source_sink_workflow_cli, "source_sink_workflow")
 
 
 if __name__ == "__main__":
