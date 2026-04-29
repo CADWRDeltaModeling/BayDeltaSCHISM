@@ -4,10 +4,10 @@ channels:
   - nodefaults               # For predictable behavior, set your conda config
   - cadwr-dms
 dependencies:
-  - python>=3.9,<=3.12     # 3.13 is the highest that pyhecdss supports
-  - schimpy>=1.12.1         # Recommended for compatibiltiy with current code
-  - vtools3>=3.9.6
-  - dms-datastore>=0.1.0
+  - python>=3.11,<=3.13     # 3.13 is the highest that pyhecdss supports
+  - schimpy>=1.15.1         # Recommended for compatibiltiy with current code
+  - vtools3>=3.9.21
+  - dms-datastore>=0.6.24
   - dynaconf
   - libgdal
   - pyogrio
@@ -43,6 +43,9 @@ dependencies:
   - rasterio
   - shapely
   - httpx
+  - utide       # used by vtools, eventually migrate to pyproj.toml there
+  - pint        # used by vtools, eventually migrate to pyproj.toml there
+  - omegaconf
 # The following are not currently supported by conda but are available via pip with git:
 # git clone -b suxarray https://github.com/kjnam/uxarray.git && pushd uxarray && pip install --no-deps -e . && popd
 # git clone -b v2024.09.0 https://github.com/cadwrdeltamodeling/suxarray && pushd suxarray && pip install --no-deps -e . && popd
