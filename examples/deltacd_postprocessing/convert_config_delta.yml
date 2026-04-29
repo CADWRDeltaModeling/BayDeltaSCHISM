@@ -1,0 +1,16 @@
+# Minimal config to convert NetCDF source/sink flow to CSV
+mode: flow                  # Options: dss-flow, dss-ec, flow (NetCDF)
+
+start_date: "2000-01-01"    # Truncate time series to start from this date
+
+infile: "inputs/dcd_schism_nows_lch1_${dcd_version}.nc"     # Path to NetCDF file
+
+outfile_prefix: "dcd_${dcd_version}"  # Prefix for all output files
+
+col_prefix: "delta"         # Prefix for column names (used in flow mode)
+
+output_dir: "processed"     # Where CSVs will be written
+
+flow_options:
+  scale_sink_mult: 1.0      # Multiplier on sink (div+seep) -- units CFS
+  scale_sink_add: 0.0       # Constant added to sink (CFS, applied before negation)

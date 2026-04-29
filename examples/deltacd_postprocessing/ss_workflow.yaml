@@ -1,0 +1,53 @@
+# Source/sink postprocessing workflow configuration.
+# $variable substitution via schimpy schism_yaml.
+#
+# To process a new channel depletion NetCDF:
+#   1. Drop the new .nc files into inputs/
+#   2. Update version (and potw_file / inferred_ec_file if new versions exist)
+#   3. Run: bds source_sink_workflow --config ss_workflow.yaml
+#      or:  bds source_sink_workflow --config ss_workflow.yaml --set version=20260101
+
+config:
+  version: "20260323"           # Change this when a new NC file arrives
+  dcd_version: "${version}"
+  smcd_version: "${version}"
+  suisun_mod: "1.4-2.0"        # Derived automatically from convert_config_suisun.yml — do not set here
+  start_time: "2008-01-01"
+  end_time: "2026-09-01"
+
+  # POTW and inferred EC may extend beyond the NC version date via climatology.
+  # Update these paths independently of version.
+  potw_file: "//cnrastore-bdo/Modeling_Data/water_quality/bay_delta_potw/south_delta/potw_ds_cnra_flow_extended_202501.csv"
+  inferred_ec_file: "//cnrastore-bdo/Modeling_Data/deltacd_ec/deltacd_ec_inferred_20250502.csv"
+
+  work_dir: "processed"      # Intermediate / QC files
+  output_dir: "th_output"        # Final .th files written here
+  prepro_dir: "E:/bay_delta_115/bay_delta/prepro_out"
+  BDSCHISM_HOME: "D:/Delta/BayDeltaSCHISM"
+
+  # Source/sink location file passed to merge_th as 'locs'.
+  # Using the preprocessor echo file for this run (exact node ordering).
+  # Fall back to template if no echo is available:
+  source_sink_locs: "${BDSCHISM_HOME}/templates/bay_delta/main_bay_delta.yaml"
+  #source_sink_locs: "main_*_echo.yaml"
+
+# Channel depletion NetCDF conversion configs (one per region)
+channel_depletion:
+  delta:
+    config: "convert_config_delta.yml"
+  suisun:
+    config: "convert_config_suisun.yml"
+
+# merge_th assembly config (schimpy)
+merge_th:
+  config: "source_sink_integration.yaml"
+
+# Synthetic file generation
+synthetic:
+  skip_if_exists: true          # Set to false or use --force to regenerate
+  nominal_cfs: 3.0
+  sink_fraction: 0.333
+  # synthetic_start and synthetic_end default to 2000-01-01 and 2027-01-01
+
+# South-delta floor exchange (sdate/edate default to start_time/end_time above)
+floor: {}

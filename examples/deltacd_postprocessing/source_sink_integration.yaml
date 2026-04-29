@@ -1,0 +1,70 @@
+
+config: 
+    # All variables below are passed through from ss_workflow.yaml via sub_vars.
+    # Do not set them here — they will be overridden by the outer workflow anyway.
+    # Eliminated in favor of passthrough: version, dcd_version, smcd_version,
+    # suisun_mod, BDSCHISM_HOME, work_dir, source_sink_locs, stime, prepro_dir
+    stime: 2008-01-01   # fallback only — overridden by ss_workflow.yaml start_time
+    
+merge_time_history:
+    start_time: ${stime}
+    end_time: 2026-09-01    
+
+    th_files:
+      ${work_dir}/vsource_${version}.th:
+        locs: ${source_sink_locs}
+        role: source_flux
+        # If dated_output is False or omitted, name of the file should have a .th extension.
+        # If True, csv extension
+        # If it is a string ending in "csv" the string will be interpreted as output file name for dated version
+        dated_output: ${work_dir}/vsource_dated_${version}.csv
+        data:  # later entries override earlier       
+        - ${work_dir}/smcd_${smcd_version}_source.csv
+        - ${work_dir}/mss_added_source.csv         # Nodes that were added for inference and given a +3/-3 exchange 
+        - ${work_dir}/dcd_${dcd_version}_source.csv
+        - ${work_dir}/potw_south_delta_flow.csv
+      ${work_dir}/vsink_${version}_${suisun_mod}.th:         
+        locs: ${source_sink_locs}
+        dated_output: ${work_dir}/vsink_dated_${version}_${suisun_mod}.csv
+        role: sink_flux
+        data:
+        - ${work_dir}/smcd_${smcd_version}_sink_${suisun_mod}.csv
+        - ${work_dir}/mss_added_sink.csv        
+        - ${work_dir}/dcd_${dcd_version}_sink.csv
+        - ${work_dir}/nullzone_sink.csv
+      ${work_dir}/msource_${version}.th:
+        dated_output: ${work_dir}/msource_dated_${version}.csv
+        locs: ${source_sink_locs}
+        variables: [temperature, salinity]
+        role: source_tracer
+        constant:
+          temperature:
+          - col_pattern: suisun.*
+            value: ambient
+            overwrite: False
+          - col_pattern: delta_src_.*
+            value: ambient
+            overwrite: False      
+          - col_pattern: potw_.*
+            value: ambient
+            overwrite: False            
+          salinity:
+          - col_pattern: suisun.*
+            value: ambient
+            overwrite: False
+          - col_pattern: delta.*
+            value: ambient
+            overwrite: False            
+        data: # later entries override earlier
+          - fname: ${BDSCHISM_HOME}/data/channel_depletion/msource_dated_multi.th
+            variable: multi
+          #- fname: ${work_dir}/mss_added_salinity.csv
+          #  variable: salinity
+          - fname: ${work_dir}/mss_added_temperature.csv
+            variable: temperature            
+          - fname: ${work_dir}/deltacd_salinity_inferred_${inferred_ec_stamp}.csv
+            variable: salinity
+          - fname: ${work_dir}/potw_south_delta_salinity.csv
+            variable: salinity
+
+

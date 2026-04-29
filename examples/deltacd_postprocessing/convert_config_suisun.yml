@@ -1,0 +1,16 @@
+# Suisun flow case configuration for NetCDF source/sink conversion
+mode: flow
+
+start_date: 2000-01-01        # Start date for output CSVs
+
+infile: inputs/smcd_schism_nows_lch1_${smcd_version}.nc # Path to NetCDF file for Suisun region
+
+outfile_prefix: "smcd_${smcd_version}"  # Prefix for output CSV filenames
+
+col_prefix: "suisun"        # Prefix for source/sink column names in CSVs
+
+output_dir: "processed"     # Directory for output CSVs
+
+flow_options:
+  scale_sink_mult: 1.4      # Scale multiplier for sink flows 
+  scale_sink_add:  2.0      # Additional constant to add to sink flows
