@@ -1,6 +1,17 @@
 __author__ = """Eli Ateljevich, Kijin Nam"""
 __email__ = "Eli.Ateljevich@water.ca.gov; Kijin.Nam@water.ca.gov"
 
+
+import logging
+
+# This ensures that ignore logging and
+# we don't fall back on default handlers 
+# in applications that call logger.log() when parent
+# scripts/applications/cli that isn't using
+# logging
+logging.getLogger(__name__).addHandler(logging.NullHandler())
+
+
 try:
     from importlib.metadata import version, PackageNotFoundError
 except ImportError:

@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from collections import Counter
 import csv
 import matplotlib.cm as cm
-from shapely.geometry import Point, mapping
-import fiona
+from shapely.geometry import Point
+import geopandas as gpd
 
 
 @click.group()
@@ -182,40 +182,25 @@ def plot_summarized_bad_actors(bad_actors, all_x, all_y, label_top=None):
 
 
 def write_bad_shp(shp_out, points, all_x, all_y):
-
-    schema = {
-        "geometry": "Point",
-        "properties": {
-            "elem_idx": "int",
-            "count": "int",
-            "max_count": "int",
-            "x": "float",
-            "y": "float",
-            "nth_ratios": "str",
-            "timesteps": "str",
-        },
-    }
-    with fiona.open(
-        shp_out, "w", driver="ESRI Shapefile", schema=schema, crs="EPSG:26910"
-    ) as shp:
-        for pt in points:
-            xi = pt["x"]
-            yi = pt["y"]
-            gpt = Point(xi, yi)
-            shp.write(
-                {
-                    "geometry": mapping(gpt),
-                    "properties": {
-                        "elem_idx": int(pt["index"]),
-                        "count": int(pt["count"]),
-                        "max_count": int(pt['max_count']),
-                        "x": float(xi),
-                        "y": float(yi),
-                        "nth_ratios": ','.join(str(round(dtr,1)) for dtr in pt["nth_ratios"]),
-                        "timesteps": ','.join(str(round(dt,1)) for dt in pt["timesteps"]),
-                    },
-                }
-            )
+    """Write bad actor points to shapefile using geopandas."""
+    data = []
+    for pt in points:
+        xi = pt["x"]
+        yi = pt["y"]
+        gpt = Point(xi, yi)
+        data.append({
+            "geometry": gpt,
+            "elem_idx": int(pt["index"]),
+            "count": int(pt["count"]),
+            "max_count": int(pt['max_count']),
+            "x": float(xi),
+            "y": float(yi),
+            "nth_ratios": ','.join(str(round(dtr,1)) for dtr in pt["nth_ratios"]),
+            "timesteps": ','.join(str(round(dt,1)) for dt in pt["timesteps"]),
+        })
+    
+    gdf = gpd.GeoDataFrame(data, crs="EPSG:26910")
+    gdf.to_file(shp_out, driver="ESRI Shapefile", engine="pyogrio")
 
 
 def write_bad_csv(csv_out, points):

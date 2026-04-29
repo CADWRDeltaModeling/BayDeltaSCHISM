@@ -42,7 +42,8 @@ The timeseries inputs are the files that are not sensitive to the geometry of th
   barotropic.rst
   flow_boundary.rst
   atmospheric.rst
-  param.rst  
+  param.rst
+  clifton_court_forebay_gate_operation.rst
 
 Run Initialization and Nudging: Spatio-Temporal Inputs
 -------------------------------------------------------
