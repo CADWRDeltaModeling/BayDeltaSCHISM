@@ -29,7 +29,6 @@ dependencies = [
 	"netCDF4",
 	"osgeo",
 	"rasterio",
-	"fiona",
     "pyhecdss"
 ]
 
