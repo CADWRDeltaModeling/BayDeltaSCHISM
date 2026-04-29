@@ -101,7 +101,7 @@ Study layout
 The overall structure of a study is discretionary. There are workflows that make transfer, sharing and reuse easier.
 The examples here are starting points -- ultimately what you change depends on whether you have physical changes (e.g. restoration)
 or forcing changes (years, operations). Your choices also may depend on whether you are prepping on Windows and moving 
-to Linux (see example below) or doing everything on Linux.
+to Linux (see example below) or doing everything on Linux. For most applications, we reccomend that you prepare all folders in Windows, then move the simulations study to Linux or your cluster for running.
 
 It is recommended, and a standard in the Delta Modeling Section, that you isolate isolate the preprocessing template input (e.g. yaml) from the SCHISM native input (e.g. gr3). 
 
