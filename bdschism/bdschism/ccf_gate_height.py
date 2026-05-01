@@ -34,12 +34,14 @@ logger = logging.getLogger(__name__)
 
 Q_NORM = 5000.0
 
-OH4_SF_COEF = 1.057768
-OH4_SJR_EXCESS_COEF = 0.237763
+# OH4 subtidal reconstruction coefficients.
+# Fit using fit_oh4_sjr_elev.py (fit_sf_sjr_excess case), using data from 2010-01-01 to 2024-01-01.
+OH4_SF_COEF = 1.104618
+OH4_SJR_EXCESS_COEF = 0.256440
 OH4_SJR_THRESHOLD = 2500.0
 
 # Fixed intercept from the fit. This replaces per-window mean removal.
-OH4_SUB_INTERCEPT = -3.716825
+OH4_SUB_INTERCEPT = -3.900034
 
 ccf_A = 91868000  # area of ccf forbay above 0 navd 88 in ft^2
 ccf_reference_level = 2.0  # navd 88 in ft
@@ -620,6 +622,12 @@ def gen_gate_height(
     zt2_arr = np.empty(_max_steps, dtype='int64')
     zin_arr = np.empty(_max_steps, dtype=float)
     zt_arr = np.empty(_max_steps, dtype='int64')
+    # Diagnostic arrays: oh4, orccf (oh4 - drawdown), gate flow, op flag, ccf interior
+    diag_oh4_arr = np.empty(_max_steps, dtype=float)
+    diag_orccf_arr = np.empty(_max_steps, dtype=float)
+    diag_qint_arr = np.empty(_max_steps, dtype=float)
+    diag_op_arr = np.empty(_max_steps, dtype=float)
+    diag_ccf_arr = np.empty(_max_steps, dtype=float)
     n_out = 0       # index into height_arr / tt_arr
     n_zin2 = 0      # index into zin2_arr / zt2_arr
     n_zin = 0       # index into zin_arr / zt_arr
@@ -659,12 +667,18 @@ def gen_gate_height(
                 # Single closed step
                 height_arr[n_out] = height
                 tt_arr[n_out] = t_ns
-                n_out += 1
                 # mass balance for this single step
                 loc = np.searchsorted(oh4_idx, t_ns) - 1
-                zup = oh4_val[loc] - draw_down
+                oh4_raw = oh4_val[loc]
+                zup = oh4_raw - draw_down
                 zin, vt, qint = _simple_mass_balance_scalar(
                     export, zup, zin, height, dt_sec, vt, ccf_A, _width, _zsill)
+                diag_oh4_arr[n_out] = oh4_raw
+                diag_orccf_arr[n_out] = zup
+                diag_qint_arr[n_out] = qint
+                diag_op_arr[n_out] = op
+                diag_ccf_arr[n_out] = zin
+                n_out += 1
                 accumulate_export += export * dt_sec
                 zin_arr[n_zin] = zin
                 zt_arr[n_zin] = t_ns
@@ -682,22 +696,26 @@ def gen_gate_height(
                 relax_height_t[-1] = height_target
                 relax_n = len(relax_height_t) - 1
                 relax_height = relax_height_t[1:]
-                # Write height ramp
-                for ri in range(relax_n):
-                    tt_arr[n_out] = t_ns + ri * dt_ns
-                    height_arr[n_out] = relax_height[ri]
-                    n_out += 1
-                # Mass balance over the ramp
+                # Write height ramp and mass balance together
                 ramp_t_ns = t_ns
                 for ri in range(relax_n):
                     if ramp_t_ns == tday1_ns:
                         accumulate_export = 0.0
+                    tt_arr[n_out] = ramp_t_ns
+                    height_arr[n_out] = relax_height[ri]
                     loc = np.searchsorted(export_idx, ramp_t_ns) - 1
                     export = export_val[loc]
                     loc = np.searchsorted(oh4_idx, ramp_t_ns) - 1
-                    zup = oh4_val[loc] - draw_down
+                    oh4_raw = oh4_val[loc]
+                    zup = oh4_raw - draw_down
                     zin, vt, qint = _simple_mass_balance_scalar(
                         export, zup, zin, relax_height[ri], dt_sec, vt, ccf_A, _width, _zsill)
+                    diag_oh4_arr[n_out] = oh4_raw
+                    diag_orccf_arr[n_out] = zup
+                    diag_qint_arr[n_out] = qint
+                    diag_op_arr[n_out] = op
+                    diag_ccf_arr[n_out] = zin
+                    n_out += 1
                     accumulate_export += export * dt_sec
                     zin_arr[n_zin] = zin
                     zt_arr[n_zin] = ramp_t_ns
@@ -726,9 +744,16 @@ def gen_gate_height(
             if nleft >= relax_n:
                 left_height_arr[:relax_n] = relax_height[1:]
 
+            loc = np.searchsorted(oh4_idx, t_ns) - 1
+            oh4_raw = oh4_val[loc]
             for li in range(nleft):
                 height_arr[n_out] = left_height_arr[li]
                 tt_arr[n_out] = t_ns + li * dt_ns
+                diag_oh4_arr[n_out] = oh4_raw
+                diag_orccf_arr[n_out] = oh4_raw - draw_down
+                diag_qint_arr[n_out] = 0.0
+                diag_op_arr[n_out] = op
+                diag_ccf_arr[n_out] = ccf_reference_level + vt / ccf_A
                 n_out += 1
 
             vt = vt - export_remain
@@ -762,13 +787,19 @@ def gen_gate_height(
         for i in range(relax_n):
             height_temp = height + height_step * (i + 1)
             loc = np.searchsorted(oh4_idx, t_ns) - 1
-            zup = oh4_val[loc] - draw_down
+            oh4_raw = oh4_val[loc]
+            zup = oh4_raw - draw_down
             loc = np.searchsorted(export_idx, t_ns) - 1
             export = export_val[loc]
             zin, vt, qint = _simple_mass_balance_scalar(export, zup, zin, height_temp, dt_sec, vt, ccf_A, _width, _zsill)
             accumulate_export = accumulate_export + export * dt_sec
             height_arr[n_out] = height_temp
             tt_arr[n_out] = t_ns
+            diag_oh4_arr[n_out] = oh4_raw
+            diag_orccf_arr[n_out] = zup
+            diag_qint_arr[n_out] = qint
+            diag_op_arr[n_out] = op
+            diag_ccf_arr[n_out] = zin
             n_out += 1
             zin_arr[n_zin] = zin
             zt_arr[n_zin] = t_ns
@@ -787,7 +818,20 @@ def gen_gate_height(
     df = pd.DataFrame(height_arr[:n_out], index=tt_index, columns=["ccfb_height"])
     zt2_index = pd.DatetimeIndex(zt2_arr[:n_zin2], dtype='datetime64[ns]')
     zin_df2 = pd.DataFrame(zin2_arr[:n_zin2], index=zt2_index, columns=["ccfb_interior_surface"])
-    return df, zin_df2
+
+    # Diagnostic DataFrame on the same irregular grid as gate height
+    diag_df = pd.DataFrame(
+        {
+            "gate_op": diag_op_arr[:n_out],
+            "gate_height": height_arr[:n_out],
+            "gate_flow": diag_qint_arr[:n_out],
+            "oh4_elev": diag_oh4_arr[:n_out],
+            "orccf_elev": diag_orccf_arr[:n_out],
+            "ccf_elev": diag_ccf_arr[:n_out],
+        },
+        index=tt_index,
+    )
+    return df, zin_df2, diag_df
 
 
 def process_height(s1, s2, swp_ts,cvp_ts, sjr_ts, oh4_astro_ts, sffpx_elev_ts, save_intermediate=False):
@@ -849,12 +893,12 @@ def process_height(s1, s2, swp_ts,cvp_ts, sjr_ts, oh4_astro_ts, sffpx_elev_ts, s
     logger.info("OH4 prediction complete")
 
     logger.info("Starting water balance loop: %s to %s", s1, s2)
-    sim_gate_height, zin_df = gen_gate_height(
+    sim_gate_height, zin_df, diag_df = gen_gate_height(
         swp_ts, priority, max_height, oh4_predict, cvp_ts, inside_level0, s1, s2, dt
     )
     logger.info("Water balance loop complete")
 
-    return sim_gate_height, zin_df
+    return sim_gate_height, zin_df, diag_df
 
 
 @click.command(
@@ -905,6 +949,18 @@ def process_height(s1, s2, swp_ts,cvp_ts, sjr_ts, oh4_astro_ts, sffpx_elev_ts, s
 )
 @click.option("--logdir", default=None, type=click.Path(), help="Directory for log files.")
 @click.option("--debug", is_flag=True, default=False, help="Enable debug logging.")
+@click.option(
+    "--output-diagnostic",
+    default=None,
+    type=click.Path(),
+    help="Path for diagnostic CSV (gate op, height, flow, oh4, orccf, ccf elevations).",
+)
+@click.option(
+    "--output-dt",
+    default="5min",
+    show_default=True,
+    help="Time step for diagnostic output resampling.",
+)
 def ccf_gate_cli(
     sdate,
     edate,
@@ -917,6 +973,8 @@ def ccf_gate_cli(
     save_intermediate,
     logdir,
     debug,
+    output_diagnostic,
+    output_dt,
 ):
     from bdschism.logging_config import configure_logging
 
@@ -952,6 +1010,8 @@ def ccf_gate_cli(
         sffpx_elev_ts,
         plot,
         save_intermediate,
+        diagnostic_output=output_diagnostic,
+        diagnostic_dt=output_dt,
     )
 
 
@@ -966,6 +1026,8 @@ def ccf_gate(
     sffpx_elev_ts,
     plot=False,
     save_intermediate=False,
+    diagnostic_output=None,
+    diagnostic_dt="5min",
 ):
     """
     Generate the predicted gate height for the Clifton Court Forebay.
@@ -1008,7 +1070,7 @@ def ccf_gate(
     position_shift = int(shift_h / sffpx_elev_ts.index.freq)
     sffpx_elev_ts = sffpx_elev_ts.shift(position_shift)
     oneday = days(1)
-    height, zin = process_height(sdate, edate, swp_ts,cvp_ts, sjr_ts, astro_ts, sffpx_elev_ts)
+    height, zin, diag_df = process_height(sdate, edate, swp_ts,cvp_ts, sjr_ts, astro_ts, sffpx_elev_ts)
     #height_t = remove_continuous_duplicates(height, height.columns.tolist()[0])
     logger.info("Coarsening %d rows of 2-min gate height output", len(height))
     height_t = ts_coarsen(height, grid="2min",preserve_vals=[0.0],qwidth=0.01,hyst=0.5,heartbeat_freq="60min")
@@ -1032,6 +1094,13 @@ def ccf_gate(
         float_format="%.3f",
         date_format="%Y-%m-%dT%H:%M",
     )
+
+    if diagnostic_output:
+        diag_out = diag_df[sdate:edate].resample(diagnostic_dt).first().dropna(how="all")
+        diag_out.index.name = "datetime"
+        diag_out.to_csv(diagnostic_output, float_format="%.4f")
+        logger.info("Saved diagnostic output to %s (%d rows, dt=%s)",
+                    diagnostic_output, len(diag_out), diagnostic_dt)
 
     if plot:
         import matplotlib.pyplot as plt
