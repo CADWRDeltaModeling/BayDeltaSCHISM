@@ -88,7 +88,8 @@ addopts = [
     "--durations=20"
 ]
 markers = [
-    "serial: execute test serially (to avoid race conditions)"
+    "serial: execute test serially (to avoid race conditions)",
+    "integration: requires network connectivity or external data"
 ]
 
 [project.urls]

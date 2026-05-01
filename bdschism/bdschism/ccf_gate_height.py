@@ -7,9 +7,19 @@ based on SWP export, eligible intervals for opening, priority level, maximum gat
 OH4 stage level, and CVP pump rate for a given period.
 """
 
+import logging
+import math
+import os
+import glob
+from pathlib import Path
+
+import click
+import numba
+import numpy as np
 import pandas as pd
+
 from vtools.functions.unit_conversions import M2FT, FT2M, CMS2CFS
-from vtools import days, hours ,minutes, divide_interval
+from vtools import days, hours, minutes, divide_interval
 from dms_datastore.read_ts import read_ts
 from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
@@ -17,14 +27,9 @@ from vtools.functions.coarsen import ts_coarsen
 
 import schimpy.param as parms
 from schimpy.th_io import read_th
-import numpy as np
-import numba
 from vtools.functions import tidalhl
-import os
-import math
-import matplotlib.pyplot as plt
-import click
-import glob
+
+logger = logging.getLogger(__name__)
 
 
 Q_NORM = 5000.0
@@ -106,7 +111,7 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
     Output: 3 irregular time series that contain the schedule for the priority 1, 2 and 3.
     """
 
-    print("Making priorities from tide")
+    logger.info("Making priorities from tide")
 
     s = input_tide[stime:etime]
     if isinstance(s, pd.Series):
@@ -203,7 +208,7 @@ def save_prio_ts(tsdir, tide_lagged, p1, p2, p3, p4):
     if not os.path.exists(tsdir):
         os.makedirs(tsdir)
 
-    print("saving prio time series to", tsdir)
+    logger.info("Saving prio time series to %s", tsdir)
     p1.to_csv(os.path.join(tsdir, "p1.csv"))
     p2.to_csv(os.path.join(tsdir, "p2.csv"))
     p3.to_csv(os.path.join(tsdir, "p3.csv"))
@@ -239,7 +244,7 @@ def export_lookup(x):
         prio = p[6]
         max_gate = max_g[6]
 
-    print("Export is", x, "CFS--> Priority =", prio, " Max GH =", max_gate)
+    logger.info("Export is %s CFS--> Priority = %s  Max GH = %s", x, prio, max_gate)
 
 
 def gen_prio_for_varying_exports(input_tide, export_df):
@@ -249,15 +254,15 @@ def gen_prio_for_varying_exports(input_tide, export_df):
     if dt == "D":
         export_1day = export_df.squeeze()  # the original data is daily
         export_15min = export_df.resample("15min").ffill()
-        print("The input export dt is Daily")
+        logger.info("The input export dt is Daily")
     elif dt == "15min":
         export_1day = (
             export_df.resample("D").mean().squeeze()
         )  # the original data is 15 minutes
         export_15min = export_df.squeeze()
-        print("The input export ts dt is 15 Min")
+        logger.info("The input export ts dt is 15 Min")
     else:
-        print("Cannot infer dt for the Export time series")
+        raise ValueError("Cannot infer dt for the Export time series")
 
     stimee = export_df.index[0]
     etimee = export_df.index[-1]
@@ -311,11 +316,11 @@ def sffpx_level(sdate, edate, sffpx_datasrc):
     is_file_like = os.path.exists(sffpx_datasrc) or len(matches) > 0
 
     if is_file_like:
-        print("Reading sffpx data from file(s):", sffpx_datasrc)
+        logger.info("Reading sffpx data from file(s): %s", sffpx_datasrc)
         sf = read_ts(sffpx_datasrc, start=s, end=e, force_regular=True)
     else:
         try:
-            print("Reading sffpx data from repository:", sffpx_datasrc)
+            logger.info("Reading sffpx data from repository: %s", sffpx_datasrc)
             sf = read_ts_repo(
                 "sffpx",
                 "elev",
@@ -325,7 +330,7 @@ def sffpx_level(sdate, edate, sffpx_datasrc):
                 force_regular=True,
             )
         except Exception as exc:
-            print(exc)
+            logger.error("%s", exc)
             raise ValueError(
                 f"Could not interpret --sffpx-datasrc={sffpx_datasrc!r} "
                 "as an existing file/pattern or as a repo name for "
@@ -823,7 +828,7 @@ def process_height(s1, s2, swp_ts,cvp_ts, sjr_ts, oh4_astro_ts, sffpx_elev_ts, s
     priority, max_height = gen_prio_for_varying_exports(
         sffpx_elev_ts, export_ts_daily_average
     )
-    print("Priority generation complete")
+    logger.info("Priority generation complete")
 
     if save_intermediate:
         full_path = os.path.abspath(os.path.join("./prio_ts", "priority.csv"))
@@ -841,13 +846,13 @@ def process_height(s1, s2, swp_ts,cvp_ts, sjr_ts, oh4_astro_ts, sffpx_elev_ts, s
         sffpx_elev_ts,
         sjr_ts,
     )
-    print("OH4 prediction complete")
+    logger.info("OH4 prediction complete")
 
-    print(f"Starting water balance loop: {s1} to {s2}")
+    logger.info("Starting water balance loop: %s to %s", s1, s2)
     sim_gate_height, zin_df = gen_gate_height(
         swp_ts, priority, max_height, oh4_predict, cvp_ts, inside_level0, s1, s2, dt
     )
-    print("Water balance loop complete")
+    logger.info("Water balance loop complete")
 
     return sim_gate_height, zin_df
 
@@ -898,6 +903,8 @@ def process_height(s1, s2, swp_ts,cvp_ts, sjr_ts, oh4_astro_ts, sffpx_elev_ts, s
     default=False,
     help="Save intermediate products such as priority time series.",
 )
+@click.option("--logdir", default=None, type=click.Path(), help="Directory for log files.")
+@click.option("--debug", is_flag=True, default=False, help="Enable debug logging.")
 def ccf_gate_cli(
     sdate,
     edate,
@@ -908,7 +915,18 @@ def ccf_gate_cli(
     length_unit,
     plot,
     save_intermediate,
+    logdir,
+    debug,
 ):
+    from bdschism.logging_config import configure_logging
+
+    configure_logging(
+        package_name="bdschism",
+        level=logging.DEBUG if debug else logging.INFO,
+        logdir=Path(logdir) if logdir else None,
+        logfile_prefix="ccf_gate",
+    )
+
     if sdate is None or edate is None:
         raise ValueError("Start date and end date must be provided.")
 
@@ -992,9 +1010,9 @@ def ccf_gate(
     oneday = days(1)
     height, zin = process_height(sdate, edate, swp_ts,cvp_ts, sjr_ts, astro_ts, sffpx_elev_ts)
     #height_t = remove_continuous_duplicates(height, height.columns.tolist()[0])
-    print(f"Coarsening {len(height)} rows of 2-min gate height output")
+    logger.info("Coarsening %d rows of 2-min gate height output", len(height))
     height_t = ts_coarsen(height, grid="2min",preserve_vals=[0.0],qwidth=0.01,hyst=0.5,heartbeat_freq="60min")
-    print(f"Coarsening complete: {len(height_t)} rows retained")
+    logger.info("Coarsening complete: %d rows retained", len(height_t))
     height_t = height_t * FT2M
     height_t.index.name = "datetime"
     height_t.columns = ["height"]
@@ -1006,7 +1024,7 @@ def ccf_gate(
     height_t.insert(4, "elev", dlen * [-4.0244])
     height_t.insert(5, "width", dlen * [6.096])
 
-    print(f"Saving predicted gate height file to {dest}")
+    logger.info("Saving predicted gate height file to %s", dest)
     height_t[sdate : edate + oneday].to_csv(
         dest,
         sep=" ",
@@ -1016,6 +1034,7 @@ def ccf_gate(
     )
 
     if plot:
+        import matplotlib.pyplot as plt
         fig, (ax1) = plt.subplots(1, 1)
         lsyn = ax1.step(
             height_t.index,
