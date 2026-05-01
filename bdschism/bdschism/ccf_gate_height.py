@@ -6,7 +6,7 @@ This module provides functions to estimate the gate opening height for Clifton C
 based on SWP export, eligible intervals for opening, priority level, maximum gate height allowed,
 OH4 stage level, and CVP pump rate for a given period.
 """
-import datetime as dtm
+
 import pandas as pd
 from vtools.functions.unit_conversions import M2FT, FT2M, CMS2CFS
 from vtools import days, hours ,minutes, divide_interval
@@ -18,6 +18,7 @@ from vtools.functions.coarsen import ts_coarsen
 import schimpy.param as parms
 from schimpy.th_io import read_th
 import numpy as np
+import numba
 from vtools.functions import tidalhl
 import os
 import math
@@ -97,9 +98,9 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
     input_tide : :py:class:`Series <pandas:pandas.Series>`
         Time series of the Predicted tide at SF in LST
         The time series should be taken from the datastore (water level in m, NAVD88). Headers: datetime,predicted_m,elev_m.
-    stime: :py:class:`datetime.timedelta`
+    stime: :py:class:`pd.Timestamp`
         start time.
-    etime: :py:class:`datetime.timedelta`
+    etime: :py:class:`pd.Timestamp`
         end time.
 
     Output: 3 irregular time series that contain the schedule for the priority 1, 2 and 3.
@@ -114,7 +115,9 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
         sframe = s
     
     # Find minimum and maximums
-    sh, sl = tidalhl.get_tidal_hl(sframe)  # Get Tidal highs and lows
+    # SFFPX is pre-filtered upstream; find_peaks on sequential 25h windows
+    # is much faster than the default rolling method for long series.
+    sh, sl = tidalhl.get_tidal_hl(sframe, method="find_peaks")  # Get Tidal highs and lows
     sh = pd.concat([sh, tidalhl.get_tidal_hh_lh(sh)], axis=1)
     sh.columns = ["max", "max_name"]
     sl = pd.concat([sl, tidalhl.get_tidal_ll_hl(sl)], axis=1)
@@ -455,15 +458,39 @@ def draw_down_regression(cvp, qin):
 
 
 def simple_mass_balance(export, zup, zin0, height, dt, vt):
-    
-    
-
     qin0 = radial_gate_flow(zin0, zup, height, 5)
     zin_predict = zin0 - (export - qin0) * dt.total_seconds() / ccf_A
     qin1 = radial_gate_flow(zin_predict, zup, height, 5)
     qint = 0.5 * (qin0 + qin1)
     zin = zin0 - (export - qint) * dt.total_seconds() / ccf_A
     vt = vt - (export - qint) * dt.total_seconds()
+    return zin, vt, qint
+
+
+@numba.jit(nopython=True)
+def _radial_gate_flow_scalar(zdown, zup, height, n, width, zsill):
+    """Pure-scalar gate flow for numba nopython JIT inside the tight loop."""
+    if zup < zdown:
+        return 0.0
+    d = 0.75
+    s = 0.8
+    g = 32.2
+    r = min(1.0, height / (zup - zsill))
+    c = d + s * r
+    A = min(height, zup - zsill) * width
+    q = n * c * A * math.sqrt(2.0 * g * (zup - zdown))
+    return q
+
+
+@numba.jit(nopython=True)
+def _simple_mass_balance_scalar(export, zup, zin0, height, dt_sec, vt, ccf_A_val, width, zsill):
+    """Scalar mass balance with pre-computed dt_sec and constants for numba."""
+    qin0 = _radial_gate_flow_scalar(zin0, zup, height, 5, width, zsill)
+    zin_predict = zin0 - (export - qin0) * dt_sec / ccf_A_val
+    qin1 = _radial_gate_flow_scalar(zin_predict, zup, height, 5, width, zsill)
+    qint = 0.5 * (qin0 + qin1)
+    zin = zin0 - (export - qint) * dt_sec / ccf_A_val
+    vt = vt - (export - qint) * dt_sec
     return zin, vt, qint
 
 
@@ -519,11 +546,11 @@ def gen_gate_height(
         CVP pumping rate.
     inside_level0 : float
         Initial CCFB surface stage.
-    s1 : datetime.datetime
+    s1 : pd.Timestamp
         Start time.
-    s2 : datetime.datetime
+    s2 : pd.Timestamp
         End time.
-    dt : datetime.timedelta
+    dt : pd.Timedelta
         Output time step.
 
     Returns
@@ -536,8 +563,6 @@ def gen_gate_height(
     t = s1
     relax_period = minutes(6)
     smooth_steps = int(relax_period / dt)
-    height_ts = []
-    tt = []
     height = 0.0
     v0 = (inside_level0 - ccf_reference_level) * ccf_A
     vt = v0
@@ -547,45 +572,104 @@ def gen_gate_height(
     export_ts_daily = (export_ts.resample("D").sum()) * export_ts_freq.total_seconds()
     prio = 0
     op = 0
-    zin_lst = []
-    ztime = []
-    zin_lst2 = []
-    ztime2 = []
     draw_down = 0.0
 
-    while t < s2:
-        zin2 = 2 + vt / ccf_A
-        zin_lst2.append(zin2)
-        ztime2.append(t)
-        tday = dtm.datetime(*t.timetuple()[:3])
-        tday1 = tday + days(1)
-        tleft = tday1 - t
-        nleft = int(tleft / dt)
+    # Pre-extract numpy arrays for fast lookup inside the tight loop.
+    # pandas .iloc inside a 2-min loop over 16+ years is ~100x slower than
+    # direct numpy array indexing with np.searchsorted on int64 timestamps.
+    #
+    # IMPORTANT: pandas 2.x uses datetime64[us] by default, so .asi8 returns
+    # microseconds.  pd.Timestamp.value always returns nanoseconds.  We
+    # normalize all .asi8 arrays to nanoseconds here to match t_ns.
+    _asi8_to_ns = pd.Timestamp(export_ts.index[0]).value // export_ts.index.asi8[0]
+    export_idx = export_ts.index.asi8 * _asi8_to_ns
+    export_val = export_ts.to_numpy(dtype=float)
+    oh4_idx = oh4_level.index.asi8 * _asi8_to_ns
+    oh4_val = oh4_level.to_numpy(dtype=float)
+    priority_idx = priority.index.asi8 * _asi8_to_ns
+    priority_val = priority["priority"].to_numpy(dtype=float)
+    op_val = priority["op"].to_numpy(dtype=float)
+    maxh_idx = max_height.index.asi8 * _asi8_to_ns
+    maxh_val = max_height.to_numpy(dtype=float)
+    cvp_idx = cvp_ts.index.asi8 * _asi8_to_ns
+    cvp_val = cvp_ts.to_numpy(dtype=float)
+    daily_idx = export_ts_daily.index.asi8 * _asi8_to_ns
+    daily_val = export_ts_daily.to_numpy(dtype=float)
+    dt_sec = dt.total_seconds()
+    _width = 6.096 * M2FT
+    _zsill = -4.044 * M2FT
 
-        if tday == t:
+    # Integer-nanosecond time loop: eliminates pd.Timestamp(t).value and
+    # datetime arithmetic from the hot path (~4M iterations for 16 years).
+    dt_ns = int(dt_sec * 1_000_000_000)
+    day_ns = 86400 * 1_000_000_000
+    t_ns = np.int64(pd.Timestamp(s1).value)
+    s2_ns = np.int64(pd.Timestamp(s2).value)
+
+    # Pre-allocate output arrays.  Upper bound: one row per dt step plus
+    # some headroom for relax ramps.
+    _max_steps = int((s2 - s1) / dt) + 2 * smooth_steps + 1
+    height_arr = np.empty(_max_steps, dtype=float)
+    tt_arr = np.empty(_max_steps, dtype='int64')
+    zin2_arr = np.empty(_max_steps, dtype=float)
+    zt2_arr = np.empty(_max_steps, dtype='int64')
+    zin_arr = np.empty(_max_steps, dtype=float)
+    zt_arr = np.empty(_max_steps, dtype='int64')
+    n_out = 0       # index into height_arr / tt_arr
+    n_zin2 = 0      # index into zin2_arr / zt2_arr
+    n_zin = 0       # index into zin_arr / zt_arr
+
+    while t_ns < s2_ns:
+        zin2 = 2.0 + vt / ccf_A
+        zin2_arr[n_zin2] = zin2
+        zt2_arr[n_zin2] = t_ns
+        n_zin2 += 1
+
+        tday_ns = t_ns - (t_ns % day_ns)
+        tday1_ns = tday_ns + day_ns
+        tleft_ns = tday1_ns - t_ns
+        nleft = int(tleft_ns // dt_ns)
+
+        if t_ns == tday_ns:
             accumulate_export = 0.0
-        loc = export_ts.index.searchsorted(t) - 1
-        export = export_ts.iloc[loc]
-        export_daily = export_ts_daily[tday]
-        loc = priority.index.searchsorted(t) - 1
-        prio = priority.priority.iloc[loc]
-        op = priority.op.iloc[loc]
-        loc = oh4_level.index.searchsorted(t) - 1
-        zup = oh4_level.iloc[loc] - draw_down
-        loc = max_height.index.searchsorted(t) - 1
-        max_h = max_height.iloc[loc]
+
+        loc = np.searchsorted(export_idx, t_ns) - 1
+        export = export_val[loc]
+        loc_day = np.searchsorted(daily_idx, tday_ns)
+        if loc_day >= len(daily_val):
+            loc_day = len(daily_val) - 1
+        export_daily = daily_val[loc_day]
+        loc = np.searchsorted(priority_idx, t_ns) - 1
+        prio = priority_val[loc]
+        op = op_val[loc]
+        loc = np.searchsorted(oh4_idx, t_ns) - 1
+        zup = oh4_val[loc] - draw_down
+        loc = np.searchsorted(maxh_idx, t_ns) - 1
+        max_h = maxh_val[loc]
 
         # if (prio < 1) or (op == 0) or ((zup - zin) < 0.0):
         if (prio < 1) or (op == 0):
             height_target = 0.0
-            accumulate_time = []
-            relax_height = []
             if height == height_target:
-                height_ts.append(height)
-                tt.append(t)
-                accumulate_time.append(t)
-                relax_height = [height]
-                t = t + dt
+                # Single closed step
+                height_arr[n_out] = height
+                tt_arr[n_out] = t_ns
+                n_out += 1
+                # mass balance for this single step
+                loc = np.searchsorted(oh4_idx, t_ns) - 1
+                zup = oh4_val[loc] - draw_down
+                zin, vt, qint = _simple_mass_balance_scalar(
+                    export, zup, zin, height, dt_sec, vt, ccf_A, _width, _zsill)
+                accumulate_export += export * dt_sec
+                zin_arr[n_zin] = zin
+                zt_arr[n_zin] = t_ns
+                n_zin += 1
+                loc = np.searchsorted(cvp_idx, t_ns)
+                if loc >= len(cvp_val):
+                    loc = len(cvp_val) - 1
+                cvp = cvp_val[loc]
+                draw_down = draw_down_regression(cvp, qint)
+                t_ns += dt_ns
             else:  # closing smoothly
                 relax_n = smooth_steps
                 relax_step = -1.0 / relax_n
@@ -593,30 +677,35 @@ def gen_gate_height(
                 relax_height_t[-1] = height_target
                 relax_n = len(relax_height_t) - 1
                 relax_height = relax_height_t[1:]
-                height_ts = height_ts + relax_height.tolist()
-                tt = tt + [t + i * dt for i in range(relax_n)]
-                accumulate_time += [t + i * dt for i in range(relax_n)]
-                t = tt[-1] + dt
+                # Write height ramp
+                for ri in range(relax_n):
+                    tt_arr[n_out] = t_ns + ri * dt_ns
+                    height_arr[n_out] = relax_height[ri]
+                    n_out += 1
+                # Mass balance over the ramp
+                ramp_t_ns = t_ns
+                for ri in range(relax_n):
+                    if ramp_t_ns == tday1_ns:
+                        accumulate_export = 0.0
+                    loc = np.searchsorted(export_idx, ramp_t_ns) - 1
+                    export = export_val[loc]
+                    loc = np.searchsorted(oh4_idx, ramp_t_ns) - 1
+                    zup = oh4_val[loc] - draw_down
+                    zin, vt, qint = _simple_mass_balance_scalar(
+                        export, zup, zin, relax_height[ri], dt_sec, vt, ccf_A, _width, _zsill)
+                    accumulate_export += export * dt_sec
+                    zin_arr[n_zin] = zin
+                    zt_arr[n_zin] = ramp_t_ns
+                    n_zin += 1
+                    loc = np.searchsorted(cvp_idx, ramp_t_ns)
+                    if loc >= len(cvp_val):
+                        loc = len(cvp_val) - 1
+                    cvp = cvp_val[loc]
+                    draw_down = draw_down_regression(cvp, qint)
+                    ramp_t_ns += dt_ns
+                t_ns = ramp_t_ns
 
-            for ttemp, htemp in zip(accumulate_time, relax_height):
-                if ttemp == tday1:
-                    accumulate_export = 0.0
-                loc = export_ts.index.searchsorted(ttemp) - 1
-                export = export_ts.iloc[loc]
-                loc = oh4_level.index.searchsorted(ttemp) - 1
-                zup = oh4_level.iloc[loc] - draw_down
-                zin, vt, qint = simple_mass_balance(export, zup, zin, htemp, dt, vt)
-                accumulate_export += export * dt.total_seconds()
-                zin_lst.append(zin)
-                ztime.append(ttemp)
-                loc = cvp_ts.index.searchsorted(ttemp)
-                if loc >= len(cvp_ts):
-                    loc = len(cvp_ts) - 1  # Clamp to the last valid index
-                cvp = cvp_ts.iloc[loc]
-                draw_down = draw_down_regression(cvp, qint)
-            # print(ttemp,vt,zin,export,qint)
             height = height_target
-
             continue
 
         export_remain = export_daily - accumulate_export
@@ -627,30 +716,36 @@ def gen_gate_height(
             relax_n = smooth_steps
             relax_step = -1.0 / relax_n
             relax_height = np.arange(1.0, 0, relax_step) * height
-            left_height = nleft * [height_target]
+            left_height_arr = np.zeros(nleft)
             relax_n = len(relax_height) - 1
             if nleft >= relax_n:
-                left_height[0:relax_n] = relax_height[1:]
+                left_height_arr[:relax_n] = relax_height[1:]
 
-            height_ts = height_ts + left_height
-            tt = tt + [t + i * dt for i in range(nleft)]
+            for li in range(nleft):
+                height_arr[n_out] = left_height_arr[li]
+                tt_arr[n_out] = t_ns + li * dt_ns
+                n_out += 1
+
             vt = vt - export_remain
             accumulate_export = accumulate_export + export_remain
             zin = ccf_reference_level + vt / ccf_A
 
-            t = tday1
+            t_ns = tday1_ns
             height = height_target
-            zin_lst.append(zin)
-            ztime.append(t)
-            loc = cvp_ts.index.searchsorted(t)
-            cvp = cvp_ts.iloc[loc]
+            zin_arr[n_zin] = zin
+            zt_arr[n_zin] = t_ns
+            n_zin += 1
+            loc = np.searchsorted(cvp_idx, t_ns)
+            if loc >= len(cvp_val):
+                loc = len(cvp_val) - 1
+            cvp = cvp_val[loc]
             draw_down = draw_down_regression(cvp, 0)
             continue
 
         if zup - zin <= 0.0:
             height_target = max_h
         else:
-            height_target = min(11 * math.pow(zup - zin, -0.3) - 0.5, max_h)
+            height_target = min(11.0 * math.pow(zup - zin, -0.3) - 0.5, max_h)
 
         if height == 0:
             relax_n = smooth_steps
@@ -661,28 +756,32 @@ def gen_gate_height(
 
         for i in range(relax_n):
             height_temp = height + height_step * (i + 1)
-            loc = oh4_level.index.searchsorted(t) - 1
-            zup = oh4_level.iloc[loc] - draw_down
-            loc = export_ts.index.searchsorted(t) - 1
-            export = export_ts.iloc[loc]
-            zin, vt, qint = simple_mass_balance(export, zup, zin, height_temp, dt, vt)
-            accumulate_export = accumulate_export + export * dt.total_seconds()
-            height_ts.append(height_temp)
-            tt.append(t)
-            zin_lst.append(zin)
-            ztime.append(t)
-            loc = cvp_ts.index.searchsorted(t) - 1
-            cvp = cvp_ts.iloc[loc]
+            loc = np.searchsorted(oh4_idx, t_ns) - 1
+            zup = oh4_val[loc] - draw_down
+            loc = np.searchsorted(export_idx, t_ns) - 1
+            export = export_val[loc]
+            zin, vt, qint = _simple_mass_balance_scalar(export, zup, zin, height_temp, dt_sec, vt, ccf_A, _width, _zsill)
+            accumulate_export = accumulate_export + export * dt_sec
+            height_arr[n_out] = height_temp
+            tt_arr[n_out] = t_ns
+            n_out += 1
+            zin_arr[n_zin] = zin
+            zt_arr[n_zin] = t_ns
+            n_zin += 1
+            loc = np.searchsorted(cvp_idx, t_ns) - 1
+            cvp = cvp_val[loc]
             draw_down = draw_down_regression(cvp, qint)
-            t += dt
+            t_ns += dt_ns
             ## if time passes the next day, reset the accumulate export
-            if t == tday1:
+            if t_ns == tday1_ns:
                 accumulate_export = 0.0
         height = height_target
 
-    # Create the DataFrame
-    df = pd.DataFrame(height_ts, index=tt, columns=["ccfb_height"])
-    zin_df2 = pd.DataFrame(zin_lst2, index=ztime2, columns=["ccfb_interior_surface"])
+    # Build DataFrames from pre-allocated arrays
+    tt_index = pd.DatetimeIndex(tt_arr[:n_out], dtype='datetime64[ns]')
+    df = pd.DataFrame(height_arr[:n_out], index=tt_index, columns=["ccfb_height"])
+    zt2_index = pd.DatetimeIndex(zt2_arr[:n_zin2], dtype='datetime64[ns]')
+    zin_df2 = pd.DataFrame(zin2_arr[:n_zin2], index=zt2_index, columns=["ccfb_interior_surface"])
     return df, zin_df2
 
 
@@ -724,6 +823,7 @@ def process_height(s1, s2, swp_ts,cvp_ts, sjr_ts, oh4_astro_ts, sffpx_elev_ts, s
     priority, max_height = gen_prio_for_varying_exports(
         sffpx_elev_ts, export_ts_daily_average
     )
+    print("Priority generation complete")
 
     if save_intermediate:
         full_path = os.path.abspath(os.path.join("./prio_ts", "priority.csv"))
@@ -741,10 +841,13 @@ def process_height(s1, s2, swp_ts,cvp_ts, sjr_ts, oh4_astro_ts, sffpx_elev_ts, s
         sffpx_elev_ts,
         sjr_ts,
     )
+    print("OH4 prediction complete")
 
+    print(f"Starting water balance loop: {s1} to {s2}")
     sim_gate_height, zin_df = gen_gate_height(
         swp_ts, priority, max_height, oh4_predict, cvp_ts, inside_level0, s1, s2, dt
     )
+    print("Water balance loop complete")
 
     return sim_gate_height, zin_df
 
@@ -811,8 +914,8 @@ def ccf_gate_cli(
 
     sffpx_elev_ts = sffpx_level(sdate, edate, sffpx_datasrc)
     
-    s1 = dtm.datetime.strptime(sdate, "%Y-%m-%d")
-    s2 = dtm.datetime.strptime(edate, "%Y-%m-%d")
+    s1 = pd.Timestamp(sdate)
+    s2 = pd.Timestamp(edate)
     out =get_flux_ts_cfs(s1, s2, export_datasrc)
     swp_ts = out['swp']
     cvp_ts = out['cvp']
@@ -889,7 +992,9 @@ def ccf_gate(
     oneday = days(1)
     height, zin = process_height(sdate, edate, swp_ts,cvp_ts, sjr_ts, astro_ts, sffpx_elev_ts)
     #height_t = remove_continuous_duplicates(height, height.columns.tolist()[0])
+    print(f"Coarsening {len(height)} rows of 2-min gate height output")
     height_t = ts_coarsen(height, grid="2min",preserve_vals=[0.0],qwidth=0.01,hyst=0.5,heartbeat_freq="60min")
+    print(f"Coarsening complete: {len(height_t)} rows retained")
     height_t = height_t * FT2M
     height_t.index.name = "datetime"
     height_t.columns = ["height"]
