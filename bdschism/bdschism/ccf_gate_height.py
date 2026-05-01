@@ -13,7 +13,6 @@ from vtools import days, hours ,minutes, divide_interval
 from dms_datastore.read_ts import read_ts
 from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
-from vtools.functions.merge import ts_merge
 from vtools.functions.coarsen import ts_coarsen
 
 import schimpy.param as parms
@@ -138,10 +137,7 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
     idx2 = sl[sl["min_name"] == "LL"].index - pd.Timedelta("2h")
     closes = pd.DataFrame(data=np.zeros(len(sl)), index=idx1.union(idx2))
 
-    # combined the df
-    open_close = pd.concat([opens, closes], axis=1)
-
-    prio3_ts = ts_merge([open_close.iloc[:, 0],open_close.iloc[:, 1]]).to_frame()
+    prio3_ts = opens.squeeze().combine_first(closes.squeeze()).to_frame()
     prio3_ts.columns = [3]
     prio3_ts.index.name = "DATETIME"
     prio3_ts = prio3_ts[prio3_ts[3] != prio3_ts[3].shift()]
@@ -164,9 +160,7 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
     idx2 = sl[sl["min_name"] == "LL"].index - pd.Timedelta("2h")
     closes = pd.DataFrame(data=np.zeros(len(sl)), index=idx1.union(idx2))
 
-    # combined the df
-    open_close = pd.concat([opens, closes], axis=1)
-    prio2_ts = ts_merge([open_close.iloc[:, 0], open_close.iloc[:, 1]]).to_frame()
+    prio2_ts = opens.squeeze().combine_first(closes.squeeze()).to_frame()
     prio2_ts.columns = [2]
     prio2_ts.index.name = "DATETIME"
     prio2_ts = prio2_ts[prio2_ts[2] != prio2_ts[2].shift()]
@@ -185,9 +179,7 @@ def make_priorities(input_tide, stime, etime, save_intermediate=False):
     idx2 = sl[sl["min_name"] == "LL"].index - pd.Timedelta("2h")
     closes = pd.DataFrame(data=np.zeros(len(sl)), index=idx1.union(idx2))
 
-    # combined the df
-    open_close = pd.concat([opens, closes], axis=1)
-    prio1_ts = ts_merge([open_close.iloc[:, 0], open_close.iloc[:, 1]]).to_frame()
+    prio1_ts = opens.squeeze().combine_first(closes.squeeze()).to_frame()
     prio1_ts.columns = [1]
     prio1_ts.index.name = "DATETIME"
     prio1_ts = prio1_ts[prio1_ts[1] != prio1_ts[1].shift()]
