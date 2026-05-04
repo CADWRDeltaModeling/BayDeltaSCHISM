@@ -85,6 +85,7 @@ def potw_prep_cli(potw_file, output_dir, logdir, debug):
     configure_logging(
         package_name="bdschism",
         level=logging.DEBUG if debug else logging.INFO,
-        logdir=Path(logdir) if logdir else None,
+        logdir=Path(logdir) if logdir else None,        
+        logfile_prefix="potw",
     )
     potw_to_schism(potw_file, output_dir)

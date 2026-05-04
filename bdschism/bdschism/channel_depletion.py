@@ -178,6 +178,7 @@ def cd_prep_cli(config_file, set_vars, logdir, debug):
         package_name="bdschism",
         level=logging.DEBUG if debug else logging.INFO,
         logdir=Path(logdir) if logdir else None,
+        logfile_prefix="channel_depletion",
     )
     kv = dict(s.split("=", 1) for s in set_vars)
     convert_channel_depletion(config_file, kv)

@@ -165,5 +165,6 @@ def csv_to_th_cli(infile, outfile, dated, reftime, start, end, logdir, debug):
         package_name="bdschism",
         level=logging.DEBUG if debug else logging.INFO,
         logdir=Path(logdir) if logdir else None,
+        logfile_prefix="convert_csv_th",
     )
     convert_csv_th(infile, outfile, dated=dated, reftime=reftime, start=start, end=end)
