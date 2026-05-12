@@ -334,16 +334,16 @@ def setup_tmp_dir(bg_output_dir, tmp_bg_output_dir, nfile):
 
     print("\n\tOutput files linked:")
     print(
-        f"\t\t{os.path.join(bg_output_dir, f"out2d_{nfile}.nc")} -> {os.path.join(tmp_bg_output_dir, "out2d_1.nc")}"
+        f"\t\t{os.path.join(bg_output_dir, f'out2d_{nfile}.nc')} -> {os.path.join(tmp_bg_output_dir, 'out2d_1.nc')}"
     )
     print(
-        f"\t\t{os.path.join(bg_output_dir, f"zCoordinates_{nfile}.nc")} -> {os.path.join(tmp_bg_output_dir, "zCoordinates_1.nc")}"
+        f"\t\t{os.path.join(bg_output_dir, f'zCoordinates_{nfile}.nc')} -> {os.path.join(tmp_bg_output_dir, 'zCoordinates_1.nc')}"
     )
     print(
-        f"\t\t{os.path.join(bg_output_dir, f"horizontalVelX_{nfile}.nc")} -> {os.path.join(tmp_bg_output_dir, "horizontalVelX_1.nc")}"
+        f"\t\t{os.path.join(bg_output_dir, f'horizontalVelX_{nfile}.nc')} -> {os.path.join(tmp_bg_output_dir, 'horizontalVelX_1.nc')}"
     )
     print(
-        f"\t\t{os.path.join(bg_output_dir, f"horizontalVelY_{nfile}.nc")} -> {os.path.join(tmp_bg_output_dir, "horizontalVelY_1.nc")}\n"
+        f"\t\t{os.path.join(bg_output_dir, f'horizontalVelY_{nfile}.nc')} -> {os.path.join(tmp_bg_output_dir, 'horizontalVelY_1.nc')}\n"
     )
 
     config.create_link(
