@@ -4,6 +4,8 @@ import pytest
 import os
 import xarray as xr
 import glob
+import re
+from datetime import datetime
 
 
 @pytest.mark.prerun
@@ -58,6 +60,7 @@ def test_sflux_dimensions(sim_dir, sflux_dirname="sflux"):
             raise AssertionError(f"Error reading file {os.path.basename(nc_file)}: {str(e)}")
     
     print(f"All {len(nc_files)} netcdf files have consistent dimensions: nx_grid={reference_nx_grid}, ny_grid={reference_ny_grid}")
+
 @pytest.mark.prerun
 def test_sflux_base_date_consistency(sflux_dir):
     """Check that base_date of time variable in sflux files matches the days offset in filename
