@@ -1,3 +1,14 @@
+
+# This is a legacy reference file, created shortly after the 2023 conclusion of the MSS project. 
+# Original source/sinks were colocated, # a practice borrowed from DSM2 is not physical in the context of the SCHISM numerical scheme with geophysical sources and sinks. One vacuums up the other.
+
+# the dcd "_adj" files are prefered.
+# These have had the sources and sinks separated using relocate_source_sink. Running
+# the script again following a grid change will not hurt, but it may change the min-depth polygons that
+# assure adequate local depth in places where this could not be found with a random search.
+# The script does not adjust sources and sinks that have previously been separated, but it might alter the polygons.
+
+
 suisun_sink_227:
 - 590536.06
 - 4213751.0

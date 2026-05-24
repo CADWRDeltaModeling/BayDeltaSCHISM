@@ -1,0 +1,399 @@
+linestrings:
+- comment: diagnostic
+  coordinates:
+  - - 583823.7239176433
+    - 4227305.437705884
+  - - 583784.6332823492
+    - 4227529.320435296
+  name: suisunsl_up
+  station_na: Suisun Slough Upstream Near Restoration
+- comment: diagnostic
+  coordinates:
+  - - 550170.2406235188
+    - 4202091.977941175
+  - - 547547.6143646948
+    - 4203094.119682352
+  - - 546097.7071646944
+    - 4203435.274317646
+  name: ptsanbablo
+  station_na: Point San Pablo
+- comment: diagnostic
+  coordinates:
+  - - 577314.0
+    - 4210041.0
+  - - 577022.0
+    - 4210544.0
+  - - 576816.0
+    - 4210865.0
+  - - 576354.0
+    - 4211261.0
+  name: ben_bridge
+  station_na: Benicia Bridge
+- comment: diagnostic
+  coordinates:
+  - - 595108.0
+    - 4211015.0
+  - - 595229.0
+    - 4212010.0
+  name: chipps2
+  station_na: Sac at Chipps 2
+- comment: diagnostic
+  coordinates:
+  - - 596842.0
+    - 4210862.0
+  - - 596617.0
+    - 4212078.0
+  name: chipps1
+  station_na: Sac at Chipps 1
+- comment: diagnostic
+  coordinates:
+  - - 593426.0
+    - 4211328.0
+  - - 593683.0
+    - 4211922.0
+  - - 593734.0
+    - 4212269.0
+  name: chipps3
+  station_na: Sac at Chipps 3
+- comment: diagnostic
+  coordinates:
+  - - 610474.0
+    - 4215781.0
+  - - 609945.0
+    - 4216551.0
+  name: emmaton
+  station_na: Sac at Emmaton
+- comment: diagnostic
+  coordinates:
+  - - 598195.0
+    - 4210323.0
+  - - 598436.0
+    - 4210635.0
+  name: newyork
+  station_na: New York Slough
+- comment: diagnostic
+  coordinates:
+  - - 606691.0
+    - 4209550.0
+  - - 606565.0
+    - 4209517.0
+  name: mayberrycut
+  station_na: Mayberry Cut
+- comment: diagnostic
+  coordinates:
+  - - 607450.4
+    - 4209813.4
+  - - 607406.0
+    - 4209776.4
+  - - 607380.8
+    - 4209726.0
+  - - 607323.1
+    - 4209687.5
+  - - 607237.2000000001
+    - 4209660.8
+  name: donlan
+  station_na: Donlan Lake to SJR
+- comment: diagnostic
+  coordinates:
+  - - 608588.4
+    - 4209982.600000001
+  - - 608451.0
+    - 4210000.0
+  name: mayberrysl
+  station_na: Mayberrry Slough
+- comment: diagnostic
+  coordinates:
+  - - 607315.0
+    - 4213686.0
+  - - 606783.0
+    - 4214474.0
+  name: sherman_us
+  station_na: Sac at Sherman Upstream of Lake
+- comment: diagnostic
+  coordinates:
+  - - 604655.0
+    - 4212498.0
+  - - 604793.0
+    - 4213613.0
+  name: sherman_ds
+  station_na: Sac at Sherman Dowstream of Lake
+- comment: diagnostic
+  coordinates:
+  - - 604044.0
+    - 4208456.0
+  - - 604173.0
+    - 4209086.0
+  name: antioch
+  station_na: Antioch near NOAA Station
+- comment: diagnostic
+  coordinates:
+  - - 567795.0
+    - 4212332.0
+  - - 567808.0
+    - 4213396.0
+  name: carqbridge
+  station_na: Carquinez Bridge
+- comment: diagnostic
+  coordinates:
+  - - 546052.0
+    - 4184920.0
+  - - 545965.0
+    - 4185302.0
+  - - 545305.0
+    - 4186852.0
+  name: ggate
+  station_na: Golden Gate
+- comment: diagnostic
+  coordinates:
+  - - 627072.0
+    - 4187833.6
+  - - 627039.5
+    - 4187978.8000000003
+  name: ccf_intake2
+  station_na: Clifton Court Intake 2
+- comment: diagnostic
+  coordinates:
+  - - 627167.5
+    - 4187852.7
+  - - 627137.0
+    - 4187992.2
+  name: ccf_intake1
+  station_na: Clifton Court Intake 1
+- comment: diagnostic
+  coordinates:
+  - - 597584.2000000001
+    - 4216744.4
+  - - 597665.7000000001
+    - 4216813.4
+  name: smscg1
+  station_na: Montezuma at SMSCG 1
+- comment: diagnostic
+  coordinates:
+  - - 597507.1
+    - 4216817.9
+  - - 597551.0
+    - 4216873.4
+  name: smacg_below_rr
+  station_na: Montezuma below Roaring River
+- comment: diagnostic
+  coordinates:
+  - - 597665.5
+    - 4216587.5
+  - - 597755.4
+    - 4216636.8
+  name: smscg_up
+  station_na: Montezuma Upstream of SMSCG
+- comment: diagnostic
+  coordinates:
+  - - 608988.4796572953
+    - 4208691.410694727
+  - - 609064.5786671963
+    - 4209917.450298687
+  name: sjr_sherman_us
+  station_na: SJR above Sherman Lake
+- comment: diagnostic
+  coordinates:
+  - - 598550.2321325426
+    - 4211012.430496707
+  - - 598262.7469840278
+    - 4211507.074061063
+  - - 598131.6875780872
+    - 4211600.083962053
+  - - 597692.0044097704
+    - 4212466.76713037
+  name: sac_ny_us
+  station_na: Sac Upstream of New York Slough
+- comment: diagnostic
+  coordinates:
+  - - 602592.3830588219
+    - 4210958.915764703
+  - - 602538.8404705867
+    - 4211038.607058821
+  - - 602512.6917647043
+    - 4211133.240470586
+  - - 602460.3943529396
+    - 4211159.389176468
+  name: shermanwest
+  station_na: Sherman Lake western outlet
+- comment: diagnostic
+  coordinates:
+  - - 630384.2242470653
+    - 4234299.10772942
+  - - 630346.0220353005
+    - 4234206.711682361
+  name: dcc_up
+  station_na: Delta Cross Channel Upstream
+- comment: diagnostic, not in station database
+  coordinates:
+  - - 582843.76
+    - 4223420.858
+  - - 583316.307
+    - 4223180.0
+  name: south_hunter_cut
+  station_na: South Hunter Cut
+- comment: diagnostic, not in station database
+  coordinates:
+  - - 582883.794
+    - 4223492.479
+  - - 582950.985
+    - 4223598.304
+  name: crossover_c01
+  station_na: crossover_c01
+- comment: diagnostic, not in station database
+  coordinates:
+  - - 582668.786
+    - 4223640.298
+  - - 582729.257
+    - 4223734.364
+  name: crossover_c12
+  station_na: crossover_c12
+- comment: diagnostic, not in station database
+  coordinates:
+  - - 593742.2
+    - 4226879.0
+  - - 593854.5
+    - 4226927.1
+  name: west_nurse_sl
+  station_na: west_nurse_sl
+- comment: diagnostic, not in station database
+  coordinates:
+  - - 595914.606
+    - 4227190.522
+  - - 595972.871
+    - 4227298.311
+  name: east_nurse_sl
+  station_na: east_nurse_sl
+- comment: diagnostic, not in station database
+  coordinates:
+  - - 584362.71
+    - 4227805.84
+  - - 584375.36
+    - 4227752.5
+  name: connection_st_west
+  station_na: connection_st_west
+- comment: diagnostic, not in station database
+  coordinates:
+  - - 588218.67
+    - 4227425.831
+  - - 588277.937
+    - 4227536.956
+  name: connection_st_east
+  station_na: connection_st_east
+- comment: diagnostic, not in station database
+  coordinates:
+  - - 592950.0
+    - 4224828.1
+  - - 592928.8805294106
+    - 4225046.472811778
+  name: nurse_sl_west
+  station_na: nurse_sl_west
+- comment: diagnostic, not in station database
+  coordinates:
+  - - 593576.282
+    - 4225344.889
+  - - 593695.845
+    - 4225236.555
+  name: nurse_sl_east_north
+  station_na: nurse_sl_east_north
+- comment: diagnostic, not in station database
+  coordinates:
+  - - 593745.0
+    - 4224145.0
+  - - 593911.0
+    - 4224260.0
+  name: nurse_sl_east_south
+  station_na: nurse_sl_east_south
+- comment: diagnostic on Woodward Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 627740.0
+    - 4197145.0
+  - - 627740.0
+    - 4197300.0
+  name: woodward_c
+  station_na: woodward_central
+- comment: diagnostic on Woodward Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 629945.0
+    - 4197203.0
+  - - 629945.0
+    - 4197355.0
+  name: woodward_e
+  station_na: woodward_east
+- comment: diagnostic on Railroad Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 627530.0
+    - 4200065.0
+  - - 627530.0
+    - 4200140.0
+  name: railroad_s
+  station_na: railroad_southcent
+- comment: diagnostic on Railroad Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 627542.0
+    - 4200165.0
+  - - 627543.0
+    - 4200255.0
+  name: railroad_n
+  station_na: railroad_northcent
+- comment: diagnostic on Railroad Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 628690.0
+    - 4200080.0
+  - - 628690.0
+    - 4200150.0
+  name: railroad_se
+  station_na: railroad_southeast
+- comment: diagnostic on Railroad Cut, to be augmented by real deployment in 2021
+  coordinates:
+  - - 628471.0
+    - 4200171.0
+  - - 628471.0
+    - 4200260.0
+  name: railroad_ne
+  station_na: railroad_northeast
+- comment: Diagnostic on Paradise Cut Weir
+  coordinates:
+  - - 648849.75
+    - 4180514.84
+  - - 648844.73
+    - 4180597.55
+  name: paradise_cut_weir
+  station_na: paradise_cut_weir
+- comment: diagnostic
+  coordinates:
+  - - 639290.0
+    - 4183660.0
+  - - 639323.0
+    - 4183685.0
+  name: tompaine_flux
+  station_na: tompaine_flux
+- comment: diagnostic
+  coordinates:
+  - - 637206.0
+    - 4186943.0
+  - - 637206.0
+    - 4187012.0
+  name: gle2
+  station_na: Grant Line diagnostic
+- comment: diagnostic
+  coordinates:
+  - - 636643.0
+    - 4186910.0
+  - - 636643.0
+    - 4187007.0
+  name: gle3
+  station_na: Grant Line diagnostic
+- comment: diagnostic
+  coordinates:
+  - - 593978.4048588228
+    - 4225458.701329425
+  - - 593965.3746470581
+    - 4225506.08391766
+  - - 593858.7638235287
+    - 4225643.493423543
+  - - 593830.3342705874
+    - 4225722.859258837
+  - - 593698.8475882345
+    - 4225766.688152954
+  name: nurse
+  station_na: Nurse Slough Entrance

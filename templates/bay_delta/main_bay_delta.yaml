@@ -1,10 +1,36 @@
-# Main input file for default bay_delta template based on version 117 of the mesh
+# Main input file for default bay_delta template based on version 118 of the mesh
 
-prepro_output_dir: ./prepro_out # where your preprocessor output will go
+# Changed since before:
+# Depth enforcement suisun polygons depth_enforcement_suisun_polygons2.yaml
+# rough_lsc2_v3b   renamed rough.yaml
+# diffmin_lsc2_v3b renamed diffmin.yaml
+# krvel_3b
+# tvd_lsc2
+# vgrid is now incorporated and produces the simple name vgrid
+# bctides still wrong
+# depth_enforcement_polygons.yaml works, trying depth_enforcement_polygons5.yaml
+# rough_lsc2_v3b works, trying v3c
+# sav_density2 and sav_height2
+
+
+prepro_output_dir: ../prepro_out # where your preprocessor output will go
+
+config:
+  mesh_year: 2018
+  mesh_version: 118
+  sav_year: 2014
+  sav_repo: "//cnrastore-bdo/Modeling_Data/sav/remote_sensing_2014-2024_complete"
+  suisun_veg_year_scale: 0.5   # Because we only have 2024, early years scaled down
+
+# Common schimpy modules (or module functions)
+# used in evaluating expressions in polygons and on linestrings
+imports:
+  - schimpy.sav_density_raster
+  - schimpy.bound_linear  
 
 mesh:
   # SMS formatted 2dm file (which will be formatted) or a preexisting SCHISM hgrid.gr3
-  mesh_inputfile: ./bay_delta_117.2dm
+  mesh_inputfile: ./bay_delta_${mesh_version}_${mesh_year}.2dm
   
   # Mesh generation produces some skew elements. These are handled more robustly
   # if they are triangles rather than quads. These criteria are used for identifying skew and splitting
@@ -29,7 +55,8 @@ mesh:
     include:
       #- dem_restorations_future_20250822.yaml  # Selected proposed locations. Vet carefully to make sure it covers your area of interest
       #- dem_restorations_2024_20260211.yaml    # Restoration sites up to 2024. See comments in this file for year of introduction if you are targetting surgically
-      - dem_4.3_suisun_20250430.yaml            # Contemporary soundings through 2024, restoration in Delta to approximately 2019
+      - dem_4.3_hist_${mesh_year}.yaml            # Contemporary soundings through 2024, 
+                                                  # restoration in Delta to approximately 2019
 
   # The depth optimization step:
   # 1. adjusts the node depths so that the elements (based on shape functions) better match the volume of the DEM (as given by a large number of quadrature samples). 
@@ -42,13 +69,22 @@ mesh:
   
   # The final depth adjustment is to manually enforce features, make up for known DEM defects or 
   # do experiments with landscape change such as dredging.
+  # These are based on 2018
   depth_enforcement:
     polygons:
       include:
-        - depth_enforcement_polygons_117.yaml
-        - depth_enforcement_ss_polygons.yaml
-        - depth_enforcement_suisun_polygons.yaml
-        - depth_enforcement_v117_restoration_polygons.yaml
+        #- depth_enforcement_taper_lean.yaml
+        - depth_enforcement_polygons_v${mesh_version}.yaml
+        - depth_enforcement_delta_source_sink.yaml  # Identified using relocate_source_sink script to separate standard sources and sinks.
+        - depth_enforcement_suisun_source_sink.yaml # Identified using relocate_source_sink to separate standard sources and sinks.
+        - depth_enforcement_ss_polygons.yaml        # Additional source/sink depth enforcement location for node from MSS
+        - depth_enforcement_suisun_polygons_pre2018.yaml   # Eliminate blockages and 2010-2018 deposition.
+                                                    # depth_enforcement_suisun_polygons.yaml worked but is more aggressive
+                                                    # depth_enforcement_suisun_polygons5 is a rollback along main channel but includes transormation seen in Suisun Sl
+                                                    # during 2004-2026 (ambiguous)
+                                                    # Unclear that it was ever tested                                                    
+        - depth_enforcement_v${mesh_version}_restoration_polygons.yaml
+        - depth_enforcement_polygons_monitoring.yaml  # Maintain shore stations wet
         # Must come last and only needed if eliminating 
         # effects of 2018 accidental breaches from early runs
         # Should not be used post-2018
@@ -59,23 +95,25 @@ mesh:
         - depth_enforcement_sjr_linestrings.yaml
         - depth_enforcement_suisun_linestrings.yaml
         - depth_enforcement_suisun_restoration.yaml
-        - depth_enforcement_v117_linestrings.yaml
+        - depth_enforcement_v${mesh_version}_linestrings.yaml
         - depth_enforcement_linestrings.yaml
-        - depth_enforcement_v117_restoration_linestrings.yaml
+        - depth_enforcement_v${mesh_version}_restoration_linestrings.yaml
 
   ll_outputfile: hgrid.ll
   gr3_outputfile: hgrid.gr3
 
-# Note this file is in the /data directory and relative location needs to be set
-# This should come from flow_station_xsects_new.yaml with newer ids.
+# Used for fluxflags.prop and flux.out
 flow_outputs:
-  include: flow_station_xsects.yaml
+  include: 
+    - flow_station_xsects.yaml
+    - flow_diagnostic_xsects.yaml
   outputfile: fluxflag.prop
 
 # The gr3 file is a node-centered file used to populate many of the most important spatial inputs to SCHISM
 gr3:
-  diffmin.gr3: !include diffmin.yaml # Updated for retrospective (diffmin_retro_2025g.yaml)
-  rough.gr3: !include rough.yaml  #
+  
+  diffmin.gr3: !include diffmin.yaml  # In calibration diffmin_lsc2_v3b.yaml
+  rough.gr3: !include rough.yaml      # In calibration rough_lsc2_v3c.yaml
 
   #rough.gr3:     # Approximately what Works with GOTM k-eps last time we tried it.
   #  default: 4.e-5
@@ -93,11 +131,11 @@ gr3:
   # Be cautious of the coupling between sav_cd.gr3 value and the intepretation of density.
   # The way we do interpretation of NDVI index data leaves some ambiguity between density and drag coeficient
   # and it is only their product that matters, not the individual values. See User Guide for more info.  
-  sav_N.gr3: !include sav_density.yaml
-  sav_D.gr3: !include sav_diameter.yaml
-  sav_h.gr3: !include sav_height.yaml
-  sav_cd.gr3:
-    default: 0.20
+  veg_N.gr3: !include sav_density2.yaml   # uses new algorithm
+  veg_D.gr3: !include sav_diameter.yaml
+  veg_h.gr3: !include sav_height2.yaml    # uses new algorithm
+  veg_cd.gr3:
+    default: 0.1    # Lower than previous realease
   # Initial condition for water level elevation. This is used directly in barotropic runs and
   # is based on a formula that puts initially dry areas just below the bed. 
   elev.ic: !include elev.yaml
@@ -121,7 +159,7 @@ gr3:
   #TEM_nudge.gr3: !include TEM_nudge.yaml
 
 prop:
-  tvd.prop: !include tvd.yaml
+  tvd.prop: !include tvd.yaml  # updated from tvd_lsc2
 
 # Definitions and physical characteristics of Delta hydraulic structures, most recently expanded to 
 # correspond to our understanding of the Morrow distribution system as it exists today. 
@@ -134,31 +172,27 @@ sources_sinks:
   # See the _2019 variant for older locations
   sinks:
     include:
-    - sink_dcd.yaml
-    - sink_mss.yaml       # comment out if excluding MSS for legacy reasons
-    - sink_nullzone.yaml  # comment out if excluding MSS for legacy reasons
-    - sink_suisun.yaml
+    - sink_dcd_adj.yaml   # DCD locations adjusted to separate sources and sinks
+    - sink_mss.yaml       # comment out if not using MSS
+    - sink_nullzone.yaml  # comment out if not using MSS
+    - sink_suisun_adj.yaml  # SMCD locations adjusted to separate sources and sinks 
   sources:
     include:
-    - source_dcd.yaml
-    - source_mss.yaml     # comment out if excluding MSS for legacy reasons
-    - source_suisun.yaml
-    - source_potw.yaml    # comment out if excluding MSS for legacy reasons
+    - source_dcd_adj.yaml
+    - source_mss.yaml     # comment out if not using MSS
+    - source_suisun_adj.yaml
+    - source_potw.yaml    # comment out if not using MSS
   outputfile: source_sink.in
 
-vgrid:
-    vgrid_out: vgrid.in.3d
-    minmaxlayerfile: minmaxlayer_v115.shp
-    eta: 1.5
-    vgrid_version: '5.10'
+vgrid: !include vgrid_v2.yaml
+
 
 station_output:
   name: station.in      # Name of the output file in the preprocessor output. Often this will also be station.in, same as one of the inputs
   request: all          # Variables requested
   station_in_files:
-    - station.in        # Use this key to re-use an established station.in, say for backwards compatibility
-    # - GENERATE        # Use this key to trigger automatic revision using dms_datastore's station.py functionality 
-    # - diagnostic.in   # Example of adding project specific output locations in the same format as station.in
+    - station_20260523.in        # Use this key to re-use an established station.in, say for backwards compatibility
+    - station_diagnostic.in   # Example of adding project specific output locations in the same format as station.in
 
 bctides:
   include:

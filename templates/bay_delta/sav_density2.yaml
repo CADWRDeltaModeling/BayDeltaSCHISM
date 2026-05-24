@@ -1,0 +1,88 @@
+#This is a revised methodology 2026 that does less blurring of edge vegetation into the water column
+
+default: 0
+polygons:
+- name: delta
+  imports: schimpy.sav_density_raster
+  type: none
+  attribute: >
+    sav_density_raster.sav_density(
+        mesh,
+        nodes_sel,
+        '${sav_repo}/processed_files/${sav_year}/${sav_year}_veg_type.tif',
+        '${sav_repo}/processed_files/${sav_year}/${sav_year}_veg_density.tif',
+        stencil=3,
+        depth_limit=3.0,
+        mapping='sav_mapping.csv',
+        strict=False
+    )
+  vertices:
+  - - 604042.845857751
+    - 4305002.717812906
+  - - 597247.733143792
+    - 4234334.963263432
+  - - 599702.7084290446
+    - 4234181.523885463
+  - - 599209.5628699122
+    - 4216772.036417161
+  - - 597582.0563437666
+    - 4213664.9614674095
+  - - 599801.4014639375
+    - 4210508.56545832
+  - - 597976.6198025137
+    - 4208289.225631941
+  - - 594211.0880984358
+    - 4208365.095279527
+  - - 591417.3133127061
+    - 4184665.570616065
+  - - 621008.4597099968
+    - 4164740.8552927477
+  - - 699918.2100482264
+    - 4164148.7222387926
+  - - 658293.535243294
+    - 4310526.353680361
+  - - 604042.845857751
+    - 4305002.717812906
+- name: suisun
+  imports: schimpy.sav_density_raster
+  type: none
+  attribute: >
+    ${suisun_veg_year_scale}*sav_density_raster.sav_density(
+        mesh,
+        nodes_sel,
+        '${sav_repo}/../processed_2024_suisun/processed_quantile/vegetation_type_Suisun_2024.tif',
+        '${sav_repo}/../processed_2024_suisun/processed_quantile/vegetation_density_Suisun_2024.tif',
+        stencil=3,
+        depth_limit=3.0,
+        mapping='sav_mapping.csv',
+        strict=False
+    ) 
+  vertices:
+  - - 584437.3520359724
+    - 4207836.72225253
+  - - 594021.1708056952
+    - 4206754.0314291725
+  - - 594211.0880984358
+    - 4208365.095279527
+  - - 597976.6198025137
+    - 4208289.225631941
+  - - 599801.4014639375
+    - 4210508.56545832
+  - - 597582.0563437666
+    - 4213664.9614674095
+  - - 599209.5628699122
+    - 4216772.036417161
+  - - 599702.7084290446
+    - 4234181.523885463
+  - - 597247.733143792
+    - 4234334.963263432
+  - - 597303.2976041725
+    - 4234912.822058882
+  - - 574747.1582295228
+    - 4234558.165779406
+  - - 574600.3371112432
+    - 4207836.72225253
+  - - 584437.3520359724
+    - 4207836.72225253
+
+    

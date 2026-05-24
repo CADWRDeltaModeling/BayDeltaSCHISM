@@ -1,6 +1,6 @@
 linestrings:
 - ID: 1
-  attribute: 0.1
+  attribute: max(z,0.1)
   coordinates:
   - - 581061.7
     - 4219611.9
@@ -77,7 +77,7 @@ linestrings:
   name: morrow_intake_cline
   type: none
 - ID: 2
-  attribute: 0.1
+  attribute: max(z,0.1)
   coordinates:
   - - 580975.4
     - 4219266.8
@@ -96,7 +96,7 @@ linestrings:
   name: morrow_mline
   type: none
 - ID: 3
-  attribute: 0.1
+  attribute: max(z,0.1)
   coordinates:
   - - 579011.8
     - 4218640.5
@@ -389,7 +389,7 @@ linestrings:
   name: goodyear5
   type: none
 - ID: 4
-  attribute: 0.1
+  attribute: max(z,0.1)
   coordinates:
   - - 580123.1
     - 4221200.5
@@ -602,7 +602,7 @@ linestrings:
   name: goodyear4
   type: none
 - ID: 3
-  attribute: 0.1
+  attribute: max(z,0.1)
   coordinates:
   - - 578407.5490629494
     - 4215360.406343106

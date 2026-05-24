@@ -1,0 +1,43 @@
+vgrid_generator_version: v2
+vgrid_out: vgrid.in.3d
+eta: 1.5
+vgrid_version: '5.10'
+
+depth_function:
+    name: bilinear
+    params:
+        a: 0.5
+        b: 0.005
+        c: 0.08
+        d: -3.0e-5
+
+algorithm:
+    Lsmooth_passes: 30
+    Lsmooth_kappa: 0.80
+    hysteresis:
+        delta_up: 1.1
+        delta_down: 1.1
+        Jmax: 0
+        eps_depth: 2.75
+        max_sweeps: 6
+        do_median_cleanup: true
+    fit:
+        kappa: 0.55
+        dt: 0.5
+        iters_bottom: 30
+        iters_mid: 20
+        lam_D: 0.65
+        lam_B: 2.0
+        K_bottom: 3
+        tmin: 0.45
+        keep_top_thin: 3
+        top_relax: 0.75
+        no_collapse_ratio: 0.6
+        sm_alpha_top: 0.65
+        sm_alpha_bot: 0.1
+        sm_power: 1.1
+        sm_iters: 2
+
+region_constraints:
+    include: vgrid_constraints.yaml
+constraint_taper_rings: 3
