@@ -416,6 +416,7 @@ def slice_nc(
 
         tenc = dict(ds_out[tname].encoding or {})
         ds_out[tname].encoding = {k: tenc[k] for k in tenc.keys() & supported}
+        ds_out[tname].encoding["_FillValue"] = None  # prevent fill-value masking on time
 
         ds_out.to_netcdf(outfile, encoding=encoding)
     except Exception as e:
