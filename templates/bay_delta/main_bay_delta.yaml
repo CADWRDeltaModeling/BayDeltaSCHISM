@@ -20,7 +20,7 @@ config:
   mesh_version: 118
   sav_year: 2014
   sav_repo: "//cnrastore-bdo/Modeling_Data/sav/remote_sensing_2014-2024_complete"
-  suisun_veg_year_scale: 0.5   # Because we only have 2024, early years scaled down
+  suisun_veg_year_scale: 0.75   # Because we only have 2024, early years scaled down
 
 # Common schimpy modules (or module functions)
 # used in evaluating expressions in polygons and on linestrings
@@ -135,7 +135,7 @@ gr3:
   veg_D.gr3: !include sav_diameter.yaml
   veg_h.gr3: !include sav_height2.yaml    # uses new algorithm
   veg_cd.gr3:
-    default: 0.1    # Lower than previous realease
+    default: 0.075    # Lower than previous realease
   # Initial condition for water level elevation. This is used directly in barotropic runs and
   # is based on a formula that puts initially dry areas just below the bed. 
   elev.ic: !include elev.yaml
