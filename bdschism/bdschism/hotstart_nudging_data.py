@@ -13,12 +13,14 @@ from dms_datastore.read_multi import *
 from vtools.functions.unit_conversions import *
 from vtools.data.vtime import days
 import glob
+import pathlib
 import pandas as pd
 import os
 import logging
 import click
 
-logger = logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
+from bdschism.logging_config import configure_logging, resolve_loglevel
 
 
 stations = [
@@ -106,7 +108,7 @@ stations = [
     "sut",
     "snod",
     "gln",
-    "rye",
+    #"rye",
     "ryf",
     "rvb",
     "mir",
@@ -131,16 +133,14 @@ stations = [
 
 # Stations where an "upper" and "lower" sublocation occur and we must distinguish the upper
 add_upper = ["anh", "cse", "mrz", "emm", "mal", "pts"]
-repo = "//cnrastore-bdo/Modeling_Data/jenkins_repo_staging/continuous/formatted"
-repo = "//cnrastore-bdo/Modeling_Data/repo/continuous/screened"
 
 
-def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
+def hotstart_nudge_data(sdate, ndays, dest, repo = "screened"):
 
     t0 = sdate
     nudgelen = pd.Timedelta(days=ndays)
 
-    repo = repo_dir
+
     ##
     station_df = station_dbase()
 
@@ -160,7 +160,6 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
         var = {"temperature": "temp", "salinity": "ec"}[
             label_var
         ]  # working variable for data
-        print(f"Working on variable: {label_var},{var}")
         logger.info(f"Working on variable: {label_var},{var}")
         vals = []
         accepted = {}
@@ -170,16 +169,11 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
             y = row.y
             fndx = ndx + "@upper" if ndx in add_upper else ndx
 
-            pat = f"*_{fndx}_*_{var}*_20??.csv"
-            pat = os.path.join(repo, pat)
-            matches = glob.glob(pat)
-            if len(matches) == 0:
-                no_such_file.append((ndx, var))
-                continue
             try:
                 subloc = "upper" if ndx in add_upper else None
+                logger.info(f"Reading {var} data for {ndx} with subloc={subloc}")
                 ts = read_ts_repo(
-                    ndx, var, subloc=subloc, repo=repo, src_priority="infer"
+                    ndx, var, subloc=subloc, repo=repo
                 )
                 ts = ts.loc[sdata:edata]
                 ts = ts.interpolate(limit=4)
@@ -191,8 +185,7 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
                 if var == "temp":
                     topquant = ts.quantile(q=0.25)
                     if topquant > 35:
-                        print("Transforming F to C based on 25% qyantuke > 35deg")
-                        print("Transforming F to C based on 25% qyantuke > 35deg")
+                        logger.warning("Transforming F to C: 25th percentile > 35 deg, assuming Fahrenheit")
                         ts = fahrenheit_to_celsius(ts)
                     if ndx in ["clc"] and (ts < 0.0).all():
                         ts = celsius_to_farenheit(ts)
@@ -210,9 +203,9 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
                 # This is the fraction of missing data
                 ts = ts.reindex(tndx)
                 gap_frac = ts.isnull().sum() / len(ts)
-                print(f"Fraction of mssing data for {ndx} {var} is {gap_frac}")
+                logger.debug(f"Fraction of missing data for {ndx} {var}: {gap_frac:.3f}")
                 if gap_frac < 0.25:
-                    print(f"Accepted {ndx} {var}")
+                    logger.info(f"Accepted {ndx} {var}")
                     ts.columns = [ndx]
                     ts = ts.fillna(-9999.0)
                     accepted[ndx] = ts
@@ -221,10 +214,7 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
                         used_stations.add(ndx)
 
             except Exception as err:
-                print("Exception")
-                print(str(err))
-                print(ndx, var)
-                print(err)
+                logger.warning(f"Error processing {ndx} {var}: {err}")
         var_df = pd.DataFrame(data=vals, columns=("station", "x", "y", f"{label_var}"))
         var_df.set_index("station")
         var_df.to_csv(
@@ -240,12 +230,10 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
             nudging_df = pd.concat(accepted, axis=1)
         nudging_df.index.name = "datetime"
         nudging_dfs[label_var] = nudging_df
-        print(nudging_df)
         logger.info(nudging_df)
 
     obs_xy = pd.DataFrame(data=accepted_loc, columns=["site", "x", "y"])
-    print("reindexing and printing")
-    logger.info("reindexing and printing")
+    logger.info("Writing nudging data files")
 
     for label_var in all_vars:
         nudging_dfs[label_var].to_csv(
@@ -259,20 +247,15 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
     obs_xy = obs_xy.set_index("site", drop=True)
     obs_xy.to_csv(os.path.join(dest, f"obs_xy.csv"), sep=",", float_format="%.2f")
 
-    print("No such file")
-    logger.info("No such files")
-    for item in no_such_file:
-        print(item)
-        logger.info(item)
+    if no_such_file:
+        logger.info("No data files found for: %s", no_such_file)
 
 
-@click.command(
-    help="""\n
+@click.command(help="""\n
     Download station data from repo and save in csv format for hotstart nudging.\n
     Usage:\n
     bds hot_nudge_data --start_date 2018-02-19 --nudge_len 300 --dest_dir . --repo_dir $repo_path\n
-    """
-)
+    """)
 @click.option(
     "--start_date",
     required=True,
@@ -293,16 +276,18 @@ def hotstart_nudge_data(sdate, ndays, dest, repo_dir):
                         Default is current folder",
 )
 @click.option(
-    "--repo_dir",
-    default=repo,
-    help=f"path to the repo of observed time series. \
-                        Default is {repo}",
+    "--repo",
+    default="screened",
+    help="repo of observed time series. \
+                        Default is screened",
 )
-@click.option("--logdir", type=click.Path(path_type=click.Path), default="logs")
+@click.option("--logdir", type=click.Path(path_type=pathlib.Path), default="logs")
 @click.option("--debug", is_flag=True)
 @click.option("--quiet", is_flag=True)
 @click.help_option("-h", "--help")
-def hotstart_nudge_data_cli(start_date, nudge_len, dest_dir, repo_dir, logdir, debug, quiet):
+def hotstart_nudge_data_cli(
+    start_date, nudge_len, dest_dir, repo, logdir, debug, quiet
+):
     """
     Command-line interface for the hotstart_nudge_data function.
     """
@@ -312,19 +297,19 @@ def hotstart_nudge_data_cli(start_date, nudge_len, dest_dir, repo_dir, logdir, d
         quiet=quiet,
     )
     configure_logging(
-          package_name="bdschism",
-          level=level,
-          console=console,
-          logdir=logdir,
-          logfile_prefix="hotstart_nudge_data",
-    ) 
+        package_name="bdschism",
+        level=level,
+        console=console,
+        logdir=logdir,
+        logfile_prefix="hotstart_nudge_data",
+    )
 
     try:
         sdate = pd.to_datetime(start_date)
     except ValueError:
         raise ValueError("Invalid date format. Use YYYY-MM-DD.")
 
-    hotstart_nudge_data(sdate, nudge_len, dest_dir, repo_dir)
+    hotstart_nudge_data(sdate, nudge_len, dest_dir, repo)
 
 
 if __name__ == "__main__":
