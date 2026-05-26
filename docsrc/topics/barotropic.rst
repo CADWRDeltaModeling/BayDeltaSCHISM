@@ -83,22 +83,79 @@ Symlink your vgrid.in file to vgrid.in.3d for baroclinic run and vgrid.in.2d for
 
 Generate uv3D.th.nc
 ---------------------
-There are two ways to generate the uv3D.th.nc file. Both use the SCHISM utility `interpolate_variables` to interpolate the 2D barotropic velocity output to the 3D grid. 
-The first method is to run the bdschism command line utility `bds uv3d` which runs the interpolation for you with no required arguments.
+Both methods described below use the SCHISM utility ``interpolate_variables`` to interpolate
+2D barotropic velocity output onto the 3D grid, producing ``uv3D.th.nc``.
+
+Simple method
+^^^^^^^^^^^^^
+The simplest approach is the bdschism utility ``bds uv3d``, which runs the full interpolation
+in a single call with no required arguments (run from the barotropic simulation directory):
 
 .. code-block:: console
-    
+
     bds uv3d
 
-The second method is to run the bdschism command line utility `bds uv3d_single` which allows you to run the interpolation in batch mode across all output files in the barotropic run. This cuts the time down from potentially hours to minutes. See `this example slurm batch script <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/examples/uv3d_batch/batch_create_uv3d.slurm>`_ for running uv3d in batch mode. After running the batch script you will have a uv3D.th.nc file for each output file (dayly typically) in the barotropic run. You can then use the `bds combine_nc` utility to combine these into a single file for use in the baroclinic run.
+This is convenient but processes all output files serially, which can take hours for long runs.
+
+Batch method (SLURM)
+^^^^^^^^^^^^^^^^^^^^
+For much faster generation, use the SLURM array script that drives ``bds uv3d_single``.
+Each array task independently processes one netCDF output stack (typically one day, as set
+by ``dt`` and output frequency in ``param.nml``), so the entire run completes in roughly the
+time of a single file rather than the sum of all files.
+
+**Background and foreground directories**
+
+The script distinguishes two simulation directories that can be anywhere relative to each other:
+
+* **Background** (``BG_DIR``) — the barotropic (source) simulation. Velocity output files and
+  the 2D vgrid are read from here.
+* **Foreground** (``FG_DIR``) — the baroclinic (destination) simulation. The 3D vgrid and
+  hgrid that define the target grid are taken from here. Output files are written here.
+
+Unlike ``bds uv3d``, each task performs its work in a temporary directory created inside
+``BG_DIR`` (``BG_DIR/tmp_outputs_<TASKID>``), keeping the barotropic outputs untouched.
+
+**How each task "lies about time"**
+
+``interpolate_variables`` expects to process stack files numbered from 1. Each SLURM task
+tricks it by symlinking the single file for its task index to ``*_1.nc`` names, then invoking
+the utility with ``nday=1``. The result is a ``uv3d.th.nc`` whose internal timestamps reflect
+only that one day's data; the correct absolute times are restored when the files are combined
+in the post-processing step.
+
+**Per-task workflow**
+
+For task ``N`` the script:
+
+1. Creates ``BG_DIR/tmp_outputs_N``
+2. Symlinks the four required netCDF files from the barotropic outputs into the temp directory, renaming them to ``*_1.nc``
+3. Symlinks the grid files (``bg.gr3``, ``fg.gr3``, ``vgrid.bg``, ``vgrid.fg``) into the temp directory
+4. Runs ``interpolate_variables`` (``nday=1``) in the temp directory
+5. Moves the result to ``FG_OUT_DIR/uv3d_N.th.nc``
+6. Removes the temp directory
+
+See the `example SLURM script <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/examples/uv3d_batch/batch_create_uv3d.slurm>`_
+for the configuration variables (``BG_DIR``, ``FG_DIR``, vgrid/hgrid filenames, output directory)
+that are set at the top of the file before submitting.
+
+**Combining the per-file outputs**
+
+Once the array job completes, combine the individual files into a single continuous
+``uv3D.th.nc`` using:
 
 .. code-block:: console
 
-    bds combine_nc ./outputs.tropic/uv3d/uv3d_*.th.nc 1 100 -o uv3d.combined.th.nc
+    bds combine_nc uv3d
 
-For the above example it would combine files 1 through 100 into a single file called uv3d.combined.th.nc. You can then link this to uv3D.th.nc for use in the baroclinic run.
+or, to select a specific range:
 
-After combining, you can delete the intermediate uv3d files to save space.
+.. code-block:: console
+
+    bds combine_nc ./uv3d/uv3d_*.th.nc 1 100 -o uv3d.combined.th.nc
+
+Then symlink ``uv3D.th.nc`` in the baroclinic run directory to the combined file.
+The intermediate per-file outputs can be deleted once the combined file is verified.
 
 
 
