@@ -2,58 +2,82 @@
 #SBATCH --job-name=uv3d_batch                                           # job name used to track job progress in sbatch
 #SBATCH --partition=work                                                # job partition
 #SBATCH --array=1-797                                                   # number of days from outputs to use to generate uv3D.th.nc
-#SBATCH --ntasks=1                                                      # 1 task
-#SBATCH --cpus-per-task=1                                               # 1 cpu per task is plenty
+#SBATCH --ntasks=1                                                      # 1 MPI rank per array element (interpolate_variables is serial, not MPI)
+#SBATCH --cpus-per-task=1                                               # serial
 #SBATCH --output=./_slurm_logs/slurm_uv3d_%A_%a.log                     # creates a folder of logs per task
 #SBATCH --mail-type=NONE                                                # NONE - no emails sent on completion (too many jobs)
 
 set -eo pipefail
 
-conda activate schism                                                   # conda environment with bdschism
+# conda activate requires shell functions that .bashrc normally provides.
+# Source the init script explicitly since SLURM runs a non-interactive shell.
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate schism
 set -u
 
-export SIM_DIR="/path/to/simulations"                                   # set the directory to your simulations
+# ===========================================================================
+# Configuration — edit these before submitting
+# ===========================================================================
 
-nfile="$SLURM_ARRAY_TASK_ID"                                            # inherited per task from array numbers (above)
+# Background (barotropic / source) simulation.
+# Velocity outputs and grid files are READ from here.
+BG_DIR="/path/to/barotropic_sim"
+BG_OUTPUT_DIR=""            # output subdirectory inside BG_DIR
+                            #   leave empty to auto-detect (tries outputs.tropic, then outputs)
+BG_HGRID="hgrid.gr3"       # hgrid file in BG_DIR, linked as bg.gr3
+BG_VGRID="vgrid.in.2d"     # 2-D (barotropic) vgrid in BG_DIR, linked as vgrid.bg
 
-run_uv3d_if_in_range() {
-	local sim_name="$1"                                                 # pass the name of the simulation folder (ex: /path/to/simulations/sim_name)
-	local run_dir="${SIM_DIR}/${sim_name}"                              # run_dir path to sim_name
-	local param_file="${run_dir}/param.nml"                             # path to param.nml in run_dir
+# Foreground (baroclinic / destination) simulation.
+# Target grid onto which velocities are interpolated.
+FG_DIR="/path/to/baroclinic_sim"
+FG_HGRID="hgrid.gr3"       # hgrid file in FG_DIR, linked as fg.gr3
+                            #   often identical to BG_HGRID when grids are shared
+FG_VGRID="vgrid.in.3d"     # 3-D (baroclinic) vgrid in FG_DIR, linked as vgrid.fg
+FG_OUT_DIR="${FG_DIR}/uv3d" # directory where uv3d_<N>.th.nc files are written
 
-	if [[ ! -f "$param_file" ]]; then
-		echo "[SKIP] ${sim_name}: missing ${param_file}"
-		return 0
-	fi
+# ===========================================================================
 
-	local rnday_int
-	rnday_int=$(awk '
-		BEGIN { IGNORECASE=1 }
-		/^[[:space:]]*!/ { next }
-		{
-			gsub(/!.*$/, "")
-			if (match($0, /rnday[[:space:]]*=[[:space:]]*([0-9]+(\.[0-9]+)?)/, m)) {
-				print int(m[1])
-				exit
-			}
+nfile="$SLURM_ARRAY_TASK_ID"
+
+# Parse rnday from BG param.nml — the bg run determines the valid output range.
+rnday_int=$(awk '
+	BEGIN { IGNORECASE=1 }
+	/^[[:space:]]*!/ { next }
+	{
+		gsub(/!.*$/, "")
+		if (match($0, /rnday[[:space:]]*=[[:space:]]*([0-9]+(\.[0-9]+)?)/, m)) {
+			print int(m[1])
+			exit
 		}
-	' "$param_file")                                                    # gather rnday_int from param.nml rnday
+	}
+' "${BG_DIR}/param.nml")
 
-	if [[ -z "$rnday_int" ]]; then
-		echo "[SKIP] ${case_name}: could not parse rnday from ${param_file}"
-		return 0
-	fi
+if [[ -z "$rnday_int" ]]; then
+	echo "[ERROR] Could not parse rnday from ${BG_DIR}/param.nml"
+	exit 1
+fi
 
-	if (( nfile <= rnday_int )); then
-		echo "[RUN]  ${case_name}: nfile=${nfile}, rnday=${rnday_int}"
-		cd "$run_dir"
-		bds uv3d_single "$nfile" -o outputs.tropic/uv3d --overwrite     # compute single uv3d file from $nfile
-	else
-		echo "[SKIP] ${case_name}: nfile=${nfile} > rnday=${rnday_int}"
-	fi
-}
+if (( nfile > rnday_int )); then
+	echo "[SKIP] nfile=${nfile} > rnday=${rnday_int}"
+	exit 0
+fi
 
+echo "[RUN] nfile=${nfile}, rnday=${rnday_int}"
+echo "      bg=${BG_DIR}"
+echo "      fg=${FG_DIR}"
 
-# Pass whichever simulation folders you want to calculate uv3D.th.nc files from
-run_uv3d_if_in_range "simulation_name_1"
-run_uv3d_if_in_range "simulation_name_2"
+# Pass --bg-output-dir only when explicitly set; otherwise let single_uv3d
+# auto-detect (tries outputs.tropic first, then outputs).
+bg_output_dir_arg=()
+[[ -n "$BG_OUTPUT_DIR" ]] && bg_output_dir_arg=( --bg-output-dir "$BG_OUTPUT_DIR" )
+
+bds uv3d_single "$nfile"  \
+	--bg-dir   "$BG_DIR"   \
+	--fg-dir   "$FG_DIR"   \
+	--hgrid-bg "$BG_HGRID" \
+	--hgrid-fg "$FG_HGRID" \
+	--vgrid-bg "$BG_VGRID" \
+	--vgrid-fg "$FG_VGRID" \
+	"${bg_output_dir_arg[@]}" \
+	-o         "$FG_OUT_DIR" \
+	--overwrite

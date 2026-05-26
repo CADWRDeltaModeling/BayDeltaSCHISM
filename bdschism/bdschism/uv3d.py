@@ -395,8 +395,10 @@ def single_uv3d(
             )
             raise ValueError
 
-    # Create a temporary directory for the single uv3d output file
-    tmp_bg_output_dir = f"./tmp_outputs_{nfile}"
+    # Create a temporary directory inside bg_dir for this output file.
+    # Absolute path ensures correct resolution regardless of CWD, which
+    # matters when --bg-dir is passed explicitly without cd-ing into it.
+    tmp_bg_output_dir = os.path.join(os.path.abspath(bg_dir), f"tmp_outputs_{nfile}")
     os.makedirs(tmp_bg_output_dir, exist_ok=True)
     print(f"Linking outputs in {tmp_bg_output_dir}...")
     
