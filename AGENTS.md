@@ -20,13 +20,24 @@ schimpy: https://github.com/CADWRDeltaModeling/schimpy
 - Do not add to the spatial dependency stack
 - Do not add to the plotting dependency stack
 
-# CLI
+# CLI 
 - If operating on data, have a funtion that does that with a worker function based on CLI. The CLI or a secondary wrapper should validate and open files. 
 - CLI should have informative -h and --help 
-- If CLI should uses logging, it should be set up in the cli entry point function and use logging_config. Typical arguments include --logdir, --debug, etc.
-- The canonical example includes the guard in bdschism/__init__.py logging_config. 
+- If CLI should uses logging, it should be set up in the cli entry point function and use logging_config. Typical arguments include --logdir, --debug, etc. 
 - If the nature of the project allows, scripts should have a workhorse function that facilitates equivalent work with inputs and outputs 
 - The suite uses a hierarchical CLI structure. Code needs entry in the local package pyproj.toml, __main__.py, and also in bdschism. Remind the user.
+- CLI should use @click.help_option("-h", "--help")
+
+# logging 
+- The canonical example includes the guard in bdschism/__init__.py and functions in logging_config.
+- add logdir and debug arguments
+- config at entry point looks like:
+    configure_logging(
+        package_name="bdschism",
+        level=logging.DEBUG if debug else logging.INFO,
+        logdir=Path(logdir) if logdir else None,
+        logfile_prefix="cli package or command name",
+    )
 
 # Passing data
 - In bdschism, prep scripts may know station and repo names
