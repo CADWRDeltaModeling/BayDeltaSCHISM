@@ -29,6 +29,9 @@
 !  sed_class = 3 !SED3D (USE_SED)
 !  eco_class = 27 !EcoSim (USE_ECO): must be between [25,60]
 
+! # of vertical bins in vegetation module (used only if iveg/=0)
+  nbins_veg_vert = 2
+
 ! Global output controls
   nspool = 20 !output step spool
   ihfskip = 960 !stack spool; every ihfskip steps will be put into 1_*, 2_*, etc...
@@ -378,8 +381,8 @@
 ! if inter_mom=-1, the regions where Kriging is used is specified in krvel.gr3
 ! (depth=0: no kriging; depth=1: with kriging).
 !-----------------------------------------------------------------------
-  inter_mom = 0
-  kr_co = 1 !not used if inter_mom=0
+  inter_mom = -1
+  kr_co = 2 !not used if inter_mom=0
 
 !-----------------------------------------------------------------------
 ! Transport method.
@@ -392,7 +395,7 @@
 ! Controls for WENO are not yet in place
 !-----------------------------------------------------------------------
   itr_met = 3 !Default: 1
-  h_tvd = 6. !used only if itr_met>=2; cut-off depth (m)
+  h_tvd = 4. !used only if itr_met>=2; cut-off depth (m)
   !If itr_met=3 or 4, need the following 2 tolerances of convergence. The convergence
   !is achieved when sqrt[\sum_i(T_i^s+1-T_i^s)^2]<=eps1_tvd_imp*sqrt[\sum_i(T_i^s)^2]+eps2_tvd_imp
   eps1_tvd_imp = 1.e-4 !suggested value is 1.e-4, but for large suspended load, need to use a smaller value (e.g. 1.e-9)
@@ -459,15 +462,20 @@
   hmin_salt_ex = 0.2 ![m], no effect if isconsv=0 
   iprecip_off_bnd = 0 !if /=0, precip will be turned off near land bnd
 
-!-----------------------------------------------------------------------
 ! Turbulence closure.
+! itur=4 requires building with GOTM (input in gotmturb.nml). In this case, mid, stab are not used.
+! 2nd-order stability function coefficient options (options 1 to 7); needed if icompute_cpsi3/=0
+! 5: Canuto A; 6: Canuto B (see misc_subs.F90 for other options) 
 !-----------------------------------------------------------------------
   itur = 3 !Default: 0
   dfv0 = 1.e-2 !needed if itur=0
   dfh0 = 1.e-4 !needed if itur=0
-  mid = 'KE' !needed if itur=3,5. Use KE if itur=5
-  stab = 'KC' !needed if itur=3 or 5. Use 'GA' if turb_met='MY'; otherwise use 'KC'.
+  mid = 'KE' !needed if itur=3,5. Use KE if itur=5 
+  stab = 'KC' !needed if itur=3 or 5. Use 'GA' if turb_met='MY'; otherwise use 'KC'. 
   xlsc0 = 0.1 !needed if itur=3 or 5. Scale for surface & bottom mixing length (>0)
+  ! iscnd_coeff = 5
+  ! ri_st = 0.22 !needed if icompute_cpsi3/=0. Try [0.1,0.25]
+  ! icompute_cpsi3 = 1 !needed if itur=3,5; optional to compute c_psi3
 
 !-----------------------------------------------------------------------
 ! Sponge layer for elevation and vel.
@@ -512,6 +520,21 @@
 !step_nu_tr = 10800. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
   step_nu_tr = 3600. !time step [sec] in all [MOD]_nu.nc (for inu_[MOD]=2)
 
+
+!-----------------------------------------------------------------------
+! Surface T,S restoration (for large-scale long-term runs). If invoked, 
+! the input is surface_restore.nc. If iref_ts=2, additional input ref_ts_scale.gr3
+! specifies scaling factors in [0,1] (ramp-down nearshore).
+!-----------------------------------------------------------------------
+  iref_ts = 0 !off (0); 1 (scaling factor from depths below); 2 (scaling factor from ref_ts_scale.gr3)
+  ref_ts_restore_depth = 50. !restoration depth [m]
+  ref_ts_tscale = 100. !restoration time scale [days]
+  ref_ts_dt = 30. !time step in surface_restore.nc [days]
+  ref_ts_h1 = 100. !ramp-down depth 1 [m] (to turn off restoration in shallows). Used if iref_ts=1
+  ref_ts_h2 = 60. !ramp-down depth 2 [m]; must <ref_ts_h1
+
+
+
 !-----------------------------------------------------------------------
 ! Cut-off depth for cubic spline interpolation near bottom when computing horizontal gradients
 ! e.g. using hgrad_nodes() (radiation stress, and gradients of qnon and qhat in non-hydro model).
@@ -520,7 +543,7 @@
 ! conservative method is used without extrapolation beyond bottom;
 ! otherwise constant extrapolation below bottom is used.
 !-----------------------------------------------------------------------
-  h_bcc1 = 200. !h_bcc1
+  h_bcc1 = 100. !h_bcc1
 
 !-----------------------------------------------------------------------
 ! Dimensioning parameters for inter-subdomain btrack.
@@ -580,14 +603,27 @@
 
 !----------------------------------------------------------------------
 ! Vegetation model
-! If isav=1, need 3 extra inputs: (1) sav_D.gr3 (depth is stem diameter in meters);
-! (2) sav_N.gr3 (depth is # of stems per m^2);
-! (3) sav_h.gr3 (height of canopy in meters).
-! If one of these depths=0 at a node, the code will set all to 0.
-! If USE_MARSH is on and isav=1, all .gr3 must have constant depths!
+! If iveg/=0, need 4 extra inputs (for unbent stems): (1) veg_D.gr3 (depth is stem diameter in meters);
+! (2) veg_N.gr3 (depth is # of stems per m^2);
+! (3) veg_h.gr3 (height of canopy in meters);
+! (4) veg_cd.gr3 (form drag coefficient).
+! If one of these depths=0 at a node, the code will set all to 0. 
+
+! With iveg/=0, the vertical scaling is given by veg_vert_scale_[cd,N,D](1:nbins_veg_vert+1) below.
+! veg_vert_z(1:nbins_veg_vert+1) specify the distance from bed for each bin (ascending 
+! order starting from 0; const extrapolation is done beyond largest height).
+! iveg=2: flex vegeation using Ganthy fomulation.
+! For all options, the cross section of leaf can be circular or rectangular; in 
+! the latter case, the input 'diameter' is leaf width.
 !----------------------------------------------------------------------
-  isav = 1 !on/off flag. Typically on for Bay-Delta
-!  sav_cd = 1.13 !only needed if isav=1. Drag coefficient
+  iveg = 1                     !on/off flag
+  veg_vert_z = 0.,0.5,1.       ![m] starting from 0.; used if iveg=1
+  veg_vert_scale_cd = 1.,1.,1. !scaling [-]; used if iveg=1
+  veg_vert_scale_N = 1.,1.,1.  !scaling [-]; used if iveg=1
+  veg_vert_scale_D = 1.,1.,1.  !scaling [-]; used if iveg=1
+
+!  veg_lai = 1. !Leaf Area Index [-]; used if iveg=2. Ganthy suggests 0-10?
+  veg_cw = 3.6 !scaling coefficient with iveg=2 [exp(-veg_cw*|U|)]. Ganthy suggests 3.6 s/m
 
 !----------------------------------------------------------------------
 ! Coupling step with ICE module.
@@ -652,7 +688,7 @@
   iof_hydro(15) = 0 !wind stress vector [m^2/s/s] {windStressX,Y}  2D vector
   iof_hydro(16) = 0 !depth-averaged vel vector [m/s] {depthAverageVelX,Y}  2D vector
   iof_hydro(17) = 0 !vertical velocity [m/s] {verticalVelocity}  3D
-  iof_hydro(18) = 0 !water temperature [C] {temperature}  3D
+  iof_hydro(18) = 1 !water temperature [C] {temperature}  3D
   iof_hydro(19) = 1 !water salinity [PSU] {salinity}  3D
   iof_hydro(20) = 0 !water density [kg/m^3] {waterDensity}  3D
   iof_hydro(21) = 0 !vertical eddy diffusivity [m^2/s] {diffusivity}  3D
