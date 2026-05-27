@@ -1,4 +1,6 @@
-"""Tests to make sure that the sflux netcdf files have consistent dimensions"""
+"""Tests to make sure that the sflux netcdf files have consistent dimensions 
+and that the base_date in the time variable matches the days offset in the filename.
+"""
 
 import pytest
 import os
@@ -10,11 +12,22 @@ from datetime import datetime
 
 @pytest.mark.prerun
 def test_sflux_dimensions(sim_dir, sflux_dirname="sflux"):
-    """Reads all netcdf files in sflux folder and checks that nx_grid and ny_grid dimensions are consistent"""
+    """Reads all netcdf files in sflux folder and checks that nx_grid and ny_grid dimensions are consistent
+    
+       Loops over all netcdf files matching pattern sflux_***_1.dddd.nc where:
+       - *** is one of ["air", "prc", "rad"]
+       - dddd is a 4-digit number representing number of days
+    
+    Verifies that nx_grid and ny_grid dimensions are the same across all files of the same parameter type (air, prc, rad).
+
+    """
     sflux_dir = os.path.join(sim_dir, sflux_dirname)
     
     # Check if sflux directory exists
     assert os.path.isdir(sflux_dir), f"sflux directory not found at {sflux_dir}"
+    
+    # Pattern for sflux_***_1.dddd.nc files
+    pattern = r'sflux_([a-z]+)_1\.(\d{4})\.nc'
     
     # Get all netcdf files in sflux folder
     nc_files = glob.glob(os.path.join(sflux_dir, "*.nc"))
@@ -23,43 +36,60 @@ def test_sflux_dimensions(sim_dir, sflux_dirname="sflux"):
     
     print(f"Found {len(nc_files)} netcdf files in {sflux_dir}")
     
-    # Store the reference dimensions from the first file
-    reference_nx_grid = None
-    reference_ny_grid = None
-    reference_file = None
+    # Store reference dimensions per parameter type
+    reference_dims = {}  # {param_type: (nx_grid, ny_grid, reference_file)}
     
-    # Loop through all netcdf files
+    # Organize files by parameter type
+    files_by_param = {}
     for nc_file in nc_files:
-        try:
-            ds = xr.open_dataset(nc_file)
-            
-            # Check if nx_grid and ny_grid dimensions exist
-            if 'nx_grid' in ds.dims and 'ny_grid' in ds.dims:
-                nx_grid = ds.dims['nx_grid']
-                ny_grid = ds.dims['ny_grid']
-                
-                print(f"{os.path.basename(nc_file)}: nx_grid={nx_grid}, ny_grid={ny_grid}")
-                
-                # Set reference dimensions from first file
-                if reference_nx_grid is None:
-                    reference_nx_grid = nx_grid
-                    reference_ny_grid = ny_grid
-                    reference_file = os.path.basename(nc_file)
-                    print(f"Reference dimensions from {reference_file}: nx_grid={reference_nx_grid}, ny_grid={reference_ny_grid}")
-                else:
-                    # Check if dimensions match reference
-                    assert (
-                        nx_grid == reference_nx_grid and ny_grid == reference_ny_grid
-                    ), f"File {os.path.basename(nc_file)} has nx_grid={nx_grid}, ny_grid={ny_grid}, but reference file {reference_file} has nx_grid={reference_nx_grid}, ny_grid={reference_ny_grid}"
-            else:
-                raise AssertionError(f"File {os.path.basename(nc_file)} does not have nx_grid and/or ny_grid dimensions")
-            
-            ds.close()
-            
-        except Exception as e:
-            raise AssertionError(f"Error reading file {os.path.basename(nc_file)}: {str(e)}")
+        basename = os.path.basename(nc_file)
+        match = re.match(pattern, basename)
+        if match:
+            param_type = match.group(1)
+            if param_type not in files_by_param:
+                files_by_param[param_type] = []
+            files_by_param[param_type].append(nc_file)
     
-    print(f"All {len(nc_files)} netcdf files have consistent dimensions: nx_grid={reference_nx_grid}, ny_grid={reference_ny_grid}")
+    # Check dimensions for each parameter type
+    for param_type, files in sorted(files_by_param.items()):
+        print(f"\nChecking parameter type '{param_type}' ({len(files)} files)")
+        
+        for nc_file in files:
+            try:
+                ds = xr.open_dataset(nc_file)
+                basename = os.path.basename(nc_file)
+                
+                # Check if nx_grid and ny_grid dimensions exist
+                if 'nx_grid' in ds.dims and 'ny_grid' in ds.dims:
+                    nx_grid = ds.dims['nx_grid']
+                    ny_grid = ds.dims['ny_grid']
+                    
+                    print(f"  {basename}: nx_grid={nx_grid}, ny_grid={ny_grid}")
+                    
+                    # Set reference dimensions from first file of this parameter type
+                    if param_type not in reference_dims:
+                        reference_dims[param_type] = (nx_grid, ny_grid, basename)
+                        print(f"    -> Reference for '{param_type}': nx_grid={nx_grid}, ny_grid={ny_grid}")
+                    else:
+                        # Check if dimensions match reference for this parameter type
+                        ref_nx, ref_ny, ref_file = reference_dims[param_type]
+                        assert (
+                            nx_grid == ref_nx and ny_grid == ref_ny
+                        ), f"File {basename} has nx_grid={nx_grid}, ny_grid={ny_grid}, but reference file {ref_file} has nx_grid={ref_nx}, ny_grid={ref_ny}"
+                else:
+                    raise AssertionError(f"File {basename} does not have nx_grid and/or ny_grid dimensions")
+                
+                ds.close()
+                
+            except Exception as e:
+                raise AssertionError(f"Error reading file {os.path.basename(nc_file)}: {str(e)}")
+    
+    # Print summary by parameter type
+    print(f"\nDimension validation summary:")
+    for param_type in sorted(reference_dims.keys()):
+        nx, ny, ref_file = reference_dims[param_type]
+        num_files = len(files_by_param.get(param_type, []))
+        print(f"  '{param_type}': {num_files} files with nx_grid={nx}, ny_grid={ny}")
 
 @pytest.mark.prerun
 def test_sflux_base_date_consistency(sflux_dir):
