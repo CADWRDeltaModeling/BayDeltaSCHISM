@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import datetime
+import logging
 import click
 from pathlib import Path
 import pandas as pd
@@ -8,6 +9,8 @@ from bdschism.settings import get_settings
 from schimpy.schism_yaml import load
 import shutil
 import platform
+
+logger = logging.getLogger(__name__)
 
 
 op_dic = {"symlink": os.symlink, "copy": shutil.copy}
@@ -60,7 +63,7 @@ os_name = platform.system().lower()
          data are linked \n\n"
         "Example:\n"
         "  make_links_full --config sflux.yaml --dest ./sflux --sdate 2020-1-1 --edate 2022-2-2 "
-    )
+    )   
 )
 
 @click.option(
@@ -93,7 +96,21 @@ os_name = platform.system().lower()
     help="data file end date in format YEAR-MONTH-DAY, e.g., 2022-2-2.",
 )
 
-def make_links(sdate,edate,config,dest):
+@click.option(
+    "--logdir",
+    default=None,
+    type=click.Path(),
+    help="Directory for log files.",
+)
+
+@click.option(
+    "--debug",
+    is_flag=True,
+    default=False,
+    help="Enable debug logging.",
+)
+
+def make_links(sdate, edate, config, dest, logdir, debug):
     """
     Make links for synthetic flux data based on the specified date range and configuration.
     Parameters
@@ -106,6 +123,10 @@ def make_links(sdate,edate,config,dest):
         The path to the configuration file (YAML format). If None or the file does not exist, it will attempt to find the configuration file from the default location.
     dest : str
         The destination directory where the links will be created.
+    logdir : str or None
+        Directory for log files.
+    debug : bool
+        Enable debug logging.
     Raises
     ------
     FileNotFoundError
@@ -118,6 +139,14 @@ def make_links(sdate,edate,config,dest):
     -----
     This function reads the configuration from a YAML file, retrieves the necessary parameters, and creates symbolic links for the synthetic flux data files based on the specified date range. The linking operation is determined by the link style specified in the configuration.
     """
+    from bdschism.logging_config import configure_logging
+
+    configure_logging(
+        package_name="bdschism",
+        level=logging.DEBUG if debug else logging.INFO,
+        logdir=Path(logdir) if logdir else None,
+        logfile_prefix="create_sflux_links",
+    )
 
     ## first read in bds_config.yaml to get source folder   
     settings = get_settings()
@@ -128,10 +157,13 @@ def make_links(sdate,edate,config,dest):
         if hasattr(settings, "sflux_config"):
             config = Path(settings.sflux_config)
             if not os.path.exists(config):
+                logger.error("Configuration file %s not found. Please provide a valid config file.", config)
                 raise FileNotFoundError(
                 f"Configuration file {config} not found. Please provide a valid config file."
             )
+            logger.info("Using config from settings: %s", config)
         else:
+            logger.error("No configuration file provided and sflux_config not found in bds_config.yaml.")
             raise FileNotFoundError(
                 "No configuration file not provided and sflux_config not found in bds_config.yaml. Please provide a valid config file."
             )
@@ -139,33 +171,43 @@ def make_links(sdate,edate,config,dest):
     ## if config is given but file does not exist, raise error
     else:
         if not os.path.exists(config):
+            logger.error("Configuration file %s not found.", config)
             raise FileNotFoundError(
                 f"Configuration file {config} not found. Please provide a valid config file."
             )
+        logger.info("Using provided config file: %s", config)
 
     ## read in config file using schism_yaml
+    logger.debug("Loading sflux configuration from %s", config)
     f= open(config, "r")
     sflux_config = load(f)
     f.close()
+    logger.debug("Configuration loaded successfully")
 
     if sdate is None:
         ## check run_start_date in sflux_config 
         ## if not found, raise error
         if not( hasattr(settings, "run_start_date")):
+            logger.error("run_start_date is not provided")
             raise ValueError("run_start_date is not provided, and not found in User Env,BDSCHISM or Local Setting." \
             " Please provide run_start_date.")
         sdate = settings.run_start_date
+        logger.info("Using run_start_date from settings: %s", sdate)
     if edate is None:
         if not(hasattr(settings, "run_end_date")):
+            logger.error("run_end_date is not provided")
             raise ValueError("run_end_date is not provided, and not found in User Env,BDSCHISM or Local Setting." \
             " Please provide run_end_date.")
         edate = settings.run_end_date
+        logger.info("Using run_end_date from settings: %s", edate)
     start = pd.to_datetime(sdate)
     dt = pd.Timedelta(days=1)
     end = pd.to_datetime(edate)
     current = start
+    logger.info("Processing date range: %s to %s", start.strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d"))
     if (current >= end):
-        print(f'ERROR: Start date {start.strftime("%b %d, %Y")} is after end date {end.strftime("%b %d, %Y")}')
+        logger.error("Start date %s is after end date %s", start.strftime("%b %d, %Y"), end.strftime("%b %d, %Y"))
+        raise ValueError(f"Start date {start} is after end date {end}")
     nfile = 1
 
 
@@ -175,15 +217,18 @@ def make_links(sdate,edate,config,dest):
     link_style = settings.get("link_style")
     op = op_dic["symlink"]
     if link_style is None:
-        print("no link style specified in bds_config.yaml, using symlink as default")  
+        logger.info("No link style specified in bds_config.yaml, using symlink as default")
     else:
         op_id = link_style[os_name]
         op = op_dic[op_id]
-        print(f"Using {link_style[os_name]} as link style on {os_name} system")
+        logger.info("Using %s as link style on %s system", link_style[os_name], os_name)
+    logger.info("Starting link creation for destination: %s", link_dir)
     while (current <= end):
+        logger.debug("Processing date: %s", current.strftime("%Y-%m-%d"))
         for par in sflux_specification.keys():
             par_spec = sflux_specification.get(par, None)   
             if par_spec is None:
+                logger.error("Parameter %s not found in sflux_specification", par)
                 raise ValueError(f"Parameter {par} not found in sflux_specification.")
             ## retrieve list of sources for this parameeter and sort list index by use_after date
             use_dates = [s.get("use_after", "1900-01-01") for s in par_spec]
@@ -204,18 +249,21 @@ def make_links(sdate,edate,config,dest):
             directory = selected_source.get("directory", None)
             rel_path = selected_source.get("rel_path", None)
             if  directory is None or rel_path is None:
+                logger.error("Parameter %s source %s is missing directory or rel_path", par, label)
                 raise ValueError(f"Parameter {par} source {label} is missing directory or rel_path.")
             src_str = os.path.join(directory, rel_path.format(year=current.year, month=current.month, day=current.day))
             if not os.path.exists(src_str):
+                logger.error("Source %s does not exist", src_str)
                 raise ValueError(f"source {src_str} does not exist.")
             link_str = os.path.join(link_dir, f"sflux_{par}_1.{nfile:04d}.nc")
             if not os.path.exists(link_str):
                 op(src_str, link_str)
-                print(f"Linking {src_str} to {link_str}")
+                logger.info("Linking %s to %s", src_str, link_str)
             else:
-                print(f"Link {link_str} already exists. Skipping.")
+                logger.debug("Link %s already exists. Skipping.", link_str)
         nfile += 1
         current += dt
+    logger.info("Link creation complete")
 
 
 if __name__ == "__main__":
