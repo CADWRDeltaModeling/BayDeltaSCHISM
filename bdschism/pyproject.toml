@@ -14,7 +14,7 @@ readme = "README.md"
 keywords = ["Bay-Delta", "SCHISM", "hydrodynamics"]
 
 # This has to be coordinated with entries in .github/python-package-conda.yml and build_sphinx.yml
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.10,<3.14"
 
 dependencies = [
     "schimpy>=1.12.1",
