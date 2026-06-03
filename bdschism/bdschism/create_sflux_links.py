@@ -62,10 +62,10 @@ os_name = platform.system().lower()
          and precipitation and baydelta schism air pressure are linked. After 2020, hrrr \
          data are linked \n\n"
         "Example:\n"
-        "  make_links_full --config sflux.yaml --dest ./sflux --sdate 2020-1-1 --edate 2022-2-2 "
+        "  create_sflux_links --config sflux.yaml --dest ./sflux --sdate 2020-1-1 --edate 2022-2-2 "
     )   
 )
-
+@click.help_option("-h", "--help")
 @click.option(
     "--config",
     required=False,
@@ -110,7 +110,7 @@ os_name = platform.system().lower()
     help="Enable debug logging.",
 )
 
-def make_links(sdate, edate, config, dest, logdir, debug):
+def create_sflux_links(sdate, edate, config, dest, logdir, debug):
     """
     Make links for synthetic flux data based on the specified date range and configuration.
     Parameters
@@ -267,4 +267,4 @@ def make_links(sdate, edate, config, dest, logdir, debug):
 
 
 if __name__ == "__main__":
-    make_links()
+    create_sflux_links()

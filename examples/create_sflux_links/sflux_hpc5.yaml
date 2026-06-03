@@ -1,0 +1,41 @@
+# The directory and layout may vary, but this is how the Delta Modeling Section lays it out on
+# its high performance computing clusters
+
+# In general we do not suggest  you ever use NARR for wind and you have to start and stop SCHISM if you 
+# switch.  
+# The setup below works for studies centered in the 2010s, with the "use_after" set so that HRRR
+# is pushed out of the simulation window so we have one source of data.
+# If you want to do a run that is more focused on the 2020s (say 2019-2023) you would probably change 
+# those "use_after" dates so that HRRR is the sole source of input.
+
+env:
+    sflux_root: /scratch/nasbdo/modeling_data/atmospheric
+        
+sflux_specification:   
+   air:
+       - label: DMS
+         directory: "${sflux_root}/atmospheric_dwr"            
+         rel_path: "baydelta_sflux_v20220916/baydelta_schism_air_{year:4d}{month:02d}{day:02d}.nc"
+         use_after: 2004-01-01                                            # If early spec is out of time window of run it will be skipped
+       - label: HRRR
+         directory: "${sflux_root}/atmospheric_hrrr"
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"          
+         use_after: 2021-01-01
+   rad:
+       - label: NARR
+         directory: "${sflux_root}/NARR_cropped"            
+         rel_path: "{year:4d}_{month:02d}/narr_rad.{year:4d}_{month:02d}_{day:02d}.nc"
+         use_after: 2009-01-01   
+       - label: HRRR
+         directory: "${sflux_root}/atmospheric_hrrr"
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"         # Not real, change to the actual NARR pattern
+         use_after: 2021-01-01   
+   prc:
+       - label: NARR
+         directory: "${sflux_root}/NARR_cropped"             
+         rel_path: "{year:4d}_{month:02d}/narr_prc.{year:4d}_{month:02d}_{day:02d}.nc"
+         use_after: 2009-01-01     
+       - label: HRRR
+         directory: "${sflux_root}/atmospheric_hrrr"
+         rel_path: "{year:4d}/hrrr_{year:4d}{month:02d}{day:02d}00.nc"        # Not real. Change to the actual NARR pattern
+         use_after: 2021-01-01         

@@ -22,6 +22,7 @@ from bdschism.convert_csv_th import csv_to_th_cli
 from bdschism.slice_th_nc import slice_th_nc_cli
 from bdschism.source_sink_postprocess import postprocess_source_sink_cli
 from bdschism.source_sink_workflow import source_sink_workflow_cli
+from bdschism.create_sflux_links import create_sflux_links
 #
 import subprocess
 import sys
@@ -93,6 +94,7 @@ cli.add_command(csv_to_th_cli, "csv_to_th")
 cli.add_command(slice_th_nc_cli, "slice_th_nc")
 cli.add_command(postprocess_source_sink_cli, "postprocess_source_sink")
 cli.add_command(source_sink_workflow_cli, "source_sink_workflow")
+cli.add_command(create_sflux_links, "create_sflux_links")
 
 
 if __name__ == "__main__":
