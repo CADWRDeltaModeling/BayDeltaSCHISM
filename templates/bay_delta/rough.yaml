@@ -1,12 +1,11 @@
 # This file approximately produces roughness used with bay_delta_118
-# which utilizes local LSC2. Originally called rough_lsc2_v3c.yaml
+# which utilizes local LSC2.
 smooth:
   iter_total: 50
   kappa: 0.35
   dt: 1.
-
 polygons:
-- attribute: bound_linear.bound_linear(z,4,10,1.25e-5,0.0002)
+- attribute: bound_linear.bound_linear(z,4,8,5.e-5,0.0001)
   name: ocean
   type: none
   vertices:
@@ -26,7 +25,7 @@ polygons:
     - 4219480.206250003
   - - 493922.95908203116
     - 4212752.396875002
-- attribute: bound_linear.bound_linear(z,4,10,1.25e-5,0.0002)
+- attribute: bound_linear.bound_linear(z,4,8,5.e-5,0.0001)
   name: bay
   type: none
   vertices:
@@ -64,7 +63,7 @@ polygons:
     - 4232188.290625003
   - - 529647.1523361017
     - 4205599.156422612
-- attribute: bound_linear.bound_linear(z,4,10,1.25e-5,0.0002)
+- attribute: bound_linear.bound_linear(z,4,8,5.e-5,0.0001)
   name: napa
   type: none
   vertices:
@@ -84,7 +83,7 @@ polygons:
     - 4216619.114860171
   - - 560280.9619276294
     - 4250043.625580285
-- attribute: bound_linear.bound_linear(z,4,10,1.25e-5,0.0002)
+- attribute: bound_linear.bound_linear(z,4,8,5.e-5,0.0001)
   name: carquinez
   type: none
   vertices:
@@ -100,7 +99,7 @@ polygons:
     - 4204224.204825808
   - - 574692.1115194695
     - 4216619.114860171
-- attribute: bound_linear.bound_linear(z,4,10,1.25e-5,0.0003)
+- attribute: bound_linear.bound_linear(z,4,8,5.e-5,0.0001)
   name: suisun_bay
   type: none
   vertices:
@@ -152,7 +151,7 @@ polygons:
     - 4212558.668024962
   - - 593466.5789619001
     - 4212293.225064233
-- attribute: bound_linear.bound_linear(z,4,10,4.0e-6,2.e-5)
+- attribute: bound_linear.bound_linear(z,4,8,2.0e-5,5.e-5)
   name: grizzly_bay_main
   type: none
   vertices:
@@ -184,7 +183,7 @@ polygons:
     - 4220341.001638972
   - - 581655.508875665
     - 4218471.969768653
-- attribute: bound_linear.bound_linear(z,4,10,2.e-6,1.e-5)
+- attribute: bound_linear.bound_linear(z,4,8,5.e-6,2.e-5)
   name: suisun_grizzly_transition
   type: none
   vertices:
@@ -208,7 +207,7 @@ polygons:
     - 4218471.969768653
   - - 579936.1331054686
     - 4216645.805078128
-- attribute: bound_linear.bound_linear(z,4,10,1.e-6,8.e-6)
+- attribute: bound_linear.bound_linear(z,4,8,2.e-6,1.e-5)
   name: suisun_marsh
   type: none
   vertices:
@@ -250,7 +249,7 @@ polygons:
     - 4219800.564158376
   - - 590076.6812699313
     - 4216958.354568722
-- attribute: bound_linear.bound_linear(z,4,12,1.25e-5,.0005)
+- attribute: bound_linear.bound_linear(z,4,8,1.e-4,8.e-4)
   name: confluence
   type: none
   vertices:
@@ -304,20 +303,12 @@ polygons:
     - 4211717.275451956
   - - 591650.226507305
     - 4210907.04556684
-- attribute: bound_linear.bound_linear(z,4,12,1.25e-5,4.e-4)
+- attribute: bound_linear.bound_linear(z,4,8,4.0e-4,8.e-4)
   name: sjr_above_confluence
   type: none
   vertices:
-  - - 608967.0320653111
-    - 4207997.3574827425
-  - - 609744.0663085935
-    - 4208049.159765628
-  - - 612609.6147460935
-    - 4209731.112109378
-  - - 614260.4198242183
-    - 4210322.910156255
-  - - 617281.7045898433
-    - 4212067.157031254
+  - - 617948.419725769
+    - 4213206.128721794
   - - 618029.2389648432
     - 4213344.194921879
   - - 617998.0916992183
@@ -380,7 +371,23 @@ polygons:
     - 4210013.9463032335
   - - 608967.0320653111
     - 4207997.3574827425
-- attribute: bound_linear.bound_linear(z,4,10,1.25e-5,1.e-4)
+  - - 609744.0663085935
+    - 4208049.159765628
+  - - 612609.6147460935
+    - 4209731.112109378
+  - - 614260.4198242183
+    - 4210322.910156255
+  - - 617281.7045898433
+    - 4212067.157031254
+  - - 617413.862210376
+    - 4212292.926299664
+  - - 617211.7720340195
+    - 4212566.725893437
+  - - 617526.0203161737
+    - 4213346.928524992
+  - - 617948.419725769
+    - 4213206.128721794
+- attribute: bound_linear.bound_linear(z,4,8,1.0e-4,4.e-4)
   name: sjr_to_delta_1
   type: none
   vertices:
@@ -394,7 +401,7 @@ polygons:
     - 4219408.249935184
   - - 625154.501478403
     - 4219726.860694235
-- attribute: bound_linear.bound_linear(z,4,10,1.25e-5,5.e-5)
+- attribute: bound_linear.bound_linear(z,4,8,5.0e-5,2.e-4)
   name: sjr_to_delta_2
   type: none
   vertices:
@@ -422,7 +429,7 @@ polygons:
     - 4223281.004068301
   - - 620456.8290694134
     - 4222342.74577157
-- attribute: bound_linear.bound_linear(z,4,10,1.25e-5,1.e-4)
+- attribute: bound_linear.bound_linear(z,4,8,1.0e-4,4.e-4)
   name: sjr_to_delta1b
   type: none
   vertices:
@@ -438,7 +445,7 @@ polygons:
     - 4216769.569419922
   - - 624370.671401116
     - 4216390.937350137
-- attribute: bound_linear.bound_linear(z,4,10,1.25e-5,4.e-4)
+- attribute: bound_linear.bound_linear(z,4,8,4.e-4,8.e-4)
   name: sac_above_confluence
   type: none
   vertices:
@@ -468,8 +475,8 @@ polygons:
     - 4220082.085545454
   - - 615136.9980155303
     - 4220399.744843384
-- attribute: bound_linear.bound_linear(z,4,10,1.e-5,1.25e-5)
-  name: delta
+- attribute: bound_linear.bound_linear(z,4,8,5.e-5,1.0e-4)
+  name: delta1
   type: none
   vertices:
   - - 650039.2937453891
@@ -640,6 +647,10 @@ polygons:
     - 4216209.7433593795
   - - 618029.2389648432
     - 4213344.194921879
+  - - 617948.419725769
+    - 4213206.128721794
+  - - 617413.862210376
+    - 4212292.926299664
   - - 617281.7045898433
     - 4212067.157031254
   - - 614260.4198242183
@@ -700,7 +711,7 @@ polygons:
     - 4183522.2027799403
   - - 650039.2937453891
     - 4182769.192873923
-- attribute: bound_linear.bound_linear(z,4,10,1.e-5,1.25e-5)
+- attribute: bound_linear.bound_linear(z,4,8,5.e-5,1.e-4)
   name: east_delta
   type: none
   vertices:
@@ -742,7 +753,7 @@ polygons:
     - 4225674.884599637
   - - 621176.8877622533
     - 4223281.004068301
-- attribute: bound_linear.bound_linear(z,4,10,6.0e-6,1e-5)
+- attribute: bound_linear.bound_linear(z,4,8,6.0e-6,1e-5)
   name: sac_upper
   type: none
   vertices:
@@ -764,7 +775,7 @@ polygons:
     - 4275975.615709707
   - - 622837.826254597
     - 4271972.021085331
-- attribute: bound_linear.bound_linear(z,4,10,2.e-6,8.e-6)
+- attribute: bound_linear.bound_linear(z,4,8,2.e-6,8.e-6)
   name: upper_sac2_american
   type: none
   vertices:
@@ -788,7 +799,7 @@ polygons:
     - 4274433.809909897
   - - 631496.0819267128
     - 4265733.55949846
-- attribute: bound_linear.bound_linear(z,4,10,4.0e-6,6.e-6)
+- attribute: bound_linear.bound_linear(z,4,8,4.0e-6,6.e-6)
   name: sjr_upstream1
   type: none
   vertices:
@@ -820,7 +831,7 @@ polygons:
     - 4177756.8758699773
   - - 693685.922437785
     - 4181307.5246629203
-- attribute: bound_linear.bound_linear(z,4,10,2.0e-6,6.e-6)
+- attribute: bound_linear.bound_linear(z,4,8,2.0e-6,6.e-6)
   name: sjr_upstream2
   type: none
   vertices:
@@ -840,8 +851,8 @@ polygons:
     - 4177706.90994128
   - - 647957.358391866
     - 4177388.5380121875
-- attribute: bound_linear.bound_linear(z,4,10,1.e-5,1.25e-5)
-  name: delta
+- attribute: bound_linear.bound_linear(z,4,8,1.0e-4,2.e-4)
+  name: rio_vista_to_liberty
   type: none
   vertices:
   - - 616527.0996889605
@@ -912,7 +923,7 @@ polygons:
     - 4226741.878114982
   - - 616527.0996889605
     - 4226520.565273167
-- attribute: bound_linear.bound_linear(z,4,10,1.25e-5,5.e-5)
+- attribute: bound_linear.bound_linear(z,4,8,2.0e-4,4.e-4)
   name: sac_to_delta_2
   type: none
   vertices:
@@ -942,8 +953,8 @@ polygons:
     - 4223281.004068301
   - - 619400.1275059553
     - 4224121.329558622
-- attribute: bound_linear.bound_linear(z,4,10,1.e-5,1.25e-5)
-  name: delta
+- attribute: bound_linear.bound_linear(z,4,8,5.e-5,1.e-4)
+  name: osj_delta
   type: none
   vertices:
   - - 624270.687222194
@@ -980,7 +991,7 @@ polygons:
     - 4215173.298173333
   - - 624270.687222194
     - 4216378.998940714
-- attribute: bound_linear.bound_linear(z,4,10,1.e-5,5.e-5)
+- attribute: bound_linear.bound_linear(z,4,8,8.0e-5,2.e-4)
   name: sjr_to_delta2b
   type: none
   vertices:
@@ -996,7 +1007,7 @@ polygons:
     - 4215713.676480833
   - - 625678.6393465318
     - 4216547.112627203
-- attribute: bound_linear.bound_linear(z,4,10,6.e-6,8e-6)
+- attribute: bound_linear.bound_linear(z,4,8,6.e-6,8e-6)
   name: msd_to_paradise
   type: none
   vertices:
@@ -1028,3 +1039,18 @@ polygons:
     - 4183394.685837331
   - - 649359.1630333844
     - 4182494.228229444
+- attribute: bound_linear.bound_linear(z,4,8,1.0e-4,2.e-4)
+  name: false_r_transition
+  type: none
+  vertices:
+  - - 617413.862210376
+    - 4212292.926299664
+  - - 617948.419725769
+    - 4213206.128721794
+  - - 617526.0203161737
+    - 4213346.928524992
+  - - 617211.7720340195
+    - 4212566.725893437
+  - - 617413.862210376
+    - 4212292.926299664
+

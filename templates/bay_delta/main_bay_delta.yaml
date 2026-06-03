@@ -27,6 +27,7 @@ config:
 imports:
   - schimpy.sav_density_raster
   - schimpy.bound_linear  
+  - bdschism.ocean_boundary_ops
 
 mesh:
   # SMS formatted 2dm file (which will be formatted) or a preexisting SCHISM hgrid.gr3
