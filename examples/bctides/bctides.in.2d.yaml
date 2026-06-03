@@ -73,7 +73,7 @@ bctides:
           - velocity:
               source: flux history
       - name: northbay
-        flow_direction: bidirection
+        flow_direction: outflow
         variables:
           - velocity:
               source: flux history

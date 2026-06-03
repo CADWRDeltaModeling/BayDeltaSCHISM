@@ -130,16 +130,10 @@ bctides:
                 source: 0.062920
                 nudge: 1.0
       -  name: northbay
-         flow_direction: bidirection
+         flow_direction: outflow
          variables:
             - velocity:
                 source: flux history
-            - temperature:
-                source: temperature history
-                nudge: 1.0
-            - salinity:
-                source: 0.074318
-                nudge: 1.0
       -  name: napa
          flow_direction: inflow
          variables:
