@@ -176,20 +176,10 @@ bctides:
                  source: time history
                  relax: 1 
       -  name: north_bay
-         flow_direction: bidirection
+         flow_direction: outflow
          variables:
           - velocity:
               source: flux history
-          - temperature:
-              source: temperature history
-              nudge: 1.0
-          - salinity:
-              source: 0.062920
-              nudge: 1.0
-          - tracers:
-               - module: SED
-                 source: [0.0,0.0,0.0]
-                 relax: 1
       -  name: napa
          flow_direction: inflow
          variables:
