@@ -315,7 +315,7 @@ def interpolate_uv3d_cli(
     Command-line interface for the interpolate_uv3d function.
     """
     interpolate_uv3d(
-        param_nml,
+        param,
         bg_dir,
         bg_output_dir,
         fg_dir,
