@@ -100,7 +100,7 @@ bctides:
              - module: SED
                source: [0.05,0.06,0]
                relax: 1 
-      -  name: mokelumne+cosumnes
+      -  name: mokelumne
          flow_direction: inflow
          variables:
           - velocity:
@@ -175,7 +175,7 @@ bctides:
                - module: SED
                  source: time history
                  relax: 1 
-      -  name: north_bay
+      -  name: northbay
          flow_direction: bidirection
          variables:
           - velocity:
