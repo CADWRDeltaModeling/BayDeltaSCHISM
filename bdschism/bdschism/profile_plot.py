@@ -121,12 +121,16 @@ def profile_plot(x,z,data,ax,context_label = None,add_labels = False,xlabel = No
         greys = 1.0-lev/32.
         cs = ax.contour(x_part,z_part,data_part,levels = lev,colors=['black','black','black','black'],linewidths=2)
         greylev = 1.0
-        for c in cs.collections:
-            c.set_linestyle('solid')
-        #Thicken the zero contour.
-        zc = cs.collections[0]
-        #ax.setp(zc, linewidth=3)
-        #ax.setp(zc, linestyle = 'dotted')
+        try:
+            for c in cs.collections:
+                c.set_linestyle('solid')
+            #Thicken the zero contour.
+            zc = cs.collections[0]
+            #ax.setp(zc, linewidth=3)
+            #ax.setp(zc, linestyle = 'dotted')
+        except (AttributeError, IndexError):
+            # Matplotlib version may not support collections attribute
+            pass
         ax.clabel(cs, lev,  # label every second level
                inline=1,
                inline_spacing = 3,
@@ -187,7 +191,8 @@ def profile_plot(x,z,data,ax,context_label = None,add_labels = False,xlabel = No
     if xlabel:
         ax.set_xlabel(xlabel, size = 14)
     ax.set_ylabel('Depth (m)', size = 14)
-
+    ax.set_ylim(30, 1)
+    ax.set_yticks([1, 5, 10, 15, 20, 25, 30])
 
     return im, cs, ttxt
 
