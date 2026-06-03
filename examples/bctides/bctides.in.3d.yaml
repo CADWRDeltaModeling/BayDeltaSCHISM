@@ -12,7 +12,7 @@ bctides:
          flow_direction: bidirection
          variables:
             - elevation:
-                source: elev history
+                source: 2D elev history
             - velocity:
                 source: 3D uv history
             - temperature:
