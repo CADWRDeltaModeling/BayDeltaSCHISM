@@ -11,7 +11,7 @@ bctides:
         flow_direction: bidirection
         variables:
           - elevation:
-              source: elev history
+              source: 2D elev history
       - name: coyote
         flow_direction: inflow
         variables:
