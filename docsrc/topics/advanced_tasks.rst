@@ -12,6 +12,7 @@ Advanced Tasks and Concepts
   sea_level_rise.rst
   sources.rst
   mesh.rst
+  vmesh.rst
   utilities.rst
   
   

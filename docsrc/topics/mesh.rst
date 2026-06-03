@@ -2,9 +2,9 @@
 
 .. _gridding_mesh:
 
-==============================
-Gridding the Horizontal Mesh
-==============================
+===============
+Mesh Generation
+===============
 
 The format of the SCHISM horizontal mesh is described in the `SCHISM manual <https://schism-dev.github.io/schism/master/index.html>`_. 
 
@@ -39,8 +39,8 @@ Here we will cover:
 
 
 
-Meshing
--------
+Horizontal Mesh
+---------------
 
 Meshing considerations for SCHISM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -108,8 +108,10 @@ Recap/checklist
 
 
 
-Vertical mesh setup
--------------------
+Vertical Mesh
+-------------
+
+See :ref:`vmesh` for documentation of the LSC2 v2 vertical grid methodology.
 
 
 .. _change_mesh:
