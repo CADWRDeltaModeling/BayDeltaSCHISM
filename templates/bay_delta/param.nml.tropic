@@ -86,7 +86,7 @@
 ! If indvel=0, conformal linear shape function is used; if indvel=1, averaging method is used.
 ! For indvel=0, a stabilization method is needed (see below).
 !-----------------------------------------------------------------------
-  indvel = 0 !default: 1
+  indvel = 1 !default: 1
 
 !-----------------------------------------------------------------------
 ! 2 stabilization methods, mostly for indvel=0.
@@ -112,7 +112,7 @@
 ! if indvel=ihorcon=0. To transition between eddying/non-eddying regimes, use
 ! indvel=0, ihorcon/=0, and ishapiro=-1 (shapiro.gr3).
 !-----------------------------------------------------------------------
-  ishapiro = 1 !on/off flag. Default: 0
+  ishapiro = 0 !on/off flag. Default: 0
   shapiro0 = 0.5 !Shapiro filter strength, needed only if ishapiro=1; max is 0.5
   niter_shap = 1 !needed of ishapiro/=0 - # of iterations with Shapiro filter. Suggested: 1
 

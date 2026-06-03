@@ -255,8 +255,6 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
     etime = end
     fpath_out = outfile
 
-    # todo: hardwire
-    nnode = 83
 
     tbuf = days(16)
     # convert start time string input to datetime
@@ -292,10 +290,14 @@ def gen_elev2D(hgrid_fpath, outfile, pt_reyes_fpath, monterey_fpath, start, end,
     y_mt = np.dot(normal, mt_rel)  # Normal to x-direction to the
 
     # Grid
-    # todo: what is the difference between this and m = read_grid()??
     mesh = read_mesh(hgrid_fpath)
+    if not mesh.boundaries:
+        raise ValueError(f"No boundary information found in {hgrid_fpath}")
 
     ocean_boundary = mesh.boundaries[0]  # First one is ocean
+    nnode = ocean_boundary.n_nodes()
+    print(f"Ocean boundary has {nnode} nodes")
+
 
     # Data
     print("Reading Point Reyes...")

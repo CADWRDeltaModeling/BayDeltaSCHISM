@@ -73,7 +73,7 @@ mesh:
   depth_enforcement:
     polygons:
       include:
-        #- depth_enforcement_taper_lean.yaml
+        - depth_enforcement_ocean_bound.yaml  # Smooths undulations very close to ocean boundary.
         - depth_enforcement_polygons_v${mesh_version}.yaml
         - depth_enforcement_delta_source_sink.yaml  # Identified using relocate_source_sink script to separate standard sources and sinks.
         - depth_enforcement_suisun_source_sink.yaml # Identified using relocate_source_sink to separate standard sources and sinks.
@@ -124,8 +124,8 @@ gr3:
   # manning value here is intentionally diffusive for the barotropic-baroclinic sequence in order to control spurious modes on the boundary
   # the value was changed from 0.025 in prior templates, and this is a fairly consequential change. 
   # For maximum barotropic 2D accuracy through the domain, a lower value like 0.021 is useful
-  manning.gr3:
-    default: 0.0245  
+  manning.gr3: !include manning.yaml
+
   estuary.gr3: !include estuary.yaml  # This is an indicator of the "estuary" zone, not used by schism but used by some other
                                       # tools in the tool chain. 
   # Be cautious of the coupling between sav_cd.gr3 value and the intepretation of density.
@@ -135,7 +135,7 @@ gr3:
   veg_D.gr3: !include sav_diameter.yaml
   veg_h.gr3: !include sav_height2.yaml    # uses new algorithm
   veg_cd.gr3:
-    default: 0.075    # Lower than previous realease
+    default: 0.18    # Lower than previous realease
   # Initial condition for water level elevation. This is used directly in barotropic runs and
   # is based on a formula that puts initially dry areas just below the bed. 
   elev.ic: !include elev.yaml

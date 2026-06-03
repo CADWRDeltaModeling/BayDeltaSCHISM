@@ -1,0 +1,22 @@
+
+# Smooths the undulations at the ocean boundary, 
+# which are a consequence of the bathymetry (Farallons etc) and the way the ocean boundary is defined.
+polygons:
+  - name: ocean_bathy_smooth_blend
+    attribute: ocean_boundary_ops.ocean_bathy_smooth_blend(mesh, nodes_sel,zero_dist=25_000., full_dist=40_000.,kappa=0.25,dt=1.0,iter_total=800.)
+    type: none
+    vertices:
+      - - 501520.3098578577
+        - 4217323.676275988
+      - - 491076.68985853274
+        - 4189648.0832777764
+      - - 498213.16352473816
+        - 4153791.6546134274
+      - - 531632.7475225781
+        - 4134645.0179479984
+      - - 556697.435520958
+        - 4132730.3542814553
+      - - 542598.5485218694
+        - 4191214.6262776754
+      - - 501520.3098578577
+        - 4217323.676275988
