@@ -1,0 +1,26 @@
+
+# Mostly consistent at 0.023 domain wide, but ramps up near ocean boundary to control flare-ups
+
+
+default: 0.024
+polygons:
+  - name: ocean_manning_ramp
+    type: none
+    ########### COORDINATE DEFAULT WITH THE LOWER VALUE OF THE RAMP!!!!!
+    attribute: ocean_boundary_ops.ocean_manning_ramp(mesh, nodes_sel, zero_dist=30_000.,full_dist=45_000.,n_inner=0.024,n_outer=0.0255)
+    vertices:
+      - - 501520.3098578577
+        - 4217323.676275988
+      - - 491076.68985853274
+        - 4189648.0832777764
+      - - 498213.16352473816
+        - 4153791.6546134274
+      - - 531632.7475225781
+        - 4134645.0179479984
+      - - 556697.435520958
+        - 4132730.3542814553
+      - - 542598.5485218694
+        - 4191214.6262776754
+      - - 501520.3098578577
+        - 4217323.676275988
+

@@ -1,3 +1,5 @@
+# Adjusted for version 118 of the mesh based on observed setup and mixed layer depth.
+
 default: 1.0
 polygons:
 - attribute: '1.00'
@@ -26,7 +28,7 @@ polygons:
     - 4219519.198870753
   - - 620046.1009722124
     - 4219017.229823491
-- attribute: '1.0'
+- attribute: '1.1'
   name: dutch
   type: none
   vertices:
@@ -76,7 +78,7 @@ polygons:
     - 4225410.0
   - - 613130.0
     - 4220920.0
-- attribute: '1.10'
+- attribute: '1.30'
   name: sherman
   type: none
   vertices:
@@ -128,7 +130,7 @@ polygons:
     - 4217700.0
   - - 603130.0
     - 4217660.0
-- attribute: '1.00'
+- attribute: '1.10'
   name: ocean
   type: none
   vertices:
@@ -250,7 +252,7 @@ polygons:
     - 4216542.615173041
   - - 570491.0665726273
     - 4217053.231426043
-- attribute: '1.10'
+- attribute: '1.20'
   name: carq_strait
   type: none
   vertices:
@@ -280,7 +282,7 @@ polygons:
     - 4214107.913398978
   - - 563705.9869208742
     - 4214325.541628864
-- attribute: '0.80'
+- attribute: '0.85'
   name: delta_main
   type: none
   vertices:
@@ -334,7 +336,7 @@ polygons:
     - 4206827.654216125
   - - 619935.988825643
     - 4207184.129158774
-- attribute: '1.00'
+- attribute: '1.20'
   name: suisun_bay
   type: none
   vertices:
@@ -378,7 +380,7 @@ polygons:
     - 4220670.0
   - - 581220.0
     - 4219140.0
-- attribute: '0.95'
+- attribute: '1.00'
   name: suisun_marsh
   type: none
   vertices:

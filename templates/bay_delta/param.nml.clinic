@@ -89,7 +89,7 @@
 ! If indvel=0, conformal linear shape function is used; if indvel=1, averaging method is used.
 ! For indvel=0, a stabilization method is needed (see below).
 !-----------------------------------------------------------------------
-  indvel = 0 !default: 1
+  indvel = 0 ! 0 is good for baroclinic bay delta
 
 !-----------------------------------------------------------------------
 ! 2 stabilization methods, mostly for indvel=0.
@@ -282,7 +282,7 @@
 ! 0: model sets own i.c. (EcoSim; TIMOR)
 !  flag_ic(3) = 0 !GEN (user defined module)
 !  flag_ic(4) = 0 !Age
-  flag_ic(5) = 1 !SED3D
+   flag_ic(5) = 1 !SED3D
 !  flag_ic(6) = 0 !EcoSim
 !  flag_ic(7) = 0 !ICM
 !  flag_ic(8) = 0 !CoSINE

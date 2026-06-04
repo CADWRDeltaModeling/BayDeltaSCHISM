@@ -16,7 +16,7 @@
   ibc = 1 !Baroclinic option
   ibtp = 0
 
-  rnday = 260 !total run time in days
+  rnday = 1130 ! to end of April 2014 
   dt = 120. !Time step in sec
 
 ! Grid for WWM (USE_WWM)
@@ -29,9 +29,13 @@
 !  sed_class = 3 !SED3D (USE_SED)
 !  eco_class = 27 !EcoSim (USE_ECO): must be between [25,60]
 
+
+! # of vertical bins in vegetation module (used only if iveg/=0)
+  nbins_veg_vert = 2
+
 ! Global output controls
   nspool = 15 !output step spool
-  ihfskip = 720 !stack spool; every ihfskip steps will be put into 1_*, 2_*, etc...
+  ihfskip = 720 !stack spool; every ihfskip steps will be put into 1_*, 2_*, etc...b
 /
 
 &OPT
@@ -39,9 +43,9 @@
 ! Optional parameters. The values shown below are default unless otherwise noted
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ! Starting time
-  start_year = 2018 !int
-  start_month = 5 !int
-  start_day = 7 !int
+  start_year = 2011 !int
+  start_month = 3 !int
+  start_day = 29 !int
   start_hour = 0 !double
   utc_start = 8 !double
 
@@ -86,7 +90,7 @@
 ! If indvel=0, conformal linear shape function is used; if indvel=1, averaging method is used.
 ! For indvel=0, a stabilization method is needed (see below).
 !-----------------------------------------------------------------------
-  indvel = 1 !default: 1
+  indvel = 1 !default: 1 use 1 for tropic warmup
 
 !-----------------------------------------------------------------------
 ! 2 stabilization methods, mostly for indvel=0.
@@ -112,7 +116,7 @@
 ! if indvel=ihorcon=0. To transition between eddying/non-eddying regimes, use
 ! indvel=0, ihorcon/=0, and ishapiro=-1 (shapiro.gr3).
 !-----------------------------------------------------------------------
-  ishapiro = 0 !on/off flag. Default: 0
+  ishapiro = 0 !on/off flag. Default: 0 for barotropic warmup
   shapiro0 = 0.5 !Shapiro filter strength, needed only if ishapiro=1; max is 0.5
   niter_shap = 1 !needed of ishapiro/=0 - # of iterations with Shapiro filter. Suggested: 1
 
@@ -120,7 +124,7 @@
 ! Implicitness factor (0.5<thetai<=1).
 !-----------------------------------------------------------------------
   thetai = 1.0
-
+  vclose_surf_frac = 0.5
 !-----------------------------------------------------------------------
 ! If WWM is used, set coupling/decoupling flag. Not used if USE_WWM is distabled in Makefile
 !       0: decoupled so 2 models will run independently;
@@ -202,6 +206,10 @@
 !  nramp_ss = 1 !needed if if_source=1; ramp-up flag for source/sinks
 !  dramp_ss = 4. !needed if if_source=1; ramp-up period in days
 
+! Level to introduce tracers. Originally -9 (bottom) now 0 (full water column)
+  lev_tr_source(1) = 0 !T
+  lev_tr_source(2) = 0 !S
+
 !-----------------------------------------------------------------------
 ! Horizontal diffusivity option. if ihdif=1, horizontal diffusivity is given in hdif.gr3
 !-----------------------------------------------------------------------
@@ -219,10 +227,10 @@
 !           and may remove this constant in the future.
 !           If iwbl/=0, nchi must =1.
 !-----------------------------------------------------------------------
-  nchi = -1
-  dzb_min = 0.65 !needed if nchi=1; min. bottom boundary layer thickness [m].
-!  dzb_decay = 0.0 !needed if nchi=1; a decay const. [-]. should =0
-  hmin_man = 1. !needed if nchi=-1: min. depth in Manning's formulation [m]
+  nchi = 1
+  dzb_min = 0.8  !needed if nchi=1; min. bottom boundary layer thickness [m].
+!  dzb_decay = 0. !needed if nchi=1; a decay const. [-]. should =0
+!  hmin_man = 1. !needed if nchi=-1: min. depth in Manning's formulation [m]
 
 !-----------------------------------------------------------------------
 ! Coriolis. If ncor=-1, specify "rlatitude" (in degrees); if ncor=0,
@@ -503,7 +511,7 @@
 ! conservative method is used without extrapolation beyond bottom;
 ! otherwise constant extrapolation below bottom is used.
 !-----------------------------------------------------------------------
-  h_bcc1 = 200. !h_bcc1
+  h_bcc1 = 100. !h_bcc1
 
 !-----------------------------------------------------------------------
 ! Dimensioning parameters for inter-subdomain btrack.
@@ -563,14 +571,27 @@
 
 !----------------------------------------------------------------------
 ! Vegetation model
-! If isav=1, need 3 extra inputs: (1) sav_D.gr3 (depth is stem diameter in meters);
-! (2) sav_N.gr3 (depth is # of stems per m^2);
-! (3) sav_h.gr3 (height of canopy in meters).
-! If one of these depths=0 at a node, the code will set all to 0.
-! If USE_MARSH is on and isav=1, all .gr3 must have constant depths!
+! If iveg/=0, need 4 extra inputs (for unbent stems): (1) veg_D.gr3 (depth is stem diameter in meters);
+! (2) veg_N.gr3 (depth is # of stems per m^2);
+! (3) veg_h.gr3 (height of canopy in meters);
+! (4) veg_cd.gr3 (form drag coefficient).
+! If one of these depths=0 at a node, the code will set all to 0. 
+
+! With iveg/=0, the vertical scaling is given by veg_vert_scale_[cd,N,D](1:nbins_veg_vert+1) below.
+! veg_vert_z(1:nbins_veg_vert+1) specify the distance from bed for each bin (ascending 
+! order starting from 0; const extrapolation is done beyond largest height).
+! iveg=2: flex vegeation using Ganthy fomulation.
+! For all options, the cross section of leaf can be circular or rectangular; in 
+! the latter case, the input 'diameter' is leaf width.
 !----------------------------------------------------------------------
-  isav = 0 !on/off flag
-!  sav_cd = 1.13 !only needed if isav=1. Drag coefficient
+  iveg = 0                     !on/off flag
+  veg_vert_z = 0.,0.5,1.       ![m] starting from 0.; used if iveg=1
+  veg_vert_scale_cd = 1.,1.,1. !scaling [-]; used if iveg=1
+  veg_vert_scale_N = 1.,1.,1.  !scaling [-]; used if iveg=1
+  veg_vert_scale_D = 1.,1.,1.  !scaling [-]; used if iveg=1
+
+!  veg_lai = 1. !Leaf Area Index [-]; used if iveg=2. Ganthy suggests 0-10?
+  veg_cw = 3.6 !scaling coefficient with iveg=2 [exp(-veg_cw*|U|)]. Ganthy suggests 3.6 s/m
 
 !----------------------------------------------------------------------
 ! Coupling step with ICE module.
