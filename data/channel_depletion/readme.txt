@@ -1,2 +1,4 @@
 
-dcd_temp_climatology and dcd_ec_climatology files are annual patterns meant to be stacked and interpolated with a decent spline. A script that does this is c prep_source_salt_temp.py.
+
+These files contain sources and sinks that include DeltaCD, Suisun Marsh CD (scaled), several Publicly Operated Treatment Works and inferred source materials from MSS.
+
