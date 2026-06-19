@@ -110,7 +110,13 @@ os_name = platform.system().lower()
     help="Enable debug logging.",
 )
 
-def create_sflux_links(sdate, edate, config, dest, logdir, debug):
+@click.option(
+    "--pad/--nopad",
+    default=True,
+    help="Zero-pad file counter to 4 digits, e.g. sflux_air_1.0001.nc (default: --pad). Use --nopad for unpadded, e.g. sflux_air_1.1.nc.",
+)
+
+def create_sflux_links(sdate, edate, config, dest, logdir, debug, pad):
     """
     Make links for synthetic flux data based on the specified date range and configuration.
     Parameters
@@ -255,7 +261,7 @@ def create_sflux_links(sdate, edate, config, dest, logdir, debug):
             if not os.path.exists(src_str):
                 logger.error("Source %s does not exist", src_str)
                 raise ValueError(f"source {src_str} does not exist.")
-            link_str = os.path.join(link_dir, f"sflux_{par}_1.{nfile:04d}.nc")
+            link_str = os.path.join(link_dir, f"sflux_{par}_1.{nfile:04d}.nc" if pad else f"sflux_{par}_1.{nfile}.nc")
             if not os.path.exists(link_str):
                 op(src_str, link_str)
                 logger.info("Linking %s to %s", src_str, link_str)
