@@ -335,14 +335,24 @@ def write_source_sink_th(
         _write_dated_th(vsink_df, vsink_dated_th_fname, metadata)
         logger.info("Wrote %s", vsink_dated_th_fname)
 
+    elapsed_header = f"# elapsed from {sdate} to {edate}\n"
+
     src_window = vsource_df.loc[sdate:edate, :]
     src_elapsed = datetime_elapsed(src_window, reftime=sdate)
-    src_elapsed.to_csv(vsource_th_fname, header=False, float_format="%.4f", sep=" ")
+    with open(vsource_th_fname, "w", newline="\n", encoding="utf-8") as f:
+        f.write(elapsed_header)
+        src_elapsed.to_csv(
+            f, header=False, float_format="%.4f", sep=" ", lineterminator="\n"
+        )
     logger.info("Wrote %s", vsource_th_fname)
 
     sink_window = vsink_df.loc[sdate:edate, :]
     sink_elapsed = datetime_elapsed(sink_window, reftime=sdate)
-    sink_elapsed.to_csv(vsink_th_fname, header=False, float_format="%.4f", sep=" ")
+    with open(vsink_th_fname, "w", newline="\n", encoding="utf-8") as f:
+        f.write(elapsed_header)
+        sink_elapsed.to_csv(
+            f, header=False, float_format="%.4f", sep=" ", lineterminator="\n"
+        )
     logger.info("Wrote %s", vsink_th_fname)
 
 
@@ -352,6 +362,8 @@ def copy_paradise_up(
     msource_adj_th_fname,
     metadata=None,
     msource_adj_dated_th_fname=None,
+    sdate=None,
+    edate=None,
 ):
     """Propagate salinity from Paradise Cut midpoint to its head nodes.
 
@@ -370,7 +382,14 @@ def copy_paradise_up(
         Metadata dict passed to ``write_ts_csv`` (units, config path, etc.).
     msource_adj_dated_th_fname : str or Path, optional
         Output path for dated ``.th`` file (space-sep, with header, full period).
+    sdate : str or Timestamp, optional
+        Start date for elapsed ``.th`` file. Defaults to first timestamp in CSV.
+    edate : str or Timestamp, optional
+        End date for elapsed ``.th`` file. Defaults to last timestamp in CSV.
     """
+    from dms_datastore.write_ts import write_ts_csv
+    from vtools.data.timeseries import datetime_elapsed
+    
     msource = pd.read_csv(
         msource_dated_fname, sep=r"\s+", header=[0, 1], parse_dates=[0], index_col=0
     )
@@ -382,7 +401,6 @@ def copy_paradise_up(
         msource.loc[:, ("salinity", dest)] = msource.loc[:, ("salinity", "delta_src_802")]
 
     # Write adjusted dated CSV
-    from dms_datastore.write_ts import write_ts_csv
     write_ts_csv(
         msource,
         msource_adj_dated_fname,
@@ -397,13 +415,20 @@ def copy_paradise_up(
         logger.info("Wrote %s", msource_adj_dated_th_fname)
 
     # Write elapsed .th (salinity/temperature — no unit conversion needed)
-    msource_elapsed = msource.copy()
-    msource_elapsed.index = (
-        msource_elapsed.index - msource_elapsed.index[0]
-    ).total_seconds()
-    msource_elapsed.to_csv(
-        msource_adj_th_fname, sep=" ", float_format="%.4f", header=False
-    )
+    if sdate is None:
+        sdate = msource.index[0]
+    if edate is None:
+        edate = msource.index[-1]
+    elapsed_header = f"# elapsed from {sdate} to {edate}\n"
+
+    msource_window = msource.loc[sdate:edate, :]
+    msource_elapsed = datetime_elapsed(msource_window, reftime=sdate)
+
+    with open(msource_adj_th_fname, "w", newline="\n", encoding="utf-8") as f:
+        f.write(elapsed_header)
+        msource_elapsed.to_csv(
+            f, sep=" ", float_format="%.4f", header=False, lineterminator="\n"
+        )
     logger.info("Wrote %s", msource_adj_th_fname)
 
 

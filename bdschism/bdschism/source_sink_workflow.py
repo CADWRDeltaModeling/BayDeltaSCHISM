@@ -69,7 +69,7 @@ def run_source_sink_workflow(config_file, set_vars=None, force=False):
         Default False.
     """
     from schimpy.merge_th import merge_th
-    from schimpy.schism_yaml import load as yaml_load
+    from schimpy.yaml_util import yaml_from_file
 
     from bdschism.channel_depletion import convert_channel_depletion
     from bdschism.potw import potw_to_schism
@@ -87,8 +87,7 @@ def run_source_sink_workflow(config_file, set_vars=None, force=False):
     if set_vars is None:
         set_vars = {}
 
-    with open(config_file, "r") as f:
-        cfg = yaml_load(f, envvar=set_vars)
+    cfg = yaml_from_file(config_file, envvar=set_vars)  # Validate config file
 
     c = cfg["config"]
     version = str(c["version"])
@@ -107,8 +106,7 @@ def run_source_sink_workflow(config_file, set_vars=None, force=False):
     # Derive suisun_mod from the suisun convert config so it stays in sync
     # with scale_sink_mult / scale_sink_add rather than being duplicated.
     cd_suisun_cfg_path = cfg["channel_depletion"]["suisun"]["config"]
-    with open(cd_suisun_cfg_path, "r") as f:
-        _suisun_cfg = yaml_load(f, envvar=sub_vars)
+    _suisun_cfg = yaml_from_file(cd_suisun_cfg_path, envvar=sub_vars)
     _fopts = _suisun_cfg.get("flow_options", {})
     _mult = _fopts.get("scale_sink_mult", 1.0)
     _add = _fopts.get("scale_sink_add", 0.0)
@@ -185,8 +183,7 @@ def run_source_sink_workflow(config_file, set_vars=None, force=False):
     # ------------------------------------------------------------------
     logger.info("Step 6: Running merge_th (CFS intermediates)")
     merge_th_cfg_path = cfg["merge_th"]["config"]
-    with open(merge_th_cfg_path, "r") as f:
-        merge_th_cfg = yaml_load(f, envvar=sub_vars)
+    merge_th_cfg = yaml_from_file(merge_th_cfg_path, envvar=sub_vars)
     merge_th(merge_th_cfg)
 
     # ------------------------------------------------------------------
@@ -259,6 +256,8 @@ def run_source_sink_workflow(config_file, set_vars=None, force=False):
         msource_adj_th,
         metadata=_tracer_meta,
         msource_adj_dated_th_fname=msource_adj_dated_th,
+        sdate=sdate,
+        edate=edate,
     )
 
     logger.info(

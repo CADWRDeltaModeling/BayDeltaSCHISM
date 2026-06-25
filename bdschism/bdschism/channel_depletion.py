@@ -64,7 +64,7 @@ def convert_nc_flow(
         h = ds[var].values
         df = pd.DataFrame(h, columns=nodes, index=times)
         df.index.name = "datetime"
-        dfs[varout] = df[start_date:]
+        dfs[varout] = df.loc[start_date:]
         dfs[varout].to_csv(outfile, float_format="%.2f", date_format="%Y-%m-%dT%H:%M")
 
     # Source = drainage in CFS, no unit conversion
@@ -106,12 +106,11 @@ def convert_channel_depletion(config_file, set_vars=None):
     ValueError
         If required config keys are missing or ``mode`` is not ``'flow'``.
     """
-    from schimpy.schism_yaml import load as yaml_load
+    from schimpy.yaml_util import yaml_from_file
 
     if set_vars is None:
         set_vars = {}
-    with open(config_file, "r") as f:
-        config = yaml_load(f, envvar=set_vars)
+    config = yaml_from_file(config_file, envvar=set_vars)
 
     required = ["start_date", "infile", "output_dir", "outfile_prefix"]
     for key in required:
