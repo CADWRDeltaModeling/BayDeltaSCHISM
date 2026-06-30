@@ -117,7 +117,7 @@ def interpolate_uv3d(
     #
     if interp_template is None:
         print(
-            "interpolate_variables.in is not specified. Extracting nday from user input."
+            f"interpolate_variables.in is not specified. Extracting nday from user input: nday = {nday}."
         )
         if nday is None:
             print("nday not specified in user input. Extracting nday from param.nml.")
@@ -349,18 +349,22 @@ def setup_tmp_dir(bg_output_dir, tmp_bg_output_dir, nfile):
     config.create_link(
         os.path.join(bg_output_dir, f"out2d_{nfile}.nc"),
         os.path.join(tmp_bg_output_dir, "out2d_1.nc"),
+        abs=True
     )
     config.create_link(
         os.path.join(bg_output_dir, f"zCoordinates_{nfile}.nc"),
         os.path.join(tmp_bg_output_dir, "zCoordinates_1.nc"),
+        abs=True
     )
     config.create_link(
         os.path.join(bg_output_dir, f"horizontalVelX_{nfile}.nc"),
         os.path.join(tmp_bg_output_dir, "horizontalVelX_1.nc"),
+        abs=True
     )
     config.create_link(
         os.path.join(bg_output_dir, f"horizontalVelY_{nfile}.nc"),
         os.path.join(tmp_bg_output_dir, "horizontalVelY_1.nc"),
+        abs=True
     )
 
 

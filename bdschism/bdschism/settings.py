@@ -69,7 +69,7 @@ def get_settings(config_log: bool=False):
     return settings
 
 
-def create_link(source, symlink, config_log=False):
+def create_link(source, symlink, config_log=False, abs=False):
     """
     Create a link between a source file and a target path based on system-specific link styles.
 
@@ -85,6 +85,8 @@ def create_link(source, symlink, config_log=False):
         The target path where the link (or copy) will be created.
     config_log : bool, optional
         If True, log the configuration source being used.
+    abs : bool, optional
+        If True, use absolute paths for the source and symlink.
 
     Raises
     ------
@@ -106,6 +108,10 @@ def create_link(source, symlink, config_log=False):
     """
     settings = get_settings(config_log=config_log)
     link_style = settings.link_style[platform.system()]
+
+    if abs:
+        source = os.path.abspath(source)
+        symlink = os.path.abspath(symlink)
 
     # remove symlink before setting
     if os.path.islink(symlink):
