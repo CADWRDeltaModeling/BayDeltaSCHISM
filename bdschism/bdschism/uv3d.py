@@ -19,6 +19,7 @@ def interpolate_uv3d(
     nday,
     output,
     overwrite,
+    bnd_seg=None
 ):
     """Run interpolate_variables utility to generate uv3d.th.nc.
 
@@ -52,6 +53,9 @@ def interpolate_uv3d(
     overwrite : bool
         If True, overwrite an existing file in output_dir. If False, fail
         fast if the file already exists.
+    bnd_seg : list of int or None
+        Used only when interp_template is None.
+        Listing of boundary segments to be interpolated.
     """
     #
     # Validate directory paths
@@ -129,9 +133,18 @@ def interpolate_uv3d(
             params = param.read_params(param_nml)
             nday = params["rnday"]
 
+        # If user did not specify boundary segments, default to boundary segment 1
+        if bnd_seg is None or len(bnd_seg) == 0:
+            print("Boundary segments not specified. Defaulting to boundary segment 1.")
+            bnd_info = "1 1\n"
+        else:
+            print("Boundary segments specified by user.")
+            bnd_info = f"{len(bnd_seg)} " + " ".join(str(seg) for seg in bnd_seg) + "\n"
+
+        print(f"\tWritten into interpolate_variables.in: {bnd_info}")
         with open(os.path.join(interp_dir, "interpolate_variables.in"), "w") as f:
             f.write(f"3 {nday}\n")
-            f.write("1 1\n")
+            f.write(bnd_info)
             f.write("0")
 
     else:
@@ -296,6 +309,14 @@ def interpolate_uv3d(
     is_flag=True,
     help="Overwrite an existing uv3d output file in output_dir, if present.",
 )
+@click.option(
+    "--bnd-seg", "-b",
+    default=None,
+    multiple=True,
+    type=int,
+    help="Listing of boundary segments to be interpolated.\
+        Used only when interp_template is None. Example: --b 1 -b 2 -b 4 (segments 1, 2, and 4).",
+)
 @click.help_option("-h", "--help")
 def interpolate_uv3d_cli(
     param,
@@ -310,6 +331,7 @@ def interpolate_uv3d_cli(
     nday,
     output,
     overwrite,
+    bnd_seg
 ):
     """
     Command-line interface for the interpolate_uv3d function.
@@ -327,6 +349,7 @@ def interpolate_uv3d_cli(
         nday,
         output,
         overwrite,
+        bnd_seg
     )
 
 def setup_tmp_dir(bg_output_dir, tmp_bg_output_dir, nfile):
@@ -381,6 +404,7 @@ def single_uv3d(
     out_dir="./",
     overwrite=True,
     cleanup=True,
+    bnd_seg=None
 ):
     """
     Process a single uv3d output file for the specified nfile index.
@@ -426,6 +450,7 @@ def single_uv3d(
             1,
             f"{out_dir}/uv3d_{nfile}.th.nc",
             overwrite,
+            bnd_seg,
         )
 
     finally:
@@ -523,6 +548,14 @@ def single_uv3d(
     show_default=True,
     help="Remove temporary linked files after interpolation.",
 )
+@click.option(
+    "--bnd-seg", "-b",
+    default=None,
+    multiple=True,
+    type=int,
+    help="Listing of boundary segments to be interpolated.\
+        Used only when interp_template is None. Example: --b 1 -b 2 -b 4 (segments 1, 2, and 4).",
+)
 @click.help_option("-h", "--help")
 def single_uv3d_cli(
     nfile,
@@ -537,6 +570,7 @@ def single_uv3d_cli(
     out_dir,
     overwrite,
     cleanup,
+    bnd_seg
 ):
     """Generate one uv3d file for output index NFILE."""
     single_uv3d(
@@ -552,6 +586,7 @@ def single_uv3d_cli(
         out_dir,
         overwrite,
         cleanup,
+        bnd_seg
     )
 
 if __name__ == "__main__":
