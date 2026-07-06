@@ -4,6 +4,7 @@ import bdschism.settings as config
 import os
 import shutil
 import datetime
+from pathlib import Path
 
 
 def interpolate_uv3d(
@@ -79,7 +80,7 @@ def interpolate_uv3d(
             raise ValueError
 
     # Directory in which interpolate_variables executable will be run
-    interp_dir = os.path.join(bg_dir, bg_output_dir)
+    interp_dir = os.path.abspath(os.path.join(bg_dir, bg_output_dir))
     try:
         assert os.path.exists(interp_dir)
     except AssertionError:
@@ -211,9 +212,24 @@ def interpolate_uv3d(
     #
     src_file = os.path.join(interp_dir, output_from_interpolate_variables)
     if not os.path.exists(src_file):
-        raise Exception(
-            f"Expected output file {src_file} not found after interpolate_variables."
-        )
+        candidate_names = [
+            output_from_interpolate_variables,
+            output_from_interpolate_variables.lower(),
+            output_from_interpolate_variables.upper(),
+        ]
+        candidates = []
+        for candidate_name in candidate_names:
+            candidate_path = os.path.join(interp_dir, candidate_name)
+            if os.path.exists(candidate_path):
+                candidates.append(candidate_path)
+        if not candidates:
+            candidates = [str(path) for path in Path(interp_dir).glob("*.th.nc")]
+        if not candidates:
+            raise Exception(
+                f"Expected output file {src_file} not found after interpolate_variables. "
+                f"Files present: {sorted(os.listdir(interp_dir))}"
+            )
+        src_file = candidates[0]
 
     print(
         f"Moving {src_file} to {output}"
@@ -590,4 +606,5 @@ def single_uv3d_cli(
     )
 
 if __name__ == "__main__":
-    interpolate_uv3d_cli()
+    # interpolate_uv3d_cli()
+    single_uv3d_cli()
