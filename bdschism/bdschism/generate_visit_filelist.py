@@ -7,6 +7,7 @@ def visit_list(
     start,
     end,
     filename,
+    overwrite
 ):
     """Generate a file containing a list of SCHISM output files to be visualized on VisIt.
 
@@ -24,6 +25,11 @@ def visit_list(
         Filename for the list of SCHISM output files.
     """
 
+    # Check if the output file already exists
+    if os.path.exists(filename) and overwrite == False:
+        print(f"File already exists: {filename}. Use --overwrite to overwrite the file.")
+        return
+
     # Make sure output_dir exists
     try:
         assert os.path.exists(output_dir)
@@ -31,11 +37,13 @@ def visit_list(
         print(f"Path does not exist: {output_dir}")
 
     # Make sure var is a SCHISM output variable
-    try:
-        assert var in ["horizontalVelX", "horizontalVelY", "zCoordinates", "out2d", "salinity",
+    valid_vars = ["horizontalVelX", "horizontalVelY", "zCoordinates", "out2d", "salinity",
                         "sedConcentration_1", "sedConcentration_2", "sedConcentration_3", "GEN_1", "GEN_2", "GEN_3", "temperature", "verticalVel"]
+    try:
+        assert var in valid_vars
     except AssertionError:
         print(f"Invalid SCHISM output variable: {var}")
+        print(f"Valid SCHISM output variables are: {', '.join(valid_vars)}")
 
     # start should be less than end
     try:
@@ -49,11 +57,11 @@ def visit_list(
     except AssertionError:
         print(f"File being generated should have .visit extension: {filename}")
 
-    # Generate file list
+    # Generate file list. Use absolute paths to avoid issues with VisIt not being able to find files.
     file_list = []
     for i in range(start, end + 1):
         file_name = f"{var}_{i}.nc"
-        file_path = os.path.join(output_dir, file_name)
+        file_path = os.path.abspath(os.path.join(output_dir, file_name))
         if os.path.exists(file_path):
             file_list.append(file_path)
         else:
@@ -64,7 +72,12 @@ def visit_list(
         for file_path in file_list:
             f.write(f"{file_path}\n")
 
-    print(f"File list generated: `{filename}` with {len(file_list)} files.")
+    if len(file_list) > 0:
+        print(f"File list generated: `{os.path.abspath(filename)}` with {len(file_list)} files:")
+        for file_path in file_list:
+            print(f"  {file_path}")
+    else:
+        print(f"No file list was generated.")
 
 @click.command(help="Generates a file list for visualizaing multiple, consecutive files in VisIt. \n Example: visit_list --output_dir . --var horizontalVelX --start 1 --end 10 --filename list_winter.visit")
 @click.option(
@@ -105,6 +118,13 @@ def visit_list(
     help=("Filename for the list of SCHISM output files."
     ),
 )
+@click.option(
+    "--overwrite",
+    is_flag=True,
+    default=False,
+    required=False,
+    help="Overwrite the output file if it already exists.",
+)
 
 @click.help_option("-h", "--help")
 def visit_list_cli(
@@ -113,6 +133,7 @@ def visit_list_cli(
     start,
     end,
     filename,
+    overwrite
 ):
     """
     Command-line interface to create a file containing a list of SCHISM output files to be visualized on VisIt.
@@ -123,6 +144,7 @@ def visit_list_cli(
     start,
     end,
     filename,
+    overwrite
 )
 
 
