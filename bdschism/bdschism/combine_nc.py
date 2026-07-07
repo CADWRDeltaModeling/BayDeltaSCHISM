@@ -58,6 +58,7 @@ def get_selected_files(template, start_num, end_num):
 
     selected.sort(key=lambda item: item[0])
     input_files = [path for _, path in selected]
+    input_file_nums = [num for num, _ in selected]
 
     if not input_files:
         raise ValueError(
@@ -65,10 +66,19 @@ def get_selected_files(template, start_num, end_num):
             f"[{start_num}, {end_num}]"
         )
 
+    print(", ".join(input_files[:10]))
+    missing_nums = [
+        num for num in range(start_num, end_num + 1) if num not in input_file_nums]
+    if missing_nums:
+        raise ValueError(
+            f"Missing input files for template '{template}' in range "
+            f"[{start_num}, {end_num}]: {missing_nums}"
+        )
+
     return input_files
 
 
-def combine_nc(input_files, outfile, reset_time=False):
+def combine_nc(input_files, outfile):
     """Combines multiple NetCDF files (e.g., out2d_1.nc, out2d_2.nc, etc.) into a single NetCDF file along the time dimension."""
 
     # Load and combine the NetCDF files, dropping the first time slice
@@ -84,34 +94,7 @@ def combine_nc(input_files, outfile, reset_time=False):
     combined_ds = xr.concat(concat_datasets, dim="time")
 
     # Update the time coordinate with the provided times
-    if reset_time == True:
-        times = np.asarray(combined_ds["time"].values, dtype=float)
-        dt = np.diff(times)[1]
-
-        print("\tResetting time coordinate to start from zero.")
-        print(
-            "\tOriginal time values:",
-            "[",
-            " ".join(map(str, combined_ds["time"].values[:3])),
-            "...",
-            " ".join(map(str, combined_ds["time"].values[-3:])),
-            "]"
-        )
-
-        # create array of new time values starting from 0 with the same length as the combined dataset
-        combined_ds["time"] = np.arange(0, len(times) * dt, dt)
-
-        print(
-            "\tUpdated time values:",
-            "[",
-            " ".join(map(str, combined_ds["time"].values[:3])),
-            "...",
-            " ".join(map(str, combined_ds["time"].values[-3:])),
-            "]"
-        )
-
-    elif reset_time == False:
-        validate_time_step_consistency(combined_ds["time"].values)
+    validate_time_step_consistency(combined_ds["time"].values)
 
     # Save the combined dataset to a new NetCDF file
     out_dir = os.path.dirname(outfile)
@@ -129,14 +112,13 @@ def combine_uv3d(
     end_num,
     outfile,
     tmp_out_dir="./outputs.tropic/uv3d",
-    reset_time=False,
 ):
 
     template = f"{tmp_out_dir}/uv3d_*.th.nc"
 
     input_files = get_selected_files(template, start_num, end_num)
 
-    combine_nc(input_files, outfile, reset_time=reset_time)
+    combine_nc(input_files, outfile)
     
     print(f"\nOutfile written to : {outfile}")
 
@@ -221,13 +203,8 @@ def compare_dataarray_all_axes(validate_da, check_da, atol=1e-6, rtol=1e-6):
         "Used only for uv3d mode; defaults to ./outputs.tropic/uv3d."
     ),
 )
-@click.option(
-    "--reset-time",
-    is_flag=True,
-    help="Reset the time coordinate to start from zero.",
-)
 @click.help_option("-h", "--help")
-def combine_nc_cli(template, start, end, output, tmp_out_dir, reset_time=False):
+def combine_nc_cli(template, start, end, output, tmp_out_dir):
     """Command line utility for combining NetCDF files.
 
     Example usage:
@@ -237,15 +214,15 @@ def combine_nc_cli(template, start, end, output, tmp_out_dir, reset_time=False):
     if "uv3d" in template.lower():
         print("Combining uv3d files using combine_uv3d...")
         if tmp_out_dir is None:
-            combine_uv3d(start, end, output, reset_time=reset_time)
+            combine_uv3d(start, end, output)
         else:
-            combine_uv3d(start, end, output, tmp_out_dir=tmp_out_dir, reset_time=reset_time)
+            combine_uv3d(start, end, output, tmp_out_dir=tmp_out_dir)
     else:
         print(
             f"Combining generic NetCDF files using combine_nc and template: {template}..."
         )
         input_files = get_selected_files(template, start, end)
-        combine_nc(input_files, output, reset_time=reset_time)
+        combine_nc(input_files, output)
 
 
 if __name__ == "__main__":
