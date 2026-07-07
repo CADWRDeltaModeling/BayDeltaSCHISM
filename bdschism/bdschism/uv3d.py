@@ -70,15 +70,15 @@ def interpolate_uv3d(
     # bg_output_dir
     if bg_output_dir is None:
         if os.path.exists(os.path.join(bg_dir, "outputs.tropic")):
-            bg_output_dir = "outputs.tropic"
+            bg_output_dir = os.path.join(bg_dir, "outputs.tropic")
         elif os.path.exists(os.path.join(bg_dir, "outputs")):
-            bg_output_dir = "outputs"
+            bg_output_dir = os.path.join(bg_dir, "outputs")
         else:
             print(
                 f"Invalid path: {bg_output_dir} (Default is outputs.tropic or outputs)"
             )
             raise ValueError
-
+    bg_output_dir = os.path.abspath(bg_output_dir)
     # Directory in which interpolate_variables executable will be run
     interp_dir = os.path.abspath(os.path.join(bg_dir, bg_output_dir))
     try:
@@ -430,15 +430,16 @@ def single_uv3d(
     # Determine outputs directory to link to tmp dir
     if bg_output_dir is None:
         if os.path.exists(os.path.join(bg_dir, "outputs.tropic")):
-            bg_output_dir = "../outputs.tropic"
+            bg_output_dir = os.path.join(bg_dir, "outputs.tropic")
         elif os.path.exists(os.path.join(bg_dir, "outputs")):
-            bg_output_dir = "../outputs"
+            bg_output_dir = os.path.join(bg_dir, "outputs")
         else:
             print(
                 f"Invalid path: {bg_output_dir} (Default is outputs.tropic or outputs)"
             )
             raise ValueError
 
+    bg_output_dir = os.path.abspath(bg_output_dir)
     # Create a temporary directory inside bg_dir for this output file.
     # Absolute path ensures correct resolution regardless of CWD, which
     # matters when --bg-dir is passed explicitly without cd-ing into it.
@@ -606,5 +607,5 @@ def single_uv3d_cli(
     )
 
 if __name__ == "__main__":
-    # interpolate_uv3d_cli()
-    single_uv3d_cli()
+    interpolate_uv3d_cli()
+    # single_uv3d_cli()
