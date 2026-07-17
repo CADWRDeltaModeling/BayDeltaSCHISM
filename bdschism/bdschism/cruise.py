@@ -1,5 +1,5 @@
 import datetime as dtm
-from profile_plot import profile_plot
+from .profile_plot import profile_plot
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import fontManager, FontProperties
 import sys
@@ -1321,7 +1321,7 @@ def cruise_plot(
     help="Use legacy daily file format (usgs_cruise_yyyymmdd.txt) instead of yearly.",
 )
 def cruise_plot_cli(data_path, start, schism_output_path, output_stem, xmin, xmax, max_depth, use_yearly_format, legacy_daily_format):
-    """CLI wrapper: Command-line entry point for cruise salinity profile plotting.
+    """ This tool generates comparison plots of observed USGS cruise salinity profile against SCHISM model output.
 
     This is the click-decorated CLI function that serves as the entry point
     for the command-line utility. It parses arguments and delegates to the
