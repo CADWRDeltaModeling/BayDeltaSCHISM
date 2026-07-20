@@ -1,5 +1,5 @@
-from schimpy.three_point_linear_norm import *
-
+from .three_point_linear_norm import *
+import matplotlib 
 
 location_labels = {
     54: "Martinez",
@@ -126,7 +126,7 @@ def profile_plot(
     data_part = data[0:max_depth, min_station:max_station]
     data_part = np.ma.masked_where(np.isnan(data_part), data_part)
 
-    cmap = cm.get_cmap("RdBu_r").copy()
+    cmap = matplotlib.colormaps["RdBu_r"].copy()
     cmap.set_bad("white", 0.0)
 
     im = None
