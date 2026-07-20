@@ -1316,7 +1316,7 @@ def cruise_plot(
 @click.option(
     "--data_path",
     required=True,
-    help="Path containing downloaded USGS cruise water quality data.",
+    help="Path containing downloaded USGS cruise water quality data and location usgs_cruise_stations.csv.",
 )
 @click.option(
     "--start",
@@ -1329,7 +1329,7 @@ def cruise_plot(
     "--schism_output_path",
     required=False,
     default=None,
-    help="Path containing SCHISM output data. Defaults to <data_path>/2011outputs.",
+    help="Path containing SCHISM output data, vgrid and read_output_xyt.in.",
 )
 @click.option(
     "--output_stem",
