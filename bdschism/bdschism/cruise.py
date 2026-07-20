@@ -9,7 +9,7 @@ import os
 import re
 from dateutil import parser
 import errno
-from shutil import copyfile
+from shutil import copyfile, which
 import subprocess
 import click
 import textwrap
@@ -101,6 +101,35 @@ def validate_out2d_time_variable(out2d_path):
                 "Could not validate out2d_1.nc because neither netCDF4 nor xarray is installed. "
                 "Install one of these packages to enable time-variable validation."
             ) from exc
+
+
+def check_read_output10_xyt_available():
+    """Check if read_output10_xyt executable is available in PATH.
+    
+    Verifies that the SCHISM read_output10_xyt utility is available in the
+    system PATH. This executable is required for extracting model profiles
+    from SCHISM output files.
+    
+    Raises
+    ------
+    FileNotFoundError
+        If read_output10_xyt executable is not found in PATH, with a helpful
+        error message instructing the user how to add it to their environment.
+    """
+    if which("read_output10_xyt") is None:
+        raise FileNotFoundError(
+            f"The 'read_output10_xyt' executable was not found in your system PATH.\n\n"
+            f"This executable is required for extracting SCHISM model profiles.\n"
+            f"To fix this issue:\n\n"
+            f"1. Locate the SCHISM build directory containing the read_output10_xyt executable\n"
+            f"2. Add it to your PATH by running one of the following:\n\n"
+            f"   # Temporarily (for current session):\n"
+            f"   export PATH=/path/to/schism/build/bin:$PATH\n\n"
+            f"   # Permanently (add to ~/.bashrc or ~/.bash_profile):\n"
+            f"   echo 'export PATH=/path/to/schism/build/bin:$PATH' >> ~/.bashrc\n"
+            f"   source ~/.bashrc\n\n"
+            f"Replace '/path/to/schism/build/bin' with the actual path to your SCHISM executable directory."
+        )
 
 
 def process_stations(station_file):
@@ -1072,7 +1101,8 @@ def cruise_plot(
     ------
     FileNotFoundError
         If required files are missing: vgrid.in, read_output_xyt.in,
-        usgs_cruise_stations.csv, or cruise data files.
+        usgs_cruise_stations.csv, cruise data files, or if read_output10_xyt
+        executable is not found in PATH.
     ChildProcessError
         If read_output10_xyt command fails during model extraction.
 
@@ -1089,6 +1119,9 @@ def cruise_plot(
     For yearly format, a date is included only if ALL target stations have
     valid observations. Temporary files are cleaned up after plotting.
     """
+    # Check if read_output10_xyt is available in PATH
+    check_read_output10_xyt_available()
+    
     data_folder = data_path
     base_date = parser.parse(start)
     if schism_output_path is None:
