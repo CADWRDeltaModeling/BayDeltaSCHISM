@@ -69,3 +69,10 @@ datetime      install ndup op_down   op_up     elev     rad
 2024-05-09T13:00     1    3    1.67    1.67    -0.53    0.61    # Weir closed, culverts tied open
 2024-06-10T00:00     1    3    0.67    1.67    -0.53    0.61    # All flap gates tidal
 2024-11-20T09:30     1    3    1.67    1.67    -0.53    0.61    # breach        
+2025-05-09T09:30     1    3    1.67    1.67    -0.53    0.61    # Weir closed, culverts tied open
+2025-05-22T17:00     1    3    1.33    1.67    -0.53    0.61    # 5/6 (left 3/3, right 2/3 flap gates tidal)
+2025-07-31T07:30     1    3    0.67    1.67    -0.53    0.61    # All flap gates tidal
+2025-11-20T09:30     1    3    1.67    1.67    -0.53    0.61    # breach
+2026-06-02T11:00     1    3    1.33    1.67    -0.53    0.61    # 5/6 (left 3/3, right 2/3 flap gates tidal)
+2026-07-07T10:00     1    3    0.67    1.67    -0.53    0.61    # All flap gates tidal
+2026-11-20T09:30     1    3    1.67    1.67    -0.53    0.61    # breach (gates remain in place and open)

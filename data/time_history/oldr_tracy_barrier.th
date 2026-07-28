@@ -128,4 +128,7 @@ datetime	install	ndup_weir	op_down_weir	op_up_weir	elev_weir	width_weir	ndup_pip
 2024-10-29T10:15	0	1	1.00	1.00	1.33	22.90	9	1.67	1.67	-1.11	0.61	# CULVERT:  Barrier breach
 2025-05-22T17:00 	1	1	1.00	1.00	1.33	22.90	9	0.78	1.67	-1.11	0.61	# WEIR:  closed, one flap gate open
 2025-07-31T08:30 	1	1	1.00	1.00	1.33	22.90	9	0.67	1.67	-1.11	0.61	# WEIR:  closed, remaining flap gate tidal
-2025-10-28T00:00	0	1	1.00	1.00	1.33	22.90	9	1.67	1.67	-1.11	0.61	# WEIR:  barrier breached (projected)
+2025-10-28T09:30	0	1	1.00	1.00	1.33	22.90	9	1.67	1.67	-1.11	0.61	# WEIR:  barrier breached (projected)
+2026-05-22T14:45	1	1	1.00	1.00	1.33	22.90	9	0.78	1.67	-1.11	0.61	# WEIR:  closed, one flap gate open
+2026-07-07T09:00 	1	1	1.00	1.00	1.33	22.90	9	0.67	1.67	-1.11	0.61	# WEIR:  closed, remaining flap gate tidal
+2026-10-28T00:00	0	1	1.00	1.00	1.33	22.90	9	1.67	1.67	-1.11	0.61	# WEIR:  barrier breached (guess based on 2025 projected)
