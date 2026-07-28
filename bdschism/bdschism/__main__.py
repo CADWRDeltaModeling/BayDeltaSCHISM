@@ -24,6 +24,7 @@ from bdschism.cruise import cruise_plot_cli
 from bdschism.source_sink_postprocess import postprocess_source_sink_cli
 from bdschism.source_sink_workflow import source_sink_workflow_cli
 from bdschism.create_sflux_links import create_sflux_links
+from bdschism.convert_struct_data_schism import convert_struct_data_schism_cli
 #
 import subprocess
 import sys
@@ -97,6 +98,7 @@ cli.add_command(postprocess_source_sink_cli, "postprocess_source_sink")
 cli.add_command(source_sink_workflow_cli, "source_sink_workflow")
 cli.add_command(create_sflux_links, "create_sflux_links")
 cli.add_command(cruise_plot_cli, "usgs_cruise_profile")
+cli.add_command(convert_struct_data_schism_cli, "convert_struct_data_schism")
 
 
 if __name__ == "__main__":
