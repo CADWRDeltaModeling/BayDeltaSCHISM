@@ -121,7 +121,7 @@ def combine_nc(input_files, outfile, reset_time=False):
         )
 
     elif reset_time == False:
-    validate_time_step_consistency(combined_ds["time"].values)
+        validate_time_step_consistency(combined_ds["time"].values)
 
     # Save the combined dataset to a new NetCDF file
     out_dir = os.path.dirname(outfile)
