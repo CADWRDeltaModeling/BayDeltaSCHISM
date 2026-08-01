@@ -65,7 +65,7 @@ datetime      install  ndup  op_down   op_up     elev      width
 2017-05-12T00:00 1 1 1.000 1.000 -5.34 20.73 # Removed flashboards, boat lock closed. | Boat lock wasn't closed in log, but is remarked to be
 2017-11-20T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboards installed.
 2018-05-08T00:00 1 1 1.000 1.000 -5.34 20.73 # Flashboards removed at 10:00 hrs.
-2018-07-27T14:50 1 1 0.000 0.000 -5.34 20.73
+2018-07-27T14:50 1 1 0.000 0.000 -5.34 20.73 # Flashboards Installed
 2019-05-07T12:00 1 1 1.000 1.000 -5.34 20.73 # Specific log entry missing. Boat Lock Operator reported off at 12:00, which can only have occurred because he was no longer required. | import pandas as pd
 2019-10-01T13:06 1 1 0.000 0.000 -5.34 20.73 # Start of Control Season.
 2020-05-28T09:32 1 1 1.000 1.000 -5.34 20.73 # End of Control Season
@@ -75,5 +75,5 @@ datetime      install  ndup  op_down   op_up     elev      width
 2022-01-01T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboard/boatlock state unchanged in 2022
 2022-06-01T00:00 1 1 0.000 0.000 -5.34 20.73 # Flashboards remain in through summer
 2022-09-01T13:20 1 1 0.000 0.000 -5.34 20.73 # Flashboards remain in for control season
-2023-06-11T11:13 1 1 1.000 1.000 -5.34 20.73 # Flashboards removed at end of control season.
-2023-08-14T13:18 1 1 0.000 0.000 -5.34 20.73 # Flashboards installed early to meet new ITP requirement of using 100 TAF of water.
+2023-06-11T11:13 1 1 1.00 1.00 -5.34 20.73 # Flashboards removed at end of control season.
+2023-08-14T13:18 1 1 0.00 0.00 -5.34 20.73 # Flashboards installed early to meet new ITP requirement of using 100 TAF of water.
