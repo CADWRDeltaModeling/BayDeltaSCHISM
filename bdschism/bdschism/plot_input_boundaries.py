@@ -633,6 +633,55 @@ def plot_bds_boundaries(
     else:
         fig.show()
 
+def plot_bds_bc(sim_dirs,
+                html_name,
+                obs=False,
+                scenario_names=[],
+                sink_head=os.path.join(bds_dir, "./data/channel_depletion/vsink_dated.th"),
+                source_head=os.path.join(bds_dir, "./data/channel_depletion/vsink_dated.th"),
+                envvar={}):
+    
+    wkdir = os.getcwd()
+    os.chdir(sim_dirs[0])  # Ensure cwd is correct
+    # Determine time_basis and rndays from param.nml
+    params = parms.read_params("./param.nml")
+    time_basis = params.run_start
+    rndays = params["rnday"]
+    print(
+        f"\t\tInferring run period from param.nml:\n\t\t{os.path.abspath('./param.nml')}"
+    )
+    end_date = time_basis + dt.timedelta(days=rndays)
+
+    bc_data_list = []
+    scenario_list = []
+
+    # Observed data
+    if obs:
+        obs_data = get_observed_data(
+            period={"begin": time_basis, "end": end_date}, **envvar
+        )
+        bc_data_list.append(obs_data)
+        scenario_list.append("Observed")
+        
+    envvar['sink_head'] = sink_head
+    envvar['source_head'] = source_head
+
+    # Simulation data
+    for i, sim_dir in enumerate(sim_dirs):
+        os.chdir(sim_dir)
+        # Pass envvar as keyword arguments to get_boundary_data
+        bc_data = get_boundary_data(**envvar)
+        bc_data_list.append(bc_data)
+        if scenario_names and len(scenario_names) > i:
+            scenario_list.append(scenario_names[i])
+        else:
+            scenario_list.append(os.path.basename(os.path.normpath(sim_dir)))
+        os.chdir(wkdir)
+
+    # Plot
+    plot_bds_boundaries(
+        bc_data_list, scenario_list, write_html=True, html_name=html_name
+    )
 
 @click.command()
 @click.option(
@@ -728,46 +777,13 @@ def plot_bds_bc_cli(
     sim_dirs = [os.path.abspath(sim_dir) for sim_dir in sim_dirs]
     html_name = os.path.abspath(html_name)
 
-    os.chdir(sim_dirs[0])  # Ensure cwd is correct
-    # Determine time_basis and rndays from param.nml
-    params = parms.read_params("./param.nml")
-    time_basis = params.run_start
-    rndays = params["rnday"]
-    print(
-        f"\t\tInferring run period from param.nml:\n\t\t{os.path.abspath('./param.nml')}"
-    )
-    end_date = time_basis + dt.timedelta(days=rndays)
-
-    bc_data_list = []
-    scenario_list = []
-
-    # Observed data
-    if obs:
-        obs_data = get_observed_data(
-            period={"begin": time_basis, "end": end_date}, **envvar
-        )
-        bc_data_list.append(obs_data)
-        scenario_list.append("Observed")
-        
-    envvar['sink_head'] = sink_head
-    envvar['source_head'] = source_head
-
-    # Simulation data
-    for i, sim_dir in enumerate(sim_dirs):
-        os.chdir(sim_dir)
-        # Pass envvar as keyword arguments to get_boundary_data
-        bc_data = get_boundary_data(**envvar)
-        bc_data_list.append(bc_data)
-        if scenario_names and len(scenario_names) > i:
-            scenario_list.append(scenario_names[i])
-        else:
-            scenario_list.append(os.path.basename(os.path.normpath(sim_dir)))
-
-    # Plot
-    plot_bds_boundaries(
-        bc_data_list, scenario_list, write_html=True, html_name=html_name
-    )
-
+    plot_bds_bc(sim_dirs,
+                html_name,
+                obs=obs,
+                scenario_names=scenario_names,
+                sink_head=sink_head,
+                source_head=source_head,
+                envvar=envvar)
 
 if __name__ == "__main__":
     # os.chdir("/scratch/projects/summer_x2_2025/simulations/")
