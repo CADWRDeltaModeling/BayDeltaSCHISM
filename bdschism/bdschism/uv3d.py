@@ -76,6 +76,8 @@ def interpolate_uv3d(
 
     # Directory in which interpolate_variables executable will be run
     interp_dir = os.path.join(bg_dir, bg_output_dir)
+    if not os.path.exists(interp_dir):
+        os.makedirs(interp_dir, exist_ok=True)
     try:
         assert os.path.exists(interp_dir)
     except AssertionError:
@@ -396,7 +398,11 @@ def single_uv3d(
             raise ValueError
 
     # Create a temporary directory for the single uv3d output file
-    tmp_bg_output_dir = f"./tmp_outputs_{nfile}"
+    # Must live directly under bg_dir: setup_tmp_dir links files using relative
+    # targets like "../outputs", which resolve against this dir's actual parent
+    # on disk (not cwd) -- and it must match interpolate_uv3d's interp_dir,
+    # computed as os.path.join(bg_dir, bg_output_dir).
+    tmp_bg_output_dir = os.path.join(bg_dir, f"tmp_outputs_{nfile}")
     os.makedirs(tmp_bg_output_dir, exist_ok=True)
     print(f"Linking outputs in {tmp_bg_output_dir}...")
     
