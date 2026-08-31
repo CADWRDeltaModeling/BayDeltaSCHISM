@@ -430,16 +430,20 @@ def single_uv3d(
     # Determine outputs directory to link to tmp dir
     if bg_output_dir is None:
         if os.path.exists(os.path.join(bg_dir, "outputs.tropic")):
-            bg_output_dir = os.path.join(bg_dir, "outputs.tropic")
+            bg_output_dir = "outputs.tropic"
         elif os.path.exists(os.path.join(bg_dir, "outputs")):
-            bg_output_dir = os.path.join(bg_dir, "outputs")
+            bg_output_dir = "outputs"
         else:
             print(
                 f"Invalid path: {bg_output_dir} (Default is outputs.tropic or outputs)"
             )
             raise ValueError
 
-    bg_output_dir = os.path.abspath(bg_output_dir)
+    # Resolve to an absolute path (relative to bg_dir) so the symlinks created
+    # in tmp_outputs_<nfile>/ below resolve correctly regardless of nesting.
+    if not os.path.isabs(bg_output_dir):
+        bg_output_dir = os.path.abspath(os.path.join(bg_dir, bg_output_dir))
+
     # Create a temporary directory inside bg_dir for this output file.
     # Absolute path ensures correct resolution regardless of CWD, which
     # matters when --bg-dir is passed explicitly without cd-ing into it.

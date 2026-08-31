@@ -25,7 +25,8 @@ import schimpy.schism_hotstart as sh
 import schimpy.param as parms
 import bdschism.config as config
 from schimpy.yaml_util import yaml_from_file
-
+import logging
+logger = logging.getLogger(__name__)
 
 def _normalize_modules(modules):
     """Normalize CLI module inputs.
@@ -130,6 +131,7 @@ def hotstart_newgrid(
 
     modules = _normalize_modules(modules)
 
+    logger.info("Initializing hotstart transfer...")
     # Create a hotstart file for SCHISM
     hot = sh.hotstart(yaml_template_fn, modules=modules, crs=crs, envvar=envvar)
     hnc = hot.create_hotstart(
@@ -209,6 +211,18 @@ def hotstart_newgrid(
     type=click.Path(),
     help="Output filename for VisIt-friendly netCDF when --visit is enabled.",
 )
+@click.option(
+    "--logdir",
+    default=None,
+    type=click.Path(),
+    help="Directory for log files.",
+)
+@click.option(
+    "--debug",
+    is_flag=True,
+    default=False,
+    help="Enable debug logging.",
+)
 @click.help_option("-h", "--help")
 def hotstart_newgrid_cli(
     yaml_template_fn: str,
@@ -220,15 +234,35 @@ def hotstart_newgrid_cli(
     crs="EPSG:26910",
     visit=False,
     visit_outname="schout_hotstart.nc",
+    logdir=None,
+    debug=False,
 ):
     """
     Command-line interface for transferring hotstart data from one grid to another.
     """
+    from bdschism.logging_config import configure_logging
+
+    configure_logging(
+        package_name="bdschism",
+        level=logging.DEBUG if debug else logging.INFO,
+        logdir=Path(logdir) if logdir else None,
+        logfile_prefix="hot_from_hot",
+    )
+    configure_logging(
+        package_name="schimpy",
+        level=logging.DEBUG if debug else logging.INFO,
+        logdir=Path(logdir) if logdir else None,
+        logfile_prefix="hotstart",
+    )
+
+
     # Ensure input and output directories exist
     if not os.path.exists(src_dir):
         raise ValueError(f"Source directory {src_dir} does not exist.")
     if not os.path.exists(trg_dir):
         raise ValueError(f"Target directory {trg_dir} does not exist.")
+
+    logger.info(f"Transferring hotstart from {f_in} to {f_out} using template {yaml_template_fn}.")
 
     # Call the hotstart transfer function
     hotstart_newgrid(
@@ -248,41 +282,3 @@ if __name__ == "__main__":
     """Main function to handle hotstart transfer."""
     hotstart_newgrid_cli()
     
-    # os.chdir(
-    #     "//cnrastore-bdo/SCHISM/studies/hindcast_2026/hotstart_nudging/20180315_2019grid/"
-    # )
-    # # Call the hotstart transfer function
-    # hotstart_newgrid(
-    #     "hotstart_from_hotstart.yaml",
-    #     "hotstart.20190901.513600.nc",
-    #     "hotstart_2019grid.20190901.513600.nc",
-    #     "./2018_source",
-    #     "./2019_target",
-    #     modules=None,
-    #     crs="EPSG:26910",
-    # )
-    
-#     import schimpy.schism_hotstart as sh
-#     envvar={
-#             "hotstart_in": "hotstart_from_hotstart.yaml",
-#             "hotstart_out": str(hotstart_out),
-#             "timestep": str(timestep),
-#             "run_start": str(run_start),
-#             "hot_date": str(hot_date),
-#             "hgrid_in": str(hgrid_in),
-#             "hgrid_out": str(hgrid_out),
-#             "vgrid_in": str(vgrid_in),
-#             "vgrid_out": str(vgrid_out),
-#             "src_dir": str(src_dir),
-#             "trg_dir": str(trg_dir),
-#         }
-#     # Create a hotstart file for SCHISM
-#     hot = sh.hotstart(yaml_template_fn, modules=modules, crs=crs, envvar=envvar)
-#     sh.hotstart_to_outputnc(
-#     "hotstart_2019grid.20190901.513600.nc",
-#     str(h.date),
-#     hgrid_fn="../../data_in/hgrid.gr3",
-#     vgrid_fn="../../data_in/vgrid.in.3d",
-#     vgrid_version=h.vgrid_version,
-#     outname="schout_hotstart.nc",
-# # )
