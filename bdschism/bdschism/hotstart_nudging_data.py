@@ -251,7 +251,7 @@ def hotstart_nudge_data(sdate, ndays, dest, repo = "screened"):
         logger.info("No data files found for: %s", no_such_file)
 
 
-@click.command(help="""\n
+@click.command(help="""
     Download station data from repo and save in csv format for hotstart nudging.\n
     Usage:\n
     bds hot_nudge_data --start_date 2018-02-19 --nudge_len 300 --dest_dir . --repo_dir $repo_path\n

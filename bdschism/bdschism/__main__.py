@@ -25,6 +25,7 @@ from bdschism.source_sink_postprocess import postprocess_source_sink_cli
 from bdschism.source_sink_workflow import source_sink_workflow_cli
 from bdschism.create_sflux_links import create_sflux_links
 from bdschism.convert_struct_data_schism import convert_struct_data_schism_cli
+from schimpy.__main__ import cli as schimpy_cli
 #
 import subprocess
 import sys
@@ -32,9 +33,46 @@ import os
 
 bds_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../")
 
+BDS_SECTION = "Bay-Delta commands (bdschism)"
+SCHIMPY_SECTION = "SCHISM preprocessing commands (schimpy)"
+
+
+class SectionedGroup(click.Group):
+    """Group whose help lists commands under a heading naming the package they come from."""
+
+    _section_order = (BDS_SECTION, SCHIMPY_SECTION)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.command_sections = {}
+
+    def add_command(self, cmd, name=None, section=BDS_SECTION):
+        super().add_command(cmd, name)
+        self.command_sections[name or cmd.name] = section
+
+    def format_commands(self, ctx, formatter):
+        grouped = {}
+        for name in self.list_commands(ctx):
+            cmd = self.get_command(ctx, name)
+            if cmd is None or cmd.hidden:
+                continue
+            label = self.command_sections.get(name, BDS_SECTION)
+            grouped.setdefault(label, []).append((name, cmd))
+
+        for label in self._section_order:
+            rows = grouped.get(label)
+            if not rows:
+                continue
+            limit = formatter.width - 6 - max(len(name) for name, _ in rows)
+            with formatter.section(label):
+                formatter.write_dl(
+                    [(name, cmd.get_short_help_str(limit)) for name, cmd in rows]
+                )
+
 
 @click.group(
-    help="Bay-Delta SCHISM CLI tools for managing simulations and data processing."
+    cls=SectionedGroup,
+    help="Bay-Delta SCHISM CLI tools for managing simulations and data processing.",
 )
 @click.help_option("-h", "--help")  # Add the help option at the group level
 def cli():
@@ -69,6 +107,10 @@ def precheck(simdir, pytest_args):
     result = subprocess.run(cmd)
     sys.exit(result.returncode)
 
+
+# Registered first so any bdschism command below overrides a schimpy name clash.
+for _name, _cmd in schimpy_cli.commands.items():
+    cli.add_command(_cmd, _name, section=SCHIMPY_SECTION)
 
 # Register bds sub-commands
 cli.add_command(set_nudging_cli, "set_nudge")

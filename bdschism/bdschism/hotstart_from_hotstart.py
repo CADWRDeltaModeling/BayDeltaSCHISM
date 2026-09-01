@@ -143,7 +143,10 @@ def hotstart_newgrid(
     # Write out the hotstart file to NetCDF
     encoding = None
     if "tracer_list" in hnc.coords:
-        tracer_values = [str(x) for x in hnc["tracer_list"].values]
+        tracer_values = [
+            str(x.decode()) if isinstance(x, bytes) else str(x)
+            for x in hnc["tracer_list"].values
+        ]
         hnc = hnc.drop_vars("tracer_list")
         hnc = hnc.assign_coords(
             tracer_list=("tracer_list", np.array(tracer_values, dtype=object))
