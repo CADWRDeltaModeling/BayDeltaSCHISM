@@ -292,10 +292,10 @@ bctides:
                            34.80722892, 34.8313253 , 34.85542169, 34.87951807, 34.90361446,
                            34.92771084, 34.95180723, 34.97590361]
           - temperature:
-              source: initial profile
+              source: initial_profile
               nudge: 0.5
           - salinity:
-              source: initial profile
+              source: initial_profile
               nudge: 0.5
           - tracers: 
             - module: GEN
@@ -308,14 +308,14 @@ bctides:
         flow_direction: inflow
         variables:
         - elevation:
-            source: 2D elev history
+            source: 2D_elev_history
         - velocity:
-            source: 3D uv history
+            source: 3D_uv_history
         - temperature:
-            source: initial profile
+            source: initial_profile
             nudge: 0.5
         - salinity:
-            source: initial profile
+            source: initial_profile
             nudge: 0.5
         - tracers: 
             - module: GEN
@@ -328,16 +328,16 @@ bctides:
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux history
+            source: flux_history
         - temperature:
-            source: initial profile
+            source: initial_profile
             nudge: 1.0
         - salinity:
-            source: initial profile
+            source: initial_profile
             nudge: 1.0
         - tracers: 
           - module: GEN
-            source: time history  # Hans will tell us if this can be mixed and this possibly a list
+            source: time_history  # Hans will tell us if this can be mixed and this possibly a list
             relax: 1.0  # If scalar, will be repeated for both tracers
           - module: AGE
             source: [10, 20]
@@ -349,12 +349,12 @@ bctides:
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux history
+            source: flux_history
         - temperature:
-            source: initial profile
+            source: initial_profile
             nudge: 0.5
         - salinity:
-            source: initial profile
+            source: initial_profile
             nudge: 0.5
         - tracers:
           - module: GEN
@@ -370,22 +370,22 @@ bctides:
         flow_direction: outflow #inflow check enforced
         variables:
         - velocity:
-            source: flux history
+            source: flux_history
       - name: cvp
         flow_direction: outflow # specify outflow direction for validation puroses, if any tracer/scalar, throw error
         variables:
         - velocity:
-            source: flux history
+            source: flux_history
       - name: sjr
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux history
+            source: flux_history
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D salinity history
+            source: 3D_salinity_history
             nudge: 1.0
         - tracers: 
             - module: GEN
@@ -405,7 +405,7 @@ bctides:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D salinity history
+            source: 3D_salinity_history
             nudge: 1.0
         - tracers: 
             - module: GEN
@@ -418,12 +418,12 @@ bctides:
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux history
+            source: flux_history
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D salinity history
+            source: 3D_salinity_history
             nudge: 1.0
         - tracers: 
             - module: GEN
@@ -436,12 +436,12 @@ bctides:
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux history
+            source: flux_history
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D salinity history 
+            source: 3D_salinity_history 
             nudge: 1.0
         - tracers: 
             - module: GEN
@@ -454,12 +454,12 @@ bctides:
         flow_direction: inflow
         variables:
         - velocity:
-             source: flux history
+             source: flux_history
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D salinity history
+            source: 3D_salinity_history
             nudge: 1.0
         - tracers: 
             - module: GEN
@@ -472,12 +472,12 @@ bctides:
         flow_direction: bidirection
         variables:
         - velocity:
-             source: flux history
+             source: flux_history
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D salinity history
+            source: 3D_salinity_history
             nudge: 1.0
         - tracers: 
             - module: GEN
@@ -490,12 +490,12 @@ bctides:
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux history
+            source: flux_history
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D salinity history
+            source: 3D_salinity_history
             nudge: 1.0
         - tracers: 
             - module: GEN
@@ -508,7 +508,7 @@ bctides:
         flow_direction: bidirection
         variables:
         - elevation:
-            source: tidal and 2D elev history 
+            source: tidal_and_2D_elev_history
             spatial: uniform
             constituents:
               - Z0:
@@ -524,7 +524,7 @@ bctides:
                 - amplitude: 0.578
                 - phase: 190
         - velocity:
-             source: tidal and 3D uv history
+             source: tidal_and_3D_uv_history
              spatial: uniform
              constituents:
               - Z0:
@@ -551,7 +551,7 @@ bctides:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D salinity history
+            source: 3D_salinity_history
             nudge: 1.0
         - tracers: 
             - module: GEN
@@ -564,7 +564,7 @@ bctides:
         flow_direction: inflow
         variables:
         - velocity:
-             source: flather 1
+             source: flather_1
              eta_mean: 0.23
              eta_m0: [0.23,0.23,0.23]
              vnormal_mean: 0.01
@@ -576,7 +576,7 @@ bctides:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D salinity history
+            source: 3D_salinity_history
             nudge: 1.0
         - tracers: 
             - module: GEN
@@ -589,7 +589,7 @@ bctides:
         flow_direction: outflow
         variables:
         - elevation:
-            source: elev history
+            source: elev_history
         - velocity:
-            source: flux history
+            source: flux_history
 

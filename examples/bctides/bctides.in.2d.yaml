@@ -11,79 +11,79 @@ bctides:
         flow_direction: bidirection
         variables:
           - elevation:
-              source: 2D elev history
+              source: 2D_elev_history
       - name: coyote
         flow_direction: inflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: ccc_rock_slough
         flow_direction: outflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: ccc_old
         flow_direction: outflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: swp
         flow_direction: outflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: cvp
         flow_direction: outflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: sjr
         flow_direction: inflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: calaveras
         flow_direction: inflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: mokelumne
         flow_direction: inflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: american
         flow_direction: inflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: sacramento
         flow_direction: inflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: yolo_toedrain
         flow_direction: bidirection
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: yolo
         flow_direction: inflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: northbay
         flow_direction: outflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: napa
         flow_direction: inflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history
       - name: ccc_victoria
         flow_direction: outflow
         variables:
           - velocity:
-              source: flux history
+              source: flux_history

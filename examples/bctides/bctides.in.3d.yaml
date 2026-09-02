@@ -12,22 +12,22 @@ bctides:
          flow_direction: bidirection
          variables:
             - elevation:
-                source: 2D elev history
+                source: 2D_elev_history
             - velocity:
-                source: 3D uv history
+                source: 3D_uv_history
             - temperature:
-                source: initial profile
+                source: initial_profile
                 nudge: 0.01
             - salinity:
-                source: initial profile  
+                source: initial_profile  
                 nudge: 0.01
       -  name: coyote
          flow_direction: inflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
             - temperature:
-                source: temperature history
+                source: temperature_history
                 nudge: 1.0
             - salinity:
                 source: 0.074318
@@ -36,40 +36,40 @@ bctides:
          flow_direction: outflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
       -  name: ccc_old
          flow_direction: outflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
       -  name: swp
          flow_direction: outflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
       -  name: cvp
          flow_direction: outflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
       -  name: sjr
          flow_direction: inflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
             - temperature:
-                source: temperature history
+                source: temperature_history
                 nudge: 1.0
             - salinity:
-                source: salinity history
+                source: salinity_history
                 nudge: 1.0
       -  name: calaveras
          flow_direction: inflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
             - temperature:
-                source: temperature history
+                source: temperature_history
                 nudge: 1.0
             - salinity:
                 source: 0.062920
@@ -78,9 +78,9 @@ bctides:
          flow_direction: inflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
             - temperature:
-                source: temperature history
+                source: temperature_history
                 nudge: 1.0
             - salinity:
                 source: 0.062920
@@ -89,9 +89,9 @@ bctides:
          flow_direction: inflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
             - temperature:
-                source: temperature history
+                source: temperature_history
                 nudge: 1.0
             - salinity:
                 source: 0.062920
@@ -100,31 +100,31 @@ bctides:
          flow_direction: inflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
             - temperature:
-                source: temperature history
+                source: temperature_history
                 nudge: 1.0
             - salinity:
-                source: salinity history
+                source: salinity_history
                 nudge: 1.0
       -  name: yolo_toedrain
          flow_direction: bidirection
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
             - temperature:
-                source: temperature history
+                source: temperature_history
                 nudge: 1.0
             - salinity:
-                source: salinity history
+                source: salinity_history
                 nudge: 1.0
       -  name: yolo
          flow_direction: inflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
             - temperature:
-                source: temperature history
+                source: temperature_history
                 nudge: 1.0
             - salinity:
                 source: 0.062920
@@ -133,14 +133,14 @@ bctides:
          flow_direction: outflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
       -  name: napa
          flow_direction: inflow
          variables:
             - velocity:
-                source: flux history
+                source: flux_history
             - temperature:
-                source: temperature history
+                source: temperature_history
                 nudge: 1.0
             - salinity:
                 source: 0.074318
@@ -149,4 +149,4 @@ bctides:
          flow_direction: outflow
          variables:
             - velocity:
-                source: flux history   
+                source: flux_history   
