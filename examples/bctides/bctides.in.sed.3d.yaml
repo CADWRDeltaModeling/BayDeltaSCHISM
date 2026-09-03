@@ -18,10 +18,10 @@ bctides:
            - velocity:
                source: 3D_uv_history
            - temperature:
-               source: initial profile
+               source: initial_profile
                nudge: 0.01
            - salinity:
-               source: initial profile  
+               source: initial_profile  
                nudge: 0.01 
            - tracers: 
              - module: SED
