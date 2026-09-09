@@ -43,7 +43,7 @@ There is some documentation for our Python libraries online, including:
   * `vtools3 <https://cadwrdeltamodeling.github.io/vtools3/index.html>`_ an extension to schimpy that includes some time series manipulations we need that go beyond basic `Pandas <https://pandas.pydata.org/docs/>`_ which is a prerequisite. 
   * `dms_datastore <https://cadwrdeltamodeling.github.io/dms_datastore/html/index.html>`_ a library for getting data associated with the Bay-Delta.
 
-`Hydraulic structures manual <structures>`_
+:external+schimpy:ref:`Hydraulic structures manual <hydraulic_structures>`
 
 `VisIt`
 

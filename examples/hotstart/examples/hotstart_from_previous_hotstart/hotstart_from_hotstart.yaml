@@ -1,5 +1,5 @@
 # to use with bdschism hotstart_from_hotstart.py:
-# hot_from_hot ./hotstart_from_hotstart.yaml --f_in hotstart_it=480000.nc --src_dir ./source_dir/ --trg_dir ./target_dir/
+# hot_from_hot ./hotstart_from_hotstart.yaml --f_in hotstart_it=480000.nc --f_out hotstart.nc --src_dir ./source_dir/ --trg_dir ./target_dir/
 
 hotstart: 
     output_fn: "${hotstart_out}"
@@ -21,6 +21,7 @@ hotstart:
                 source_vgrid_version: '5.10'
                 vgrid_version: '5.10'
                 method: nearest   
+                max_blw_bed: 0.01
     tke:
         initializer: 
             hotstart_nc:

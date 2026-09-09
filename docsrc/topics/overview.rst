@@ -31,7 +31,13 @@ For more accomplished users, repeating the thicket of details is tedious. We are
 Grid and Spatial Data
 =====================
 
-`Spatial data` refers to distributed inputs like the grid elevations, roughness, background diffusivity and vegetation density.  We disseminate and modify Bay-Delta spatial data by means of our `templates` and `preprocessor` system. 
+`Spatial data` refers to distributed inputs like the grid elevations, roughness, background diffusivity and vegetation density.  We disseminate and modify Bay-Delta spatial data by means of our `templates` and `preprocessor` system.
+
+Gates, barriers, weirs, culverts and similar controls are represented as
+:external+schimpy:ref:`hydraulic structures <hydraulic_structures>`. Their locations are tied to the mesh,
+their static configuration is managed with the spatial templates, and the
+preprocessor writes the model-facing ``hydraulics.in`` file. Structure
+operations may also require time-history files for the run period.
 
 Why do it this way? Our applications are not static. We need to quickly reapply parameters, structures, etc as meshes change, restoration regions are incorporated or scenarios change. SCHISM native input formats are specified in terms of model topology, using node and element indexes. (see the `I/O section of the SCHISM online manual <https://schism-dev.github.io/schism/master/input-output/overview.html>`_). The spatial files can be visualized, but the system is fragile and hard to organize when you start to make changes.
 
@@ -128,7 +134,9 @@ At the beginning of a new study, or for each alternative with large landscape or
 This is the name of the file used for initializing the model or restarting it to change inputs or recover from an error. See :ref:`hotstart`.
 
 *hydraulic structures:*
-This is the term used for gates and barriers. See :ref:`structures`.
+This is the term used for gates and barriers. See the
+:external+schimpy:ref:`schimpy hydraulic-structures reference
+<hydraulic_structures>`.
 
 *nudging:*
 Nudging is a crude form of data assimilation that is used either to generate a sponge-like boundary condition on the coastal boundary or to aid with spin-up of the model in a hindcast.

@@ -5,11 +5,13 @@ hotstart:
     hgrid_input_file: ../../data_in/hgrid.gr3               # hgrid needs to be in utm coordinates. 
     vgrid_input_file: ../../data_in/vgrid.in.3d 
     vgrid_version: "5.10"
+    modules: [TEM, SAL, GEN, AGE]
     param_nml: ./param.nml.clinic # param_nml does not need to be defined unless any of ['SED', 'AGE', 'GEN', 'ECO'] is turned on.
     elevation:
         initializer: 
             hotstart_nc:
                 data_source: ../../data_in/hotstart.nc   #only assign source_hgrid and source_vgrid if they are different from the destination grid. 
+                max_blw_bed: 0.01
     temperature:
         initializer: 
             hotstart_nc:

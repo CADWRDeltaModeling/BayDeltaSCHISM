@@ -21,14 +21,14 @@ that a cold start from very basic (zero velocity, flat water elevation) is fine.
 What is the difference between a cold and hot start?
 -----------------------------------------------------
 
-A cold start means values are initialized from very simple and well behaved values. Typically velocity is zero
+A cold start means values are initialized from very simple and well-behaved values. Typically velocity is zero
 and the water surface is flat. This avoids "mini-tsunamis" that develop if we try to get too clever
 with the initial water surface profile.  Cold starts are invoked using `ihot=0` 
 in the control file `param.nml`. You also need plausible values for initialization. 
-If you our using our schism templates and requires some 
-initial conditions be provided in the form of text \*.ic files which are like \*.gr3 files with values at each node, 
-but don't have mesh topology in the file (and `param.nml.tropic` control file suggestions for a barotropic run) 
-then a cold start is assumed and the text initialization file elev.ic (and any other \*.ic file) will be built.
+The SCHISM templates may require initial conditions in text ``*.ic`` files,
+which are like ``*.gr3`` files with values at each node but no mesh topology.
+For the barotropic configuration suggested by ``param.nml.tropic``, the
+preprocessor builds ``elev.ic`` and any other configured ``*.ic`` files.
 
 A hotstart means initializing a model with non-trivial values. There are two main cases:
 
@@ -84,6 +84,83 @@ The two pictures below show the common initialization sequences, as well as the 
 Creating a Hotstart for Hydro/Salt/Temp with schism_hotstart
 ------------------------------------------------------------
 
+``schimpy.schism_hotstart`` creates an initial-condition hotstart or transfers a
+prior hotstart onto a target grid. Put the complete configuration in YAML and
+run it directly::
+
+    create_hotstart hotstart.yaml
+
+The grouped schimpy command is equivalent::
+
+    sch create_hotstart hotstart.yaml
+
+Do not add a ``create_hotstart.py`` driver for new work. Some older examples
+still contain one because modules and other arguments used to be supplied from
+Python. Current configurations should declare those inputs in YAML.
+
+The ``hotstart`` block must identify the target grid, vertical grid and model
+clock. For ``ihot=1``, ``run_start: default`` sets the time origin to ``date``.
+For an ``ihot=2`` continuation, ``run_start`` remains the original simulation
+origin and ``date`` is the restart moment. Schimpy computes ``time``, ``iths``
+and ``nsteps_from_cold`` from those values and ``time_step``; do not patch the
+clock variables after creating the file.
+
+Each requested variable has one initializer. Common choices are:
+
+``simple_trend``
+    A constant or an expression in ``x``, ``y`` and depth ``z``.
+
+``extrude_casts``
+    Vertical cruise or profile observations, normally used in the Bay and
+    estuary.
+
+``obs_points``
+    Station observations, normally used where the Delta or marsh network is
+    dense.
+
+``text_init``
+    A field such as a generated ``elev.ic``.
+
+``hotstart_nc``
+    A prior hotstart, optionally with source horizontal and vertical grids for
+    transfer to a changed mesh.
+
+``patch_init``
+    Dispatches different initializers by region. Region sources may be a
+    shapefile or a schimpy polygon YAML file.
+
+When elevation uses ``hotstart_nc``, set ``max_blw_bed`` inside that initializer.
+It is a non-negative limit on how far the initialized surface at a novel target
+node may sit below the target bed. It is not a tracer setting and does not belong
+at the top level::
+
+    elevation:
+      initializer:
+        hotstart_nc:
+          data_source: source_hotstart.nc
+          source_hgrid: source_hgrid.gr3
+          source_vgrid: source_vgrid.in.3d
+          source_vgrid_version: "5.10"
+          max_blw_bed: 0.01
+
+Wet/dry handling depends on whether elevation came from a prior hotstart. At
+target nodes that coincide with source nodes, an elevation ``hotstart_nc``
+retains the source ``idry`` flag. Nodes without a matched source flag, and nodes
+initialized by other methods, are evaluated on the target grid: a node is dry
+when ``dp + eta <= h0``. Side and element flags are then derived from the
+completed target-node flags.
+
+Examples
+^^^^^^^^
+
+Applied configurations are under ``examples/hotstart/`` in BayDeltaSCHISM.
+They illustrate constants, cruise casts, station observations, changed-grid
+transfer, flooded islands, sediment, age and biology modules. They are reference
+configurations rather than self-contained test cases: shared target grids,
+vertical grids and source hotstarts are not distributed. Several module cases
+also retain legacy Python drivers or YAML that predates current required keys.
+Use them to choose initializer patterns, then check configuration keys against
+the current schimpy documentation and CLI.
 
 
 
@@ -98,6 +175,90 @@ that is the way their interface looks at the time of writing).
 If you are using in-Delta observations you will also need QA/QC'd data at least for the instant of the hotstart.
 Within the Delta Modeling Section, the script that does gathers these is `BayDeltaSCHISM/bdschism/bdschism/hotstart_nudging_data.py`. 
 That script assumes a data repository full of observed data from multiple agencies that is not yet disseminated. If you need help, please contact us. 
+
+Initializing Restoration Areas and Gradual Inundation
+------------------------------------------------------
+
+When a restoration action adds wettable terrain, a prior hotstart does not by
+itself define the new area's initial state. Decide whether the area should start
+dry, at a designed pool level, or continuous with the adjacent channel, and
+whether it is isolated by a hydraulic structure at the restart time. This is a
+modeling decision, not something to infer from the old restart.
+
+Use ``schimpy.inundate_island`` when a restored island is held behind temporary
+hydraulic structures and opened gradually. Start from the finished base grid and
+write a restoration specification containing each island polygon, breach
+geometry, dredge depths, structure and optional breach date. See the
+:external+schimpy:ref:`schimpy hydraulic-structures reference
+<hydraulic_structures>` for structure types, mesh setup and general
+operating-data guidance. The workflow here adds the initial-state and
+changed-grid requirements specific to inundation.
+
+Generate the coupled inputs with::
+
+        sch inundate_island \
+                --config inundate_breaches.yaml \
+                --hgrid ../hgrid.gr3 \
+                --out-dir .
+
+The command writes four files that share the same generated geometry:
+
+``depth_enforce_inundate.yaml``
+        Breach dredging for a second ``prepare_schism`` pass.
+
+``elev_inundate.yaml``
+        Domain, dry-island and breach-pool rules used to generate ``elev.ic``.
+
+``hydraulic_structures_inundate.yaml``
+        Temporary structures, plus ``.th`` schedules when breach dates are supplied.
+
+``inundate_regions.yaml``
+        Complete regions for the continuation hotstart's ``patch_init``.
+
+Apply the depth, elevation and structure files in a second preprocessing pass
+whose mesh input is the finished base ``hgrid.gr3``. This preserves the base
+preprocessing result and makes the restoration modification reproducible. If
+the depth changes warrant a refitted vertical grid, regenerate it in this pass
+and build the hotstart against that new vertical grid.
+
+For elevation in the continuation hotstart, point ``patch_init`` directly at
+``inundate_regions.yaml``. Use the prior ``hotstart_nc`` in ``domain`` and the
+generated ``elev.ic`` in every restoration region::
+
+        elevation:
+            initializer:
+                patch_init:
+                    smoothing: false
+                    regions_filename: ../inundate_regions.yaml
+                    allow_overlap: true
+                    allow_incomplete: false
+                    regions:
+                        - region: domain
+                            initializer:
+                                hotstart_nc:
+                                    data_source: source_for_hotstart/hotstart.nc
+                                    source_hgrid: source_for_hotstart/hgrid.gr3
+                                    source_vgrid: source_for_hotstart/vgrid.in.3d
+                                    source_vgrid_version: "5.10"
+                                    max_blw_bed: 0.01
+                                    novel_node_tol: 0.001
+                        - region: restoration_area
+                            initializer:
+                                text_init:
+                                    data_source: ../prepro_out_inundate/elev.ic
+
+List ``domain`` first and every restoration region afterwards. The regions
+overlap intentionally, ``allow_overlap`` is therefore required, and the last
+matching configured region wins. Repeat the ``text_init`` entry for each named
+restoration region generated by the tool. Transfer temperature, salinity,
+velocities and turbulence variables from the prior hotstart in their own
+``hotstart_nc`` initializers.
+
+Validate the result against intent as well as file integrity: check the clock,
+finite values, tracer ranges, restoration elevations, water-column depth
+``dp + eta``, wet/dry state, and wet reference nodes for every hydraulic
+structure. Regenerate the hotstart whenever the target ``hgrid``, ``vgrid``,
+``elev.ic`` or region file changes.
 
 Combining Hotstarts and Managing Restart Files
 ----------------------------------------------
@@ -167,7 +328,8 @@ The ``bdschism`` CLI and library provide a wrapper around the native
 
 This avoids the need to enter ``outputs/`` manually or guess iteration numbers.
 
-### File Naming Convention
+File Naming Convention
+^^^^^^^^^^^^^^^^^^^^^^
 
 The wrapper names combined hotstarts as::
 
@@ -181,13 +343,14 @@ Examples::
 The optional ``PREFIX`` is useful when creating multiple hotstarts for different
 scenarios (e.g., ``clinic`` vs. ``tropic`` configurations).
 
-### Typical Use Cases
+Typical Use Cases
+^^^^^^^^^^^^^^^^^
 
 **1. Get the latest hotstart and make it the restart file**
 
 .. code-block:: bash
 
-    combine_hotstart --latest --links --prefix clinic
+    combine_hotstart --latest --link --prefix clinic
 
 This creates ``hotstart.clinic.YYYYMMDD.ITER.nc`` in the run directory and a
 link named ``hotstart.nc`` pointing to it (required for ``ihot=2`` restarts).
@@ -227,7 +390,7 @@ You may also use the wrapper programmatically:
         outputs_dir="outputs",
         prefix="clinic",
         latest=True,
-        links=True,
+        link=True,
     )
 
 This returns a list of absolute paths to the newly created combined hotstarts.

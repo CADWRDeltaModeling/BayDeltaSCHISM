@@ -19,13 +19,19 @@ Spatial Inputs and the Preprocessor
 
 The preprocessor is a powerful tool for preparing spatial inputs, including the mesh and bathymetry, for your model run. It can be used to apply templates, modify existing runs, and configure input parameters through YAML files. 
 
+Spatial preprocessing also locates and configures
+:external+schimpy:ref:`hydraulic structures <hydraulic_structures>` such as
+gates, barriers, weirs and culverts. Read that guide when a study changes a
+structure location or type, adds a restoration control, or needs structure
+time-history inputs; these changes must remain consistent with the mesh and the
+generated ``hydraulics.in`` file.
+
 .. toctree::
   :maxdepth: 2
   :titlesonly:
 
   mesh_input.rst
   preprocess.rst
-  structures.rst
   vegetation.rst 
 
 Boundaries and Sources: Time-Varying Inputs
