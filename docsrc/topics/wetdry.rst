@@ -32,27 +32,35 @@ Wet/dry side states
 -------------------
 
 .. figure:: ../img/wet_dry_channel_example.png
-   :alt: Numbered schematic of a wet/dry bank transition
+   :alt: Numbered schematic of a wet/dry bank transition and open boundary
 
-   Numbered schematic of a wet/dry bank transition
+   Numbered schematic of a wet/dry bank transition and open boundary
 
-The schematic represents a channel with flow in the direction of the
-arrow. The northern edge is a bank. At **node 7**, the total water depth
-has fallen to or below the minimum depth threshold :math:`h_0`. An
-element is wet only when the total depth at every one of its nodes is
-greater than :math:`h_0`, so **elements 3 and 5**, which contain node 7,
-are dry in the state shown. SCHISM then derives the node and side states
-from the surrounding element states, as described in
-:ref:`wetdry-state-classification`. This produces three useful side
-cases.
+The schematic represents a channel flowing from right to left, in the
+direction of the arrow. Node and element numbers increase downstream.
+Nodes are numbered down each cross-section before continuing to the next
+cross-section, and elements are numbered from the bank toward the
+channel bed before continuing downstream.
+
+The northern edge is a bank. At **node 7**, the total water depth has
+fallen to or below the minimum depth threshold :math:`h_0`. An element
+is wet only when the total depth at every one of its nodes is greater
+than :math:`h_0`, so **elements 3 and 5**, which contain node 7, are dry
+in the state shown. SCHISM then derives the node and side states from the
+surrounding element states, as described in
+:ref:`wetdry-state-classification`. The figure shows three internal-side
+cases and one external-boundary case.
 
 The labels are interpreted as follows:
 
--  **A**: an ordinary interior side between wet elements **4 and 6**
--  **B**: a wet side between dry element **3** and wet element **4**
--  **C**: a dry side between dry elements **3 and 5**
--  **D**: a hypothetical true model boundary, such as an inflow
-   boundary, where an actual boundary condition could be imposed
+-  **A**: the side from nodes **8 to 9**, between wet elements **4 and
+   6**
+-  **B**: the side from nodes **5 to 8**, between dry element **3** and
+   wet element **4**
+-  **C**: the side from nodes **7 to 8**, between dry elements **3 and
+   5**
+-  **D**: the open boundary along nodes **1**, **2**, and **3**, adjoining
+   wet elements **1 and 2**
 
 The three internal-side states are therefore
 
@@ -423,8 +431,8 @@ This is very different from **B**.
 Case D: a true open boundary
 ----------------------------
 
-A true model boundary is conceptually different from either **B** or
-**C**.
+Case **D**, shown at the right edge of the schematic, is a true model
+boundary. It is fundamentally different from either **B** or **C**.
 
 For a prescribed-flow open boundary, SCHISM computes the wetted boundary
 cross-sectional area using wet boundary sides, and the prescribed
@@ -840,10 +848,11 @@ important.
 
 --------------
 
-18. Compact summary for the schematic
--------------------------------------
+Compact summary
+---------------
 
-For the supplied figure, the most concise interpretation is:
+For the four cases shown in the figure, the most concise interpretation
+is:
 
 .. math::
 
@@ -866,7 +875,7 @@ For the supplied figure, the most concise interpretation is:
    C:\ \text{hydro no,\ tracer no,\ flux.out no}
    }
 
-and, separately,
+The external case **D** is a true boundary-condition location:
 
 .. math::
 
