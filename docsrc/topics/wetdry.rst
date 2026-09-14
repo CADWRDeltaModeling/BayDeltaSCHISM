@@ -180,14 +180,16 @@ therefore:
 4. allows ``flux.out`` to integrate the side contribution when it lies
    on a specified flux-region interface
 
-A layer contribution to volume flux has the form
+A contribution from the layer face strip bounded by whole levels
+:math:`k` and :math:`k+1` has the form
 
 .. math::
 
 
-   Q_{A,k}
+   Q_{A,[k,k+1]}
    =
-   L_A \Delta z_k u_{n,A,k}
+   L_A (z_{k+1}-z_k)
+   \frac{u_{n,A,k}+u_{n,A,k+1}}{2}
 
 and the vertically integrated side flux is
 
@@ -196,7 +198,13 @@ and the vertically integrated side flux is
 
    Q_A
    =
-   L_A\sum_k \Delta z_k u_{n,A,k}
+   L_A\sum_{k=k_{bs}}^{N-1}(z_{k+1}-z_k)
+   \frac{u_{n,A,k}+u_{n,A,k+1}}{2}
+
+Thus, the velocities are located at whole levels, while each term in
+the sum represents the intervening layer of the vertical side face.
+The detailed indexing, including the bottom and surface terms, is
+described in :ref:`flux-out-vertical-integration`.
 
 Side A therefore represents ordinary interior transport between two
 active water volumes.
@@ -268,7 +276,8 @@ A geometric side-volume flux can consequently be formed:
 
    Q_B
    =
-   L_B\sum_k \Delta z_k u_{n,B,k}
+   L_B\sum_{k=k_{bs}}^{N-1}(z_{k+1}-z_k)
+   \frac{u_{n,B,k}+u_{n,B,k+1}}{2}
 
 This quantity can be nonzero.
 
@@ -472,6 +481,8 @@ with fluxes near an inundation front.
 How ``flux.out`` calculates volume flux
 ---------------------------------------
 
+.. _flux-out-vertical-integration:
+
 The native flux diagnostic in ``schism_step(6).F90`` does not
 reconstruct a weak-form boundary term. It directly integrates solved
 side velocity over side area.
@@ -496,14 +507,60 @@ It then forms the layer contribution
 
    ftmp=fac*distj(i)*(zs(k+1,i)-zs(k,i))*vnn
 
-which is simply
+Here ``su2`` and ``sv2`` are located at the side center horizontally and
+at whole levels vertically. There is consequently one more whole-level
+velocity than there are vertical layer face strips on an active side.
+In the equations below, :math:`k` is the lower whole-level index, and
+:math:`[k,k+1]` denotes the intervening strip of the vertical prism
+face. It does not denote a velocity located at a layer center.
+
+Projecting the velocities at the two bounding whole levels onto the
+side normal gives
 
 .. math::
 
 
-   Q_k
+   u_{n,k}=u_k n_x+v_k n_y,
+
+and the code uses their arithmetic mean for the layer:
+
+.. math::
+
+
+   \overline{u}_{n,k+1/2}
    =
-   L\,\Delta z_k\,u_{n,k}
+   \frac{u_{n,k}+u_{n,k+1}}{2}.
+
+The contribution from that layer face strip is therefore
+
+.. math::
+
+
+   Q_{[k,k+1]}
+   =
+   L\,(z_{k+1}-z_k)
+   \frac{u_{n,k}+u_{n,k+1}}{2}.
+
+This is the trapezoidal rule applied to the vertical integral of normal
+velocity over one strip of the prism face. Equivalently, it is the strip
+area :math:`L(z_{k+1}-z_k)` multiplied by the arithmetic mean of the two
+bounding whole-level velocities.
+
+For a wet side, ``kbs(i)`` is its lowest active whole-level index and
+``nvrt`` is the surface whole-level index. The ``flux.out`` loop uses
+``k = kbs(i), ..., nvrt-1``. The first term therefore spans whole levels
+``kbs(i)`` and ``kbs(i)+1``; the last spans ``nvrt-1`` and ``nvrt``.
+There are ``nvrt-kbs(i)`` layer face strips, one fewer than the
+``nvrt-kbs(i)+1`` whole-level velocities used to bound them.
+
+The routines index these strips differently: ``flux.out`` uses the lower
+whole-level index ``k``, whereas the TVD transport routines use the upper
+index ``k`` for the strip bounded by ``k-1`` and ``k``. This is only an
+indexing shift. A dry side is excluded before the ``flux.out`` loop. If
+an interval has zero thickness, its contribution is zero; if no interval
+is present, the sum is empty. True external boundary sides are also
+excluded from this native internal-side diagnostic and are handled
+through the boundary-condition machinery described for case **D**.
 
 The native volume diagnostic therefore measures a geometric transport
 associated with the solved side velocity.
