@@ -6,13 +6,13 @@
 
 """
 
-import argparse
 import logging
 import os
 import re
 import numpy as np
 import pandas as pd
 from pathlib import Path
+import click
 from dms_datastore.read_multi import read_ts_repo
 from vtools.functions.filter import cosine_lanczos
 from vtools.functions.tidalhours import hour_tide
@@ -343,63 +343,63 @@ def plot_gate_op_ts(predict_smscg):
     show(column(p1))
 
 
-def build_arg_parser():
-    parser = argparse.ArgumentParser(
-        description="Generate and optionally plot predicted SMSCG gate operation time series."
-    )
-    parser.add_argument(
-        "start",
-        help="Period start timestamp, for example 2024-01-01 or 2024-01-01T00:00:00",
-    )
-    parser.add_argument(
-        "end",
-        help="Period end timestamp, for example 2024-02-01 or 2024-02-01T00:00:00",
-    )
-    parser.add_argument(
-        "csv_path",
-        help="CSV path to write the output from smscg_gate.",
-    )
-    parser.add_argument(
-        "--plot",
-        action="store_true",
-        help="Plot the predicted gate operation time series.",
+@click.command(
+    context_settings={"help_option_names": ["-h", "--help"]},
+    help="Generate predicted SMSCG gate operation time series from tide and flow data.",
+)
+@click.option("--sdate", default=None, help="Start date, e.g. 2024-04-16.")
+@click.option("--edate", default=None, help="End date, e.g. 2025-01-01.")
+@click.option(
+    "--csv-path",
+    "csv_path",
+    type=click.Path(path_type=Path),
+    required=True,
+    help="CSV path to write the output from smscg_gate.",
+)
+@click.option("--plot", is_flag=True, default=False, help="Plot the predicted gate operation time series.")
+@click.option(
+    "--astronomical-tide-path",
+    "astronomical_tide_path",
+    type=click.Path(path_type=Path, file_okay=False, dir_okay=True),
+    default=None,
+    help="Path to the astronomical tide data containing cse and mrz elevation plus srv flow.",
+)
+@click.option("--logdir", default=None, type=click.Path(), help="Directory for log files.")
+@click.option("--debug", is_flag=True, default=False, help="Enable debug logging.")
+def smscg_cli(sdate, edate, csv_path, plot, astronomical_tide_path, logdir, debug):
+    from bdschism.logging_config import configure_logging
+
+    configure_logging(
+        package_name="bdschism",
+        level=logging.DEBUG if debug else logging.INFO,
+        logdir=Path(logdir) if logdir else None,
+        logfile_prefix="smscg_gate",
     )
 
-    parser.add_argument(
-        "--astronomical_tide_path",
-        type=Path,
-        default=None,
-        help="Path to the astronomical tide data, " \
-        "storing astronomical tide of cse andmrz elevation, srv flow and srv diurnal flow.",
-    )
-    return parser
+    if sdate is None or edate is None:
+        raise ValueError("Start date and end date must be provided.")
 
+    start = pd.Timestamp(sdate)
+    end = pd.Timestamp(edate)
 
-def main(argv=None):
-    parser = build_arg_parser()
-    args = parser.parse_args(argv)
-
-    start = pd.Timestamp(args.start)
-    end = pd.Timestamp(args.end)
-
-    if args.astronomical_tide_path is not None:
-        logger.info("Loading harmonic tide data from %s", args.astronomical_tide_path)
-        elev_cse, elev_mrz, flow_srv, flow_srv_d1 = load_ts_harmonic(args.astronomical_tide_path)
+    if astronomical_tide_path is not None:
+        logger.info("Loading harmonic tide data from %s", astronomical_tide_path)
+        elev_cse, elev_mrz, flow_srv, flow_srv_d1 = load_ts_harmonic(astronomical_tide_path)
     else:
         logger.info("Loading time series data from repo between %s and %s", start, end)
         flow_srv, elev_mrz, elev_cse = load_ts(start, end)
         flow_srv_d1 = flow_srv
 
-    elev_diff = elev_cse-elev_mrz
+    elev_diff = elev_cse - elev_mrz
     elev_diff_filtered = cosine_lanczos(elev_diff, cutoff_period="12h")
     logger.info("Computing predicted gate operation series")
     gate_op_ts = smscg_gate(flow_srv, elev_diff_filtered, elev_mrz, flow_srv_d1, [[start, end]])
-    logger.info("Saving predicted gate operation series to %s", args.csv_path)
-    gate_op_ts.to_csv(args.csv_path, header=True)
+    logger.info("Saving predicted gate operation series to %s", csv_path)
+    gate_op_ts.to_csv(csv_path, header=True)
 
-    if args.plot:
+    if plot:
         plot_gate_op_ts(gate_op_ts)
 
 
 if __name__ == "__main__":
-    main()
+    smscg_cli()
