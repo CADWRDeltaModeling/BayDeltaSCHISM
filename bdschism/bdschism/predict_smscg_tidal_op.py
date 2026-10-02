@@ -1,8 +1,11 @@
 """Predict SMSCG tidal open and close hours by linear regression.
 
-   The prediction is based on linear regression models that relate tidal open and close hours to SRV flow, MRZ Tidal energy, 
-   and CSE-MRZ elevation difference. User need to provide astonoic tidal ddata as inputs, if not given, the prediction 
-   is based on modeling data repo and may be less accurate.
+   The prediction is based on linear regression models that relate tidal gate opening and closing 
+   hours to SRV flow, MRZ tidal energy, and the elevation difference between CSE and MRZ.
+
+    Users should provide astronomical tidal data as input. If astronomical tidal data are 
+    not provided, the prediction will use tidal data from the modeling data repository and may 
+    be less accurate.
 
 """
 
