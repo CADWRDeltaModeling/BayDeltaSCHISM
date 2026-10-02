@@ -25,6 +25,7 @@ from bdschism.source_sink_postprocess import postprocess_source_sink_cli
 from bdschism.source_sink_workflow import source_sink_workflow_cli
 from bdschism.create_sflux_links import create_sflux_links
 from bdschism.convert_struct_data_schism import convert_struct_data_schism_cli
+from bdschism.predict_smscg_tidal_op import smscg_cli
 from schimpy.__main__ import cli as schimpy_cli
 #
 import subprocess
@@ -141,6 +142,7 @@ cli.add_command(source_sink_workflow_cli, "source_sink_workflow")
 cli.add_command(create_sflux_links, "create_sflux_links")
 cli.add_command(cruise_plot_cli, "usgs_cruise_profile")
 cli.add_command(convert_struct_data_schism_cli, "convert_struct_data_schism")
+cli.add_command(smscg_cli, "smscg_tidal_op")
 
 
 if __name__ == "__main__":
