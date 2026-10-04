@@ -17,6 +17,7 @@ def calc_indoi(
     flux_head=os.path.join(bds_dir, "./data/time_history/flux.th"),
     sink_head=os.path.join(bds_dir, "./data/channel_depletion/vsink_dated.th"),
     source_head=os.path.join(bds_dir, "./data/channel_depletion/vsource_dated.th"),
+    detailed_outputs=False,
 ):
     """Calculate an estimate of Net Delta Outflow from boundary inputs applied to SCHISM"""
 
@@ -45,12 +46,14 @@ def calc_indoi(
             "american",
             "yolo_toedrain",
             "yolo",
-            "east",
-            "calaveras",
             "northbay",
         ],
         "Exports": ["ccc_rock", "ccc_old", "ccc_victoria", "swp", "cvp"],
         "Sac at Freeport": ["sac", "american"],
+        "East Delta Inflows": [
+            "calaveras",
+            "east",
+        ],
     }
 
     comb_df = combine_flux(
@@ -74,12 +77,32 @@ def calc_indoi(
     # Resample to 15 min
     dcu_df = dcu_df.resample("15min").ffill()
 
-    ndoi_df = dcu_df + comb_df["Exports"] + comb_df["Northern Flow"] + flux_df["sjr"]
+    ndoi_df = (
+        -dcu_df
+        + comb_df["Exports"]
+        + comb_df["Northern Flow"]
+        + comb_df["East Delta Inflows"]
+        + flux_df["sjr"]
+    )
     ndoi_df.name = "Boundary Input NDOI"
     ndoi_df.index.name = "datetime"
     ndoi_df = ndoi_df.dropna()
 
-    return ndoi_df
+    if detailed_outputs:
+        detail_df = pd.concat(
+            [-dcu_df, comb_df["Exports"], comb_df["Northern Flow"], comb_df["East Delta Inflows"],flux_df["sjr"]],
+            axis=1,
+        )
+        detail_df.columns = [
+            "Consumptive Use",
+            "Exports",
+            "Northern Flow",
+            "East Delta Inflows",
+            "San Joaquin River",
+        ]
+        return ndoi_df, detail_df.dropna(how="any")
+    else:
+        return ndoi_df
 
 
 @click.command(
