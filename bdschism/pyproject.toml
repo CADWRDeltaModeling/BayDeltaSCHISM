@@ -50,7 +50,8 @@ doc = [
     "pillow>=4.0.0",
     "nbsphinx",
     "docutils",
-    "babel"	
+    "babel",	
+	"httpx"
 ]
 test = [
     "pytest",

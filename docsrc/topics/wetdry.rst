@@ -478,10 +478,10 @@ with fluxes near an inundation front.
 
 --------------
 
+.. _flux-out-vertical-integration:
+
 How ``flux.out`` calculates volume flux
 ---------------------------------------
-
-.. _flux-out-vertical-integration:
 
 The native flux diagnostic in ``schism_step(6).F90`` does not
 reconstruct a weak-form boundary term. It directly integrates solved
