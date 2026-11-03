@@ -7,7 +7,7 @@ The ocean boundary relies on elev2D.th.nc for both barotropic and baroclinic run
 
 .. note::
 
-    For future scenarios, you could use tidal components to set the ocean boundary. This case is demonstrated in the `bctides.in.3d.tide.yaml example <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/templates/bay_delta/bctides.in.3d.tide.yaml>`_.
+    For future scenarios, you could use tidal components to set the ocean boundary. This case is demonstrated in the `bctides.in.3d.tide.yaml example <https://github.com/CADWRDeltaModeling/BayDeltaSCHISM/blob/master/examples/bctides/bctides.in.3d.tide.yaml>`_ (see :ref:`bctides_topic`).
 
 The elev2D.th.nc file is a 2D time-varying netCDF file that provides the ocean boundary condition for the model. It contains the elevation (sea surface height) at the ocean boundary over time for each element along the ocean boundary. 
 

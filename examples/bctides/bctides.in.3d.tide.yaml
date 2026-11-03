@@ -1,7 +1,6 @@
-# If using sed with 3 classes, can one be fixed and the other two time history? 
-# If so we should accommodate that here.
-# Don't forget that time_history_nc is an option
-# Let's be rigorous about velocity/flow and make sure exactly zero (tidal) or one is specified 
+# Synthetic example exercising most bctides source keywords: tidal, th_text,
+# th_nc, tidal_th_nc, constants, initial_profile and flather_1, plus tracers.
+# See the schimpy "Boundary conditions (bctides)" chapter for the keyword reference.
 bctides:
   - name: bctides.tide.in.3d
     modules:
@@ -299,18 +298,21 @@ bctides:
               nudge: 0.5
           - tracers: 
             - module: GEN
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: AGE
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: SED
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
       - name: coyote
         flow_direction: inflow
         variables:
         - elevation:
-            source: 2D_elev_history
+            source: th_nc
         - velocity:
-            source: 3D_uv_history
+            source: th_nc
         - temperature:
             source: initial_profile
             nudge: 0.5
@@ -319,16 +321,19 @@ bctides:
             nudge: 0.5
         - tracers: 
             - module: GEN
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: AGE
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: SED
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
       - name: ccc_rock_slough
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux_history
+            source: th_text
         - temperature:
             source: initial_profile
             nudge: 1.0
@@ -337,19 +342,19 @@ bctides:
             nudge: 1.0
         - tracers: 
           - module: GEN
-            source: time_history  # Hans will tell us if this can be mixed and this possibly a list
-            relax: 1.0  # If scalar, will be repeated for both tracers
+            source: th_text
+            nudge: 1.0
           - module: AGE
             source: [10, 20]
-            relax: 1.0
+            nudge: 1.0
           - module: SED
             source: [0.1, 0.2, 0.1, 0.12, 0.23]
-            relax: 1.0
+            nudge: 1.0
       - name: ccc_old
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux_history
+            source: th_text
         - temperature:
             source: initial_profile
             nudge: 0.5
@@ -359,41 +364,44 @@ bctides:
         - tracers:
           - module: GEN
             source: 10
-            relax: 0.5
+            nudge: 0.5
           - module: AGE
             source: [10, 20]
-            relax: 1.0
+            nudge: 1.0
           - module: SED
             source: [0.1, 0.2, 0.1, 0.12, 0.23]
-            relax: 1.0
+            nudge: 1.0
       - name: swp
         flow_direction: outflow #inflow check enforced
         variables:
         - velocity:
-            source: flux_history
+            source: th_text
       - name: cvp
         flow_direction: outflow # specify outflow direction for validation puroses, if any tracer/scalar, throw error
         variables:
         - velocity:
-            source: flux_history
+            source: th_text
       - name: sjr
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux_history
+            source: th_text
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D_salinity_history
+            source: th_nc
             nudge: 1.0
         - tracers: 
             - module: GEN
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: AGE
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: SED
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
       - name: calaveras
         flow_direction: inflow
         variables:
@@ -405,110 +413,128 @@ bctides:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D_salinity_history
+            source: th_nc
             nudge: 1.0
         - tracers: 
             - module: GEN
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: AGE
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: SED
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
       - name: mokelumne
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux_history
+            source: th_text
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D_salinity_history
+            source: th_nc
             nudge: 1.0
         - tracers: 
             - module: GEN
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: AGE
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: SED
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
       - name: american
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux_history
+            source: th_text
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D_salinity_history 
+            source: th_nc
             nudge: 1.0
         - tracers: 
             - module: GEN
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: AGE
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: SED
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
       - name: sacramento
         flow_direction: inflow
         variables:
         - velocity:
-             source: flux_history
+             source: th_text
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D_salinity_history
+            source: th_nc
             nudge: 1.0
         - tracers: 
             - module: GEN
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: AGE
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: SED
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
       - name: yolo_toedrain
         flow_direction: bidirection
         variables:
         - velocity:
-             source: flux_history
+             source: th_text
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D_salinity_history
+            source: th_nc
             nudge: 1.0
         - tracers: 
             - module: GEN
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: AGE
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: SED
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
       - name: yolo
         flow_direction: inflow
         variables:
         - velocity:
-            source: flux_history
+            source: th_text
         - temperature:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D_salinity_history
+            source: th_nc
             nudge: 1.0
         - tracers: 
             - module: GEN
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: AGE
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: SED
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
       - name: northbay
         flow_direction: bidirection
         variables:
         - elevation:
-            source: tidal_and_2D_elev_history
+            source: tidal_th_nc
             spatial: uniform
             constituents:
               - Z0:
@@ -524,7 +550,7 @@ bctides:
                 - amplitude: 0.578
                 - phase: 190
         - velocity:
-             source: tidal_and_3D_uv_history
+             source: tidal_th_nc
              spatial: uniform
              constituents:
               - Z0:
@@ -551,23 +577,24 @@ bctides:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D_salinity_history
+            source: th_nc
             nudge: 1.0
         - tracers: 
             - module: GEN
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: AGE
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: SED
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
       - name: napa
         flow_direction: inflow
         variables:
         - velocity:
              source: flather_1
-             eta_mean: 0.23
              eta_m0: [0.23,0.23,0.23]
-             vnormal_mean: 0.01
              vnormal_nodes:
                - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.01, 0.01]
                - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.01, 0.01]
@@ -576,20 +603,23 @@ bctides:
             source: 10.0
             nudge: 1.0
         - salinity:
-            source: 3D_salinity_history
+            source: th_nc
             nudge: 1.0
         - tracers: 
             - module: GEN
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: AGE
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
             - module: SED
-              source: unspecified 
+              source: initial_profile
+              nudge: 1.0
       - name: ccc_victoria
         flow_direction: outflow
         variables:
         - elevation:
-            source: elev_history
+            source: th_text
         - velocity:
-            source: flux_history
+            source: th_text
 

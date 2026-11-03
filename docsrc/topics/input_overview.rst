@@ -44,6 +44,7 @@ The timeseries inputs are the files that are not sensitive to the geometry of th
   :titlesonly:
 
   baydelta_boundaries.rst
+  bctides.rst
   ocean.rst
   barotropic.rst
   flow_boundary.rst

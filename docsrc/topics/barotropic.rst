@@ -58,7 +58,7 @@ Note that technically you do not have to have `hotstart.in.nc` or the nudging fi
 
 bctides.in
 ^^^^^^^^^^
-Symlink your bctides file to bctides.in.3d for baroclinic run and bctides.in.2d for barotropic run.
+Symlink your bctides file to bctides.in.3d for baroclinic run and bctides.in.2d for barotropic run. Both are generated from the templates described in :ref:`bctides_topic`.
 
 param.nml
 ^^^^^^^^^
