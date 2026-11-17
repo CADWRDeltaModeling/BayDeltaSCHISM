@@ -349,14 +349,11 @@ epub_copyright = (
 # epub_tocdup = True
 
 
-# Configuration for intersphinx: note use of "raw in URL.
-# It is worth checking if objects.inv in the site below is empty.
+# Configuration for intersphinx. The schimpy documentation is published with GitHub
+# Pages actions, so its objects.inv is at the site root (not on the gh-pages branch).
 
 intersphinx_mapping = {
-    "schimpy": (
-        "https://cadwrdeltamodeling.github.io/schimpy",
-        "https://github.com/CADWRDeltaModeling/schimpy/raw/gh-pages/objects.inv",
-    )
+    "schimpy": ("https://cadwrdeltamodeling.github.io/schimpy/", None)
 }
 tls_verify = False
 # using mock to avoid nodepy documentation which is hard to import
