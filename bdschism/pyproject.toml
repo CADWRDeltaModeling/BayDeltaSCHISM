@@ -34,7 +34,7 @@ dependencies = [
 
 [project.optional-dependencies]
 doc = [
-    "sphinx",
+    "sphinx>=8.2,<9",
     "sphinx-rtd-theme",
 	"sphinx-autodoc-typehints",
     "sphinx-click",
@@ -44,7 +44,6 @@ doc = [
     "sphinxcontrib-mermaid",
     "sphinxcontrib-xlsxtable",
     "myst-parser",
-	"ghp-import",
 	"ipython",
     "numpydoc",
     "pillow>=4.0.0",

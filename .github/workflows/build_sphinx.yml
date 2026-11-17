@@ -1,85 +1,72 @@
+# This is the github action that builds the documentation and posts it to github-pages
 name: "Sphinx: Render docs"
 
 on: 
   # Runs on pushes targeting the default branch
   push:
-    branches: ["main", "master"]
+    branches: ["main"]
     tags:
       - 'v[0-9]*.*'      # v1, v1.2, v1.2.3, v2025.09.04, etc.
       - '[0-9]*\.[0-9]*\.*'  # 1, 1.2, 1.2.3, 2025.09.04, etc.  
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: write
-  pages: write
-  id-token: write
-
+  contents: read
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
 jobs:
-  # This workflow contains a single job called "build"
   build:
-
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    defaults:
+      run:
+        shell: bash -el {0}
+    env:
+      SETUPTOOLS_SCM_ROOT: ${{ github.workspace }}
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up micromamba (conda-forge + optional org channel)
-        uses: mamba-org/setup-micromamba@v2
+      - name: Get cache period
+        id: cache-period
+        run: echo "week=$(date +%G-W%V)" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          init-shell: bash
-          cache-downloads: true
-          environment-name: docs
-          # The python here should be coordinated with pyproj.toml. 
-          # The others are a minimal set of things needed to bootstrap the build 
-          # versions should be coordinated with pyproj.toml
-          create-args: >-
-            python=3.12
-            setuptools>=68
-            setuptools_scm
-            numpy>2
-            numpydoc
-          condarc: |
-            channel_priority: strict
-            channels:
-              - conda-forge
-              - cadwr-dms   # keep if you publish your internal deps here
+          miniforge-version: latest
+          activate-environment: bds_doc
+          conda-remove-defaults: true
 
-      - name: Overlay current checkout (no pip deps and install bdschism)
+      # The full SCHISM environment is slow to solve and download, so cache it.
+      # The key changes when either YAML changes, and weekly so that unpinned
+      # packages are still refreshed. Bump CACHE_NUMBER to force a rebuild.
+      - name: Cache Conda environment
+        id: env-cache
+        uses: actions/cache@v4
         env:
-          PIP_NO_INDEX: "1"
-          PIP_NO_BUILD_ISOLATION: "1"
-          SETUPTOOLS_SCM_ROOT: ${{ github.workspace }}
-        working-directory: ${{ github.workspace }}
-        run: |
-          micromamba run -n docs python -m pip install --upgrade pip
-          micromamba run -n docs python -m pip install ./bdschism --no-deps --no-build-isolation -v
+          CACHE_NUMBER: 0
+        with:
+          path: ${{ env.CONDA }}/envs
+          key: conda-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NUMBER }}-${{ steps.cache-period.outputs.week }}-${{ hashFiles('schism_env.yml', 'environment-doc.yml') }}
 
-      - name: Install docs extras from pyproject via conda
+      - name: Create runtime environment plus documentation overlay
+        if: steps.env-cache.outputs.cache-hit != 'true'
         run: |
-          micromamba run -n docs python scripts/install_docs_extras.py
+          conda env update -n bds_doc -f schism_env.yml
+          conda env update -n bds_doc -f environment-doc.yml
+
+      - name: Install checkout
+        run: python -m pip install --no-deps --no-build-isolation -e ./bdschism
 
       - name: Build Sphinx
-        shell: bash -l {0}
-        env:
-          # flip to "0" if/when you want a full unmocked build
-          DOCS_USE_MOCKS: "0"
-          SETUPTOOLS_SCM_ROOT: ${{ github.workspace }}
         run: |
-          sphinx-apidoc --force -T --templatedir ./_templates -o . ../bdschism ../bdschism/setup.py ../bdschism/tests/*
           make -C docsrc clean
           make -C docsrc html
 
@@ -92,8 +79,11 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
-      name: github-pages      # 👈 this resolves your 400 error
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages

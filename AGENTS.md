@@ -81,6 +81,7 @@ schimpy: https://github.com/CADWRDeltaModeling/schimpy
 - Plan before coding
 - Do not refactor outside of scope of chat conversation. Alert is good 
 - Do not contract existing documentation
+- For Sphinx documentation setup and builds, follow [docsrc/documentation.rst](docsrc/documentation.rst) and the `documentation` skill.
 
 # SCHISM wrappers
 - SCHISM wrappers use the Dynaconf config system through settings.py to avoid hardwiring of and to stabilize identity of the utilities, e.g. "combine_hotstart" rather than "combine_hotstart7"

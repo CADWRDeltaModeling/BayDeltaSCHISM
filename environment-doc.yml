@@ -1,0 +1,34 @@
+# Documentation overlay for schism_env.yml; run from the repository root.
+# conda env create -n bds_doc -f schism_env.yml
+# conda env update -n bds_doc -f environment-doc.yml
+# Do not use --prune: this overlay does not describe the runtime dependencies.
+# conda activate bds_doc
+# python -m pip install --no-deps --no-build-isolation -e ./bdschism
+# cd docsrc
+# make html
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - pip
+  # Needed to build and install bdschism (version comes from git via setuptools_scm).
+  - setuptools>=68
+  - setuptools_scm
+  - sphinx>=8.2,<9
+  - sphinx-rtd-theme
+  - sphinx-autodoc-typehints
+  - sphinx-click
+  - sphinx-design
+  - sphinx-argparse
+  - sphinxcontrib-bibtex
+  - sphinxcontrib-mermaid
+  - myst-parser
+  - numpydoc
+  - pillow>=4.0.0
+  - nbsphinx
+  - docutils
+  - babel
+  - ipython
+  - pip:
+      # Not available on conda-forge.
+      - sphinxcontrib-xlsxtable
