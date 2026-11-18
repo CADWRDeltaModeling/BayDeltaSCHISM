@@ -22,6 +22,12 @@ def pytest_addoption(parser):
         action="store_true",
         default=True,
         help="Ignore SMSCG gate operation failures that are consistent with historical record",
+    ),
+    parser.addoption(
+        "--sflux_dir",
+        action="store",
+        default="sflux",
+        help="Directory containing sflux files",
     )
 
 
@@ -49,3 +55,7 @@ def sea_level(request):
 @pytest.fixture(scope="module")
 def historical_gates(request):
     return request.config.getoption("--hist_gate")
+
+@pytest.fixture(scope="module")
+def sflux_dir(request):
+    return request.config.getoption("--sflux_dir")
