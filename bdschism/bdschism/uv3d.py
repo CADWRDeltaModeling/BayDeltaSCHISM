@@ -125,7 +125,6 @@ def interpolate_uv3d(
             f"interpolate_variables.in is not specified. Extracting nday from user input: nday = {nday}."
         )
         if nday is None:
-            print("nday not specified in user input. Extracting nday from param.nml.")
             #
             # Parse param.nml
             #
@@ -134,6 +133,7 @@ def interpolate_uv3d(
             params = param.read_params(param_nml)
             nday = params["rnday"]
 
+            print(f"nday not specified in user input. Extracting nday from param.nml: nday = {nday}.")
         # If user did not specify boundary segments, default to boundary segment 1
         if bnd_seg is None or len(bnd_seg) == 0:
             print("Boundary segments not specified. Defaulting to boundary segment 1.")
