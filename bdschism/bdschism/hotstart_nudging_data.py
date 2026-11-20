@@ -135,7 +135,7 @@ stations = [
 add_upper = ["anh", "cse", "mrz", "emm", "mal", "pts"]
 
 
-def hotstart_nudge_data(sdate, ndays, dest, repo = "screened"):
+def hotstart_nudge_data(sdate, ndays, dest, repo = "screened", exclude=[]):
 
     t0 = sdate
     nudgelen = pd.Timedelta(days=ndays)
@@ -148,7 +148,8 @@ def hotstart_nudge_data(sdate, ndays, dest, repo = "screened"):
     sdata = t0 - buf
     edata = t0 + nudgelen + buf
 
-    station_df = station_df.loc[stations]
+    selected_stations = [station for station in stations if station not in exclude]
+    station_df = station_df.loc[selected_stations]
 
     no_such_file = []
     tndx = pd.date_range(t0, t0 + nudgelen, freq="h")
@@ -281,12 +282,19 @@ def hotstart_nudge_data(sdate, ndays, dest, repo = "screened"):
     help="repo of observed time series. \
                         Default is screened",
 )
+
+@click.option(
+    "--exclude",
+    multiple=True,
+    help="List of stations to exclude. Use multiple times for multiple stations (e.g., --exclude co5 --exclude sjj)",
+)
+
 @click.option("--logdir", type=click.Path(path_type=pathlib.Path), default="logs")
 @click.option("--debug", is_flag=True)
 @click.option("--quiet", is_flag=True)
 @click.help_option("-h", "--help")
 def hotstart_nudge_data_cli(
-    start_date, nudge_len, dest_dir, repo, logdir, debug, quiet
+    start_date, nudge_len, dest_dir, repo, logdir, debug, quiet, exclude
 ):
     """
     Command-line interface for the hotstart_nudge_data function.
@@ -309,7 +317,7 @@ def hotstart_nudge_data_cli(
     except ValueError:
         raise ValueError("Invalid date format. Use YYYY-MM-DD.")
 
-    hotstart_nudge_data(sdate, nudge_len, dest_dir, repo)
+    hotstart_nudge_data(sdate, nudge_len, dest_dir, repo, exclude)
 
 
 if __name__ == "__main__":
